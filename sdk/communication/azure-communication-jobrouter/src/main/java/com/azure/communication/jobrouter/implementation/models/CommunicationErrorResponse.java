@@ -4,12 +4,12 @@
 
 package com.azure.communication.jobrouter.implementation.models;
 
-import com.azure.communication.jobrouter.models.JobRouterError;
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Communication Services error. */
-@Fluent
+@Immutable
 public final class CommunicationErrorResponse {
     /*
      * The Communication Services error.
@@ -18,22 +18,21 @@ public final class CommunicationErrorResponse {
     private JobRouterError error;
 
     /**
+     * Creates an instance of CommunicationErrorResponse class.
+     *
+     * @param error the error value to set.
+     */
+    @JsonCreator
+    public CommunicationErrorResponse(@JsonProperty(value = "error", required = true) JobRouterError error) {
+        this.error = error;
+    }
+
+    /**
      * Get the error property: The Communication Services error.
      *
      * @return the error value.
      */
     public JobRouterError getError() {
         return this.error;
-    }
-
-    /**
-     * Set the error property: The Communication Services error.
-     *
-     * @param error the error value to set.
-     * @return the CommunicationErrorResponse object itself.
-     */
-    public CommunicationErrorResponse setError(JobRouterError error) {
-        this.error = error;
-        return this;
     }
 }

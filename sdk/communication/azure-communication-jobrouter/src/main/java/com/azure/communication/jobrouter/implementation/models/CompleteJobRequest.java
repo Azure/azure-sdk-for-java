@@ -5,6 +5,7 @@
 package com.azure.communication.jobrouter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request payload for completing jobs. */
@@ -17,11 +18,20 @@ public final class CompleteJobRequest {
     private String assignmentId;
 
     /*
-     * (Optional) A note that will be appended to the jobs' Notes collection
-     * with the current timestamp.
+     * (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
      */
     @JsonProperty(value = "note")
     private String note;
+
+    /**
+     * Creates an instance of CompleteJobRequest class.
+     *
+     * @param assignmentId the assignmentId value to set.
+     */
+    @JsonCreator
+    public CompleteJobRequest(@JsonProperty(value = "assignmentId", required = true) String assignmentId) {
+        this.assignmentId = assignmentId;
+    }
 
     /**
      * Get the assignmentId property: The assignment within the job to complete.
@@ -30,17 +40,6 @@ public final class CompleteJobRequest {
      */
     public String getAssignmentId() {
         return this.assignmentId;
-    }
-
-    /**
-     * Set the assignmentId property: The assignment within the job to complete.
-     *
-     * @param assignmentId the assignmentId value to set.
-     * @return the CompleteJobRequest object itself.
-     */
-    public CompleteJobRequest setAssignmentId(String assignmentId) {
-        this.assignmentId = assignmentId;
-        return this;
     }
 
     /**

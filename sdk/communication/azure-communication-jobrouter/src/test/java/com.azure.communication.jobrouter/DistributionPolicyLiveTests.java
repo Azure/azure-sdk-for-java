@@ -3,8 +3,6 @@
 
 package com.azure.communication.jobrouter;
 
-import com.azure.communication.jobrouter.models.AzureFunctionRule;
-import com.azure.communication.jobrouter.models.AzureFunctionRuleCredential;
 import com.azure.communication.jobrouter.models.BestWorkerMode;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.LongestIdleMode;

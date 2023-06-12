@@ -30,7 +30,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -54,18 +57,18 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.communication.jobrouter.routeradministrationasyncclient.instantiation -->
  *
- * <p>View {@link RouterAdministrationClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link JobRouterClientBuilder this} for additional ways to construct the client.</p>
  *
- * @see RouterAdministrationClientBuilder
+ * @see JobRouterClientBuilder
  */
-@ServiceClient(builder = RouterAdministrationClientBuilder.class, isAsync = true)
+@ServiceClient(builder = JobRouterClientBuilder.class, isAsync = true)
 public final class RouterAdministrationAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(RouterAdministrationAsyncClient.class);
 
     private final JobRouterAdministrationsImpl jobRouterAdmin;
 
-    RouterAdministrationAsyncClient(AzureCommunicationServicesImpl jobRouterService) {
-        this.jobRouterAdmin = jobRouterService.getJobRouterAdministrations();
+    RouterAdministrationAsyncClient(JobRouterAdministrationsImpl jobRouterService) {
+        this.jobRouterAdmin = jobRouterService;
     }
 
     /**
@@ -159,11 +162,29 @@ public final class RouterAdministrationAsyncClient {
             return monoError(LOGGER, ex);
         }
     }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> updateClassificationPolicyWithResponse(String id, BinaryData patch, RequestOptions requestOptions) {
+        try {
+            return upsertClassificationPolicyWithResponseInternal(id, patch, requestOptions);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
 
     Mono<Response<ClassificationPolicy>> upsertClassificationPolicyWithResponse(String id, ClassificationPolicy classificationPolicy, Context context) {
         try {
-            return jobRouterAdmin.upsertClassificationPolicyWithResponseAsync(id, classificationPolicy, context);
+            RequestOptions requestOptions = new RequestOptions().setContext(context);
+            return upsertClassificationPolicyWithResponseInternal(id, BinaryData.fromObject(classificationPolicy), requestOptions)
+                .flatMap((Response<BinaryData> res) -> Mono.justOrEmpty(new SimpleResponse<ClassificationPolicy>(res, res.getValue().toObject(ClassificationPolicy.class))));
         } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<BinaryData>> upsertClassificationPolicyWithResponseInternal(String id, BinaryData patch, RequestOptions requestOptions){
+        try {
+            return jobRouterAdmin.upsertClassificationPolicyWithResponseAsync(id, patch, requestOptions);
+        }catch (RuntimeException ex){
             return monoError(LOGGER, ex);
         }
     }
@@ -214,7 +235,9 @@ public final class RouterAdministrationAsyncClient {
 
     Mono<Response<ClassificationPolicy>> getClassificationPolicyWithResponse(String id, Context context) {
         try {
-            return jobRouterAdmin.getClassificationPolicyWithResponseAsync(id, context);
+            RequestOptions requestOptions = new RequestOptions().setContext(context);
+            return jobRouterAdmin.getClassificationPolicyWithResponseAsync(id, requestOptions)
+                .flatMap((Response<BinaryData> res) -> Mono.justOrEmpty(new SimpleResponse<ClassificationPolicy>(res, res.getValue().toObject(ClassificationPolicy.class))));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -266,7 +289,8 @@ public final class RouterAdministrationAsyncClient {
 
     Mono<Response<Void>> deleteClassificationPolicyWithResponse(String id, Context context) {
         try {
-            return jobRouterAdmin.deleteClassificationPolicyWithResponseAsync(id, context);
+            RequestOptions requestOptions = new RequestOptions().setContext(context);
+            return jobRouterAdmin.deleteClassificationPolicyWithResponseAsync(id, requestOptions);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -400,7 +424,17 @@ public final class RouterAdministrationAsyncClient {
 
     Mono<Response<DistributionPolicy>> upsertDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy, Context context) {
         try {
-            return jobRouterAdmin.upsertDistributionPolicyWithResponseAsync(id, distributionPolicy, context);
+            RequestOptions requestOptions = new RequestOptions().setContext(context);
+            return jobRouterAdmin.upsertDistributionPolicyWithResponseAsync(id, BinaryData.fromObject(distributionPolicy), requestOptions)
+                .flatMap((Response<BinaryData> res) -> Mono.justOrEmpty(new SimpleResponse<DistributionPolicy>(res, res.getValue().toObject(DistributionPolicy.class))));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<BinaryData>> upsertDistributionPolicyWithResponse(String id, BinaryData patch, RequestOptions requestOptions) {
+        try {
+            return jobRouterAdmin.upsertDistributionPolicyWithResponseAsync(id, patch, requestOptions);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -452,7 +486,9 @@ public final class RouterAdministrationAsyncClient {
 
     Mono<Response<DistributionPolicy>> getDistributionPolicyWithResponse(String id, Context context) {
         try {
-            return jobRouterAdmin.getDistributionPolicyWithResponseAsync(id, context);
+            RequestOptions requestOptions = new RequestOptions().setContext(context);
+            return jobRouterAdmin.getDistributionPolicyWithResponseAsync(id, requestOptions)
+                .flatMap((Response<BinaryData> res) -> Mono.justOrEmpty(new SimpleResponse<DistributionPolicy>(res, res.getValue().toObject(DistributionPolicy.class))));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -504,7 +540,8 @@ public final class RouterAdministrationAsyncClient {
 
     Mono<Response<Void>> deleteDistributionPolicyWithResponse(String id, Context context) {
         try {
-            return jobRouterAdmin.deleteDistributionPolicyWithResponseAsync(id, context);
+            RequestOptions requestOptions = new RequestOptions().setContext(context);
+            return jobRouterAdmin.deleteDistributionPolicyWithResponseAsync(id, requestOptions);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -622,7 +659,17 @@ public final class RouterAdministrationAsyncClient {
 
     Mono<Response<ExceptionPolicy>> upsertExceptionPolicyWithResponse(String id, ExceptionPolicy exceptionPolicy, Context context) {
         try {
-            return jobRouterAdmin.upsertExceptionPolicyWithResponseAsync(id, exceptionPolicy, context);
+            RequestOptions requestOptions = new RequestOptions().setContext(context);
+            return upsertExceptionPolicyWithResponse(id, BinaryData.fromObject(exceptionPolicy), requestOptions)
+                .flatMap((Response<BinaryData> res) -> Mono.justOrEmpty(new SimpleResponse<ExceptionPolicy>(res, res.getValue().toObject(ExceptionPolicy.class))));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<BinaryData>> upsertExceptionPolicyWithResponse(String id, BinaryData patch, RequestOptions requestOptions) {
+        try {
+            return jobRouterAdmin.upsertExceptionPolicyWithResponseAsync(id, patch, requestOptions);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -674,7 +721,9 @@ public final class RouterAdministrationAsyncClient {
 
     Mono<Response<ExceptionPolicy>> getExceptionPolicyWithResponse(String id, Context context) {
         try {
-            return jobRouterAdmin.getExceptionPolicyWithResponseAsync(id, context);
+            RequestOptions requestOptions = new RequestOptions().setContext(context);
+            return jobRouterAdmin.getExceptionPolicyWithResponseAsync(id, requestOptions)
+                .flatMap((Response<BinaryData> res) -> Mono.justOrEmpty(new SimpleResponse<ExceptionPolicy>(res, res.getValue().toObject(ExceptionPolicy.class))));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -726,7 +775,8 @@ public final class RouterAdministrationAsyncClient {
 
     Mono<Response<Void>> deleteExceptionPolicyWithResponse(String id, Context context) {
         try {
-            return jobRouterAdmin.deleteExceptionPolicyWithResponseAsync(id, context);
+            RequestOptions requestOptions = new RequestOptions().setContext(context);
+            return jobRouterAdmin.deleteExceptionPolicyWithResponseAsync(id, requestOptions);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -858,9 +908,28 @@ public final class RouterAdministrationAsyncClient {
         }
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> updateQueueWithResponse(String id, BinaryData patch, RequestOptions requestOptions) {
+        try {
+            return updateQueueWithResponse(id, patch, requestOptions);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
     Mono<Response<JobQueue>> upsertQueueWithResponse(String id, JobQueue jobQueue, Context context) {
         try {
-            return jobRouterAdmin.upsertQueueWithResponseAsync(id, jobQueue, context);
+            RequestOptions requestOptions = new RequestOptions().setContext(context);
+            return upsertQueueWithResponse(id, BinaryData.fromObject(jobQueue), requestOptions)
+                .flatMap((Response<BinaryData> res) -> Mono.justOrEmpty(new SimpleResponse<JobQueue>(res, res.getValue().toObject(JobQueue.class))));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<BinaryData>> upsertQueueWithResponse(String id, BinaryData patch, RequestOptions requestOptions) {
+        try {
+            return jobRouterAdmin.upsertQueueWithResponseAsync(id, patch, requestOptions);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

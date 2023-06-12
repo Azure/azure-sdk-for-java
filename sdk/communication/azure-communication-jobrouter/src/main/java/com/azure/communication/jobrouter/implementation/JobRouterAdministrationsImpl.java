@@ -4,19 +4,6 @@
 
 package com.azure.communication.jobrouter.implementation;
 
-import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.jobrouter.models.ClassificationPolicy;
-import com.azure.communication.jobrouter.models.ClassificationPolicyCollection;
-import com.azure.communication.jobrouter.models.ClassificationPolicyItem;
-import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.DistributionPolicyCollection;
-import com.azure.communication.jobrouter.models.DistributionPolicyItem;
-import com.azure.communication.jobrouter.models.ExceptionPolicy;
-import com.azure.communication.jobrouter.models.ExceptionPolicyCollection;
-import com.azure.communication.jobrouter.models.ExceptionPolicyItem;
-import com.azure.communication.jobrouter.models.JobQueue;
-import com.azure.communication.jobrouter.models.JobQueueItem;
-import com.azure.communication.jobrouter.models.QueueCollection;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -31,14 +18,23 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobRouterAdministrations. */
@@ -47,14 +43,14 @@ public final class JobRouterAdministrationsImpl {
     private final JobRouterAdministrationsService service;
 
     /** The service client containing this operation class. */
-    private final AzureCommunicationServicesImpl client;
+    private final JobRouterClientImpl client;
 
     /**
      * Initializes an instance of JobRouterAdministrationsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    JobRouterAdministrationsImpl(AzureCommunicationServicesImpl client) {
+    JobRouterAdministrationsImpl(JobRouterClientImpl client) {
         this.service =
                 RestProxy.create(
                         JobRouterAdministrationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -62,533 +58,1120 @@ public final class JobRouterAdministrationsImpl {
     }
 
     /**
-     * The interface defining all the services for AzureCommunicationServicesJobRouterAdministrations to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for AzureCommunicationJobRouterServiceJobRouterAdministrations to be used
+     * by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureCommunicationSe")
+    @ServiceInterface(name = "AzureCommunicationJo")
     public interface JobRouterAdministrationsService {
         @Patch("/routing/classificationPolicies/{id}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ClassificationPolicy>> upsertClassificationPolicy(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> upsertClassificationPolicy(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") ClassificationPolicy patch,
+                @BodyParam("application/merge-patch+json") BinaryData patch,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Patch("/routing/classificationPolicies/{id}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> upsertClassificationPolicySync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/merge-patch+json") BinaryData patch,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("/routing/classificationPolicies/{id}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ClassificationPolicy>> getClassificationPolicy(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getClassificationPolicy(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/routing/classificationPolicies/{id}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getClassificationPolicySync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Delete("/routing/classificationPolicies/{id}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteClassificationPolicy(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/routing/classificationPolicies/{id}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteClassificationPolicySync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("/routing/classificationPolicies")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ClassificationPolicyCollection>> listClassificationPolicies(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listClassificationPolicies(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("maxPageSize") Integer maxPageSize,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/routing/classificationPolicies")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listClassificationPoliciesSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Patch("/routing/distributionPolicies/{id}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<DistributionPolicy>> upsertDistributionPolicy(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> upsertDistributionPolicy(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") DistributionPolicy patch,
+                @BodyParam("application/merge-patch+json") BinaryData patch,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Patch("/routing/distributionPolicies/{id}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> upsertDistributionPolicySync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/merge-patch+json") BinaryData patch,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("/routing/distributionPolicies/{id}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<DistributionPolicy>> getDistributionPolicy(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getDistributionPolicy(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/routing/distributionPolicies/{id}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getDistributionPolicySync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Delete("/routing/distributionPolicies/{id}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteDistributionPolicy(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/routing/distributionPolicies/{id}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteDistributionPolicySync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("/routing/distributionPolicies")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<DistributionPolicyCollection>> listDistributionPolicies(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listDistributionPolicies(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("maxPageSize") Integer maxPageSize,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/routing/distributionPolicies")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listDistributionPoliciesSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Patch("/routing/exceptionPolicies/{id}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ExceptionPolicy>> upsertExceptionPolicy(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> upsertExceptionPolicy(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") ExceptionPolicy patch,
+                @BodyParam("application/merge-patch+json") BinaryData patch,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Patch("/routing/exceptionPolicies/{id}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> upsertExceptionPolicySync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/merge-patch+json") BinaryData patch,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("/routing/exceptionPolicies/{id}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ExceptionPolicy>> getExceptionPolicy(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getExceptionPolicy(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/routing/exceptionPolicies/{id}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getExceptionPolicySync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Delete("/routing/exceptionPolicies/{id}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteExceptionPolicy(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/routing/exceptionPolicies/{id}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteExceptionPolicySync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("/routing/exceptionPolicies")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ExceptionPolicyCollection>> listExceptionPolicies(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listExceptionPolicies(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("maxPageSize") Integer maxPageSize,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/routing/exceptionPolicies")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listExceptionPoliciesSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Patch("/routing/queues/{id}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<JobQueue>> upsertQueue(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> upsertQueue(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") JobQueue patch,
+                @BodyParam("application/merge-patch+json") BinaryData patch,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Patch("/routing/queues/{id}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> upsertQueueSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/merge-patch+json") BinaryData patch,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("/routing/queues/{id}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<JobQueue>> getQueue(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getQueue(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/routing/queues/{id}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getQueueSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Delete("/routing/queues/{id}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteQueue(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/routing/queues/{id}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteQueueSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("/routing/queues")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<QueueCollection>> listQueues(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listQueues(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("maxPageSize") Integer maxPageSize,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/routing/queues")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listQueuesSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ClassificationPolicyCollection>> listClassificationPoliciesNext(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listClassificationPoliciesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<DistributionPolicyCollection>> listDistributionPoliciesNext(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listClassificationPoliciesNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ExceptionPolicyCollection>> listExceptionPoliciesNext(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listDistributionPoliciesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<QueueCollection>> listQueuesNext(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listDistributionPoliciesNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listExceptionPoliciesNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listExceptionPoliciesNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listQueuesNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listQueuesNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
     }
 
     /**
      * Creates or updates a classification policy.
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     fallbackQueueId: String (Optional)
+     *     queueSelectors (Optional): [
+     *         Object (Optional)
+     *     ]
+     *     prioritizationRule (Optional): {
+     *     }
+     *     workerSelectors (Optional): [
+     *         Object (Optional)
+     *     ]
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     fallbackQueueId: String (Optional)
+     *     queueSelectors (Optional): [
+     *         Object (Optional)
+     *     ]
+     *     prioritizationRule (Optional): {
+     *     }
+     *     workerSelectors (Optional): [
+     *         Object (Optional)
+     *     ]
+     * }
+     * }</pre>
+     *
      * @param id Id of the classification policy.
      * @param patch Model of classification policy properties to be patched. See also:
      *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a container for the rules that govern how jobs are classified along with {@link Response} on successful
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ClassificationPolicy>> upsertClassificationPolicyWithResponseAsync(
-            String id, ClassificationPolicy patch) {
+    public Mono<Response<BinaryData>> upsertClassificationPolicyWithResponseAsync(
+            String id, BinaryData patch, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.upsertClassificationPolicy(
-                                this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context));
+                                this.client.getEndpoint(),
+                                id,
+                                this.client.getServiceVersion().getVersion(),
+                                patch,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
      * Creates or updates a classification policy.
      *
-     * @param id Id of the classification policy.
-     * @param patch Model of classification policy properties to be patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for the rules that govern how jobs are classified along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ClassificationPolicy>> upsertClassificationPolicyWithResponseAsync(
-            String id, ClassificationPolicy patch, Context context) {
-        final String accept = "application/json";
-        return service.upsertClassificationPolicy(
-                this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context);
-    }
-
-    /**
-     * Creates or updates a classification policy.
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     fallbackQueueId: String (Optional)
+     *     queueSelectors (Optional): [
+     *         Object (Optional)
+     *     ]
+     *     prioritizationRule (Optional): {
+     *     }
+     *     workerSelectors (Optional): [
+     *         Object (Optional)
+     *     ]
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     fallbackQueueId: String (Optional)
+     *     queueSelectors (Optional): [
+     *         Object (Optional)
+     *     ]
+     *     prioritizationRule (Optional): {
+     *     }
+     *     workerSelectors (Optional): [
+     *         Object (Optional)
+     *     ]
+     * }
+     * }</pre>
      *
      * @param id Id of the classification policy.
      * @param patch Model of classification policy properties to be patched. See also:
      *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for the rules that govern how jobs are classified on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ClassificationPolicy> upsertClassificationPolicyAsync(String id, ClassificationPolicy patch) {
-        return upsertClassificationPolicyWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a classification policy.
-     *
-     * @param id Id of the classification policy.
-     * @param patch Model of classification policy properties to be patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for the rules that govern how jobs are classified on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ClassificationPolicy> upsertClassificationPolicyAsync(
-            String id, ClassificationPolicy patch, Context context) {
-        return upsertClassificationPolicyWithResponseAsync(id, patch, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a classification policy.
-     *
-     * @param id Id of the classification policy.
-     * @param patch Model of classification policy properties to be patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for the rules that govern how jobs are classified.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClassificationPolicy upsertClassificationPolicy(String id, ClassificationPolicy patch) {
-        return upsertClassificationPolicyAsync(id, patch).block();
-    }
-
-    /**
-     * Creates or updates a classification policy.
-     *
-     * @param id Id of the classification policy.
-     * @param patch Model of classification policy properties to be patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a container for the rules that govern how jobs are classified along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClassificationPolicy> upsertClassificationPolicyWithResponse(
-            String id, ClassificationPolicy patch, Context context) {
-        return upsertClassificationPolicyWithResponseAsync(id, patch, context).block();
+    public Response<BinaryData> upsertClassificationPolicyWithResponse(
+            String id, BinaryData patch, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.upsertClassificationPolicySync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                patch,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Retrieves an existing classification policy by Id.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     fallbackQueueId: String (Optional)
+     *     queueSelectors (Optional): [
+     *         Object (Optional)
+     *     ]
+     *     prioritizationRule (Optional): {
+     *     }
+     *     workerSelectors (Optional): [
+     *         Object (Optional)
+     *     ]
+     * }
+     * }</pre>
+     *
      * @param id Id of the classification policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a container for the rules that govern how jobs are classified along with {@link Response} on successful
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ClassificationPolicy>> getClassificationPolicyWithResponseAsync(String id) {
+    public Mono<Response<BinaryData>> getClassificationPolicyWithResponseAsync(
+            String id, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getClassificationPolicy(
-                                this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context));
+                                this.client.getEndpoint(),
+                                id,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
      * Retrieves an existing classification policy by Id.
      *
-     * @param id Id of the classification policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for the rules that govern how jobs are classified along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ClassificationPolicy>> getClassificationPolicyWithResponseAsync(String id, Context context) {
-        final String accept = "application/json";
-        return service.getClassificationPolicy(
-                this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Retrieves an existing classification policy by Id.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     fallbackQueueId: String (Optional)
+     *     queueSelectors (Optional): [
+     *         Object (Optional)
+     *     ]
+     *     prioritizationRule (Optional): {
+     *     }
+     *     workerSelectors (Optional): [
+     *         Object (Optional)
+     *     ]
+     * }
+     * }</pre>
      *
      * @param id Id of the classification policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for the rules that govern how jobs are classified on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ClassificationPolicy> getClassificationPolicyAsync(String id) {
-        return getClassificationPolicyWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves an existing classification policy by Id.
-     *
-     * @param id Id of the classification policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for the rules that govern how jobs are classified on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ClassificationPolicy> getClassificationPolicyAsync(String id, Context context) {
-        return getClassificationPolicyWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves an existing classification policy by Id.
-     *
-     * @param id Id of the classification policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for the rules that govern how jobs are classified.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClassificationPolicy getClassificationPolicy(String id) {
-        return getClassificationPolicyAsync(id).block();
-    }
-
-    /**
-     * Retrieves an existing classification policy by Id.
-     *
-     * @param id Id of the classification policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a container for the rules that govern how jobs are classified along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClassificationPolicy> getClassificationPolicyWithResponse(String id, Context context) {
-        return getClassificationPolicyWithResponseAsync(id, context).block();
+    public Response<BinaryData> getClassificationPolicyWithResponse(String id, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getClassificationPolicySync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Delete a classification policy by Id.
      *
      * @param id Id of the classification policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteClassificationPolicyWithResponseAsync(String id) {
+    public Mono<Response<Void>> deleteClassificationPolicyWithResponseAsync(String id, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteClassificationPolicy(
-                                this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context));
+                                this.client.getEndpoint(),
+                                id,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
      * Delete a classification policy by Id.
      *
      * @param id Id of the classification policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteClassificationPolicyWithResponseAsync(String id, Context context) {
-        final String accept = "application/json";
-        return service.deleteClassificationPolicy(
-                this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Delete a classification policy by Id.
-     *
-     * @param id Id of the classification policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteClassificationPolicyAsync(String id) {
-        return deleteClassificationPolicyWithResponseAsync(id).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Delete a classification policy by Id.
-     *
-     * @param id Id of the classification policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteClassificationPolicyAsync(String id, Context context) {
-        return deleteClassificationPolicyWithResponseAsync(id, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Delete a classification policy by Id.
-     *
-     * @param id Id of the classification policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteClassificationPolicy(String id) {
-        deleteClassificationPolicyAsync(id).block();
-    }
-
-    /**
-     * Delete a classification policy by Id.
-     *
-     * @param id Id of the classification policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteClassificationPolicyWithResponse(String id, Context context) {
-        return deleteClassificationPolicyWithResponseAsync(id, context).block();
+    public Response<Void> deleteClassificationPolicyWithResponse(String id, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteClassificationPolicySync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Retrieves existing classification policies.
      *
-     * @param maxPageSize Maximum page size.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum page size</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     classificationPolicy (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         fallbackQueueId: String (Optional)
+     *         queueSelectors (Optional): [
+     *             Object (Optional)
+     *         ]
+     *         prioritizationRule (Optional): {
+     *         }
+     *         workerSelectors (Optional): [
+     *             Object (Optional)
+     *         ]
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a paged collection of classification policies along with {@link PagedResponse} on successful completion
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ClassificationPolicyItem>> listClassificationPoliciesSinglePageAsync(
-            Integer maxPageSize) {
+    private Mono<PagedResponse<BinaryData>> listClassificationPoliciesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listClassificationPolicies(
                                         this.client.getEndpoint(),
-                                        maxPageSize,
-                                        this.client.getApiVersion(),
+                                        this.client.getServiceVersion().getVersion(),
                                         accept,
+                                        requestOptions,
                                         context))
                 .map(
                         res ->
@@ -596,420 +1179,470 @@ public final class JobRouterAdministrationsImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Retrieves existing classification policies.
      *
-     * @param maxPageSize Maximum page size.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of classification policies along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum page size</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     classificationPolicy (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         fallbackQueueId: String (Optional)
+     *         queueSelectors (Optional): [
+     *             Object (Optional)
+     *         ]
+     *         prioritizationRule (Optional): {
+     *         }
+     *         workerSelectors (Optional): [
+     *             Object (Optional)
+     *         ]
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a paged collection of classification policies as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listClassificationPoliciesAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listClassificationPoliciesSinglePageAsync(requestOptions),
+                nextLink -> listClassificationPoliciesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * Retrieves existing classification policies.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum page size</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     classificationPolicy (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         fallbackQueueId: String (Optional)
+     *         queueSelectors (Optional): [
+     *             Object (Optional)
+     *         ]
+     *         prioritizationRule (Optional): {
+     *         }
+     *         workerSelectors (Optional): [
+     *             Object (Optional)
+     *         ]
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a paged collection of classification policies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ClassificationPolicyItem>> listClassificationPoliciesSinglePageAsync(
-            Integer maxPageSize, Context context) {
+    private PagedResponse<BinaryData> listClassificationPoliciesSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listClassificationPolicies(
-                        this.client.getEndpoint(), maxPageSize, this.client.getApiVersion(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        Response<BinaryData> res =
+                service.listClassificationPoliciesSync(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     /**
      * Retrieves existing classification policies.
      *
-     * @param maxPageSize Maximum page size.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of classification policies as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ClassificationPolicyItem> listClassificationPoliciesAsync(Integer maxPageSize) {
-        return new PagedFlux<>(
-                () -> listClassificationPoliciesSinglePageAsync(maxPageSize),
-                nextLink -> listClassificationPoliciesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Retrieves existing classification policies.
+     * <p><strong>Query Parameters</strong>
      *
-     * @param maxPageSize Maximum page size.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of classification policies as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ClassificationPolicyItem> listClassificationPoliciesAsync(Integer maxPageSize, Context context) {
-        return new PagedFlux<>(
-                () -> listClassificationPoliciesSinglePageAsync(maxPageSize, context),
-                nextLink -> listClassificationPoliciesNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Retrieves existing classification policies.
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum page size</td></tr>
+     * </table>
      *
-     * @param maxPageSize Maximum page size.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     classificationPolicy (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         fallbackQueueId: String (Optional)
+     *         queueSelectors (Optional): [
+     *             Object (Optional)
+     *         ]
+     *         prioritizationRule (Optional): {
+     *         }
+     *         workerSelectors (Optional): [
+     *             Object (Optional)
+     *         ]
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a paged collection of classification policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ClassificationPolicyItem> listClassificationPolicies(Integer maxPageSize) {
-        return new PagedIterable<>(listClassificationPoliciesAsync(maxPageSize));
-    }
-
-    /**
-     * Retrieves existing classification policies.
-     *
-     * @param maxPageSize Maximum page size.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of classification policies as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ClassificationPolicyItem> listClassificationPolicies(Integer maxPageSize, Context context) {
-        return new PagedIterable<>(listClassificationPoliciesAsync(maxPageSize, context));
+    public PagedIterable<BinaryData> listClassificationPolicies(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listClassificationPoliciesSinglePage(requestOptions),
+                nextLink -> listClassificationPoliciesNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
      * Creates or updates a distribution policy.
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     offerTtlSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: int (Required)
+     *         maxConcurrentOffers: int (Required)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     offerTtlSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: int (Required)
+     *         maxConcurrentOffers: int (Required)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
      * @param id Id of the distribution policy.
      * @param patch Model of distribution policy properties to be patched. See also:
      *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return policy governing how jobs are distributed to workers along with {@link Response} on successful completion
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DistributionPolicy>> upsertDistributionPolicyWithResponseAsync(
-            String id, DistributionPolicy patch) {
+    public Mono<Response<BinaryData>> upsertDistributionPolicyWithResponseAsync(
+            String id, BinaryData patch, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.upsertDistributionPolicy(
-                                this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context));
+                                this.client.getEndpoint(),
+                                id,
+                                this.client.getServiceVersion().getVersion(),
+                                patch,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
      * Creates or updates a distribution policy.
      *
-     * @param id Id of the distribution policy.
-     * @param patch Model of distribution policy properties to be patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy governing how jobs are distributed to workers along with {@link Response} on successful completion
-     *     of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DistributionPolicy>> upsertDistributionPolicyWithResponseAsync(
-            String id, DistributionPolicy patch, Context context) {
-        final String accept = "application/json";
-        return service.upsertDistributionPolicy(
-                this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context);
-    }
-
-    /**
-     * Creates or updates a distribution policy.
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     offerTtlSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: int (Required)
+     *         maxConcurrentOffers: int (Required)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     offerTtlSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: int (Required)
+     *         maxConcurrentOffers: int (Required)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
+     * }
+     * }</pre>
      *
      * @param id Id of the distribution policy.
      * @param patch Model of distribution policy properties to be patched. See also:
      *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy governing how jobs are distributed to workers on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DistributionPolicy> upsertDistributionPolicyAsync(String id, DistributionPolicy patch) {
-        return upsertDistributionPolicyWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a distribution policy.
-     *
-     * @param id Id of the distribution policy.
-     * @param patch Model of distribution policy properties to be patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy governing how jobs are distributed to workers on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DistributionPolicy> upsertDistributionPolicyAsync(
-            String id, DistributionPolicy patch, Context context) {
-        return upsertDistributionPolicyWithResponseAsync(id, patch, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a distribution policy.
-     *
-     * @param id Id of the distribution policy.
-     * @param patch Model of distribution policy properties to be patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy governing how jobs are distributed to workers.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DistributionPolicy upsertDistributionPolicy(String id, DistributionPolicy patch) {
-        return upsertDistributionPolicyAsync(id, patch).block();
-    }
-
-    /**
-     * Creates or updates a distribution policy.
-     *
-     * @param id Id of the distribution policy.
-     * @param patch Model of distribution policy properties to be patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return policy governing how jobs are distributed to workers along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DistributionPolicy> upsertDistributionPolicyWithResponse(
-            String id, DistributionPolicy patch, Context context) {
-        return upsertDistributionPolicyWithResponseAsync(id, patch, context).block();
+    public Response<BinaryData> upsertDistributionPolicyWithResponse(
+            String id, BinaryData patch, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.upsertDistributionPolicySync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                patch,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Retrieves an existing distribution policy by Id.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     offerTtlSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: int (Required)
+     *         maxConcurrentOffers: int (Required)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
      * @param id Id of the distribution policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return policy governing how jobs are distributed to workers along with {@link Response} on successful completion
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DistributionPolicy>> getDistributionPolicyWithResponseAsync(String id) {
+    public Mono<Response<BinaryData>> getDistributionPolicyWithResponseAsync(String id, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDistributionPolicy(
-                                this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context));
+                                this.client.getEndpoint(),
+                                id,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
      * Retrieves an existing distribution policy by Id.
      *
-     * @param id Id of the distribution policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy governing how jobs are distributed to workers along with {@link Response} on successful completion
-     *     of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DistributionPolicy>> getDistributionPolicyWithResponseAsync(String id, Context context) {
-        final String accept = "application/json";
-        return service.getDistributionPolicy(
-                this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Retrieves an existing distribution policy by Id.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     offerTtlSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: int (Required)
+     *         maxConcurrentOffers: int (Required)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
+     * }
+     * }</pre>
      *
      * @param id Id of the distribution policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy governing how jobs are distributed to workers on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DistributionPolicy> getDistributionPolicyAsync(String id) {
-        return getDistributionPolicyWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves an existing distribution policy by Id.
-     *
-     * @param id Id of the distribution policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy governing how jobs are distributed to workers on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DistributionPolicy> getDistributionPolicyAsync(String id, Context context) {
-        return getDistributionPolicyWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves an existing distribution policy by Id.
-     *
-     * @param id Id of the distribution policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy governing how jobs are distributed to workers.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DistributionPolicy getDistributionPolicy(String id) {
-        return getDistributionPolicyAsync(id).block();
-    }
-
-    /**
-     * Retrieves an existing distribution policy by Id.
-     *
-     * @param id Id of the distribution policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return policy governing how jobs are distributed to workers along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DistributionPolicy> getDistributionPolicyWithResponse(String id, Context context) {
-        return getDistributionPolicyWithResponseAsync(id, context).block();
+    public Response<BinaryData> getDistributionPolicyWithResponse(String id, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getDistributionPolicySync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Delete a distribution policy by Id.
      *
      * @param id Id of the distribution policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDistributionPolicyWithResponseAsync(String id) {
+    public Mono<Response<Void>> deleteDistributionPolicyWithResponseAsync(String id, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteDistributionPolicy(
-                                this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context));
+                                this.client.getEndpoint(),
+                                id,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
      * Delete a distribution policy by Id.
      *
      * @param id Id of the distribution policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDistributionPolicyWithResponseAsync(String id, Context context) {
-        final String accept = "application/json";
-        return service.deleteDistributionPolicy(
-                this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Delete a distribution policy by Id.
-     *
-     * @param id Id of the distribution policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteDistributionPolicyAsync(String id) {
-        return deleteDistributionPolicyWithResponseAsync(id).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Delete a distribution policy by Id.
-     *
-     * @param id Id of the distribution policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteDistributionPolicyAsync(String id, Context context) {
-        return deleteDistributionPolicyWithResponseAsync(id, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Delete a distribution policy by Id.
-     *
-     * @param id Id of the distribution policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteDistributionPolicy(String id) {
-        deleteDistributionPolicyAsync(id).block();
-    }
-
-    /**
-     * Delete a distribution policy by Id.
-     *
-     * @param id Id of the distribution policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDistributionPolicyWithResponse(String id, Context context) {
-        return deleteDistributionPolicyWithResponseAsync(id, context).block();
+    public Response<Void> deleteDistributionPolicyWithResponse(String id, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteDistributionPolicySync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Retrieves existing distribution policies.
      *
-     * @param maxPageSize Maximum page size.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum page size</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     distributionPolicy (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         offerTtlSeconds: Double (Optional)
+     *         mode (Optional): {
+     *             minConcurrentOffers: int (Required)
+     *             maxConcurrentOffers: int (Required)
+     *             bypassSelectors: Boolean (Optional)
+     *         }
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a paged collection of distribution policies along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DistributionPolicyItem>> listDistributionPoliciesSinglePageAsync(Integer maxPageSize) {
+    private Mono<PagedResponse<BinaryData>> listDistributionPoliciesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDistributionPolicies(
                                         this.client.getEndpoint(),
-                                        maxPageSize,
-                                        this.client.getApiVersion(),
+                                        this.client.getServiceVersion().getVersion(),
                                         accept,
+                                        requestOptions,
                                         context))
                 .map(
                         res ->
@@ -1017,421 +1650,482 @@ public final class JobRouterAdministrationsImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Retrieves existing distribution policies.
      *
-     * @param maxPageSize Maximum page size.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of distribution policies along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum page size</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     distributionPolicy (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         offerTtlSeconds: Double (Optional)
+     *         mode (Optional): {
+     *             minConcurrentOffers: int (Required)
+     *             maxConcurrentOffers: int (Required)
+     *             bypassSelectors: Boolean (Optional)
+     *         }
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a paged collection of distribution policies as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listDistributionPoliciesAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listDistributionPoliciesSinglePageAsync(requestOptions),
+                nextLink -> listDistributionPoliciesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * Retrieves existing distribution policies.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum page size</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     distributionPolicy (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         offerTtlSeconds: Double (Optional)
+     *         mode (Optional): {
+     *             minConcurrentOffers: int (Required)
+     *             maxConcurrentOffers: int (Required)
+     *             bypassSelectors: Boolean (Optional)
+     *         }
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a paged collection of distribution policies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DistributionPolicyItem>> listDistributionPoliciesSinglePageAsync(
-            Integer maxPageSize, Context context) {
+    private PagedResponse<BinaryData> listDistributionPoliciesSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listDistributionPolicies(
-                        this.client.getEndpoint(), maxPageSize, this.client.getApiVersion(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        Response<BinaryData> res =
+                service.listDistributionPoliciesSync(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     /**
      * Retrieves existing distribution policies.
      *
-     * @param maxPageSize Maximum page size.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of distribution policies as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DistributionPolicyItem> listDistributionPoliciesAsync(Integer maxPageSize) {
-        return new PagedFlux<>(
-                () -> listDistributionPoliciesSinglePageAsync(maxPageSize),
-                nextLink -> listDistributionPoliciesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Retrieves existing distribution policies.
+     * <p><strong>Query Parameters</strong>
      *
-     * @param maxPageSize Maximum page size.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of distribution policies as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DistributionPolicyItem> listDistributionPoliciesAsync(Integer maxPageSize, Context context) {
-        return new PagedFlux<>(
-                () -> listDistributionPoliciesSinglePageAsync(maxPageSize, context),
-                nextLink -> listDistributionPoliciesNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Retrieves existing distribution policies.
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Maximum page size</td></tr>
+     * </table>
      *
-     * @param maxPageSize Maximum page size.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     distributionPolicy (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         offerTtlSeconds: Double (Optional)
+     *         mode (Optional): {
+     *             minConcurrentOffers: int (Required)
+     *             maxConcurrentOffers: int (Required)
+     *             bypassSelectors: Boolean (Optional)
+     *         }
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a paged collection of distribution policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DistributionPolicyItem> listDistributionPolicies(Integer maxPageSize) {
-        return new PagedIterable<>(listDistributionPoliciesAsync(maxPageSize));
-    }
-
-    /**
-     * Retrieves existing distribution policies.
-     *
-     * @param maxPageSize Maximum page size.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of distribution policies as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DistributionPolicyItem> listDistributionPolicies(Integer maxPageSize, Context context) {
-        return new PagedIterable<>(listDistributionPoliciesAsync(maxPageSize, context));
+    public PagedIterable<BinaryData> listDistributionPolicies(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listDistributionPoliciesSinglePage(requestOptions),
+                nextLink -> listDistributionPoliciesNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
      * Creates or updates a exception policy.
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): {
+     *         String (Optional): {
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): {
+     *         String (Optional): {
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
      * @param id Id of the exception policy.
      * @param patch Model of exception policy properties to be patched. See also:
      *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a policy that defines actions to execute when exception are triggered along with {@link Response} on
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExceptionPolicy>> upsertExceptionPolicyWithResponseAsync(String id, ExceptionPolicy patch) {
+    public Mono<Response<BinaryData>> upsertExceptionPolicyWithResponseAsync(
+            String id, BinaryData patch, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.upsertExceptionPolicy(
-                                this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context));
+                                this.client.getEndpoint(),
+                                id,
+                                this.client.getServiceVersion().getVersion(),
+                                patch,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
      * Creates or updates a exception policy.
      *
-     * @param id Id of the exception policy.
-     * @param patch Model of exception policy properties to be patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy that defines actions to execute when exception are triggered along with {@link Response} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExceptionPolicy>> upsertExceptionPolicyWithResponseAsync(
-            String id, ExceptionPolicy patch, Context context) {
-        final String accept = "application/json";
-        return service.upsertExceptionPolicy(
-                this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context);
-    }
-
-    /**
-     * Creates or updates a exception policy.
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): {
+     *         String (Optional): {
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): {
+     *         String (Optional): {
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     * }
+     * }</pre>
      *
      * @param id Id of the exception policy.
      * @param patch Model of exception policy properties to be patched. See also:
      *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy that defines actions to execute when exception are triggered on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExceptionPolicy> upsertExceptionPolicyAsync(String id, ExceptionPolicy patch) {
-        return upsertExceptionPolicyWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a exception policy.
-     *
-     * @param id Id of the exception policy.
-     * @param patch Model of exception policy properties to be patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy that defines actions to execute when exception are triggered on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExceptionPolicy> upsertExceptionPolicyAsync(String id, ExceptionPolicy patch, Context context) {
-        return upsertExceptionPolicyWithResponseAsync(id, patch, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a exception policy.
-     *
-     * @param id Id of the exception policy.
-     * @param patch Model of exception policy properties to be patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy that defines actions to execute when exception are triggered.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExceptionPolicy upsertExceptionPolicy(String id, ExceptionPolicy patch) {
-        return upsertExceptionPolicyAsync(id, patch).block();
-    }
-
-    /**
-     * Creates or updates a exception policy.
-     *
-     * @param id Id of the exception policy.
-     * @param patch Model of exception policy properties to be patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a policy that defines actions to execute when exception are triggered along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExceptionPolicy> upsertExceptionPolicyWithResponse(
-            String id, ExceptionPolicy patch, Context context) {
-        return upsertExceptionPolicyWithResponseAsync(id, patch, context).block();
+    public Response<BinaryData> upsertExceptionPolicyWithResponse(
+            String id, BinaryData patch, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.upsertExceptionPolicySync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                patch,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Retrieves an existing exception policy by Id.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): {
+     *         String (Optional): {
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
      * @param id Id of the exception policy to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a policy that defines actions to execute when exception are triggered along with {@link Response} on
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExceptionPolicy>> getExceptionPolicyWithResponseAsync(String id) {
+    public Mono<Response<BinaryData>> getExceptionPolicyWithResponseAsync(String id, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getExceptionPolicy(
-                                this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context));
+                                this.client.getEndpoint(),
+                                id,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
      * Retrieves an existing exception policy by Id.
      *
-     * @param id Id of the exception policy to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy that defines actions to execute when exception are triggered along with {@link Response} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExceptionPolicy>> getExceptionPolicyWithResponseAsync(String id, Context context) {
-        final String accept = "application/json";
-        return service.getExceptionPolicy(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Retrieves an existing exception policy by Id.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): {
+     *         String (Optional): {
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     * }
+     * }</pre>
      *
      * @param id Id of the exception policy to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy that defines actions to execute when exception are triggered on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExceptionPolicy> getExceptionPolicyAsync(String id) {
-        return getExceptionPolicyWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves an existing exception policy by Id.
-     *
-     * @param id Id of the exception policy to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy that defines actions to execute when exception are triggered on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExceptionPolicy> getExceptionPolicyAsync(String id, Context context) {
-        return getExceptionPolicyWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves an existing exception policy by Id.
-     *
-     * @param id Id of the exception policy to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy that defines actions to execute when exception are triggered.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExceptionPolicy getExceptionPolicy(String id) {
-        return getExceptionPolicyAsync(id).block();
-    }
-
-    /**
-     * Retrieves an existing exception policy by Id.
-     *
-     * @param id Id of the exception policy to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a policy that defines actions to execute when exception are triggered along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExceptionPolicy> getExceptionPolicyWithResponse(String id, Context context) {
-        return getExceptionPolicyWithResponseAsync(id, context).block();
+    public Response<BinaryData> getExceptionPolicyWithResponse(String id, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getExceptionPolicySync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Deletes a exception policy by Id.
      *
      * @param id Id of the exception policy to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteExceptionPolicyWithResponseAsync(String id) {
+    public Mono<Response<Void>> deleteExceptionPolicyWithResponseAsync(String id, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteExceptionPolicy(
-                                this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context));
+                                this.client.getEndpoint(),
+                                id,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
      * Deletes a exception policy by Id.
      *
      * @param id Id of the exception policy to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteExceptionPolicyWithResponseAsync(String id, Context context) {
-        final String accept = "application/json";
-        return service.deleteExceptionPolicy(
-                this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Deletes a exception policy by Id.
-     *
-     * @param id Id of the exception policy to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteExceptionPolicyAsync(String id) {
-        return deleteExceptionPolicyWithResponseAsync(id).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Deletes a exception policy by Id.
-     *
-     * @param id Id of the exception policy to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteExceptionPolicyAsync(String id, Context context) {
-        return deleteExceptionPolicyWithResponseAsync(id, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Deletes a exception policy by Id.
-     *
-     * @param id Id of the exception policy to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteExceptionPolicy(String id) {
-        deleteExceptionPolicyAsync(id).block();
-    }
-
-    /**
-     * Deletes a exception policy by Id.
-     *
-     * @param id Id of the exception policy to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteExceptionPolicyWithResponse(String id, Context context) {
-        return deleteExceptionPolicyWithResponseAsync(id, context).block();
+    public Response<Void> deleteExceptionPolicyWithResponse(String id, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteExceptionPolicySync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Retrieves existing exception policies.
      *
-     * @param maxPageSize Number of objects to return per page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of objects to return per page</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     exceptionPolicy (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         exceptionRules (Optional): {
+     *             String (Optional): {
+     *                 trigger (Required): {
+     *                 }
+     *                 actions (Required): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a paged collection of exception policies along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ExceptionPolicyItem>> listExceptionPoliciesSinglePageAsync(Integer maxPageSize) {
+    private Mono<PagedResponse<BinaryData>> listExceptionPoliciesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listExceptionPolicies(
                                         this.client.getEndpoint(),
-                                        maxPageSize,
-                                        this.client.getApiVersion(),
+                                        this.client.getServiceVersion().getVersion(),
                                         accept,
+                                        requestOptions,
                                         context))
                 .map(
                         res ->
@@ -1439,404 +2133,459 @@ public final class JobRouterAdministrationsImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Retrieves existing exception policies.
      *
-     * @param maxPageSize Number of objects to return per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of exception policies along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of objects to return per page</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     exceptionPolicy (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         exceptionRules (Optional): {
+     *             String (Optional): {
+     *                 trigger (Required): {
+     *                 }
+     *                 actions (Required): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a paged collection of exception policies as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listExceptionPoliciesAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listExceptionPoliciesSinglePageAsync(requestOptions),
+                nextLink -> listExceptionPoliciesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * Retrieves existing exception policies.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of objects to return per page</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     exceptionPolicy (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         exceptionRules (Optional): {
+     *             String (Optional): {
+     *                 trigger (Required): {
+     *                 }
+     *                 actions (Required): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a paged collection of exception policies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ExceptionPolicyItem>> listExceptionPoliciesSinglePageAsync(
-            Integer maxPageSize, Context context) {
+    private PagedResponse<BinaryData> listExceptionPoliciesSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listExceptionPolicies(
-                        this.client.getEndpoint(), maxPageSize, this.client.getApiVersion(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        Response<BinaryData> res =
+                service.listExceptionPoliciesSync(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     /**
      * Retrieves existing exception policies.
      *
-     * @param maxPageSize Number of objects to return per page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of exception policies as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ExceptionPolicyItem> listExceptionPoliciesAsync(Integer maxPageSize) {
-        return new PagedFlux<>(
-                () -> listExceptionPoliciesSinglePageAsync(maxPageSize),
-                nextLink -> listExceptionPoliciesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Retrieves existing exception policies.
+     * <p><strong>Query Parameters</strong>
      *
-     * @param maxPageSize Number of objects to return per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of exception policies as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ExceptionPolicyItem> listExceptionPoliciesAsync(Integer maxPageSize, Context context) {
-        return new PagedFlux<>(
-                () -> listExceptionPoliciesSinglePageAsync(maxPageSize, context),
-                nextLink -> listExceptionPoliciesNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Retrieves existing exception policies.
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of objects to return per page</td></tr>
+     * </table>
      *
-     * @param maxPageSize Number of objects to return per page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     exceptionPolicy (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         exceptionRules (Optional): {
+     *             String (Optional): {
+     *                 trigger (Required): {
+     *                 }
+     *                 actions (Required): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a paged collection of exception policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExceptionPolicyItem> listExceptionPolicies(Integer maxPageSize) {
-        return new PagedIterable<>(listExceptionPoliciesAsync(maxPageSize));
-    }
-
-    /**
-     * Retrieves existing exception policies.
-     *
-     * @param maxPageSize Number of objects to return per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of exception policies as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExceptionPolicyItem> listExceptionPolicies(Integer maxPageSize, Context context) {
-        return new PagedIterable<>(listExceptionPoliciesAsync(maxPageSize, context));
+    public PagedIterable<BinaryData> listExceptionPolicies(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listExceptionPoliciesSinglePage(requestOptions),
+                nextLink -> listExceptionPoliciesNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
      * Creates or updates a queue.
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
+     * }
+     * }</pre>
+     *
      * @param id Id of the queue.
      * @param patch Model of queue properties to be patched. See also: https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a queue that can contain jobs to be routed along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobQueue>> upsertQueueWithResponseAsync(String id, JobQueue patch) {
+    public Mono<Response<BinaryData>> upsertQueueWithResponseAsync(
+            String id, BinaryData patch, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.upsertQueue(
-                                this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context));
+                                this.client.getEndpoint(),
+                                id,
+                                this.client.getServiceVersion().getVersion(),
+                                patch,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
      * Creates or updates a queue.
      *
-     * @param id Id of the queue.
-     * @param patch Model of queue properties to be patched. See also: https://datatracker.ietf.org/doc/html/rfc7386.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a queue that can contain jobs to be routed along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobQueue>> upsertQueueWithResponseAsync(String id, JobQueue patch, Context context) {
-        final String accept = "application/json";
-        return service.upsertQueue(this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context);
-    }
-
-    /**
-     * Creates or updates a queue.
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
+     * }
+     * }</pre>
      *
      * @param id Id of the queue.
      * @param patch Model of queue properties to be patched. See also: https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a queue that can contain jobs to be routed on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobQueue> upsertQueueAsync(String id, JobQueue patch) {
-        return upsertQueueWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a queue.
-     *
-     * @param id Id of the queue.
-     * @param patch Model of queue properties to be patched. See also: https://datatracker.ietf.org/doc/html/rfc7386.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a queue that can contain jobs to be routed on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobQueue> upsertQueueAsync(String id, JobQueue patch, Context context) {
-        return upsertQueueWithResponseAsync(id, patch, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a queue.
-     *
-     * @param id Id of the queue.
-     * @param patch Model of queue properties to be patched. See also: https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a queue that can contain jobs to be routed.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobQueue upsertQueue(String id, JobQueue patch) {
-        return upsertQueueAsync(id, patch).block();
-    }
-
-    /**
-     * Creates or updates a queue.
-     *
-     * @param id Id of the queue.
-     * @param patch Model of queue properties to be patched. See also: https://datatracker.ietf.org/doc/html/rfc7386.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a queue that can contain jobs to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobQueue> upsertQueueWithResponse(String id, JobQueue patch, Context context) {
-        return upsertQueueWithResponseAsync(id, patch, context).block();
+    public Response<BinaryData> upsertQueueWithResponse(String id, BinaryData patch, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.upsertQueueSync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                patch,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Retrieves an existing queue by Id.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
+     * }
+     * }</pre>
+     *
      * @param id Id of the queue to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a queue that can contain jobs to be routed along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobQueue>> getQueueWithResponseAsync(String id) {
+    public Mono<Response<BinaryData>> getQueueWithResponseAsync(String id, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getQueue(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context));
+                        service.getQueue(
+                                this.client.getEndpoint(),
+                                id,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
      * Retrieves an existing queue by Id.
      *
-     * @param id Id of the queue to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a queue that can contain jobs to be routed along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobQueue>> getQueueWithResponseAsync(String id, Context context) {
-        final String accept = "application/json";
-        return service.getQueue(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Retrieves an existing queue by Id.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
+     * }
+     * }</pre>
      *
      * @param id Id of the queue to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a queue that can contain jobs to be routed on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobQueue> getQueueAsync(String id) {
-        return getQueueWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves an existing queue by Id.
-     *
-     * @param id Id of the queue to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a queue that can contain jobs to be routed on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobQueue> getQueueAsync(String id, Context context) {
-        return getQueueWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves an existing queue by Id.
-     *
-     * @param id Id of the queue to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a queue that can contain jobs to be routed.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobQueue getQueue(String id) {
-        return getQueueAsync(id).block();
-    }
-
-    /**
-     * Retrieves an existing queue by Id.
-     *
-     * @param id Id of the queue to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a queue that can contain jobs to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobQueue> getQueueWithResponse(String id, Context context) {
-        return getQueueWithResponseAsync(id, context).block();
+    public Response<BinaryData> getQueueWithResponse(String id, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getQueueSync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Deletes a queue by Id.
      *
      * @param id Id of the queue to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteQueueWithResponseAsync(String id) {
+    public Mono<Response<Void>> deleteQueueWithResponseAsync(String id, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteQueue(
-                                this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context));
+                                this.client.getEndpoint(),
+                                id,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
      * Deletes a queue by Id.
      *
      * @param id Id of the queue to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteQueueWithResponseAsync(String id, Context context) {
-        final String accept = "application/json";
-        return service.deleteQueue(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Deletes a queue by Id.
-     *
-     * @param id Id of the queue to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteQueueAsync(String id) {
-        return deleteQueueWithResponseAsync(id).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Deletes a queue by Id.
-     *
-     * @param id Id of the queue to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteQueueAsync(String id, Context context) {
-        return deleteQueueWithResponseAsync(id, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Deletes a queue by Id.
-     *
-     * @param id Id of the queue to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteQueue(String id) {
-        deleteQueueAsync(id).block();
-    }
-
-    /**
-     * Deletes a queue by Id.
-     *
-     * @param id Id of the queue to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteQueueWithResponse(String id, Context context) {
-        return deleteQueueWithResponseAsync(id, context).block();
+    public Response<Void> deleteQueueWithResponse(String id, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteQueueSync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Retrieves existing queues.
      *
-     * @param maxPageSize Number of objects to return per page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of objects to return per page</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     jobQueue (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         distributionPolicyId: String (Optional)
+     *         labels (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         exceptionPolicyId: String (Optional)
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<JobQueueItem>> listQueuesSinglePageAsync(Integer maxPageSize) {
+    private Mono<PagedResponse<BinaryData>> listQueuesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listQueues(
                                         this.client.getEndpoint(),
-                                        maxPageSize,
-                                        this.client.getApiVersion(),
+                                        this.client.getServiceVersion().getVersion(),
                                         accept,
+                                        requestOptions,
                                         context))
                 .map(
                         res ->
@@ -1844,309 +2593,572 @@ public final class JobRouterAdministrationsImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Retrieves existing queues.
      *
-     * @param maxPageSize Number of objects to return per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of objects to return per page</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     jobQueue (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         distributionPolicyId: String (Optional)
+     *         labels (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         exceptionPolicyId: String (Optional)
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a paged collection of queues as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listQueuesAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listQueuesSinglePageAsync(requestOptions),
+                nextLink -> listQueuesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * Retrieves existing queues.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of objects to return per page</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     jobQueue (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         distributionPolicyId: String (Optional)
+     *         labels (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         exceptionPolicyId: String (Optional)
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a paged collection of queues along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<JobQueueItem>> listQueuesSinglePageAsync(Integer maxPageSize, Context context) {
+    private PagedResponse<BinaryData> listQueuesSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listQueues(this.client.getEndpoint(), maxPageSize, this.client.getApiVersion(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        Response<BinaryData> res =
+                service.listQueuesSync(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     /**
      * Retrieves existing queues.
      *
-     * @param maxPageSize Number of objects to return per page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of queues as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobQueueItem> listQueuesAsync(Integer maxPageSize) {
-        return new PagedFlux<>(
-                () -> listQueuesSinglePageAsync(maxPageSize), nextLink -> listQueuesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Retrieves existing queues.
+     * <p><strong>Query Parameters</strong>
      *
-     * @param maxPageSize Number of objects to return per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of queues as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobQueueItem> listQueuesAsync(Integer maxPageSize, Context context) {
-        return new PagedFlux<>(
-                () -> listQueuesSinglePageAsync(maxPageSize, context),
-                nextLink -> listQueuesNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Retrieves existing queues.
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of objects to return per page</td></tr>
+     * </table>
      *
-     * @param maxPageSize Number of objects to return per page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     jobQueue (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         distributionPolicyId: String (Optional)
+     *         labels (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         exceptionPolicyId: String (Optional)
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a paged collection of queues as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobQueueItem> listQueues(Integer maxPageSize) {
-        return new PagedIterable<>(listQueuesAsync(maxPageSize));
-    }
-
-    /**
-     * Retrieves existing queues.
-     *
-     * @param maxPageSize Number of objects to return per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of queues as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobQueueItem> listQueues(Integer maxPageSize, Context context) {
-        return new PagedIterable<>(listQueuesAsync(maxPageSize, context));
+    public PagedIterable<BinaryData> listQueues(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listQueuesSinglePage(requestOptions),
+                nextLink -> listQueuesNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     classificationPolicy (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         fallbackQueueId: String (Optional)
+     *         queueSelectors (Optional): [
+     *             Object (Optional)
+     *         ]
+     *         prioritizationRule (Optional): {
+     *         }
+     *         workerSelectors (Optional): [
+     *             Object (Optional)
+     *         ]
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a paged collection of classification policies along with {@link PagedResponse} on successful completion
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ClassificationPolicyItem>> listClassificationPoliciesNextSinglePageAsync(
-            String nextLink) {
+    private Mono<PagedResponse<BinaryData>> listClassificationPoliciesNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listClassificationPoliciesNext(
-                                        nextLink, this.client.getEndpoint(), accept, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of classification policies along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     classificationPolicy (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         fallbackQueueId: String (Optional)
+     *         queueSelectors (Optional): [
+     *             Object (Optional)
+     *         ]
+     *         prioritizationRule (Optional): {
+     *         }
+     *         workerSelectors (Optional): [
+     *             Object (Optional)
+     *         ]
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a paged collection of classification policies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ClassificationPolicyItem>> listClassificationPoliciesNextSinglePageAsync(
-            String nextLink, Context context) {
+    private PagedResponse<BinaryData> listClassificationPoliciesNextSinglePage(
+            String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listClassificationPoliciesNext(nextLink, this.client.getEndpoint(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        Response<BinaryData> res =
+                service.listClassificationPoliciesNextSync(
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     distributionPolicy (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         offerTtlSeconds: Double (Optional)
+     *         mode (Optional): {
+     *             minConcurrentOffers: int (Required)
+     *             maxConcurrentOffers: int (Required)
+     *             bypassSelectors: Boolean (Optional)
+     *         }
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a paged collection of distribution policies along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DistributionPolicyItem>> listDistributionPoliciesNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<BinaryData>> listDistributionPoliciesNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDistributionPoliciesNext(
-                                        nextLink, this.client.getEndpoint(), accept, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of distribution policies along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     distributionPolicy (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         offerTtlSeconds: Double (Optional)
+     *         mode (Optional): {
+     *             minConcurrentOffers: int (Required)
+     *             maxConcurrentOffers: int (Required)
+     *             bypassSelectors: Boolean (Optional)
+     *         }
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a paged collection of distribution policies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DistributionPolicyItem>> listDistributionPoliciesNextSinglePageAsync(
-            String nextLink, Context context) {
+    private PagedResponse<BinaryData> listDistributionPoliciesNextSinglePage(
+            String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listDistributionPoliciesNext(nextLink, this.client.getEndpoint(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        Response<BinaryData> res =
+                service.listDistributionPoliciesNextSync(
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     exceptionPolicy (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         exceptionRules (Optional): {
+     *             String (Optional): {
+     *                 trigger (Required): {
+     *                 }
+     *                 actions (Required): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a paged collection of exception policies along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ExceptionPolicyItem>> listExceptionPoliciesNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<BinaryData>> listExceptionPoliciesNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listExceptionPoliciesNext(nextLink, this.client.getEndpoint(), accept, context))
+                                service.listExceptionPoliciesNext(
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of exception policies along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     exceptionPolicy (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         exceptionRules (Optional): {
+     *             String (Optional): {
+     *                 trigger (Required): {
+     *                 }
+     *                 actions (Required): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a paged collection of exception policies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ExceptionPolicyItem>> listExceptionPoliciesNextSinglePageAsync(
-            String nextLink, Context context) {
+    private PagedResponse<BinaryData> listExceptionPoliciesNextSinglePage(
+            String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listExceptionPoliciesNext(nextLink, this.client.getEndpoint(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        Response<BinaryData> res =
+                service.listExceptionPoliciesNextSync(
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     jobQueue (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         distributionPolicyId: String (Optional)
+     *         labels (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         exceptionPolicyId: String (Optional)
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<JobQueueItem>> listQueuesNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<BinaryData>> listQueuesNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.listQueuesNext(nextLink, this.client.getEndpoint(), accept, context))
+                        context ->
+                                service.listQueuesNext(
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     jobQueue (Optional): {
+     *         id: String (Optional)
+     *         name: String (Optional)
+     *         distributionPolicyId: String (Optional)
+     *         labels (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         exceptionPolicyId: String (Optional)
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a paged collection of queues along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<JobQueueItem>> listQueuesNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<BinaryData> listQueuesNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listQueuesNext(nextLink, this.client.getEndpoint(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        Response<BinaryData> res =
+                service.listQueuesNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
+    }
+
+    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+        try {
+            Map<?, ?> obj = binaryData.toObject(Map.class);
+            List<?> values = (List<?>) obj.get(path);
+            return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
+        } catch (RuntimeException e) {
+            return null;
+        }
+    }
+
+    private String getNextLink(BinaryData binaryData, String path) {
+        try {
+            Map<?, ?> obj = binaryData.toObject(Map.class);
+            return (String) obj.get(path);
+        } catch (RuntimeException e) {
+            return null;
+        }
     }
 }

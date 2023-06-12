@@ -4,22 +4,6 @@
 
 package com.azure.communication.jobrouter.implementation;
 
-import com.azure.communication.jobrouter.implementation.models.CancelJobRequest;
-import com.azure.communication.jobrouter.implementation.models.CloseJobRequest;
-import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.jobrouter.implementation.models.CompleteJobRequest;
-import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
-import com.azure.communication.jobrouter.models.JobCollection;
-import com.azure.communication.jobrouter.models.JobPositionDetails;
-import com.azure.communication.jobrouter.models.JobStateSelector;
-import com.azure.communication.jobrouter.models.QueueStatistics;
-import com.azure.communication.jobrouter.models.RouterJob;
-import com.azure.communication.jobrouter.models.RouterJobItem;
-import com.azure.communication.jobrouter.models.RouterWorker;
-import com.azure.communication.jobrouter.models.RouterWorkerItem;
-import com.azure.communication.jobrouter.models.UnassignJobResult;
-import com.azure.communication.jobrouter.models.WorkerCollection;
-import com.azure.communication.jobrouter.models.WorkerStateSelector;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -35,15 +19,23 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobRouters. */
@@ -52,1076 +44,1675 @@ public final class JobRoutersImpl {
     private final JobRoutersService service;
 
     /** The service client containing this operation class. */
-    private final AzureCommunicationServicesImpl client;
+    private final JobRouterClientImpl client;
 
     /**
      * Initializes an instance of JobRoutersImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    JobRoutersImpl(AzureCommunicationServicesImpl client) {
+    JobRoutersImpl(JobRouterClientImpl client) {
         this.service =
                 RestProxy.create(JobRoutersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureCommunicationServicesJobRouters to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for AzureCommunicationJobRouterServiceJobRouters to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureCommunicationSe")
+    @ServiceInterface(name = "AzureCommunicationJo")
     public interface JobRoutersService {
         @Patch("/routing/jobs/{id}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterJob>> upsertJob(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> upsertJob(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") RouterJob patch,
+                @BodyParam("application/merge-patch+json") BinaryData patch,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Patch("/routing/jobs/{id}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> upsertJobSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/merge-patch+json") BinaryData patch,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("/routing/jobs/{id}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterJob>> getJob(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getJob(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/routing/jobs/{id}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getJobSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Delete("/routing/jobs/{id}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteJob(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/routing/jobs/{id}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteJobSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Post("/routing/jobs/{id}:reclassify")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Object>> reclassifyJobAction(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> reclassifyJobAction(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") Object reclassifyJobRequest,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/routing/jobs/{id}:reclassify")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> reclassifyJobActionSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Post("/routing/jobs/{id}:cancel")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Object>> cancelJobAction(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> cancelJobAction(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CancelJobRequest cancelJobRequest,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/routing/jobs/{id}:cancel")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> cancelJobActionSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Post("/routing/jobs/{id}:complete")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Object>> completeJobAction(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> completeJobAction(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CompleteJobRequest completeJobRequest,
+                @BodyParam("application/json") BinaryData completeJobRequest,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/routing/jobs/{id}:complete")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> completeJobActionSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData completeJobRequest,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Post("/routing/jobs/{id}:close")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Object>> closeJobAction(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> closeJobAction(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CloseJobRequest closeJobRequest,
+                @BodyParam("application/json") BinaryData closeJobRequest,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/routing/jobs/{id}:close")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> closeJobActionSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData closeJobRequest,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("/routing/jobs")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<JobCollection>> listJobs(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listJobs(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("status") JobStateSelector status,
-                @QueryParam("queueId") String queueId,
-                @QueryParam("channelId") String channelId,
-                @QueryParam("classificationPolicyId") String classificationPolicyId,
-                @QueryParam("maxPageSize") Integer maxPageSize,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/routing/jobs")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listJobsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("/routing/jobs/{id}/position")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<JobPositionDetails>> getInQueuePosition(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getInQueuePosition(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/routing/jobs/{id}/position")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getInQueuePositionSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Post("/routing/jobs/{id}/assignments/{assignmentId}:unassign")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<UnassignJobResult>> unassignJobAction(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> unassignJobAction(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @PathParam("assignmentId") String assignmentId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/routing/jobs/{id}/assignments/{assignmentId}:unassign")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> unassignJobActionSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @PathParam("assignmentId") String assignmentId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Post("/routing/workers/{workerId}/offers/{offerId}:accept")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<AcceptJobOfferResult>> acceptJobAction(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> acceptJobAction(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("workerId") String workerId,
                 @PathParam("offerId") String offerId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/routing/workers/{workerId}/offers/{offerId}:accept")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> acceptJobActionSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("workerId") String workerId,
+                @PathParam("offerId") String offerId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Post("/routing/workers/{workerId}/offers/{offerId}:decline")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Object>> declineJobAction(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> declineJobAction(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("workerId") String workerId,
                 @PathParam("offerId") String offerId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/routing/workers/{workerId}/offers/{offerId}:decline")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> declineJobActionSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("workerId") String workerId,
+                @PathParam("offerId") String offerId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("/routing/queues/{id}/statistics")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<QueueStatistics>> getQueueStatistics(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getQueueStatistics(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/routing/queues/{id}/statistics")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getQueueStatisticsSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Patch("/routing/workers/{workerId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterWorker>> upsertWorker(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> upsertWorker(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("workerId") String workerId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") RouterWorker patch,
+                @BodyParam("application/merge-patch+json") BinaryData patch,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Patch("/routing/workers/{workerId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> upsertWorkerSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("workerId") String workerId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/merge-patch+json") BinaryData patch,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("/routing/workers/{workerId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterWorker>> getWorker(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getWorker(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("workerId") String workerId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/routing/workers/{workerId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getWorkerSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("workerId") String workerId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Delete("/routing/workers/{workerId}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteWorker(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("workerId") String workerId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/routing/workers/{workerId}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteWorkerSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("workerId") String workerId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("/routing/workers")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<WorkerCollection>> listWorkers(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listWorkers(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("status") WorkerStateSelector status,
-                @QueryParam("channelId") String channelId,
-                @QueryParam("queueId") String queueId,
-                @QueryParam("hasCapacity") Boolean hasCapacity,
-                @QueryParam("maxPageSize") Integer maxPageSize,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/routing/workers")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listWorkersSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<JobCollection>> listJobsNext(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listJobsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<WorkerCollection>> listWorkersNext(
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listJobsNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listWorkersNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listWorkersNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
                 Context context);
     }
 
     /**
      * Creates or updates a router job.
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     channelReference: String (Optional)
+     *     jobStatus: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
+     *     enqueueTimeUtc: OffsetDateTime (Optional)
+     *     channelId: String (Optional)
+     *     classificationPolicyId: String (Optional)
+     *     queueId: String (Optional)
+     *     priority: Integer (Optional)
+     *     dispositionCode: String (Optional)
+     *     requestedWorkerSelectors (Optional): [
+     *          (Optional){
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             value: Object (Optional)
+     *             ttlSeconds: Double (Optional)
+     *             expedite: Boolean (Optional)
+     *             state: String(active/expired) (Optional)
+     *             expireTime: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     attachedWorkerSelectors (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     assignments (Optional): {
+     *         String (Optional): {
+     *             id: String (Required)
+     *             workerId: String (Optional)
+     *             assignTime: OffsetDateTime (Required)
+     *             completeTime: OffsetDateTime (Optional)
+     *             closeTime: OffsetDateTime (Optional)
+     *         }
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     notes (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     unavailableForMatching: Boolean (Optional)
+     *     scheduledTimeUtc: OffsetDateTime (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     channelReference: String (Optional)
+     *     jobStatus: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
+     *     enqueueTimeUtc: OffsetDateTime (Optional)
+     *     channelId: String (Optional)
+     *     classificationPolicyId: String (Optional)
+     *     queueId: String (Optional)
+     *     priority: Integer (Optional)
+     *     dispositionCode: String (Optional)
+     *     requestedWorkerSelectors (Optional): [
+     *          (Optional){
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             value: Object (Optional)
+     *             ttlSeconds: Double (Optional)
+     *             expedite: Boolean (Optional)
+     *             state: String(active/expired) (Optional)
+     *             expireTime: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     attachedWorkerSelectors (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     assignments (Optional): {
+     *         String (Optional): {
+     *             id: String (Required)
+     *             workerId: String (Optional)
+     *             assignTime: OffsetDateTime (Required)
+     *             completeTime: OffsetDateTime (Optional)
+     *             closeTime: OffsetDateTime (Optional)
+     *         }
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     notes (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     unavailableForMatching: Boolean (Optional)
+     *     scheduledTimeUtc: OffsetDateTime (Optional)
+     * }
+     * }</pre>
+     *
      * @param id Id of the job.
      * @param patch Model of job properties to be created or patched. See also:
      *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJob>> upsertJobWithResponseAsync(String id, RouterJob patch) {
+    public Mono<Response<BinaryData>> upsertJobWithResponseAsync(
+            String id, BinaryData patch, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.upsertJob(
-                                this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context));
+                                this.client.getEndpoint(),
+                                id,
+                                this.client.getServiceVersion().getVersion(),
+                                patch,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
      * Creates or updates a router job.
      *
-     * @param id Id of the job.
-     * @param patch Model of job properties to be created or patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJob>> upsertJobWithResponseAsync(String id, RouterJob patch, Context context) {
-        final String accept = "application/json";
-        return service.upsertJob(this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context);
-    }
-
-    /**
-     * Creates or updates a router job.
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     channelReference: String (Optional)
+     *     jobStatus: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
+     *     enqueueTimeUtc: OffsetDateTime (Optional)
+     *     channelId: String (Optional)
+     *     classificationPolicyId: String (Optional)
+     *     queueId: String (Optional)
+     *     priority: Integer (Optional)
+     *     dispositionCode: String (Optional)
+     *     requestedWorkerSelectors (Optional): [
+     *          (Optional){
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             value: Object (Optional)
+     *             ttlSeconds: Double (Optional)
+     *             expedite: Boolean (Optional)
+     *             state: String(active/expired) (Optional)
+     *             expireTime: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     attachedWorkerSelectors (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     assignments (Optional): {
+     *         String (Optional): {
+     *             id: String (Required)
+     *             workerId: String (Optional)
+     *             assignTime: OffsetDateTime (Required)
+     *             completeTime: OffsetDateTime (Optional)
+     *             closeTime: OffsetDateTime (Optional)
+     *         }
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     notes (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     unavailableForMatching: Boolean (Optional)
+     *     scheduledTimeUtc: OffsetDateTime (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     channelReference: String (Optional)
+     *     jobStatus: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
+     *     enqueueTimeUtc: OffsetDateTime (Optional)
+     *     channelId: String (Optional)
+     *     classificationPolicyId: String (Optional)
+     *     queueId: String (Optional)
+     *     priority: Integer (Optional)
+     *     dispositionCode: String (Optional)
+     *     requestedWorkerSelectors (Optional): [
+     *          (Optional){
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             value: Object (Optional)
+     *             ttlSeconds: Double (Optional)
+     *             expedite: Boolean (Optional)
+     *             state: String(active/expired) (Optional)
+     *             expireTime: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     attachedWorkerSelectors (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     assignments (Optional): {
+     *         String (Optional): {
+     *             id: String (Required)
+     *             workerId: String (Optional)
+     *             assignTime: OffsetDateTime (Required)
+     *             completeTime: OffsetDateTime (Optional)
+     *             closeTime: OffsetDateTime (Optional)
+     *         }
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     notes (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     unavailableForMatching: Boolean (Optional)
+     *     scheduledTimeUtc: OffsetDateTime (Optional)
+     * }
+     * }</pre>
      *
      * @param id Id of the job.
      * @param patch Model of job properties to be created or patched. See also:
      *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJob> upsertJobAsync(String id, RouterJob patch) {
-        return upsertJobWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a router job.
-     *
-     * @param id Id of the job.
-     * @param patch Model of job properties to be created or patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJob> upsertJobAsync(String id, RouterJob patch, Context context) {
-        return upsertJobWithResponseAsync(id, patch, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a router job.
-     *
-     * @param id Id of the job.
-     * @param patch Model of job properties to be created or patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterJob upsertJob(String id, RouterJob patch) {
-        return upsertJobAsync(id, patch).block();
-    }
-
-    /**
-     * Creates or updates a router job.
-     *
-     * @param id Id of the job.
-     * @param patch Model of job properties to be created or patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a unit of work to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterJob> upsertJobWithResponse(String id, RouterJob patch, Context context) {
-        return upsertJobWithResponseAsync(id, patch, context).block();
+    public Response<BinaryData> upsertJobWithResponse(String id, BinaryData patch, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.upsertJobSync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                patch,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Retrieves an existing job by Id.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     channelReference: String (Optional)
+     *     jobStatus: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
+     *     enqueueTimeUtc: OffsetDateTime (Optional)
+     *     channelId: String (Optional)
+     *     classificationPolicyId: String (Optional)
+     *     queueId: String (Optional)
+     *     priority: Integer (Optional)
+     *     dispositionCode: String (Optional)
+     *     requestedWorkerSelectors (Optional): [
+     *          (Optional){
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             value: Object (Optional)
+     *             ttlSeconds: Double (Optional)
+     *             expedite: Boolean (Optional)
+     *             state: String(active/expired) (Optional)
+     *             expireTime: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     attachedWorkerSelectors (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     assignments (Optional): {
+     *         String (Optional): {
+     *             id: String (Required)
+     *             workerId: String (Optional)
+     *             assignTime: OffsetDateTime (Required)
+     *             completeTime: OffsetDateTime (Optional)
+     *             closeTime: OffsetDateTime (Optional)
+     *         }
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     notes (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     unavailableForMatching: Boolean (Optional)
+     *     scheduledTimeUtc: OffsetDateTime (Optional)
+     * }
+     * }</pre>
+     *
      * @param id Id of the job to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJob>> getJobWithResponseAsync(String id) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.getJob(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context));
-    }
-
-    /**
-     * Retrieves an existing job by Id.
-     *
-     * @param id Id of the job to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJob>> getJobWithResponseAsync(String id, Context context) {
-        final String accept = "application/json";
-        return service.getJob(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Retrieves an existing job by Id.
-     *
-     * @param id Id of the job to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJob> getJobAsync(String id) {
-        return getJobWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves an existing job by Id.
-     *
-     * @param id Id of the job to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJob> getJobAsync(String id, Context context) {
-        return getJobWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves an existing job by Id.
-     *
-     * @param id Id of the job to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterJob getJob(String id) {
-        return getJobAsync(id).block();
-    }
-
-    /**
-     * Retrieves an existing job by Id.
-     *
-     * @param id Id of the job to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterJob> getJobWithResponse(String id, Context context) {
-        return getJobWithResponseAsync(id, context).block();
-    }
-
-    /**
-     * Deletes a job and all of its traces.
-     *
-     * @param id The id parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteJobWithResponseAsync(String id) {
+    public Mono<Response<BinaryData>> getJobWithResponseAsync(String id, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.deleteJob(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context));
+                        service.getJob(
+                                this.client.getEndpoint(),
+                                id,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Retrieves an existing job by Id.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     channelReference: String (Optional)
+     *     jobStatus: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
+     *     enqueueTimeUtc: OffsetDateTime (Optional)
+     *     channelId: String (Optional)
+     *     classificationPolicyId: String (Optional)
+     *     queueId: String (Optional)
+     *     priority: Integer (Optional)
+     *     dispositionCode: String (Optional)
+     *     requestedWorkerSelectors (Optional): [
+     *          (Optional){
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             value: Object (Optional)
+     *             ttlSeconds: Double (Optional)
+     *             expedite: Boolean (Optional)
+     *             state: String(active/expired) (Optional)
+     *             expireTime: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     attachedWorkerSelectors (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     assignments (Optional): {
+     *         String (Optional): {
+     *             id: String (Required)
+     *             workerId: String (Optional)
+     *             assignTime: OffsetDateTime (Required)
+     *             completeTime: OffsetDateTime (Optional)
+     *             closeTime: OffsetDateTime (Optional)
+     *         }
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     notes (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     unavailableForMatching: Boolean (Optional)
+     *     scheduledTimeUtc: OffsetDateTime (Optional)
+     * }
+     * }</pre>
+     *
+     * @param id Id of the job to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a unit of work to be routed along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getJobWithResponse(String id, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getJobSync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Deletes a job and all of its traces.
      *
-     * @param id The id parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param id Id of the job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteJobWithResponseAsync(String id, Context context) {
+    public Mono<Response<Void>> deleteJobWithResponseAsync(String id, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteJob(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
+        return FluxUtil.withContext(
+                context ->
+                        service.deleteJob(
+                                this.client.getEndpoint(),
+                                id,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
      * Deletes a job and all of its traces.
      *
-     * @param id The id parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteJobAsync(String id) {
-        return deleteJobWithResponseAsync(id).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Deletes a job and all of its traces.
-     *
-     * @param id The id parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteJobAsync(String id, Context context) {
-        return deleteJobWithResponseAsync(id, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Deletes a job and all of its traces.
-     *
-     * @param id The id parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteJob(String id) {
-        deleteJobAsync(id).block();
-    }
-
-    /**
-     * Deletes a job and all of its traces.
-     *
-     * @param id The id parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param id Id of the job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteJobWithResponse(String id, Context context) {
-        return deleteJobWithResponseAsync(id, context).block();
+    public Response<Void> deleteJobWithResponse(String id, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteJobSync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Reclassify a job.
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * Object
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * Object
+     * }</pre>
+     *
      * @param id Id of the job.
-     * @param reclassifyJobRequest Request object for reclassifying a job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> reclassifyJobActionWithResponseAsync(String id, Object reclassifyJobRequest) {
+    public Mono<Response<BinaryData>> reclassifyJobActionWithResponseAsync(String id, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.reclassifyJobAction(
                                 this.client.getEndpoint(),
                                 id,
-                                this.client.getApiVersion(),
-                                reclassifyJobRequest,
+                                this.client.getServiceVersion().getVersion(),
                                 accept,
+                                requestOptions,
                                 context));
     }
 
     /**
      * Reclassify a job.
      *
-     * @param id Id of the job.
-     * @param reclassifyJobRequest Request object for reclassifying a job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> reclassifyJobActionWithResponseAsync(
-            String id, Object reclassifyJobRequest, Context context) {
-        final String accept = "application/json";
-        return service.reclassifyJobAction(
-                this.client.getEndpoint(), id, this.client.getApiVersion(), reclassifyJobRequest, accept, context);
-    }
-
-    /**
-     * Reclassify a job.
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * Object
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * Object
+     * }</pre>
      *
      * @param id Id of the job.
-     * @param reclassifyJobRequest Request object for reclassifying a job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> reclassifyJobActionAsync(String id, Object reclassifyJobRequest) {
-        return reclassifyJobActionWithResponseAsync(id, reclassifyJobRequest)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Reclassify a job.
-     *
-     * @param id Id of the job.
-     * @param reclassifyJobRequest Request object for reclassifying a job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> reclassifyJobActionAsync(String id, Object reclassifyJobRequest, Context context) {
-        return reclassifyJobActionWithResponseAsync(id, reclassifyJobRequest, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Reclassify a job.
-     *
-     * @param id Id of the job.
-     * @param reclassifyJobRequest Request object for reclassifying a job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object reclassifyJobAction(String id, Object reclassifyJobRequest) {
-        return reclassifyJobActionAsync(id, reclassifyJobRequest).block();
-    }
-
-    /**
-     * Reclassify a job.
-     *
-     * @param id Id of the job.
-     * @param reclassifyJobRequest Request object for reclassifying a job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return any object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> reclassifyJobActionWithResponse(String id, Object reclassifyJobRequest, Context context) {
-        return reclassifyJobActionWithResponseAsync(id, reclassifyJobRequest, context).block();
+    public Response<BinaryData> reclassifyJobActionWithResponse(String id, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.reclassifyJobActionSync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json".</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     note: String (Optional)
+     *     dispositionCode: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * Object
+     * }</pre>
+     *
      * @param id Id of the job.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
-     *     provided, default value of "Cancelled" is set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> cancelJobActionWithResponseAsync(String id, String note, String dispositionCode) {
+    public Mono<Response<BinaryData>> cancelJobActionWithResponseAsync(String id, RequestOptions requestOptions) {
         final String accept = "application/json";
-        CancelJobRequest cancelJobRequestInternal = null;
-        if (note != null || dispositionCode != null) {
-            cancelJobRequestInternal = new CancelJobRequest();
-            cancelJobRequestInternal.setNote(note);
-            cancelJobRequestInternal.setDispositionCode(dispositionCode);
-        }
-        CancelJobRequest cancelJobRequest = cancelJobRequestInternal;
         return FluxUtil.withContext(
                 context ->
                         service.cancelJobAction(
                                 this.client.getEndpoint(),
                                 id,
-                                this.client.getApiVersion(),
-                                cancelJobRequest,
+                                this.client.getServiceVersion().getVersion(),
                                 accept,
+                                requestOptions,
                                 context));
     }
 
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      *
-     * @param id Id of the job.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
-     *     provided, default value of "Cancelled" is set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> cancelJobActionWithResponseAsync(
-            String id, String note, String dispositionCode, Context context) {
-        final String accept = "application/json";
-        CancelJobRequest cancelJobRequestInternal = null;
-        if (note != null || dispositionCode != null) {
-            cancelJobRequestInternal = new CancelJobRequest();
-            cancelJobRequestInternal.setNote(note);
-            cancelJobRequestInternal.setDispositionCode(dispositionCode);
-        }
-        CancelJobRequest cancelJobRequest = cancelJobRequestInternal;
-        return service.cancelJobAction(
-                this.client.getEndpoint(), id, this.client.getApiVersion(), cancelJobRequest, accept, context);
-    }
-
-    /**
-     * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json".</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     note: String (Optional)
+     *     dispositionCode: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * Object
+     * }</pre>
      *
      * @param id Id of the job.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
-     *     provided, default value of "Cancelled" is set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> cancelJobActionAsync(String id, String note, String dispositionCode) {
-        return cancelJobActionWithResponseAsync(id, note, dispositionCode)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
-     *
-     * @param id Id of the job.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
-     *     provided, default value of "Cancelled" is set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> cancelJobActionAsync(String id, String note, String dispositionCode, Context context) {
-        return cancelJobActionWithResponseAsync(id, note, dispositionCode, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
-     *
-     * @param id Id of the job.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
-     *     provided, default value of "Cancelled" is set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object cancelJobAction(String id, String note, String dispositionCode) {
-        return cancelJobActionAsync(id, note, dispositionCode).block();
-    }
-
-    /**
-     * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
-     *
-     * @param id Id of the job.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
-     *     provided, default value of "Cancelled" is set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return any object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> cancelJobActionWithResponse(
-            String id, String note, String dispositionCode, Context context) {
-        return cancelJobActionWithResponseAsync(id, note, dispositionCode, context).block();
+    public Response<BinaryData> cancelJobActionWithResponse(String id, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.cancelJobActionSync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Completes an assigned job.
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     assignmentId: String (Required)
+     *     note: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * Object
+     * }</pre>
+     *
      * @param id Id of the job.
-     * @param assignmentId The assignment within the job to complete.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param completeJobRequest Request model for completing job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> completeJobActionWithResponseAsync(String id, String assignmentId, String note) {
+    public Mono<Response<BinaryData>> completeJobActionWithResponseAsync(
+            String id, BinaryData completeJobRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
-        CompleteJobRequest completeJobRequest = new CompleteJobRequest();
-        completeJobRequest.setAssignmentId(assignmentId);
-        completeJobRequest.setNote(note);
         return FluxUtil.withContext(
                 context ->
                         service.completeJobAction(
                                 this.client.getEndpoint(),
                                 id,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 completeJobRequest,
                                 accept,
+                                requestOptions,
                                 context));
     }
 
     /**
      * Completes an assigned job.
      *
-     * @param id Id of the job.
-     * @param assignmentId The assignment within the job to complete.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> completeJobActionWithResponseAsync(
-            String id, String assignmentId, String note, Context context) {
-        final String accept = "application/json";
-        CompleteJobRequest completeJobRequest = new CompleteJobRequest();
-        completeJobRequest.setAssignmentId(assignmentId);
-        completeJobRequest.setNote(note);
-        return service.completeJobAction(
-                this.client.getEndpoint(), id, this.client.getApiVersion(), completeJobRequest, accept, context);
-    }
-
-    /**
-     * Completes an assigned job.
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     assignmentId: String (Required)
+     *     note: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * Object
+     * }</pre>
      *
      * @param id Id of the job.
-     * @param assignmentId The assignment within the job to complete.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> completeJobActionAsync(String id, String assignmentId, String note) {
-        return completeJobActionWithResponseAsync(id, assignmentId, note)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Completes an assigned job.
-     *
-     * @param id Id of the job.
-     * @param assignmentId The assignment within the job to complete.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> completeJobActionAsync(String id, String assignmentId, String note, Context context) {
-        return completeJobActionWithResponseAsync(id, assignmentId, note, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Completes an assigned job.
-     *
-     * @param id Id of the job.
-     * @param assignmentId The assignment within the job to complete.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object completeJobAction(String id, String assignmentId, String note) {
-        return completeJobActionAsync(id, assignmentId, note).block();
-    }
-
-    /**
-     * Completes an assigned job.
-     *
-     * @param id Id of the job.
-     * @param assignmentId The assignment within the job to complete.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param completeJobRequest Request model for completing job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return any object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> completeJobActionWithResponse(
-            String id, String assignmentId, String note, Context context) {
-        return completeJobActionWithResponseAsync(id, assignmentId, note, context).block();
+    public Response<BinaryData> completeJobActionWithResponse(
+            String id, BinaryData completeJobRequest, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.completeJobActionSync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                completeJobRequest,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Closes a completed job.
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     assignmentId: String (Required)
+     *     dispositionCode: String (Optional)
+     *     closeTime: OffsetDateTime (Optional)
+     *     note: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * Object
+     * }</pre>
+     *
      * @param id Id of the job.
-     * @param assignmentId The assignment within which the job is to be closed.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values.
-     * @param closeTime If not provided, worker capacity is released immediately along with a JobClosedEvent
-     *     notification. If provided, worker capacity is released along with a JobClosedEvent notification at a future
-     *     time.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param closeJobRequest Request model for closing job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> closeJobActionWithResponseAsync(
-            String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
+    public Mono<Response<BinaryData>> closeJobActionWithResponseAsync(
+            String id, BinaryData closeJobRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
-        CloseJobRequest closeJobRequest = new CloseJobRequest();
-        closeJobRequest.setAssignmentId(assignmentId);
-        closeJobRequest.setDispositionCode(dispositionCode);
-        closeJobRequest.setCloseTime(closeTime);
-        closeJobRequest.setNote(note);
         return FluxUtil.withContext(
                 context ->
                         service.closeJobAction(
                                 this.client.getEndpoint(),
                                 id,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 closeJobRequest,
                                 accept,
+                                requestOptions,
                                 context));
     }
 
     /**
      * Closes a completed job.
      *
-     * @param id Id of the job.
-     * @param assignmentId The assignment within which the job is to be closed.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values.
-     * @param closeTime If not provided, worker capacity is released immediately along with a JobClosedEvent
-     *     notification. If provided, worker capacity is released along with a JobClosedEvent notification at a future
-     *     time.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> closeJobActionWithResponseAsync(
-            String id,
-            String assignmentId,
-            String dispositionCode,
-            OffsetDateTime closeTime,
-            String note,
-            Context context) {
-        final String accept = "application/json";
-        CloseJobRequest closeJobRequest = new CloseJobRequest();
-        closeJobRequest.setAssignmentId(assignmentId);
-        closeJobRequest.setDispositionCode(dispositionCode);
-        closeJobRequest.setCloseTime(closeTime);
-        closeJobRequest.setNote(note);
-        return service.closeJobAction(
-                this.client.getEndpoint(), id, this.client.getApiVersion(), closeJobRequest, accept, context);
-    }
-
-    /**
-     * Closes a completed job.
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     assignmentId: String (Required)
+     *     dispositionCode: String (Optional)
+     *     closeTime: OffsetDateTime (Optional)
+     *     note: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * Object
+     * }</pre>
      *
      * @param id Id of the job.
-     * @param assignmentId The assignment within which the job is to be closed.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values.
-     * @param closeTime If not provided, worker capacity is released immediately along with a JobClosedEvent
-     *     notification. If provided, worker capacity is released along with a JobClosedEvent notification at a future
-     *     time.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> closeJobActionAsync(
-            String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
-        return closeJobActionWithResponseAsync(id, assignmentId, dispositionCode, closeTime, note)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Closes a completed job.
-     *
-     * @param id Id of the job.
-     * @param assignmentId The assignment within which the job is to be closed.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values.
-     * @param closeTime If not provided, worker capacity is released immediately along with a JobClosedEvent
-     *     notification. If provided, worker capacity is released along with a JobClosedEvent notification at a future
-     *     time.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> closeJobActionAsync(
-            String id,
-            String assignmentId,
-            String dispositionCode,
-            OffsetDateTime closeTime,
-            String note,
-            Context context) {
-        return closeJobActionWithResponseAsync(id, assignmentId, dispositionCode, closeTime, note, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Closes a completed job.
-     *
-     * @param id Id of the job.
-     * @param assignmentId The assignment within which the job is to be closed.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values.
-     * @param closeTime If not provided, worker capacity is released immediately along with a JobClosedEvent
-     *     notification. If provided, worker capacity is released along with a JobClosedEvent notification at a future
-     *     time.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object closeJobAction(
-            String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
-        return closeJobActionAsync(id, assignmentId, dispositionCode, closeTime, note).block();
-    }
-
-    /**
-     * Closes a completed job.
-     *
-     * @param id Id of the job.
-     * @param assignmentId The assignment within which the job is to be closed.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values.
-     * @param closeTime If not provided, worker capacity is released immediately along with a JobClosedEvent
-     *     notification. If provided, worker capacity is released along with a JobClosedEvent notification at a future
-     *     time.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param closeJobRequest Request model for closing job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return any object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> closeJobActionWithResponse(
-            String id,
-            String assignmentId,
-            String dispositionCode,
-            OffsetDateTime closeTime,
-            String note,
-            Context context) {
-        return closeJobActionWithResponseAsync(id, assignmentId, dispositionCode, closeTime, note, context).block();
+    public Response<BinaryData> closeJobActionWithResponse(
+            String id, BinaryData closeJobRequest, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.closeJobActionSync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                closeJobRequest,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Retrieves list of jobs based on filter parameters.
      *
-     * @param status (Optional) If specified, filter jobs by status.
-     * @param queueId (Optional) If specified, filter jobs by queue.
-     * @param channelId (Optional) If specified, filter jobs by channel.
-     * @param classificationPolicyId (Optional) If specified, filter jobs by classificationPolicy.
-     * @param maxPageSize Number of objects to return per page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>status</td><td>String</td><td>No</td><td>(Optional) If specified, filter jobs by status. Allowed values: "all", "pendingClassification", "queued", "assigned", "completed", "closed", "cancelled", "classificationFailed", "created", "pendingSchedule", "scheduled", "scheduleFailed", "waitingForActivation", "active".</td></tr>
+     *     <tr><td>queueId</td><td>String</td><td>No</td><td>(Optional) If specified, filter jobs by queue.</td></tr>
+     *     <tr><td>channelId</td><td>String</td><td>No</td><td>(Optional) If specified, filter jobs by channel.</td></tr>
+     *     <tr><td>classificationPolicyId</td><td>String</td><td>No</td><td>(Optional) If specified, filter jobs by classificationPolicy.</td></tr>
+     *     <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>(Optional) If specified, filter on jobs that was scheduled before or at given timestamp. Range: (-Inf, scheduledBefore]</td></tr>
+     *     <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>(Optional) If specified, filter on jobs that was scheduled at or after given value. Range: [scheduledAfter, +Inf).</td></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of objects to return per page</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     routerJob (Optional): {
+     *         id: String (Optional)
+     *         channelReference: String (Optional)
+     *         jobStatus: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
+     *         enqueueTimeUtc: OffsetDateTime (Optional)
+     *         channelId: String (Optional)
+     *         classificationPolicyId: String (Optional)
+     *         queueId: String (Optional)
+     *         priority: Integer (Optional)
+     *         dispositionCode: String (Optional)
+     *         requestedWorkerSelectors (Optional): [
+     *              (Optional){
+     *                 key: String (Required)
+     *                 labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *                 value: Object (Optional)
+     *                 ttlSeconds: Double (Optional)
+     *                 expedite: Boolean (Optional)
+     *                 state: String(active/expired) (Optional)
+     *                 expireTime: OffsetDateTime (Optional)
+     *             }
+     *         ]
+     *         attachedWorkerSelectors (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         labels (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         assignments (Optional): {
+     *             String (Optional): {
+     *                 id: String (Required)
+     *                 workerId: String (Optional)
+     *                 assignTime: OffsetDateTime (Required)
+     *                 completeTime: OffsetDateTime (Optional)
+     *                 closeTime: OffsetDateTime (Optional)
+     *             }
+     *         }
+     *         tags (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         notes (Optional): {
+     *             String: String (Optional)
+     *         }
+     *         unavailableForMatching: Boolean (Optional)
+     *         scheduledTimeUtc: OffsetDateTime (Optional)
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterJobItem>> listJobsSinglePageAsync(
-            JobStateSelector status,
-            String queueId,
-            String channelId,
-            String classificationPolicyId,
-            Integer maxPageSize) {
+    private Mono<PagedResponse<BinaryData>> listJobsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listJobs(
                                         this.client.getEndpoint(),
-                                        status,
-                                        queueId,
-                                        channelId,
-                                        classificationPolicyId,
-                                        maxPageSize,
-                                        this.client.getApiVersion(),
+                                        this.client.getServiceVersion().getVersion(),
                                         accept,
+                                        requestOptions,
                                         context))
                 .map(
                         res ->
@@ -1129,261 +1720,388 @@ public final class JobRoutersImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Retrieves list of jobs based on filter parameters.
      *
-     * @param status (Optional) If specified, filter jobs by status.
-     * @param queueId (Optional) If specified, filter jobs by queue.
-     * @param channelId (Optional) If specified, filter jobs by channel.
-     * @param classificationPolicyId (Optional) If specified, filter jobs by classificationPolicy.
-     * @param maxPageSize Number of objects to return per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>status</td><td>String</td><td>No</td><td>(Optional) If specified, filter jobs by status. Allowed values: "all", "pendingClassification", "queued", "assigned", "completed", "closed", "cancelled", "classificationFailed", "created", "pendingSchedule", "scheduled", "scheduleFailed", "waitingForActivation", "active".</td></tr>
+     *     <tr><td>queueId</td><td>String</td><td>No</td><td>(Optional) If specified, filter jobs by queue.</td></tr>
+     *     <tr><td>channelId</td><td>String</td><td>No</td><td>(Optional) If specified, filter jobs by channel.</td></tr>
+     *     <tr><td>classificationPolicyId</td><td>String</td><td>No</td><td>(Optional) If specified, filter jobs by classificationPolicy.</td></tr>
+     *     <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>(Optional) If specified, filter on jobs that was scheduled before or at given timestamp. Range: (-Inf, scheduledBefore]</td></tr>
+     *     <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>(Optional) If specified, filter on jobs that was scheduled at or after given value. Range: [scheduledAfter, +Inf).</td></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of objects to return per page</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     routerJob (Optional): {
+     *         id: String (Optional)
+     *         channelReference: String (Optional)
+     *         jobStatus: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
+     *         enqueueTimeUtc: OffsetDateTime (Optional)
+     *         channelId: String (Optional)
+     *         classificationPolicyId: String (Optional)
+     *         queueId: String (Optional)
+     *         priority: Integer (Optional)
+     *         dispositionCode: String (Optional)
+     *         requestedWorkerSelectors (Optional): [
+     *              (Optional){
+     *                 key: String (Required)
+     *                 labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *                 value: Object (Optional)
+     *                 ttlSeconds: Double (Optional)
+     *                 expedite: Boolean (Optional)
+     *                 state: String(active/expired) (Optional)
+     *                 expireTime: OffsetDateTime (Optional)
+     *             }
+     *         ]
+     *         attachedWorkerSelectors (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         labels (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         assignments (Optional): {
+     *             String (Optional): {
+     *                 id: String (Required)
+     *                 workerId: String (Optional)
+     *                 assignTime: OffsetDateTime (Required)
+     *                 completeTime: OffsetDateTime (Optional)
+     *                 closeTime: OffsetDateTime (Optional)
+     *             }
+     *         }
+     *         tags (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         notes (Optional): {
+     *             String: String (Optional)
+     *         }
+     *         unavailableForMatching: Boolean (Optional)
+     *         scheduledTimeUtc: OffsetDateTime (Optional)
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a paged collection of jobs as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listJobsAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listJobsSinglePageAsync(requestOptions),
+                nextLink -> listJobsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * Retrieves list of jobs based on filter parameters.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>status</td><td>String</td><td>No</td><td>(Optional) If specified, filter jobs by status. Allowed values: "all", "pendingClassification", "queued", "assigned", "completed", "closed", "cancelled", "classificationFailed", "created", "pendingSchedule", "scheduled", "scheduleFailed", "waitingForActivation", "active".</td></tr>
+     *     <tr><td>queueId</td><td>String</td><td>No</td><td>(Optional) If specified, filter jobs by queue.</td></tr>
+     *     <tr><td>channelId</td><td>String</td><td>No</td><td>(Optional) If specified, filter jobs by channel.</td></tr>
+     *     <tr><td>classificationPolicyId</td><td>String</td><td>No</td><td>(Optional) If specified, filter jobs by classificationPolicy.</td></tr>
+     *     <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>(Optional) If specified, filter on jobs that was scheduled before or at given timestamp. Range: (-Inf, scheduledBefore]</td></tr>
+     *     <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>(Optional) If specified, filter on jobs that was scheduled at or after given value. Range: [scheduledAfter, +Inf).</td></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of objects to return per page</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     routerJob (Optional): {
+     *         id: String (Optional)
+     *         channelReference: String (Optional)
+     *         jobStatus: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
+     *         enqueueTimeUtc: OffsetDateTime (Optional)
+     *         channelId: String (Optional)
+     *         classificationPolicyId: String (Optional)
+     *         queueId: String (Optional)
+     *         priority: Integer (Optional)
+     *         dispositionCode: String (Optional)
+     *         requestedWorkerSelectors (Optional): [
+     *              (Optional){
+     *                 key: String (Required)
+     *                 labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *                 value: Object (Optional)
+     *                 ttlSeconds: Double (Optional)
+     *                 expedite: Boolean (Optional)
+     *                 state: String(active/expired) (Optional)
+     *                 expireTime: OffsetDateTime (Optional)
+     *             }
+     *         ]
+     *         attachedWorkerSelectors (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         labels (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         assignments (Optional): {
+     *             String (Optional): {
+     *                 id: String (Required)
+     *                 workerId: String (Optional)
+     *                 assignTime: OffsetDateTime (Required)
+     *                 completeTime: OffsetDateTime (Optional)
+     *                 closeTime: OffsetDateTime (Optional)
+     *             }
+     *         }
+     *         tags (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         notes (Optional): {
+     *             String: String (Optional)
+     *         }
+     *         unavailableForMatching: Boolean (Optional)
+     *         scheduledTimeUtc: OffsetDateTime (Optional)
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a paged collection of jobs along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterJobItem>> listJobsSinglePageAsync(
-            JobStateSelector status,
-            String queueId,
-            String channelId,
-            String classificationPolicyId,
-            Integer maxPageSize,
-            Context context) {
+    private PagedResponse<BinaryData> listJobsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listJobs(
+        Response<BinaryData> res =
+                service.listJobsSync(
                         this.client.getEndpoint(),
-                        status,
-                        queueId,
-                        channelId,
-                        classificationPolicyId,
-                        maxPageSize,
-                        this.client.getApiVersion(),
+                        this.client.getServiceVersion().getVersion(),
                         accept,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     /**
      * Retrieves list of jobs based on filter parameters.
      *
-     * @param status (Optional) If specified, filter jobs by status.
-     * @param queueId (Optional) If specified, filter jobs by queue.
-     * @param channelId (Optional) If specified, filter jobs by channel.
-     * @param classificationPolicyId (Optional) If specified, filter jobs by classificationPolicy.
-     * @param maxPageSize Number of objects to return per page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of jobs as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterJobItem> listJobsAsync(
-            JobStateSelector status,
-            String queueId,
-            String channelId,
-            String classificationPolicyId,
-            Integer maxPageSize) {
-        return new PagedFlux<>(
-                () -> listJobsSinglePageAsync(status, queueId, channelId, classificationPolicyId, maxPageSize),
-                nextLink -> listJobsNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Retrieves list of jobs based on filter parameters.
+     * <p><strong>Query Parameters</strong>
      *
-     * @param status (Optional) If specified, filter jobs by status.
-     * @param queueId (Optional) If specified, filter jobs by queue.
-     * @param channelId (Optional) If specified, filter jobs by channel.
-     * @param classificationPolicyId (Optional) If specified, filter jobs by classificationPolicy.
-     * @param maxPageSize Number of objects to return per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of jobs as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterJobItem> listJobsAsync(
-            JobStateSelector status,
-            String queueId,
-            String channelId,
-            String classificationPolicyId,
-            Integer maxPageSize,
-            Context context) {
-        return new PagedFlux<>(
-                () -> listJobsSinglePageAsync(status, queueId, channelId, classificationPolicyId, maxPageSize, context),
-                nextLink -> listJobsNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Retrieves list of jobs based on filter parameters.
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>status</td><td>String</td><td>No</td><td>(Optional) If specified, filter jobs by status. Allowed values: "all", "pendingClassification", "queued", "assigned", "completed", "closed", "cancelled", "classificationFailed", "created", "pendingSchedule", "scheduled", "scheduleFailed", "waitingForActivation", "active".</td></tr>
+     *     <tr><td>queueId</td><td>String</td><td>No</td><td>(Optional) If specified, filter jobs by queue.</td></tr>
+     *     <tr><td>channelId</td><td>String</td><td>No</td><td>(Optional) If specified, filter jobs by channel.</td></tr>
+     *     <tr><td>classificationPolicyId</td><td>String</td><td>No</td><td>(Optional) If specified, filter jobs by classificationPolicy.</td></tr>
+     *     <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>(Optional) If specified, filter on jobs that was scheduled before or at given timestamp. Range: (-Inf, scheduledBefore]</td></tr>
+     *     <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>(Optional) If specified, filter on jobs that was scheduled at or after given value. Range: [scheduledAfter, +Inf).</td></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of objects to return per page</td></tr>
+     * </table>
      *
-     * @param status (Optional) If specified, filter jobs by status.
-     * @param queueId (Optional) If specified, filter jobs by queue.
-     * @param channelId (Optional) If specified, filter jobs by channel.
-     * @param classificationPolicyId (Optional) If specified, filter jobs by classificationPolicy.
-     * @param maxPageSize Number of objects to return per page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     routerJob (Optional): {
+     *         id: String (Optional)
+     *         channelReference: String (Optional)
+     *         jobStatus: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
+     *         enqueueTimeUtc: OffsetDateTime (Optional)
+     *         channelId: String (Optional)
+     *         classificationPolicyId: String (Optional)
+     *         queueId: String (Optional)
+     *         priority: Integer (Optional)
+     *         dispositionCode: String (Optional)
+     *         requestedWorkerSelectors (Optional): [
+     *              (Optional){
+     *                 key: String (Required)
+     *                 labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *                 value: Object (Optional)
+     *                 ttlSeconds: Double (Optional)
+     *                 expedite: Boolean (Optional)
+     *                 state: String(active/expired) (Optional)
+     *                 expireTime: OffsetDateTime (Optional)
+     *             }
+     *         ]
+     *         attachedWorkerSelectors (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         labels (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         assignments (Optional): {
+     *             String (Optional): {
+     *                 id: String (Required)
+     *                 workerId: String (Optional)
+     *                 assignTime: OffsetDateTime (Required)
+     *                 completeTime: OffsetDateTime (Optional)
+     *                 closeTime: OffsetDateTime (Optional)
+     *             }
+     *         }
+     *         tags (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         notes (Optional): {
+     *             String: String (Optional)
+     *         }
+     *         unavailableForMatching: Boolean (Optional)
+     *         scheduledTimeUtc: OffsetDateTime (Optional)
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a paged collection of jobs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouterJobItem> listJobs(
-            JobStateSelector status,
-            String queueId,
-            String channelId,
-            String classificationPolicyId,
-            Integer maxPageSize) {
-        return new PagedIterable<>(listJobsAsync(status, queueId, channelId, classificationPolicyId, maxPageSize));
-    }
-
-    /**
-     * Retrieves list of jobs based on filter parameters.
-     *
-     * @param status (Optional) If specified, filter jobs by status.
-     * @param queueId (Optional) If specified, filter jobs by queue.
-     * @param channelId (Optional) If specified, filter jobs by channel.
-     * @param classificationPolicyId (Optional) If specified, filter jobs by classificationPolicy.
-     * @param maxPageSize Number of objects to return per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of jobs as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouterJobItem> listJobs(
-            JobStateSelector status,
-            String queueId,
-            String channelId,
-            String classificationPolicyId,
-            Integer maxPageSize,
-            Context context) {
+    public PagedIterable<BinaryData> listJobs(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
         return new PagedIterable<>(
-                listJobsAsync(status, queueId, channelId, classificationPolicyId, maxPageSize, context));
+                () -> listJobsSinglePage(requestOptions),
+                nextLink -> listJobsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
      * Gets a job's position details.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     jobId: String (Required)
+     *     position: int (Required)
+     *     queueId: String (Required)
+     *     queueLength: int (Required)
+     *     estimatedWaitTimeMinutes: double (Required)
+     * }
+     * }</pre>
+     *
      * @param id Id of the job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a job's position details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobPositionDetails>> getInQueuePositionWithResponseAsync(String id) {
+    public Mono<Response<BinaryData>> getInQueuePositionWithResponseAsync(String id, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getInQueuePosition(
-                                this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context));
+                                this.client.getEndpoint(),
+                                id,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
      * Gets a job's position details.
      *
-     * @param id Id of the job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job's position details along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobPositionDetails>> getInQueuePositionWithResponseAsync(String id, Context context) {
-        final String accept = "application/json";
-        return service.getInQueuePosition(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets a job's position details.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     jobId: String (Required)
+     *     position: int (Required)
+     *     queueId: String (Required)
+     *     queueLength: int (Required)
+     *     estimatedWaitTimeMinutes: double (Required)
+     * }
+     * }</pre>
      *
      * @param id Id of the job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job's position details on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobPositionDetails> getInQueuePositionAsync(String id) {
-        return getInQueuePositionWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a job's position details.
-     *
-     * @param id Id of the job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job's position details on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobPositionDetails> getInQueuePositionAsync(String id, Context context) {
-        return getInQueuePositionWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a job's position details.
-     *
-     * @param id Id of the job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job's position details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobPositionDetails getInQueuePosition(String id) {
-        return getInQueuePositionAsync(id).block();
-    }
-
-    /**
-     * Gets a job's position details.
-     *
-     * @param id Id of the job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a job's position details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobPositionDetails> getInQueuePositionWithResponse(String id, Context context) {
-        return getInQueuePositionWithResponseAsync(id, context).block();
+    public Response<BinaryData> getInQueuePositionWithResponse(String id, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getInQueuePositionSync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Un-assign a job.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     jobId: String (Required)
+     *     unassignmentCount: int (Required)
+     * }
+     * }</pre>
+     *
      * @param id Id of the job to un-assign.
      * @param assignmentId Id of the assignment to un-assign.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return response payload after a job has been successfully unassigned along with {@link Response} on successful
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UnassignJobResult>> unassignJobActionWithResponseAsync(String id, String assignmentId) {
+    public Mono<Response<BinaryData>> unassignJobActionWithResponseAsync(
+            String id, String assignmentId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1391,107 +2109,73 @@ public final class JobRoutersImpl {
                                 this.client.getEndpoint(),
                                 id,
                                 assignmentId,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 accept,
+                                requestOptions,
                                 context));
     }
 
     /**
      * Un-assign a job.
      *
-     * @param id Id of the job to un-assign.
-     * @param assignmentId Id of the assignment to un-assign.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response payload after a job has been successfully unassigned along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UnassignJobResult>> unassignJobActionWithResponseAsync(
-            String id, String assignmentId, Context context) {
-        final String accept = "application/json";
-        return service.unassignJobAction(
-                this.client.getEndpoint(), id, assignmentId, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Un-assign a job.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     jobId: String (Required)
+     *     unassignmentCount: int (Required)
+     * }
+     * }</pre>
      *
      * @param id Id of the job to un-assign.
      * @param assignmentId Id of the assignment to un-assign.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response payload after a job has been successfully unassigned on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnassignJobResult> unassignJobActionAsync(String id, String assignmentId) {
-        return unassignJobActionWithResponseAsync(id, assignmentId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Un-assign a job.
-     *
-     * @param id Id of the job to un-assign.
-     * @param assignmentId Id of the assignment to un-assign.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response payload after a job has been successfully unassigned on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnassignJobResult> unassignJobActionAsync(String id, String assignmentId, Context context) {
-        return unassignJobActionWithResponseAsync(id, assignmentId, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Un-assign a job.
-     *
-     * @param id Id of the job to un-assign.
-     * @param assignmentId Id of the assignment to un-assign.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response payload after a job has been successfully unassigned.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnassignJobResult unassignJobAction(String id, String assignmentId) {
-        return unassignJobActionAsync(id, assignmentId).block();
-    }
-
-    /**
-     * Un-assign a job.
-     *
-     * @param id Id of the job to un-assign.
-     * @param assignmentId Id of the assignment to un-assign.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return response payload after a job has been successfully unassigned along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UnassignJobResult> unassignJobActionWithResponse(String id, String assignmentId, Context context) {
-        return unassignJobActionWithResponseAsync(id, assignmentId, context).block();
+    public Response<BinaryData> unassignJobActionWithResponse(
+            String id, String assignmentId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.unassignJobActionSync(
+                this.client.getEndpoint(),
+                id,
+                assignmentId,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     assignmentId: String (Required)
+     *     jobId: String (Required)
+     *     workerId: String (Required)
+     * }
+     * }</pre>
+     *
      * @param workerId Id of the worker.
      * @param offerId Id of the offer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return response containing Id's for the worker, job, and assignment from an accepted offer along with {@link
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcceptJobOfferResult>> acceptJobActionWithResponseAsync(String workerId, String offerId) {
+    public Mono<Response<BinaryData>> acceptJobActionWithResponseAsync(
+            String workerId, String offerId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1499,110 +2183,78 @@ public final class JobRoutersImpl {
                                 this.client.getEndpoint(),
                                 workerId,
                                 offerId,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 accept,
+                                requestOptions,
                                 context));
     }
 
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
      *
-     * @param workerId Id of the worker.
-     * @param offerId Id of the offer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing Id's for the worker, job, and assignment from an accepted offer along with {@link
-     *     Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcceptJobOfferResult>> acceptJobActionWithResponseAsync(
-            String workerId, String offerId, Context context) {
-        final String accept = "application/json";
-        return service.acceptJobAction(
-                this.client.getEndpoint(), workerId, offerId, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     assignmentId: String (Required)
+     *     jobId: String (Required)
+     *     workerId: String (Required)
+     * }
+     * }</pre>
      *
      * @param workerId Id of the worker.
      * @param offerId Id of the offer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing Id's for the worker, job, and assignment from an accepted offer on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcceptJobOfferResult> acceptJobActionAsync(String workerId, String offerId) {
-        return acceptJobActionWithResponseAsync(workerId, offerId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
-     *
-     * @param workerId Id of the worker.
-     * @param offerId Id of the offer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing Id's for the worker, job, and assignment from an accepted offer on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcceptJobOfferResult> acceptJobActionAsync(String workerId, String offerId, Context context) {
-        return acceptJobActionWithResponseAsync(workerId, offerId, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
-     *
-     * @param workerId Id of the worker.
-     * @param offerId Id of the offer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing Id's for the worker, job, and assignment from an accepted offer.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcceptJobOfferResult acceptJobAction(String workerId, String offerId) {
-        return acceptJobActionAsync(workerId, offerId).block();
-    }
-
-    /**
-     * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
-     *
-     * @param workerId Id of the worker.
-     * @param offerId Id of the offer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return response containing Id's for the worker, job, and assignment from an accepted offer along with {@link
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AcceptJobOfferResult> acceptJobActionWithResponse(
-            String workerId, String offerId, Context context) {
-        return acceptJobActionWithResponseAsync(workerId, offerId, context).block();
+    public Response<BinaryData> acceptJobActionWithResponse(
+            String workerId, String offerId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.acceptJobActionSync(
+                this.client.getEndpoint(),
+                workerId,
+                offerId,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Declines an offer to work on a job.
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     reofferTimeUtc: OffsetDateTime (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * Object
+     * }</pre>
+     *
      * @param workerId Id of the worker.
      * @param offerId Id of the offer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> declineJobActionWithResponseAsync(String workerId, String offerId) {
+    public Mono<Response<BinaryData>> declineJobActionWithResponseAsync(
+            String workerId, String offerId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1610,508 +2262,624 @@ public final class JobRoutersImpl {
                                 this.client.getEndpoint(),
                                 workerId,
                                 offerId,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 accept,
+                                requestOptions,
                                 context));
     }
 
     /**
      * Declines an offer to work on a job.
      *
-     * @param workerId Id of the worker.
-     * @param offerId Id of the offer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> declineJobActionWithResponseAsync(String workerId, String offerId, Context context) {
-        final String accept = "application/json";
-        return service.declineJobAction(
-                this.client.getEndpoint(), workerId, offerId, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Declines an offer to work on a job.
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     reofferTimeUtc: OffsetDateTime (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * Object
+     * }</pre>
      *
      * @param workerId Id of the worker.
      * @param offerId Id of the offer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> declineJobActionAsync(String workerId, String offerId) {
-        return declineJobActionWithResponseAsync(workerId, offerId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Declines an offer to work on a job.
-     *
-     * @param workerId Id of the worker.
-     * @param offerId Id of the offer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> declineJobActionAsync(String workerId, String offerId, Context context) {
-        return declineJobActionWithResponseAsync(workerId, offerId, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Declines an offer to work on a job.
-     *
-     * @param workerId Id of the worker.
-     * @param offerId Id of the offer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object declineJobAction(String workerId, String offerId) {
-        return declineJobActionAsync(workerId, offerId).block();
-    }
-
-    /**
-     * Declines an offer to work on a job.
-     *
-     * @param workerId Id of the worker.
-     * @param offerId Id of the offer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return any object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> declineJobActionWithResponse(String workerId, String offerId, Context context) {
-        return declineJobActionWithResponseAsync(workerId, offerId, context).block();
+    public Response<BinaryData> declineJobActionWithResponse(
+            String workerId, String offerId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.declineJobActionSync(
+                this.client.getEndpoint(),
+                workerId,
+                offerId,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Retrieves a queue's statistics.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     queueId: String (Required)
+     *     length: int (Required)
+     *     estimatedWaitTimeMinutes (Optional): {
+     *         String: double (Optional)
+     *     }
+     *     longestJobWaitTimeMinutes: Double (Optional)
+     * }
+     * }</pre>
+     *
      * @param id Id of the queue to retrieve statistics.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return statistics for the queue along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueueStatistics>> getQueueStatisticsWithResponseAsync(String id) {
+    public Mono<Response<BinaryData>> getQueueStatisticsWithResponseAsync(String id, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getQueueStatistics(
-                                this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context));
+                                this.client.getEndpoint(),
+                                id,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
      * Retrieves a queue's statistics.
      *
-     * @param id Id of the queue to retrieve statistics.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return statistics for the queue along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueueStatistics>> getQueueStatisticsWithResponseAsync(String id, Context context) {
-        final String accept = "application/json";
-        return service.getQueueStatistics(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Retrieves a queue's statistics.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     queueId: String (Required)
+     *     length: int (Required)
+     *     estimatedWaitTimeMinutes (Optional): {
+     *         String: double (Optional)
+     *     }
+     *     longestJobWaitTimeMinutes: Double (Optional)
+     * }
+     * }</pre>
      *
      * @param id Id of the queue to retrieve statistics.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return statistics for the queue on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueueStatistics> getQueueStatisticsAsync(String id) {
-        return getQueueStatisticsWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves a queue's statistics.
-     *
-     * @param id Id of the queue to retrieve statistics.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return statistics for the queue on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueueStatistics> getQueueStatisticsAsync(String id, Context context) {
-        return getQueueStatisticsWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves a queue's statistics.
-     *
-     * @param id Id of the queue to retrieve statistics.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return statistics for the queue.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueueStatistics getQueueStatistics(String id) {
-        return getQueueStatisticsAsync(id).block();
-    }
-
-    /**
-     * Retrieves a queue's statistics.
-     *
-     * @param id Id of the queue to retrieve statistics.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return statistics for the queue along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueueStatistics> getQueueStatisticsWithResponse(String id, Context context) {
-        return getQueueStatisticsWithResponseAsync(id, context).block();
+    public Response<BinaryData> getQueueStatisticsWithResponse(String id, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getQueueStatisticsSync(
+                this.client.getEndpoint(),
+                id,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Creates or updates a worker.
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     state: String(active/draining/inactive) (Optional)
+     *     queueAssignments (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     totalCapacity: Integer (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     channelConfigurations (Optional): {
+     *         String (Optional): {
+     *             capacityCostPerJob: int (Required)
+     *             maxNumberOfJobs: Integer (Optional)
+     *         }
+     *     }
+     *     offers (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             offerTimeUtc: OffsetDateTime (Optional)
+     *             expiryTimeUtc: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     assignedJobs (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             assignTime: OffsetDateTime (Required)
+     *         }
+     *     ]
+     *     loadRatio: Double (Optional)
+     *     availableForOffers: Boolean (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     state: String(active/draining/inactive) (Optional)
+     *     queueAssignments (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     totalCapacity: Integer (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     channelConfigurations (Optional): {
+     *         String (Optional): {
+     *             capacityCostPerJob: int (Required)
+     *             maxNumberOfJobs: Integer (Optional)
+     *         }
+     *     }
+     *     offers (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             offerTimeUtc: OffsetDateTime (Optional)
+     *             expiryTimeUtc: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     assignedJobs (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             assignTime: OffsetDateTime (Required)
+     *         }
+     *     ]
+     *     loadRatio: Double (Optional)
+     *     availableForOffers: Boolean (Optional)
+     * }
+     * }</pre>
+     *
      * @param workerId Id of the worker.
      * @param patch Model of worker properties to be created or patched. See also:
      *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an entity for jobs to be routed to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterWorker>> upsertWorkerWithResponseAsync(String workerId, RouterWorker patch) {
+    public Mono<Response<BinaryData>> upsertWorkerWithResponseAsync(
+            String workerId, BinaryData patch, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.upsertWorker(
                                 this.client.getEndpoint(),
                                 workerId,
-                                this.client.getApiVersion(),
+                                this.client.getServiceVersion().getVersion(),
                                 patch,
                                 accept,
+                                requestOptions,
                                 context));
     }
 
     /**
      * Creates or updates a worker.
      *
-     * @param workerId Id of the worker.
-     * @param patch Model of worker properties to be created or patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity for jobs to be routed to along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterWorker>> upsertWorkerWithResponseAsync(
-            String workerId, RouterWorker patch, Context context) {
-        final String accept = "application/json";
-        return service.upsertWorker(
-                this.client.getEndpoint(), workerId, this.client.getApiVersion(), patch, accept, context);
-    }
-
-    /**
-     * Creates or updates a worker.
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     state: String(active/draining/inactive) (Optional)
+     *     queueAssignments (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     totalCapacity: Integer (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     channelConfigurations (Optional): {
+     *         String (Optional): {
+     *             capacityCostPerJob: int (Required)
+     *             maxNumberOfJobs: Integer (Optional)
+     *         }
+     *     }
+     *     offers (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             offerTimeUtc: OffsetDateTime (Optional)
+     *             expiryTimeUtc: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     assignedJobs (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             assignTime: OffsetDateTime (Required)
+     *         }
+     *     ]
+     *     loadRatio: Double (Optional)
+     *     availableForOffers: Boolean (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     state: String(active/draining/inactive) (Optional)
+     *     queueAssignments (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     totalCapacity: Integer (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     channelConfigurations (Optional): {
+     *         String (Optional): {
+     *             capacityCostPerJob: int (Required)
+     *             maxNumberOfJobs: Integer (Optional)
+     *         }
+     *     }
+     *     offers (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             offerTimeUtc: OffsetDateTime (Optional)
+     *             expiryTimeUtc: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     assignedJobs (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             assignTime: OffsetDateTime (Required)
+     *         }
+     *     ]
+     *     loadRatio: Double (Optional)
+     *     availableForOffers: Boolean (Optional)
+     * }
+     * }</pre>
      *
      * @param workerId Id of the worker.
      * @param patch Model of worker properties to be created or patched. See also:
      *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterWorker> upsertWorkerAsync(String workerId, RouterWorker patch) {
-        return upsertWorkerWithResponseAsync(workerId, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a worker.
-     *
-     * @param workerId Id of the worker.
-     * @param patch Model of worker properties to be created or patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterWorker> upsertWorkerAsync(String workerId, RouterWorker patch, Context context) {
-        return upsertWorkerWithResponseAsync(workerId, patch, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a worker.
-     *
-     * @param workerId Id of the worker.
-     * @param patch Model of worker properties to be created or patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity for jobs to be routed to.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterWorker upsertWorker(String workerId, RouterWorker patch) {
-        return upsertWorkerAsync(workerId, patch).block();
-    }
-
-    /**
-     * Creates or updates a worker.
-     *
-     * @param workerId Id of the worker.
-     * @param patch Model of worker properties to be created or patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an entity for jobs to be routed to along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterWorker> upsertWorkerWithResponse(String workerId, RouterWorker patch, Context context) {
-        return upsertWorkerWithResponseAsync(workerId, patch, context).block();
+    public Response<BinaryData> upsertWorkerWithResponse(
+            String workerId, BinaryData patch, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.upsertWorkerSync(
+                this.client.getEndpoint(),
+                workerId,
+                this.client.getServiceVersion().getVersion(),
+                patch,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Retrieves an existing worker by Id.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     state: String(active/draining/inactive) (Optional)
+     *     queueAssignments (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     totalCapacity: Integer (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     channelConfigurations (Optional): {
+     *         String (Optional): {
+     *             capacityCostPerJob: int (Required)
+     *             maxNumberOfJobs: Integer (Optional)
+     *         }
+     *     }
+     *     offers (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             offerTimeUtc: OffsetDateTime (Optional)
+     *             expiryTimeUtc: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     assignedJobs (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             assignTime: OffsetDateTime (Required)
+     *         }
+     *     ]
+     *     loadRatio: Double (Optional)
+     *     availableForOffers: Boolean (Optional)
+     * }
+     * }</pre>
+     *
      * @param workerId Id of the worker to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an entity for jobs to be routed to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterWorker>> getWorkerWithResponseAsync(String workerId) {
+    public Mono<Response<BinaryData>> getWorkerWithResponseAsync(String workerId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getWorker(
-                                this.client.getEndpoint(), workerId, this.client.getApiVersion(), accept, context));
+                                this.client.getEndpoint(),
+                                workerId,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
      * Retrieves an existing worker by Id.
      *
-     * @param workerId Id of the worker to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity for jobs to be routed to along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterWorker>> getWorkerWithResponseAsync(String workerId, Context context) {
-        final String accept = "application/json";
-        return service.getWorker(this.client.getEndpoint(), workerId, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Retrieves an existing worker by Id.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     state: String(active/draining/inactive) (Optional)
+     *     queueAssignments (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     totalCapacity: Integer (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     channelConfigurations (Optional): {
+     *         String (Optional): {
+     *             capacityCostPerJob: int (Required)
+     *             maxNumberOfJobs: Integer (Optional)
+     *         }
+     *     }
+     *     offers (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             offerTimeUtc: OffsetDateTime (Optional)
+     *             expiryTimeUtc: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     assignedJobs (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             assignTime: OffsetDateTime (Required)
+     *         }
+     *     ]
+     *     loadRatio: Double (Optional)
+     *     availableForOffers: Boolean (Optional)
+     * }
+     * }</pre>
      *
      * @param workerId Id of the worker to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterWorker> getWorkerAsync(String workerId) {
-        return getWorkerWithResponseAsync(workerId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves an existing worker by Id.
-     *
-     * @param workerId Id of the worker to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterWorker> getWorkerAsync(String workerId, Context context) {
-        return getWorkerWithResponseAsync(workerId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves an existing worker by Id.
-     *
-     * @param workerId Id of the worker to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity for jobs to be routed to.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterWorker getWorker(String workerId) {
-        return getWorkerAsync(workerId).block();
-    }
-
-    /**
-     * Retrieves an existing worker by Id.
-     *
-     * @param workerId Id of the worker to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an entity for jobs to be routed to along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterWorker> getWorkerWithResponse(String workerId, Context context) {
-        return getWorkerWithResponseAsync(workerId, context).block();
+    public Response<BinaryData> getWorkerWithResponse(String workerId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getWorkerSync(
+                this.client.getEndpoint(),
+                workerId,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Deletes a worker and all of its traces.
      *
      * @param workerId Id of the worker to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWorkerWithResponseAsync(String workerId) {
+    public Mono<Response<Void>> deleteWorkerWithResponseAsync(String workerId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteWorker(
-                                this.client.getEndpoint(), workerId, this.client.getApiVersion(), accept, context));
+                                this.client.getEndpoint(),
+                                workerId,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
      * Deletes a worker and all of its traces.
      *
      * @param workerId Id of the worker to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWorkerWithResponseAsync(String workerId, Context context) {
-        final String accept = "application/json";
-        return service.deleteWorker(this.client.getEndpoint(), workerId, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Deletes a worker and all of its traces.
-     *
-     * @param workerId Id of the worker to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteWorkerAsync(String workerId) {
-        return deleteWorkerWithResponseAsync(workerId).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Deletes a worker and all of its traces.
-     *
-     * @param workerId Id of the worker to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteWorkerAsync(String workerId, Context context) {
-        return deleteWorkerWithResponseAsync(workerId, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Deletes a worker and all of its traces.
-     *
-     * @param workerId Id of the worker to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteWorker(String workerId) {
-        deleteWorkerAsync(workerId).block();
-    }
-
-    /**
-     * Deletes a worker and all of its traces.
-     *
-     * @param workerId Id of the worker to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWorkerWithResponse(String workerId, Context context) {
-        return deleteWorkerWithResponseAsync(workerId, context).block();
+    public Response<Void> deleteWorkerWithResponse(String workerId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteWorkerSync(
+                this.client.getEndpoint(),
+                workerId,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Retrieves existing workers.
      *
-     * @param status (Optional) If specified, select workers by worker status.
-     * @param channelId (Optional) If specified, select workers who have a channel configuration with this channel.
-     * @param queueId (Optional) If specified, select workers who are assigned to this queue.
-     * @param hasCapacity (Optional) If set to true, select only workers who have capacity for the channel specified by
-     *     `channelId` or for any channel if `channelId` not specified. If set to false, then will return all workers
-     *     including workers without any capacity for jobs. Defaults to false.
-     * @param maxPageSize Number of objects to return per page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>status</td><td>String</td><td>No</td><td>(Optional) If specified, select workers by worker status. Allowed values: "active", "draining", "inactive", "all".</td></tr>
+     *     <tr><td>channelId</td><td>String</td><td>No</td><td>(Optional) If specified, select workers who have a channel configuration with this channel</td></tr>
+     *     <tr><td>queueId</td><td>String</td><td>No</td><td>(Optional) If specified, select workers who are assigned to this queue</td></tr>
+     *     <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>(Optional) If set to true, select only workers who have capacity for the channel specified by `channelId` or for any channel
+     *             if `channelId` not specified. If set to false, then will return all workers including workers without any capacity for jobs. Defaults to false.</td></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of objects to return per page</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     routerWorker (Optional): {
+     *         id: String (Optional)
+     *         state: String(active/draining/inactive) (Optional)
+     *         queueAssignments (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         totalCapacity: Integer (Optional)
+     *         labels (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         tags (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         channelConfigurations (Optional): {
+     *             String (Optional): {
+     *                 capacityCostPerJob: int (Required)
+     *                 maxNumberOfJobs: Integer (Optional)
+     *             }
+     *         }
+     *         offers (Optional): [
+     *              (Optional){
+     *                 id: String (Required)
+     *                 jobId: String (Required)
+     *                 capacityCost: int (Required)
+     *                 offerTimeUtc: OffsetDateTime (Optional)
+     *                 expiryTimeUtc: OffsetDateTime (Optional)
+     *             }
+     *         ]
+     *         assignedJobs (Optional): [
+     *              (Optional){
+     *                 id: String (Required)
+     *                 jobId: String (Required)
+     *                 capacityCost: int (Required)
+     *                 assignTime: OffsetDateTime (Required)
+     *             }
+     *         ]
+     *         loadRatio: Double (Optional)
+     *         availableForOffers: Boolean (Optional)
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterWorkerItem>> listWorkersSinglePageAsync(
-            WorkerStateSelector status, String channelId, String queueId, Boolean hasCapacity, Integer maxPageSize) {
+    private Mono<PagedResponse<BinaryData>> listWorkersSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listWorkers(
                                         this.client.getEndpoint(),
-                                        status,
-                                        channelId,
-                                        queueId,
-                                        hasCapacity,
-                                        maxPageSize,
-                                        this.client.getApiVersion(),
+                                        this.client.getServiceVersion().getVersion(),
                                         accept,
+                                        requestOptions,
                                         context))
                 .map(
                         res ->
@@ -2119,254 +2887,600 @@ public final class JobRoutersImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Retrieves existing workers.
      *
-     * @param status (Optional) If specified, select workers by worker status.
-     * @param channelId (Optional) If specified, select workers who have a channel configuration with this channel.
-     * @param queueId (Optional) If specified, select workers who are assigned to this queue.
-     * @param hasCapacity (Optional) If set to true, select only workers who have capacity for the channel specified by
-     *     `channelId` or for any channel if `channelId` not specified. If set to false, then will return all workers
-     *     including workers without any capacity for jobs. Defaults to false.
-     * @param maxPageSize Number of objects to return per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>status</td><td>String</td><td>No</td><td>(Optional) If specified, select workers by worker status. Allowed values: "active", "draining", "inactive", "all".</td></tr>
+     *     <tr><td>channelId</td><td>String</td><td>No</td><td>(Optional) If specified, select workers who have a channel configuration with this channel</td></tr>
+     *     <tr><td>queueId</td><td>String</td><td>No</td><td>(Optional) If specified, select workers who are assigned to this queue</td></tr>
+     *     <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>(Optional) If set to true, select only workers who have capacity for the channel specified by `channelId` or for any channel
+     *             if `channelId` not specified. If set to false, then will return all workers including workers without any capacity for jobs. Defaults to false.</td></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of objects to return per page</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     routerWorker (Optional): {
+     *         id: String (Optional)
+     *         state: String(active/draining/inactive) (Optional)
+     *         queueAssignments (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         totalCapacity: Integer (Optional)
+     *         labels (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         tags (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         channelConfigurations (Optional): {
+     *             String (Optional): {
+     *                 capacityCostPerJob: int (Required)
+     *                 maxNumberOfJobs: Integer (Optional)
+     *             }
+     *         }
+     *         offers (Optional): [
+     *              (Optional){
+     *                 id: String (Required)
+     *                 jobId: String (Required)
+     *                 capacityCost: int (Required)
+     *                 offerTimeUtc: OffsetDateTime (Optional)
+     *                 expiryTimeUtc: OffsetDateTime (Optional)
+     *             }
+     *         ]
+     *         assignedJobs (Optional): [
+     *              (Optional){
+     *                 id: String (Required)
+     *                 jobId: String (Required)
+     *                 capacityCost: int (Required)
+     *                 assignTime: OffsetDateTime (Required)
+     *             }
+     *         ]
+     *         loadRatio: Double (Optional)
+     *         availableForOffers: Boolean (Optional)
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a paged collection of workers as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listWorkersAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listWorkersSinglePageAsync(requestOptions),
+                nextLink -> listWorkersNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * Retrieves existing workers.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>status</td><td>String</td><td>No</td><td>(Optional) If specified, select workers by worker status. Allowed values: "active", "draining", "inactive", "all".</td></tr>
+     *     <tr><td>channelId</td><td>String</td><td>No</td><td>(Optional) If specified, select workers who have a channel configuration with this channel</td></tr>
+     *     <tr><td>queueId</td><td>String</td><td>No</td><td>(Optional) If specified, select workers who are assigned to this queue</td></tr>
+     *     <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>(Optional) If set to true, select only workers who have capacity for the channel specified by `channelId` or for any channel
+     *             if `channelId` not specified. If set to false, then will return all workers including workers without any capacity for jobs. Defaults to false.</td></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of objects to return per page</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     routerWorker (Optional): {
+     *         id: String (Optional)
+     *         state: String(active/draining/inactive) (Optional)
+     *         queueAssignments (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         totalCapacity: Integer (Optional)
+     *         labels (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         tags (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         channelConfigurations (Optional): {
+     *             String (Optional): {
+     *                 capacityCostPerJob: int (Required)
+     *                 maxNumberOfJobs: Integer (Optional)
+     *             }
+     *         }
+     *         offers (Optional): [
+     *              (Optional){
+     *                 id: String (Required)
+     *                 jobId: String (Required)
+     *                 capacityCost: int (Required)
+     *                 offerTimeUtc: OffsetDateTime (Optional)
+     *                 expiryTimeUtc: OffsetDateTime (Optional)
+     *             }
+     *         ]
+     *         assignedJobs (Optional): [
+     *              (Optional){
+     *                 id: String (Required)
+     *                 jobId: String (Required)
+     *                 capacityCost: int (Required)
+     *                 assignTime: OffsetDateTime (Required)
+     *             }
+     *         ]
+     *         loadRatio: Double (Optional)
+     *         availableForOffers: Boolean (Optional)
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a paged collection of workers along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterWorkerItem>> listWorkersSinglePageAsync(
-            WorkerStateSelector status,
-            String channelId,
-            String queueId,
-            Boolean hasCapacity,
-            Integer maxPageSize,
-            Context context) {
+    private PagedResponse<BinaryData> listWorkersSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listWorkers(
+        Response<BinaryData> res =
+                service.listWorkersSync(
                         this.client.getEndpoint(),
-                        status,
-                        channelId,
-                        queueId,
-                        hasCapacity,
-                        maxPageSize,
-                        this.client.getApiVersion(),
+                        this.client.getServiceVersion().getVersion(),
                         accept,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     /**
      * Retrieves existing workers.
      *
-     * @param status (Optional) If specified, select workers by worker status.
-     * @param channelId (Optional) If specified, select workers who have a channel configuration with this channel.
-     * @param queueId (Optional) If specified, select workers who are assigned to this queue.
-     * @param hasCapacity (Optional) If set to true, select only workers who have capacity for the channel specified by
-     *     `channelId` or for any channel if `channelId` not specified. If set to false, then will return all workers
-     *     including workers without any capacity for jobs. Defaults to false.
-     * @param maxPageSize Number of objects to return per page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of workers as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterWorkerItem> listWorkersAsync(
-            WorkerStateSelector status, String channelId, String queueId, Boolean hasCapacity, Integer maxPageSize) {
-        return new PagedFlux<>(
-                () -> listWorkersSinglePageAsync(status, channelId, queueId, hasCapacity, maxPageSize),
-                nextLink -> listWorkersNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Retrieves existing workers.
+     * <p><strong>Query Parameters</strong>
      *
-     * @param status (Optional) If specified, select workers by worker status.
-     * @param channelId (Optional) If specified, select workers who have a channel configuration with this channel.
-     * @param queueId (Optional) If specified, select workers who are assigned to this queue.
-     * @param hasCapacity (Optional) If set to true, select only workers who have capacity for the channel specified by
-     *     `channelId` or for any channel if `channelId` not specified. If set to false, then will return all workers
-     *     including workers without any capacity for jobs. Defaults to false.
-     * @param maxPageSize Number of objects to return per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of workers as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterWorkerItem> listWorkersAsync(
-            WorkerStateSelector status,
-            String channelId,
-            String queueId,
-            Boolean hasCapacity,
-            Integer maxPageSize,
-            Context context) {
-        return new PagedFlux<>(
-                () -> listWorkersSinglePageAsync(status, channelId, queueId, hasCapacity, maxPageSize, context),
-                nextLink -> listWorkersNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Retrieves existing workers.
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>status</td><td>String</td><td>No</td><td>(Optional) If specified, select workers by worker status. Allowed values: "active", "draining", "inactive", "all".</td></tr>
+     *     <tr><td>channelId</td><td>String</td><td>No</td><td>(Optional) If specified, select workers who have a channel configuration with this channel</td></tr>
+     *     <tr><td>queueId</td><td>String</td><td>No</td><td>(Optional) If specified, select workers who are assigned to this queue</td></tr>
+     *     <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>(Optional) If set to true, select only workers who have capacity for the channel specified by `channelId` or for any channel
+     *             if `channelId` not specified. If set to false, then will return all workers including workers without any capacity for jobs. Defaults to false.</td></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of objects to return per page</td></tr>
+     * </table>
      *
-     * @param status (Optional) If specified, select workers by worker status.
-     * @param channelId (Optional) If specified, select workers who have a channel configuration with this channel.
-     * @param queueId (Optional) If specified, select workers who are assigned to this queue.
-     * @param hasCapacity (Optional) If set to true, select only workers who have capacity for the channel specified by
-     *     `channelId` or for any channel if `channelId` not specified. If set to false, then will return all workers
-     *     including workers without any capacity for jobs. Defaults to false.
-     * @param maxPageSize Number of objects to return per page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     routerWorker (Optional): {
+     *         id: String (Optional)
+     *         state: String(active/draining/inactive) (Optional)
+     *         queueAssignments (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         totalCapacity: Integer (Optional)
+     *         labels (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         tags (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         channelConfigurations (Optional): {
+     *             String (Optional): {
+     *                 capacityCostPerJob: int (Required)
+     *                 maxNumberOfJobs: Integer (Optional)
+     *             }
+     *         }
+     *         offers (Optional): [
+     *              (Optional){
+     *                 id: String (Required)
+     *                 jobId: String (Required)
+     *                 capacityCost: int (Required)
+     *                 offerTimeUtc: OffsetDateTime (Optional)
+     *                 expiryTimeUtc: OffsetDateTime (Optional)
+     *             }
+     *         ]
+     *         assignedJobs (Optional): [
+     *              (Optional){
+     *                 id: String (Required)
+     *                 jobId: String (Required)
+     *                 capacityCost: int (Required)
+     *                 assignTime: OffsetDateTime (Required)
+     *             }
+     *         ]
+     *         loadRatio: Double (Optional)
+     *         availableForOffers: Boolean (Optional)
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a paged collection of workers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouterWorkerItem> listWorkers(
-            WorkerStateSelector status, String channelId, String queueId, Boolean hasCapacity, Integer maxPageSize) {
-        return new PagedIterable<>(listWorkersAsync(status, channelId, queueId, hasCapacity, maxPageSize));
-    }
-
-    /**
-     * Retrieves existing workers.
-     *
-     * @param status (Optional) If specified, select workers by worker status.
-     * @param channelId (Optional) If specified, select workers who have a channel configuration with this channel.
-     * @param queueId (Optional) If specified, select workers who are assigned to this queue.
-     * @param hasCapacity (Optional) If set to true, select only workers who have capacity for the channel specified by
-     *     `channelId` or for any channel if `channelId` not specified. If set to false, then will return all workers
-     *     including workers without any capacity for jobs. Defaults to false.
-     * @param maxPageSize Number of objects to return per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of workers as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouterWorkerItem> listWorkers(
-            WorkerStateSelector status,
-            String channelId,
-            String queueId,
-            Boolean hasCapacity,
-            Integer maxPageSize,
-            Context context) {
-        return new PagedIterable<>(listWorkersAsync(status, channelId, queueId, hasCapacity, maxPageSize, context));
+    public PagedIterable<BinaryData> listWorkers(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listWorkersSinglePage(requestOptions),
+                nextLink -> listWorkersNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     routerJob (Optional): {
+     *         id: String (Optional)
+     *         channelReference: String (Optional)
+     *         jobStatus: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
+     *         enqueueTimeUtc: OffsetDateTime (Optional)
+     *         channelId: String (Optional)
+     *         classificationPolicyId: String (Optional)
+     *         queueId: String (Optional)
+     *         priority: Integer (Optional)
+     *         dispositionCode: String (Optional)
+     *         requestedWorkerSelectors (Optional): [
+     *              (Optional){
+     *                 key: String (Required)
+     *                 labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *                 value: Object (Optional)
+     *                 ttlSeconds: Double (Optional)
+     *                 expedite: Boolean (Optional)
+     *                 state: String(active/expired) (Optional)
+     *                 expireTime: OffsetDateTime (Optional)
+     *             }
+     *         ]
+     *         attachedWorkerSelectors (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         labels (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         assignments (Optional): {
+     *             String (Optional): {
+     *                 id: String (Required)
+     *                 workerId: String (Optional)
+     *                 assignTime: OffsetDateTime (Required)
+     *                 completeTime: OffsetDateTime (Optional)
+     *                 closeTime: OffsetDateTime (Optional)
+     *             }
+     *         }
+     *         tags (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         notes (Optional): {
+     *             String: String (Optional)
+     *         }
+     *         unavailableForMatching: Boolean (Optional)
+     *         scheduledTimeUtc: OffsetDateTime (Optional)
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterJobItem>> listJobsNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<BinaryData>> listJobsNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.listJobsNext(nextLink, this.client.getEndpoint(), accept, context))
+                        context ->
+                                service.listJobsNext(
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     routerJob (Optional): {
+     *         id: String (Optional)
+     *         channelReference: String (Optional)
+     *         jobStatus: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
+     *         enqueueTimeUtc: OffsetDateTime (Optional)
+     *         channelId: String (Optional)
+     *         classificationPolicyId: String (Optional)
+     *         queueId: String (Optional)
+     *         priority: Integer (Optional)
+     *         dispositionCode: String (Optional)
+     *         requestedWorkerSelectors (Optional): [
+     *              (Optional){
+     *                 key: String (Required)
+     *                 labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *                 value: Object (Optional)
+     *                 ttlSeconds: Double (Optional)
+     *                 expedite: Boolean (Optional)
+     *                 state: String(active/expired) (Optional)
+     *                 expireTime: OffsetDateTime (Optional)
+     *             }
+     *         ]
+     *         attachedWorkerSelectors (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         labels (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         assignments (Optional): {
+     *             String (Optional): {
+     *                 id: String (Required)
+     *                 workerId: String (Optional)
+     *                 assignTime: OffsetDateTime (Required)
+     *                 completeTime: OffsetDateTime (Optional)
+     *                 closeTime: OffsetDateTime (Optional)
+     *             }
+     *         }
+     *         tags (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         notes (Optional): {
+     *             String: String (Optional)
+     *         }
+     *         unavailableForMatching: Boolean (Optional)
+     *         scheduledTimeUtc: OffsetDateTime (Optional)
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a paged collection of jobs along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterJobItem>> listJobsNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<BinaryData> listJobsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listJobsNext(nextLink, this.client.getEndpoint(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        Response<BinaryData> res =
+                service.listJobsNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     routerWorker (Optional): {
+     *         id: String (Optional)
+     *         state: String(active/draining/inactive) (Optional)
+     *         queueAssignments (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         totalCapacity: Integer (Optional)
+     *         labels (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         tags (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         channelConfigurations (Optional): {
+     *             String (Optional): {
+     *                 capacityCostPerJob: int (Required)
+     *                 maxNumberOfJobs: Integer (Optional)
+     *             }
+     *         }
+     *         offers (Optional): [
+     *              (Optional){
+     *                 id: String (Required)
+     *                 jobId: String (Required)
+     *                 capacityCost: int (Required)
+     *                 offerTimeUtc: OffsetDateTime (Optional)
+     *                 expiryTimeUtc: OffsetDateTime (Optional)
+     *             }
+     *         ]
+     *         assignedJobs (Optional): [
+     *              (Optional){
+     *                 id: String (Required)
+     *                 jobId: String (Required)
+     *                 capacityCost: int (Required)
+     *                 assignTime: OffsetDateTime (Required)
+     *             }
+     *         ]
+     *         loadRatio: Double (Optional)
+     *         availableForOffers: Boolean (Optional)
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterWorkerItem>> listWorkersNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<BinaryData>> listWorkersNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.listWorkersNext(nextLink, this.client.getEndpoint(), accept, context))
+                        context ->
+                                service.listWorkersNext(
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     routerWorker (Optional): {
+     *         id: String (Optional)
+     *         state: String(active/draining/inactive) (Optional)
+     *         queueAssignments (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         totalCapacity: Integer (Optional)
+     *         labels (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         tags (Optional): {
+     *             String: Object (Optional)
+     *         }
+     *         channelConfigurations (Optional): {
+     *             String (Optional): {
+     *                 capacityCostPerJob: int (Required)
+     *                 maxNumberOfJobs: Integer (Optional)
+     *             }
+     *         }
+     *         offers (Optional): [
+     *              (Optional){
+     *                 id: String (Required)
+     *                 jobId: String (Required)
+     *                 capacityCost: int (Required)
+     *                 offerTimeUtc: OffsetDateTime (Optional)
+     *                 expiryTimeUtc: OffsetDateTime (Optional)
+     *             }
+     *         ]
+     *         assignedJobs (Optional): [
+     *              (Optional){
+     *                 id: String (Required)
+     *                 jobId: String (Required)
+     *                 capacityCost: int (Required)
+     *                 assignTime: OffsetDateTime (Required)
+     *             }
+     *         ]
+     *         loadRatio: Double (Optional)
+     *         availableForOffers: Boolean (Optional)
+     *     }
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a paged collection of workers along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterWorkerItem>> listWorkersNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<BinaryData> listWorkersNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listWorkersNext(nextLink, this.client.getEndpoint(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        Response<BinaryData> res =
+                service.listWorkersNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
+    }
+
+    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+        try {
+            Map<?, ?> obj = binaryData.toObject(Map.class);
+            List<?> values = (List<?>) obj.get(path);
+            return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
+        } catch (RuntimeException e) {
+            return null;
+        }
+    }
+
+    private String getNextLink(BinaryData binaryData, String path) {
+        try {
+            Map<?, ?> obj = binaryData.toObject(Map.class);
+            return (String) obj.get(path);
+        } catch (RuntimeException e) {
+            return null;
+        }
     }
 }

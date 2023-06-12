@@ -5,6 +5,7 @@
 package com.azure.communication.jobrouter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -18,27 +19,33 @@ public final class CloseJobRequest {
     private String assignmentId;
 
     /*
-     * Indicates the outcome of the job, populate this field with your own
-     * custom values.
+     * Indicates the outcome of the job, populate this field with your own custom values.
      */
     @JsonProperty(value = "dispositionCode")
     private String dispositionCode;
 
     /*
-     * If not provided, worker capacity is released immediately along with a
-     * JobClosedEvent notification.
-     * If provided, worker capacity is released along with a JobClosedEvent
-     * notification at a future time.
+     * If not provided, worker capacity is released immediately along with a JobClosedEvent notification.
+     * If provided, worker capacity is released along with a JobClosedEvent notification at a future time.
      */
     @JsonProperty(value = "closeTime")
     private OffsetDateTime closeTime;
 
     /*
-     * (Optional) A note that will be appended to the jobs' Notes collection
-     * with the current timestamp.
+     * (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
      */
     @JsonProperty(value = "note")
     private String note;
+
+    /**
+     * Creates an instance of CloseJobRequest class.
+     *
+     * @param assignmentId the assignmentId value to set.
+     */
+    @JsonCreator
+    public CloseJobRequest(@JsonProperty(value = "assignmentId", required = true) String assignmentId) {
+        this.assignmentId = assignmentId;
+    }
 
     /**
      * Get the assignmentId property: The assignment within which the job is to be closed.
@@ -47,17 +54,6 @@ public final class CloseJobRequest {
      */
     public String getAssignmentId() {
         return this.assignmentId;
-    }
-
-    /**
-     * Set the assignmentId property: The assignment within which the job is to be closed.
-     *
-     * @param assignmentId the assignmentId value to set.
-     * @return the CloseJobRequest object itself.
-     */
-    public CloseJobRequest setAssignmentId(String assignmentId) {
-        this.assignmentId = assignmentId;
-        return this;
     }
 
     /**
