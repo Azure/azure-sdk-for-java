@@ -18,4 +18,4 @@
 
 ### New Features
 
-- Initial release of the Purview Share client library for Java
+- Initial release of the Microsoft Purview Share client library for Java
