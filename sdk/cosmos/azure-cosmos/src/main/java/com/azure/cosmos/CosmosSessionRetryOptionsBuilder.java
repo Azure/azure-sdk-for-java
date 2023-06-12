@@ -16,6 +16,9 @@ public final class CosmosSessionRetryOptionsBuilder {
     /**
      * Sets the {@link CosmosRegionSwitchHint} which specifies for
      * a request whether internal retry policies should prioritize a local region or a remote region.
+     *
+     * @param regionSwitchHint The region switch hint
+     * @return This instance of {@link CosmosSessionRetryOptionsBuilder}
      * */
     public CosmosSessionRetryOptionsBuilder setRegionSwitchHint(CosmosRegionSwitchHint regionSwitchHint) {
         this.regionSwitchHint = regionSwitchHint;
@@ -23,7 +26,9 @@ public final class CosmosSessionRetryOptionsBuilder {
     }
 
     /**
-     * Builds an instance of {@link CosmosSessionRetryOptions}.
+     * Builds an instance of {@link CosmosSessionRetryOptions}
+     *
+     * @return An instance of {@link CosmosSessionRetryOptions}
      * */
     public CosmosSessionRetryOptions build() {
         return new CosmosSessionRetryOptions(regionSwitchHint);
