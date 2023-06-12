@@ -10,12 +10,12 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.models.CloudEvent;
 import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.models.CloudEvent;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -40,6 +40,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class EventGridPublisherClientTests extends TestBase {
@@ -471,6 +472,58 @@ public class EventGridPublisherClientTests extends TestBase {
     }
 
     @Test
+    public void publishWithSasTokenSync() {
+
+        String sasToken = EventGridPublisherAsyncClient.generateSas(
+            getEndpoint(EVENTGRID_ENDPOINT),
+            getKey(EVENTGRID_KEY),
+            OffsetDateTime.now().plusMinutes(20)
+        );
+
+        EventGridPublisherClient<EventGridEvent> egClient = builder
+            .credential(new AzureSasCredential(sasToken))
+            .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
+            .buildEventGridEventPublisherClient();
+
+        EventGridEvent event = new EventGridEvent("Test", "Microsoft.MockPublisher.TestEvent",
+            BinaryData.fromObject(new HashMap<String, String>() {
+                {
+                    put("Field1", "Value1");
+                    put("Field2", "Value2");
+                    put("Field3", "Value3");
+                }
+            }),
+            "1.0")
+            .setEventTime(OffsetDateTime.now());
+
+        egClient.sendEvent(event);
+    }
+
+    @Disabled
+    @Test
+    public void publishWithTokenCredentialSync() {
+        DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
+        EventGridPublisherClient<CloudEvent> egClient = builder
+            .credential(defaultCredential)
+            .endpoint(getEndpoint(CLOUD_ENDPOINT))
+            .buildCloudEventPublisherClient();
+
+        List<CloudEvent> events = new ArrayList<>();
+        events.add(new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
+            BinaryData.fromObject(new HashMap<String, String>() {
+                {
+                    put("Field1", "Value1");
+                    put("Field2", "Value2");
+                    put("Field3", "Value3");
+                }
+            }), CloudEventDataFormat.JSON, "application/json")
+            .setSubject("Test")
+            .setTime(OffsetDateTime.now()));
+
+        egClient.sendEvents(events);
+    }
+
+    @Test
     public void publishCloudEventsSync() {
         EventGridPublisherClient<CloudEvent> egClient = builder
             .credential(getKey(CLOUD_KEY))
@@ -518,6 +571,95 @@ public class EventGridPublisherClientTests extends TestBase {
     }
 
     @Test
+    public void publishCloudEventsToPartnerTopicSync() {
+        EventGridPublisherClient<CloudEvent> egClient = builder
+            .endpoint(getEndpoint(EVENTGRID_PARTNER_NAMESPACE_TOPIC_ENDPOINT))
+            .credential(getKey(EVENTGRID_PARTNER_NAMESPACE_TOPIC_KEY))
+            .addPolicy((httpPipelineCallContext, httpPipelineNextPolicy) -> {
+                HttpHeader httpHeader = httpPipelineCallContext.getHttpRequest().getHeaders().get("aeg-channel-name");
+                assertNotNull(httpHeader);
+                return httpPipelineNextPolicy.process();
+            })
+            .buildCloudEventPublisherClient();
+
+        CloudEvent event = new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
+            BinaryData.fromObject(new HashMap<String, String>() {
+                {
+                    put("Field1", "Value1");
+                    put("Field2", "Value2");
+                    put("Field3", "Value3");
+                }
+            }), CloudEventDataFormat.JSON, "application/json")
+            .setSubject("Test")
+            .setTime(OffsetDateTime.now());
+
+        Response<Void> response = egClient.sendEventsWithResponse(Arrays.asList(event),
+            getChannelName(EVENTGRID_PARTNER_CHANNEL_NAME), Context.NONE);
+        assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
+    public void publishEventGridEventToPartnerTopicSync() {
+        EventGridPublisherClient<EventGridEvent> egClient = builder
+            .endpoint(getEndpoint(EVENTGRID_PARTNER_NAMESPACE_TOPIC_ENDPOINT))
+            .credential(getKey(EVENTGRID_PARTNER_NAMESPACE_TOPIC_KEY))
+            .addPolicy((httpPipelineCallContext, httpPipelineNextPolicy) -> {
+                HttpHeader httpHeader = httpPipelineCallContext.getHttpRequest().getHeaders().get("aeg-channel-name");
+                assertNotNull(httpHeader);
+                return httpPipelineNextPolicy.process();
+            })
+            .buildEventGridEventPublisherClient();
+
+        EventGridEvent event = new EventGridEvent("Test", "Microsoft.MockPublisher.TestEvent",
+            BinaryData.fromObject(new HashMap<String, String>() {
+                {
+                    put("Field1", "Value1");
+                    put("Field2", "Value2");
+                    put("Field3", "Value3");
+                }
+            }),
+            "1.0")
+            .setEventTime(OffsetDateTime.now());
+
+
+        HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
+            egClient.sendEventsWithResponse(Arrays.asList(event),
+                getChannelName(EVENTGRID_PARTNER_CHANNEL_NAME), Context.NONE);
+        });
+        assertEquals(400, exception.getResponse().getStatusCode());
+    }
+
+    @Test
+    public void publishCloudEventsCustomSerializerSync() {
+        // Custom Serializer for testData
+        JacksonAdapter customSerializer = new JacksonAdapter();
+        customSerializer.serializer().registerModule(new SimpleModule().addSerializer(TestData.class,
+            new JsonSerializer<TestData>() {
+                @Override
+                public void serialize(TestData testData, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
+                    throws IOException {
+                    jsonGenerator.writeString(testData.getName());
+                }
+            }));
+
+        EventGridPublisherClient<CloudEvent> egClient = builder
+            .credential(getKey(CLOUD_KEY))
+            .endpoint(getEndpoint(CLOUD_ENDPOINT))
+            .buildCloudEventPublisherClient();
+
+        List<CloudEvent> events = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            events.add(new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
+                BinaryData.fromObject(new TestData().setName("Hello " + i)), CloudEventDataFormat.JSON, null)
+                .setSubject("Test " + i)
+            );
+        }
+
+        Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);
+        assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
     public void publishCustomEventsSync() {
         EventGridPublisherClient<BinaryData> egClient = builder
             .credential(getKey(CUSTOM_KEY))
@@ -539,6 +681,29 @@ public class EventGridPublisherClientTests extends TestBase {
 
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 200);
+    }
+
+    @Test
+    public void publishCustomEventsWithSerializerSync() {
+        EventGridPublisherClient<BinaryData> egClient = builder
+            .credential(getKey(CUSTOM_KEY))
+            .endpoint(getEndpoint(CUSTOM_ENDPOINT))
+            .buildCustomEventPublisherClient();
+
+        List<BinaryData> events = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            events.add(BinaryData.fromObject(new HashMap<String, String>() {
+                {
+                    put("id", UUID.randomUUID().toString());
+                    put("time", OffsetDateTime.now().toString());
+                    put("subject", "Test");
+                    put("foo", "bar");
+                    put("type", "Microsoft.MockPublisher.TestEvent");
+                }
+            }, new JacksonJsonSerializerBuilder().build()));
+        }
+        Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);
+        assertEquals(200, response.getStatusCode());
     }
 
     @Test
