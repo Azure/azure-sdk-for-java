@@ -3,12 +3,7 @@
 
 package com.azure.cosmos.faultinjection;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.CosmosSessionRetryOptionsBuilder;
+import com.azure.cosmos.*;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -26,16 +21,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
-import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
-import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
-import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
-import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
-import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
-import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
-import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
-import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
-import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import com.azure.cosmos.test.faultinjection.*;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -81,11 +67,33 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
     public Object[][] nonWriteOperationContextProvider() {
         return new Object[][]{
             {OperationType.Read, FaultInjectionOperationType.READ_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
-            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED}
+            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
+            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
+            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
+            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, null},
+            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, null}
         };
     }
 
-    @Test(groups = {"multi-region"}, dataProvider = "nonWriteOperationContextProvider", timeOut = 180000)
+    @DataProvider(name = "writeOperationContextProvider")
+    public Object[][] writeOperationContextProvider() {
+        return new Object[][]{
+            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
+            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
+            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
+            {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
+            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
+            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
+            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
+            {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
+            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, null},
+            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, null},
+            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, null},
+            {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, null}
+        };
+    }
+
+    @Test(groups = {"multi-region"}, dataProvider = "nonWriteOperationContextProvider", timeOut = 60000)
     public void nonWriteOperation_WithReadSessionUnavailable_test(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType, CosmosRegionSwitchHint regionSwitchHint) {
         List<String> preferredLocations = this.writeRegionMap.keySet().stream().collect(Collectors.toList());
         Duration sessionTokenMismatchDefaultWaitTime = Duration.ofMillis(Configs.getSessionTokenMismatchDefaultWaitTimeInMs());
@@ -93,12 +101,9 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         assertThat(preferredLocations).isNotNull();
         assertThat(preferredLocations.size()).isEqualTo(2);
 
-        CosmosAsyncClient clientWithPreferredRegions = null;
-
-        clientWithPreferredRegions = new CosmosClientBuilder()
+        CosmosAsyncClient clientWithPreferredRegions = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
-            .contentResponseOnWriteEnabled(true)
             .consistencyLevel(BridgeInternal.getContextClient(this.cosmosAsyncClient).getConsistencyLevel())
             .preferredRegions(preferredLocations)
             .sessionRetryOptions(new CosmosSessionRetryOptionsBuilder()
@@ -138,10 +143,79 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
             .block();
 
         validateOperationExecutionResult(
-            performDocumentOperation(containerForClientWithPreferredRegions, createdItem, operationType),
-            sessionTokenMismatchDefaultWaitTime);
+            performDocumentOperation(
+                containerForClientWithPreferredRegions,
+                createdItem,
+                operationType,
+                badSessionTokenRule),
+            sessionTokenMismatchDefaultWaitTime,
+            regionSwitchHint);
 
         safeCloseAsync(clientWithPreferredRegions);
+    }
+
+    @Test(groups = {"multi-master"}, dataProvider = "writeOperationContextProvider", timeOut = 60000)
+    public void writeOperation_withReadSessionUnavailable_test(
+        OperationType operationType,
+        FaultInjectionOperationType faultInjectionOperationType,
+        CosmosRegionSwitchHint regionSwitchHint) {
+
+        List<String> preferredRegions = this.writeRegionMap.keySet().stream().collect(Collectors.toList());
+
+        Duration sessionTokenMismatchDefaultWaitTime = Duration.ofMillis(Configs.getSessionTokenMismatchDefaultWaitTimeInMs());
+
+        assertThat(preferredRegions).isNotNull();
+        assertThat(preferredRegions.size()).isEqualTo(2);
+
+        TestItem itemForCachingSessionToken = TestItem.createNewItem();
+
+        CosmosAsyncClient clientWithPreferredRegions = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .contentResponseOnWriteEnabled(true)
+            .preferredRegions(preferredRegions)
+            .sessionRetryOptions(new CosmosSessionRetryOptionsBuilder().setRegionSwitchHint(regionSwitchHint).build())
+            .buildAsyncClient();
+
+        CosmosAsyncContainer asyncContainerFromClientWithPreferredRegions = clientWithPreferredRegions
+            .getDatabase(cosmosAsyncContainer.getDatabase().getId())
+            .getContainer(cosmosAsyncContainer.getId());
+
+        // creating an item forces a token to be cached
+        asyncContainerFromClientWithPreferredRegions
+            .createItem(itemForCachingSessionToken, new CosmosItemRequestOptions())
+            .block();
+
+        FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
+            .operationType(faultInjectionOperationType)
+            .connectionType(FaultInjectionConnectionType.DIRECT)
+            .region(preferredRegions.get(0))
+            .build();
+
+        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+            .build();
+
+        FaultInjectionRule badSessionTokenRule = new FaultInjectionRuleBuilder("bad-session-token-rule-" + UUID.randomUUID())
+            .condition(faultInjectionCondition)
+            .result(faultInjectionServerErrorResult)
+            .duration(Duration.ofSeconds(5))
+            .build();
+
+        CosmosFaultInjectionHelper
+            .configureFaultInjectionRules(asyncContainerFromClientWithPreferredRegions, Arrays.asList(badSessionTokenRule))
+            .block();
+
+        TestItem testItem = TestItem.createNewItem();
+
+        validateOperationExecutionResult(
+            performDocumentOperation(
+                asyncContainerFromClientWithPreferredRegions,
+                testItem,
+                operationType,
+                badSessionTokenRule),
+            sessionTokenMismatchDefaultWaitTime,
+            regionSwitchHint);
     }
 
     @Test(groups = {"multi-region"}, timeOut = 60000)
@@ -152,9 +226,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         assertThat(preferredLocations).isNotNull();
         assertThat(preferredLocations.size()).isEqualTo(2);
 
-        CosmosAsyncClient clientWithPreferredRegions = null;
-
-        clientWithPreferredRegions = new CosmosClientBuilder()
+        CosmosAsyncClient clientWithPreferredRegions = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
@@ -225,7 +297,11 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         return regionMap;
     }
 
-    private OperationExecutionResult performDocumentOperation(CosmosAsyncContainer faultInjectedContainer, TestItem testItem, OperationType operationType) {
+    private OperationExecutionResult performDocumentOperation(
+        CosmosAsyncContainer faultInjectedContainer,
+        TestItem testItem,
+        OperationType operationType,
+        FaultInjectionRule badSessionTokenRule) {
 
         AtomicReference<Instant> operationStart = new AtomicReference<>(Instant.now());
         AtomicReference<Instant> operationEnd = new AtomicReference<>(Instant.now());
@@ -249,7 +325,8 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
             return new OperationExecutionResult(
                 feedResponse.getCosmosDiagnostics(),
                 Duration.between(operationStart.get(), operationEnd.get()),
-                HttpConstants.StatusCodes.OK);
+                HttpConstants.StatusCodes.OK,
+                operationType);
         }
 
         if (operationType == OperationType.Read) {
@@ -263,10 +340,12 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
             return new OperationExecutionResult(
                 itemResponse.getDiagnostics(),
                 Duration.between(operationStart.get(), operationEnd.get()),
-                itemResponse.getStatusCode());
+                itemResponse.getStatusCode(),
+                operationType);
         }
 
         if (operationType == OperationType.Create) {
+
             CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
 
             CosmosItemResponse<TestItem> itemResponse = faultInjectedContainer
@@ -275,11 +354,20 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
                 .doOnSuccess(ignore -> operationEnd.set(Instant.now()))
                 .block();
 
-            return new OperationExecutionResult(itemResponse.getDiagnostics(), Duration.between(operationStart.get(), operationEnd.get()), itemResponse.getStatusCode());
+            return new OperationExecutionResult(
+                itemResponse.getDiagnostics(),
+                Duration.between(operationStart.get(), operationEnd.get()),
+                itemResponse.getStatusCode(),
+                operationType);
         }
 
         if (operationType == OperationType.Replace) {
+
             CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+
+            faultInjectedContainer
+                .createItem(testItem, new PartitionKey(testItem.getId()), itemRequestOptions)
+                .block();
 
             CosmosItemResponse<TestItem> itemResponse = faultInjectedContainer
                 .replaceItem(testItem, testItem.getId(), new PartitionKey(testItem.getId()), itemRequestOptions)
@@ -290,11 +378,16 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
             return new OperationExecutionResult(
                 itemResponse.getDiagnostics(),
                 Duration.between(operationStart.get(), operationEnd.get()),
-                itemResponse.getStatusCode());
+                itemResponse.getStatusCode(),
+                operationType);
         }
 
         if (operationType == OperationType.Delete) {
             CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+
+            faultInjectedContainer
+                .createItem(testItem, new PartitionKey(testItem.getId()), itemRequestOptions)
+                .block();
 
             CosmosItemResponse<Object> itemResponse = faultInjectedContainer
                 .deleteItem(testItem.getId(), new PartitionKey(testItem.getId()), itemRequestOptions)
@@ -305,7 +398,8 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
             return new OperationExecutionResult(
                 itemResponse.getDiagnostics(),
                 Duration.between(operationStart.get(), operationEnd.get()),
-                itemResponse.getStatusCode());
+                itemResponse.getStatusCode(),
+                operationType);
         }
 
         if (operationType == OperationType.Upsert) {
@@ -320,7 +414,8 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
             return new OperationExecutionResult(
                 itemResponse.getDiagnostics(),
                 Duration.between(operationStart.get(), operationEnd.get()),
-                itemResponse.getStatusCode());
+                itemResponse.getStatusCode(),
+                operationType);
         }
 
         return null;
@@ -328,20 +423,41 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
 
     private void validateOperationExecutionResult(
         OperationExecutionResult operationExecutionResult,
-        Duration maxSessionTokenMismatchRetryWaitTime) {
-        assertThat(operationExecutionResult.statusCode).isEqualTo(HttpConstants.StatusCodes.OK);
-        assertThat(operationExecutionResult.duration).isLessThan(maxSessionTokenMismatchRetryWaitTime);
+        Duration sessionTokenMismatchDefaultWaitTimePerRegion,
+        CosmosRegionSwitchHint regionSwitchHint) {
+
+        OperationType executionOpType = operationExecutionResult.operationType;
+        int statusCode = operationExecutionResult.statusCode;
+        Duration executionDuration = operationExecutionResult.duration;
+
+        if (executionOpType == OperationType.Create) {
+            assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.CREATED);
+        } else if (executionOpType == OperationType.Delete) {
+            assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.NO_CONTENT);
+        } else if (executionOpType == OperationType.Upsert) {
+            assertThat(statusCode == HttpConstants.StatusCodes.OK || statusCode == HttpConstants.StatusCodes.CREATED).isTrue();
+        } else {
+            assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.OK);
+        }
+
+        if (regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED) {
+            assertThat(executionDuration).isLessThan(sessionTokenMismatchDefaultWaitTimePerRegion);
+        } else if (regionSwitchHint == CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED || regionSwitchHint == null) {
+            assertThat(executionDuration).isGreaterThan(sessionTokenMismatchDefaultWaitTimePerRegion);
+        }
     }
 
     private class OperationExecutionResult {
         private CosmosDiagnostics diagnostics;
         private Duration duration;
         private int statusCode;
+        private OperationType operationType;
 
-        OperationExecutionResult(CosmosDiagnostics diagnostics, Duration duration, int statusCode) {
+        OperationExecutionResult(CosmosDiagnostics diagnostics, Duration duration, int statusCode, OperationType operationType) {
             this.diagnostics = diagnostics;
             this.duration = duration;
             this.statusCode = statusCode;
+            this.operationType = operationType;
         }
     }
 }

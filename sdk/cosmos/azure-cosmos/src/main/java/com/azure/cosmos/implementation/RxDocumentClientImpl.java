@@ -1242,6 +1242,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // then it should have been populated into request context already
         // otherwise set them here with the client level policy
 
+        request.requestContext.setSessionRetryOptions(this.sessionRetryOptions);
+
         return populateHeadersAsync(request, RequestVerb.POST)
             .flatMap(requestPopulated ->
                 this.getStoreProxy(requestPopulated).processMessage(requestPopulated)
@@ -2250,6 +2252,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
                 OperationType.Delete, ResourceType.Document, path, requestHeaders, options);
 
+            request.requestContext.setSessionRetryOptions(this.sessionRetryOptions);
+
             if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
                 request.setNonIdempotentWriteRetriesEnabled(true);
             }
@@ -2793,9 +2797,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             @Override
             public Mono<RxDocumentServiceResponse> executeQueryAsync(RxDocumentServiceRequest request) {
-
-                request.requestContext.setSessionRetryOptions(RxDocumentClientImpl.this.sessionRetryOptions);
-
                 if (operationContextAndListenerTuple == null) {
                     return RxDocumentClientImpl.this.query(request).single();
                 } else {
