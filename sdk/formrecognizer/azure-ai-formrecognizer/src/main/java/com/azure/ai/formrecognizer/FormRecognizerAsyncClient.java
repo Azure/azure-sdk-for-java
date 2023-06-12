@@ -38,7 +38,6 @@ import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Objects;
