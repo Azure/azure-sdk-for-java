@@ -43,6 +43,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -1129,17 +1130,17 @@ public final class QueueAsyncClient {
             processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
         return Flux.fromIterable(queueMessageInternalItems)
             .flatMapSequential(queueMessageItemInternal ->
-                Mono.just(ModelHelper.transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding))
+                transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding)
                 .onErrorResume(IllegalArgumentException.class, e -> {
                     if (processMessageDecodingErrorAsyncHandler != null) {
-                        return Mono.just(ModelHelper.transformQueueMessageItemInternal(
-                            queueMessageItemInternal, QueueMessageEncoding.NONE))
+                        return transformQueueMessageItemInternal(
+                            queueMessageItemInternal, QueueMessageEncoding.NONE)
                             .flatMap(messageItem -> processMessageDecodingErrorAsyncHandler.apply(
                                 new QueueMessageDecodingError(this, queueClient, messageItem, null, e)))
                             .then(Mono.empty());
                     } else if (processMessageDecodingErrorHandler != null) {
-                        return Mono.just(ModelHelper.transformQueueMessageItemInternal(
-                            queueMessageItemInternal, QueueMessageEncoding.NONE))
+                        return transformQueueMessageItemInternal(
+                            queueMessageItemInternal, QueueMessageEncoding.NONE)
                             .flatMap(messageItem -> {
                                 try {
                                     processMessageDecodingErrorHandler.accept(
@@ -1161,6 +1162,40 @@ public final class QueueAsyncClient {
                 queueMessageItems,
                 null,
                 response.getDeserializedHeaders()));
+    }
+
+    private static Mono<QueueMessageItem> transformQueueMessageItemInternal(
+        QueueMessageItemInternal queueMessageItemInternal, QueueMessageEncoding messageEncoding) {
+        QueueMessageItem queueMessageItem = new QueueMessageItem()
+            .setMessageId(queueMessageItemInternal.getMessageId())
+            .setDequeueCount(queueMessageItemInternal.getDequeueCount())
+            .setExpirationTime(queueMessageItemInternal.getExpirationTime())
+            .setInsertionTime(queueMessageItemInternal.getInsertionTime())
+            .setPopReceipt(queueMessageItemInternal.getPopReceipt())
+            .setTimeNextVisible(queueMessageItemInternal.getTimeNextVisible());
+        return decodeMessageBody(queueMessageItemInternal.getMessageText(), messageEncoding)
+            .map(queueMessageItem::setBody)
+            .switchIfEmpty(Mono.just(queueMessageItem));
+    }
+
+    private static Mono<BinaryData> decodeMessageBody(String messageText, QueueMessageEncoding messageEncoding) {
+        if (messageText == null) {
+            return Mono.empty();
+        }
+
+        switch (messageEncoding) {
+            case NONE:
+                return Mono.just(BinaryData.fromString(messageText));
+            case BASE64:
+                try {
+                    return Mono.just(BinaryData.fromBytes(Base64.getDecoder().decode(messageText)));
+                } catch (IllegalArgumentException e) {
+                    return FluxUtil.monoError(LOGGER, e);
+                }
+            default:
+                return FluxUtil.monoError(
+                    LOGGER, new IllegalArgumentException("Unsupported message encoding=" + messageEncoding));
+        }
     }
 
     /**
@@ -1257,17 +1292,17 @@ public final class QueueAsyncClient {
 
         return Flux.fromIterable(peekedMessageInternalItems)
             .flatMapSequential(peekedMessageItemInternal ->
-                Mono.just(ModelHelper.transformPeekedMessageItemInternal(peekedMessageItemInternal, messageEncoding))
+                transformPeekedMessageItemInternal(peekedMessageItemInternal, messageEncoding)
                     .onErrorResume(IllegalArgumentException.class, e -> {
                         if (processMessageDecodingErrorAsyncHandler != null) {
-                            return Mono.just(ModelHelper.transformPeekedMessageItemInternal(
-                                peekedMessageItemInternal, QueueMessageEncoding.NONE))
+                            return transformPeekedMessageItemInternal(
+                                peekedMessageItemInternal, QueueMessageEncoding.NONE)
                                 .flatMap(messageItem -> processMessageDecodingErrorAsyncHandler.apply(
                                     new QueueMessageDecodingError(this, queueClient, null, messageItem, e)))
                                 .then(Mono.empty());
                         } else if (processMessageDecodingErrorHandler != null) {
-                            return Mono.just(ModelHelper.transformPeekedMessageItemInternal(
-                                peekedMessageItemInternal, QueueMessageEncoding.NONE))
+                            return transformPeekedMessageItemInternal(
+                                peekedMessageItemInternal, QueueMessageEncoding.NONE)
                                 .flatMap(messageItem -> {
                                     try {
                                         processMessageDecodingErrorHandler.accept(
@@ -1289,6 +1324,18 @@ public final class QueueAsyncClient {
                 peekedMessageItems,
                 null,
                 response.getDeserializedHeaders()));
+    }
+
+    private static Mono<PeekedMessageItem> transformPeekedMessageItemInternal(
+        PeekedMessageItemInternal peekedMessageItemInternal, QueueMessageEncoding messageEncoding) {
+        PeekedMessageItem peekedMessageItem = new PeekedMessageItem()
+            .setMessageId(peekedMessageItemInternal.getMessageId())
+            .setDequeueCount(peekedMessageItemInternal.getDequeueCount())
+            .setExpirationTime(peekedMessageItemInternal.getExpirationTime())
+            .setInsertionTime(peekedMessageItemInternal.getInsertionTime());
+        return decodeMessageBody(peekedMessageItemInternal.getMessageText(), messageEncoding)
+            .map(peekedMessageItem::setBody)
+            .switchIfEmpty(Mono.just(peekedMessageItem));
     }
 
     /**

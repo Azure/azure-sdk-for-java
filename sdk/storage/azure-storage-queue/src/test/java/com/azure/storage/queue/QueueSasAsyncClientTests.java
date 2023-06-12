@@ -9,7 +9,6 @@ import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.queue.models.QueueAccessPolicy;
-import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
 import com.azure.storage.queue.models.QueueStorageException;
 import com.azure.storage.queue.models.SendMessageResult;
@@ -23,14 +22,9 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 
-import static com.azure.storage.queue.QueueTestHelper.assertAsyncResponseStatusCode;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class QueueSasAsyncClientTests extends QueueTestBase {
     private QueueAsyncClient asyncSasClient;
@@ -129,9 +123,9 @@ public class QueueSasAsyncClientTests extends QueueTestBase {
         clientIdentifier.sendMessage("sastest").block();
 
         StepVerifier.create(clientIdentifier.receiveMessages(2).collectList()).assertNext(messageItemList -> {
-                assertEquals("test", messageItemList.get(0).getBody().toString());
-                assertEquals("sastest", messageItemList.get(1).getBody().toString());
-            }).verifyComplete();
+            assertEquals("test", messageItemList.get(0).getBody().toString());
+            assertEquals("sastest", messageItemList.get(1).getBody().toString());
+        }).verifyComplete();
     }
 
     @Test
