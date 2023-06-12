@@ -8,8 +8,13 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FileContent;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
+import com.azure.core.test.implementation.mocking.MockAsynchronousFileChannel;
+import com.azure.core.test.implementation.mocking.MockFileContent;
+import com.azure.core.test.implementation.mocking.MockPath;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
@@ -19,10 +24,15 @@ import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
-import org.junit.jupiter.api.Named;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.api.TestTemplate;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.Extension;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.ParameterContext;
+import org.junit.jupiter.api.extension.ParameterResolutionException;
+import org.junit.jupiter.api.extension.ParameterResolver;
+import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
+import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -46,6 +56,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicLong;
@@ -76,6 +87,17 @@ public abstract class HttpClientTests {
     protected static final String ECHO_RESPONSE = "echo";
 
     private static final byte[] EXPECTED_RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] LARGE_BINARY_DATA_BYTES;
+    private static final byte[] LARGE_SLICE_FILE_BINARY_DATA_BYTES;
+
+    static {
+        int largeSize = 10 * 1024 * 1024 + 13;
+        LARGE_BINARY_DATA_BYTES = new byte[largeSize];
+        LARGE_SLICE_FILE_BINARY_DATA_BYTES = new byte[LARGE_BINARY_DATA_BYTES.length + 16384];
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        random.nextBytes(LARGE_BINARY_DATA_BYTES);
+        System.arraycopy(LARGE_BINARY_DATA_BYTES, 0, LARGE_SLICE_FILE_BINARY_DATA_BYTES, 8192, largeSize);
+    }
 
     /**
      * Get the HTTP client that will be used for each test. This will be called once per test.
@@ -363,193 +385,250 @@ public abstract class HttpClientTests {
 
         Context context = Context.NONE.addData("azure-eagerly-convert-headers", true);
 
-        HttpResponse response = SyncAsyncExtension.execute(
+        try (HttpResponse response = SyncAsyncExtension.execute(
             () -> createHttpClient().sendSync(request, context),
-            () -> createHttpClient().send(request, context)
-        );
+            () -> createHttpClient().send(request, context))) {
 
-        // Validate getHttpHeaders type is HttpHeaders (not instanceof)
-        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
+            // Validate getHttpHeaders type is HttpHeaders (not instanceof)
+            assertEquals(HttpHeaders.class, response.getHeaders().getClass());
+        }
     }
 
     /**
      * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
-     * @param requestBody The BinaryData that contains random bytes.
-     * @param expectedResponseBody The expected bytes in the echo response.
+     *
+     * @param testDataBinaryData The test data.
      */
-    @ParameterizedTest
-    @MethodSource("getBinaryDataBodyVariants")
-    public void canSendBinaryData(BinaryData requestBody, byte[] expectedResponseBody) {
-        HttpRequest request = new HttpRequest(
-            HttpMethod.PUT,
-            getRequestUrl(ECHO_RESPONSE),
-            new HttpHeaders(),
-            requestBody);
+    @TestTemplate
+    @ExtendWith(RepeatedParameterizedTestTemplate.class)
+    public void canSendBinaryData(BinaryDataTestData testDataBinaryData) {
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
+            testDataBinaryData.getBinaryData());
 
         StepVerifier.create(createHttpClient()
             .send(request)
             .flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(responseBytes -> assertArrayEquals(expectedResponseBody, responseBytes))
+            .assertNext(responseBytes -> assertArrayEquals(testDataBinaryData.getBytes(), responseBytes))
             .verifyComplete();
     }
 
     /**
      * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
-     * @param requestBody The BinaryData that contains random bytes.
-     * @param expectedResponseBody The expected bytes in the echo response.
+     *
+     * @param testDataBinaryData The test data.
      */
-    @ParameterizedTest
-    @MethodSource("getBinaryDataBodyVariants")
-    public void canSendBinaryDataSync(BinaryData requestBody, byte[] expectedResponseBody) {
-        HttpRequest request = new HttpRequest(
-            HttpMethod.PUT,
-            getRequestUrl(ECHO_RESPONSE),
-            new HttpHeaders(),
-            requestBody);
+    @TestTemplate
+    @ExtendWith(RepeatedParameterizedTestTemplate.class)
+    public void canSendBinaryDataSync(BinaryDataTestData testDataBinaryData) {
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
+            testDataBinaryData.getBinaryData());
 
-        HttpResponse httpResponse = createHttpClient()
-            .sendSync(request, Context.NONE);
+        try (HttpResponse httpResponse = createHttpClient().sendSync(request, Context.NONE)) {
+            byte[] responseBytes = httpResponse.getBodyAsByteArray().block();
 
-        byte[] responseBytes = httpResponse
-            .getBodyAsByteArray()
-            .block();
-
-        assertArrayEquals(expectedResponseBody, responseBytes);
+            assertArrayEquals(testDataBinaryData.getBytes(), responseBytes);
+        }
     }
 
     /**
      * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
-     * @param requestBody The BinaryData that contains random bytes.
-     * @param expectedResponseBody The expected bytes in the echo response.
+     *
+     * @param testDataBinaryData The test data.
      */
-    @ParameterizedTest
-    @MethodSource("getBinaryDataBodyVariants")
-    public void canSendBinaryDataWithProgressReporting(BinaryData requestBody, byte[] expectedResponseBody) {
-        HttpRequest request = new HttpRequest(
-            HttpMethod.PUT,
-            getRequestUrl(ECHO_RESPONSE),
-            new HttpHeaders(),
-            requestBody);
+    @TestTemplate
+    @ExtendWith(RepeatedParameterizedTestTemplate.class)
+    public void canSendBinaryDataWithProgressReporting(BinaryDataTestData testDataBinaryData) {
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
+            testDataBinaryData.getBinaryData());
 
         AtomicLong progress = new AtomicLong();
         Context context = Contexts.empty()
-            .setHttpRequestProgressReporter(
-                ProgressReporter.withProgressListener(progress::set))
+            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::set))
             .getContext();
 
-        StepVerifier.create(createHttpClient()
-                .send(request, context)
-                .flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(responseBytes -> assertArrayEquals(expectedResponseBody, responseBytes))
+        StepVerifier.create(createHttpClient().send(request, context).flatMap(HttpResponse::getBodyAsByteArray))
+            .assertNext(responseBytes -> assertArrayEquals(testDataBinaryData.getBytes(), responseBytes))
             .verifyComplete();
 
-        assertEquals(expectedResponseBody.length, progress.intValue());
+        assertEquals(testDataBinaryData.getBytes().length, progress.intValue());
     }
 
     /**
      * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
-     * @param requestBody The BinaryData that contains random bytes.
-     * @param expectedResponseBody The expected bytes in the echo response.
+     *
+     * @param testDataBinaryData The test data.
      */
-    @ParameterizedTest
-    @MethodSource("getBinaryDataBodyVariants")
-    public void canSendBinaryDataWithProgressReportingSync(BinaryData requestBody, byte[] expectedResponseBody) {
-        HttpRequest request = new HttpRequest(
-            HttpMethod.PUT,
-            getRequestUrl(ECHO_RESPONSE),
-            new HttpHeaders(),
-            requestBody);
+    @TestTemplate
+    @ExtendWith(RepeatedParameterizedTestTemplate.class)
+    public void canSendBinaryDataWithProgressReportingSync(BinaryDataTestData testDataBinaryData) {
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
+            testDataBinaryData.getBinaryData());
 
         AtomicLong progress = new AtomicLong();
         Context context = Contexts.empty()
-            .setHttpRequestProgressReporter(
-                ProgressReporter.withProgressListener(progress::set))
+            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::set))
             .getContext();
 
-        HttpResponse httpResponse = createHttpClient()
-            .sendSync(request, context);
+        try (HttpResponse httpResponse = createHttpClient().sendSync(request, context)) {
+            byte[] responseBytes = httpResponse.getBodyAsByteArray().block();
 
-        byte[] responseBytes = httpResponse
-            .getBodyAsByteArray()
-            .block();
-
-        assertArrayEquals(expectedResponseBody, responseBytes);
-        assertEquals(expectedResponseBody.length, progress.intValue());
+            assertArrayEquals(testDataBinaryData.getBytes(), responseBytes);
+            assertEquals(testDataBinaryData.getBytes().length, progress.intValue());
+        }
     }
 
-    private static Stream<Arguments> getBinaryDataBodyVariants() {
+    private static final class RepeatedParameterizedTestTemplate implements TestTemplateInvocationContextProvider {
+
+        @Override
+        public boolean supportsTestTemplate(ExtensionContext context) {
+            return true;
+        }
+
+        @Override
+        public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
+            // Repeat BinaryData tests 100 times for validation.
+            Stream<TestTemplateInvocationContext> stream = Stream.empty();
+            for (int i = 0; i < 100; i++) {
+                stream = Stream.concat(stream, getBinaryDataBodyVariants()
+                    .map(RepeatedParameterizedTestTemplate::createInvocationContext));
+            }
+
+            return stream;
+        }
+
+        private static TestTemplateInvocationContext createInvocationContext(BinaryDataTestData testData) {
+            return new TestTemplateInvocationContext() {
+                @Override
+                public String getDisplayName(int invocationIndex) {
+                    return TestTemplateInvocationContext.super.getDisplayName(invocationIndex);
+                }
+
+                @Override
+                public List<Extension> getAdditionalExtensions() {
+                    return Collections.singletonList(new ParameterResolver() {
+                        @Override
+                        public boolean supportsParameter(ParameterContext parameterContext,
+                            ExtensionContext extensionContext) throws ParameterResolutionException {
+                            return true;
+                        }
+
+                        @Override
+                        public Object resolveParameter(ParameterContext parameterContext,
+                            ExtensionContext extensionContext) throws ParameterResolutionException {
+                            return testData;
+                        }
+                    });
+                }
+            };
+        }
+    }
+
+    /**
+     * Content for a BinaryData test.
+     */
+    public static final class BinaryDataTestData {
+        private final BinaryData binaryData;
+        private final byte[] bytes;
+
+        /**
+         * Creates a new BinaryDataTestData.
+         *
+         * @param binaryData The BinaryData being sent over the wire.
+         * @param bytes The expected bytes to be received.
+         */
+        public BinaryDataTestData(BinaryData binaryData, byte[] bytes) {
+            this.binaryData = binaryData;
+            this.bytes = bytes;
+        }
+
+        /**
+         * Gets the BinaryData to send over the wire.
+         *
+         * @return The BinaryData to send over the wire.
+         */
+        public BinaryData getBinaryData() {
+            return binaryData;
+        }
+
+        /**
+         * Gets the expected bytes to be returned from the echo body endpoint.
+         *
+         * @return The expected response bytes.
+         */
+        public byte[] getBytes() {
+            return bytes;
+        }
+    }
+
+    private static Stream<BinaryDataTestData> getBinaryDataBodyVariants() {
         return Stream.of(1, 2, 10, 127, 1024, 1024 + 157, 8 * 1024 + 3, 10 * 1024 * 1024 + 13)
             .flatMap(size -> {
-                try {
-                    byte[] bytes = new byte[size];
+                byte[] bytes;
+                if (size == 10 * 1024 * 1024 + 13) {
+                    bytes = LARGE_BINARY_DATA_BYTES;
+                } else {
+                    bytes = new byte[size];
                     ThreadLocalRandom.current().nextBytes(bytes);
-
-                    BinaryData byteArrayData = BinaryData.fromBytes(bytes);
-
-                    String randomString = new String(bytes, StandardCharsets.UTF_8);
-                    byte[] randomStringBytes = randomString.getBytes(StandardCharsets.UTF_8);
-                    BinaryData stringBinaryData = BinaryData.fromString(randomString);
-
-                    BinaryData streamData = BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length);
-
-                    List<ByteBuffer> bufferList = new ArrayList<>();
-                    int bufferSize = 1023;
-                    for (int startIndex = 0; startIndex < bytes.length; startIndex += bufferSize) {
-                        bufferList.add(ByteBuffer.wrap(bytes, startIndex,
-                            Math.min(bytes.length - startIndex, bufferSize)));
-                    }
-
-                    BinaryData fluxBinaryData = BinaryData.fromFlux(Flux.fromIterable(bufferList)
-                        .map(ByteBuffer::duplicate), null, false)
-                        .block();
-
-                    BinaryData fluxBinaryDataWithLength = BinaryData.fromFlux(Flux.fromIterable(bufferList)
-                        .map(ByteBuffer::duplicate), size.longValue(), false)
-                        .block();
-
-                    BinaryData asyncFluxBinaryData = BinaryData.fromFlux(Flux.fromIterable(bufferList)
-                        .map(ByteBuffer::duplicate)
-                        .delayElements(Duration.ofNanos(10)), null, false)
-                        .block();
-
-                    BinaryData asyncFluxBinaryDataWithLength = BinaryData.fromFlux(Flux.fromIterable(bufferList)
-                        .map(ByteBuffer::duplicate)
-                        .delayElements(Duration.ofNanos(10)), size.longValue(), false)
-                        .block();
-
-                    BinaryData objectBinaryData = BinaryData.fromObject(bytes, new ByteArraySerializer());
-
-
-                    Path wholeFile = Files.createTempFile("http-client-tests", null);
-                    wholeFile.toFile().deleteOnExit();
-                    Files.write(wholeFile, bytes);
-                    BinaryData fileData = BinaryData.fromFile(wholeFile);
-
-                    Path sliceFile = Files.createTempFile("http-client-tests", null);
-                    sliceFile.toFile().deleteOnExit();
-                    Files.write(sliceFile, new byte[size], StandardOpenOption.APPEND);
-                    Files.write(sliceFile, bytes, StandardOpenOption.APPEND);
-                    Files.write(sliceFile, new byte[size], StandardOpenOption.APPEND);
-                    BinaryData sliceFileData = BinaryData.fromFile(sliceFile, Long.valueOf(size), Long.valueOf(size));
-
-
-                    return Stream.of(
-                        Arguments.of(Named.named("byte[]", byteArrayData), Named.named(String.valueOf(size), bytes)),
-                        Arguments.of(Named.named("String", stringBinaryData),
-                            Named.named(String.valueOf(randomStringBytes.length), randomStringBytes)),
-                        Arguments.of(Named.named("InputStream",
-                            streamData), Named.named(String.valueOf(size), bytes)),
-                        Arguments.of(Named.named("Flux", fluxBinaryData), Named.named(String.valueOf(size), bytes)),
-                        Arguments.of(Named.named("Flux with length", fluxBinaryDataWithLength), Named.named(String.valueOf(size), bytes)),
-                        Arguments.of(Named.named("async Flux", asyncFluxBinaryData), Named.named(String.valueOf(size), bytes)),
-                        Arguments.of(Named.named("async Flux with length", asyncFluxBinaryDataWithLength), Named.named(String.valueOf(size), bytes)),
-                        Arguments.of(Named.named("Object", objectBinaryData), Named.named(String.valueOf(size), bytes)),
-                        Arguments.of(Named.named("File", fileData), Named.named(String.valueOf(size), bytes)),
-                        Arguments.of(Named.named("File slice", sliceFileData), Named.named(String.valueOf(size), bytes))
-                    );
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
                 }
+
+                BinaryData byteArrayData = BinaryData.fromBytes(bytes);
+
+                String randomString = new String(bytes, StandardCharsets.UTF_8);
+                byte[] randomStringBytes = randomString.getBytes(StandardCharsets.UTF_8);
+                BinaryData stringBinaryData = BinaryData.fromString(randomString);
+
+                BinaryData streamData = BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length);
+
+                List<ByteBuffer> bufferList = new ArrayList<>();
+                int bufferSize = 1023;
+                for (int startIndex = 0; startIndex < bytes.length; startIndex += bufferSize) {
+                    bufferList.add(ByteBuffer.wrap(bytes, startIndex,
+                        Math.min(bytes.length - startIndex, bufferSize)));
+                }
+
+                BinaryData fluxBinaryData = BinaryData.fromFlux(Flux.fromIterable(bufferList)
+                    .map(ByteBuffer::duplicate), null, false)
+                    .block();
+
+                BinaryData fluxBinaryDataWithLength = BinaryData.fromFlux(Flux.fromIterable(bufferList)
+                    .map(ByteBuffer::duplicate), size.longValue(), false)
+                    .block();
+
+                BinaryData asyncFluxBinaryData = BinaryData.fromFlux(Flux.fromIterable(bufferList)
+                    .map(ByteBuffer::duplicate)
+                    .delayElements(Duration.ofNanos(10)), null, false)
+                    .block();
+
+                BinaryData asyncFluxBinaryDataWithLength = BinaryData.fromFlux(Flux.fromIterable(bufferList)
+                    .map(ByteBuffer::duplicate)
+                    .delayElements(Duration.ofNanos(10)), size.longValue(), false)
+                    .block();
+
+                BinaryData objectBinaryData = BinaryData.fromObject(bytes, new ByteArraySerializer());
+
+                BinaryData fileData = createMockFileBinaryData(bytes, 0L, (long) bytes.length);
+
+                BinaryData sliceFileData;
+                if (size == 10 * 1024 * 1024 + 13) {
+                    sliceFileData = createMockFileBinaryData(LARGE_SLICE_FILE_BINARY_DATA_BYTES, 8192L,
+                        (long) bytes.length);
+                } else {
+                    byte[] sliceFileBytes = new byte[8192 + bytes.length + 8192];
+                    System.arraycopy(bytes, 0, sliceFileBytes, 8192, bytes.length);
+                    sliceFileData = createMockFileBinaryData(sliceFileBytes, 8192L, (long) bytes.length);
+                }
+
+                return Stream.of(
+                    new BinaryDataTestData(byteArrayData, bytes),
+                    new BinaryDataTestData(stringBinaryData, randomStringBytes),
+                    new BinaryDataTestData(streamData, bytes),
+                    new BinaryDataTestData(fluxBinaryData, bytes),
+                    new BinaryDataTestData(fluxBinaryDataWithLength, bytes),
+                    new BinaryDataTestData(asyncFluxBinaryData, bytes),
+                    new BinaryDataTestData(asyncFluxBinaryDataWithLength, bytes),
+                    new BinaryDataTestData(objectBinaryData, bytes),
+                    new BinaryDataTestData(fileData, bytes),
+                    new BinaryDataTestData(sliceFileData, bytes));
             });
     }
 
@@ -625,5 +704,18 @@ public abstract class HttpClientTests {
         public Mono<Void> serializeAsync(OutputStream stream, Object value) {
             return Mono.fromRunnable(() -> serialize(stream, value));
         }
+    }
+
+    private static BinaryData createMockFileBinaryData(byte[] fileData, Long position, Long size) {
+        MockAsynchronousFileChannel mockFileChannel = new MockAsynchronousFileChannel(fileData, fileData.length);
+        FileContent fileContent = new MockFileContent(new MockPath("fakeFile", fileData, fileData.length), 8192,
+            position, size) {
+            @Override
+            public AsynchronousFileChannel openAsynchronousFileChannel() {
+                return mockFileChannel;
+            }
+        };
+
+        return BinaryDataHelper.createBinaryData(fileContent);
     }
 }

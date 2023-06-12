@@ -8,7 +8,6 @@ import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.IterableOfByteBuffersInputStream;
-import com.azure.core.implementation.util.MyFileContent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.mocking.MockAsynchronousFileChannel;
 import com.azure.core.util.mocking.MockFile;
@@ -520,7 +519,7 @@ public class BinaryDataTest {
             }
         };
 
-        FileContent fileContent = new MyFileContent(null, 8192, 0, 1024) {
+        FileContent fileContent = new MockFileContent(new MockPath("fakeFile", null, 8192), 8192, 0L, 1024L) {
             @Override
             public AsynchronousFileChannel openAsynchronousFileChannel() {
                 return myFileChannel;
@@ -550,7 +549,7 @@ public class BinaryDataTest {
             }
         };
 
-        FileContent fileContent = new MyFileContent(null, 8192, 0, 1024) {
+        FileContent fileContent = new MockFileContent(new MockPath("fakeFile", null, 8192), 8192, 0L, 1024L) {
             @Override
             public AsynchronousFileChannel openAsynchronousFileChannel() {
                 return myFileChannel;

@@ -17,6 +17,7 @@ import com.github.tomakehurst.wiremock.http.Fault;
 import io.vertx.core.http.HttpClosedException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -120,7 +121,7 @@ public class VertxAsyncHttpClientTests {
             .verifyComplete();
     }
 
-    @Test
+    @RepeatedTest(100)
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
         HttpClient client = new VertxAsyncHttpClientProvider().createInstance();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
@@ -132,7 +133,7 @@ public class VertxAsyncHttpClientTests {
             .verify();
     }
 
-    @Test
+    @RepeatedTest(100)
     public void testRequestBodyEndsInErrorShouldPropagateToResponse() {
         HttpClient client = new VertxAsyncHttpClientProvider().createInstance();
         String contentChunk = "abcdefgh";

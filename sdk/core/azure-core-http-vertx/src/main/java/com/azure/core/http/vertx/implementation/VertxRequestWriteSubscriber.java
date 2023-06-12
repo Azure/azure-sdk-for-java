@@ -21,7 +21,7 @@ import java.nio.ByteBuffer;
  * Subscriber that writes a stream of {@link ByteBuffer ByteBuffers} to a {@link HttpClientRequest Vertx Request}.
  */
 @SuppressWarnings("ReactiveStreamsSubscriberImplementation")
-public class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
+public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
     private static final ClientLogger LOGGER = new ClientLogger(VertxRequestWriteSubscriber.class);
 
     private final HttpClientRequest request;
@@ -42,7 +42,7 @@ public class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
     }
 
     @Override
-    public void onSubscribe(Subscription s) {
+    public synchronized void onSubscribe(Subscription s) {
         // Only set the Subscription if one has not been previously set.
         // Any additional Subscriptions will be cancelled.
         if (Operators.validate(subscription, s)) {
