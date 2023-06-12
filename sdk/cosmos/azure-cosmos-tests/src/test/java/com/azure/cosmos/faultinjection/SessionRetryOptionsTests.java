@@ -66,7 +66,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         super(cosmosClientBuilder);
     }
 
-    @BeforeClass(groups = {"multi-region"})
+    @BeforeClass(groups = {"multi-region", "multi-master"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         cosmosAsyncClient = getClientBuilder().buildAsyncClient();
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(cosmosAsyncClient);
@@ -107,7 +107,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-region"}, dataProvider = "nonWriteOperationContextProvider", timeOut = 60000)
+    @Test(groups = {"multi-region"}, dataProvider = "nonWriteOperationContextProvider", timeOut = TIMEOUT)
     public void nonWriteOperation_WithReadSessionUnavailable_test(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType, CosmosRegionSwitchHint regionSwitchHint) {
         List<String> preferredLocations = this.writeRegionMap.keySet().stream().collect(Collectors.toList());
         Duration sessionTokenMismatchDefaultWaitTime = Duration.ofMillis(Configs.getSessionTokenMismatchDefaultWaitTimeInMs());
@@ -168,7 +168,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         safeCloseAsync(clientWithPreferredRegions);
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "writeOperationContextProvider", timeOut = 60000)
+    @Test(groups = {"multi-master"}, dataProvider = "writeOperationContextProvider", timeOut = TIMEOUT)
     public void writeOperation_withReadSessionUnavailable_test(
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType,
@@ -234,7 +234,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         safeCloseAsync(clientWithPreferredRegions);
     }
 
-    @AfterClass(groups = {"multi-region"})
+    @AfterClass(groups = {"multi-region", "multi-master"}, timeOut = SHUTDOWN_TIMEOUT)
     public void afterClass() {
         safeDeleteCollection(cosmosAsyncContainer);
         safeCloseAsync(cosmosAsyncClient);
