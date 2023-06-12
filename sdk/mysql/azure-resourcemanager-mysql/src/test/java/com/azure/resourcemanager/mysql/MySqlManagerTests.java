@@ -86,8 +86,8 @@ public class MySqlManagerTests extends TestBase {
         try {
             String serverName = "mysql" + randomPadding;
             String adminName = "sqlAdmin" + randomPadding;
-            String adminPwd = "sqlAdmin" +
-                UUID.randomUUID().toString().replace("-", StringUtil.EMPTY_STRING).substring(0, 8);
+            String adminPwd = "sqlAdmin"
+                + UUID.randomUUID().toString().replace("-", StringUtil.EMPTY_STRING).substring(0, 8);
             // @embedmeStart
             server = mysqlManager.servers()
                 .define(serverName)
