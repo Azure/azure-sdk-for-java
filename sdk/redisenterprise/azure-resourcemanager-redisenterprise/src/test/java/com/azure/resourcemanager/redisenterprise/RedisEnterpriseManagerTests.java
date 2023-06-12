@@ -80,7 +80,7 @@ public class RedisEnterpriseManagerTests extends TestBase {
                 .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE))
                 .withMinimumTlsVersion(TlsVersion.ONE_TWO)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             cluster.refresh();
             Assertions.assertEquals(cluster.name(), clusterName);
             Assertions.assertEquals(cluster.name(), redisEnterpriseManager.redisEnterprises().getById(cluster.id()).name());
