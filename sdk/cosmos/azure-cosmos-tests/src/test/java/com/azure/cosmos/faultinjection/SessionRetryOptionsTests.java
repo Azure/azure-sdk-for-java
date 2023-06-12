@@ -3,7 +3,12 @@
 
 package com.azure.cosmos.faultinjection;
 
-import com.azure.cosmos.*;
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosSessionRetryOptionsBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -21,7 +26,16 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.azure.cosmos.test.faultinjection.*;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
+import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -199,7 +213,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         FaultInjectionRule badSessionTokenRule = new FaultInjectionRuleBuilder("bad-session-token-rule-" + UUID.randomUUID())
             .condition(faultInjectionCondition)
             .result(faultInjectionServerErrorResult)
-            .duration(Duration.ofSeconds(5))
+            .duration(Duration.ofSeconds(10))
             .build();
 
         CosmosFaultInjectionHelper
@@ -216,6 +230,8 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
                 badSessionTokenRule),
             sessionTokenMismatchDefaultWaitTime,
             regionSwitchHint);
+
+        safeCloseAsync(clientWithPreferredRegions);
     }
 
     @Test(groups = {"multi-region"}, timeOut = 60000)
