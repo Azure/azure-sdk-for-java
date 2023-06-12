@@ -25,6 +25,11 @@ import java.util.List;
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB service.
  * Calls to CosmosClient API's are blocked for completion.
+ * <p>
+ * CosmosClient is thread-safe.
+ * Its recommended to maintain a single instance of CosmosClient per lifetime of the application which enables efficient connection management and performance.
+ * CosmosClient initialization is a heavy operation - don't use initialization CosmosClient instances as credentials or network connectivity validations.
+ * <p/>
  */
 @ServiceClient(builder = CosmosClientBuilder.class)
 public final class CosmosClient implements Closeable {
