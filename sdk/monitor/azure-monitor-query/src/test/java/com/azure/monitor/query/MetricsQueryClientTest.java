@@ -6,6 +6,8 @@ package com.azure.monitor.query;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
@@ -14,6 +16,8 @@ import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponse;
+import com.azure.monitor.query.implementation.metricsbatch.models.ResourceIdList;
 import com.azure.monitor.query.models.AggregationType;
 import com.azure.monitor.query.models.MetricDefinition;
 import com.azure.monitor.query.models.MetricNamespace;
@@ -195,5 +199,25 @@ public class MetricsQueryClientTest extends TestProxyTestBase {
     public void testMetricsNamespaces() {
         PagedIterable<MetricNamespace> metricsNamespaces = client.listMetricNamespaces(RESOURCE_URI, null);
         assertEquals(1, metricsNamespaces.stream().count());
+    }
+
+    @Test
+    public void testMetricsBatchQuery() {
+        MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+            .endpoint("https://westus.metrics.monitor.azure.com")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .buildClient();
+
+        List<MetricsQueryResult> metricsQueryResults = metricsQueryClient.queryBatch(Arrays.asList("/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.Storage/storageAccounts/srnagarstorage"), Arrays.asList("Transactions"), "Account");
+
+        Response<MetricResultsResponse> metricResultsResponseResponse = metricsQueryClient.batchWithResponse(
+            "faa080af-c1d8-40ad-9cce-e1a450ca5b57",
+            "Account",
+            Arrays.asList("Transactions"),
+            new ResourceIdList().setResourceids(Arrays.asList("/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.Storage/storageAccounts/srnagarstorage")),
+            null, null, null, null, null, null, null, Context.NONE);
+
+        System.out.println(metricResultsResponseResponse.getValue().getValues());
     }
 }

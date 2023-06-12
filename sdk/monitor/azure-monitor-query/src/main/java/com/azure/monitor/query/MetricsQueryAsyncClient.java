@@ -17,6 +17,7 @@ import com.azure.monitor.query.implementation.metrics.MonitorManagementClientImp
 import com.azure.monitor.query.implementation.metrics.models.ErrorResponseException;
 import com.azure.monitor.query.implementation.metrics.models.MetricsHelper;
 import com.azure.monitor.query.implementation.metrics.models.ResultType;
+import com.azure.monitor.query.implementation.metricsbatch.AzureMonitorMetricBatch;
 import com.azure.monitor.query.implementation.metricsdefinitions.MetricsDefinitionsClientImpl;
 import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespacesClientImpl;
 import com.azure.monitor.query.models.MetricDefinition;
@@ -49,13 +50,15 @@ public final class MetricsQueryAsyncClient {
     private final MonitorManagementClientImpl metricsClient;
     private final MetricsNamespacesClientImpl metricsNamespaceClient;
     private final MetricsDefinitionsClientImpl metricsDefinitionsClient;
+    private final AzureMonitorMetricBatch metricsBatchClient;
 
     MetricsQueryAsyncClient(MonitorManagementClientImpl metricsClient,
                             MetricsNamespacesClientImpl metricsNamespaceClient,
-                            MetricsDefinitionsClientImpl metricsDefinitionsClients) {
+                            MetricsDefinitionsClientImpl metricsDefinitionsClients, AzureMonitorMetricBatch azureMonitorMetricBatch) {
         this.metricsClient = metricsClient;
         this.metricsNamespaceClient = metricsNamespaceClient;
         this.metricsDefinitionsClient = metricsDefinitionsClients;
+        this.metricsBatchClient = azureMonitorMetricBatch;
     }
 
     /**
@@ -102,6 +105,7 @@ public final class MetricsQueryAsyncClient {
                                                                         MetricsQueryOptions options) {
         return withContext(context -> queryResourceWithResponse(resourceUri, metricsNames, options, context));
     }
+
 
     /**
      * Lists all the metrics namespaces created for the resource URI.

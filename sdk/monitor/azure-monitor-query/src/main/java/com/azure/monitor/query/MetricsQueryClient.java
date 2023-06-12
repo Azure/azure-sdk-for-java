@@ -10,6 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.models.ResponseError;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.monitor.query.implementation.logs.models.LogsQueryHelper;
@@ -17,16 +18,27 @@ import com.azure.monitor.query.implementation.metrics.MonitorManagementClientImp
 import com.azure.monitor.query.implementation.metrics.models.MetricsHelper;
 import com.azure.monitor.query.implementation.metrics.models.MetricsResponse;
 import com.azure.monitor.query.implementation.metrics.models.ResultType;
+import com.azure.monitor.query.implementation.metricsbatch.AzureMonitorMetricBatch;
+import com.azure.monitor.query.implementation.metricsbatch.models.Metric;
+import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponse;
+import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponseValuesItem;
+import com.azure.monitor.query.implementation.metricsbatch.models.ResourceIdList;
 import com.azure.monitor.query.implementation.metricsdefinitions.MetricsDefinitionsClientImpl;
 import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespacesClientImpl;
 import com.azure.monitor.query.models.MetricDefinition;
 import com.azure.monitor.query.models.MetricNamespace;
+import com.azure.monitor.query.models.MetricResult;
+import com.azure.monitor.query.models.MetricUnit;
+import com.azure.monitor.query.models.MetricValue;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
+import com.azure.monitor.query.models.QueryTimeInterval;
+import com.azure.monitor.query.models.TimeSeriesElement;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -50,13 +62,15 @@ public final class MetricsQueryClient {
     private final MonitorManagementClientImpl metricsClient;
     private final MetricsNamespacesClientImpl metricsNamespaceClient;
     private final MetricsDefinitionsClientImpl metricsDefinitionsClient;
+    private final AzureMonitorMetricBatch metricsBatchClient;
 
     MetricsQueryClient(MonitorManagementClientImpl metricsClient,
                        MetricsNamespacesClientImpl metricsNamespaceClient,
-                       MetricsDefinitionsClientImpl metricsDefinitionsClients) {
+                       MetricsDefinitionsClientImpl metricsDefinitionsClients, AzureMonitorMetricBatch azureMonitorMetricBatch) {
         this.metricsClient = metricsClient;
         this.metricsNamespaceClient = metricsNamespaceClient;
         this.metricsDefinitionsClient = metricsDefinitionsClients;
+        this.metricsBatchClient = azureMonitorMetricBatch;
     }
 
     /**
@@ -88,6 +102,87 @@ public final class MetricsQueryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricsQueryResult queryResource(String resourceUri, List<String> metricsNames) {
         return queryResourceWithResponse(resourceUri, metricsNames, new MetricsQueryOptions(), Context.NONE).getValue();
+    }
+
+    List<MetricsQueryResult> queryBatch(List<String> resourceUris, List<String> metricsNames, String metricsNamespace) {
+        if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(resourceUris, "'resourceUris cannot be null."))) {
+            throw new IllegalArgumentException("resourceUris cannot be empty");
+        }
+
+        if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(metricsNames, "metricsNames cannot be null"))) {
+            throw new IllegalArgumentException("metricsNames cannot be empty");
+        }
+
+        String subscriptionId = getSubscriptionFromResourceId(resourceUris.get(0));
+        ResourceIdList resourceIdList = new ResourceIdList();
+        resourceIdList.setResourceids(resourceUris);
+        Response<MetricResultsResponse> metricResultsResponseResponse = this.metricsBatchClient.getMetrics()
+            .batchWithResponse(subscriptionId, metricsNamespace, metricsNames, resourceIdList, null,
+                null, null, null, null, null, null, Context.NONE);
+
+        MetricResultsResponse value = metricResultsResponseResponse.getValue();
+        List<MetricResultsResponseValuesItem> values = value.getValues();
+        return values.stream()
+            .map(mrrvi -> mapToMetricsQueryResult(mrrvi))
+            .collect(Collectors.toList());
+
+    }
+
+    private MetricsQueryResult mapToMetricsQueryResult(MetricResultsResponseValuesItem item) {
+        List<MetricResult> metrics = item.getValue()
+            .stream()
+            .map(metric -> mapToMetrics(metric))
+            .collect(Collectors.toList());
+
+        MetricsQueryResult metricsQueryResult = new MetricsQueryResult(/* TODO (srnagar): fix this item.getCost() */ null,
+            new QueryTimeInterval(item.getInterval()), item.getInterval(), item.getNamespace(), item.getResourceregion(), metrics);
+        return metricsQueryResult;
+    }
+
+    private MetricResult mapToMetrics(Metric metric) {
+        List<TimeSeriesElement> timeSeries = metric.getTimeseries().stream().map(ts -> mapToTimeSeries(ts)).collect(Collectors.toList());
+        MetricResult metricResult = new MetricResult(metric.getId(), metric.getType(), MetricUnit.fromString(metric.getUnit().name()),
+            metric.getName().getValue(), timeSeries, metric.getDisplayDescription(),
+            new ResponseError(metric.getErrorCode(), metric.getErrorMessage()));
+        return metricResult;
+    }
+
+    private TimeSeriesElement mapToTimeSeries(com.azure.monitor.query.implementation.metricsbatch.models.TimeSeriesElement ts) {
+        List<MetricValue> values = ts.getData().stream().map(mv -> mapToMetricValue(mv)).collect(Collectors.toList());
+        Map<String, String> metadata = ts.getMetadatavalues().stream().collect(Collectors.toMap(md -> md.getName().getValue(), md -> md.getValue()));
+        TimeSeriesElement timeSeriesElement = new TimeSeriesElement(values, metadata);
+        return timeSeriesElement;
+    }
+
+    private MetricValue mapToMetricValue(com.azure.monitor.query.implementation.metricsbatch.models.MetricValue mv) {
+        MetricValue metricValue = new MetricValue(mv.getTimeStamp(), mv.getAverage(), mv.getMinimum(), mv.getMaximum(), mv.getTotal(), mv.getCount());
+        return metricValue;
+    }
+
+    private String getSubscriptionFromResourceId(String s) {
+        int i = s.indexOf("subscriptions/") + 14;
+        String subscriptionId = s.substring(i, s.indexOf("/", i));
+        return subscriptionId;
+    }
+
+    public Response<MetricResultsResponse> batchWithResponse(
+        String subscriptionId,
+        String metricnamespace,
+        List<String> metricnames,
+        ResourceIdList resourceIds,
+        String starttime,
+        String endtime,
+        Duration interval,
+        String aggregation,
+        Integer top,
+        String orderBy,
+        String filter,
+        Context context) {
+
+        return this.metricsBatchClient.getMetrics()
+            .batchWithResponse(subscriptionId, metricnamespace, metricnames, resourceIds, starttime, endtime,
+                interval, aggregation, top, orderBy, filter, context);
+
     }
 
     /**
