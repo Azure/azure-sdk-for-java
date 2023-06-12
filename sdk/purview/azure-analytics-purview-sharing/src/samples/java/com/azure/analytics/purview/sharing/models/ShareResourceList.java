@@ -10,10 +10,10 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * List of sent shares.
+ * A page of ShareResource results.
  */
 @Fluent
-public final class SentShareList {
+public final class ShareResourceList {
     /*
      * The Url of next result page.
      */
@@ -21,15 +21,15 @@ public final class SentShareList {
     private String nextLink;
 
     /*
-     * Collection of items of type SentShare
+     * Collection of items of type ShareResource
      */
     @JsonProperty(value = "value", required = true)
-    private List<SentShare> value;
+    private List<ShareResource> value;
 
     /**
-     * Creates an instance of SentShareList class.
+     * Creates an instance of ShareResourceList class.
      */
-    public SentShareList() {
+    public ShareResourceList() {
     }
 
     /**
@@ -45,29 +45,29 @@ public final class SentShareList {
      * Set the nextLink property: The Url of next result page.
      * 
      * @param nextLink the nextLink value to set.
-     * @return the SentShareList object itself.
+     * @return the ShareResourceList object itself.
      */
-    public SentShareList setNextLink(String nextLink) {
+    public ShareResourceList setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }
 
     /**
-     * Get the value property: Collection of items of type SentShare.
+     * Get the value property: Collection of items of type ShareResource.
      * 
      * @return the value value.
      */
-    public List<SentShare> getValue() {
+    public List<ShareResource> getValue() {
         return this.value;
     }
 
     /**
-     * Set the value property: Collection of items of type SentShare.
+     * Set the value property: Collection of items of type ShareResource.
      * 
      * @param value the value value to set.
-     * @return the SentShareList object itself.
+     * @return the ShareResourceList object itself.
      */
-    public SentShareList setValue(List<SentShare> value) {
+    public ShareResourceList setValue(List<ShareResource> value) {
         this.value = value;
         return this;
     }

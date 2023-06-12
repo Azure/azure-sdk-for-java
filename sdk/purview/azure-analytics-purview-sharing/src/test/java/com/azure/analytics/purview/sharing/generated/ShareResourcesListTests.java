@@ -11,12 +11,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class ReceivedSharesListDetachedTests extends PurviewShareClientTestBase {
+public final class ShareResourcesListTests extends PurviewShareClientTestBase {
     @Test
     @Disabled
-    public void testReceivedSharesListDetachedTests() {
-        RequestOptions requestOptions = new RequestOptions().addQueryParam("filter", "Name eq 'testName'");
-        PagedIterable<BinaryData> response = receivedSharesClient.listDetachedReceivedShares(requestOptions);
+    public void testShareResourcesListTests() {
+        RequestOptions requestOptions = new RequestOptions();
+        PagedIterable<BinaryData> response = shareResourcesClient.listShareResources(requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
                 "Wed, 12 July 2022 18:04:32 GMT",
@@ -26,7 +26,7 @@ public final class ReceivedSharesListDetachedTests extends PurviewShareClientTes
                 response.iterableByPage().iterator().next().getHeaders().get("x-ms-correlation-request-id").getValue());
         Assertions.assertEquals(
                 BinaryData.fromString(
-                                "{\"type\":\"receivedShares\",\"id\":\"0D67B9C8-A6C6-4990-9EDE-12EA059D3002\",\"properties\":{\"assetLocation\":\"eastus\",\"assetStoreKind\":\"BlobAccount\",\"createdAt\":\"2022-07-12T18:18:50.7095202Z\",\"displayName\":\"receivedShareName1\",\"receiverEmail\":\"janedoe@fabrikam.com\",\"receiverName\":null,\"receiverTenantName\":null,\"senderEmail\":\"ali.smith@contoso.com\",\"senderName\":\"Ali Smith\",\"senderTenantName\":\"Contoso\",\"sentShareDescription\":\"description\",\"shareStatus\":\"Detached\",\"sharedAt\":\"2022-07-12T18:17:56.1065304Z\",\"state\":\"Succeeded\"},\"shareKind\":\"InPlace\"}")
+                                "{\"type\":\"ShareResource\",\"id\":\"cb817140-a0cf-464f-8a82-0a9627a026ab\",\"receivedSharesCount\":1,\"sentSharesCount\":1,\"storeKind\":\"BlobAccount\",\"storeReference\":{\"type\":\"ArmResourceReference\",\"referenceName\":\"/subscriptions/de06c3a0-4610-4ca0-8cbb-bbdac204bd65/resourceGroups/sender-storage-rg/providers/Microsoft.Storage/storageAccounts/providerstorage\"}}")
                         .toObject(Object.class),
                 response.iterator().next().toObject(Object.class));
     }
