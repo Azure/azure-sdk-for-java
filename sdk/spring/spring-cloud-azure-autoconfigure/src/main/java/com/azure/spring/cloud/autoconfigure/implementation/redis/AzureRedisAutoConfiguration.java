@@ -69,7 +69,8 @@ public class AzureRedisAutoConfiguration {
         redisProperties.setPassword(redisCache.keys().primaryKey());
         Method setSsl = ReflectionUtils.findMethod(AzureRedisProperties.class, "setSsl", boolean.class);
         if (setSsl == null) {
-            redisProperties.getSsl().setEnabled(useSsl);
+            ReflectionUtils.findMethod(RedisProperties.Ssl.class, "setEnabled", boolean.class)
+                           .invoke(redisProperties, useSsl);
         } else {
             setSsl.invoke(redisProperties, useSsl);
         }
