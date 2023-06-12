@@ -16,10 +16,12 @@ import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.postgresql.models.*;
 import com.azure.resourcemanager.resources.ResourceManager;
+import io.netty.util.internal.StringUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
+import java.util.UUID;
 
 public class PostgreSqlManagerTests extends TestBase {
     private static final Random RANDOM = new Random();
@@ -72,7 +74,9 @@ public class PostgreSqlManagerTests extends TestBase {
         String randomPadding = randomPadding();
         try {
             String serverName = "postgresql" + randomPadding;
-            String saUserName = "sqlsa" + randomPadding;
+            String adminName = "sqlAdmin" + randomPadding;
+            String adminPwd = "sqlAdmin" +
+                UUID.randomUUID().toString().replace("-", StringUtil.EMPTY_STRING).substring(0, 8);
             // @embedmeStart
             server = postgreSqlManager.servers()
                 .define(serverName)
@@ -80,8 +84,8 @@ public class PostgreSqlManagerTests extends TestBase {
                 .withExistingResourceGroup(resourceGroupName)
                 .withProperties(
                     new ServerPropertiesForDefaultCreate()
-                        .withAdministratorLogin(saUserName)
-                        .withAdministratorLoginPassword("!QA2ws#ED4rf")
+                        .withAdministratorLogin(adminName)
+                        .withAdministratorLoginPassword(adminPwd)
                         .withStorageProfile(new StorageProfile()
                             .withBackupRetentionDays(7)
                             .withGeoRedundantBackup(GeoRedundantBackup.DISABLED)
