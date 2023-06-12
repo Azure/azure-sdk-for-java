@@ -75,8 +75,8 @@ public class PostgreSqlManagerTests extends TestBase {
         try {
             String serverName = "postgresql" + randomPadding;
             String adminName = "sqlAdmin" + randomPadding;
-            String adminPwd = "sqlAdmin" +
-                UUID.randomUUID().toString().replace("-", StringUtil.EMPTY_STRING).substring(0, 8);
+            String adminPwd = "sqlAdmin"
+                + UUID.randomUUID().toString().replace("-", StringUtil.EMPTY_STRING).substring(0, 8);
             // @embedmeStart
             server = postgreSqlManager.servers()
                 .define(serverName)
