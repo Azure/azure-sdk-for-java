@@ -44,7 +44,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         super(cosmosClientBuilder);
     }
 
-    @BeforeClass(groups = {"multi-master"})
+    @BeforeClass(groups = {"multi-region"})
     public void beforeClass() {
         cosmosAsyncClient = getClientBuilder().buildAsyncClient();
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(cosmosAsyncClient);
@@ -63,7 +63,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-region"}, dataProvider = "nonWriteOperationContextProvider", timeOut = 60000)
+    @Test(groups = {"multi-region"}, dataProvider = "nonWriteOperationContextProvider", timeOut = 180000)
     public void nonWriteOperation_WithReadSessionUnavailable_test(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType, CosmosRegionSwitchHint regionSwitchHint) {
         List<String> preferredLocations = this.writeRegionMap.keySet().stream().collect(Collectors.toList());
         Duration sessionTokenMismatchDefaultWaitTime = Duration.ofMillis(Configs.getSessionTokenMismatchDefaultWaitTimeInMs());
@@ -80,7 +80,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
             .consistencyLevel(BridgeInternal.getContextClient(this.cosmosAsyncClient).getConsistencyLevel())
             .preferredRegions(preferredLocations)
             .sessionRetryOptions(new CosmosSessionRetryOptionsBuilder()
-                .setRegionSwitchHint(CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED)
+                .setRegionSwitchHint(regionSwitchHint)
                 .build()
             )
             .directMode()
@@ -108,7 +108,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         FaultInjectionRule badSessionTokenRule = badSessionTokenRuleBuilder
             .condition(faultInjectionConditionForReadsInPrimaryRegion)
             .result(badSessionTokenServerErrorResult)
-            .duration(Duration.ofMinutes(10))
+            .duration(Duration.ofSeconds(10))
             .build();
 
         CosmosFaultInjectionHelper
@@ -122,7 +122,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         safeCloseAsync(clientWithPreferredRegions);
     }
 
-    @Test(groups = {"multi-master"}, timeOut = 60000)
+    @Test(groups = {"multi-region"}, timeOut = 60000)
     public void readSessionUnavailable_oneReplica_test() {
 
         List<String> preferredLocations = this.writeRegionMap.keySet().stream().collect(Collectors.toList());
@@ -184,7 +184,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         safeCloseAsync(clientWithPreferredRegions);
     }
 
-    @AfterClass(groups = {"multi-master"})
+    @AfterClass(groups = {"multi-region"})
     public void afterClass() {
         safeDeleteCollection(cosmosAsyncContainer);
         safeCloseAsync(cosmosAsyncClient);
@@ -203,17 +203,17 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         return regionMap;
     }
 
-    private OperationExecutionResult performDocumentOperation(CosmosAsyncContainer asyncContainer, TestItem testItem, OperationType operationType) {
+    private OperationExecutionResult performDocumentOperation(CosmosAsyncContainer faultInjectedContainer, TestItem testItem, OperationType operationType) {
 
-        AtomicReference<Instant> operationStart = new AtomicReference<>();
-        AtomicReference<Instant> operationEnd = new AtomicReference<>();
+        AtomicReference<Instant> operationStart = new AtomicReference<>(Instant.now());
+        AtomicReference<Instant> operationEnd = new AtomicReference<>(Instant.now());
 
         if (operationType == OperationType.Query) {
             String query = String.format("SELECT * FROM c WHERE c.id = '%s'", testItem.getId());
             CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
 
             SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query);
-            FeedResponse<TestItem> feedResponse = cosmosAsyncContainer
+            FeedResponse<TestItem> feedResponse = faultInjectedContainer
                 .queryItems(sqlQuerySpec, queryRequestOptions, TestItem.class)
                 .byPage()
                 .doOnSubscribe(ignore -> operationStart.set(Instant.now()))
@@ -233,7 +233,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         if (operationType == OperationType.Read) {
             CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
 
-            CosmosItemResponse<TestItem> itemResponse = cosmosAsyncContainer
+            CosmosItemResponse<TestItem> itemResponse = faultInjectedContainer
                 .readItem(testItem.getId(), new PartitionKey(testItem.getId()), TestItem.class)
                 .doOnSubscribe(ignore -> operationStart.set(Instant.now()))
                 .doOnSuccess(ignore -> operationEnd.set(Instant.now()))
@@ -248,7 +248,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         if (operationType == OperationType.Create) {
             CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
 
-            CosmosItemResponse<TestItem> itemResponse = cosmosAsyncContainer
+            CosmosItemResponse<TestItem> itemResponse = faultInjectedContainer
                 .createItem(testItem, new PartitionKey(testItem.getId()), itemRequestOptions)
                 .doOnSubscribe(ignore -> operationStart.set(Instant.now()))
                 .doOnSuccess(ignore -> operationEnd.set(Instant.now()))
@@ -260,7 +260,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         if (operationType == OperationType.Replace) {
             CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
 
-            CosmosItemResponse<TestItem> itemResponse = cosmosAsyncContainer
+            CosmosItemResponse<TestItem> itemResponse = faultInjectedContainer
                 .replaceItem(testItem, testItem.getId(), new PartitionKey(testItem.getId()), itemRequestOptions)
                 .doOnSubscribe(ignore -> operationStart.set(Instant.now()))
                 .doOnSuccess(ignore -> operationEnd.set(Instant.now()))
@@ -275,7 +275,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         if (operationType == OperationType.Delete) {
             CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
 
-            CosmosItemResponse<Object> itemResponse = cosmosAsyncContainer
+            CosmosItemResponse<Object> itemResponse = faultInjectedContainer
                 .deleteItem(testItem.getId(), new PartitionKey(testItem.getId()), itemRequestOptions)
                 .doOnSubscribe(ignore -> operationStart.set(Instant.now()))
                 .doOnSuccess(ignore -> operationEnd.set(Instant.now()))
@@ -290,7 +290,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         if (operationType == OperationType.Upsert) {
             CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
 
-            CosmosItemResponse<TestItem> itemResponse = cosmosAsyncContainer
+            CosmosItemResponse<TestItem> itemResponse = faultInjectedContainer
                 .upsertItem(testItem, new PartitionKey(testItem.getId()), itemRequestOptions)
                 .doOnSubscribe(ignore -> operationStart.set(Instant.now()))
                 .doOnSuccess(ignore -> operationEnd.set(Instant.now()))

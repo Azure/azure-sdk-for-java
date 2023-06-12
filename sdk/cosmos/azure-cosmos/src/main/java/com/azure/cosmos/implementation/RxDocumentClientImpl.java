@@ -2793,6 +2793,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             @Override
             public Mono<RxDocumentServiceResponse> executeQueryAsync(RxDocumentServiceRequest request) {
+
+                request.requestContext.setSessionRetryOptions(RxDocumentClientImpl.this.sessionRetryOptions);
+
                 if (operationContextAndListenerTuple == null) {
                     return RxDocumentClientImpl.this.query(request).single();
                 } else {
@@ -2801,8 +2804,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     final OperationContext operationContext = operationContextAndListenerTuple.getOperationContext();
                     request.getHeaders().put(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID, operationContext.getCorrelationActivityId());
                     listener.requestListener(operationContext, request);
-
-                    request.requestContext.setSessionRetryOptions(RxDocumentClientImpl.this.sessionRetryOptions);
 
                     return RxDocumentClientImpl.this.query(request).single().doOnNext(
                         response -> listener.responseListener(operationContext, response)

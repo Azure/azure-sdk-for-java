@@ -36,5 +36,5 @@ public enum FaultInjectionServerErrorType {
     RESPONSE_DELAY,
 
     /** simulate high channel acquisition, when it is over connection timeout, can simulate connectionTimeoutException */
-    CONNECTION_DELAY,
+    CONNECTION_DELAY
 }
