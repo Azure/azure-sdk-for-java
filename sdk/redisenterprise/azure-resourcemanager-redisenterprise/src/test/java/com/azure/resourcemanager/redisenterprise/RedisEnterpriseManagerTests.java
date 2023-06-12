@@ -77,7 +77,7 @@ public class RedisEnterpriseManagerTests extends TestBase {
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .withSku(new Sku().withName(SkuName.ENTERPRISE_E10).withCapacity(2))
-                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE))
+                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
                 .withMinimumTlsVersion(TlsVersion.ONE_TWO)
                 .create();
             // @embedEnd
