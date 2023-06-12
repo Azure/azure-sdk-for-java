@@ -27,10 +27,12 @@ import com.azure.resourcemanager.mysql.models.SkuTier;
 import com.azure.resourcemanager.mysql.models.SslEnforcementEnum;
 import com.azure.resourcemanager.mysql.models.StorageProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
+import io.netty.util.internal.StringUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
+import java.util.UUID;
 
 public class MySqlManagerTests extends TestBase {
     private static final Random RANDOM = new Random();
@@ -83,7 +85,9 @@ public class MySqlManagerTests extends TestBase {
         String randomPadding = randomPadding();
         try {
             String serverName = "mysql" + randomPadding;
-            String adminName = "sqlsa" + randomPadding;
+            String adminName = "sqlAdmin" + randomPadding;
+            String adminPwd = "sqlAdmin" +
+                UUID.randomUUID().toString().replace("-", StringUtil.EMPTY_STRING).substring(0, 8);
             // @embedmeStart
             server = mysqlManager.servers()
                 .define(serverName)
@@ -92,7 +96,7 @@ public class MySqlManagerTests extends TestBase {
                 .withProperties(
                     new ServerPropertiesForDefaultCreate()
                         .withAdministratorLogin(adminName)
-                        .withAdministratorLoginPassword("!QA2ws#ED4rf")
+                        .withAdministratorLoginPassword(adminPwd)
                         .withSslEnforcement(SslEnforcementEnum.DISABLED)
                         .withStorageProfile(new StorageProfile()
                             .withBackupRetentionDays(7)
