@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import com.azure.resourcemanager.elastic.models.OperationResult;
 import java.nio.ByteBuffer;
@@ -33,7 +32,7 @@ public final class OperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"okth\",\"isDataAction\":false,\"display\":{\"provider\":\"odsfcpkvxodpuozm\",\"resource\":\"ydagfuaxbe\",\"operation\":\"iu\",\"description\":\"ktwh\"},\"origin\":\"xw\"}]}";
+            "{\"value\":[{\"name\":\"umasxazjpq\",\"isDataAction\":false,\"display\":{\"provider\":\"lhbxxhejjzzvdud\",\"resource\":\"dslfhotwmcy\",\"operation\":\"wlbjnpgacftade\",\"description\":\"nltyfsoppusuesnz\"},\"origin\":\"ej\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,14 +60,14 @@ public final class OperationsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<OperationResult> response = manager.operations().list(Context.NONE);
+        PagedIterable<OperationResult> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("okth", response.iterator().next().name());
+        Assertions.assertEquals("umasxazjpq", response.iterator().next().name());
         Assertions.assertEquals(false, response.iterator().next().isDataAction());
-        Assertions.assertEquals("odsfcpkvxodpuozm", response.iterator().next().display().provider());
-        Assertions.assertEquals("ydagfuaxbe", response.iterator().next().display().resource());
-        Assertions.assertEquals("iu", response.iterator().next().display().operation());
-        Assertions.assertEquals("ktwh", response.iterator().next().display().description());
-        Assertions.assertEquals("xw", response.iterator().next().origin());
+        Assertions.assertEquals("lhbxxhejjzzvdud", response.iterator().next().display().provider());
+        Assertions.assertEquals("dslfhotwmcy", response.iterator().next().display().resource());
+        Assertions.assertEquals("wlbjnpgacftade", response.iterator().next().display().operation());
+        Assertions.assertEquals("nltyfsoppusuesnz", response.iterator().next().display().description());
+        Assertions.assertEquals("ej", response.iterator().next().origin());
     }
 }

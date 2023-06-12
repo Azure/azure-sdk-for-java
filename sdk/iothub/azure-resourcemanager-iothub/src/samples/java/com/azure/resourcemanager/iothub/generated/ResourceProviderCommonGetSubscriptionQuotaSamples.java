@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.iothub.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceProviderCommon GetSubscriptionQuota. */
 public final class ResourceProviderCommonGetSubscriptionQuotaSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-04-30-preview/examples/iothub_usages.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_usages.json
      */
     /**
      * Sample code: ResourceProviderCommon_GetSubscriptionQuota.
@@ -18,6 +16,6 @@ public final class ResourceProviderCommonGetSubscriptionQuotaSamples {
      */
     public static void resourceProviderCommonGetSubscriptionQuota(
         com.azure.resourcemanager.iothub.IotHubManager manager) {
-        manager.resourceProviderCommons().getSubscriptionQuotaWithResponse(Context.NONE);
+        manager.resourceProviderCommons().getSubscriptionQuotaWithResponse(com.azure.core.util.Context.NONE);
     }
 }

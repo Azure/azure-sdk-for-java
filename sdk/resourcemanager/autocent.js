@@ -75,7 +75,7 @@ async function readPom(artifact, version) {
         console.log("[WARN] no package tag found in version %s for service %s.", version, artifact);
     } else {
         var tag = match[1];
-        var service = artifact.split("-").pop();
+        var service = artifact.split("azure-resourcemanager-").pop();
         if (!data[service]) {
             data[service] = {};
         }
@@ -144,12 +144,16 @@ function writeMarkdown() {
                     } else if (aVerNums[1] < bVerNums[1]) {
                         return 1;
                     } else {
-                        var aPatchNums = aVerNums[2].split("-beta.");
-                        var bPatchNums = bVerNums[2].split("-beta.");
+                        var aPatchNums = a.split("-beta.");
+                        var bPatchNums = b.split("-beta.");
+                        // sort GA version before beta version
                         if (aPatchNums.length < bPatchNums.length) {
                             return -1;
                         } else if (aPatchNums.length > bPatchNums.length) {
                             return 1;
+                        } else if (aPatchNums.length > 1) {
+                          // sort according to beta minor version
+                          return parseInt(bPatchNums[1]) - parseInt(aPatchNums[1]);
                         } else {
                             return b.localeCompare(a);
                         }
@@ -161,7 +165,9 @@ function writeMarkdown() {
                 content +=
                     "    * [" +
                     sdk +
-                    "](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-" +
+                    "](" +
+                    groupUrl +
+                    "azure-resourcemanager-" +
                     service +
                     "/" +
                     sdk +
@@ -202,8 +208,21 @@ function getSpecsMapping() {
     const data = fs.readFileSync(api_specs_file, "utf-8");
     let specs = { managedapplications: "resources" };
     Object.entries(yaml.parse(data))
-        .filter(([, service]) => service.hasOwnProperty("service"))
-        .forEach(([rp, service]) => (specs[service["service"]] = rp));
+        .forEach(([rp, service]) => {
+            // e.g.
+            // web: (rp)
+            //   service: appservice (service["service"])
+            //   suffix: generated (service["suffix"])
+            let serviceName = rp
+            if (service.hasOwnProperty("service")) {
+                serviceName = service["service"]
+            }
+            if (service.hasOwnProperty("suffix")) {
+                serviceName = serviceName + "-" + service["suffix"];
+            }
+            console.log(serviceName)
+            specs[serviceName] = rp;
+        });
     return specs;
 }
 

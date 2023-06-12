@@ -19,7 +19,7 @@ import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.clienttelemetry.ClientMetricsDiagnosticsHandler;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryDiagnosticsHandler;
@@ -32,6 +32,7 @@ import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -45,12 +46,15 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -69,6 +73,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
     builder = CosmosClientBuilder.class,
     isAsync = true)
 public final class CosmosAsyncClient implements Closeable {
+    private static final Logger logger = LoggerFactory.getLogger(CosmosAsyncClient.class);
+
     private static final CosmosClientTelemetryConfig DEFAULT_TELEMETRY_CONFIG = new CosmosClientTelemetryConfig();
     private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
@@ -95,6 +101,7 @@ public final class CosmosAsyncClient implements Closeable {
     private static final ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor containerIdentityAccessor =
             ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
     private final ConsistencyLevel accountConsistencyLevel;
+    private final WriteRetryPolicy nonIdempotentWriteRetryPolicy;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         // Async Cosmos client wrapper
@@ -110,6 +117,8 @@ public final class CosmosAsyncClient implements Closeable {
         boolean sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         boolean enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
+        this.nonIdempotentWriteRetryPolicy = builder.getNonIdempotentWriteRetryPolicy();
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationConfig();
 
         CosmosClientTelemetryConfig effectiveTelemetryConfig = telemetryConfigAccessor
             .createSnapshot(
@@ -151,6 +160,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withApiType(apiType)
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .withClientCorrelationId(clientCorrelationId)
+                                       .withEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig)
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();
@@ -578,44 +588,38 @@ public final class CosmosAsyncClient implements Closeable {
         return new GlobalThroughputControlConfigBuilder(this, databaseId, containerId);
     }
 
+    WriteRetryPolicy getNonIdempotentWriteRetryPolicy() {
+        return this.nonIdempotentWriteRetryPolicy;
+    }
+
     void openConnectionsAndInitCaches() {
-        blockListVoidResponse(openConnectionsAndInitCachesInternal());
+        blockVoidFlux(asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig));
     }
 
-    private Mono<List<Void>> openConnectionsAndInitCachesInternal() {
-        int concurrency = 1;
-        int prefetch = 1;
-        if (this.proactiveContainerInitConfig != null) {
-            return Flux.fromIterable(this.proactiveContainerInitConfig.getCosmosContainerIdentities())
-                    .flatMap(
-                        cosmosContainerIdentity -> Mono.just(this
-                            .getDatabase(containerIdentityAccessor.getDatabaseName(cosmosContainerIdentity))
-                            .getContainer(containerIdentityAccessor.getContainerName(cosmosContainerIdentity))),
-                        concurrency,
-                        prefetch
-                    )
-                    .flatMap(
-                        cosmosAsyncContainer -> cosmosAsyncContainer
-                            .openConnectionsAndInitCaches(
-                                this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount()),
-                        concurrency,
-                        prefetch)
-                    .collectList();
-        }
-        return Mono.empty();
+    void openConnectionsAndInitCaches(Duration aggressiveWarmupDuration) {
+        Flux<Void> submitOpenConnectionTasksFlux = asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig);
+        blockVoidFlux(wrapSourceFluxAndSoftCompleteAfterTimeout(submitOpenConnectionTasksFlux, aggressiveWarmupDuration));
     }
 
-    private void blockListVoidResponse(Mono<List<Void>> voidListMono) {
+    // this method is currently used to open connections when the client is being built
+    // the goal is to switch b/w a blocking flow to non-blocking flow when it comes
+    // to opening connections and at the same time to only block for some specified duration
+    // the below method allows the original flux to continue opening connections
+    // by not issuing a cancel on it, instead we wrap around the original flux
+    // with a sink and block on the wrapping flux for the specified duration
+    private Flux<Void> wrapSourceFluxAndSoftCompleteAfterTimeout(Flux<Void> source, Duration timeout) {
+        return Flux.<Void>create(sink -> {
+                    source.subscribe(t -> sink.next(t));
+                })
+                .take(timeout);
+    }
+
+    private void blockVoidFlux(Flux<Void> voidFlux) {
         try {
-            voidListMono.block();
+            voidFlux.blockLast();
         } catch (Exception ex) {
-            final Throwable throwable = Exceptions.unwrap(ex);
-
-            if (throwable instanceof CosmosException) {
-                throw (CosmosException) throwable;
-            } else {
-                throw Exceptions.propagate(throwable);
-            }
+            // swallow exceptions here
+            logger.warn("The void flux did not complete successfully", ex);
         }
     }
 
@@ -767,6 +771,14 @@ public final class CosmosAsyncClient implements Closeable {
         return telemetryConfigAccessor.isTransportLevelTracingEnabled(effectiveConfig);
     }
 
+    void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.asyncDocumentClient.recordOpenConnectionsAndInitCachesCompleted(cosmosContainerIdentities);
+    }
+
+    void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.asyncDocumentClient.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
+    }
+
     String getAccountTagValue() {
         return this.accountTagValue;
     }
@@ -829,9 +841,29 @@ public final class CosmosAsyncClient implements Closeable {
                 }
 
                 @Override
+                public String getConnectionMode(CosmosAsyncClient client) {
+                    return client.connectionPolicy.getConnectionMode().toString();
+                }
+
+                @Override
+                public String getUserAgent(CosmosAsyncClient client) {
+                    return client.getUserAgent();
+                }
+
+                @Override
                 public CosmosMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMetricName name) {
                     return  telemetryConfigAccessor
                         .getMeterOptions(client.clientTelemetryConfig, name);
+                }
+
+                @Override
+                public boolean isEffectiveContentResponseOnWriteEnabled(CosmosAsyncClient client,
+                                                                        Boolean requestOptionsContentResponseEnabled) {
+                    if (requestOptionsContentResponseEnabled != null) {
+                        return requestOptionsContentResponseEnabled;
+                    }
+
+                    return client.asyncDocumentClient.isContentResponseOnWriteEnabled();
                 }
 
                 @Override

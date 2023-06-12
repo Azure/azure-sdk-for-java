@@ -12,13 +12,18 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager;
+import com.azure.resourcemanager.newrelicobservability.models.AccountCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.BillingCycle;
+import com.azure.resourcemanager.newrelicobservability.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.newrelicobservability.models.NewRelicMonitorResource;
+import com.azure.resourcemanager.newrelicobservability.models.OrgCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.PlanData;
 import com.azure.resourcemanager.newrelicobservability.models.SwitchBillingRequest;
 import com.azure.resourcemanager.newrelicobservability.models.UsageType;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -32,9 +37,10 @@ public final class MonitorsSwitchBillingWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{}";
+        String responseStr =
+            "{\"properties\":{\"provisioningState\":\"Updating\",\"monitoringStatus\":\"Disabled\",\"marketplaceSubscriptionStatus\":\"Active\",\"marketplaceSubscriptionId\":\"txmedj\",\"newRelicAccountProperties\":{\"userId\":\"lynqwwncwzzh\"},\"userInfo\":{\"firstName\":\"gucnapkte\",\"lastName\":\"llwptfdy\",\"emailAddress\":\"fqbuaceopzf\",\"phoneNumber\":\"hhuao\",\"country\":\"pcqeqx\"},\"planData\":{\"usageType\":\"COMMITTED\",\"billingCycle\":\"MONTHLY\",\"planDetails\":\"xcto\",\"effectiveDate\":\"2021-01-13T03:12:52Z\"},\"liftrResourceCategory\":\"MonitorLogs\",\"liftrResourcePreference\":1740681281,\"orgCreationSource\":\"NEWRELIC\",\"accountCreationSource\":\"LIFTR\"},\"identity\":{\"principalId\":\"1151cee7-9e16-4851-9d31-70346fb26ae6\",\"tenantId\":\"7bd4edf3-d1c7-4626-a15b-a59b946f8cc5\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"bunrmfqjhhk\",\"tags\":{\"vkr\":\"vjymjhxxjyngud\",\"szjfauvjfdxxivet\":\"swbxqz\",\"qaqtdoqmcbxvwvxy\":\"t\",\"obl\":\"lqbhsf\"},\"id\":\"tkblmpewww\",\"name\":\"bkrvrnsvshqj\",\"type\":\"hxcr\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(204);
+        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
         Mockito
             .when(httpResponse.getBody())
@@ -60,21 +66,39 @@ public final class MonitorsSwitchBillingWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .monitors()
-            .switchBillingWithResponse(
-                "xyawj",
-                "yaqcslyjpkiidz",
-                new SwitchBillingRequest()
-                    .withAzureResourceId("xznelixhnrztf")
-                    .withOrganizationId("hb")
-                    .withPlanData(
-                        new PlanData()
-                            .withUsageType(UsageType.COMMITTED)
-                            .withBillingCycle(BillingCycle.MONTHLY)
-                            .withPlanDetails("ulppggdtpnapnyir")
-                            .withEffectiveDate(OffsetDateTime.parse("2021-02-09T03:01:47Z")))
-                    .withUserEmail("hpigv"),
-                com.azure.core.util.Context.NONE);
+        NewRelicMonitorResource response =
+            manager
+                .monitors()
+                .switchBillingWithResponse(
+                    "xyawj",
+                    "yaqcslyjpkiidz",
+                    new SwitchBillingRequest()
+                        .withAzureResourceId("xznelixhnrztf")
+                        .withOrganizationId("hb")
+                        .withPlanData(
+                            new PlanData()
+                                .withUsageType(UsageType.COMMITTED)
+                                .withBillingCycle(BillingCycle.MONTHLY)
+                                .withPlanDetails("ulppggdtpnapnyir")
+                                .withEffectiveDate(OffsetDateTime.parse("2021-02-09T03:01:47Z")))
+                        .withUserEmail("hpigv"),
+                    com.azure.core.util.Context.NONE)
+                .getValue();
+
+        Assertions.assertEquals("bunrmfqjhhk", response.location());
+        Assertions.assertEquals("vjymjhxxjyngud", response.tags().get("vkr"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("lynqwwncwzzh", response.newRelicAccountProperties().userId());
+        Assertions.assertEquals("gucnapkte", response.userInfo().firstName());
+        Assertions.assertEquals("llwptfdy", response.userInfo().lastName());
+        Assertions.assertEquals("fqbuaceopzf", response.userInfo().emailAddress());
+        Assertions.assertEquals("hhuao", response.userInfo().phoneNumber());
+        Assertions.assertEquals("pcqeqx", response.userInfo().country());
+        Assertions.assertEquals(UsageType.COMMITTED, response.planData().usageType());
+        Assertions.assertEquals(BillingCycle.MONTHLY, response.planData().billingCycle());
+        Assertions.assertEquals("xcto", response.planData().planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-13T03:12:52Z"), response.planData().effectiveDate());
+        Assertions.assertEquals(OrgCreationSource.NEWRELIC, response.orgCreationSource());
+        Assertions.assertEquals(AccountCreationSource.LIFTR, response.accountCreationSource());
     }
 }

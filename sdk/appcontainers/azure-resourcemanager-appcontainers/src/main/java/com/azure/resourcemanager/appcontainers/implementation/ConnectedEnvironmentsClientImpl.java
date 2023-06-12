@@ -68,7 +68,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerAppsApiClie")
-    private interface ConnectedEnvironmentsService {
+    public interface ConnectedEnvironmentsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.App/connectedEnvironments")
         @ExpectedResponses({200})
@@ -82,8 +82,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/connectedEnvironments")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ConnectedEnvironmentCollection>> listByResourceGroup(
@@ -96,8 +95,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/connectedEnvironments/{connectedEnvironmentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ConnectedEnvironmentInner>> getByResourceGroup(
@@ -111,8 +109,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/connectedEnvironments/{connectedEnvironmentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -127,8 +124,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/connectedEnvironments/{connectedEnvironmentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -142,8 +138,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/connectedEnvironments/{connectedEnvironmentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ConnectedEnvironmentInner>> update(
@@ -157,8 +152,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/connectedEnvironments/{connectedEnvironmentName}/checkNameAvailability")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailability(
@@ -843,7 +837,8 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectedEnvironmentInner>, ConnectedEnvironmentInner> beginCreateOrUpdate(
         String resourceGroupName, String connectedEnvironmentName, ConnectedEnvironmentInner environmentEnvelope) {
-        return beginCreateOrUpdateAsync(resourceGroupName, connectedEnvironmentName, environmentEnvelope)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, connectedEnvironmentName, environmentEnvelope)
             .getSyncPoller();
     }
 
@@ -866,7 +861,8 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
         String connectedEnvironmentName,
         ConnectedEnvironmentInner environmentEnvelope,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, connectedEnvironmentName, environmentEnvelope, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, connectedEnvironmentName, environmentEnvelope, context)
             .getSyncPoller();
     }
 
@@ -1104,7 +1100,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String connectedEnvironmentName) {
-        return beginDeleteAsync(resourceGroupName, connectedEnvironmentName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, connectedEnvironmentName).getSyncPoller();
     }
 
     /**
@@ -1121,7 +1117,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String connectedEnvironmentName, Context context) {
-        return beginDeleteAsync(resourceGroupName, connectedEnvironmentName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, connectedEnvironmentName, context).getSyncPoller();
     }
 
     /**

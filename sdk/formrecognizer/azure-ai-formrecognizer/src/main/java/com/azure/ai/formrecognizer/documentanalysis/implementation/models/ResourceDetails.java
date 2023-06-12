@@ -4,11 +4,12 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** General information regarding the current resource. */
-@Fluent
+@Immutable
 public final class ResourceDetails {
     /*
      * Details regarding custom document models.
@@ -22,8 +23,21 @@ public final class ResourceDetails {
     @JsonProperty(value = "customNeuralDocumentModelBuilds", required = true)
     private QuotaDetails customNeuralDocumentModelBuilds;
 
-    /** Creates an instance of ResourceDetails class. */
-    public ResourceDetails() {}
+    /**
+     * Creates an instance of ResourceDetails class.
+     *
+     * @param customDocumentModels the customDocumentModels value to set.
+     * @param customNeuralDocumentModelBuilds the customNeuralDocumentModelBuilds value to set.
+     */
+    @JsonCreator
+    public ResourceDetails(
+            @JsonProperty(value = "customDocumentModels", required = true)
+                    CustomDocumentModelsDetails customDocumentModels,
+            @JsonProperty(value = "customNeuralDocumentModelBuilds", required = true)
+                    QuotaDetails customNeuralDocumentModelBuilds) {
+        this.customDocumentModels = customDocumentModels;
+        this.customNeuralDocumentModelBuilds = customNeuralDocumentModelBuilds;
+    }
 
     /**
      * Get the customDocumentModels property: Details regarding custom document models.
@@ -35,33 +49,11 @@ public final class ResourceDetails {
     }
 
     /**
-     * Set the customDocumentModels property: Details regarding custom document models.
-     *
-     * @param customDocumentModels the customDocumentModels value to set.
-     * @return the ResourceDetails object itself.
-     */
-    public ResourceDetails setCustomDocumentModels(CustomDocumentModelsDetails customDocumentModels) {
-        this.customDocumentModels = customDocumentModels;
-        return this;
-    }
-
-    /**
      * Get the customNeuralDocumentModelBuilds property: Quota used, limit, and next reset date/time.
      *
      * @return the customNeuralDocumentModelBuilds value.
      */
     public QuotaDetails getCustomNeuralDocumentModelBuilds() {
         return this.customNeuralDocumentModelBuilds;
-    }
-
-    /**
-     * Set the customNeuralDocumentModelBuilds property: Quota used, limit, and next reset date/time.
-     *
-     * @param customNeuralDocumentModelBuilds the customNeuralDocumentModelBuilds value to set.
-     * @return the ResourceDetails object itself.
-     */
-    public ResourceDetails setCustomNeuralDocumentModelBuilds(QuotaDetails customNeuralDocumentModelBuilds) {
-        this.customNeuralDocumentModelBuilds = customNeuralDocumentModelBuilds;
-        return this;
     }
 }

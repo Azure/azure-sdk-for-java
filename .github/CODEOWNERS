@@ -46,6 +46,8 @@
 /sdk/spring/spring-cloud-azure-appconfiguration-config*/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 /sdk/spring/spring-cloud-azure-feature-management*/   @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 /sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+# PRLabel: %azure-spring
+/sdk/spring/azure-spring-data-cosmos/                @kushagraThapar @FabianMeiswinkel @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan @aayush3011 @simorenoh @fangjian0423 @jeet1995 @Pilchie
 
 
 # PRLabel: %Attestation
@@ -54,7 +56,7 @@
 /sdk/attestation/azure-resourcemanager-attestation/  @azure-sdk-write-attestation @anilba06 @gkostal
 
 # PRLabel: %Batch
-/sdk/batch/                                          @gingi @paterasMSFT @dpwatrous
+/sdk/batch/                                          @jingjlii @ljiaqi1998 @JJJessieWang @dpwatrous @NickKouds
 
 # PRLabel: %Communication
 /sdk/communication/
@@ -96,17 +98,13 @@
 /sdk/core/                                           @alzimmermsft @srnagar @anuchandy @lmolkova @vcolin7 @mssfang @jonathangiles @billwert
 
 # PRLabel: %Azure.Core.AMQP
-/sdk/core/azure-core-amqp/                           @conniey @anuchandy @ki1729 @srnagar @jonathangiles @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
+/sdk/core/azure-core-amqp/                           @conniey @anuchandy @lmolkova
 
 # PRLabel: %Azure.Core
 /sdk/core/azure-core-tracing-opentelemetry/          @samvaity @alzimmermsft @trask @lmolkova
 
 # PRLabel: %Cosmos
 /sdk/cosmos/                                         @kushagraThapar @FabianMeiswinkel @kirankumarkolli @xinlian12 @milismsft @aayush3011 @simorenoh @jeet1995 @Pilchie
-# PRLabel: %azure-spring
-/sdk/cosmos/azure-spring-data-cosmos/                @kushagraThapar @FabianMeiswinkel @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan @aayush3011 @simorenoh @fangjian0423 @jeet1995 @Pilchie
-# PRLabel: %azure-spring
-/sdk/cosmos/azure-spring-data-cosmos-test/           @kushagraThapar @FabianMeiswinkel @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan @aayush3011 @simorenoh @fangjian0423 @jeet1995 @Pilchie
 
 # PRLabel: %Load Testing
 /sdk/loadtesting/                                    @Harshan01 @abranj1219
@@ -124,7 +122,7 @@
 /sdk/eventgrid/                                      @mssfang @srnagar @lmolkova @billwert
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/                                      @conniey @anuchandy @liukun-msft @ZejiaJiang
+/sdk/eventhubs/                                      @conniey @anuchandy @lmolkova
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs-eph/        @JamesBirdsall @sjkwak
@@ -154,19 +152,22 @@
 # PRLabel: %azure-spring
 /sdk/keyvault/azure-security-keyvault-jca/           @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 
-/sdk/loganalytics/microsoft-azure-loganalytics/      @divyajay @alongafni
+/sdk/loganalytics/microsoft-azure-loganalytics/      @ischrei
 
 # PRLabel:  %Monitor - Exporter
 /sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti
 
 # PRLabel:  %Monitor
-/sdk/monitor/azure-monitor-query*/                   @srnagar @lmolkova @ki1729
+/sdk/monitor/azure-monitor-query*/                   @srnagar @lmolkova @jairmyree
 
 # PRLabel:  %Monitor
-/sdk/monitor/azure-monitor-ingestion*/               @srnagar @lmolkova @ki1729
+/sdk/monitor/azure-monitor-ingestion*/               @srnagar @lmolkova @jairmyree
 
 # PRLabel: %Mixed Reality Authentication
 /sdk/mixedreality/azure-mixedreality-authentication/ @craigktreasure
+
+# PRLabel: %Open AI
+/sdk/openai/azure-ai-openai/                         @brandom-msft @jpalvarezl @mssfang
 
 # PRLabel: %Remote Rendering
 /sdk/remoterendering/                                @MichaelZp0 @ChristopherManthei
@@ -178,7 +179,7 @@
 /sdk/search/                                         @alzimmermsft @jairmyree
 
 # PRLabel: %Service Bus
-/sdk/servicebus/                                     @anuchandy @ki1729 @conniey @liukun-msft @ZejiaJiang
+/sdk/servicebus/                                     @anuchandy @conniey @lmolkova
 
 # PRLabel: %Service Bus
 /sdk/servicebus/microsoft-azure-servicebus/          @shankarsama @yvgopal
@@ -187,7 +188,7 @@
 /sdk/storage/                                        @ibrahimrabab @jaschrep-msft @alzimmermsft
 
 # PRLabel: %Tables
-/sdk/tables/                                         @vcolin7 @conniey @jairmyree
+/sdk/tables/                                         @jairmyree @vcolin7
 
 # PRLabel: %EngSys
 /sdk/template/                                       @hallipr @weshaggard @JimSuplizio
@@ -208,13 +209,13 @@
 
 # end to end tests
 # PRLabel: %Azure.Identity
-/sdk/e2e/                                            @g2vinay @joshfree @alzimmermsft
+/sdk/e2e/                                            @g2vinay @billwert
 /common/smoke-tests/                                 @joshfree @jonathangiles @alzimmermsft @g2vinay @conniey @srnagar
 
 # Management Plane
 /sdk/resourcemanager/                                @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978
 /sdk/**/azure-resourcemanager-*/                     @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978
-/sdk/resourcemanagerhybrid/                          @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @bbridges @bganapa
+/sdk/resourcemanagerhybrid/                          @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @bganapa
 
 # Quantum
 # PRLabel: %Azure Quantum

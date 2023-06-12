@@ -10,6 +10,9 @@ import java.util.Collection;
 
 /** Health check status values. */
 public final class HealthCheckStatus extends ExpandableStringEnum<HealthCheckStatus> {
+    /** Static value Unknown for HealthCheckStatus. */
+    public static final HealthCheckStatus UNKNOWN = fromString("Unknown");
+
     /** Static value Pending for HealthCheckStatus. */
     public static final HealthCheckStatus PENDING = fromString("Pending");
 
@@ -19,14 +22,20 @@ public final class HealthCheckStatus extends ExpandableStringEnum<HealthCheckSta
     /** Static value Passed for HealthCheckStatus. */
     public static final HealthCheckStatus PASSED = fromString("Passed");
 
-    /** Static value Failed for HealthCheckStatus. */
-    public static final HealthCheckStatus FAILED = fromString("Failed");
-
     /** Static value Warning for HealthCheckStatus. */
     public static final HealthCheckStatus WARNING = fromString("Warning");
 
-    /** Static value Unknown for HealthCheckStatus. */
-    public static final HealthCheckStatus UNKNOWN = fromString("Unknown");
+    /** Static value Failed for HealthCheckStatus. */
+    public static final HealthCheckStatus FAILED = fromString("Failed");
+
+    /**
+     * Creates a new instance of HealthCheckStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HealthCheckStatus() {
+    }
 
     /**
      * Creates or finds a HealthCheckStatus from its string representation.

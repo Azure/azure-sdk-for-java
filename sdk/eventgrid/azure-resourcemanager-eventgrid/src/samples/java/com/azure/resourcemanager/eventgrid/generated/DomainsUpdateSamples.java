@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.models.Domain;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.IpActionType;
@@ -16,7 +15,7 @@ import java.util.Map;
 /** Samples for Domains Update. */
 public final class DomainsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/Domains_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Domains_Update.json
      */
     /**
      * Sample code: Domains_Update.
@@ -25,7 +24,10 @@ public final class DomainsUpdateSamples {
      */
     public static void domainsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
         Domain resource =
-            manager.domains().getByResourceGroupWithResponse("examplerg", "exampledomain1", Context.NONE).getValue();
+            manager
+                .domains()
+                .getByResourceGroupWithResponse("examplerg", "exampledomain1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))

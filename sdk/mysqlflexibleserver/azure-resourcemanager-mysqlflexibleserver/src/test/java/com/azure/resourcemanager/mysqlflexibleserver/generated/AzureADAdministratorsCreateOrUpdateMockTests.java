@@ -33,7 +33,7 @@ public final class AzureADAdministratorsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"ubpaxhe\",\"sid\":\"i\",\"tenantId\":\"vpdtiirqtdqoa\",\"identityResourceId\":\"r\"},\"id\":\"fgsqu\",\"name\":\"fxrxxle\",\"type\":\"tramxjez\"}";
+            "{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"n\",\"sid\":\"bpzkafkuwbc\",\"tenantId\":\"wbme\",\"identityResourceId\":\"seyvj\"},\"id\":\"rts\",\"name\":\"hspkdeemao\",\"type\":\"mx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,18 +65,18 @@ public final class AzureADAdministratorsCreateOrUpdateMockTests {
             manager
                 .azureADAdministrators()
                 .define(AdministratorName.ACTIVE_DIRECTORY)
-                .withExistingFlexibleServer("cqqudf", "byxbaaabjy")
+                .withExistingFlexibleServer("azqugxywpmueefj", "wfqkquj")
                 .withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
-                .withLogin("m")
-                .withSid("rtuzqogs")
-                .withTenantId("nevfdnw")
-                .withIdentityResourceId("mewzsyyc")
+                .withLogin("nobglaocq")
+                .withSid("ccm")
+                .withTenantId("udxytlmoyrx")
+                .withIdentityResourceId("fudwpznt")
                 .create();
 
         Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, response.administratorType());
-        Assertions.assertEquals("ubpaxhe", response.login());
-        Assertions.assertEquals("i", response.sid());
-        Assertions.assertEquals("vpdtiirqtdqoa", response.tenantId());
-        Assertions.assertEquals("r", response.identityResourceId());
+        Assertions.assertEquals("n", response.login());
+        Assertions.assertEquals("bpzkafkuwbc", response.sid());
+        Assertions.assertEquals("wbme", response.tenantId());
+        Assertions.assertEquals("seyvj", response.identityResourceId());
     }
 }

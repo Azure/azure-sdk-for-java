@@ -3,12 +3,11 @@
 package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
-import com.azure.cosmos.implementation.HttpConstants
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
-import com.azure.cosmos.{models, _}
 import com.azure.cosmos.models._
 import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, bulkWriterBoundedElastic, getThreadInfo}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
+import com.azure.cosmos._
 import reactor.core.scheduler.Scheduler
 
 import scala.collection.mutable
@@ -30,9 +29,9 @@ import reactor.core.scala.publisher.{SFlux, SMono}
 import reactor.core.scheduler.Schedulers
 
 import java.util.UUID
-import java.util.concurrent.{Semaphore, TimeUnit}
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicInteger, AtomicLong, AtomicReference}
 import java.util.concurrent.locks.ReentrantLock
+import java.util.concurrent.{Semaphore, TimeUnit}
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
@@ -74,6 +73,7 @@ class BulkWriter(container: CosmosAsyncContainer,
   private val closed = new AtomicBoolean(false)
   private val lock = new ReentrantLock
   private val pendingTasksCompleted = lock.newCondition
+  private val pendingRetries = new AtomicLong(0);
   private val activeTasks = new AtomicInteger(0)
   private val errorCaptureFirstException = new AtomicReference[Throwable]()
   private val bulkInputEmitter: Sinks.Many[models.CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
@@ -92,6 +92,7 @@ class BulkWriter(container: CosmosAsyncContainer,
       new CosmosBulkExecutionOptions(BulkWriter.bulkProcessingThresholds),
       maxConcurrentPartitions
     )
+  ThroughputControlHelper.populateThroughputControlGroupName(cosmosBulkExecutionOptions, writeConfig.throughputControlConfig)
 
   private val operationContext = initializeOperationContext()
   private val cosmosPatchHelperOpt = writeConfig.itemWriteStrategy match {
@@ -351,12 +352,15 @@ class BulkWriter(container: CosmosAsyncContainer,
         s"attemptNumber=${context.attemptNumber}, exceptionMessage=${exceptionMessage},  " +
         s"Context: {${operationContext.toString}} ${getThreadInfo}")
 
+      this.pendingRetries.incrementAndGet();
+
       // this is to ensure the submission will happen on a different thread in background
       // and doesn't block the active thread
       val deferredRetryMono = SMono.defer(() => {
         scheduleWriteInternal(itemOperation.getPartitionKeyValue,
           itemOperation.getItem.asInstanceOf[ObjectNode],
           OperationContext(context.itemId, context.partitionKeyValue, context.eTag, context.attemptNumber + 1))
+        this.pendingRetries.decrementAndGet()
         SMono.empty
       })
 
@@ -487,10 +491,13 @@ class BulkWriter(container: CosmosAsyncContainer,
           try {
             val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
             var activeTasksSnapshot = activeTasks.get()
-            while (activeTasksSnapshot > 0 && errorCaptureFirstException.get == null) {
+            var pendingRetriesSnapshot = pendingRetries.get()
+            while ((pendingRetriesSnapshot > 0 || activeTasksSnapshot > 0)
+              && errorCaptureFirstException.get == null) {
+
               log.logInfo(
-                s"Waiting for pending activeTasks $activeTasksSnapshot, " +
-                  s"Context: ${operationContext.toString} ${getThreadInfo}")
+                s"Waiting for pending activeTasks $activeTasksSnapshot and/or pendingRetries " +
+                  s"$pendingRetriesSnapshot,  Context: ${operationContext.toString} ${getThreadInfo}")
               val activeOperationsSnapshot = activeOperations.clone()
               val awaitCompleted = pendingTasksCompleted.await(1, TimeUnit.MINUTES)
               if (!awaitCompleted) {
@@ -501,20 +508,21 @@ class BulkWriter(container: CosmosAsyncContainer,
                 )
               }
               activeTasksSnapshot = activeTasks.get()
+              pendingRetriesSnapshot = pendingRetries.get()
               val semaphoreAvailablePermitsSnapshot = semaphore.availablePermits()
 
               if (awaitCompleted) {
-                log.logInfo(s"Waiting completed for pending activeTasks $activeTasksSnapshot, " +
-                  s"Context: ${operationContext.toString} ${getThreadInfo}")
+                log.logInfo(s"Waiting completed for pending activeTasks $activeTasksSnapshot, pendingRetries " +
+                  s"$pendingRetriesSnapshot Context: ${operationContext.toString} ${getThreadInfo}")
               } else {
-                log.logInfo(s"Waiting interrupted for pending activeTasks $activeTasksSnapshot - " +
-                  s"available permits ${semaphoreAvailablePermitsSnapshot}, " +
+                log.logInfo(s"Waiting interrupted for pending activeTasks $activeTasksSnapshot , pendingRetries " +
+                  s"$pendingRetriesSnapshot - available permits ${semaphoreAvailablePermitsSnapshot}, " +
                   s"Context: ${operationContext.toString} ${getThreadInfo}")
               }
             }
 
-            log.logInfo(s"Waiting completed for pending activeTasks $activeTasksSnapshot, " +
-              s"Context: ${operationContext.toString} ${getThreadInfo}")
+            log.logInfo(s"Waiting completed for pending activeTasks $activeTasksSnapshot, pendingRetries " +
+              s"$pendingRetriesSnapshot Context: ${operationContext.toString} ${getThreadInfo}")
           } finally {
             lock.unlock()
           }

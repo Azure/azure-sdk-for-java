@@ -62,11 +62,15 @@
       "type": "string",
       "defaultValue": "[resourceId(subscription().subscriptionId, 'TrainingData', 'Microsoft.Storage/storageAccounts', parameters('blobStorageAccount'))]"
     },
+    "classifierTrainingDataContainer": {
+      "type": "string",
+      "defaultValue": "training-data-classifier"
+    },
     "trainingDataSasProperties": {
       "type": "object",
       "defaultValue": {
         "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('trainingDataContainer'))]",
-        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT2H')]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT3H')]",
         "signedPermission": "rl",
         "signedResource": "c"
       }
@@ -75,7 +79,7 @@
       "type": "object",
       "defaultValue": {
         "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('errorTrainingDataContainer'))]",
-        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT2H')]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT3H')]",
         "signedPermission": "rl",
         "signedResource": "c"
       }
@@ -92,7 +96,7 @@
       "type": "object",
       "defaultValue": {
         "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('testingDataContainer'))]",
-        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT2H')]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT3H')]",
         "signedPermission": "rl",
         "signedResource": "c"
       }
@@ -105,7 +109,7 @@
       "type": "object",
       "defaultValue": {
         "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('multiPageTestingDataContainer'))]",
-        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT2H')]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT3H')]",
         "signedPermission": "rl",
         "signedResource": "c"
       }
@@ -114,7 +118,7 @@
       "type": "object",
       "defaultValue": {
         "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('selectionMarkTrainingDataContainer'))]",
-        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT2H')]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT3H')]",
         "signedPermission": "rl",
         "signedResource": "c"
       }
@@ -122,8 +126,8 @@
     "classifierTrainingDataSasProperties": {
       "type": "object",
       "defaultValue": {
-        "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('training-data-classifier'))]",
-        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT2H')]",
+        "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('classifierTrainingDataContainer'))]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT3H')]",
         "signedPermission": "rl",
         "signedResource": "c"
       }
@@ -206,7 +210,7 @@
     },
     "FORM_RECOGNIZER_CLASSIFIER_TRAINING_BLOB_CONTAINER_SAS_URL": {
       "type": "string",
-      "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('training-data-classifier'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('classifierTrainingDataSasProperties')).serviceSasToken)]"
+      "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('classifierTrainingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('classifierTrainingDataSasProperties')).serviceSasToken)]"
     },
     "FORM_RECOGNIZER_TARGET_RESOURCE_REGION": {
       "type": "string",

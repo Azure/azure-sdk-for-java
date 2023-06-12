@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.38 (Unreleased)
+## 1.0.0-beta.41 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,37 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.40 (2023-06-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to `1.40.0`.
+
+## 1.0.0-beta.39 (2023-05-04)
+
+### Features Added
+
+- Added `OperationLocationPollingStrategy` and `SyncOperationLocationPollingStrategy` for the new polling strategy.
+- Added `PollResult` which represents a general poll result for the new polling strategy.
+
+### Other Changes
+
+- Removed `com.azure.core.experimental.implementation` from "export" clause of module-info.java.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to `1.39.0`.
+
+## 1.0.0-beta.38 (2023-04-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to `1.38.0`.
 
 ## 1.0.0-beta.37 (2023-03-02)
 

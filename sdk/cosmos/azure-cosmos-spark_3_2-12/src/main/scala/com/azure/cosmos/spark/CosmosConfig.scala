@@ -4,6 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.core.management.AzureEnvironment
+import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants
 import com.azure.cosmos.implementation.routing.LocationHelper
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosParameterizedQuery, DedicatedGatewayRequestOptions, FeedRange}
@@ -14,6 +15,7 @@ import com.azure.cosmos.spark.CosmosPatchOperationTypes.CosmosPatchOperationType
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNullOrEmpty, requireNotNullOrEmpty}
 import com.azure.cosmos.spark.ItemWriteStrategy.{ItemWriteStrategy, values}
 import com.azure.cosmos.spark.PartitioningStrategies.PartitioningStrategy
+import com.azure.cosmos.spark.PriorityLevels.PriorityLevel
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 import com.azure.cosmos.spark.SerializationDateTimeConversionModes.SerializationDateTimeConversionMode
 import com.azure.cosmos.spark.SerializationInclusionModes.SerializationInclusionMode
@@ -79,6 +81,7 @@ private[spark] object CosmosConfigNames {
   val WriteBulkEnabled = "spark.cosmos.write.bulk.enabled"
   val WriteBulkMaxPendingOperations = "spark.cosmos.write.bulk.maxPendingOperations"
   val WriteBulkMaxConcurrentPartitions = "spark.cosmos.write.bulk.maxConcurrentCosmosPartitions"
+  val WriteBulkPayloadSizeInBytes = "spark.cosmos.write.bulk.targetedPayloadSizeInBytes"
   val WritePointMaxConcurrency = "spark.cosmos.write.point.maxConcurrency"
   val WritePatchDefaultOperationType = "spark.cosmos.write.patch.defaultOperationType"
   val WritePatchColumnConfigs = "spark.cosmos.write.patch.columnConfigs"
@@ -100,12 +103,15 @@ private[spark] object CosmosConfigNames {
   val ThroughputControlName = "spark.cosmos.throughputControl.name"
   val ThroughputControlTargetThroughput = "spark.cosmos.throughputControl.targetThroughput"
   val ThroughputControlTargetThroughputThreshold = "spark.cosmos.throughputControl.targetThroughputThreshold"
+  val ThroughputControlPriorityLevel = "spark.cosmos.throughputControl.priorityLevel"
   val ThroughputControlGlobalControlDatabase = "spark.cosmos.throughputControl.globalControl.database"
   val ThroughputControlGlobalControlContainer = "spark.cosmos.throughputControl.globalControl.container"
   val ThroughputControlGlobalControlRenewalIntervalInMS =
     "spark.cosmos.throughputControl.globalControl.renewIntervalInMS"
   val ThroughputControlGlobalControlExpireIntervalInMS =
     "spark.cosmos.throughputControl.globalControl.expireIntervalInMS"
+  val ThroughputControlGlobalControlUseDedicatedContainer =
+    "spark.cosmos.throughputControl.globalControl.useDedicatedContainer"
   val SerializationInclusionMode =
     "spark.cosmos.serialization.inclusionMode"
   val SerializationDateTimeConversionMode =
@@ -113,6 +119,10 @@ private[spark] object CosmosConfigNames {
   val MetricsEnabledForSlf4j = "spark.cosmos.metrics.slf4j.enabled"
   val MetricsIntervalInSeconds = "spark.cosmos.metrics.intervalInSeconds"
   val MetricsAzureMonitorConnectionString = "spark.cosmos.metrics.azureMonitor.connectionString"
+
+  // Only meant to be used when throughput control is configured without using dedicated containers
+  // Then in this case, we are going to allocate the throughput budget equally across all executors
+  val SparkExecutorCount = "spark.executorCount"
 
   private val cosmosPrefix = "spark.cosmos."
 
@@ -155,6 +165,7 @@ private[spark] object CosmosConfigNames {
     WriteBulkEnabled,
     WriteBulkMaxPendingOperations,
     WriteBulkMaxConcurrentPartitions,
+    WriteBulkPayloadSizeInBytes,
     WritePointMaxConcurrency,
     WritePatchDefaultOperationType,
     WritePatchColumnConfigs,
@@ -176,10 +187,12 @@ private[spark] object CosmosConfigNames {
     ThroughputControlName,
     ThroughputControlTargetThroughput,
     ThroughputControlTargetThroughputThreshold,
+    ThroughputControlPriorityLevel,
     ThroughputControlGlobalControlDatabase,
     ThroughputControlGlobalControlContainer,
     ThroughputControlGlobalControlRenewalIntervalInMS,
     ThroughputControlGlobalControlExpireIntervalInMS,
+    ThroughputControlGlobalControlUseDedicatedContainer,
     SerializationInclusionMode,
     SerializationDateTimeConversionMode,
     MetricsEnabledForSlf4j,
@@ -207,7 +220,8 @@ private object CosmosConfig {
     containerName: Option[String],
     sparkConf: Option[SparkConf],
     // spark application configteams
-    userProvidedOptions: Map[String, String] // user provided config
+    userProvidedOptions: Map[String, String], // user provided config,
+    executorCount: Option[Int] // total executor count
   ) : Map[String, String] = {
     var accountDataResolverCls = None : Option[AccountDataResolver]
     val serviceLoader = ServiceLoader.load(classOf[AccountDataResolver])
@@ -230,9 +244,13 @@ private object CosmosConfig {
       effectiveUserConfig += (CosmosContainerConfig.CONTAINER_NAME_KEY -> containerName.get)
     }
 
+    if (executorCount.isDefined) {
+        effectiveUserConfig += (CosmosConfigNames.SparkExecutorCount -> executorCount.get.toString)
+    }
+
     val returnValue = sparkConf match {
       case Some(sparkConfig) => {
-        val conf = sparkConf.get.clone()
+        val conf = sparkConfig.clone()
         conf.setAll(effectiveUserConfig.toMap).getAll.toMap
       }
       case None => effectiveUserConfig.toMap
@@ -252,6 +270,7 @@ private object CosmosConfig {
   ) : Map[String, String] = {
 
     val session = SparkSession.active
+    val executorCount = getExecutorCount(session)
 
     // TODO: moderakh we should investigate how spark sql config should be merged:
     // TODO: session.conf.getAll, // spark sql runtime config
@@ -259,7 +278,15 @@ private object CosmosConfig {
       databaseName,
       containerName,
       Some(session.sparkContext.getConf), // spark application config
-      userProvidedOptions) // user provided config
+      userProvidedOptions,
+      Some(executorCount)) // user provided config
+  }
+
+  def getExecutorCount(sparkSession: SparkSession): Int = {
+      val sparkContext = sparkSession.sparkContext
+      // The getExecutorInfos will return information for both the driver and executors
+      // We only want the total executor count
+      sparkContext.statusTracker.getExecutorInfos.length - 1
   }
 
   def getEffectiveConfigIgnoringSessionConfig
@@ -275,7 +302,8 @@ private object CosmosConfig {
       databaseName,
       containerName,
       None,
-      userProvidedOptions) // user provided config
+      userProvidedOptions,
+      None) // user provided config
   }
 }
 
@@ -555,7 +583,8 @@ private case class CosmosReadConfig(forceEventualConsistency: Boolean,
                                     maxItemCount: Int,
                                     prefetchBufferSize: Int,
                                     dedicatedGatewayRequestOptions: DedicatedGatewayRequestOptions,
-                                    customQuery: Option[CosmosParameterizedQuery])
+                                    customQuery: Option[CosmosParameterizedQuery],
+                                    throughputControlConfig: Option[CosmosThroughputControlConfig] = None)
 
 private object SchemaConversionModes extends Enumeration {
   type SchemaConversionMode = Value
@@ -643,6 +672,7 @@ private object CosmosReadConfig {
       result
     }
 
+    val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(cfg)
 
     CosmosReadConfig(
       forceEventualConsistency.get,
@@ -660,7 +690,8 @@ private object CosmosReadConfig {
         }
       ),
       dedicatedGatewayRequestOptions,
-      customQuery)
+      customQuery,
+      throughputControlConfigOpt)
   }
 }
 
@@ -783,7 +814,9 @@ private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
                                      bulkMaxPendingOperations: Option[Int] = None,
                                      pointMaxConcurrency: Option[Int] = None,
                                      maxConcurrentCosmosPartitions: Option[Int] = None,
-                                     patchConfigs: Option[CosmosPatchConfigs] = None)
+                                     patchConfigs: Option[CosmosPatchConfigs] = None,
+                                     throughputControlConfig: Option[CosmosThroughputControlConfig] = None,
+                                     maxMicroBatchPayloadSizeInBytes: Option[Int] = None)
 
 private object CosmosWriteConfig {
   private val DefaultMaxRetryCount = 10
@@ -794,6 +827,15 @@ private object CosmosWriteConfig {
     mandatory = false,
     parseFromStringFunction = bulkEnabledAsString => bulkEnabledAsString.toBoolean,
     helpMessage = "Cosmos DB Item Write bulk enabled")
+
+  private val microBatchPayloadSizeInBytes = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteBulkPayloadSizeInBytes,
+    defaultValue = Option.apply(BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES),
+    mandatory = false,
+    parseFromStringFunction = payloadSizeInBytesString => payloadSizeInBytesString.toInt,
+    helpMessage = "Cosmos DB target bulk micro batch size in bytes - a micro batch will be flushed to the backend " +
+      "when its payload size exceeds this value. For best efficiency its value should be low enough to leave enough " +
+      "room for one document - to avoid that the request size exceeds the Cosmos DB maximum of 2 MB too often " +
+      "which would result in retries and having to transmit large network payloads multiple times.")
 
   private val bulkMaxPendingOperations = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteBulkMaxPendingOperations,
     mandatory = false,
@@ -933,6 +975,8 @@ private object CosmosWriteConfig {
     val maxRetryCountOpt = CosmosConfigEntry.parse(cfg, maxRetryCount)
     val bulkEnabledOpt = CosmosConfigEntry.parse(cfg, bulkEnabled)
     var patchConfigsOpt = Option.empty[CosmosPatchConfigs]
+    val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(cfg)
+    val microBatchPayloadSizeInBytesOpt = CosmosConfigEntry.parse(cfg, microBatchPayloadSizeInBytes)
 
     assert(bulkEnabledOpt.isDefined)
 
@@ -956,7 +1000,9 @@ private object CosmosWriteConfig {
       bulkMaxPendingOperations = CosmosConfigEntry.parse(cfg, bulkMaxPendingOperations),
       pointMaxConcurrency = CosmosConfigEntry.parse(cfg, pointWriteConcurrency),
       maxConcurrentCosmosPartitions = CosmosConfigEntry.parse(cfg, bulkMaxConcurrentPartitions),
-      patchConfigs = patchConfigsOpt)
+      patchConfigs = patchConfigsOpt,
+      throughputControlConfig = throughputControlConfigOpt,
+      maxMicroBatchPayloadSizeInBytes = microBatchPayloadSizeInBytesOpt)
   }
 
   def parsePatchColumnConfigs(cfg: Map[String, String], inputSchema: StructType): TrieMap[String, CosmosPatchColumnConfig] = {
@@ -1268,6 +1314,13 @@ private object ChangeFeedStartFromModes extends Enumeration {
   val PointInTime: ChangeFeedStartFromModes.Value = Value("PointInTime")
 }
 
+private object PriorityLevels extends Enumeration {
+  type PriorityLevel = Value
+
+  val Low: PriorityLevels.Value = Value("Low")
+  val High: PriorityLevels.Value = Value("High")
+}
+
 private case class CosmosChangeFeedConfig
 (
   changeFeedMode: ChangeFeedMode,
@@ -1395,10 +1448,12 @@ private case class CosmosThroughputControlConfig(cosmosAccountConfig: CosmosAcco
                                                  groupName: String,
                                                  targetThroughput: Option[Int],
                                                  targetThroughputThreshold: Option[Double],
-                                                 globalControlDatabase: String,
-                                                 globalControlContainer: String,
+                                                 priorityLevel: Option[PriorityLevel],
+                                                 globalControlDatabase: Option[String],
+                                                 globalControlContainer: Option[String],
                                                  globalControlRenewInterval: Option[Duration],
-                                                 globalControlExpireInterval: Option[Duration])
+                                                 globalControlExpireInterval: Option[Duration],
+                                                 globalControlUseDedicatedContainer: Boolean)
 
 private object CosmosThroughputControlConfig {
     private val throughputControlEnabledSupplier = CosmosConfigEntry[Boolean](
@@ -1444,6 +1499,12 @@ private object CosmosThroughputControlConfig {
         parseFromStringFunction = targetThroughput => targetThroughput.toDouble,
         helpMessage = "Throughput control group target throughput threshold. The value should be between (0,1]. ")
 
+    private val priorityLevelSupplier = CosmosConfigEntry[PriorityLevel](
+        key = CosmosConfigNames.ThroughputControlPriorityLevel,
+        mandatory = false,
+        parseFromStringFunction = priorityLevel => CosmosConfigEntry.parseEnumeration(priorityLevel, PriorityLevels),
+        helpMessage = "Throughput control group priority level. The value can be High or Low. ")
+
     private val globalControlDatabaseSupplier = CosmosConfigEntry[String](
         key = CosmosConfigNames.ThroughputControlGlobalControlDatabase,
         mandatory = false,
@@ -1472,6 +1533,14 @@ private object CosmosThroughputControlConfig {
             "and hence allow its throughput share to be taken by other clients. " +
             "Default is 11s, the allowed min value is 2 * renewIntervalInMS + 1")
 
+    private val globalControlUseDedicatedContainerSupplier = CosmosConfigEntry[Boolean](
+        key = CosmosConfigNames.ThroughputControlGlobalControlUseDedicatedContainer,
+        mandatory = false,
+        defaultValue = Some(true),
+        parseFromStringFunction = globalControlUseDedicatedContainer => globalControlUseDedicatedContainer.toBoolean,
+        helpMessage = "Flag to indicate whether use dedicated container for global throughputput control. " +
+            "If false, will equally distribute throughput across all executors.")
+
     def parseThroughputControlConfig(cfg: Map[String, String]): Option[CosmosThroughputControlConfig] = {
         val throughputControlEnabled = CosmosConfigEntry.parse(cfg, throughputControlEnabledSupplier).get
 
@@ -1486,24 +1555,32 @@ private object CosmosThroughputControlConfig {
             val groupName = CosmosConfigEntry.parse(cfg, groupNameSupplier)
             val targetThroughput = CosmosConfigEntry.parse(cfg, targetThroughputSupplier)
             val targetThroughputThreshold = CosmosConfigEntry.parse(cfg, targetThroughputThresholdSupplier)
+            val priorityLevel = CosmosConfigEntry.parse(cfg, priorityLevelSupplier)
             val globalControlDatabase = CosmosConfigEntry.parse(cfg, globalControlDatabaseSupplier)
             val globalControlContainer = CosmosConfigEntry.parse(cfg, globalControlContainerSupplier)
             val globalControlItemRenewInterval = CosmosConfigEntry.parse(cfg, globalControlItemRenewIntervalSupplier)
             val globalControlItemExpireInterval = CosmosConfigEntry.parse(cfg, globalControlItemExpireIntervalSupplier)
+            val globalControlUseDedicatedContainer = CosmosConfigEntry.parse(cfg, globalControlUseDedicatedContainerSupplier)
 
             assert(groupName.isDefined)
-            assert(globalControlDatabase.isDefined)
-            assert(globalControlContainer.isDefined)
+            assert(globalControlUseDedicatedContainer.isDefined)
+
+            if (globalControlUseDedicatedContainer.get) {
+                assert(globalControlDatabase.isDefined)
+                assert(globalControlContainer.isDefined)
+            }
 
             Some(CosmosThroughputControlConfig(
                 throughputControlCosmosAccountConfig,
                 groupName.get,
                 targetThroughput,
                 targetThroughputThreshold,
-                globalControlDatabase.get,
-                globalControlContainer.get,
+                priorityLevel,
+                globalControlDatabase,
+                globalControlContainer,
                 globalControlItemRenewInterval,
-                globalControlItemExpireInterval))
+                globalControlItemExpireInterval,
+                globalControlUseDedicatedContainer.get))
         } else {
             None
         }

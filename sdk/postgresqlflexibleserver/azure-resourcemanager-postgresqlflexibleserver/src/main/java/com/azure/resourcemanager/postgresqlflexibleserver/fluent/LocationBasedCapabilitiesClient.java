@@ -6,12 +6,25 @@ package com.azure.resourcemanager.postgresqlflexibleserver.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.CapabilityPropertiesInner;
 
 /** An instance of this class provides access to all the operations defined in LocationBasedCapabilitiesClient. */
 public interface LocationBasedCapabilitiesClient {
+    /**
+     * Get capabilities at specified location in a given subscription.
+     *
+     * @param locationName The name of the location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return capabilities at specified location in a given subscription as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<CapabilityPropertiesInner> executeAsync(String locationName);
+
     /**
      * Get capabilities at specified location in a given subscription.
      *

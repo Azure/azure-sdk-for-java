@@ -11,11 +11,19 @@ import java.util.Collection;
 /** The sorting criteria to use for the results of Extractive Summarization. */
 public final class ExtractiveSummarizationSortingCriteria
         extends ExpandableStringEnum<ExtractiveSummarizationSortingCriteria> {
-    /** Static value Offset for ExtractiveSummarizationSortingCriteria. */
+    /** Indicates that results should be sorted in order of appearance in the text. */
     public static final ExtractiveSummarizationSortingCriteria OFFSET = fromString("Offset");
 
-    /** Static value Rank for ExtractiveSummarizationSortingCriteria. */
+    /** Indicates that results should be sorted in order of importance (i.e. rank score) according to the model. */
     public static final ExtractiveSummarizationSortingCriteria RANK = fromString("Rank");
+
+    /**
+     * Creates a new instance of ExtractiveSummarizationSortingCriteria value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExtractiveSummarizationSortingCriteria() {}
 
     /**
      * Creates or finds a ExtractiveSummarizationSortingCriteria from its string representation.

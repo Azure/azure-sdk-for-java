@@ -15,7 +15,7 @@ public class EntitiesDocumentResult extends DocumentResult {
      * Recognized entities in the document.
      */
     @JsonProperty(value = "entities", required = true)
-    private List<EntityWithResolution> entities;
+    private List<Entity> entities;
 
     /** Creates an instance of EntitiesDocumentResult class. */
     public EntitiesDocumentResult() {}
@@ -25,7 +25,7 @@ public class EntitiesDocumentResult extends DocumentResult {
      *
      * @return the entities value.
      */
-    public List<EntityWithResolution> getEntities() {
+    public List<Entity> getEntities() {
         return this.entities;
     }
 
@@ -35,7 +35,7 @@ public class EntitiesDocumentResult extends DocumentResult {
      * @param entities the entities value to set.
      * @return the EntitiesDocumentResult object itself.
      */
-    public EntitiesDocumentResult setEntities(List<EntityWithResolution> entities) {
+    public EntitiesDocumentResult setEntities(List<Entity> entities) {
         this.entities = entities;
         return this;
     }

@@ -24,6 +24,10 @@ public final class VirtualNetworkLinkListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of VirtualNetworkLinkListResult class. */
+    public VirtualNetworkLinkListResult() {
+    }
+
     /**
      * Get the value property: Information about the virtual network links to the Private DNS zones.
      *

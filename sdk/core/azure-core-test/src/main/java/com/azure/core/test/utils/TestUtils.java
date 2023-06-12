@@ -11,6 +11,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -80,14 +82,31 @@ public final class TestUtils {
      * @param actual The actual {@link ByteBuffer}.
      */
     public static void assertByteBuffersEqual(ByteBuffer expected, ByteBuffer actual) {
+        int expectedPosition = 0;
+        int actualPosition = 0;
+        if (expected != null) {
+            expectedPosition = expected.position();
+        }
+
+        if (actual != null) {
+            actualPosition = actual.position();
+        }
+
         if (!Objects.equals(expected, actual)) {
             // Reset the ByteBuffers in case their position was changed.
-            expected.reset();
-            actual.reset();
-            byte[] expectedArray = new byte[expected.remaining()];
-            expected.get(expectedArray);
-            byte[] actualArray = new byte[actual.remaining()];
-            actual.get(actualArray);
+            byte[] expectedArray = null;
+            if (expected != null) {
+                expected.position(expectedPosition);
+                expectedArray = new byte[expected.remaining()];
+                expected.get(expectedArray);
+            }
+
+            byte[] actualArray = null;
+            if (actual != null) {
+                actual.position(actualPosition);
+                actualArray = new byte[actual.remaining()];
+                actual.get(actualArray);
+            }
 
             Assertions.assertArrayEquals(expectedArray, actualArray);
         }
@@ -104,7 +123,7 @@ public final class TestUtils {
         if (folderUrl != null) {
             // Use toURI as getResource will return a URL encoded file path that can only be cleaned up using the
             // URI-based constructor of File.
-            return new File(toURI(folderUrl, LOGGER));
+            return new File(toURI(folderUrl));
         }
 
         throw new IllegalStateException("Unable to locate session-records folder. Please create a session-records "
@@ -113,14 +132,45 @@ public final class TestUtils {
     }
 
 
-    private static URI toURI(URL url, ClientLogger logger) {
+    /**
+     *  Returns a {@link java.net.URI} equivalent to this URL.
+     * @param url the url to be converted to URI
+     * @return the URI
+     */
+    public static URI toURI(URL url) {
         try {
             return url.toURI();
         } catch (URISyntaxException ex) {
-            throw logger.logExceptionAsError(new IllegalStateException(ex));
+            throw LOGGER.logExceptionAsError(new IllegalStateException(ex));
         }
     }
 
     private TestUtils() {
+    }
+
+    /**
+     * Locates the root of the current repo until the provided folder's parent.
+     *
+     * @param testClassPath the test class path
+     * @param resolveFolder the folder parent to resolve the path until
+     * @return The {@link Path} to the root of the repo.
+     * @throws RuntimeException The specified folder could not be located.
+     */
+    public static Path getRepoRootResolveUntil(Path testClassPath, String resolveFolder) {
+        String repoName = "\\azure-sdk-for-java";
+        Path path = testClassPath;
+        Path candidate = null;
+        while (path != null && !path.endsWith(repoName)) {
+            candidate = path.resolve(resolveFolder);
+            if (Files.exists(candidate)) {
+                break;
+            }
+            path = path.getParent();
+        }
+        if (path == null) {
+            throw new RuntimeException(String.format(
+                "Could not locate %s folder within repository %s", resolveFolder, repoName));
+        }
+        return path;
     }
 }

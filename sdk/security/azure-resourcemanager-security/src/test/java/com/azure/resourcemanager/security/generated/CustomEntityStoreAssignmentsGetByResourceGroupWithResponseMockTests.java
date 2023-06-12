@@ -31,7 +31,7 @@ public final class CustomEntityStoreAssignmentsGetByResourceGroupWithResponseMoc
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"principal\":\"aowuzo\",\"entityStoreDatabaseLink\":\"uohdkcprgukxr\"},\"id\":\"tiochlutixmqr\",\"name\":\"djizcbf\",\"type\":\"mcrunfhiucn\"}";
+            "{\"properties\":{\"principal\":\"sztekxby\",\"entityStoreDatabaseLink\":\"msfe\"},\"id\":\"x\",\"name\":\"ihpq\",\"type\":\"dagrhrdicxdw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class CustomEntityStoreAssignmentsGetByResourceGroupWithResponseMoc
         CustomEntityStoreAssignment response =
             manager
                 .customEntityStoreAssignments()
-                .getByResourceGroupWithResponse("upet", "svvoqsbpkflanfk", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("kxpkzwaq", "ofqovchiqbplv", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("aowuzo", response.principal());
-        Assertions.assertEquals("uohdkcprgukxr", response.entityStoreDatabaseLink());
+        Assertions.assertEquals("sztekxby", response.principal());
+        Assertions.assertEquals("msfe", response.entityStoreDatabaseLink());
     }
 }

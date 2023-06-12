@@ -53,7 +53,6 @@ public class TestUtils {
     static final String OTHER_SYSTEM_PROPERTY = "Some-other-system-property";
     static final Boolean OTHER_SYSTEM_PROPERTY_VALUE = Boolean.TRUE;
     static final Map<String, Object> APPLICATION_PROPERTIES = new HashMap<>();
-
     static final int USE_CASE_DEFAULT = 0;
     static final int USE_CASE_RECEIVE_MORE_AND_COMPLETE = 1;
     static final int USE_CASE_SCHEDULE_MESSAGES = 2;
@@ -79,6 +78,13 @@ public class TestUtils {
     static final int USE_CASE_PROXY = 22;
     static final int USE_CASE_PROCESSOR_RECEIVE = 23;
     static final int USE_CASE_AMQP_TYPES = 24;
+    static final int USE_CASE_RENEW_LOCK = 25;
+    static final int USE_CASE_SEND_SCHEDULED = 26;
+    static final int USE_CASE_RECEIVE_AND_COMPLETE = 27;
+    static final int USE_CASE_PEEK_MESSAGE = 28;
+    static final int USE_CASE_MULTIPLE_SESSIONS1 = 29;
+    static final int USE_CASE_MULTIPLE_SESSIONS2 = 30;
+    static final int USE_CASE_MULTIPLE_SESSIONS3 = 31;
     static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
 
     // An application property key to identify where in the stream this message was created.
@@ -150,7 +156,7 @@ public class TestUtils {
     }
 
     public static String getEndpoint() {
-        return getPropertyValue("AZURE_SERVICEBUS_EDNPOINT_SUFFIX", ".servicebus.windows.net");
+        return getPropertyValue("AZURE_SERVICEBUS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
     }
 
     /**

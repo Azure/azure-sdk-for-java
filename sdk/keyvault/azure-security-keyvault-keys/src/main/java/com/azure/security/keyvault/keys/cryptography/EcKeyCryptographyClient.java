@@ -26,11 +26,12 @@ import java.security.Security;
 import java.security.MessageDigest;
 
 class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
-    private final ClientLogger logger = new ClientLogger(EcKeyCryptographyClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EcKeyCryptographyClient.class);
 
-    private KeyPair keyPair;
     private final CryptographyServiceClient serviceClient;
     private final Provider provider;
+
+    private KeyPair keyPair;
 
     /**
      * Creates a EcKeyCryptographyClient that uses {@code service} to service requests
@@ -59,25 +60,25 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context, JsonWebKey key) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException(
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Encrypt operation is not supported for EC key"));
     }
 
     @Override
     Mono<EncryptResult> encryptAsync(EncryptParameters options, Context context, JsonWebKey key) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException(
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Encrypt operation is not supported for EC key"));
     }
 
     @Override
     Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context, JsonWebKey key) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException(
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Encrypt operation is not supported for EC key"));
     }
 
     @Override
     Mono<DecryptResult> decryptAsync(DecryptParameters options, Context context, JsonWebKey key) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException(
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Decrypt operation is not supported for EC key"));
     }
 
@@ -171,7 +172,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
     @Override
     Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context,
                                       JsonWebKey key) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException(
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Unwrap key operation is not supported for Ec key"));
     }
 

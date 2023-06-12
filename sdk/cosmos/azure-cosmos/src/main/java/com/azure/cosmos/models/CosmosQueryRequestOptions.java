@@ -4,7 +4,9 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -14,7 +16,9 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
@@ -53,6 +57,9 @@ public class CosmosQueryRequestOptions {
     private boolean emptyPageDiagnosticsEnabled;
     private Function<JsonNode, ?> itemFactoryMethod;
     private String queryName;
+    private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
+    private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
+
     /**
      * Instantiates a new query request options.
      */
@@ -94,6 +101,8 @@ public class CosmosQueryRequestOptions {
         this.queryName = options.queryName;
         this.feedRange = options.feedRange;
         this.thresholds = options.thresholds;
+        this.cosmosEndToEndOperationLatencyPolicyConfig = options.cosmosEndToEndOperationLatencyPolicyConfig;
+        this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -320,6 +329,17 @@ public class CosmosQueryRequestOptions {
         return responseContinuationTokenLimitInKb;
     }
 
+    /**
+     * Sets the {@link CosmosEndToEndOperationLatencyPolicyConfig} to be used for the request. If the config is already set
+     *      * on the client, then this will override the client level config for this request
+     *
+     * @param cosmosEndToEndOperationLatencyPolicyConfig the {@link CosmosEndToEndOperationLatencyPolicyConfig}
+     * @return the CosmosQueryRequestOptions
+     */
+    public CosmosQueryRequestOptions setCosmosEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
+        this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
+        return this;
+    }
 
     /**
      * Gets the maximum number of items to be returned in the enumeration
@@ -662,6 +682,14 @@ public class CosmosQueryRequestOptions {
         return this;
     }
 
+    List<CosmosDiagnostics> getCancelledRequestDiagnosticsTracker() {
+        return this.cancelledRequestDiagnosticsTracker;
+    }
+
+    void setCancelledRequestDiagnosticsTracker(List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
+        this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -773,6 +801,7 @@ public class CosmosQueryRequestOptions {
                     if (queryRequestOptions.thresholds != null) {
                         requestOptions.setDiagnosticsThresholds(queryRequestOptions.thresholds);
                     }
+                    requestOptions.setCosmosEndToEndLatencyPolicyConfig(queryRequestOptions.cosmosEndToEndOperationLatencyPolicyConfig);
 
                     if (queryRequestOptions.customOptions != null) {
                         for(Map.Entry<String, String> entry : queryRequestOptions.customOptions.entrySet()) {
@@ -803,7 +832,28 @@ public class CosmosQueryRequestOptions {
 
                     fluxOptions.setMaxItemCount(requestOptions.getMaxItemCount());
                 }
+
+                @Override
+                public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(CosmosQueryRequestOptions options) {
+                    return options.getEndToEndOperationLatencyConfig();
+                }
+
+                @Override
+                public List<CosmosDiagnostics> getCancelledRequestDiagnosticsTracker(CosmosQueryRequestOptions options) {
+                    return options.getCancelledRequestDiagnosticsTracker();
+                }
+
+                public void setCancelledRequestDiagnosticsTracker(
+                    CosmosQueryRequestOptions options,
+                    List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
+
+                    options.setCancelledRequestDiagnosticsTracker(cancelledRequestDiagnosticsTracker);
+                }
             });
+    }
+
+    private CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyConfig() {
+        return cosmosEndToEndOperationLatencyPolicyConfig;
     }
 
     static { initialize(); }

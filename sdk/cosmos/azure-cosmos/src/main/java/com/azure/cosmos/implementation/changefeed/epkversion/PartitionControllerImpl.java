@@ -168,8 +168,12 @@ class PartitionControllerImpl implements PartitionController {
                 .flatMap(partitionGoneHandler -> {
                     return partitionGoneHandler.handlePartitionGone()
                             .flatMap(l -> {
-                                l.setProperties(lease.getProperties());
-                                return this.addOrUpdateLease(l);
+                                if (partitionGoneHandler.shouldSkipDirectLeaseAssignment()) {
+                                    return Mono.empty();
+                                } else {
+                                    l.setProperties(lease.getProperties());
+                                    return this.addOrUpdateLease(l);
+                                }
                             })
                             .then(this.tryDeleteGoneLease(lease, partitionGoneHandler.shouldDeleteCurrentLease()));
                 })

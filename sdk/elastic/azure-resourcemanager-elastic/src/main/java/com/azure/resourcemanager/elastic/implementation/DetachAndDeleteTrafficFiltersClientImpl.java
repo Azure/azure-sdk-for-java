@@ -56,8 +56,7 @@ public final class DetachAndDeleteTrafficFiltersClientImpl implements DetachAndD
     public interface DetachAndDeleteTrafficFiltersService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors"
-                + "/{monitorName}/detachAndDeleteTrafficFilter")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/detachAndDeleteTrafficFilter")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(

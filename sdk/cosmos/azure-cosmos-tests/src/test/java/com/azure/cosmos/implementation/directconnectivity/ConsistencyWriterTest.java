@@ -303,7 +303,8 @@ public class ConsistencyWriterTest {
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         RxDocumentServiceRequest dsr = mockDocumentServiceRequest(clientContext);
 
-        consistencyWriter.writeAsync(dsr, timeoutHelper, false).subscribe();
+        //  do nothing
+        consistencyWriter.writeAsync(dsr, timeoutHelper, false).onErrorResume(Mono::error).subscribe();
 
         String cosmosDiagnostics = dsr.requestContext.cosmosDiagnostics.toString();
         assertThat(cosmosDiagnostics).containsOnlyOnce("storeResult");

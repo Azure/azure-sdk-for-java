@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A rule governing the accessibility of a managed hsm pool from a specific ip address or ip range. */
+/** A rule governing the accessibility of a managed HSM pool from a specific IP address or IP range. */
 @Fluent
 public final class MhsmipRule {
     /*
@@ -17,6 +17,10 @@ public final class MhsmipRule {
      */
     @JsonProperty(value = "value", required = true)
     private String value;
+
+    /** Creates an instance of MhsmipRule class. */
+    public MhsmipRule() {
+    }
 
     /**
      * Get the value property: An IPv4 address range in CIDR notation, such as '124.56.78.91' (simple IP address) or

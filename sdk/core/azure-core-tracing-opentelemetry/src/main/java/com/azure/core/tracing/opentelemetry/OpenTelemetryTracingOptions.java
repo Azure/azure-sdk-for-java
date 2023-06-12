@@ -4,6 +4,7 @@
 package com.azure.core.tracing.opentelemetry;
 
 import com.azure.core.util.TracingOptions;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.TracerProvider;
 
 /**
@@ -17,6 +18,7 @@ public class OpenTelemetryTracingOptions extends TracingOptions {
      * Creates an instance of {@link OpenTelemetryTracingOptions}.
      */
     public OpenTelemetryTracingOptions() {
+        super(OpenTelemetryTracerProvider.class);
     }
 
     /**
@@ -25,7 +27,7 @@ public class OpenTelemetryTracingOptions extends TracingOptions {
      *
      * @return the value of implementation-specific metric provider, {@code null} by default.
      */
-    public TracerProvider getProvider() {
+    TracerProvider getOpenTelemetryProvider() {
         return provider;
     }
 
@@ -41,9 +43,10 @@ public class OpenTelemetryTracingOptions extends TracingOptions {
      *     .addSpanProcessor&#40;SimpleSpanProcessor.create&#40;LoggingSpanExporter.create&#40;&#41;&#41;&#41;
      *     .build&#40;&#41;;
      *
-     * &#47;&#47; Pass OpenTelemetry tracerProvider to TracingOptions.
+     * OpenTelemetry openTelemetry = OpenTelemetrySdk.builder&#40;&#41;.setTracerProvider&#40;tracerProvider&#41;.build&#40;&#41;;
+     * &#47;&#47; Pass OpenTelemetry container to TracingOptions.
      * TracingOptions customTracingOptions = new OpenTelemetryTracingOptions&#40;&#41;
-     *     .setProvider&#40;tracerProvider&#41;;
+     *     .setOpenTelemetry&#40;openTelemetry&#41;;
      *
      * &#47;&#47; configure Azure Client to use customTracingOptions - it will use tracerProvider
      * &#47;&#47; to create tracers
@@ -58,11 +61,11 @@ public class OpenTelemetryTracingOptions extends TracingOptions {
      * </pre>
      * <!-- end com.azure.core.tracing.TracingOptions#custom -->
      *
-     * @param provider Instance of {@link TracerProvider}
+     * @param openTelemetry Instance of {@link OpenTelemetry} container
      * @return the updated {@code MetricsOptions} object.
      */
-    public OpenTelemetryTracingOptions setProvider(TracerProvider provider) {
-        this.provider = provider;
+    public OpenTelemetryTracingOptions setOpenTelemetry(OpenTelemetry openTelemetry) {
+        this.provider = openTelemetry.getTracerProvider();
         return this;
     }
 
@@ -84,5 +87,4 @@ public class OpenTelemetryTracingOptions extends TracingOptions {
         this.schemaVersion = schemaVersion;
         return this;
     }
-
 }

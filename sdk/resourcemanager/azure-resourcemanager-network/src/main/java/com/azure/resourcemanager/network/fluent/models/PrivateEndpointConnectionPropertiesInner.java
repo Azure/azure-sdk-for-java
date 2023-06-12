@@ -36,6 +36,12 @@ public final class PrivateEndpointConnectionPropertiesInner {
     @JsonProperty(value = "linkIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String linkIdentifier;
 
+    /*
+     * The location of the private endpoint.
+     */
+    @JsonProperty(value = "privateEndpointLocation", access = JsonProperty.Access.WRITE_ONLY)
+    private String privateEndpointLocation;
+
     /** Creates an instance of PrivateEndpointConnectionPropertiesInner class. */
     public PrivateEndpointConnectionPropertiesInner() {
     }
@@ -88,6 +94,15 @@ public final class PrivateEndpointConnectionPropertiesInner {
      */
     public String linkIdentifier() {
         return this.linkIdentifier;
+    }
+
+    /**
+     * Get the privateEndpointLocation property: The location of the private endpoint.
+     *
+     * @return the privateEndpointLocation value.
+     */
+    public String privateEndpointLocation() {
+        return this.privateEndpointLocation;
     }
 
     /**

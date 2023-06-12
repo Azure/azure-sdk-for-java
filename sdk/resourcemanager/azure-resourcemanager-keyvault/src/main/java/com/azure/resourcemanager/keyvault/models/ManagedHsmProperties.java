@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.keyvault.fluent.models.MhsmGeoReplicatedRegionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -32,15 +33,15 @@ public final class ManagedHsmProperties {
     private String hsmUri;
 
     /*
-     * Property to specify whether the 'soft delete' functionality is enabled for this managed HSM pool. If it's not
-     * set to any value(true or false) when creating new managed HSM pool, it will be set to true by default. Once set
-     * to true, it cannot be reverted to false.
+     * Property to specify whether the 'soft delete' functionality is enabled for this managed HSM pool. Soft delete is
+     * enabled by default for all managed HSMs and is immutable.
      */
     @JsonProperty(value = "enableSoftDelete")
     private Boolean enableSoftDelete;
 
     /*
-     * softDelete data retention days. It accepts >=7 and <=90.
+     * Soft deleted data retention days. When you delete an HSM or a key, it will remain recoverable for the configured
+     * retention period or for a default period of 90 days. It accepts values between 7 and 90.
      */
     @JsonProperty(value = "softDeleteRetentionInDays")
     private Integer softDeleteRetentionInDays;
@@ -48,8 +49,7 @@ public final class ManagedHsmProperties {
     /*
      * Property specifying whether protection against purge is enabled for this managed HSM pool. Setting this property
      * to true activates protection against purge for this managed HSM pool and its content - only the Managed HSM
-     * service may initiate a hard, irrecoverable deletion. The setting is effective only if soft delete is also
-     * enabled. Enabling this functionality is irreversible.
+     * service may initiate a hard, irrecoverable deletion. Enabling this functionality is irreversible.
      */
     @JsonProperty(value = "enablePurgeProtection")
     private Boolean enablePurgeProtection;
@@ -79,13 +79,19 @@ public final class ManagedHsmProperties {
     private MhsmNetworkRuleSet networkAcls;
 
     /*
+     * List of all regions associated with the managed hsm pool.
+     */
+    @JsonProperty(value = "regions")
+    private List<MhsmGeoReplicatedRegionInner> regions;
+
+    /*
      * List of private endpoint connections associated with the managed hsm pool.
      */
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<MhsmPrivateEndpointConnectionItem> privateEndpointConnections;
 
     /*
-     * Control permission for data plane traffic coming from public networks while private endpoint is enabled.
+     * Control permission to the managed HSM from public networks.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
@@ -95,6 +101,16 @@ public final class ManagedHsmProperties {
      */
     @JsonProperty(value = "scheduledPurgeDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime scheduledPurgeDate;
+
+    /*
+     * Managed HSM security domain properties.
+     */
+    @JsonProperty(value = "securityDomainProperties", access = JsonProperty.Access.WRITE_ONLY)
+    private ManagedHsmSecurityDomainProperties securityDomainProperties;
+
+    /** Creates an instance of ManagedHsmProperties class. */
+    public ManagedHsmProperties() {
+    }
 
     /**
      * Get the tenantId property: The Azure Active Directory tenant ID that should be used for authenticating requests
@@ -149,8 +165,7 @@ public final class ManagedHsmProperties {
 
     /**
      * Get the enableSoftDelete property: Property to specify whether the 'soft delete' functionality is enabled for
-     * this managed HSM pool. If it's not set to any value(true or false) when creating new managed HSM pool, it will be
-     * set to true by default. Once set to true, it cannot be reverted to false.
+     * this managed HSM pool. Soft delete is enabled by default for all managed HSMs and is immutable.
      *
      * @return the enableSoftDelete value.
      */
@@ -160,8 +175,7 @@ public final class ManagedHsmProperties {
 
     /**
      * Set the enableSoftDelete property: Property to specify whether the 'soft delete' functionality is enabled for
-     * this managed HSM pool. If it's not set to any value(true or false) when creating new managed HSM pool, it will be
-     * set to true by default. Once set to true, it cannot be reverted to false.
+     * this managed HSM pool. Soft delete is enabled by default for all managed HSMs and is immutable.
      *
      * @param enableSoftDelete the enableSoftDelete value to set.
      * @return the ManagedHsmProperties object itself.
@@ -172,7 +186,9 @@ public final class ManagedHsmProperties {
     }
 
     /**
-     * Get the softDeleteRetentionInDays property: softDelete data retention days. It accepts &gt;=7 and &lt;=90.
+     * Get the softDeleteRetentionInDays property: Soft deleted data retention days. When you delete an HSM or a key, it
+     * will remain recoverable for the configured retention period or for a default period of 90 days. It accepts values
+     * between 7 and 90.
      *
      * @return the softDeleteRetentionInDays value.
      */
@@ -181,7 +197,9 @@ public final class ManagedHsmProperties {
     }
 
     /**
-     * Set the softDeleteRetentionInDays property: softDelete data retention days. It accepts &gt;=7 and &lt;=90.
+     * Set the softDeleteRetentionInDays property: Soft deleted data retention days. When you delete an HSM or a key, it
+     * will remain recoverable for the configured retention period or for a default period of 90 days. It accepts values
+     * between 7 and 90.
      *
      * @param softDeleteRetentionInDays the softDeleteRetentionInDays value to set.
      * @return the ManagedHsmProperties object itself.
@@ -194,8 +212,8 @@ public final class ManagedHsmProperties {
     /**
      * Get the enablePurgeProtection property: Property specifying whether protection against purge is enabled for this
      * managed HSM pool. Setting this property to true activates protection against purge for this managed HSM pool and
-     * its content - only the Managed HSM service may initiate a hard, irrecoverable deletion. The setting is effective
-     * only if soft delete is also enabled. Enabling this functionality is irreversible.
+     * its content - only the Managed HSM service may initiate a hard, irrecoverable deletion. Enabling this
+     * functionality is irreversible.
      *
      * @return the enablePurgeProtection value.
      */
@@ -206,8 +224,8 @@ public final class ManagedHsmProperties {
     /**
      * Set the enablePurgeProtection property: Property specifying whether protection against purge is enabled for this
      * managed HSM pool. Setting this property to true activates protection against purge for this managed HSM pool and
-     * its content - only the Managed HSM service may initiate a hard, irrecoverable deletion. The setting is effective
-     * only if soft delete is also enabled. Enabling this functionality is irreversible.
+     * its content - only the Managed HSM service may initiate a hard, irrecoverable deletion. Enabling this
+     * functionality is irreversible.
      *
      * @param enablePurgeProtection the enablePurgeProtection value to set.
      * @return the ManagedHsmProperties object itself.
@@ -278,6 +296,26 @@ public final class ManagedHsmProperties {
     }
 
     /**
+     * Get the regions property: List of all regions associated with the managed hsm pool.
+     *
+     * @return the regions value.
+     */
+    public List<MhsmGeoReplicatedRegionInner> regions() {
+        return this.regions;
+    }
+
+    /**
+     * Set the regions property: List of all regions associated with the managed hsm pool.
+     *
+     * @param regions the regions value to set.
+     * @return the ManagedHsmProperties object itself.
+     */
+    public ManagedHsmProperties withRegions(List<MhsmGeoReplicatedRegionInner> regions) {
+        this.regions = regions;
+        return this;
+    }
+
+    /**
      * Get the privateEndpointConnections property: List of private endpoint connections associated with the managed hsm
      * pool.
      *
@@ -288,8 +326,7 @@ public final class ManagedHsmProperties {
     }
 
     /**
-     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
-     * private endpoint is enabled.
+     * Get the publicNetworkAccess property: Control permission to the managed HSM from public networks.
      *
      * @return the publicNetworkAccess value.
      */
@@ -298,8 +335,7 @@ public final class ManagedHsmProperties {
     }
 
     /**
-     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
-     * private endpoint is enabled.
+     * Set the publicNetworkAccess property: Control permission to the managed HSM from public networks.
      *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ManagedHsmProperties object itself.
@@ -319,6 +355,15 @@ public final class ManagedHsmProperties {
     }
 
     /**
+     * Get the securityDomainProperties property: Managed HSM security domain properties.
+     *
+     * @return the securityDomainProperties value.
+     */
+    public ManagedHsmSecurityDomainProperties securityDomainProperties() {
+        return this.securityDomainProperties;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -327,8 +372,14 @@ public final class ManagedHsmProperties {
         if (networkAcls() != null) {
             networkAcls().validate();
         }
+        if (regions() != null) {
+            regions().forEach(e -> e.validate());
+        }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (securityDomainProperties() != null) {
+            securityDomainProperties().validate();
         }
     }
 }

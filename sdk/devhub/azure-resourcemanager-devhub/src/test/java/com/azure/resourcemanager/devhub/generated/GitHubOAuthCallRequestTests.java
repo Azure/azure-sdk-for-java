@@ -7,18 +7,17 @@ package com.azure.resourcemanager.devhub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devhub.models.GitHubOAuthCallRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class GitHubOAuthCallRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         GitHubOAuthCallRequest model =
             BinaryData.fromString("{\"redirectUrl\":\"a\"}").toObject(GitHubOAuthCallRequest.class);
         Assertions.assertEquals("a", model.redirectUrl());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         GitHubOAuthCallRequest model = new GitHubOAuthCallRequest().withRedirectUrl("a");
         model = BinaryData.fromObject(model).toObject(GitHubOAuthCallRequest.class);
         Assertions.assertEquals("a", model.redirectUrl());

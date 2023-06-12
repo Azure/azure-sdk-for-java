@@ -10,6 +10,9 @@ import java.util.Map;
 /** Event data for Microsoft.Devices.DeviceTelemetry event. */
 @Fluent
 public final class IotHubDeviceTelemetryEventData extends DeviceTelemetryEventProperties {
+    /** Creates an instance of IotHubDeviceTelemetryEventData class. */
+    public IotHubDeviceTelemetryEventData() {}
+
     /** {@inheritDoc} */
     @Override
     public IotHubDeviceTelemetryEventData setBody(Object body) {

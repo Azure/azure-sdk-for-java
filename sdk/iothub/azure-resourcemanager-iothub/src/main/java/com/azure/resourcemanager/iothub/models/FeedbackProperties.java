@@ -32,6 +32,10 @@ public final class FeedbackProperties {
     @JsonProperty(value = "maxDeliveryCount")
     private Integer maxDeliveryCount;
 
+    /** Creates an instance of FeedbackProperties class. */
+    public FeedbackProperties() {
+    }
+
     /**
      * Get the lockDurationAsIso8601 property: The lock duration for the feedback queue. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.

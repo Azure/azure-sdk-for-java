@@ -17,6 +17,10 @@ public final class EventHubConsumerGroupName {
     @JsonProperty(value = "name", required = true)
     private String name;
 
+    /** Creates an instance of EventHubConsumerGroupName class. */
+    public EventHubConsumerGroupName() {
+    }
+
     /**
      * Get the name property: EventHub consumer group name.
      *

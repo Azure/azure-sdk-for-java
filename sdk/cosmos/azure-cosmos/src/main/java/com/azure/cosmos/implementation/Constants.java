@@ -31,6 +31,7 @@ public final class Constants {
         public static final String COUNT = "_count";
         public static final String E_TAG = "_etag";
         public static final String VALUE = "_value";
+        public static final String TRACKING_ID = "_trackingId";
 
         public static final String CONSISTENCY_POLICY = "consistencyPolicy";
         public static final String DEFAULT_CONSISTENCY_LEVEL = "defaultConsistencyLevel";
@@ -229,6 +230,11 @@ public final class Constants {
         public static final String CHANGE_FEED_START_FROM_TYPE = "Type";
         public static final String CHANGE_FEED_START_FROM_POINT_IN_TIME_MS = "PointInTimeMs";
         public static final String CHANGE_FEED_START_FROM_ETAG = "Etag";
+
+        // Computed Properties
+        public static final String COMPUTED_PROPERTIES = "computedProperties";
+        public static final String COMPUTED_PROPERTIES_NAME = "name";
+        public static final String COMPUTED_PROPERTIES_QUERY = "query";
     }
 
     public static final class UrlEncodingInfo {
@@ -246,5 +252,5 @@ public final class Constants {
         public static final String INCREMENTAL_FEED_HEADER_VALUE = "Incremental feed";
     }
 
-    public static final int QUERYPLAN_CACHE_SIZE = 1000;
+    public static final int QUERYPLAN_CACHE_SIZE = 5000;
 }

@@ -58,6 +58,6 @@ public final class IotSecuritySolutionsDeleteByResourceGroupWithResponseMockTest
 
         manager
             .iotSecuritySolutions()
-            .deleteByResourceGroupWithResponse("zp", "admskx", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("chskxxka", "sbvr", com.azure.core.util.Context.NONE);
     }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 12.15.0-beta.2 (Unreleased)
+## 12.16.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,39 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.16.0-beta.1 (2023-05-30)
+
+### Features Added
+- Added `DataLakeFileClient.getOutputStream()` which allows users to open an `OutputStream` on the file and write data 
+to it using `ParallelTransferOptions`.
+- Added support for 2023-01-03 service version.
+- Added owner, group, and permissions properties to `PathProperties`.
+- Added encryptionContext property to `FileParallelUploadOptions`.
+## 12.15.2 (2023-05-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
+## 12.15.1 (2023-05-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.22.0` to version `12.22.1`.
+
+## 12.15.0 (2023-04-13)
+
+### Features Added
+- Added support for 2022-11-02 service version.
+- Adding support for Encryption Context on DataLake files, a string value that can be passed to allow users to generate
+  file-level encryption keys. This value is returned on `DataLakeFileClient.getProperties()`, `DataLakeFileClient.readWithResponse()`,
+  and `DataLakeFileClient.listPaths()`.
 
 ## 12.15.0-beta.1 (2023-03-28)
 

@@ -36,17 +36,17 @@ public class TestResourceNamerTests {
     public void nullRecordedData() {
         // Doesn't throw when TestMode.LIVE.
         assertDoesNotThrow(() ->
-            new TestResourceNamer(new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.LIVE, false), null));
+            new TestResourceNamer(new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.LIVE, false, false, null), null));
 
         // Doesn't throw when 'doNotRecord' is true.
         assertDoesNotThrow(() ->
-            new TestResourceNamer(new TestContextManager(DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.RECORD, false), null));
+            new TestResourceNamer(new TestContextManager(DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.RECORD, false, false, null), null));
 
         // Does throw when TestMode isn't LIVE and doNotRecord = false
         assertThrows(NullPointerException.class, () ->
-            new TestResourceNamer(new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.RECORD, false), null));
+            new TestResourceNamer(new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.RECORD, false, false, null), null));
         assertThrows(NullPointerException.class, () ->
-            new TestResourceNamer(new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.PLAYBACK, false), null));
+            new TestResourceNamer(new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.PLAYBACK, false, false, null), null));
     }
 
     /**
@@ -56,7 +56,7 @@ public class TestResourceNamerTests {
     @Test
     public void recordedDataIsNotAllowedToReadRecordedValues() {
         TestResourceNamer resourceNamer = new TestResourceNamer(new TestContextManager(
-            DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.PLAYBACK, false), getRecordedDataWithValue());
+            DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.PLAYBACK, false, false, null), getRecordedDataWithValue());
 
         assertNotEquals(A_VARIABLE, resourceNamer.randomName("prefix", 12));
         assertNotEquals(A_VARIABLE, resourceNamer.randomUuid());
@@ -73,17 +73,17 @@ public class TestResourceNamerTests {
         RecordedData recordedData = new RecordedData();
 
         callNamerMethds(new TestResourceNamer(
-            new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.LIVE, false), recordedData));
+            new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.LIVE, false, false, null), recordedData));
         validateNoRecordingsMade(new TestResourceNamer(
-            new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.PLAYBACK, false), recordedData));
+            new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.PLAYBACK, false, false, null), recordedData));
 
         // Reset the recording data.
         recordedData = new RecordedData();
 
         callNamerMethds(new TestResourceNamer(
-            new TestContextManager(DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.RECORD, false), recordedData));
+            new TestContextManager(DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.RECORD, false, false, null), recordedData));
         validateNoRecordingsMade(new TestResourceNamer(
-            new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.PLAYBACK, false), recordedData));
+            new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.PLAYBACK, false, false, null), recordedData));
     }
 
     private void callNamerMethds(TestResourceNamer resourceNamer) {

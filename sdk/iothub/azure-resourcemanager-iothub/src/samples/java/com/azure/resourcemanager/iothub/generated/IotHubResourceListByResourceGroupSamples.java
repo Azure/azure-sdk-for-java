@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.iothub.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IotHubResource ListByResourceGroup. */
 public final class IotHubResourceListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-04-30-preview/examples/iothub_listbyrg.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_listbyrg.json
      */
     /**
      * Sample code: IotHubResource_ListByResourceGroup.
@@ -17,6 +15,6 @@ public final class IotHubResourceListByResourceGroupSamples {
      * @param manager Entry point to IotHubManager.
      */
     public static void iotHubResourceListByResourceGroup(com.azure.resourcemanager.iothub.IotHubManager manager) {
-        manager.iotHubResources().listByResourceGroup("myResourceGroup", Context.NONE);
+        manager.iotHubResources().listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

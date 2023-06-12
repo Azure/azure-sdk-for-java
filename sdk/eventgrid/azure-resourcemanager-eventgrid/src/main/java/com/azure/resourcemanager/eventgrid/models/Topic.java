@@ -50,11 +50,32 @@ public interface Topic {
     Map<String, String> tags();
 
     /**
+     * Gets the sku property: The Sku pricing tier for the topic.
+     *
+     * @return the sku value.
+     */
+    ResourceSku sku();
+
+    /**
      * Gets the identity property: Identity information for the resource.
      *
      * @return the identity value.
      */
     IdentityInfo identity();
+
+    /**
+     * Gets the kind property: Kind of the resource.
+     *
+     * @return the kind value.
+     */
+    ResourceKind kind();
+
+    /**
+     * Gets the extendedLocation property: Extended location of the resource.
+     *
+     * @return the extendedLocation value.
+     */
+    ExtendedLocation extendedLocation();
 
     /**
      * Gets the systemData property: The system metadata relating to Topic resource.
@@ -83,6 +104,22 @@ public interface Topic {
      * @return the endpoint value.
      */
     String endpoint();
+
+    /**
+     * Gets the eventTypeInfo property: Event Type Information for the user topic. This information is provided by the
+     * publisher and can be used by the subscriber to view different types of events that are published.
+     *
+     * @return the eventTypeInfo value.
+     */
+    EventTypeInfo eventTypeInfo();
+
+    /**
+     * Gets the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
+     * topic.
+     *
+     * @return the minimumTlsVersionAllowed value.
+     */
+    TlsVersion minimumTlsVersionAllowed();
 
     /**
      * Gets the inputSchema property: This determines the format that Event Grid should expect for incoming events
@@ -215,7 +252,12 @@ public interface Topic {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithSku,
                 DefinitionStages.WithIdentity,
+                DefinitionStages.WithKind,
+                DefinitionStages.WithExtendedLocation,
+                DefinitionStages.WithEventTypeInfo,
+                DefinitionStages.WithMinimumTlsVersionAllowed,
                 DefinitionStages.WithInputSchema,
                 DefinitionStages.WithInputSchemaMapping,
                 DefinitionStages.WithPublicNetworkAccess,
@@ -247,6 +289,16 @@ public interface Topic {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+        /** The stage of the Topic definition allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The Sku pricing tier for the topic..
+             *
+             * @param sku The Sku pricing tier for the topic.
+             * @return the next definition stage.
+             */
+            WithCreate withSku(ResourceSku sku);
+        }
         /** The stage of the Topic definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -256,6 +308,50 @@ public interface Topic {
              * @return the next definition stage.
              */
             WithCreate withIdentity(IdentityInfo identity);
+        }
+        /** The stage of the Topic definition allowing to specify kind. */
+        interface WithKind {
+            /**
+             * Specifies the kind property: Kind of the resource..
+             *
+             * @param kind Kind of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withKind(ResourceKind kind);
+        }
+        /** The stage of the Topic definition allowing to specify extendedLocation. */
+        interface WithExtendedLocation {
+            /**
+             * Specifies the extendedLocation property: Extended location of the resource..
+             *
+             * @param extendedLocation Extended location of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
+        }
+        /** The stage of the Topic definition allowing to specify eventTypeInfo. */
+        interface WithEventTypeInfo {
+            /**
+             * Specifies the eventTypeInfo property: Event Type Information for the user topic. This information is
+             * provided by the publisher and can be used by the subscriber to view different types of events that are
+             * published..
+             *
+             * @param eventTypeInfo Event Type Information for the user topic. This information is provided by the
+             *     publisher and can be used by the subscriber to view different types of events that are published.
+             * @return the next definition stage.
+             */
+            WithCreate withEventTypeInfo(EventTypeInfo eventTypeInfo);
+        }
+        /** The stage of the Topic definition allowing to specify minimumTlsVersionAllowed. */
+        interface WithMinimumTlsVersionAllowed {
+            /**
+             * Specifies the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish
+             * to this topic.
+             *
+             * @param minimumTlsVersionAllowed Minimum TLS version of the publisher allowed to publish to this topic.
+             * @return the next definition stage.
+             */
+            WithCreate withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed);
         }
         /** The stage of the Topic definition allowing to specify inputSchema. */
         interface WithInputSchema {
@@ -346,10 +442,13 @@ public interface Topic {
     interface Update
         extends UpdateStages.WithTags,
             UpdateStages.WithIdentity,
+            UpdateStages.WithSku,
             UpdateStages.WithPublicNetworkAccess,
             UpdateStages.WithInboundIpRules,
+            UpdateStages.WithMinimumTlsVersionAllowed,
             UpdateStages.WithDisableLocalAuth,
-            UpdateStages.WithDataResidencyBoundary {
+            UpdateStages.WithDataResidencyBoundary,
+            UpdateStages.WithEventTypeInfo {
         /**
          * Executes the update request.
          *
@@ -387,19 +486,27 @@ public interface Topic {
              */
             Update withIdentity(IdentityInfo identity);
         }
+        /** The stage of the Topic update allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The Sku pricing tier for the topic..
+             *
+             * @param sku The Sku pricing tier for the topic.
+             * @return the next definition stage.
+             */
+            Update withSku(ResourceSku sku);
+        }
         /** The stage of the Topic update allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
              * Specifies the publicNetworkAccess property: This determines if traffic is allowed over public network. By
              * default it is enabled. You can further restrict to specific IPs by configuring &lt;seealso
-             * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicUpdateParameterProperties"
-                 + ".InboundIpRules"
+             * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicUpdateParameterProperties.InboundIpRules"
              * /&gt;.
              *
              * @param publicNetworkAccess This determines if traffic is allowed over public network. By default it is
              *     enabled. You can further restrict to specific IPs by configuring &lt;seealso
-             *     cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicUpdateParameterProperties"
-                 + ".InboundIpRules"
+             *     cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicUpdateParameterProperties.InboundIpRules"
              *     /&gt;.
              * @return the next definition stage.
              */
@@ -416,6 +523,17 @@ public interface Topic {
              * @return the next definition stage.
              */
             Update withInboundIpRules(List<InboundIpRule> inboundIpRules);
+        }
+        /** The stage of the Topic update allowing to specify minimumTlsVersionAllowed. */
+        interface WithMinimumTlsVersionAllowed {
+            /**
+             * Specifies the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish
+             * to this domain.
+             *
+             * @param minimumTlsVersionAllowed Minimum TLS version of the publisher allowed to publish to this domain.
+             * @return the next definition stage.
+             */
+            Update withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed);
         }
         /** The stage of the Topic update allowing to specify disableLocalAuth. */
         interface WithDisableLocalAuth {
@@ -441,6 +559,16 @@ public interface Topic {
              */
             Update withDataResidencyBoundary(DataResidencyBoundary dataResidencyBoundary);
         }
+        /** The stage of the Topic update allowing to specify eventTypeInfo. */
+        interface WithEventTypeInfo {
+            /**
+             * Specifies the eventTypeInfo property: The eventTypeInfo for the topic..
+             *
+             * @param eventTypeInfo The eventTypeInfo for the topic.
+             * @return the next definition stage.
+             */
+            Update withEventTypeInfo(EventTypeInfo eventTypeInfo);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.
@@ -458,16 +586,9 @@ public interface Topic {
     Topic refresh(Context context);
 
     /**
-     * List the two keys used to publish to a topic.
+     * List keys for a topic.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
-     */
-    TopicSharedAccessKeys listSharedAccessKeys();
-
-    /**
-     * List the two keys used to publish to a topic.
+     * <p>List the two keys used to publish to a topic.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -478,7 +599,20 @@ public interface Topic {
     Response<TopicSharedAccessKeys> listSharedAccessKeysWithResponse(Context context);
 
     /**
-     * Regenerate a shared access key for a topic.
+     * List keys for a topic.
+     *
+     * <p>List the two keys used to publish to a topic.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    TopicSharedAccessKeys listSharedAccessKeys();
+
+    /**
+     * Regenerate key for a topic.
+     *
+     * <p>Regenerate a shared access key for a topic.
      *
      * @param regenerateKeyRequest Request body to regenerate key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -489,7 +623,9 @@ public interface Topic {
     TopicSharedAccessKeys regenerateKey(TopicRegenerateKeyRequest regenerateKeyRequest);
 
     /**
-     * Regenerate a shared access key for a topic.
+     * Regenerate key for a topic.
+     *
+     * <p>Regenerate a shared access key for a topic.
      *
      * @param regenerateKeyRequest Request body to regenerate key.
      * @param context The context to associate with this operation.

@@ -38,6 +38,14 @@ public final class EntityStatus extends ExpandableStringEnum<EntityStatus> {
     public static final EntityStatus UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of EntityStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EntityStatus() {}
+
+    /**
      * Creates or finds a EntityStatus from its string representation.
      *
      * @param name a name to look for.

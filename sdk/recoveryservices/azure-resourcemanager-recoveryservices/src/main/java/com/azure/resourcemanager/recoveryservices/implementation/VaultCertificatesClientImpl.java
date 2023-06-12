@@ -55,8 +55,7 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
     public interface VaultCertificatesService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/certificates/{certificateName}")
+            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/certificates/{certificateName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VaultCertificateResponseInner>> create(

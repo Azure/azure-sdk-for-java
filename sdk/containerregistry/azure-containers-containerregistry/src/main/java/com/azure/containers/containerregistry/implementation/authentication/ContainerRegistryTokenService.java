@@ -3,15 +3,22 @@
 
 package com.azure.containers.containerregistry.implementation.authentication;
 
-import com.azure.containers.containerregistry.ContainerRegistryServiceVersion;
+import com.azure.containers.containerregistry.implementation.AuthenticationsImpl;
+import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
+import com.azure.containers.containerregistry.implementation.models.AcrAccessToken;
 import com.azure.containers.containerregistry.implementation.models.TokenGrantType;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.HttpPipeline;
+import com.azure.core.exception.ServiceResponseException;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
+
+import java.time.OffsetDateTime;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -20,73 +27,94 @@ import static com.azure.core.util.FluxUtil.monoError;
  */
 public class ContainerRegistryTokenService implements TokenCredential {
     private AccessTokenCacheImpl refreshTokenCache;
-    private TokenServiceImpl tokenService;
-    private boolean isAnonymousAccess;
+    private final AuthenticationsImpl authenticationsImpl;
+    private final boolean isAnonymousAccess;
     private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryTokenService.class);
-
+    private static final Mono<AccessToken> ANONYMOUS_REFRESH_TOKEN = Mono.just(new AccessToken(null, OffsetDateTime.MAX));
+    private final AtomicReference<String> lastAccessToken = new AtomicReference<>();
     /**
      * Creates an instance of AccessTokenCache with default scheme "Bearer".
      *
      * @param aadTokenCredential the credential to be used to acquire the token.
-     * @param url the container registry endpoint.
-     * @param serviceVersion the service api version being targeted by the client.
-     * @param pipeline the pipeline to be used for the rest calls to the service.
+     * @param client AzureContainerRegistryImpl instance.
      */
     public ContainerRegistryTokenService(TokenCredential aadTokenCredential, ContainerRegistryAudience audience,
-                                         String url, ContainerRegistryServiceVersion serviceVersion,
-                                         HttpPipeline pipeline) {
-        this.tokenService = new TokenServiceImpl(url, serviceVersion, pipeline);
+                                         AzureContainerRegistryImpl client) {
+        this.authenticationsImpl = client.getAuthentications();
 
         if (aadTokenCredential != null) {
             this.refreshTokenCache = new AccessTokenCacheImpl(
-                new ContainerRegistryRefreshTokenCredential(tokenService, aadTokenCredential, audience));
+                new ContainerRegistryRefreshTokenCredential(authenticationsImpl, aadTokenCredential, audience));
+            isAnonymousAccess = false;
         } else {
             isAnonymousAccess = true;
         }
     }
 
-    ContainerRegistryTokenService setTokenService(TokenServiceImpl tokenServiceImpl) {
-        this.tokenService = tokenServiceImpl;
-        return this;
-    }
-
-    ContainerRegistryTokenService setRefreshTokenCache(AccessTokenCacheImpl tokenCache) {
+    ContainerRegistryTokenService(AuthenticationsImpl authenticationsImpl, AccessTokenCacheImpl tokenCache) {
+        this.authenticationsImpl = authenticationsImpl;
         this.refreshTokenCache = tokenCache;
-        return this;
-    }
-
-    ContainerRegistryTokenService setAnonymousAccess(boolean isAnonymousAccess) {
-        this.isAnonymousAccess = isAnonymousAccess;
-        return this;
+        this.isAnonymousAccess = false;
     }
 
     /**
      * Gets a token against the token request context.
      *
-     * @param tokenRequestContext the token request context to be used to get the token.
+     * @param request the token request context to be used to get the token.
      */
     @Override
-    public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-        if (!(tokenRequestContext instanceof ContainerRegistryTokenRequestContext)) {
+    public Mono<AccessToken> getToken(TokenRequestContext request) {
+        if (!(request instanceof ContainerRegistryTokenRequestContext)) {
             return monoError(LOGGER, new IllegalArgumentException("tokenRequestContext is not of the type ContainerRegistryTokenRequestContext"));
+        }
+
+        ContainerRegistryTokenRequestContext crRequest =
+            (ContainerRegistryTokenRequestContext) request;
+
+        Mono<AccessToken> getRefreshToken = isAnonymousAccess  ? ANONYMOUS_REFRESH_TOKEN : refreshTokenCache.getToken(crRequest, true);
+        TokenGrantType grantType = isAnonymousAccess ? TokenGrantType.PASSWORD : TokenGrantType.REFRESH_TOKEN;
+
+        return getRefreshToken.flatMap(refreshToken -> authenticationsImpl
+                    .exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(crRequest.getServiceName(), crRequest.getScope(), refreshToken.getToken(), grantType, Context.NONE))
+                .map(this::toAccessToken);
+    }
+
+    public AccessToken getTokenSync(TokenRequestContext tokenRequestContext) {
+        if (!(tokenRequestContext instanceof ContainerRegistryTokenRequestContext)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("tokenRequestContext is not of the type ContainerRegistryTokenRequestContext"));
         }
 
         ContainerRegistryTokenRequestContext requestContext =
             (ContainerRegistryTokenRequestContext) tokenRequestContext;
 
-        String scope = requestContext.getScope();
-        String serviceName = requestContext.getServiceName();
-
-        if (this.isAnonymousAccess) {
-            return this.tokenService.getAcrAccessTokenAsync(null, scope, serviceName, TokenGrantType.PASSWORD);
+        String refreshTokenString = null;
+        TokenGrantType grantType = isAnonymousAccess ? TokenGrantType.PASSWORD : TokenGrantType.REFRESH_TOKEN;
+        if (!isAnonymousAccess) {
+            AccessToken refreshToken = refreshTokenCache.getTokenSync(requestContext, true);
+            refreshTokenString = refreshToken.getToken();
         }
 
-        return this.refreshTokenCache.getToken(requestContext)
-            .flatMap(refreshToken -> this.tokenService.getAcrAccessTokenAsync(refreshToken.getToken(), scope,
-                serviceName, TokenGrantType.REFRESH_TOKEN));
+        return toAccessToken(authenticationsImpl
+            .exchangeAcrRefreshTokenForAcrAccessTokenWithResponse(requestContext.getServiceName(), requestContext.getScope(), refreshTokenString, grantType, Context.NONE));
     }
 
-    public AccessToken getTokenSync(TokenRequestContext tokenRequestContext) {
-        return this.getToken(tokenRequestContext).block();
+    private AccessToken toAccessToken(Response<AcrAccessToken> response) {
+        AcrAccessToken token = response.getValue();
+        if (token != null) {
+            String accessTokenStr = token.getAccessToken();
+            lastAccessToken.set(accessTokenStr);
+            return new AccessToken(accessTokenStr, JsonWebToken.retrieveExpiration(accessTokenStr));
+        }
+
+        throw LOGGER.logExceptionAsError(new ServiceResponseException("AcrAccessToken is missing in response."));
+    }
+
+    /**
+     * Returns last token. Can be used for optimistic auth header setting before challenge is received.
+     * It might have wrong scope or be expired - then usual challenge flow will happen.
+     * In case of repetitive operations such as uploads/downloads, minimizes number of auth calls.
+     */
+    public String getLastToken() {
+        return lastAccessToken.get();
     }
 }

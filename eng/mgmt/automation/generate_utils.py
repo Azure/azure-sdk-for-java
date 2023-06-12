@@ -91,7 +91,7 @@ def generate(
 
 def compile_package(sdk_root, module) -> bool:
     if os.system(
-            'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -Drevapi.skip -pl {1}:{2} -am'.format(
+            'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Djacoco.skip -Drevapi.skip -pl {1}:{2} -am'.format(
                 sdk_root, GROUP_ID, module)) != 0:
         logging.error('[COMPILE] Maven build fail')
         return False
@@ -141,7 +141,7 @@ def update_changelog(changelog_file, changelog):
     first_version_part = old_changelog[:first_version.end() +
                                        second_version.start()]
     # remove text starting from the first '###' (usually the block '### Features Added')
-    first_version_part = re.sub('\n###.*', '\n', first_version_part, re.S)
+    first_version_part = re.sub('\n###.*', '\n', first_version_part, flags=re.S)
     first_version_part = re.sub('\s+$', '', first_version_part)
 
     first_version_part += '\n\n'

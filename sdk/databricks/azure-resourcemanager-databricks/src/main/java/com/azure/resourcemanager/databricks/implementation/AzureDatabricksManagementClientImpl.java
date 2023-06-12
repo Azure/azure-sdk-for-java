@@ -22,6 +22,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.databricks.fluent.AccessConnectorsClient;
 import com.azure.resourcemanager.databricks.fluent.AzureDatabricksManagementClient;
 import com.azure.resourcemanager.databricks.fluent.OperationsClient;
 import com.azure.resourcemanager.databricks.fluent.OutboundNetworkDependenciesEndpointsClient;
@@ -63,18 +64,6 @@ public final class AzureDatabricksManagementClientImpl implements AzureDatabrick
      */
     public String getEndpoint() {
         return this.endpoint;
-    }
-
-    /** Api Version. */
-    private final String apiVersion;
-
-    /**
-     * Gets Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    public String getApiVersion() {
-        return this.apiVersion;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -185,6 +174,18 @@ public final class AzureDatabricksManagementClientImpl implements AzureDatabrick
         return this.vNetPeerings;
     }
 
+    /** The AccessConnectorsClient object to access its operations. */
+    private final AccessConnectorsClient accessConnectors;
+
+    /**
+     * Gets the AccessConnectorsClient object to access its operations.
+     *
+     * @return the AccessConnectorsClient object.
+     */
+    public AccessConnectorsClient getAccessConnectors() {
+        return this.accessConnectors;
+    }
+
     /**
      * Initializes an instance of AzureDatabricksManagementClient client.
      *
@@ -207,13 +208,13 @@ public final class AzureDatabricksManagementClientImpl implements AzureDatabrick
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-04-01-preview";
         this.workspaces = new WorkspacesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.outboundNetworkDependenciesEndpoints = new OutboundNetworkDependenciesEndpointsClientImpl(this);
         this.vNetPeerings = new VNetPeeringsClientImpl(this);
+        this.accessConnectors = new AccessConnectorsClientImpl(this);
     }
 
     /**

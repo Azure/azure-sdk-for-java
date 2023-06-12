@@ -11,39 +11,39 @@ import java.util.Map;
 
 /** Identity for the container group. */
 @Fluent
-public class ContainerGroupIdentity {
+public final class ContainerGroupIdentity {
     /*
-     * The principal id of the container group identity. This property will
-     * only be provided for a system assigned identity.
+     * The principal id of the container group identity. This property will only be provided for a system assigned
+     * identity.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
-     * The tenant id associated with the container group. This property will
-     * only be provided for a system assigned identity.
+     * The tenant id associated with the container group. This property will only be provided for a system assigned
+     * identity.
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
-     * The type of identity used for the container group. The type
-     * 'SystemAssigned, UserAssigned' includes both an implicitly created
-     * identity and a set of user assigned identities. The type 'None' will
-     * remove any identities from the container group.
+     * The type of identity used for the container group. The type 'SystemAssigned, UserAssigned' includes both an
+     * implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities
+     * from the container group.
      */
     @JsonProperty(value = "type")
     private ResourceIdentityType type;
 
     /*
-     * The list of user identities associated with the container group. The
-     * user identity dictionary key references will be ARM resource ids in the
-     * form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * The list of user identities associated with the container group.
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ContainerGroupIdentityUserAssignedIdentities> userAssignedIdentities;
+
+    /** Creates an instance of ContainerGroupIdentity class. */
+    public ContainerGroupIdentity() {
+    }
 
     /**
      * Get the principalId property: The principal id of the container group identity. This property will only be
@@ -90,9 +90,7 @@ public class ContainerGroupIdentity {
     }
 
     /**
-     * Get the userAssignedIdentities property: The list of user identities associated with the container group. The
-     * user identity dictionary key references will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * Get the userAssignedIdentities property: The list of user identities associated with the container group.
      *
      * @return the userAssignedIdentities value.
      */
@@ -101,9 +99,7 @@ public class ContainerGroupIdentity {
     }
 
     /**
-     * Set the userAssignedIdentities property: The list of user identities associated with the container group. The
-     * user identity dictionary key references will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * Set the userAssignedIdentities property: The list of user identities associated with the container group.
      *
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ContainerGroupIdentity object itself.

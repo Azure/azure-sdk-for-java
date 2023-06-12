@@ -4,7 +4,6 @@
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
-import com.azure.autorest.customization.MethodCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
@@ -34,10 +33,10 @@ public class AppConfigCustomization extends Customization {
         classCustomization.getMethod("getRetentionPeriod")
             .setReturnType("Duration", "")
             .replaceBody(joinWithNewline(
-                "if (this.retentionPeriod == null) {",
-                "    return null;",
-                "}",
-                "return Duration.ofSeconds(this.retentionPeriod);"
+                    "if (this.retentionPeriod == null) {",
+                    "    return null;",
+                    "}",
+                    "return Duration.ofSeconds(this.retentionPeriod);"
                 ),
                 Arrays.asList("java.time.Duration"));
 
@@ -65,35 +64,30 @@ public class AppConfigCustomization extends Customization {
     }
 
     private void customizeKeyValueFields(ClassCustomization classCustomization) {
-        classCustomization.addImports("java.util.Locale;");
-        classCustomization.addImports("com.azure.data.appconfiguration.ConfigurationAsyncClient;");
-        // Modify fromString() method
-        MethodCustomization fromString = classCustomization.getMethod("fromString");
-        fromString.getJavadoc()
-            .setDescription("Creates or finds a {@link SettingFields} from its string representation.")
-            .setReturn("the corresponding {@link SettingFields}");
-        fromString.removeAnnotation("JsonCreator");
-        // Add class-level javadoc
-        classCustomization.getJavadoc()
-            .setDescription(joinWithNewline(
-                "",
-                "Fields in {@link ConfigurationSetting} that can be returned from GET queries.",
-                "",
-                "@see SettingSelector",
-                "@see ConfigurationAsyncClient",
-                ""
-            ));
+        classCustomization.customizeAst(ast -> {
+            // Add imports required by class changes.
+            ast.addImport("java.util.Locale")
+                .addImport("com.azure.data.appconfiguration.ConfigurationAsyncClient");
 
-        // Add toStringMapper static new method to SettingFields
-        addToStringMapper(classCustomization);
-    }
-
-    private ClassCustomization addToStringMapper(ClassCustomization classCustomization) {
-        return classCustomization.customizeAst(ast -> {
             ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
-            // Remove original class javadoc
-            clazz.removeJavaDocComment();
-            // Add toStringMapper method
+
+            // Modify fromString() method
+
+            clazz.getMethodsByName("fromString").get(0)
+                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
+                    "Creates or finds a {@link SettingFields} from its string representation.",
+                    "@param name a name to look for.",
+                    "@return the corresponding {@link SettingFields}"
+                )));
+
+            // Add class-level javadoc
+            clazz.setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
+                "Fields in {@link ConfigurationSetting} that can be returned from GET queries.",
+                "@see SettingSelector",
+                "@see ConfigurationAsyncClient"
+            )));
+
+            // Add toStringMapper static new method to SettingFields
             clazz.addMethod("toStringMapper", Modifier.Keyword.STATIC, Modifier.Keyword.PUBLIC).setType("String")
                 .addParameter("SettingFields", "field")
                 .setBody(new BlockStmt(new NodeList<>(StaticJavaParser.parseStatement("return field.toString().toLowerCase(Locale.US);"))))

@@ -8,29 +8,24 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elastic.fluent.models.UpgradableVersionsListInner;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UpgradableVersionsListInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         UpgradableVersionsListInner model =
             BinaryData
-                .fromString(
-                    "{\"currentVersion\":\"ehoqfbowskan\",\"upgradableVersions\":[\"zlcuiywgqywgndrv\",\"nhzgpphrcgyn\",\"ocpecfvmmco\",\"fsxlzevgbmqjqa\"]}")
+                .fromString("{\"currentVersion\":\"eic\",\"upgradableVersions\":[\"npzaoq\"]}")
                 .toObject(UpgradableVersionsListInner.class);
-        Assertions.assertEquals("ehoqfbowskan", model.currentVersion());
-        Assertions.assertEquals("zlcuiywgqywgndrv", model.upgradableVersions().get(0));
+        Assertions.assertEquals("eic", model.currentVersion());
+        Assertions.assertEquals("npzaoq", model.upgradableVersions().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UpgradableVersionsListInner model =
-            new UpgradableVersionsListInner()
-                .withCurrentVersion("ehoqfbowskan")
-                .withUpgradableVersions(
-                    Arrays.asList("zlcuiywgqywgndrv", "nhzgpphrcgyn", "ocpecfvmmco", "fsxlzevgbmqjqa"));
+            new UpgradableVersionsListInner().withCurrentVersion("eic").withUpgradableVersions(Arrays.asList("npzaoq"));
         model = BinaryData.fromObject(model).toObject(UpgradableVersionsListInner.class);
-        Assertions.assertEquals("ehoqfbowskan", model.currentVersion());
-        Assertions.assertEquals("zlcuiywgqywgndrv", model.upgradableVersions().get(0));
+        Assertions.assertEquals("eic", model.currentVersion());
+        Assertions.assertEquals("npzaoq", model.upgradableVersions().get(0));
     }
 }

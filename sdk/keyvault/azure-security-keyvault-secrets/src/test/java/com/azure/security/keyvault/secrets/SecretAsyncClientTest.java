@@ -21,6 +21,7 @@ import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
@@ -50,8 +51,8 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
 
     private void createSecretAsyncClient(HttpClient httpClient, SecretServiceVersion serviceVersion,
                                          String testTenantId) {
-        HttpPipeline httpPipeline = getHttpPipeline(buildAsyncAssertingClient(httpClient == null
-            ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
+        HttpPipeline httpPipeline = getHttpPipeline(buildAsyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
         SecretClientImpl implClient = spy(new SecretClientImpl(getEndpoint(), httpPipeline, serviceVersion));
 
         if (interceptorManager.isPlaybackMode()) {
@@ -543,11 +544,15 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
 
             sleepInRecordMode(30000);
 
-            secretAsyncClient.listPropertiesOfSecretVersions(secretName).subscribe(output::add);
-
-            sleepInRecordMode(30000);
-
-            assertEquals(secretsToSetAndList.size(), output.size());
+            StepVerifier.create(secretAsyncClient.listPropertiesOfSecretVersions(secretName)
+                    .map(secretProperties -> {
+                        output.add(secretProperties);
+                        return Mono.empty();
+                    })
+                    .last())
+                .assertNext(ignore ->
+                    assertEquals(secretsToSetAndList.size(), output.size()))
+                .verifyComplete();
         });
     }
 

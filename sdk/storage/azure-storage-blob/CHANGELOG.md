@@ -1,6 +1,6 @@
 # Release History
 
-## 12.22.0-beta.2 (Unreleased)
+## 12.23.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -10,10 +10,43 @@
 
 ### Other Changes
 
+## 12.23.0-beta.1 (2023-05-30)
+
+### Features Added
+- Added support for 2023-01-03 service version.
+- Content length limit for `AppendBlobClient.appendBlock()` raised from 4 MiB to 100 MiB.
+
+## 12.22.2 (2023-05-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.21.0` to version `12.21.1`.
+- Upgraded `azure-storage-internal-avro` from `12.7.0` to version `12.7.1`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+
+## 12.22.1 (2023-05-15)
+
+### Bugs Fixed
+Fixed bug in `BlobBaseClient.downloadToFile()` and `BlobBaseClient.downloadToFileWithResponse()` where incorrect data could be written to the file in some circumstances if the SDK experienced a network error when using `azure-core-http-netty`'s `HttpClient` implementation.
+
+## 12.22.0 (2023-04-13)
+
+### Features Added
+- Added new method `StorageAccountInfo.isHierarchicalNamespaceEnabled()` to determine whether storage account has hierarchical namespace enabled.  
+- Added support for 2022-11-02 service version.
+- Added support for reading and writing a block blob via SeekableByteChannel.
+
+### Bugs Fixed
+- Fixed bug for when `FindBlobsOptions.setMaxResultsPerPage(Integer)` was set and `.byPage()` was called on `BlobServiceAsyncClient.findBlobsByTags(FindBlobsOptions)`, number of results being returned was greater than the specified max results.
+
 ## 12.22.0-beta.1 (2023-03-28)
 
 ### Features Added
 - Added support for 2022-11-02 service version.
+- Added support for reading and writing a block blob via SeekableByteChannel.
 
 ### Bugs Fixed
 - Fixed bug for when `FindBlobsOptions.setMaxResultsPerPage(Integer)` was set and `.byPage()` was called on `BlobServiceAsyncClient.findBlobsByTags(FindBlobsOptions)`, number of results being returned was greater than the specified max results.

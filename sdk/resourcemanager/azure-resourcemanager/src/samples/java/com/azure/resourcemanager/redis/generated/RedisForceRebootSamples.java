@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.redis.models.RebootType;
 import com.azure.resourcemanager.redis.models.RedisRebootParameters;
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import java.util.Arrays;
 /** Samples for Redis ForceReboot. */
 public final class RedisForceRebootSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheForceReboot.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheForceReboot.json
      */
     /**
      * Sample code: RedisCacheForceReboot.
@@ -32,6 +31,6 @@ public final class RedisForceRebootSamples {
                     .withRebootType(RebootType.ALL_NODES)
                     .withShardId(0)
                     .withPorts(Arrays.asList(13000, 15001)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

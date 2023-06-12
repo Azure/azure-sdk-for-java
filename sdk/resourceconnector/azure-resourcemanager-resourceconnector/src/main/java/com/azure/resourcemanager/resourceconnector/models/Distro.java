@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Distro. */
+/** Represents a supported Fabric/Infra. (AKSEdge etc...). */
 public final class Distro extends ExpandableStringEnum<Distro> {
     /** Static value AKSEdge for Distro. */
     public static final Distro AKSEDGE = fromString("AKSEdge");
+
+    /**
+     * Creates a new instance of Distro value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Distro() {
+    }
 
     /**
      * Creates or finds a Distro from its string representation.

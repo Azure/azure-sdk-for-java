@@ -56,6 +56,20 @@ public class RxDocumentServiceResponse {
         this.gatewayHttpRequestTimeline = gatewayHttpRequestTimeline;
     }
 
+    RxDocumentServiceResponse withRemappedStatusCode(int newStatusCode, double additionalRequestCharge) {
+        StoreResponse mappedStoreResponse = this
+            .storeResponse
+            .withRemappedStatusCode(newStatusCode, additionalRequestCharge);
+
+        RxDocumentServiceResponse result = new RxDocumentServiceResponse(
+            this.diagnosticsClientContext, mappedStoreResponse, this.gatewayHttpRequestTimeline);
+        if (this.cosmosDiagnostics != null) {
+            result.setCosmosDiagnostics(this.cosmosDiagnostics);
+        }
+
+        return result;
+    }
+
     private static <T> String getResourceKey(Class<T> c) {
         if (c.equals(Conflict.class)) {
             return InternalConstants.ResourceKeys.CONFLICTS;
