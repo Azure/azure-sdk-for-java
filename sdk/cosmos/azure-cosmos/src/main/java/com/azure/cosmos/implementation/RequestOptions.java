@@ -47,7 +47,6 @@ public class RequestOptions {
     private String trackingId;
     private boolean nonIdempotentWriteRetriesEnabled = false;
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig;
-    private CosmosSessionRetryOptions retryStrategy;
 
 
     /**
