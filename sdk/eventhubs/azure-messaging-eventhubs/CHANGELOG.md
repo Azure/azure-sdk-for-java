@@ -1,6 +1,6 @@
 # Release History
 
-## 5.16.0-beta.1 (Unreleased)
+## 5.16.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -12,6 +12,9 @@
 ### Bugs Fixed
 
 - Fixed exception when attempting to populate trace context on received `EventData`. ([#33594](https://github.com/Azure/azure-sdk-for-java/issues/33594))
+- Fixed `NullPointerException` when ending span when `AmqpException` is thrown, but its `AmqpErrorCondition` is `null`.
+  ([#35299](https://github.com/Azure/azure-sdk-for-java/issues/35299))
+
 
 ### Other Changes
 
@@ -56,6 +59,14 @@
 
 - Upgraded `azure-core` to `1.36.0`.
 - Upgraded `azure-core-amqp` to `2.8.2`.
+
+## 5.16.0-beta.1 (2023-01-31)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` to `2.9.0-beta.1`.
 
 ## 5.15.1 (2023-01-18)
 

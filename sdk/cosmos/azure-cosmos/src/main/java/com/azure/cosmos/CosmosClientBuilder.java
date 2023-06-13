@@ -1110,7 +1110,6 @@ public class CosmosClientBuilder implements
             Preconditions.checkArgument(preferredRegions != null, "preferredRegions cannot be null when proactiveContainerInitConfig has been set");
             Preconditions.checkArgument(this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount() <= this.preferredRegions.size(), "no. of regions to proactively connect to " +
                     "cannot be greater than the no.of preferred regions");
-            Preconditions.checkArgument(this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 0, "no. of proactive connection regions should be greater than 0");
             if (this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 1) {
                 Preconditions.checkArgument(this.isEndpointDiscoveryEnabled(), "endpoint discovery should be enabled when no. " +
                         "of proactive regions is greater than 1");

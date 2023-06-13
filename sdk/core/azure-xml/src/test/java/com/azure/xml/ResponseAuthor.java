@@ -6,6 +6,8 @@ package com.azure.xml;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
+import static com.azure.xml.AzureXmlTestUtils.getRootElementName;
+
 public class ResponseAuthor implements XmlSerializable<ResponseAuthor> {
     private String name;
 
@@ -31,7 +33,12 @@ public class ResponseAuthor implements XmlSerializable<ResponseAuthor> {
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("author");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        xmlWriter.writeStartElement(getRootElementName(rootElementName, "author"));
         xmlWriter.writeNamespace("http://www.w3.org/2005/Atom");
         xmlWriter.writeStringElement("name", name);
 
@@ -39,36 +46,25 @@ public class ResponseAuthor implements XmlSerializable<ResponseAuthor> {
     }
 
     public static ResponseAuthor fromXml(XmlReader xmlReader) throws XMLStreamException {
-        if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
-            // Since ResponseAuthor only cares about XML elements use nextElement()
-            xmlReader.nextElement();
-        }
+        return fromXml(xmlReader, null);
+    }
 
-        if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
-            throw new IllegalStateException("Illegal start of XML deserialization. "
-                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken." + xmlReader.currentToken() + "'.");
-        }
+    public static ResponseAuthor fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        return xmlReader.readObject("http://www.w3.org/2005/Atom", getRootElementName(rootElementName, "author"),
+            reader -> {
+                String name = null;
 
-        QName qName = xmlReader.getElementName();
-        if (!"author".equals(qName.getLocalPart())
-            || !"http://www.w3.org/2005/Atom".equals(qName.getNamespaceURI())) {
-            throw new IllegalStateException("Expected XML element to be 'author' in namespace "
-                + "'http://www.w3.org/2005/Atom' but it was: "
-                + "{'" + qName.getNamespaceURI() + "'}'" + qName.getLocalPart() + "'.");
-        }
+                while (xmlReader.nextElement() != XmlToken.END_ELEMENT) {
+                    QName qName = xmlReader.getElementName();
+                    String localPart = qName.getLocalPart();
+                    String namespaceUri = qName.getNamespaceURI();
 
-        String name = null;
+                    if ("name".equals(localPart) && "http://www.w3.org/2005/Atom".equals(namespaceUri)) {
+                        name = xmlReader.getStringElement();
+                    }
+                }
 
-        while (xmlReader.nextElement() != XmlToken.END_ELEMENT) {
-            qName = xmlReader.getElementName();
-            String localPart = qName.getLocalPart();
-            String namespaceUri = qName.getNamespaceURI();
-
-            if ("name".equals(localPart) && "http://www.w3.org/2005/Atom".equals(namespaceUri)) {
-                name = xmlReader.getStringElement();
-            }
-        }
-
-        return new ResponseAuthor().setName(name);
+                return new ResponseAuthor().setName(name);
+            });
     }
 }

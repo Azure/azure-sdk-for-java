@@ -843,6 +843,16 @@ public final class CosmosAsyncClient implements Closeable {
                 }
 
                 @Override
+                public String getConnectionMode(CosmosAsyncClient client) {
+                    return client.connectionPolicy.getConnectionMode().toString();
+                }
+
+                @Override
+                public String getUserAgent(CosmosAsyncClient client) {
+                    return client.getUserAgent();
+                }
+
+                @Override
                 public CosmosMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMetricName name) {
                     return  telemetryConfigAccessor
                         .getMeterOptions(client.clientTelemetryConfig, name);

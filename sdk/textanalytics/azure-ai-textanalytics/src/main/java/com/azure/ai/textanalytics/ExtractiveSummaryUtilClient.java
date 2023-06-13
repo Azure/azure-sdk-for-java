@@ -419,6 +419,6 @@ class ExtractiveSummaryUtilClient {
             Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1,
                 TextAnalyticsServiceVersion.V2022_05_01),
             getUnsupportedServiceApiVersionMessage("Extractive Summarization", serviceVersion,
-                TextAnalyticsServiceVersion.V2022_10_01_PREVIEW));
+                TextAnalyticsServiceVersion.V2023_04_01));
     }
 }

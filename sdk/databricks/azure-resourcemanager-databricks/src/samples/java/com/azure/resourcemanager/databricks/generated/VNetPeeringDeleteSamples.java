@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databricks.generated;
 /** Samples for VNetPeering Delete. */
 public final class VNetPeeringDeleteSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/preview/2021-04-01-preview/examples/WorkspaceVirtualNetworkPeeringDelete.json
+     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceVirtualNetworkPeeringDelete.json
      */
     /**
      * Sample code: Delete a workspace vNet Peering.
