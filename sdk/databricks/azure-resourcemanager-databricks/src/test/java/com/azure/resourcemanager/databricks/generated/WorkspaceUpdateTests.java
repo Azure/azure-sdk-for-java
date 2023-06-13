@@ -15,20 +15,16 @@ public final class WorkspaceUpdateTests {
     public void testDeserialize() throws Exception {
         WorkspaceUpdate model =
             BinaryData
-                .fromString(
-                    "{\"tags\":{\"k\":\"zwyiftyhxhur\",\"kjfkg\":\"tyxolniwpwc\",\"plwckbas\":\"awxklr\",\"cph\":\"ypnddhsgcb\"}}")
+                .fromString("{\"tags\":{\"gjvtbv\":\"b\",\"uouq\":\"ysszdnrujqguh\"}}")
                 .toObject(WorkspaceUpdate.class);
-        Assertions.assertEquals("zwyiftyhxhur", model.tags().get("k"));
+        Assertions.assertEquals("b", model.tags().get("gjvtbv"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceUpdate model =
-            new WorkspaceUpdate()
-                .withTags(
-                    mapOf("k", "zwyiftyhxhur", "kjfkg", "tyxolniwpwc", "plwckbas", "awxklr", "cph", "ypnddhsgcb"));
+        WorkspaceUpdate model = new WorkspaceUpdate().withTags(mapOf("gjvtbv", "b", "uouq", "ysszdnrujqguh"));
         model = BinaryData.fromObject(model).toObject(WorkspaceUpdate.class);
-        Assertions.assertEquals("zwyiftyhxhur", model.tags().get("k"));
+        Assertions.assertEquals("b", model.tags().get("gjvtbv"));
     }
 
     @SuppressWarnings("unchecked")

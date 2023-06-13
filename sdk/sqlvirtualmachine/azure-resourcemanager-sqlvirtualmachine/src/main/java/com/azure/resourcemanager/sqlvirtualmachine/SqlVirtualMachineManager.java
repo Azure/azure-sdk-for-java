@@ -28,10 +28,12 @@ import com.azure.resourcemanager.sqlvirtualmachine.implementation.AvailabilityGr
 import com.azure.resourcemanager.sqlvirtualmachine.implementation.OperationsImpl;
 import com.azure.resourcemanager.sqlvirtualmachine.implementation.SqlVirtualMachineGroupsImpl;
 import com.azure.resourcemanager.sqlvirtualmachine.implementation.SqlVirtualMachineManagementClientBuilder;
+import com.azure.resourcemanager.sqlvirtualmachine.implementation.SqlVirtualMachineTroubleshootsImpl;
 import com.azure.resourcemanager.sqlvirtualmachine.implementation.SqlVirtualMachinesImpl;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AvailabilityGroupListeners;
 import com.azure.resourcemanager.sqlvirtualmachine.models.Operations;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachineGroups;
+import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachineTroubleshoots;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachines;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -54,6 +56,8 @@ public final class SqlVirtualMachineManager {
     private SqlVirtualMachineGroups sqlVirtualMachineGroups;
 
     private SqlVirtualMachines sqlVirtualMachines;
+
+    private SqlVirtualMachineTroubleshoots sqlVirtualMachineTroubleshoots;
 
     private final SqlVirtualMachineManagementClient clientObject;
 
@@ -220,7 +224,7 @@ public final class SqlVirtualMachineManager {
                 .append("-")
                 .append("com.azure.resourcemanager.sqlvirtualmachine")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -325,6 +329,19 @@ public final class SqlVirtualMachineManager {
             this.sqlVirtualMachines = new SqlVirtualMachinesImpl(clientObject.getSqlVirtualMachines(), this);
         }
         return sqlVirtualMachines;
+    }
+
+    /**
+     * Gets the resource collection API of SqlVirtualMachineTroubleshoots.
+     *
+     * @return Resource collection API of SqlVirtualMachineTroubleshoots.
+     */
+    public SqlVirtualMachineTroubleshoots sqlVirtualMachineTroubleshoots() {
+        if (this.sqlVirtualMachineTroubleshoots == null) {
+            this.sqlVirtualMachineTroubleshoots =
+                new SqlVirtualMachineTroubleshootsImpl(clientObject.getSqlVirtualMachineTroubleshoots(), this);
+        }
+        return sqlVirtualMachineTroubleshoots;
     }
 
     /**

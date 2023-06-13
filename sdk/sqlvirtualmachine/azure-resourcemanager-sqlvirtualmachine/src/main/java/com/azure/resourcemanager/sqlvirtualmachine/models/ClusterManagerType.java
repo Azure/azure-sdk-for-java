@@ -17,6 +17,15 @@ public final class ClusterManagerType extends ExpandableStringEnum<ClusterManage
     public static final ClusterManagerType WSFC = fromString("WSFC");
 
     /**
+     * Creates a new instance of ClusterManagerType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClusterManagerType() {
+    }
+
+    /**
      * Creates or finds a ClusterManagerType from its string representation.
      *
      * @param name a name to look for.

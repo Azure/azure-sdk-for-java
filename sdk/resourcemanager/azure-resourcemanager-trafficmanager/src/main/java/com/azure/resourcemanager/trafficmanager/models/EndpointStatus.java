@@ -20,6 +20,15 @@ public final class EndpointStatus extends ExpandableStringEnum<EndpointStatus> {
     public static final EndpointStatus DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of EndpointStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EndpointStatus() {
+    }
+
+    /**
      * Creates or finds a EndpointStatus from its string representation.
      *
      * @param name a name to look for.

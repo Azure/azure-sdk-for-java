@@ -144,6 +144,21 @@ public interface Workspace {
     ManagedIdentityConfiguration storageAccountIdentity();
 
     /**
+     * Gets the managedDiskIdentity property: The details of Managed Identity of Disk Encryption Set used for Managed
+     * Disk Encryption.
+     *
+     * @return the managedDiskIdentity value.
+     */
+    ManagedIdentityConfiguration managedDiskIdentity();
+
+    /**
+     * Gets the diskEncryptionSetId property: The resource Id of the managed disk encryption set.
+     *
+     * @return the diskEncryptionSetId value.
+     */
+    String diskEncryptionSetId();
+
+    /**
      * Gets the encryption property: Encryption properties for databricks workspace.
      *
      * @return the encryption value.
@@ -266,6 +281,7 @@ public interface Workspace {
                 DefinitionStages.WithCreatedBy,
                 DefinitionStages.WithUpdatedBy,
                 DefinitionStages.WithStorageAccountIdentity,
+                DefinitionStages.WithManagedDiskIdentity,
                 DefinitionStages.WithEncryption,
                 DefinitionStages.WithPublicNetworkAccess,
                 DefinitionStages.WithRequiredNsgRules {
@@ -366,6 +382,18 @@ public interface Workspace {
              * @return the next definition stage.
              */
             WithCreate withStorageAccountIdentity(ManagedIdentityConfiguration storageAccountIdentity);
+        }
+        /** The stage of the Workspace definition allowing to specify managedDiskIdentity. */
+        interface WithManagedDiskIdentity {
+            /**
+             * Specifies the managedDiskIdentity property: The details of Managed Identity of Disk Encryption Set used
+             * for Managed Disk Encryption.
+             *
+             * @param managedDiskIdentity The details of Managed Identity of Disk Encryption Set used for Managed Disk
+             *     Encryption.
+             * @return the next definition stage.
+             */
+            WithCreate withManagedDiskIdentity(ManagedIdentityConfiguration managedDiskIdentity);
         }
         /** The stage of the Workspace definition allowing to specify encryption. */
         interface WithEncryption {

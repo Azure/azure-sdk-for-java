@@ -2,7 +2,7 @@
 
 ```yaml
 input-file:
-- https://github.com/Azure/azure-rest-api-specs/blob/12cbd66750c4dfe302e9eca42b1fc727f8c02700/specification/purview/data-plane/Azure.Analytics.Purview.Share/preview/2023-02-15-preview/share.json
+- https://github.com/Azure/azure-rest-api-specs/blob/main/specification/purview/data-plane/Azure.Analytics.Purview.Share/preview/2023-05-30-preview/share.json
 output-folder: ../
 java: true
 regenerate-pom: false
@@ -13,7 +13,7 @@ generate-samples: true
 namespace: com.azure.analytics.purview.sharing
 enable-sync-stack: false
 service-versions:
-- 2023-02-15-preview
+- 2023-05-30-preview
 directive:
   rename-operation:
     [
@@ -24,7 +24,7 @@ directive:
       from: "SentShares_Delete",
       to: "SentShares_DeleteSentShare",
       from: "SentShares_List",
-      to: "SentShares_GetAllSentShares",
+      to: "SentShares_ListSentShares",
       from: "SentShares_GetInvitation",
       to: "SentShares_GetSentShareInvitation",
       from: "SentShares_CreateInvitation",
@@ -32,7 +32,7 @@ directive:
       from: "SentShares_DeleteInvitation",
       to: "SentShares_DeleteSentShareInvitation",
       from: "SentShares_ListInvitations",
-      to: "SentShares_GetAllSentShareInvitations",
+      to: "SentShares_ListSentShareInvitations",
       from: "SentShares_NotifyUserInvitation",
       to: "SentShares_NotifyUserSentShareInvitation",
       from: "ReceivedShares_Get",
@@ -42,8 +42,10 @@ directive:
       from: "ReceivedShares_Delete",
       to: "ReceivedShares_DeleteReceivedShare",
       from: "ReceivedShares_ListAttached",
-      to: "ReceivedShares_GetAllAttachedReceivedShares",
+      to: "ReceivedShares_ListAttachedReceivedShares",
       from: "ReceivedShares_ListDetached",
-      to: "ReceivedShares_GetAllDetachedReceivedShares",
+      to: "ReceivedShares_ListDetachedReceivedShares",
+      from: "ShareResources_List",
+      to: "ShareResources_ListShareResources"
     ]
 ```

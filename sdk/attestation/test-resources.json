@@ -47,7 +47,7 @@
       "type": "Microsoft.Attestation/attestationProviders",
       "apiVersion": "2020-10-01",
       "name": "[variables('aadTenantName')]",
-      "location": "[parameters('location')]",
+      "location": "[parameters('location')]"
     },
     {
       "type": "Microsoft.Attestation/attestationProviders",
