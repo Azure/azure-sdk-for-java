@@ -5,14 +5,20 @@ package com.azure.core.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * Represents a geometric bounding box.
  */
 @Immutable
-public final class GeoBoundingBox {
+public final class GeoBoundingBox implements JsonSerializable<GeoBoundingBox> {
     // GeoBoundingBox is a commonly used model, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(GeoBoundingBox.class);
 
@@ -189,5 +195,62 @@ public final class GeoBoundingBox {
         return (minAltitude != null && maxAltitude != null)
             ? String.format("[%s, %s, %s, %s, %s, %s]", west, south, minAltitude, east, north, maxAltitude)
             : String.format("[%s, %s, %s, %s]", west, south, east, north);
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartArray()
+            .writeDouble(west)
+            .writeDouble(south);
+
+        if (minAltitude != null) {
+            jsonWriter.writeDouble(minAltitude);
+        }
+
+        jsonWriter.writeDouble(east)
+            .writeDouble(north);
+
+        if (maxAltitude != null) {
+            jsonWriter.writeDouble(maxAltitude);
+        }
+
+        return jsonWriter.writeEndArray();
+    }
+
+    /**
+     * Reads a JSON stream into a {@link GeoBoundingBox}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return The {@link GeoBoundingBox} that the JSON stream represented, or null if it pointed to JSON null.
+     * @throws IllegalStateException If the {@link GeoBoundingBox} doesn't have four or six positions in the array.
+     * @throws IOException If a {@link GeoBoundingBox} fails to be read from the {@code jsonReader}.
+     */
+    public static GeoBoundingBox fromJson(JsonReader jsonReader) throws IOException {
+        List<Number> coordinates = jsonReader.readArray(reader -> {
+            if (reader.currentToken() == JsonToken.NUMBER) {
+                return reader.getDouble();
+            } else {
+                return null;
+            }
+        });
+
+        if (coordinates == null) {
+            return null;
+        }
+
+        int coordinateCount = coordinates.size();
+        if (coordinateCount != 4 && coordinateCount != 6) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "Only 2 or 3 dimension bounding boxes are supported."));
+        }
+
+        double west = coordinates.get(0).doubleValue();
+        double south = coordinates.get(1).doubleValue();
+        double east = coordinates.get((coordinateCount == 6) ? 3 : 2).doubleValue();
+        double north = coordinates.get((coordinateCount == 6) ? 4 : 3).doubleValue();
+        Double minAltitude = (coordinateCount == 6) ? coordinates.get(2).doubleValue() : null;
+        Double maxAltitude = (coordinateCount == 6) ? coordinates.get(5).doubleValue() : null;
+
+        return new GeoBoundingBox(west, south, east, north, minAltitude, maxAltitude, null);
     }
 }
