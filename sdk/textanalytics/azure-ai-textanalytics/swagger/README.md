@@ -1,4 +1,4 @@
-git # Azure Cognitive Service - Text Analytics for Java
+# Azure Cognitive Service - Text Analytics for Java
 
 > see https://aka.ms/autorest
 
@@ -27,20 +27,15 @@ cd <swagger-folder>
 autorest
 ```
 
-## Configuration
+### Code Generation
 ```yaml
+use: '@autorest/java@4.1.16'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/53240ebc58b3c4e99de723194032064db1d97e63/specification/cognitiveservices/data-plane/Language/stable/2023-04-01/analyzetext.json
+java: true
+output-folder: ../
 namespace: com.azure.ai.textanalytics
-input-file: 
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/53240ebc58b3c4e99de723194032064db1d97e63/specification/cognitiveservices/data-plane/Language/stable/2023-04-01/analyzetext.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-```
-
-### Code Generation
-``` yaml
-output-folder: ..\
-java: true
-use: '@autorest/java@4.1.17'
 enable-sync-stack: true
 generate-client-interfaces: false
 generate-client-as-impl: true
@@ -49,12 +44,18 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 context-client-method-parameter: true
 generic-response-type: true
+custom-types: HealthcareEntityRelationType,ExtractiveSummarySentencesOrder,HealthcareEntityCategory
 ```
 
 ### Renames
 ```yaml
 directive:
-  - rename-model:
-      from: RelationType
-      to: HealthcareEntityRelationType
+  - from: swagger-document
+    where: $.definitions.HealthcareRelation.properties.relationType
+    transform: >
+      $["x-ms-enum"].name = "HealthcareEntityRelationType";
+  - from: swagger-document
+    where: $.definitions.ExtractiveSummarizationSortingCriteria
+    transform: >
+        $["x-ms-enum"].name = "ExtractiveSummarySentencesOrder";
 ```
