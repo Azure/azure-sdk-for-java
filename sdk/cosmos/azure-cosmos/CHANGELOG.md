@@ -3,6 +3,7 @@
 ### 4.47.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added the capability to specify region switch hints for optimizing retries on `READ_SESSION_NOT_AVAILABLE` errors. - See [PR 35292](https://github.com/Azure/azure-sdk-for-java/pull/35292)
 
 #### Breaking Changes
 
