@@ -35,12 +35,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -404,6 +399,7 @@ public class CosmosItemTest extends TestSuiteBase {
         // extract 1 partition key val from 2nd physical partition
         // to create non-existent CosmosItemIdentity instance
         AtomicReference<String> pkValItem2 = new AtomicReference<>("");
+        AtomicReference<String> itemId2 = new AtomicReference<>("");
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions2 = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions2.setFeedRange(feedRanges.get(1));
@@ -418,6 +414,7 @@ public class CosmosItemTest extends TestSuiteBase {
                     assertThat(results).isNotEmpty();
                     assertThat(results.size()).isEqualTo(1);
 
+                    itemId2.set(results.get(0).getId());
                     pkValItem2.set(results.get(0).getString("mypk"));
                 });
 
@@ -426,12 +423,30 @@ public class CosmosItemTest extends TestSuiteBase {
 
         List<CosmosItemIdentity> cosmosItemIdentities = Arrays.asList(cosmosItemIdentity, nonExistentCosmosItemIdentity);
 
-        FeedResponse<InternalObjectNode> feedResponse = container.readMany(cosmosItemIdentities, InternalObjectNode.class);
+        FeedResponse<InternalObjectNode> feedResponse1 = container.readMany(cosmosItemIdentities, InternalObjectNode.class);
 
-        assertThat(feedResponse).isNotNull();
-        assertThat(feedResponse.getResults()).isNotNull();
-        // there could be a case where 0 items were created in physical partition 1
-        assertThat(feedResponse.getResults().size()).isLessThanOrEqualTo(1);
+        // ensure we get items from both physical partitions
+        if (!itemId1.get().isEmpty() && !itemId2.get().isEmpty()) {
+            assertThat(feedResponse1).isNotNull();
+            assertThat(feedResponse1.getResults()).isNotNull();
+            assertThat(feedResponse1.getResults().size()).isEqualTo(1);
+        }
+
+        // shuffle cosmosItemIdentities
+        // done to check randomize the order in
+        // which point reads happen in readMany
+        // and to check if an expected 404 does
+        // not result in subsequent point reads
+        // from not occurring
+        Collections.shuffle(cosmosItemIdentities);
+
+        FeedResponse<InternalObjectNode> feedResponse2 = container.readMany(cosmosItemIdentities, InternalObjectNode.class);
+
+        if (!itemId1.get().isEmpty() && !itemId2.get().isEmpty()) {
+            assertThat(feedResponse2).isNotNull();
+            assertThat(feedResponse2.getResults()).isNotNull();
+            assertThat(feedResponse2.getResults().size()).isEqualTo(1);
+        }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
