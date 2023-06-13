@@ -49,7 +49,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -114,142 +114,71 @@ public class RecoveryServicesBackupManagerTests extends TestBase {
             String policyName = "policy" + randomPadding;
 
             // @embedmeStart
-            List<SubProtectionPolicy> lstSubProtectionPolicy = new ArrayList<>();
-            lstSubProtectionPolicy.add(new SubProtectionPolicy()
-                .withPolicyType(PolicyType.FULL)
-                .withSchedulePolicy(
-                    new SimpleSchedulePolicy()
-                        .withScheduleRunFrequency(ScheduleRunType.WEEKLY)
-                        .withScheduleRunDays(
-                            new ArrayList<DayOfWeek>() {
-                                {
-                                    add(DayOfWeek.SUNDAY);
-                                    add(DayOfWeek.TUESDAY);
-                                }
-                            })
-                        .withScheduleRunTimes(
-                            new ArrayList<OffsetDateTime>() {
-                                {
-                                    add(OffsetDateTime.parse("2018-01-24T10:00:00Z"));
-                                }
-                            }))
-                .withRetentionPolicy(
-                    new LongTermRetentionPolicy()
-                        .withWeeklySchedule(
-                            new WeeklyRetentionSchedule()
-                                .withDaysOfTheWeek(
-                                    new ArrayList<DayOfWeek>() {
-                                        {
-                                            add(DayOfWeek.SUNDAY);
-                                            add(DayOfWeek.TUESDAY);
-                                        }
-                                    })
-                                .withRetentionTimes(
-                                    new ArrayList<OffsetDateTime>() {
-                                        {
-                                            add(OffsetDateTime.parse("2018-01-24T10:00:00Z"));
-                                        }
-                                    })
-                                .withRetentionDuration(
-                                    new RetentionDuration()
-                                        .withCount(2)
-                                        .withDurationType(RetentionDurationType.WEEKS)))
-                        .withMonthlySchedule(
-                            new MonthlyRetentionSchedule()
-                                .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                                .withRetentionScheduleWeekly(
-                                    new WeeklyRetentionFormat()
-                                        .withDaysOfTheWeek(
-                                            new ArrayList<DayOfWeek>() {
-                                                {
-                                                    add(DayOfWeek.SUNDAY);
-                                                }
-                                            })
-                                        .withWeeksOfTheMonth(
-                                            new ArrayList<WeekOfMonth>() {
-                                                {
-                                                    add(WeekOfMonth.SECOND);
-                                                }
-                                            }))
-                                .withRetentionTimes(
-                                    new ArrayList<OffsetDateTime>() {
-                                        {
-                                            add(OffsetDateTime.parse("2018-01-24T10:00:00Z"));
-                                        }
-                                    })
-                                .withRetentionDuration(
-                                    new RetentionDuration()
-                                        .withCount(1)
-                                        .withDurationType(RetentionDurationType.MONTHS)))
-                        .withYearlySchedule(
-                            new YearlyRetentionSchedule()
-                                .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                                .withMonthsOfYear(
-                                    new ArrayList<MonthOfYear>() {
-                                        {
-                                            add(MonthOfYear.JANUARY);
-                                            add(MonthOfYear.JUNE);
-                                            add(MonthOfYear.DECEMBER);
-                                        }
-                                    })
-                                .withRetentionScheduleWeekly(
-                                    new WeeklyRetentionFormat()
-                                        .withDaysOfTheWeek(
-                                            new ArrayList<DayOfWeek>() {
-                                                {
-                                                    add(DayOfWeek.SUNDAY);
-                                                }
-                                            })
-                                        .withWeeksOfTheMonth(
-                                            new ArrayList<WeekOfMonth>() {
-                                                {
-                                                    add(WeekOfMonth.LAST);
-                                                }
-                                            }))
-                                .withRetentionTimes(
-                                    new ArrayList<OffsetDateTime>() {
-                                        {
-                                            add(OffsetDateTime.parse("2018-01-24T10:00:00Z"));
-                                        }
-                                    })
-                                .withRetentionDuration(
-                                    new RetentionDuration()
-                                        .withCount(1)
-                                        .withDurationType(RetentionDurationType.YEARS)))));
-
-            lstSubProtectionPolicy.add(new SubProtectionPolicy()
-                .withPolicyType(PolicyType.DIFFERENTIAL)
-                .withSchedulePolicy(
-                    new SimpleSchedulePolicy()
-                        .withScheduleRunFrequency(ScheduleRunType.WEEKLY)
-                        .withScheduleRunDays(
-                            new ArrayList<DayOfWeek>() {
-                                {
-                                    add(DayOfWeek.FRIDAY);
-                                }
-                            })
-                        .withScheduleRunTimes(
-                            new ArrayList<OffsetDateTime>() {
-                                {
-                                    add(OffsetDateTime.parse("2018-01-24T10:00:00Z"));
-                                }
-                            }))
-                .withRetentionPolicy(
-                    new SimpleRetentionPolicy()
-                        .withRetentionDuration(
-                            new RetentionDuration()
-                                .withCount(8)
-                                .withDurationType(RetentionDurationType.DAYS))));
-
-            lstSubProtectionPolicy.add(new SubProtectionPolicy()
-                .withPolicyType(PolicyType.LOG)
-                .withSchedulePolicy(new LogSchedulePolicy().withScheduleFrequencyInMins(60))
-                .withRetentionPolicy(
-                    new SimpleRetentionPolicy()
-                        .withRetentionDuration(
-                            new RetentionDuration()
-                                .withCount(7)
-                                .withDurationType(RetentionDurationType.DAYS))));
+            List<SubProtectionPolicy> lstSubProtectionPolicy = Arrays.asList(
+                new SubProtectionPolicy()
+                    .withPolicyType(PolicyType.FULL)
+                    .withSchedulePolicy(
+                        new SimpleSchedulePolicy()
+                            .withScheduleRunFrequency(ScheduleRunType.WEEKLY)
+                            .withScheduleRunDays(Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
+                            .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z"))))
+                    .withRetentionPolicy(
+                        new LongTermRetentionPolicy()
+                            .withWeeklySchedule(
+                                new WeeklyRetentionSchedule()
+                                    .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
+                                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
+                                    .withRetentionDuration(
+                                        new RetentionDuration()
+                                            .withCount(2)
+                                            .withDurationType(RetentionDurationType.WEEKS)))
+                            .withMonthlySchedule(
+                                new MonthlyRetentionSchedule()
+                                    .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                    .withRetentionScheduleWeekly(
+                                        new WeeklyRetentionFormat()
+                                            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.SECOND)))
+                                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
+                                    .withRetentionDuration(
+                                        new RetentionDuration()
+                                            .withCount(1)
+                                            .withDurationType(RetentionDurationType.MONTHS)))
+                            .withYearlySchedule(
+                                new YearlyRetentionSchedule()
+                                    .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                    .withMonthsOfYear(Arrays.asList(MonthOfYear.JANUARY, MonthOfYear.JUNE, MonthOfYear.DECEMBER))
+                                    .withRetentionScheduleWeekly(
+                                        new WeeklyRetentionFormat()
+                                            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.LAST)))
+                                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
+                                    .withRetentionDuration(
+                                        new RetentionDuration()
+                                            .withCount(1)
+                                            .withDurationType(RetentionDurationType.YEARS)))),
+                new SubProtectionPolicy()
+                    .withPolicyType(PolicyType.DIFFERENTIAL)
+                    .withSchedulePolicy(
+                        new SimpleSchedulePolicy()
+                            .withScheduleRunFrequency(ScheduleRunType.WEEKLY)
+                            .withScheduleRunDays(Arrays.asList(DayOfWeek.FRIDAY))
+                            .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z"))))
+                    .withRetentionPolicy(
+                        new SimpleRetentionPolicy()
+                            .withRetentionDuration(
+                                new RetentionDuration()
+                                    .withCount(8)
+                                    .withDurationType(RetentionDurationType.DAYS))),
+                new SubProtectionPolicy()
+                    .withPolicyType(PolicyType.LOG)
+                    .withSchedulePolicy(new LogSchedulePolicy().withScheduleFrequencyInMins(60))
+                    .withRetentionPolicy(
+                        new SimpleRetentionPolicy()
+                            .withRetentionDuration(
+                                new RetentionDuration()
+                                    .withCount(7)
+                                    .withDurationType(RetentionDurationType.DAYS))));
 
             vault = recoveryServicesManager.vaults()
                 .define(vaultName)
