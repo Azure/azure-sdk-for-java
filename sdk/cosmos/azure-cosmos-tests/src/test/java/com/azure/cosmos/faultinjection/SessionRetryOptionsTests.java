@@ -186,8 +186,6 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         assertThat(preferredRegions).isNotNull();
         assertThat(preferredRegions.size()).isEqualTo(2);
 
-        TestItem itemForCachingSessionToken = TestItem.createNewItem();
-
         CosmosAsyncClient clientWithPreferredRegions = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -199,11 +197,6 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         CosmosAsyncContainer asyncContainerFromClientWithPreferredRegions = clientWithPreferredRegions
             .getDatabase(cosmosAsyncContainer.getDatabase().getId())
             .getContainer(cosmosAsyncContainer.getId());
-
-        // creating an item forces a token to be cached
-        asyncContainerFromClientWithPreferredRegions
-            .createItem(itemForCachingSessionToken, new CosmosItemRequestOptions())
-            .block();
 
         FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
             .operationType(faultInjectionOperationType)
