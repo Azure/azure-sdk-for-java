@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.trafficmanager.generated;
 
-import com.azure.resourcemanager.trafficmanager.models.EndpointType;
+import com.azure.resourcemanager.trafficmanager.models.EndpointTypes;
 
 /** Samples for Endpoints Delete. */
 public final class EndpointsDeleteSamples {
@@ -25,7 +25,7 @@ public final class EndpointsDeleteSamples {
             .deleteWithResponse(
                 "azuresdkfornetautoresttrafficmanager1421",
                 "azsmnet6386",
-                EndpointType.EXTERNAL_ENDPOINTS,
+                EndpointTypes.EXTERNAL_ENDPOINTS,
                 "azsmnet7187",
                 com.azure.core.util.Context.NONE);
     }

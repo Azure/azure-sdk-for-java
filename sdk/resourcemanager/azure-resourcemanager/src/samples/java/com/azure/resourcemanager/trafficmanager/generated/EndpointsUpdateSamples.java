@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.trafficmanager.generated;
 
 import com.azure.resourcemanager.trafficmanager.fluent.models.EndpointInner;
-import com.azure.resourcemanager.trafficmanager.models.EndpointType;
+import com.azure.resourcemanager.trafficmanager.models.EndpointTypes;
 
 /** Samples for Endpoints Update. */
 public final class EndpointsUpdateSamples {
@@ -26,7 +26,7 @@ public final class EndpointsUpdateSamples {
             .updateWithResponse(
                 "azuresdkfornetautoresttrafficmanager1421",
                 "azsmnet6386",
-                EndpointType.EXTERNAL_ENDPOINTS,
+                EndpointTypes.EXTERNAL_ENDPOINTS,
                 "azsmnet7187",
                 new EndpointInner()
                     .withId(

@@ -9,7 +9,7 @@ import com.azure.resourcemanager.trafficmanager.models.AlwaysServe;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesCustomHeadersItem;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesSubnetsItem;
 import com.azure.resourcemanager.trafficmanager.models.EndpointStatus;
-import com.azure.resourcemanager.trafficmanager.models.EndpointType;
+import com.azure.resourcemanager.trafficmanager.models.EndpointTypes;
 import java.util.Arrays;
 
 /** Samples for Endpoints CreateOrUpdate. */
@@ -31,7 +31,7 @@ public final class EndpointsCreateOrUpdateSamples {
             .createOrUpdateWithResponse(
                 "azuresdkfornetautoresttrafficmanager1421",
                 "azsmnet6386",
-                EndpointType.EXTERNAL_ENDPOINTS,
+                EndpointTypes.EXTERNAL_ENDPOINTS,
                 "azsmnet7187",
                 new EndpointInner()
                     .withName("azsmnet7187")
@@ -60,7 +60,7 @@ public final class EndpointsCreateOrUpdateSamples {
             .createOrUpdateWithResponse(
                 "azuresdkfornetautoresttrafficmanager2191",
                 "azuresdkfornetautoresttrafficmanager8224",
-                EndpointType.EXTERNAL_ENDPOINTS,
+                EndpointTypes.EXTERNAL_ENDPOINTS,
                 "My%20external%20endpoint",
                 new EndpointInner()
                     .withName("My external endpoint")
@@ -92,7 +92,7 @@ public final class EndpointsCreateOrUpdateSamples {
             .createOrUpdateWithResponse(
                 "azuresdkfornetautoresttrafficmanager1421",
                 "azsmnet6386",
-                EndpointType.EXTERNAL_ENDPOINTS,
+                EndpointTypes.EXTERNAL_ENDPOINTS,
                 "azsmnet7187",
                 new EndpointInner()
                     .withName("azsmnet7187")
@@ -125,7 +125,7 @@ public final class EndpointsCreateOrUpdateSamples {
             .createOrUpdateWithResponse(
                 "azuresdkfornetautoresttrafficmanager1421",
                 "azsmnet6386",
-                EndpointType.EXTERNAL_ENDPOINTS,
+                EndpointTypes.EXTERNAL_ENDPOINTS,
                 "azsmnet7187",
                 new EndpointInner()
                     .withName("azsmnet7187")
@@ -153,7 +153,7 @@ public final class EndpointsCreateOrUpdateSamples {
             .createOrUpdateWithResponse(
                 "azuresdkfornetautoresttrafficmanager2191",
                 "azuresdkfornetautoresttrafficmanager8224",
-                EndpointType.EXTERNAL_ENDPOINTS,
+                EndpointTypes.EXTERNAL_ENDPOINTS,
                 "My%20external%20endpoint",
                 new EndpointInner()
                     .withName("My external endpoint")

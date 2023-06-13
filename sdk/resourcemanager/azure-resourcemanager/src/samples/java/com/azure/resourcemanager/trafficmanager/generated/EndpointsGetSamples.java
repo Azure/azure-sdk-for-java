@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.trafficmanager.generated;
 
-import com.azure.resourcemanager.trafficmanager.models.EndpointType;
+import com.azure.resourcemanager.trafficmanager.models.EndpointTypes;
 
 /** Samples for Endpoints Get. */
 public final class EndpointsGetSamples {
@@ -25,7 +25,7 @@ public final class EndpointsGetSamples {
             .getWithResponse(
                 "azuresdkfornetautoresttrafficmanager2191",
                 "azuresdkfornetautoresttrafficmanager8224",
-                EndpointType.EXTERNAL_ENDPOINTS,
+                EndpointTypes.EXTERNAL_ENDPOINTS,
                 "My%20external%20endpoint",
                 com.azure.core.util.Context.NONE);
     }
@@ -47,7 +47,7 @@ public final class EndpointsGetSamples {
             .getWithResponse(
                 "azuresdkfornetautoresttrafficmanager2191",
                 "azuresdkfornetautoresttrafficmanager8224",
-                EndpointType.EXTERNAL_ENDPOINTS,
+                EndpointTypes.EXTERNAL_ENDPOINTS,
                 "My%20external%20endpoint",
                 com.azure.core.util.Context.NONE);
     }
@@ -69,7 +69,7 @@ public final class EndpointsGetSamples {
             .getWithResponse(
                 "azuresdkfornetautoresttrafficmanager1421",
                 "azsmnet6386",
-                EndpointType.EXTERNAL_ENDPOINTS,
+                EndpointTypes.EXTERNAL_ENDPOINTS,
                 "azsmnet7187",
                 com.azure.core.util.Context.NONE);
     }

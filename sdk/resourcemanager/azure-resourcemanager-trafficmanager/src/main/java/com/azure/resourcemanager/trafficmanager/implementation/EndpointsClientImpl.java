@@ -28,7 +28,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.trafficmanager.fluent.EndpointsClient;
 import com.azure.resourcemanager.trafficmanager.fluent.models.DeleteOperationResultInner;
 import com.azure.resourcemanager.trafficmanager.fluent.models.EndpointInner;
-import com.azure.resourcemanager.trafficmanager.models.EndpointType;
+import com.azure.resourcemanager.trafficmanager.models.EndpointTypes;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EndpointsClient. */
@@ -66,7 +66,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("profileName") String profileName,
-            @PathParam("endpointType") EndpointType endpointType,
+            @PathParam("endpointType") EndpointTypes endpointType,
             @PathParam("endpointName") String endpointName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -83,7 +83,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("profileName") String profileName,
-            @PathParam("endpointType") EndpointType endpointType,
+            @PathParam("endpointType") EndpointTypes endpointType,
             @PathParam("endpointName") String endpointName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -99,7 +99,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("profileName") String profileName,
-            @PathParam("endpointType") EndpointType endpointType,
+            @PathParam("endpointType") EndpointTypes endpointType,
             @PathParam("endpointName") String endpointName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -116,7 +116,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("profileName") String profileName,
-            @PathParam("endpointType") EndpointType endpointType,
+            @PathParam("endpointType") EndpointTypes endpointType,
             @PathParam("endpointName") String endpointName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -142,7 +142,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     public Mono<Response<EndpointInner>> updateWithResponseAsync(
         String resourceGroupName,
         String profileName,
-        EndpointType endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters) {
         if (this.client.getEndpoint() == null) {
@@ -213,7 +213,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     private Mono<Response<EndpointInner>> updateWithResponseAsync(
         String resourceGroupName,
         String profileName,
-        EndpointType endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters,
         Context context) {
@@ -280,7 +280,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     public Mono<EndpointInner> updateAsync(
         String resourceGroupName,
         String profileName,
-        EndpointType endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters) {
         return updateWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters)
@@ -305,7 +305,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     public Response<EndpointInner> updateWithResponse(
         String resourceGroupName,
         String profileName,
-        EndpointType endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters,
         Context context) {
@@ -330,7 +330,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     public EndpointInner update(
         String resourceGroupName,
         String profileName,
-        EndpointType endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters) {
         return updateWithResponse(resourceGroupName, profileName, endpointType, endpointName, parameters, Context.NONE)
@@ -351,7 +351,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EndpointInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, EndpointType endpointType, String endpointName) {
+        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -410,7 +410,11 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EndpointInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, EndpointType endpointType, String endpointName, Context context) {
+        String resourceGroupName,
+        String profileName,
+        EndpointTypes endpointType,
+        String endpointName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -465,7 +469,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EndpointInner> getAsync(
-        String resourceGroupName, String profileName, EndpointType endpointType, String endpointName) {
+        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName) {
         return getWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -485,7 +489,11 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointInner> getWithResponse(
-        String resourceGroupName, String profileName, EndpointType endpointType, String endpointName, Context context) {
+        String resourceGroupName,
+        String profileName,
+        EndpointTypes endpointType,
+        String endpointName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName, context).block();
     }
 
@@ -503,7 +511,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointInner get(
-        String resourceGroupName, String profileName, EndpointType endpointType, String endpointName) {
+        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName) {
         return getWithResponse(resourceGroupName, profileName, endpointType, endpointName, Context.NONE).getValue();
     }
 
@@ -525,7 +533,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     public Mono<Response<EndpointInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String profileName,
-        EndpointType endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters) {
         if (this.client.getEndpoint() == null) {
@@ -596,7 +604,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     private Mono<Response<EndpointInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String profileName,
-        EndpointType endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters,
         Context context) {
@@ -663,7 +671,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     public Mono<EndpointInner> createOrUpdateAsync(
         String resourceGroupName,
         String profileName,
-        EndpointType endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters)
@@ -688,7 +696,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     public Response<EndpointInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String profileName,
-        EndpointType endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters,
         Context context) {
@@ -714,7 +722,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     public EndpointInner createOrUpdate(
         String resourceGroupName,
         String profileName,
-        EndpointType endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters) {
         return createOrUpdateWithResponse(
@@ -737,7 +745,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, EndpointType endpointType, String endpointName) {
+        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -797,7 +805,11 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, EndpointType endpointType, String endpointName, Context context) {
+        String resourceGroupName,
+        String profileName,
+        EndpointTypes endpointType,
+        String endpointName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -852,7 +864,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeleteOperationResultInner> deleteAsync(
-        String resourceGroupName, String profileName, EndpointType endpointType, String endpointName) {
+        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName) {
         return deleteWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -872,7 +884,11 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeleteOperationResultInner> deleteWithResponse(
-        String resourceGroupName, String profileName, EndpointType endpointType, String endpointName, Context context) {
+        String resourceGroupName,
+        String profileName,
+        EndpointTypes endpointType,
+        String endpointName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName, context).block();
     }
 
@@ -890,7 +906,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeleteOperationResultInner delete(
-        String resourceGroupName, String profileName, EndpointType endpointType, String endpointName) {
+        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName) {
         return deleteWithResponse(resourceGroupName, profileName, endpointType, endpointName, Context.NONE).getValue();
     }
 }

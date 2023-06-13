@@ -10,7 +10,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.trafficmanager.fluent.models.DeleteOperationResultInner;
 import com.azure.resourcemanager.trafficmanager.fluent.models.EndpointInner;
-import com.azure.resourcemanager.trafficmanager.models.EndpointType;
+import com.azure.resourcemanager.trafficmanager.models.EndpointTypes;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EndpointsClient. */
@@ -33,7 +33,7 @@ public interface EndpointsClient {
     Mono<Response<EndpointInner>> updateWithResponseAsync(
         String resourceGroupName,
         String profileName,
-        EndpointType endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters);
 
@@ -54,7 +54,7 @@ public interface EndpointsClient {
     Mono<EndpointInner> updateAsync(
         String resourceGroupName,
         String profileName,
-        EndpointType endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters);
 
@@ -76,7 +76,7 @@ public interface EndpointsClient {
     Response<EndpointInner> updateWithResponse(
         String resourceGroupName,
         String profileName,
-        EndpointType endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters,
         Context context);
@@ -98,7 +98,7 @@ public interface EndpointsClient {
     EndpointInner update(
         String resourceGroupName,
         String profileName,
-        EndpointType endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters);
 
@@ -116,7 +116,7 @@ public interface EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<EndpointInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, EndpointType endpointType, String endpointName);
+        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName);
 
     /**
      * Gets a Traffic Manager endpoint.
@@ -132,7 +132,7 @@ public interface EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<EndpointInner> getAsync(
-        String resourceGroupName, String profileName, EndpointType endpointType, String endpointName);
+        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName);
 
     /**
      * Gets a Traffic Manager endpoint.
@@ -149,7 +149,7 @@ public interface EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<EndpointInner> getWithResponse(
-        String resourceGroupName, String profileName, EndpointType endpointType, String endpointName, Context context);
+        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName, Context context);
 
     /**
      * Gets a Traffic Manager endpoint.
@@ -164,7 +164,7 @@ public interface EndpointsClient {
      * @return a Traffic Manager endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EndpointInner get(String resourceGroupName, String profileName, EndpointType endpointType, String endpointName);
+    EndpointInner get(String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName);
 
     /**
      * Create or update a Traffic Manager endpoint.
@@ -184,7 +184,7 @@ public interface EndpointsClient {
     Mono<Response<EndpointInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String profileName,
-        EndpointType endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters);
 
@@ -205,7 +205,7 @@ public interface EndpointsClient {
     Mono<EndpointInner> createOrUpdateAsync(
         String resourceGroupName,
         String profileName,
-        EndpointType endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters);
 
@@ -227,7 +227,7 @@ public interface EndpointsClient {
     Response<EndpointInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String profileName,
-        EndpointType endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters,
         Context context);
@@ -249,7 +249,7 @@ public interface EndpointsClient {
     EndpointInner createOrUpdate(
         String resourceGroupName,
         String profileName,
-        EndpointType endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters);
 
@@ -268,7 +268,7 @@ public interface EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, EndpointType endpointType, String endpointName);
+        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName);
 
     /**
      * Deletes a Traffic Manager endpoint.
@@ -284,7 +284,7 @@ public interface EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DeleteOperationResultInner> deleteAsync(
-        String resourceGroupName, String profileName, EndpointType endpointType, String endpointName);
+        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName);
 
     /**
      * Deletes a Traffic Manager endpoint.
@@ -301,7 +301,7 @@ public interface EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeleteOperationResultInner> deleteWithResponse(
-        String resourceGroupName, String profileName, EndpointType endpointType, String endpointName, Context context);
+        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName, Context context);
 
     /**
      * Deletes a Traffic Manager endpoint.
@@ -317,5 +317,5 @@ public interface EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DeleteOperationResultInner delete(
-        String resourceGroupName, String profileName, EndpointType endpointType, String endpointName);
+        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName);
 }
