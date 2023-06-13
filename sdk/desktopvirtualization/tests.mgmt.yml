@@ -1,0 +1,16 @@
+trigger: none
+
+pr: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: desktopvirtualization
+      Artifacts:
+        - name: azure-resourcemanager-desktopvirtualization
+          groupId: com.azure.resourcemanager
+          safeName: azureresourcemanagerdesktopvirtualization
+      Clouds: 'Public'
+      # Only run tests on Windows to save cost.
+      MatrixFilters:
+        - pool=.*(win).*
