@@ -18,10 +18,10 @@ import java.util.List;
  */
 public final class ResponseError implements JsonSerializable<ResponseError> {
 
-    @JsonProperty(value = "code", required = true)
+    @JsonProperty(value = "code")
     private final String code;
 
-    @JsonProperty(value = "message", required = true)
+    @JsonProperty(value = "message")
     private final String message;
 
     @JsonProperty(value = "target")
@@ -40,8 +40,7 @@ public final class ResponseError implements JsonSerializable<ResponseError> {
      * @param message the error message of this error.
      */
     @JsonCreator
-    public ResponseError(@JsonProperty(value = "code", required = true) String code,
-        @JsonProperty(value = "message", required = true) String message) {
+    public ResponseError(@JsonProperty(value = "code") String code, @JsonProperty(value = "message") String message) {
         this.code = code;
         this.message = message;
     }
@@ -199,20 +198,10 @@ public final class ResponseError implements JsonSerializable<ResponseError> {
                 }
             }
 
-            if (codeFound && messageFound) {
-                return new ResponseError(code, message)
-                    .setTarget(target)
-                    .setInnerError(innerError)
-                    .setErrorDetails(errorDetails);
-            }
-
-            if (!codeFound && !messageFound) {
-                throw new IllegalStateException("Missing required properties: code, message");
-            } else if (!codeFound) {
-                throw new IllegalStateException("Missing required property: code");
-            } else {
-                throw new IllegalStateException("Missing required property: message");
-            }
+            return new ResponseError(code, message)
+                .setTarget(target)
+                .setInnerError(innerError)
+                .setErrorDetails(errorDetails);
         });
     }
 }

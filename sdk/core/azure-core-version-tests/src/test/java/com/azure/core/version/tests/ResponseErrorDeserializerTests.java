@@ -6,7 +6,6 @@ package com.azure.core.version.tests;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -41,20 +40,4 @@ public class ResponseErrorDeserializerTests {
             Arguments.of("{\"name\":\"foo\",\"code\":\"BAD_QUERY_FORMAT\",\"message\":\"Invalid syntax\"}",
                 "BAD_QUERY_FORMAT", "Invalid syntax"));
     }
-
-    @ParameterizedTest
-    @MethodSource("deserializeResponseErrorInvalidJsonSupplier")
-    public void deserializeResponseErrorMissingRequiredProperty(String invalidJson) {
-        Assertions.assertThrows(IOException.class,
-            () -> MAPPER.deserialize(invalidJson, ResponseError.class, SerializerEncoding.JSON));
-    }
-
-    private static Stream<String> deserializeResponseErrorInvalidJsonSupplier() {
-        return Stream.of(
-            "{\"error\": {\"message\": \"Invalid syntax\"}}",
-            "{\"message\": \"Invalid syntax\"}",
-            "{\"error\": {\"code\": \"BAD_QUERY_FORMAT\"}}",
-            "{\"code\": \"BAD_QUERY_FORMAT\"}");
-    }
-
 }

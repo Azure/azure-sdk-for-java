@@ -264,6 +264,12 @@
           "code" : "java.method.removed",
           "old" : "method void com.mysql.cj.protocol.ServerSession::setOldStatusFlags(int)",
           "justification" : "Fix method removed."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.attributeRemoved",
+          "old": ".*? com\\.azure\\.core\\.models\\.ResponseError::<init>.*",
+          "justification": "No longer require those properties to exist in JSON."
         }
       ]
     }
