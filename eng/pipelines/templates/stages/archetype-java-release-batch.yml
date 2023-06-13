@@ -281,7 +281,6 @@ stages:
                   # be part of the sparse-checkout. Right now, just run that as part of the increment to see if
                   # it helps
                   - pwsh: |
-                      git config gc.auto 0
                       $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
                       $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
                       python --version
