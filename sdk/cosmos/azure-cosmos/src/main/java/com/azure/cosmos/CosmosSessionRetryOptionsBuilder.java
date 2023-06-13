@@ -17,6 +17,12 @@ public final class CosmosSessionRetryOptionsBuilder {
      * Sets the {@link CosmosRegionSwitchHint} which specifies for
      * a request whether internal retry policies should prioritize a local region or a remote region.
      *
+     * <p>
+     * NOTES:
+     * <ol>
+     *     <li>null values are ignored.</li>
+     * </ol>
+     *
      * @param regionSwitchHint The region switch hint
      * @return This instance of {@link CosmosSessionRetryOptionsBuilder}
      * */
