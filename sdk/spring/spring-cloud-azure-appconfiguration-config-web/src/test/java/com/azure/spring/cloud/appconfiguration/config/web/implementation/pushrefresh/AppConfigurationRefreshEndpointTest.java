@@ -7,6 +7,9 @@ import static com.azure.spring.cloud.appconfiguration.config.web.implementation.
 import static com.azure.spring.cloud.appconfiguration.config.web.implementation.TestConstants.TRIGGER_LABEL;
 import static com.azure.spring.cloud.appconfiguration.config.web.implementation.TestConstants.VALIDATION_URL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.BufferedReader;
@@ -61,6 +64,8 @@ public class AppConfigurationRefreshEndpointTest {
     private ArrayList<AppConfigurationStoreTrigger> triggers;
 
     private AppConfigurationStoreMonitoring monitoring;
+    
+    private String endpoint = "https://fake.test.azconfig.io";
 
     private String tokenName = "token";
 
@@ -112,10 +117,11 @@ public class AppConfigurationRefreshEndpointTest {
         when(lines.collect(Mockito.any())).thenReturn("[{\r\n"
             + "  \"id\": \"2d1781af-3a4c-4d7c-bd0c-e34b19da4e66\",\r\n"
             + "  \"topic\":" + TOPIC + ",\r\n"
-            + "  \"subject\": \"\",\r\n"
+            + "  \"subject\": \"https://fake.test.azconfig.io/kv/Foo?label=FizzBuzz\",\r\n"
             + "  \"data\": {\r\n"
             + "    \"validationCode\": \"512d38b6-c7b8-40c8-89fe-f46f9e9622b6\",\r\n"
-            + "    \"validationUrl\":" + VALIDATION_URL + "\r\n"
+            + "    \"validationUrl\":" + VALIDATION_URL + ",\r\n"
+            + "    \"syncToken\": \"zAJw6V16=MzoyMCMyODA3Mzc3;sn=2807377\"\r\n"
             + "  },\r\n"
             + "  \"eventType\": \"Microsoft.EventGrid.SubscriptionValidationEvent\",\r\n"
             + "  \"eventTime\": \"2018-01-25T22:12:19.4556811Z\",\r\n"
@@ -141,6 +147,11 @@ public class AppConfigurationRefreshEndpointTest {
         when(lines.collect(Mockito.any())).thenReturn(getResetNotification());
 
         assertEquals(HttpStatus.OK.getReasonPhrase(), endpoint.refresh(request, response, allRequestParams));
+        verify(publisher, times(1)).publishEvent(argThat(refreshEvent -> {
+            boolean hasEndpoint = ((AppConfigurationRefreshEvent) refreshEvent).getEndpoint().equals("https://fake.test.azconfig.io");
+            boolean hasSyncToken = ((AppConfigurationRefreshEvent) refreshEvent).getSyncToken().equals("zAJw6V16=MzoyMCMyODA3Mzc3;sn=2807377");
+            return hasEndpoint && hasSyncToken;
+        }));
     }
 
     @Test

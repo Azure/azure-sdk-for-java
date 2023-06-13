@@ -16,6 +16,10 @@ public final class AdditionalFeaturesServerConfigurations {
     @JsonProperty(value = "isRServicesEnabled")
     private Boolean isRServicesEnabled;
 
+    /** Creates an instance of AdditionalFeaturesServerConfigurations class. */
+    public AdditionalFeaturesServerConfigurations() {
+    }
+
     /**
      * Get the isRServicesEnabled property: Enable or disable R services (SQL 2016 onwards).
      *

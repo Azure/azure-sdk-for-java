@@ -914,8 +914,6 @@ public class GatewayAddressCache implements IAddressCache {
             // flow provided these addresses are used by a container in the connection warm up flow
             if (this.proactiveOpenConnectionsProcessor.isCollectionRidUnderOpenConnectionsFlow(collectionRid)) {
 
-                minConnectionsRequiredForEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
-
                 this.proactiveOpenConnectionsProcessor
                         .recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(
                                 collectionRid,
@@ -932,7 +930,7 @@ public class GatewayAddressCache implements IAddressCache {
                                 collectionRid,
                                 this.serviceEndpoint,
                                 addressToBeValidated,
-                                minConnectionsRequiredForEndpoint))
+                                this.connectionPolicy.getMinConnectionPoolSizePerEndpoint()))
                     .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                     .subscribe();
             }
@@ -1051,8 +1049,7 @@ public class GatewayAddressCache implements IAddressCache {
             return Mono.empty();
         }
 
-        int connectionsRequiredForEndpoint = Math.max(connectionsPerEndpointCount,
-                Configs.getMinConnectionPoolSizePerEndpoint());
+        int connectionsRequiredForEndpoint = Math.max(connectionsPerEndpointCount, this.connectionPolicy.getMinConnectionPoolSizePerEndpoint());
 
         OpenConnectionTask openConnectionTask = this.proactiveOpenConnectionsProcessor.submitOpenConnectionTaskOutsideLoop(
                 documentCollection.getResourceId(),
