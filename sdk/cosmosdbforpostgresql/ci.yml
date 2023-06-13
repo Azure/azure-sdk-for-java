@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/cosmosdbforpostgresql/ci.yml
+      - sdk/cosmosdbforpostgresql/azure-resourcemanager-cosmosdbforpostgresql/
+    exclude:
+      - sdk/cosmosdbforpostgresql/pom.xml
+      - sdk/cosmosdbforpostgresql/azure-resourcemanager-cosmosdbforpostgresql/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/cosmosdbforpostgresql/ci.yml
+      - sdk/cosmosdbforpostgresql/azure-resourcemanager-cosmosdbforpostgresql/
+    exclude:
+      - sdk/cosmosdbforpostgresql/pom.xml
+      - sdk/cosmosdbforpostgresql/azure-resourcemanager-cosmosdbforpostgresql/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagercosmosdbforpostgresql
+    displayName: azure-resourcemanager-cosmosdbforpostgresql
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: cosmosdbforpostgresql
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-cosmosdbforpostgresql
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercosmosdbforpostgresql
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercosmosdbforpostgresql }}
