@@ -23,6 +23,10 @@ import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsQueryResultStatus;
+import com.azure.monitor.query.models.LogsTable;
+import com.azure.monitor.query.models.LogsTableCell;
+import com.azure.monitor.query.models.LogsTableColumn;
+import com.azure.monitor.query.models.LogsTableRow;
 import com.azure.monitor.query.models.QueryTimeInterval;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +37,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -345,5 +350,39 @@ public class LogsQueryClientTest extends TestProxyTestBase {
 
         assertEquals("the chart title", title);
         assertEquals("the x axis title", xTitle);
+    }
+
+    private String specialQuery() {
+        String tableBase = "datatable (DateTime: datetime, String: string) [\n";
+        OffsetDateTime today = OffsetDateTime.now();
+        for (int i = 0; i < 10; i++) {
+            tableBase += String.format("datetime(%s),\"%s\", \n", today.plusDays(i).toString(), "testString" + i);
+        }
+        tableBase += "]";
+        return tableBase;
+    }
+
+    @Test void splitQueryIntoEndpoints() {
+
+        String findBatchEndpointsQuery = String.format(
+            "%1$s | sort by %2$s desc | extend batch_num = row_cumsum(1) / %3$s | summarize endpoint=min(%2$s) by batch_num | sort by batch_num asc | project endpoint", 
+            specialQuery(),
+            "DateTime",
+            5);
+
+        LogsQueryResult result = client.queryWorkspace(WORKSPACE_ID, findBatchEndpointsQuery, QueryTimeInterval.ALL);
+        LogsTable table = result.getTable();
+        List<LogsTableColumn> columns = table.getColumns();
+        List<LogsTableRow> rows = table.getRows();
+        List<OffsetDateTime> endpoints = new ArrayList<>();
+        for (LogsTableRow row : rows) {
+            OffsetDateTime endpoint = row.getColumnValue("endpoint").get().getValueAsDateTime();
+            endpoints.add(endpoint);
+        }
+
+        System.out.println("done");
+
+
+    
     }
 }

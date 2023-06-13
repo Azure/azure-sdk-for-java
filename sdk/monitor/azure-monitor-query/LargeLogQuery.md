@@ -29,4 +29,7 @@ String LOG_WORKSPACE_ID = "<your workspace id>";
 ### Defining a Helper Function
 
 In order to overcome the service limits, the strategy is to query data in smaller chunks based on some time column (i.e. TImeGenerated). The
-following helper function takes a large query and splits it into a `LogsBatchQuery` based on the time range.
+following helper functions take a large query and splits it into a `LogsBatchQuery` based on the time range.
+
+```java
+```
