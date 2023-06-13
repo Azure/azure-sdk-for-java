@@ -41,7 +41,7 @@ import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.Cosmos
  * instances as logical representation of the Azure Cosmos database service.
  * <p>
  * CosmosAsyncClient and CosmosClient are thread-safe.
- * Its recommended to maintain a single instance of CosmosClient or CosmosAsyncClient per lifetime of the application which enables efficient connection management and performance.
+ * It's recommended to maintain a single instance of CosmosClient or CosmosAsyncClient per lifetime of the application which enables efficient connection management and performance.
  * CosmosAsyncClient and CosmosClient initializations are heavy operations - don't use initialization CosmosAsyncClient or CosmosClient instances as credentials or network connectivity validations.
  * <p>
  * When building client, endpoint() and key() are mandatory APIs, without these the initialization will fail.

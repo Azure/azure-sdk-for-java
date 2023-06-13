@@ -70,7 +70,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * This asynchronous client is used to configure and execute requests against the service.
  * <p>
  * CosmosAsyncClient is thread-safe.
- * Its recommended to maintain a single instance of CosmosClient per lifetime of the application which enables efficient connection management and performance.
+ * It's recommended to maintain a single instance of CosmosAsyncClient per lifetime of the application which enables efficient connection management and performance.
  * CosmosAsyncClient initialization is a heavy operation - don't use initialization CosmosAsyncClient instances as credentials or network connectivity validations.
  * <p/>
  */
