@@ -67,15 +67,13 @@ public class AppConfigurationEndpointTest {
         Map<String, String> allRequestParams = new HashMap<String, String>();
 
         AppConfigurationEndpoint endpoint = new AppConfigurationEndpoint(request, configStores, allRequestParams);
-        assertEquals("https://testConfig", endpoint.getEndpoint());
-        assertEquals("testConfig", endpoint.getStore());
+        assertEquals("https://fake.test.azconfig.io", endpoint.getEndpoint());
 
         requestBody = mapper.readValue(new File(GET_TEST_REFRESH), JsonNode.class).toString();
         when(lines.collect(Mockito.any())).thenReturn(requestBody);
         
         endpoint = new AppConfigurationEndpoint(request, configStores, allRequestParams);
-        assertEquals("https://testConfig", endpoint.getEndpoint());
-        assertEquals("testConfig", endpoint.getStore());
+        assertEquals("https://testconfig.azconfig.io", endpoint.getEndpoint());
     }
 
     @Test
@@ -109,7 +107,7 @@ public class AppConfigurationEndpointTest {
         assertFalse(endpoint.authenticate());
 
         ConfigStore validConfigStore = new ConfigStore();
-        validConfigStore.setEndpoint("https://testConfig.azconfig.io");
+        validConfigStore.setEndpoint("https://fake.test.azconfig.io");
         configStores.add(validConfigStore);
         endpoint = new AppConfigurationEndpoint(request, configStores, allRequestParams);
         // Valid Config Store, no secrets
@@ -174,7 +172,7 @@ public class AppConfigurationEndpointTest {
         assertFalse(endpoint.authenticate());
 
         ConfigStore validConfigStore = new ConfigStore();
-        validConfigStore.setEndpoint("https://testConfig.azconfig.io");
+        validConfigStore.setEndpoint("https://fake.test.azconfig.io");
 
         configStores.add(validConfigStore);
         endpoint = new AppConfigurationEndpoint(request, configStores, allRequestParams);
