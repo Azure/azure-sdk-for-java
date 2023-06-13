@@ -121,13 +121,13 @@ public class RecoveryServicesBackupManagerTests extends TestBase {
                         new SimpleSchedulePolicy()
                             .withScheduleRunFrequency(ScheduleRunType.WEEKLY)
                             .withScheduleRunDays(Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
-                            .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z"))))
+                            .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2023-06-13T10:00:00Z"))))
                     .withRetentionPolicy(
                         new LongTermRetentionPolicy()
                             .withWeeklySchedule(
                                 new WeeklyRetentionSchedule()
                                     .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
-                                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
+                                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2023-06-13T10:00:00Z")))
                                     .withRetentionDuration(
                                         new RetentionDuration()
                                             .withCount(2)
@@ -139,7 +139,7 @@ public class RecoveryServicesBackupManagerTests extends TestBase {
                                         new WeeklyRetentionFormat()
                                             .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
                                             .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.SECOND)))
-                                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
+                                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2023-06-13T10:00:00Z")))
                                     .withRetentionDuration(
                                         new RetentionDuration()
                                             .withCount(1)
@@ -152,7 +152,7 @@ public class RecoveryServicesBackupManagerTests extends TestBase {
                                         new WeeklyRetentionFormat()
                                             .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
                                             .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.LAST)))
-                                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
+                                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2023-06-13T10:00:00Z")))
                                     .withRetentionDuration(
                                         new RetentionDuration()
                                             .withCount(1)
@@ -163,7 +163,7 @@ public class RecoveryServicesBackupManagerTests extends TestBase {
                         new SimpleSchedulePolicy()
                             .withScheduleRunFrequency(ScheduleRunType.WEEKLY)
                             .withScheduleRunDays(Arrays.asList(DayOfWeek.FRIDAY))
-                            .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z"))))
+                            .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2023-06-13T10:00:00Z"))))
                     .withRetentionPolicy(
                         new SimpleRetentionPolicy()
                             .withRetentionDuration(
