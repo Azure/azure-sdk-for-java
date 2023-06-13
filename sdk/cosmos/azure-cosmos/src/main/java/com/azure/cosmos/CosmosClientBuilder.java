@@ -810,7 +810,7 @@ public class CosmosClientBuilder implements
      * request is looking for.
      * <p>
      * DISCLAIMER: Setting {@link CosmosSessionRetryOptions} will modify retry behavior
-     * for all operations or workload executed through this instance of the client.
+     * for all operations or workloads executed through this instance of the client.
      * <p>
      * For multi-write accounts:
      * <ul>
