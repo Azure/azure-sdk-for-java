@@ -96,8 +96,8 @@ public final class AccessTokenCache {
                         new IllegalArgumentException("The token request context input cannot be null.")));
                 }
 
-                AccessTokenCacheInfo cacheInfo = this.cacheInfo.get();
-                AccessToken cache = cacheInfo.getCache();
+                AccessTokenCacheInfo cache = this.cacheInfo.get();
+                AccessToken cachedToken = cache.getCachedAccessToken();
 
                 if (wip.compareAndSet(null, Sinks.one())) {
                     final Sinks.One<AccessToken> sinksOne = wip.get();
@@ -118,11 +118,11 @@ public final class AccessTokenCache {
                         this.tokenRequestContext = tokenRequestContext;
                         tokenRefresh = Mono.defer(() -> tokenCredential.getToken(this.tokenRequestContext));
                         fallback = Mono.empty();
-                    } else if (cache != null && !shouldRefresh.test(cache)) {
+                    } else if (cachedToken != null && !shouldRefresh.test(cachedToken)) {
                         // fresh cache & no need to refresh
                         tokenRefresh = Mono.empty();
-                        fallback = Mono.just(cache);
-                    } else if (cache == null || cache.isExpired()) {
+                        fallback = Mono.just(cachedToken);
+                    } else if (cachedToken == null || cachedToken.isExpired()) {
                         // no token to use
                         // refresh immediately
                         tokenRefresh = Mono.defer(tokenSupplier);
@@ -131,7 +131,7 @@ public final class AccessTokenCache {
                         fallback = Mono.empty();
                     } else {
                         // token available, but close to expiry
-                        if (now.isAfter(cacheInfo.getNextTokenRefresh())) {
+                        if (now.isAfter(cache.getNextTokenRefresh())) {
                             // refresh immediately
                             tokenRefresh = Mono.defer(tokenSupplier);
                         } else {
@@ -139,16 +139,16 @@ public final class AccessTokenCache {
                             tokenRefresh = Mono.empty();
                         }
                         // cache hasn't expired, ignore refresh error this time
-                        fallback = Mono.just(cache);
+                        fallback = Mono.just(cachedToken);
                     }
                     return tokenRefresh
                         .materialize()
                         .flatMap(processTokenRefreshResult(sinksOne, now, fallback))
                         .doOnError(sinksOne::tryEmitError)
                         .doFinally(ignored -> wip.set(null));
-                } else if (cache != null && !cache.isExpired() && !checkToForceFetchToken) {
+                } else if (cachedToken != null && !cachedToken.isExpired() && !checkToForceFetchToken) {
                     // another thread might be refreshing the token proactively, but the current token is still valid
-                    return Mono.just(cache);
+                    return Mono.just(cachedToken);
                 } else {
                     // if a force refresh is possible, then exit and retry.
                     if (checkToForceFetchToken) {
@@ -158,10 +158,10 @@ public final class AccessTokenCache {
                     Sinks.One<AccessToken> sinksOne = wip.get();
                     if (sinksOne == null) {
                         // the refreshing thread has finished
-                        return Mono.just(cache);
+                        return Mono.just(cachedToken);
                     } else {
                         // wait for refreshing thread to finish but defer to updated cache in case just missed onNext()
-                        return sinksOne.asMono().switchIfEmpty(Mono.fromSupplier(() -> cache));
+                        return sinksOne.asMono().switchIfEmpty(Mono.fromSupplier(() -> cachedToken));
                     }
                 }
             } catch (Exception ex) {
@@ -177,8 +177,8 @@ public final class AccessTokenCache {
                 throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("The token request context input cannot be null."));
             }
-            AccessTokenCacheInfo cacheInfo = this.cacheInfo.get();
-            AccessToken cache = cacheInfo.getCache();
+            AccessTokenCacheInfo cache = this.cacheInfo.get();
+            AccessToken cachedToken = cache.getCachedAccessToken();
 
             OffsetDateTime now = OffsetDateTime.now();
             Supplier<AccessToken> tokenRefresh;
@@ -197,11 +197,11 @@ public final class AccessTokenCache {
                 this.tokenRequestContext = tokenRequestContext;
                 tokenRefresh = tokenSupplier;
                 fallback = null;
-            } else if (cache != null && !shouldRefresh.test(cache)) {
+            } else if (cachedToken != null && !shouldRefresh.test(cachedToken)) {
                 // fresh cache & no need to refresh
                 tokenRefresh = null;
-                fallback = cache;
-            } else if (cache == null || cache.isExpired()) {
+                fallback = cachedToken;
+            } else if (cachedToken == null || cachedToken.isExpired()) {
                 // no token to use
                 // refresh immediately
                 tokenRefresh = tokenSupplier;
@@ -210,7 +210,7 @@ public final class AccessTokenCache {
                 fallback = null;
             } else {
                 // token available, but close to expiry
-                if (now.isAfter(cacheInfo.getNextTokenRefresh())) {
+                if (now.isAfter(cache.getNextTokenRefresh())) {
                     // refresh immediately
                     tokenRefresh = tokenSupplier;
                 } else {
@@ -218,13 +218,13 @@ public final class AccessTokenCache {
                     tokenRefresh = null;
                 }
                 // cache hasn't expired, ignore refresh error this time
-                fallback = cache;
+                fallback = cachedToken;
             }
 
             try {
                 if (tokenRefresh != null) {
                     AccessToken token = tokenRefresh.get();
-                    buildTokenRefreshLog(LogLevel.INFORMATIONAL, cache, now)
+                    buildTokenRefreshLog(LogLevel.INFORMATIONAL, cachedToken, now)
                         .log("Acquired a new access token.");
                     OffsetDateTime nextTokenRefreshTime = OffsetDateTime.now().plus(REFRESH_DELAY);
                     AccessTokenCacheInfo updatedInfo = new AccessTokenCacheInfo(token, nextTokenRefreshTime);
@@ -234,10 +234,10 @@ public final class AccessTokenCache {
                     return fallback;
                 }
             } catch (Throwable error) {
-                buildTokenRefreshLog(LogLevel.ERROR, cache, now)
+                buildTokenRefreshLog(LogLevel.ERROR, cachedToken, now)
                     .log("Failed to acquire a new access token.", error);
                 OffsetDateTime nextTokenRefreshTime = OffsetDateTime.now();
-                AccessTokenCacheInfo updatedInfo = new AccessTokenCacheInfo(cache, nextTokenRefreshTime);
+                AccessTokenCacheInfo updatedInfo = new AccessTokenCacheInfo(cachedToken, nextTokenRefreshTime);
                 this.cacheInfo.set(updatedInfo);
                 if (fallback != null) {
                     return fallback;
@@ -260,7 +260,7 @@ public final class AccessTokenCache {
         return signal -> {
             AccessToken accessToken = signal.get();
             Throwable error = signal.getThrowable();
-            AccessToken cache = cacheInfo.get().getCache();
+            AccessToken cache = cacheInfo.get().getCachedAccessToken();
             if (signal.isOnNext() && accessToken != null) { // SUCCESS
                 buildTokenRefreshLog(LogLevel.INFORMATIONAL, cache, now)
                     .log("Acquired a new access token.");

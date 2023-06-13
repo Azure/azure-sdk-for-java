@@ -27,14 +27,14 @@ public class AccessTokenCacheInfo {
      *
      * @return the cached token.
      */
-    public AccessToken getCache() {
+    public AccessToken getCachedAccessToken() {
         return cache;
     }
 
     /**
-     * Get the time to refresh the token next.
+     * Get the next refresh time for the token.
      *
-     * @return the next token refresh time.
+     * @return the token refresh time.
      */
     public OffsetDateTime getNextTokenRefresh() {
         return nextTokenRefresh;
