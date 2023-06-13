@@ -4,7 +4,6 @@
 
 module com.azure.developer.loadtesting {
     requires transitive com.azure.core;
-    requires transitive com.azure.core.experimental;
 
     exports com.azure.developer.loadtesting;
     exports com.azure.developer.loadtesting.models;
