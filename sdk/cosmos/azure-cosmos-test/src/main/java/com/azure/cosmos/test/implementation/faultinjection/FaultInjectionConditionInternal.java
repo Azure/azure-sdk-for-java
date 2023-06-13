@@ -4,8 +4,10 @@
 package com.azure.cosmos.test.implementation.faultinjection;
 
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestArgs;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -66,6 +68,12 @@ public class FaultInjectionConditionInternal {
 
         if (primaryOnly) {
             this.validators.add(new PrimaryAddressValidator());
+        }
+    }
+
+    public void setPartitionKeyRangeIds(List<String> partitionKeyRangeIds) {
+        if (partitionKeyRangeIds != null && partitionKeyRangeIds.size() > 0) {
+            this.validators.add(new PartitionKeyRangeIdValidator(partitionKeyRangeIds));
         }
     }
 
@@ -167,7 +175,7 @@ public class FaultInjectionConditionInternal {
 
                 boolean isApplicable = this.addresses
                     .stream()
-                    .anyMatch(address -> requestArgs.getRequestUri().toString().startsWith(address.toString()));
+                    .anyMatch(address -> requestArgs.getRequestURI().toString().startsWith(address.toString()));
 
                 if (!isApplicable) {
                     requestArgs.getServiceRequest().faultInjectionRequestContext
@@ -176,7 +184,7 @@ public class FaultInjectionConditionInternal {
                                 "%s [Addresses mismatch: Expected [%s], Actual [%s]]",
                                 ruleId,
                                 addresses,
-                                requestArgs.getRequestUri().toString()));
+                                requestArgs.getRequestURI().toString()));
                 }
 
                 return isApplicable;
@@ -222,6 +230,32 @@ public class FaultInjectionConditionInternal {
                             resourceType,
                             requestArgs.getServiceRequest().getResourceType(),
                             requestArgs.getServiceRequest().isAddressRefresh()));
+            }
+
+            return isApplicable;
+        }
+    }
+
+    static class PartitionKeyRangeIdValidator implements IFaultInjectionConditionValidator {
+        private List<String> partitionKeyRangeIdList;
+        PartitionKeyRangeIdValidator(List<String> partitionKeyRangeIdList) {
+            this.partitionKeyRangeIdList = partitionKeyRangeIdList;
+        }
+
+        @Override
+        public boolean isApplicable(String ruleId, FaultInjectionRequestArgs requestArgs) {
+            PartitionKeyRange resolvedPartitionKeyRange = requestArgs.getServiceRequest().requestContext.resolvedPartitionKeyRange;
+            boolean isApplicable = resolvedPartitionKeyRange != null
+                && this.partitionKeyRangeIdList.contains(resolvedPartitionKeyRange.getId());
+
+            if (!isApplicable) {
+                requestArgs.getServiceRequest().faultInjectionRequestContext
+                    .recordFaultInjectionRuleEvaluation(requestArgs.getTransportRequestId(),
+                        String.format(
+                            "%s [PartitionKeyRangeId mismatch: Expected [%s], Actual [%s]]",
+                            ruleId,
+                            partitionKeyRangeIdList,
+                            resolvedPartitionKeyRange.getId()));
             }
 
             return isApplicable;

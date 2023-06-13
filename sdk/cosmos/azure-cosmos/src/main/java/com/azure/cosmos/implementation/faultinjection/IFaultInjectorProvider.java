@@ -11,17 +11,10 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 public interface IFaultInjectorProvider {
 
     /***
-     * Get the rntbd server error injector.
-     * @return the rntbd server error injector.
+     * Get the server error injector.
+     * @return the server error injector.
      */
-    IRntbdServerErrorInjector getRntbdServerErrorInjector();
-
-    /**
-     * Get the gateway server error injector.
-     *
-     * @return the gateway server error injector.
-     */
-    IGatewayServerErrorInjector getGatewayServerErrorInjector();
+    IServerErrorInjector getServerErrorInjector();
 
     /***
      * Register the rntbd connection error injector.

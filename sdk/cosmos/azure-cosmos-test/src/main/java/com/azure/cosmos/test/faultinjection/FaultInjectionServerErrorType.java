@@ -42,7 +42,7 @@ public enum FaultInjectionServerErrorType {
      */
     SERVICE_UNAVAILABLE,
     /**
-     * simulate 410-1002 due to staled addresses.
+     * simulate 410-0 due to staled addresses. The exception will only be cleared if a forceRefresh address refresh happened.
      */
-    STALED_ADDRESSES_PARTITION_IS_GONE
+    STALED_ADDRESSES_SERVER_GONE
 }

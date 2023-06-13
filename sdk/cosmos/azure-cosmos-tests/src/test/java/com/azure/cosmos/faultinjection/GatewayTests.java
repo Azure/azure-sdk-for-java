@@ -37,7 +37,7 @@ public class GatewayTests {
                 new FaultInjectionConditionBuilder()
                     .region("EAST US 2")
                     .connectionType(FaultInjectionConnectionType.GATEWAY)
-                    .operationType(FaultInjectionOperationType.METADATA_REQUEST_REFRESH_ADDRESSES)
+                    .operationType(FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH)
                     .build())
             .result(
                 FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)

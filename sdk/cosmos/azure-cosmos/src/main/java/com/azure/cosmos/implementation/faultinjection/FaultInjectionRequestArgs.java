@@ -1,56 +1,48 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.test.implementation.faultinjection;
+package com.azure.cosmos.implementation.faultinjection;
 
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
 
 import java.net.URI;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class FaultInjectionRequestArgs {
+public abstract class FaultInjectionRequestArgs {
     private final long transportRequestId;
-    private final URI requestUri;
+    private final URI requestURI;
     private final RxDocumentServiceRequest serviceRequest;
-    private final FaultInjectionConnectionType connectionType;
     private boolean isPrimary;
 
     public FaultInjectionRequestArgs(
         long transportRequestId,
-        URI requestUri,
+        URI requestURI,
         boolean isPrimary,
-        RxDocumentServiceRequest serviceRequest,
-        FaultInjectionConnectionType connectionType) {
+        RxDocumentServiceRequest serviceRequest) {
 
-        checkNotNull(requestUri, "Argument 'requestUri' can not null");
+        checkNotNull(requestURI, "Argument 'requestURI' can not null");
         checkNotNull(serviceRequest, "Argument 'serviceRequest' can not be null");
 
         this.transportRequestId = transportRequestId;
-        this.requestUri = requestUri;
+        this.requestURI = requestURI;
         this.isPrimary = isPrimary;
         this.serviceRequest = serviceRequest;
-        this.connectionType = connectionType;
     }
 
     public long getTransportRequestId() {
-        return transportRequestId;
+        return this.transportRequestId;
     }
 
-    public URI getRequestUri() {
-        return requestUri;
+    public URI getRequestURI() {
+        return this.requestURI;
     }
 
     public RxDocumentServiceRequest getServiceRequest() {
-        return serviceRequest;
-    }
-
-    public FaultInjectionConnectionType getConnectionType() {
-        return connectionType;
+        return this.serviceRequest;
     }
 
     public boolean isPrimary() {
-        return isPrimary;
+        return this.isPrimary;
     }
 }

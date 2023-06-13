@@ -118,62 +118,10 @@ public class FaultInjectionRuleProcessor {
     }
 
     private void validateRule(FaultInjectionRule rule) {
-        if (rule.getResult() instanceof FaultInjectionConnectionErrorResult
-            && rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY) {
-            throw new IllegalArgumentException("FaultInjectionConnectionError result can only be configured with gateway connection type");
+        if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.DIRECT
+            && this.connectionMode != ConnectionMode.DIRECT) {
+            throw new IllegalArgumentException("Direct connection type rule is not supported when client is not in direct mode.");
         }
-
-        if (rule.getResult() instanceof FaultInjectionServerErrorResult) {
-            FaultInjectionServerErrorResult serverErrorResult = (FaultInjectionServerErrorResult) rule.getResult();
-
-            // If the rule is configured for metadata
-            if (rule.getCondition().getOperationType() != null
-                && this.isMetadataRequest(rule.getCondition().getOperationType())) {
-                this.validateRuleForMetadataRequest(serverErrorResult);
-            }
-
-            if (this.connectionMode == ConnectionMode.GATEWAY) {
-                this.validateRuleOnGatewayMode(rule.getCondition(), serverErrorResult);
-            }
-        }
-    }
-
-    private void validateRuleOnGatewayMode(
-        FaultInjectionCondition condition,
-        FaultInjectionServerErrorResult serverErrorResult) {
-        if (condition.getConnectionType() == FaultInjectionConnectionType.DIRECT) {
-            throw new IllegalArgumentException("Client is in gateway mode, can not inject direct connection type rule");
-        }
-
-        // Since gateway usually will retry for GONE exception,so SDK will get 503(Service_Unavailable) instead
-        FaultInjectionServerErrorType errorType = serverErrorResult.getServerErrorType();
-        if (errorType == FaultInjectionServerErrorType.GONE) {
-            throw new IllegalArgumentException("Client is in gateway mode, can not inject GONE exception");
-        }
-
-        if (errorType == FaultInjectionServerErrorType.STALED_ADDRESSES_PARTITION_IS_GONE) {
-            throw new IllegalArgumentException("Client is in gateway mode, can not inject STALED_ADDRESSES_PARTITION_IS_GONE exception");
-        }
-
-        if (condition.getOperationType() != null
-            && condition.getOperationType() == FaultInjectionOperationType.METADATA_REQUEST_REFRESH_ADDRESSES) {
-            throw new IllegalArgumentException("Client is in gateway mode, METADATA_REQUEST_REFRESH_ADDRESSES is not supported");
-        }
-    }
-
-    private void validateRuleForMetadataRequest(FaultInjectionServerErrorResult serverErrorResult) {
-        FaultInjectionServerErrorType serverErrorType = serverErrorResult.getServerErrorType();
-        if (serverErrorType != FaultInjectionServerErrorType.CONNECTION_DELAY
-            && serverErrorType != FaultInjectionServerErrorType.RESPONSE_DELAY) {
-            throw new IllegalArgumentException("For metadata request fault injection rule, server error type " + serverErrorType + " is not supported");
-        }
-    }
-
-    private boolean isMetadataRequest(FaultInjectionOperationType operationType) {
-        return operationType == FaultInjectionOperationType.METADATA_REQUEST_QUERY_PLAN
-            || operationType == FaultInjectionOperationType.METADATA_REQUEST_REFRESH_ADDRESSES
-            || operationType == FaultInjectionOperationType.METADATA_REQUEST_CONTAINER
-            || operationType == FaultInjectionOperationType.METADATA_REQUEST_DATABASE_ACCOUNT;
     }
 
     private Mono<IFaultInjectionRuleInternal> getEffectiveRule(
@@ -219,8 +167,21 @@ public class FaultInjectionRuleProcessor {
                     effectiveCondition.setRegionEndpoints(regionEndpoints);
                 }
 
-                FaultInjectionConnectionType connectionType = this.getEffectiveConnectionType(rule);
-                if (connectionType == FaultInjectionConnectionType.GATEWAY) {
+                if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY) {
+                    // for gateway mode, SDK does not decide which replica to send the request to
+                    // so the most granular level it can control is by partition
+                    if (canErrorLimitToOperation(errorType) && canRequestLimitToPartition(rule.getCondition())) {
+                        return BackoffRetryUtility.executeRetry(
+                                () -> this.resolvePartitionKeyRangeIds(
+                                    rule.getCondition().getEndpoints(),
+                                    documentCollection),
+                                new FaultInjectionRuleProcessorRetryPolicy(this.retryOptions))
+                            .map(pkRangeIds -> {
+                                effectiveCondition.setPartitionKeyRangeIds(pkRangeIds);
+                                return effectiveCondition;
+                            });
+                    }
+
                     return Mono.just(effectiveCondition);
                 }
 
@@ -268,21 +229,25 @@ public class FaultInjectionRuleProcessor {
             });
     }
 
-    private FaultInjectionConnectionType getEffectiveConnectionType(FaultInjectionRule rule) {
-        FaultInjectionConnectionType connectionType = rule.getCondition().getConnectionType();
-        if (rule.getCondition().getOperationType() != null
-            && this.isMetadataRequest(rule.getCondition().getOperationType())) {
-            connectionType = FaultInjectionConnectionType.GATEWAY;
-        }
-
-        return connectionType;
-    }
-
     private boolean canErrorLimitToOperation(FaultInjectionServerErrorType errorType) {
         // Some errors makes sense to only apply for certain operationType/requests
         // but some should apply to all requests being routed to the server
         return errorType != FaultInjectionServerErrorType.CONNECTION_DELAY
             && errorType != FaultInjectionServerErrorType.GONE;
+    }
+
+    private boolean canRequestLimitToPartition(FaultInjectionCondition faultInjectionCondition) {
+        // Some operations can be targeted for a certain partition while some can not (for example metadata requests)
+        if (faultInjectionCondition.getOperationType() == null
+            || faultInjectionCondition.getOperationType() == FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH) {
+            return true;
+        }
+
+        // non metadata requests
+        return !ImplementationBridgeHelpers
+            .FaultInjectionConditionHelper
+            .getFaultInjectionConditionAccessor()
+            .isMetadataOperationType(faultInjectionCondition);
     }
 
     private Mono<IFaultInjectionRuleInternal> getEffectiveConnectionErrorRule(
@@ -348,7 +313,7 @@ public class FaultInjectionRuleProcessor {
             case READ_ITEM:
             case METADATA_REQUEST_CONTAINER:
             case METADATA_REQUEST_DATABASE_ACCOUNT:
-            case METADATA_REQUEST_REFRESH_ADDRESSES:
+            case METADATA_REQUEST_ADDRESS_REFRESH:
                 return OperationType.Read;
             case CREATE_ITEM:
                 return OperationType.Create;
@@ -364,6 +329,8 @@ public class FaultInjectionRuleProcessor {
                 return OperationType.Patch;
             case METADATA_REQUEST_QUERY_PLAN:
                 return OperationType.QueryPlan;
+            case METADATA_REQUEST_PARTITION_KEY_RANGES:
+                return OperationType.ReadFeed;
             default:
                 throw new IllegalStateException("FaultInjectionOperationType " + faultInjectionOperationType + " is not supported");
         }
@@ -388,12 +355,37 @@ public class FaultInjectionRuleProcessor {
                 return ResourceType.DocumentCollection;
             case METADATA_REQUEST_DATABASE_ACCOUNT:
                 return ResourceType.DatabaseAccount;
-            case METADATA_REQUEST_REFRESH_ADDRESSES:
+            case METADATA_REQUEST_ADDRESS_REFRESH:
                 return ResourceType.Address;
+            case METADATA_REQUEST_PARTITION_KEY_RANGES:
+                return ResourceType.PartitionKeyRange;
             default:
                 throw new IllegalStateException("FaultInjectionOperationType " + faultInjectionOperationType + " is not supported");
         }
     }
+
+    private Mono<List<String>> resolvePartitionKeyRangeIds(
+        FaultInjectionEndpoints addressEndpoints,
+        DocumentCollection documentCollection) {
+        if (addressEndpoints == null) {
+            return Mono.just(Arrays.asList());
+        }
+
+        FeedRangeInternal feedRangeInternal = FeedRangeInternal.convert(addressEndpoints.getFeedRange());
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            null,
+            OperationType.Read,
+            documentCollection.getResourceId(),
+            ResourceType.Document,
+            Collections.emptyMap());
+
+        return feedRangeInternal
+            .getPartitionKeyRanges(
+                this.partitionKeyRangeCache,
+                request,
+                Mono.just(new Utils.ValueHolder<>(documentCollection)));
+    }
+
 
     private Mono<List<URI>> resolvePhysicalAddresses(
         List<URI> regionEndpoints,

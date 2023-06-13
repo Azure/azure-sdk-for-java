@@ -6,7 +6,9 @@ package com.azure.cosmos.test.implementation.faultinjection;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestArgs;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 
 import java.net.URI;
 import java.time.Duration;
@@ -85,6 +87,16 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
                 requestArgs.getTransportRequestId(),
                 this.id + "[Per operation apply limit reached]"
             );
+            return false;
+        }
+
+        if (this.result.getServerErrorType() == FaultInjectionServerErrorType.STALED_ADDRESSES_SERVER_GONE
+            && requestArgs.getServiceRequest().faultInjectionRequestContext.getAddressForceRefreshed()) {
+            requestArgs.getServiceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
+                requestArgs.getTransportRequestId(),
+                "Address force refresh happened, STALED_ADDRESSES error is cleared."
+            );
+
             return false;
         }
 

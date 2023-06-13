@@ -25,10 +25,8 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
-import io.netty.channel.ConnectTimeoutException;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.timeout.ReadTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -232,6 +230,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
     public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, HttpMethod method, URI requestUri) {
 
         try {
+
             HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
 
             Flux<byte[]> contentAsByteArray = request.getContentAsByteArrayFlux();
@@ -249,69 +248,11 @@ public class RxGatewayStoreModel implements RxStoreModel {
                 responseTimeout = Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
             }
 
-            Mono<HttpResponse> httpResponseMono =
-                Mono.just(responseTimeout)
-                    .flatMap(effectiveResponseTimeout -> {
-                        if (this.gatewayServerErrorInjector != null) {
-                            Utils.ValueHolder<CosmosException> exceptionToBeInjected = new Utils.ValueHolder<>();
-                            Utils.ValueHolder<Duration> delayToBeInjected = new Utils.ValueHolder<>();
+            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, responseTimeout);
 
-                            if (this.gatewayServerErrorInjector.injectGatewayServerResponseError(
-                                httpRequest.reactorNettyRequestRecord().getTransportRequestId(),
-                                httpRequest.uri(),
-                                request,
-                                exceptionToBeInjected)) {
-                                return Mono.error(exceptionToBeInjected.v);
-                            }
-
-                            if (this.gatewayServerErrorInjector.injectGatewayServerConnectionDelay(
-                                httpRequest.reactorNettyRequestRecord().getTransportRequestId(),
-                                httpRequest.uri(),
-                                request,
-                                delayToBeInjected)) {
-                                // TODO: wire up the connection acquire timeout from configs
-                                Duration connectionAcquireTimeout = Duration.ofSeconds(45);
-                                if (delayToBeInjected.v.toMillis() >= connectionAcquireTimeout.toMillis()) {
-                                    return Mono.delay(connectionAcquireTimeout)
-                                        .then(Mono.error(new ConnectTimeoutException()));
-                                } else {
-                                    return Mono.delay(delayToBeInjected.v)
-                                        .then(this.httpClient.send(httpRequest, effectiveResponseTimeout));
-                                }
-                            }
-
-                            if (this.gatewayServerErrorInjector.injectGatewayServerResponseDelayBeforeProcessing(
-                                httpRequest.reactorNettyRequestRecord().getTransportRequestId(),
-                                httpRequest.uri(),
-                                request,
-                                delayToBeInjected)) {
-                                if (delayToBeInjected.v.toMillis() >= effectiveResponseTimeout.toMillis()) {
-                                    return Mono.delay(effectiveResponseTimeout)
-                                        .then(Mono.error(new ReadTimeoutException()));
-                                } else {
-                                    return Mono.delay(delayToBeInjected.v)
-                                        .then(this.httpClient.send(httpRequest, effectiveResponseTimeout));
-                                }
-                            }
-
-                            if (this.gatewayServerErrorInjector.injectGatewayServerResponseDelayAfterProcessing(
-                                httpRequest.reactorNettyRequestRecord().getTransportRequestId(),
-                                httpRequest.uri(),
-                                request,
-                                delayToBeInjected)) {
-                                if (delayToBeInjected.v.toMillis() >= effectiveResponseTimeout.toMillis()) {
-                                    return this.httpClient.send(httpRequest, effectiveResponseTimeout)
-                                        .delayElement(delayToBeInjected.v)
-                                        .then(Mono.error(new ReadTimeoutException()));
-                                } else {
-                                    return this.httpClient.send(httpRequest, effectiveResponseTimeout)
-                                        .delayElement(delayToBeInjected.v);
-                                }
-                            }
-                        }
-
-                        return this.httpClient.send(httpRequest, effectiveResponseTimeout);
-                    });
+            if (this.gatewayServerErrorInjector != null) {
+                httpResponseMono = this.gatewayServerErrorInjector.injectGatewayErrors(responseTimeout, httpRequest, request, httpResponseMono);
+            }
 
             return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
 
@@ -603,7 +544,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
     @Override
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
-        this.gatewayServerErrorInjector.registerServerErrorInjector(injectorProvider.getGatewayServerErrorInjector());
+        this.gatewayServerErrorInjector.registerServerErrorInjector(injectorProvider.getServerErrorInjector());
     }
 
     @Override

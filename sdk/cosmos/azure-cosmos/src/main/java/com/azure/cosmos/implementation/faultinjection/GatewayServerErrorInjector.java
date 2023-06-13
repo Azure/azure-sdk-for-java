@@ -6,6 +6,12 @@ package com.azure.cosmos.implementation.faultinjection;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
+import io.netty.channel.ConnectTimeoutException;
+import io.netty.handler.timeout.ReadTimeoutException;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.time.Duration;
@@ -14,70 +20,125 @@ import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class GatewayServerErrorInjector implements IGatewayServerErrorInjector {
+public class GatewayServerErrorInjector {
 
-    private List<IGatewayServerErrorInjector> faultInjectors = new ArrayList<>();
+    private List<IServerErrorInjector> faultInjectors = new ArrayList<>();
 
-    public void registerServerErrorInjector(IGatewayServerErrorInjector serverErrorInjector) {
+    public void registerServerErrorInjector(IServerErrorInjector serverErrorInjector) {
         checkNotNull(serverErrorInjector, "Argument 'serverErrorInjector' can not be null");
         this.faultInjectors.add(serverErrorInjector);
     }
 
-    @Override
-    public boolean injectGatewayServerResponseDelayBeforeProcessing(
-        long transportRequestId,
-        URI requestUri,
+    public Mono<HttpResponse> injectGatewayErrors(
+        Duration responseTimeout,
+        HttpRequest httpRequest,
         RxDocumentServiceRequest serviceRequest,
+        Mono<HttpResponse> originalResponseMono) {
+
+        return Mono.just(responseTimeout)
+            .flatMap(effectiveResponseTimeout -> {
+                Utils.ValueHolder<CosmosException> exceptionToBeInjected = new Utils.ValueHolder<>();
+                Utils.ValueHolder<Duration> delayToBeInjected = new Utils.ValueHolder<>();
+                FaultInjectionRequestArgs faultInjectionRequestArgs =
+                    this.createFaultInjectionRequestArgs(
+                        httpRequest.reactorNettyRequestRecord(),
+                        httpRequest.uri(),
+                        serviceRequest);
+
+                if (this.injectGatewayServerResponseError(faultInjectionRequestArgs, exceptionToBeInjected)) {
+                    return Mono.error(exceptionToBeInjected.v);
+                }
+
+                if (this.injectGatewayServerConnectionDelay(faultInjectionRequestArgs, delayToBeInjected)) {
+                    // TODO: wire up the connection acquire timeout from configs
+                    Duration connectionAcquireTimeout = Duration.ofSeconds(45);
+                    if (delayToBeInjected.v.toMillis() >= connectionAcquireTimeout.toMillis()) {
+                        return Mono.delay(connectionAcquireTimeout)
+                            .then(Mono.error(new ConnectTimeoutException()));
+                    } else {
+                        return Mono.delay(delayToBeInjected.v)
+                            .then(originalResponseMono);
+                    }
+                }
+
+                if (this.injectGatewayServerResponseDelayBeforeProcessing(faultInjectionRequestArgs, delayToBeInjected)) {
+                    if (delayToBeInjected.v.toMillis() >= effectiveResponseTimeout.toMillis()) {
+                        return Mono.delay(effectiveResponseTimeout)
+                            .then(Mono.error(new ReadTimeoutException()));
+                    } else {
+                        return Mono.delay(delayToBeInjected.v)
+                            .then(originalResponseMono);
+                    }
+                }
+
+                if (this.injectGatewayServerResponseDelayAfterProcessing(faultInjectionRequestArgs, delayToBeInjected)) {
+                    if (delayToBeInjected.v.toMillis() >= effectiveResponseTimeout.toMillis()) {
+                        return originalResponseMono
+                            .delayElement(delayToBeInjected.v)
+                            .then(Mono.error(new ReadTimeoutException()));
+                    } else {
+                        return originalResponseMono
+                            .delayElement(delayToBeInjected.v);
+                    }
+                }
+
+                return originalResponseMono;
+            });
+    }
+
+    private boolean injectGatewayServerResponseDelayBeforeProcessing(
+        FaultInjectionRequestArgs faultInjectionRequestArgs,
         Utils.ValueHolder<Duration> delayToBeInjected) {
 
-        for (IGatewayServerErrorInjector serverErrorInjector : faultInjectors) {
-            if(serverErrorInjector.injectGatewayServerResponseDelayBeforeProcessing(transportRequestId, requestUri, serviceRequest, delayToBeInjected)) {
+        for (IServerErrorInjector serverErrorInjector : faultInjectors) {
+            if(serverErrorInjector.injectServerResponseDelayAfterProcessing(faultInjectionRequestArgs, delayToBeInjected)) {
                 return true;
             }
         }
         return false;
     }
 
-    @Override
-    public boolean injectGatewayServerResponseDelayAfterProcessing(
-        long transportRequestId,
-        URI requestUri,
-        RxDocumentServiceRequest serviceRequest,
+    private boolean injectGatewayServerResponseDelayAfterProcessing(
+        FaultInjectionRequestArgs faultInjectionRequestArgs,
         Utils.ValueHolder<Duration> delayToBeInjected) {
 
-        for (IGatewayServerErrorInjector serverErrorInjector : faultInjectors) {
-            if(serverErrorInjector.injectGatewayServerResponseDelayAfterProcessing(transportRequestId, requestUri, serviceRequest, delayToBeInjected)) {
+        for (IServerErrorInjector serverErrorInjector : faultInjectors) {
+            if(serverErrorInjector.injectServerResponseDelayAfterProcessing(faultInjectionRequestArgs, delayToBeInjected)) {
                 return true;
             }
         }
         return false;
     }
 
-    @Override
-    public boolean injectGatewayServerResponseError(
-        long transportRequestId,
-        URI requestUri,
-        RxDocumentServiceRequest serviceRequest,
+    private boolean injectGatewayServerResponseError(
+       FaultInjectionRequestArgs faultInjectionRequestArgs,
         Utils.ValueHolder<CosmosException> exceptionToBeInjected) {
-        for (IGatewayServerErrorInjector serverErrorInjector : faultInjectors) {
-            if(serverErrorInjector.injectGatewayServerResponseError(transportRequestId, requestUri, serviceRequest, exceptionToBeInjected)) {
+        for (IServerErrorInjector serverErrorInjector : faultInjectors) {
+            if(serverErrorInjector.injectServerResponseError(faultInjectionRequestArgs, exceptionToBeInjected)) {
                 return true;
             }
         }
         return false;
     }
 
-    @Override
-    public boolean injectGatewayServerConnectionDelay(
-        long transportRequestId,
-        URI requestUri,
-        RxDocumentServiceRequest serviceRequest,
+    private boolean injectGatewayServerConnectionDelay(
+        FaultInjectionRequestArgs faultInjectionRequestArgs,
         Utils.ValueHolder<Duration> delayToBeInjected) {
-        for (IGatewayServerErrorInjector serverErrorInjector : faultInjectors) {
-            if(serverErrorInjector.injectGatewayServerConnectionDelay(transportRequestId, requestUri, serviceRequest, delayToBeInjected)) {
+        for (IServerErrorInjector serverErrorInjector : faultInjectors) {
+            if(serverErrorInjector.injectServerConnectionDelay(faultInjectionRequestArgs, delayToBeInjected)) {
                 return true;
             }
         }
         return false;
+    }
+
+    private GatewayFaultInjectionRequestArgs createFaultInjectionRequestArgs(
+        ReactorNettyRequestRecord requestRecord,
+        URI requestUri,
+        RxDocumentServiceRequest serviceRequest) {
+        return new GatewayFaultInjectionRequestArgs(
+            requestRecord.getTransportRequestId(),
+            requestUri,
+            serviceRequest);
     }
 }

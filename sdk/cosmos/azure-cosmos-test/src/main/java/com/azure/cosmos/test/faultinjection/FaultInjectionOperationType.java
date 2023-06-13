@@ -36,19 +36,23 @@ public enum FaultInjectionOperationType {
      */
     PATCH_ITEM,
     /**
-     * Read container.
+     * Read container request.
      */
     METADATA_REQUEST_CONTAINER,
     /**
-     * Read database account.
+     * Read database account request.
      */
     METADATA_REQUEST_DATABASE_ACCOUNT,
     /**
-     * Query query plan.
+     * Query query plan request.
      */
     METADATA_REQUEST_QUERY_PLAN,
     /**
-     * Refresh server addresses.
+     * Partition key ranges request.
      */
-    METADATA_REQUEST_REFRESH_ADDRESSES
+    METADATA_REQUEST_PARTITION_KEY_RANGES,
+    /**
+     * Address refresh request.
+     */
+    METADATA_REQUEST_ADDRESS_REFRESH;
 }

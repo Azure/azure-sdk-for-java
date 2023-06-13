@@ -8,8 +8,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
-import com.azure.cosmos.implementation.faultinjection.IGatewayServerErrorInjector;
-import com.azure.cosmos.implementation.faultinjection.IRntbdServerErrorInjector;
+import com.azure.cosmos.implementation.faultinjection.IServerErrorInjector;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +25,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class FaultInjectorProvider implements IFaultInjectorProvider {
     private final Logger logger = LoggerFactory.getLogger(FaultInjectorProvider.class);
     private final FaultInjectionRuleStore ruleStore;
-    private final RntbdServerErrorInjector rntbdServerErrorInjector;
-    private final GatewayServerErrorInjector gatewayServerErrorInjector;
+    private final IServerErrorInjector serverErrorInjector;
     private final String containerNameLink;
 
     private RntbdConnectionErrorInjector connectionErrorInjector;
@@ -38,8 +36,7 @@ public class FaultInjectorProvider implements IFaultInjectorProvider {
         this.containerNameLink =
             Utils.trimBeginningAndEndingSlashes(BridgeInternal.extractContainerSelfLink(cosmosAsyncContainer));
         this.ruleStore = new FaultInjectionRuleStore(cosmosAsyncContainer);
-        this.rntbdServerErrorInjector = new RntbdServerErrorInjector(this.ruleStore);
-        this.gatewayServerErrorInjector = new GatewayServerErrorInjector(this.ruleStore);
+        this.serverErrorInjector = new ServerErrorInjector(this.ruleStore);
     }
 
     public Mono<Void> configureFaultInjectionRules(List<FaultInjectionRule> rules) {
@@ -53,13 +50,8 @@ public class FaultInjectorProvider implements IFaultInjectorProvider {
     }
 
     @Override
-    public IRntbdServerErrorInjector getRntbdServerErrorInjector() {
-        return this.rntbdServerErrorInjector;
-    }
-
-    @Override
-    public IGatewayServerErrorInjector getGatewayServerErrorInjector() {
-        return this.gatewayServerErrorInjector;
+    public IServerErrorInjector getServerErrorInjector() {
+        return this.serverErrorInjector;
     }
 
     @Override

@@ -257,7 +257,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     public void configureFaultInjectorProvider(IFaultInjectorProvider faultInjectorProvider) {
-        this.gatewayServerErrorInjector.registerServerErrorInjector(faultInjectorProvider.getGatewayServerErrorInjector());
+        this.gatewayServerErrorInjector.registerServerErrorInjector(faultInjectorProvider.getServerErrorInjector());
     }
 
     private IAddressResolver getAddressResolver(RxDocumentServiceRequest rxDocumentServiceRequest) {
