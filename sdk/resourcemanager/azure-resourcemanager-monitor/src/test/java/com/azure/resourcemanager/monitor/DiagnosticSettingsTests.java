@@ -199,6 +199,88 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
     }
 
     @Test
+    public void canCRUDDiagnosticSettingsForStorageAccount() {
+
+        Region region = Region.US_WEST;
+
+        StorageAccount sa = storageManager.storageAccounts()
+                .define(saName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withTag("tag1", "value1")
+                .create();
+
+        // clean all diagnostic settings.
+        List<DiagnosticSetting> dsList = monitorManager.diagnosticSettings().listByResource(sa.id()).stream().collect(Collectors.toList());
+        for (DiagnosticSetting dsd : dsList) {
+            monitorManager.diagnosticSettings().deleteById(dsd.id());
+        }
+
+        EventHubNamespace namespace = eventHubManager.namespaces()
+                .define(ehName)
+                // EventHub should be in the same region as resource
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withNewManageRule("mngRule1")
+                .withNewSendRule("sndRule1")
+                .create();
+
+        EventHubNamespaceAuthorizationRule evenHubNsRule = namespace.listAuthorizationRules().iterator().next();
+
+        List<DiagnosticSettingsCategory> categories = monitorManager.diagnosticSettings()
+                .listCategoriesByResource(sa.id());
+
+        Assertions.assertNotNull(categories);
+        Assertions.assertFalse(categories.isEmpty());
+
+        DiagnosticSetting setting = monitorManager.diagnosticSettings()
+                .define(dsName)
+                .withResource(sa.id())
+                .withEventHub(evenHubNsRule.id())
+                .withLogsAndMetrics(categories, Duration.ofMinutes(5), 7)
+                .create();
+
+        Assertions.assertTrue(sa.id().equalsIgnoreCase(setting.resourceId()));
+        Assertions.assertNull(setting.storageAccountId());
+        Assertions.assertTrue(evenHubNsRule.id().equalsIgnoreCase(setting.eventHubAuthorizationRuleId()));
+        Assertions.assertNull(setting.eventHubName());
+        Assertions.assertNull(setting.workspaceId());
+        Assertions.assertFalse(setting.logs().isEmpty());
+        Assertions.assertFalse(setting.metrics().isEmpty());
+
+        setting.update()
+                .withoutStorageAccount()
+                .withoutLogs()
+                .apply();
+
+        Assertions.assertTrue(sa.id().equalsIgnoreCase(setting.resourceId()));
+        Assertions.assertTrue(evenHubNsRule.id().equalsIgnoreCase(setting.eventHubAuthorizationRuleId()));
+        Assertions.assertNull(setting.storageAccountId());
+        Assertions.assertNull(setting.eventHubName());
+        Assertions.assertNull(setting.workspaceId());
+        Assertions.assertTrue(setting.logs().isEmpty());
+        Assertions.assertFalse(setting.metrics().isEmpty());
+
+        DiagnosticSetting ds1 = monitorManager.diagnosticSettings().get(setting.resourceId(), setting.name());
+        checkDiagnosticSettingValues(setting, ds1);
+
+        DiagnosticSetting ds2 = monitorManager.diagnosticSettings().getById(setting.id());
+        checkDiagnosticSettingValues(setting, ds2);
+
+        dsList = monitorManager.diagnosticSettings().listByResource(sa.id()).stream().collect(Collectors.toList());
+        Assertions.assertNotNull(dsList);
+        Assertions.assertEquals(1, dsList.size());
+        DiagnosticSetting ds3 = dsList.get(0);
+        checkDiagnosticSettingValues(setting, ds3);
+
+        monitorManager.diagnosticSettings().deleteById(setting.id());
+
+        dsList = monitorManager.diagnosticSettings().listByResource(sa.id()).stream().collect(Collectors.toList());
+        Assertions.assertNotNull(dsList);
+        Assertions.assertTrue(dsList.isEmpty());
+    }
+
+    @Test
     public void canCRUDDiagnosticSettingsLogsCategoryGroup() {
         Region region = Region.US_WEST;
 
