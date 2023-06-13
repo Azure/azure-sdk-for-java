@@ -2202,6 +2202,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
 
+        request.requestContext.setSessionRetryOptions(this.sessionRetryOptions);
+
         if (retryPolicyInstance != null) {
             retryPolicyInstance.onBeforeSendRequest(request);
         }

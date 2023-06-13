@@ -18,13 +18,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.CosmosRegionSwitchHint;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.*;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
@@ -96,14 +90,18 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
             {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
             {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
             {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
+            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
             {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
             {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
             {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
             {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
+            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
             {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, null},
             {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, null},
             {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, null},
-            {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, null}
+            {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, null},
+            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, null},
+
         };
     }
 
@@ -362,6 +360,27 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
 
             CosmosItemResponse<TestItem> itemResponse = faultInjectedContainer
                 .upsertItem(testItem, new PartitionKey(testItem.getId()), itemRequestOptions)
+                .doOnSubscribe(ignore -> operationStart.set(Instant.now()))
+                .doOnSuccess(ignore -> operationEnd.set(Instant.now()))
+                .block();
+
+            return new OperationExecutionResult(
+                itemResponse.getDiagnostics(),
+                Duration.between(operationStart.get(), operationEnd.get()),
+                itemResponse.getStatusCode(),
+                operationType);
+        }
+
+        if (operationType == OperationType.Patch) {
+            CosmosPatchOperations patchOperations = CosmosPatchOperations.create().add("/" + "newProperty", "newVal");
+            CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+
+            faultInjectedContainer
+                .createItem(testItem, new PartitionKey(testItem.getId()), itemRequestOptions)
+                .block();
+
+            CosmosItemResponse<TestItem> itemResponse = faultInjectedContainer
+                .patchItem(testItem.getId(), new PartitionKey(testItem.getId()), patchOperations, TestItem.class)
                 .doOnSubscribe(ignore -> operationStart.set(Instant.now()))
                 .doOnSuccess(ignore -> operationEnd.set(Instant.now()))
                 .block();
