@@ -44,7 +44,7 @@ public class KeyCredential {
      * Rotates the key associated to this credential.
      *
      * @param key The new key to associated with this credential.
-     * @return The updated {@code AzureKeyCredential} object.
+     * @return The updated {@code KeyCredential} object.
      * @throws NullPointerException If {@code key} is {@code null}.
      * @throws IllegalArgumentException If {@code key} is an empty string.
      */

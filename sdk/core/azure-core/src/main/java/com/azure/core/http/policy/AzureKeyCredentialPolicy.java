@@ -4,11 +4,6 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpPipelineNextSyncPolicy;
-import com.azure.core.http.HttpResponse;
-import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
@@ -45,15 +40,5 @@ public final class AzureKeyCredentialPolicy extends KeyCredentialPolicy {
      */
     public AzureKeyCredentialPolicy(String name, AzureKeyCredential credential, String prefix) {
         super(name, Objects.requireNonNull(credential, "'credential' cannot be null."), prefix);
-    }
-
-    @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return super.process(context, next);
-    }
-
-    @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        return super.processSync(context, next);
     }
 }

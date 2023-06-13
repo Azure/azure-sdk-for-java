@@ -19,16 +19,6 @@ public final class AzureKeyCredential extends KeyCredential {
     }
 
     /**
-     * Retrieves the key associated to this credential.
-     *
-     * @return The key being used to authorize requests.
-     */
-    @Override
-    public String getKey() {
-        return super.getKey();
-    }
-
-    /**
      * Rotates the key associated to this credential.
      *
      * @param key The new key to associated with this credential.
