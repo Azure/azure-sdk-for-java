@@ -17,6 +17,10 @@ public final class TopicRegenerateKeyRequest {
     @JsonProperty(value = "keyName", required = true)
     private String keyName;
 
+    /** Creates an instance of TopicRegenerateKeyRequest class. */
+    public TopicRegenerateKeyRequest() {
+    }
+
     /**
      * Get the keyName property: Key name to regenerate key1 or key2.
      *

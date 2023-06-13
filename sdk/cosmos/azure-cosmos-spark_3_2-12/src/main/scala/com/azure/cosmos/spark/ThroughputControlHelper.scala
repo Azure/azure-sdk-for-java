@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
-import com.azure.cosmos.models.{CosmosBulkExecutionOptions, CosmosChangeFeedRequestOptions, CosmosItemRequestOptions, CosmosQueryRequestOptions}
+import com.azure.cosmos.models.{CosmosBulkExecutionOptions, CosmosChangeFeedRequestOptions, CosmosItemRequestOptions, CosmosQueryRequestOptions, PriorityLevel}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{CosmosAsyncContainer, ThroughputControlGroupConfigBuilder}
 import org.apache.spark.broadcast.Broadcast
@@ -100,6 +100,11 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
         if (throughputControlConfig.targetThroughputThreshold.isDefined) {
             groupConfigBuilder.targetThroughputThreshold(throughputControlConfig.targetThroughputThreshold.get)
         }
+        if (throughputControlConfig.priorityLevel.isDefined) {
+            val priority = throughputControlConfig.priorityLevel.get
+            logInfo(s"Configure throughput control with priority $priority")
+            groupConfigBuilder.priorityLevel(parsePriorityLevel(throughputControlConfig.priorityLevel.get))
+        }
 
         val globalThroughputControlConfigBuilder = throughputControlCacheItem.cosmosClient.createGlobalThroughputControlConfigBuilder(
             throughputControlConfig.globalControlDatabase.get,
@@ -158,6 +163,9 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
             logInfo(s"Configure throughput control with throughput threshold $targetThroughputThresholdByExecutor")
             groupConfigBuilder.targetThroughputThreshold(targetThroughputThresholdByExecutor)
         }
+        if (throughputControlConfig.priorityLevel.isDefined) {
+            groupConfigBuilder.priorityLevel(parsePriorityLevel(throughputControlConfig.priorityLevel.get))
+        }
 
         // Currently CosmosDB data plane SDK does not support query database/container throughput by using AAD authentication
         // As a mitigation we are going to pass a throughput query mono which internally use management SDK to query throughput
@@ -169,6 +177,13 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
                 container,
                 groupConfigBuilder.build(),
                 if (throughputQueryMonoOpt.isDefined) throughputQueryMonoOpt.get.asJava() else null)
+    }
+
+    def parsePriorityLevel(priorityLevels: PriorityLevels.PriorityLevel) = {
+        priorityLevels match {
+            case PriorityLevels.Low => PriorityLevel.LOW
+            case PriorityLevels.High => PriorityLevel.HIGH
+        }
     }
 
     def getThroughputControlClientCacheItem(userConfig: Map[String, String],

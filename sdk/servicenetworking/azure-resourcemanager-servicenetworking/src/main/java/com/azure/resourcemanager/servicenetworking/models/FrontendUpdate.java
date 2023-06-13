@@ -19,12 +19,6 @@ public final class FrontendUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * The updatable properties of the Frontend.
-     */
-    @JsonProperty(value = "properties")
-    private FrontendUpdateProperties properties;
-
     /** Creates an instance of FrontendUpdate class. */
     public FrontendUpdate() {
     }
@@ -50,33 +44,10 @@ public final class FrontendUpdate {
     }
 
     /**
-     * Get the properties property: The updatable properties of the Frontend.
-     *
-     * @return the properties value.
-     */
-    public FrontendUpdateProperties properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: The updatable properties of the Frontend.
-     *
-     * @param properties the properties value to set.
-     * @return the FrontendUpdate object itself.
-     */
-    public FrontendUpdate withProperties(FrontendUpdateProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
-        }
     }
 }

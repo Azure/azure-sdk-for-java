@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkResources ListByRedisCache. */
 public final class PrivateLinkResourcesListByRedisCacheSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheListPrivateLinkResources.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheListPrivateLinkResources.json
      */
     /**
      * Sample code: StorageAccountListPrivateLinkResources.
@@ -22,6 +20,6 @@ public final class PrivateLinkResourcesListByRedisCacheSamples {
             .manager()
             .serviceClient()
             .getPrivateLinkResources()
-            .listByRedisCache("rgtest01", "cacheTest01", Context.NONE);
+            .listByRedisCache("rgtest01", "cacheTest01", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for EnvironmentTypes Delete. */
 public final class EnvironmentTypesDeleteSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/EnvironmentTypes_Delete.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/EnvironmentTypes_Delete.json
      */
     /**
      * Sample code: EnvironmentTypes_Delete.
@@ -17,6 +15,6 @@ public final class EnvironmentTypesDeleteSamples {
      * @param manager Entry point to DevCenterManager.
      */
     public static void environmentTypesDelete(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager.environmentTypes().deleteWithResponse("rg1", "Contoso", "DevTest", Context.NONE);
+        manager.environmentTypes().deleteWithResponse("rg1", "Contoso", "DevTest", com.azure.core.util.Context.NONE);
     }
 }

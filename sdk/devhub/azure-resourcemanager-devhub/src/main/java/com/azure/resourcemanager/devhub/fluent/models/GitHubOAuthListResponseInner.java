@@ -17,6 +17,10 @@ public final class GitHubOAuthListResponseInner {
     @JsonProperty(value = "value")
     private List<GitHubOAuthResponseInner> value;
 
+    /** Creates an instance of GitHubOAuthListResponseInner class. */
+    public GitHubOAuthListResponseInner() {
+    }
+
     /**
      * Get the value property: Singleton list response containing one GitHubOAuthResponse response.
      *

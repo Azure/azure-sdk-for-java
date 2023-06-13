@@ -118,7 +118,7 @@ public final class CosmosAsyncClient implements Closeable {
         boolean enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
         this.nonIdempotentWriteRetryPolicy = builder.getNonIdempotentWriteRetryPolicy();
-        CosmosE2EOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationConfig();
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationConfig();
 
         CosmosClientTelemetryConfig effectiveTelemetryConfig = telemetryConfigAccessor
             .createSnapshot(
@@ -838,6 +838,16 @@ public final class CosmosAsyncClient implements Closeable {
                 @Override
                 public boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client) {
                     return client.connectionPolicy.isEndpointDiscoveryEnabled();
+                }
+
+                @Override
+                public String getConnectionMode(CosmosAsyncClient client) {
+                    return client.connectionPolicy.getConnectionMode().toString();
+                }
+
+                @Override
+                public String getUserAgent(CosmosAsyncClient client) {
+                    return client.getUserAgent();
                 }
 
                 @Override

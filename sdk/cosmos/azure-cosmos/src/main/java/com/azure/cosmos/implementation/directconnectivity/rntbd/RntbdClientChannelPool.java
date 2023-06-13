@@ -874,11 +874,13 @@ public final class RntbdClientChannelPool implements ChannelPool {
         this.acquiredChannels.remove(channel);
         this.availableChannels.remove(channel);
         channel.attr(POOL_KEY).set(null);
-        channel.close().addListener(future -> {
-            if (future.isDone() && !this.isClosed()) {
-                this.connectionStateListener.openConnectionIfNeeded();
-            }
-        });
+        if (this.connectionStateListener != null) {
+            channel.close().addListener(future -> {
+                if (future.isDone() && !this.isClosed()) {
+                    this.connectionStateListener.openConnectionIfNeeded();
+                }
+            });
+        }
     }
 
     private void closeChannelAndFail(final Channel channel, final Throwable cause, final Promise<?> promise) {

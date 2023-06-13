@@ -9,13 +9,11 @@ import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsy
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRuleImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.EntityAvailabilityStatusImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetailsImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionImpl;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,33 +27,8 @@ import static com.azure.messaging.servicebus.implementation.MessageUtils.toPrimi
  */
 @Fluent
 public final class QueueProperties {
-    private Duration autoDeleteOnIdle;
-    private final OffsetDateTime accessedAt;
-    private List<AuthorizationRule> authorizationRules;
-    private final OffsetDateTime createdAt;
-    private Duration defaultMessageTimeToLive;
-    private boolean deadLetteringOnMessageExpiration;
-    private Duration duplicateDetectionHistoryTimeWindow;
-    private boolean enableBatchedOperations;
-    private final Boolean enableExpress;
-    private boolean enablePartitioning;
-    private final EntityAvailabilityStatusImpl entityAvailabilityStatus;
-    private String forwardTo;
-    private String forwardDeadLetteredMessagesTo;
-    private final Boolean isAnonymousAccessible;
-    private Duration lockDuration;
-    private int maxDeliveryCount;
-    private long maxMessageSizeInKilobytes;
-    private long maxSizeInMegabytes;
-    private final int messageCount;
-    private final MessageCountDetailsImpl messageCountDetails;
-    private boolean requiresDuplicateDetection;
-    private boolean requiresSession;
-    private final long sizeInBytes;
-    private EntityStatus status;
-    private final Boolean supportOrdering;
-    private final OffsetDateTime updatedAt;
-    private String userMetadata;
+    private final QueueDescriptionImpl description;
+    private final List<AuthorizationRule> authorizationRules;
     private String queueName;
 
     static {
@@ -71,18 +44,18 @@ public final class QueueProperties {
                     .setDefaultMessageTimeToLive(queue.getDefaultMessageTimeToLive())
                     .setDuplicateDetectionHistoryTimeWindow(queue.getDuplicateDetectionHistoryTimeWindow())
                     .setEnablePartitioning(queue.isPartitioningEnabled())
-                    .setEnableExpress(queue.enableExpress)
-                    .setEnableBatchedOperations(queue.enableBatchedOperations)
-                    .setEntityAvailabilityStatus(queue.entityAvailabilityStatus)
+                    .setEnableExpress(queue.description.isEnableExpress())
+                    .setEnableBatchedOperations(queue.description.isEnableBatchedOperations())
+                    .setEntityAvailabilityStatus(queue.description.getEntityAvailabilityStatus())
                     .setForwardTo(queue.getForwardTo())
                     .setForwardDeadLetteredMessagesTo(queue.getForwardDeadLetteredMessagesTo())
-                    .setIsAnonymousAccessible(queue.isAnonymousAccessible)
+                    .setIsAnonymousAccessible(queue.description.isAnonymousAccessible())
                     .setLockDuration(queue.getLockDuration())
                     .setMaxSizeInMegabytes(queue.getMaxSizeInMegabytes())
                     .setMaxDeliveryCount(queue.getMaxDeliveryCount())
-                    .setMessageCount(queue.messageCount)
+                    .setMessageCount(queue.description.getMessageCount())
                     .setMessageCountDetails(queue.getMessageCountDetails())
-                    .setSupportOrdering(queue.supportOrdering)
+                    .setSupportOrdering(queue.description.isSupportOrdering())
                     .setStatus(queue.getStatus())
                     .setSizeInBytes(queue.getSizeInBytes())
                     .setRequiresSession(queue.isSessionRequired())
@@ -118,35 +91,10 @@ public final class QueueProperties {
      * @param description The queue to use.
      */
     QueueProperties(QueueDescriptionImpl description) {
-        this.accessedAt = description.getAccessedAt();
-        this.autoDeleteOnIdle = description.getAutoDeleteOnIdle();
+        this.description = description;
         this.authorizationRules = description.getAuthorizationRules().stream()
             .map(SharedAccessAuthorizationRule::new)
             .collect(Collectors.toList());
-        this.createdAt = description.getCreatedAt();
-        this.defaultMessageTimeToLive = description.getDefaultMessageTimeToLive();
-        this.deadLetteringOnMessageExpiration = toPrimitive(description.isDeadLetteringOnMessageExpiration());
-        this.duplicateDetectionHistoryTimeWindow = description.getDuplicateDetectionHistoryTimeWindow();
-        this.enableBatchedOperations = toPrimitive(description.isEnableBatchedOperations());
-        this.enableExpress = description.isEnableExpress();
-        this.enablePartitioning = toPrimitive(description.isEnablePartitioning());
-        this.entityAvailabilityStatus = description.getEntityAvailabilityStatus();
-        this.isAnonymousAccessible = description.isAnonymousAccessible();
-        this.forwardTo = description.getForwardTo();
-        this.forwardDeadLetteredMessagesTo = description.getForwardDeadLetteredMessagesTo();
-        this.lockDuration = description.getLockDuration();
-        this.maxDeliveryCount = toPrimitive(description.getMaxDeliveryCount());
-        this.maxMessageSizeInKilobytes = toPrimitive(description.getMaxMessageSizeInKilobytes());
-        this.maxSizeInMegabytes = toPrimitive(description.getMaxSizeInMegabytes());
-        this.messageCount = toPrimitive(description.getMessageCount());
-        this.messageCountDetails = description.getMessageCountDetails();
-        this.requiresDuplicateDetection = toPrimitive(description.isRequiresDuplicateDetection());
-        this.requiresSession = toPrimitive(description.isRequiresSession());
-        this.sizeInBytes = toPrimitive(description.getSizeInBytes());
-        this.supportOrdering = description.isSupportOrdering();
-        this.status = description.getStatus();
-        this.updatedAt = description.getUpdatedAt();
-        this.userMetadata = description.getUserMetadata();
     }
 
     /**
@@ -165,7 +113,7 @@ public final class QueueProperties {
      * @return the autoDeleteOnIdle value.
      */
     public Duration getAutoDeleteOnIdle() {
-        return this.autoDeleteOnIdle;
+        return description.getAutoDeleteOnIdle();
     }
 
     /**
@@ -177,7 +125,7 @@ public final class QueueProperties {
      * @return the {@link QueueProperties} object itself.
      */
     public QueueProperties setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
-        this.autoDeleteOnIdle = autoDeleteOnIdle;
+        description.setAutoDeleteOnIdle(autoDeleteOnIdle);
         return this;
     }
 
@@ -187,10 +135,6 @@ public final class QueueProperties {
      * @return the authorizationRules value.
      */
     public List<AuthorizationRule> getAuthorizationRules() {
-        if (this.authorizationRules == null) {
-            this.authorizationRules = new ArrayList<>();
-        }
-
         return this.authorizationRules;
     }
 
@@ -202,7 +146,7 @@ public final class QueueProperties {
      * @return the defaultMessageTimeToLive value.
      */
     public Duration getDefaultMessageTimeToLive() {
-        return this.defaultMessageTimeToLive;
+        return description.getDefaultMessageTimeToLive();
     }
 
     /**
@@ -215,7 +159,7 @@ public final class QueueProperties {
      * @return the {@link QueueProperties} object itself.
      */
     public QueueProperties setDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
-        this.defaultMessageTimeToLive = defaultMessageTimeToLive;
+        description.setDefaultMessageTimeToLive(defaultMessageTimeToLive);
         return this;
     }
 
@@ -226,7 +170,7 @@ public final class QueueProperties {
      * @return the deadLetteringOnMessageExpiration value.
      */
     public boolean isDeadLetteringOnMessageExpiration() {
-        return this.deadLetteringOnMessageExpiration;
+        return toPrimitive(description.isDeadLetteringOnMessageExpiration());
     }
 
     /**
@@ -238,7 +182,7 @@ public final class QueueProperties {
      * @return the {@link QueueProperties} object itself.
      */
     public QueueProperties setDeadLetteringOnMessageExpiration(boolean deadLetteringOnMessageExpiration) {
-        this.deadLetteringOnMessageExpiration = deadLetteringOnMessageExpiration;
+        description.setDeadLetteringOnMessageExpiration(deadLetteringOnMessageExpiration);
         return this;
     }
 
@@ -249,7 +193,7 @@ public final class QueueProperties {
      * @return the duplicateDetectionHistoryTimeWindow value.
      */
     public Duration getDuplicateDetectionHistoryTimeWindow() {
-        return this.duplicateDetectionHistoryTimeWindow;
+        return description.getDuplicateDetectionHistoryTimeWindow();
     }
 
     /**
@@ -261,7 +205,7 @@ public final class QueueProperties {
      * @return the {@link QueueProperties} object itself.
      */
     public QueueProperties setDuplicateDetectionHistoryTimeWindow(Duration duplicateDetectionHistoryTimeWindow) {
-        this.duplicateDetectionHistoryTimeWindow = duplicateDetectionHistoryTimeWindow;
+        description.setDuplicateDetectionHistoryTimeWindow(duplicateDetectionHistoryTimeWindow);
         return this;
     }
 
@@ -272,7 +216,7 @@ public final class QueueProperties {
      * @return the enableBatchedOperations value.
      */
     public boolean isBatchedOperationsEnabled() {
-        return this.enableBatchedOperations;
+        return toPrimitive(description.isEnableBatchedOperations());
     }
 
     /**
@@ -284,7 +228,7 @@ public final class QueueProperties {
      * @return the {@link QueueProperties} object itself.
      */
     public QueueProperties setBatchedOperationsEnabled(boolean enableBatchedOperations) {
-        this.enableBatchedOperations = enableBatchedOperations;
+        description.setEnableBatchedOperations(enableBatchedOperations);
         return this;
     }
 
@@ -295,7 +239,7 @@ public final class QueueProperties {
      * @return the enablePartitioning value.
      */
     public boolean isPartitioningEnabled() {
-        return this.enablePartitioning;
+        return toPrimitive(description.isEnablePartitioning());
     }
 
     /**
@@ -305,7 +249,7 @@ public final class QueueProperties {
      * @return the forwardTo value.
      */
     public String getForwardTo() {
-        return this.forwardTo;
+        return description.getForwardTo();
     }
 
     /**
@@ -317,7 +261,7 @@ public final class QueueProperties {
      * @return the {@link QueueProperties} object itself.
      */
     public QueueProperties setForwardTo(String forwardTo) {
-        this.forwardTo = forwardTo;
+        description.setForwardTo(forwardTo);
         return this;
     }
 
@@ -328,7 +272,7 @@ public final class QueueProperties {
      * @return the forwardDeadLetteredMessagesTo value.
      */
     public String getForwardDeadLetteredMessagesTo() {
-        return this.forwardDeadLetteredMessagesTo;
+        return description.getForwardDeadLetteredMessagesTo();
     }
 
     /**
@@ -340,7 +284,7 @@ public final class QueueProperties {
      * @return the {@link QueueProperties} object itself.
      */
     public QueueProperties setForwardDeadLetteredMessagesTo(String forwardDeadLetteredMessagesTo) {
-        this.forwardDeadLetteredMessagesTo = forwardDeadLetteredMessagesTo;
+        description.setForwardDeadLetteredMessagesTo(forwardDeadLetteredMessagesTo);
         return this;
     }
 
@@ -352,7 +296,7 @@ public final class QueueProperties {
      * @return the lockDuration value.
      */
     public Duration getLockDuration() {
-        return this.lockDuration;
+        return description.getLockDuration();
     }
 
     /**
@@ -365,7 +309,7 @@ public final class QueueProperties {
      * @return the {@link QueueProperties} object itself.
      */
     public QueueProperties setLockDuration(Duration lockDuration) {
-        this.lockDuration = lockDuration;
+        description.setLockDuration(lockDuration);
         return this;
     }
 
@@ -376,7 +320,7 @@ public final class QueueProperties {
      * @return the maxDeliveryCount value.
      */
     public int getMaxDeliveryCount() {
-        return this.maxDeliveryCount;
+        return toPrimitive(description.getMaxDeliveryCount());
     }
 
     /**
@@ -388,7 +332,7 @@ public final class QueueProperties {
      * @return the {@link QueueProperties} object itself.
      */
     public QueueProperties setMaxDeliveryCount(Integer maxDeliveryCount) {
-        this.maxDeliveryCount = maxDeliveryCount;
+        description.setMaxDeliveryCount(maxDeliveryCount);
         return this;
     }
 
@@ -398,7 +342,7 @@ public final class QueueProperties {
      * @return the maxSizeInMegabytes value.
      */
     public long getMaxSizeInMegabytes() {
-        return this.maxSizeInMegabytes;
+        return toPrimitive(description.getMaxSizeInMegabytes());
     }
 
     /**
@@ -410,7 +354,7 @@ public final class QueueProperties {
      * @return the {@link QueueProperties} object itself.
      */
     public QueueProperties setMaxSizeInMegabytes(Integer maxSizeInMegabytes) {
-        this.maxSizeInMegabytes = maxSizeInMegabytes;
+        description.setMaxSizeInMegabytes(maxSizeInMegabytes == null ? null : (long) maxSizeInMegabytes);
         return this;
     }
 
@@ -420,7 +364,7 @@ public final class QueueProperties {
      * @return the requiresDuplicateDetection value.
      */
     public boolean isDuplicateDetectionRequired() {
-        return this.requiresDuplicateDetection;
+        return toPrimitive(description.isRequiresDuplicateDetection());
     }
 
     /**
@@ -429,7 +373,7 @@ public final class QueueProperties {
      * @return the requiresSession value.
      */
     public boolean isSessionRequired() {
-        return this.requiresSession;
+        return toPrimitive(description.isRequiresSession());
     }
 
     /**
@@ -438,7 +382,7 @@ public final class QueueProperties {
      * @return the status value.
      */
     public EntityStatus getStatus() {
-        return this.status;
+        return description.getStatus();
     }
 
     /**
@@ -449,7 +393,7 @@ public final class QueueProperties {
      * @return the {@link QueueProperties} object itself.
      */
     public QueueProperties setStatus(EntityStatus status) {
-        this.status = status;
+        description.setStatus(status);
         return this;
     }
 
@@ -460,7 +404,7 @@ public final class QueueProperties {
      * @return the userMetadata value.
      */
     public String getUserMetadata() {
-        return this.userMetadata;
+        return description.getUserMetadata();
     }
 
     /**
@@ -472,7 +416,7 @@ public final class QueueProperties {
      * @return the {@link QueueProperties} object itself.
      */
     public QueueProperties setUserMetadata(String userMetadata) {
-        this.userMetadata = userMetadata;
+        description.setUserMetadata(userMetadata);
         return this;
     }
 
@@ -482,7 +426,7 @@ public final class QueueProperties {
      * @return the maxMessageSizeInKilobytes value.
      */
     public long getMaxMessageSizeInKilobytes() {
-        return this.maxMessageSizeInKilobytes;
+        return toPrimitive(description.getMaxMessageSizeInKilobytes());
     }
 
     /**
@@ -492,7 +436,7 @@ public final class QueueProperties {
      * @return the QueueDescription object itself.
      */
     public QueueProperties setMaxMessageSizeInKilobytes(long maxMessageSizeInKilobytes) {
-        this.maxMessageSizeInKilobytes = maxMessageSizeInKilobytes;
+        description.setMaxMessageSizeInKilobytes(maxMessageSizeInKilobytes);
         return this;
     }
 
@@ -503,7 +447,7 @@ public final class QueueProperties {
      * @return the accessedAt value.
      */
     OffsetDateTime getAccessedAt() {
-        return this.accessedAt;
+        return description.getAccessedAt();
     }
 
     /**
@@ -512,7 +456,7 @@ public final class QueueProperties {
      * @return the createdAt value.
      */
     OffsetDateTime getCreatedAt() {
-        return this.createdAt;
+        return description.getCreatedAt();
     }
 
     /**
@@ -521,7 +465,7 @@ public final class QueueProperties {
      * @return the messageCount value.
      */
     Integer getMessageCount() {
-        return this.messageCount;
+        return description.getMessageCount();
     }
 
     /**
@@ -530,7 +474,7 @@ public final class QueueProperties {
      * @return the messageCountDetails value.
      */
     MessageCountDetailsImpl getMessageCountDetails() {
-        return this.messageCountDetails;
+        return description.getMessageCountDetails();
     }
 
     /**
@@ -539,7 +483,7 @@ public final class QueueProperties {
      * @return the sizeInBytes value.
      */
     Long getSizeInBytes() {
-        return this.sizeInBytes;
+        return description.getSizeInBytes();
     }
 
     /**
@@ -548,21 +492,21 @@ public final class QueueProperties {
      * @return the updatedAt value.
      */
     OffsetDateTime getUpdatedAt() {
-        return this.updatedAt;
+        return description.getUpdatedAt();
     }
 
     QueueProperties setPartitioningEnabled(boolean enablePartitioning) {
-        this.enablePartitioning = enablePartitioning;
+        description.setEnablePartitioning(enablePartitioning);
         return this;
     }
 
     QueueProperties setDuplicateDetectionRequired(boolean requiresDuplicateDetection) {
-        this.requiresDuplicateDetection = requiresDuplicateDetection;
+        description.setRequiresDuplicateDetection(requiresDuplicateDetection);
         return this;
     }
 
     QueueProperties setSessionRequired(boolean requiresSession) {
-        this.requiresSession = requiresSession;
+        description.setRequiresSession(requiresSession);
         return this;
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Redis ListKeys. */
 public final class RedisListKeysSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheListKeys.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheListKeys.json
      */
     /**
      * Sample code: RedisCacheListKeys.
@@ -17,6 +15,11 @@ public final class RedisListKeysSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void redisCacheListKeys(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.redisCaches().manager().serviceClient().getRedis().listKeysWithResponse("rg1", "cache1", Context.NONE);
+        azure
+            .redisCaches()
+            .manager()
+            .serviceClient()
+            .getRedis()
+            .listKeysWithResponse("rg1", "cache1", com.azure.core.util.Context.NONE);
     }
 }

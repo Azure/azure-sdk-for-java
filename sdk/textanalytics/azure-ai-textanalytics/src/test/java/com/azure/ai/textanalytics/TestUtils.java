@@ -3,8 +3,8 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.AbstractSummaryActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.AbstractSummaryResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AbstractiveSummaryActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AbstractiveSummaryResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AbstractiveSummaryPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesActionResultPropertiesHelper;
@@ -14,8 +14,8 @@ import com.azure.ai.textanalytics.implementation.AnalyzeSentimentActionResultPro
 import com.azure.ai.textanalytics.implementation.AssessmentSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.CategorizedEntityPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.ExtractSummaryActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.ExtractSummaryResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.ExtractiveSummaryActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.ExtractiveSummaryResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityRelationPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.HealthcareEntityRelationRolePropertiesHelper;
@@ -27,12 +27,12 @@ import com.azure.ai.textanalytics.implementation.RecognizeLinkedEntitiesActionRe
 import com.azure.ai.textanalytics.implementation.RecognizePiiEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.SentenceOpinionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.SummaryContextPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.SummarySentencePropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AbstractiveSummaryContextPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.ExtractiveSummarySentencePropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TargetSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.models.AbstractSummaryActionResult;
-import com.azure.ai.textanalytics.models.AbstractSummaryResult;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryActionResult;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
 import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesActionResult;
@@ -49,8 +49,8 @@ import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
-import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
-import com.azure.ai.textanalytics.models.ExtractSummaryResult;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryActionResult;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityCategory;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
@@ -72,8 +72,8 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
-import com.azure.ai.textanalytics.models.SummaryContext;
-import com.azure.ai.textanalytics.models.SummarySentence;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryContext;
+import com.azure.ai.textanalytics.models.ExtractiveSummarySentence;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
@@ -81,12 +81,12 @@ import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.TextSentiment;
-import com.azure.ai.textanalytics.util.AbstractSummaryResultCollection;
+import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
-import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
+import com.azure.ai.textanalytics.util.ExtractiveSummaryResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -101,9 +101,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -177,9 +175,6 @@ final class TestUtils {
     static final List<String> KEY_PHRASE_INPUTS = asList(
         "Hello world. This is some input text that I love.",
         "Bonjour tout le monde");
-
-    static final String TOO_LONG_INPUT = "Thisisaveryveryverylongtextwhichgoesonforalongtimeandwhichalmostdoesn'tseemtostopatanygivenpointintime.ThereasonforthistestistotryandseewhathappenswhenwesubmitaveryveryverylongtexttoLanguage.Thisshouldworkjustfinebutjustincaseitisalwaysgoodtohaveatestcase.ThisallowsustotestwhathappensifitisnotOK.Ofcourseitisgoingtobeokbutthenagainitisalsobettertobesure!";
-
     static final List<String> KEY_PHRASE_FRENCH_INPUTS = asList(
         "Bonjour tout le monde.",
         "Je m'appelle Mondly.");
@@ -233,13 +228,6 @@ final class TestUtils {
             new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
             new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
             new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0))
-        );
-    }
-
-    static List<TextDocumentInput> getWarningsTextDocumentInputs() {
-        return asList(
-            new TextDocumentInput("0", TOO_LONG_INPUT),
-            new TextDocumentInput("1", CATEGORIZED_ENTITY_INPUTS.get(1))
         );
     }
 
@@ -748,18 +736,8 @@ final class TestUtils {
         getExpectedAnalyzeHealthcareEntitiesResultCollectionListForSinglePage() {
         return asList(
             getExpectedAnalyzeHealthcareEntitiesResultCollection(2,
-                asList(getRecognizeHealthcareEntitiesResult1("0"), getRecognizeHealthcareEntitiesResult2())));
-    }
-
-    /**
-     * Helper method that add FHIR expected result to the AnalyzeHealthcareEntitiesResult
-     */
-    static List<AnalyzeHealthcareEntitiesResultCollection>
-        getExpectedAnalyzeHealthcareEntitiesResultCollectionListForSinglePageWithFhir() {
-        return asList(
-            getExpectedAnalyzeHealthcareEntitiesResultCollection(2,
-                asList(getRecognizeHealthcareEntitiesResultWithFhir1("0"),
-                    getRecognizeHealthcareEntitiesResultWithFhir2())));
+                asList(getRecognizeHealthcareEntitiesResult1("0"),
+                    getRecognizeHealthcareEntitiesResult2())));
     }
 
     /**
@@ -807,15 +785,6 @@ final class TestUtils {
         return analyzeHealthcareEntitiesResultCollection;
     }
 
-    static AnalyzeHealthcareEntitiesResult getRecognizeHealthcareEntitiesResultWithFhir1(String documentId) {
-        AnalyzeHealthcareEntitiesResult recognizeHealthcareEntitiesResult1 =
-            getRecognizeHealthcareEntitiesResult1(documentId);
-        Map<String, Object> fhir1 = new HashMap<>();
-        fhir1.put("dummyString", "dummyObject");
-        AnalyzeHealthcareEntitiesResultPropertiesHelper.setFhirBundle(recognizeHealthcareEntitiesResult1, fhir1);
-        return recognizeHealthcareEntitiesResult1;
-    }
-
     /**
      * Result for
      * "The patient is a 54-year-old gentleman with a history of progressive angina over the past several months.",
@@ -844,76 +813,47 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity2,
             IterableStream.of(null));
         final HealthcareEntity healthcareEntity3 = new HealthcareEntity();
-        HealthcareEntityPropertiesHelper.setText(healthcareEntity3, "progressive");
-        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity3, HealthcareEntityCategory.fromString("Course"));
+        HealthcareEntityPropertiesHelper.setText(healthcareEntity3, "progressive angina");
+        HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity3, "Progressive Angina");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity3, HealthcareEntityCategory.DIAGNOSIS);
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity3, 0.91);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity3, 57);
-        HealthcareEntityPropertiesHelper.setLength(healthcareEntity3, 11);
+        HealthcareEntityPropertiesHelper.setLength(healthcareEntity3, 18);
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity3,
             IterableStream.of(null));
         final HealthcareEntity healthcareEntity4 = new HealthcareEntity();
-        HealthcareEntityPropertiesHelper.setText(healthcareEntity4, "angina");
-        HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity4, "Angina Pectoris");
-        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity4, HealthcareEntityCategory.SYMPTOM_OR_SIGN);
-        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity4, 0.81);
-        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity4, 69);
-        HealthcareEntityPropertiesHelper.setLength(healthcareEntity4, 6);
+        HealthcareEntityPropertiesHelper.setText(healthcareEntity4, "past several months");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity4, HealthcareEntityCategory.TIME);
+        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity4, 1.0);
+        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity4, 85);
+        HealthcareEntityPropertiesHelper.setLength(healthcareEntity4, 19);
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity4,
-            IterableStream.of(null));
-        // there are too many healthcare entity data sources, we can just assert it is not null.
-        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity4,
-            IterableStream.of(null));
-        final HealthcareEntity healthcareEntity5 = new HealthcareEntity();
-        HealthcareEntityPropertiesHelper.setText(healthcareEntity5, "past several months");
-        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity5, HealthcareEntityCategory.TIME);
-        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity5, 1.0);
-        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity5, 85);
-        HealthcareEntityPropertiesHelper.setLength(healthcareEntity5, 19);
-        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity5,
             IterableStream.of(null));
 
         // RecognizeHealthcareEntitiesResult
         final AnalyzeHealthcareEntitiesResult healthcareEntitiesResult1 = new AnalyzeHealthcareEntitiesResult(documentId,
             textDocumentStatistics1, null);
         AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntities(healthcareEntitiesResult1,
-            new IterableStream<>(asList(healthcareEntity1, healthcareEntity2, healthcareEntity3, healthcareEntity4,
-                healthcareEntity5)));
+            new IterableStream<>(asList(healthcareEntity1, healthcareEntity2, healthcareEntity3, healthcareEntity4)));
 
         // HealthcareEntityRelations
-        final HealthcareEntityRelation healthcareEntityRelation1 = new HealthcareEntityRelation();
         final HealthcareEntityRelationRole role1 = new HealthcareEntityRelationRole();
-        HealthcareEntityRelationRolePropertiesHelper.setName(role1, "Course");
+        HealthcareEntityRelationRolePropertiesHelper.setName(role1, "Condition");
         HealthcareEntityRelationRolePropertiesHelper.setEntity(role1, healthcareEntity3);
-        final HealthcareEntityRelationRole role2 = new HealthcareEntityRelationRole();
-        HealthcareEntityRelationRolePropertiesHelper.setName(role2, "Condition");
-        HealthcareEntityRelationRolePropertiesHelper.setEntity(role2, healthcareEntity4);
-        HealthcareEntityRelationPropertiesHelper.setRelationType(healthcareEntityRelation1,
-            HealthcareEntityRelationType.fromString("CourseOfCondition"));
-        HealthcareEntityRelationPropertiesHelper.setRoles(healthcareEntityRelation1,
-            IterableStream.of(asList(role1, role2)));
-        HealthcareEntityRelationPropertiesHelper.setConfidenceScore(healthcareEntityRelation1, 1.0);
 
         final HealthcareEntityRelation healthcareEntityRelation2 = new HealthcareEntityRelation();
-        final HealthcareEntityRelationRole role3 = new HealthcareEntityRelationRole();
-        HealthcareEntityRelationRolePropertiesHelper.setName(role3, "Time");
-        HealthcareEntityRelationRolePropertiesHelper.setEntity(role3, healthcareEntity5);
+        final HealthcareEntityRelationRole role2 = new HealthcareEntityRelationRole();
+        HealthcareEntityRelationRolePropertiesHelper.setName(role2, "Time");
+        HealthcareEntityRelationRolePropertiesHelper.setEntity(role2, healthcareEntity4);
         HealthcareEntityRelationPropertiesHelper.setRelationType(healthcareEntityRelation2,
             HealthcareEntityRelationType.TIME_OF_CONDITION);
         HealthcareEntityRelationPropertiesHelper.setRoles(healthcareEntityRelation2,
-            IterableStream.of(asList(role2, role3)));
+            IterableStream.of(asList(role1, role2)));
         HealthcareEntityRelationPropertiesHelper.setConfidenceScore(healthcareEntityRelation2, 1.0);
 
         AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntityRelations(healthcareEntitiesResult1,
-            IterableStream.of(asList(healthcareEntityRelation1, healthcareEntityRelation2)));
+            IterableStream.of(asList(healthcareEntityRelation2)));
         return healthcareEntitiesResult1;
-    }
-
-    static AnalyzeHealthcareEntitiesResult getRecognizeHealthcareEntitiesResultWithFhir2() {
-        AnalyzeHealthcareEntitiesResult recognizeHealthcareEntitiesResult2 = getRecognizeHealthcareEntitiesResult2();
-        Map<String, Object> fhir2 = new HashMap<>();
-        fhir2.put("dummyString2", "dummyObject2");
-        AnalyzeHealthcareEntitiesResultPropertiesHelper.setFhirBundle(recognizeHealthcareEntitiesResult2, fhir2);
-        return recognizeHealthcareEntitiesResult2;
     }
 
     /**
@@ -1191,8 +1131,8 @@ final class TestUtils {
         IterableStream<AnalyzeHealthcareEntitiesActionResult> analyzeHealthcareEntitiesActionResults,
         IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults,
         IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults,
-        IterableStream<ExtractSummaryActionResult> extractSummaryActionResults,
-        IterableStream<AbstractSummaryActionResult> abstractSummaryActionResults) {
+        IterableStream<ExtractiveSummaryActionResult> extractiveSummaryActionResults,
+        IterableStream<AbstractiveSummaryActionResult> abstractiveSummaryActionResults) {
 
         final AnalyzeActionsResult analyzeActionsResult = new AnalyzeActionsResult();
         AnalyzeActionsResultPropertiesHelper.setRecognizeEntitiesResults(analyzeActionsResult,
@@ -1207,10 +1147,10 @@ final class TestUtils {
             recognizeLinkedEntitiesActionResults);
         AnalyzeActionsResultPropertiesHelper.setAnalyzeSentimentResults(analyzeActionsResult,
             analyzeSentimentActionResults);
-        AnalyzeActionsResultPropertiesHelper.setExtractSummaryResults(analyzeActionsResult,
-            extractSummaryActionResults);
+        AnalyzeActionsResultPropertiesHelper.setExtractiveSummaryResults(analyzeActionsResult,
+            extractiveSummaryActionResults);
         AnalyzeActionsResultPropertiesHelper.setAbstractiveSummaryResults(analyzeActionsResult,
-            abstractSummaryActionResults);
+            abstractiveSummaryActionResults);
         return analyzeActionsResult;
     }
 
@@ -1342,42 +1282,42 @@ final class TestUtils {
         return analyzeActionsResults;
     }
 
-    static ExtractSummaryResultCollection getExpectedExtractSummaryResultCollection(
-        ExtractSummaryResult extractSummaryResult) {
-        final ExtractSummaryResultCollection expectResultCollection = new ExtractSummaryResultCollection(
-            asList(extractSummaryResult));
+    static ExtractiveSummaryResultCollection getExpectedExtractiveSummaryResultCollection(
+        ExtractiveSummaryResult extractiveSummaryResult) {
+        final ExtractiveSummaryResultCollection expectResultCollection = new ExtractiveSummaryResultCollection(
+            asList(extractiveSummaryResult));
         return expectResultCollection;
     }
 
-    static ExtractSummaryResult getExpectedExtractSummaryResultSortByOffset() {
+    static ExtractiveSummaryResult getExpectedExtractiveSummaryResultSortByOffset() {
         final TextDocumentStatistics textDocumentStatistics = new TextDocumentStatistics(67, 1);
-        final ExtractSummaryResult extractSummaryResult = new ExtractSummaryResult("0", textDocumentStatistics, null);
+        final ExtractiveSummaryResult extractiveSummaryResult = new ExtractiveSummaryResult("0", textDocumentStatistics, null);
 
-        final IterableStream<SummarySentence> summarySentences = IterableStream.of(asList(
-            getExpectedSummarySentence(
+        final IterableStream<ExtractiveSummarySentence> summarySentences = IterableStream.of(asList(
+            getExpectedExtractiveSummarySentence(
                 "At Microsoft, we have been on a quest to advance AI beyond existing"
                     + " techniques, by taking a more holistic, human-centric approach to learning and understanding.",
                 0.69, 0, 160),
-            getExpectedSummarySentence(
+            getExpectedExtractiveSummarySentence(
                 "The goal is to have pretrained models that can jointly learn representations to support a broad"
                     + " range of downstream AI tasks, much in the way humans do today.",
                 0.81, 856, 158),
-            getExpectedSummarySentence(
+            getExpectedExtractiveSummarySentence(
                 "Over the past five years, we have achieved human performance on benchmarks in conversational "
                     + "speech recognition, machine translation, conversational question answering, machine reading"
                     + " comprehension, and image captioning.",
                 0.79, 1015, 221)
         ));
 
-        ExtractSummaryResultPropertiesHelper.setSentences(extractSummaryResult, summarySentences);
-        ExtractSummaryResultPropertiesHelper.setWarnings(extractSummaryResult, null);
-        return extractSummaryResult;
+        ExtractiveSummaryResultPropertiesHelper.setSentences(extractiveSummaryResult, summarySentences);
+        ExtractiveSummaryResultPropertiesHelper.setWarnings(extractiveSummaryResult, null);
+        return extractiveSummaryResult;
     }
 
-    static ExtractSummaryActionResult getExtractSummaryActionResult(boolean isError, String actionName,
-        OffsetDateTime completeAt, ExtractSummaryResultCollection resultCollection, TextAnalyticsError actionError) {
-        ExtractSummaryActionResult actionResult = new ExtractSummaryActionResult();
-        ExtractSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
+    static ExtractiveSummaryActionResult getExtractiveSummaryActionResult(boolean isError, String actionName,
+        OffsetDateTime completeAt, ExtractiveSummaryResultCollection resultCollection, TextAnalyticsError actionError) {
+        ExtractiveSummaryActionResult actionResult = new ExtractiveSummaryActionResult();
+        ExtractiveSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
         TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, actionName);
         TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
         TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
@@ -1385,17 +1325,18 @@ final class TestUtils {
         return actionResult;
     }
 
-    static SummarySentence getExpectedSummarySentence(String text, double rankScore, int offset, int length) {
-        final SummarySentence summarySentence = new SummarySentence();
-        SummarySentencePropertiesHelper.setText(summarySentence, text);
-        SummarySentencePropertiesHelper.setRankScore(summarySentence, rankScore);
-        SummarySentencePropertiesHelper.setOffset(summarySentence, offset);
-        SummarySentencePropertiesHelper.setLength(summarySentence, length);
-        return summarySentence;
+    static ExtractiveSummarySentence getExpectedExtractiveSummarySentence(String text, double rankScore,
+                                                                          int offset, int length) {
+        final ExtractiveSummarySentence extractiveSummarySentence = new ExtractiveSummarySentence();
+        ExtractiveSummarySentencePropertiesHelper.setText(extractiveSummarySentence, text);
+        ExtractiveSummarySentencePropertiesHelper.setRankScore(extractiveSummarySentence, rankScore);
+        ExtractiveSummarySentencePropertiesHelper.setOffset(extractiveSummarySentence, offset);
+        ExtractiveSummarySentencePropertiesHelper.setLength(extractiveSummarySentence, length);
+        return extractiveSummarySentence;
     }
 
-    static AbstractSummaryResult getExpectedAbstractiveSummaryResult() {
-        AbstractSummaryResult abstractSummaryResult = new AbstractSummaryResult("0",
+    static AbstractiveSummaryResult getExpectedAbstractiveSummaryResult() {
+        AbstractiveSummaryResult abstractiveSummaryResult = new AbstractiveSummaryResult("0",
                 null, null);
 
         final IterableStream<AbstractiveSummary> abstractiveSummaries = IterableStream.of(asList(
@@ -1407,15 +1348,15 @@ final class TestUtils {
                         0, 1627)
         ));
 
-        AbstractSummaryResultPropertiesHelper.setSummaries(abstractSummaryResult, abstractiveSummaries);
-        return abstractSummaryResult;
+        AbstractiveSummaryResultPropertiesHelper.setSummaries(abstractiveSummaryResult, abstractiveSummaries);
+        return abstractiveSummaryResult;
     }
 
-    static AbstractSummaryActionResult getAbstractSummaryActionResult(boolean isError, String actionName,
-        OffsetDateTime completeAt, AbstractSummaryResultCollection resultCollection,
+    static AbstractiveSummaryActionResult getAbstractiveSummaryActionResult(boolean isError, String actionName,
+        OffsetDateTime completeAt, AbstractiveSummaryResultCollection resultCollection,
         TextAnalyticsError actionError) {
-        AbstractSummaryActionResult actionResult = new AbstractSummaryActionResult();
-        AbstractSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
+        AbstractiveSummaryActionResult actionResult = new AbstractiveSummaryActionResult();
+        AbstractiveSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
         TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, actionName);
         TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
         TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
@@ -1426,12 +1367,13 @@ final class TestUtils {
     static AbstractiveSummary getExpectedAbstractiveSummary(String text, int offset, int length) {
         AbstractiveSummary abstractiveSummary = new AbstractiveSummary();
         AbstractiveSummaryPropertiesHelper.setText(abstractiveSummary, text);
-        List<SummaryContext> summaryContexts = new ArrayList<>();
-        SummaryContext summaryContext = new SummaryContext();
-        SummaryContextPropertiesHelper.setOffset(summaryContext, offset);
-        SummaryContextPropertiesHelper.setLength(summaryContext, length);
-        summaryContexts.add(summaryContext);
-        AbstractiveSummaryPropertiesHelper.setSummaryContexts(abstractiveSummary, IterableStream.of(summaryContexts));
+        List<AbstractiveSummaryContext> abstractiveSummaryContexts = new ArrayList<>();
+        AbstractiveSummaryContext abstractiveSummaryContext = new AbstractiveSummaryContext();
+        AbstractiveSummaryContextPropertiesHelper.setOffset(abstractiveSummaryContext, offset);
+        AbstractiveSummaryContextPropertiesHelper.setLength(abstractiveSummaryContext, length);
+        abstractiveSummaryContexts.add(abstractiveSummaryContext);
+        AbstractiveSummaryPropertiesHelper.setSummaryContexts(abstractiveSummary,
+            IterableStream.of(abstractiveSummaryContexts));
         return abstractiveSummary;
     }
 

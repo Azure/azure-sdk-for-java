@@ -3,5 +3,5 @@
 package com.azure.spring.data.cosmos.domain;
 
 public enum Importance {
-    NORMAL;
+    HIGH, LOW, NORMAL;
 }

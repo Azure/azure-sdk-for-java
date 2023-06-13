@@ -51,18 +51,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the CostManagementClientImpl type. */
 @ServiceClient(builder = CostManagementClientBuilder.class)
 public final class CostManagementClientImpl implements CostManagementClient {
-    /** ETag of the Entity. Not required when creating an entity, but required when updating an entity. */
-    private final String ifMatch;
-
-    /**
-     * Gets ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-     *
-     * @return the ifMatch value.
-     */
-    public String getIfMatch() {
-        return this.ifMatch;
-    }
-
     /** server parameter. */
     private final String endpoint;
 
@@ -322,7 +310,6 @@ public final class CostManagementClientImpl implements CostManagementClient {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
      * @param endpoint server parameter.
      */
     CostManagementClientImpl(
@@ -330,12 +317,10 @@ public final class CostManagementClientImpl implements CostManagementClient {
         SerializerAdapter serializerAdapter,
         Duration defaultPollInterval,
         AzureEnvironment environment,
-        String ifMatch,
         String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
-        this.ifMatch = ifMatch;
         this.endpoint = endpoint;
         this.apiVersion = "2022-10-01";
         this.operations = new OperationsClientImpl(this);

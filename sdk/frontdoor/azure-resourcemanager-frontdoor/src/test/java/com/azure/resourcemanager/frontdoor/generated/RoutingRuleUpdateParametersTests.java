@@ -20,35 +20,40 @@ public final class RoutingRuleUpdateParametersTests {
         RoutingRuleUpdateParameters model =
             BinaryData
                 .fromString(
-                    "{\"frontendEndpoints\":[{\"id\":\"elwuipi\"},{\"id\":\"jzkzi\"}],\"acceptedProtocols\":[\"Http\",\"Http\"],\"patternsToMatch\":[\"y\",\"hyrnxxmu\"],\"enabledState\":\"Disabled\",\"routeConfiguration\":{\"@odata.type\":\"RouteConfiguration\"},\"rulesEngine\":{\"id\":\"dvstkw\"},\"webApplicationFirewallPolicyLink\":{\"id\":\"chea\"}}")
+                    "{\"frontendEndpoints\":[{\"id\":\"v\"}],\"acceptedProtocols\":[\"Https\",\"Https\",\"Https\",\"Http\"],\"patternsToMatch\":[\"cgjbirxbp\",\"bsrfbj\",\"dtws\"],\"enabledState\":\"Enabled\",\"routeConfiguration\":{\"@odata.type\":\"RouteConfiguration\"},\"rulesEngine\":{\"id\":\"vjz\"},\"webApplicationFirewallPolicyLink\":{\"id\":\"ilzznfqqnvwp\"}}")
                 .toObject(RoutingRuleUpdateParameters.class);
-        Assertions.assertEquals("elwuipi", model.frontendEndpoints().get(0).id());
-        Assertions.assertEquals(FrontDoorProtocol.HTTP, model.acceptedProtocols().get(0));
-        Assertions.assertEquals("y", model.patternsToMatch().get(0));
-        Assertions.assertEquals(RoutingRuleEnabledState.DISABLED, model.enabledState());
-        Assertions.assertEquals("dvstkw", model.rulesEngine().id());
-        Assertions.assertEquals("chea", model.webApplicationFirewallPolicyLink().id());
+        Assertions.assertEquals("v", model.frontendEndpoints().get(0).id());
+        Assertions.assertEquals(FrontDoorProtocol.HTTPS, model.acceptedProtocols().get(0));
+        Assertions.assertEquals("cgjbirxbp", model.patternsToMatch().get(0));
+        Assertions.assertEquals(RoutingRuleEnabledState.ENABLED, model.enabledState());
+        Assertions.assertEquals("vjz", model.rulesEngine().id());
+        Assertions.assertEquals("ilzznfqqnvwp", model.webApplicationFirewallPolicyLink().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RoutingRuleUpdateParameters model =
             new RoutingRuleUpdateParameters()
-                .withFrontendEndpoints(
-                    Arrays.asList(new SubResource().withId("elwuipi"), new SubResource().withId("jzkzi")))
-                .withAcceptedProtocols(Arrays.asList(FrontDoorProtocol.HTTP, FrontDoorProtocol.HTTP))
-                .withPatternsToMatch(Arrays.asList("y", "hyrnxxmu"))
-                .withEnabledState(RoutingRuleEnabledState.DISABLED)
+                .withFrontendEndpoints(Arrays.asList(new SubResource().withId("v")))
+                .withAcceptedProtocols(
+                    Arrays
+                        .asList(
+                            FrontDoorProtocol.HTTPS,
+                            FrontDoorProtocol.HTTPS,
+                            FrontDoorProtocol.HTTPS,
+                            FrontDoorProtocol.HTTP))
+                .withPatternsToMatch(Arrays.asList("cgjbirxbp", "bsrfbj", "dtws"))
+                .withEnabledState(RoutingRuleEnabledState.ENABLED)
                 .withRouteConfiguration(new RouteConfiguration())
-                .withRulesEngine(new SubResource().withId("dvstkw"))
+                .withRulesEngine(new SubResource().withId("vjz"))
                 .withWebApplicationFirewallPolicyLink(
-                    new RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink().withId("chea"));
+                    new RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink().withId("ilzznfqqnvwp"));
         model = BinaryData.fromObject(model).toObject(RoutingRuleUpdateParameters.class);
-        Assertions.assertEquals("elwuipi", model.frontendEndpoints().get(0).id());
-        Assertions.assertEquals(FrontDoorProtocol.HTTP, model.acceptedProtocols().get(0));
-        Assertions.assertEquals("y", model.patternsToMatch().get(0));
-        Assertions.assertEquals(RoutingRuleEnabledState.DISABLED, model.enabledState());
-        Assertions.assertEquals("dvstkw", model.rulesEngine().id());
-        Assertions.assertEquals("chea", model.webApplicationFirewallPolicyLink().id());
+        Assertions.assertEquals("v", model.frontendEndpoints().get(0).id());
+        Assertions.assertEquals(FrontDoorProtocol.HTTPS, model.acceptedProtocols().get(0));
+        Assertions.assertEquals("cgjbirxbp", model.patternsToMatch().get(0));
+        Assertions.assertEquals(RoutingRuleEnabledState.ENABLED, model.enabledState());
+        Assertions.assertEquals("vjz", model.rulesEngine().id());
+        Assertions.assertEquals("ilzznfqqnvwp", model.webApplicationFirewallPolicyLink().id());
     }
 }

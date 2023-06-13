@@ -12,21 +12,9 @@ import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
 /** Resource collection API of PartnerTopicEventSubscriptions. */
 public interface PartnerTopicEventSubscriptions {
     /**
-     * Get properties of an event subscription of a partner topic.
+     * Get an event subscription of a partner topic.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be found. Event subscription names must be between
-     *     3 and 100 characters in length and use alphanumeric letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an event subscription of a partner topic.
-     */
-    EventSubscription get(String resourceGroupName, String partnerTopicName, String eventSubscriptionName);
-
-    /**
-     * Get properties of an event subscription of a partner topic.
+     * <p>Get properties of an event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -42,7 +30,25 @@ public interface PartnerTopicEventSubscriptions {
         String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context);
 
     /**
-     * Asynchronously creates or updates an event subscription of a partner topic with the specified parameters.
+     * Get an event subscription of a partner topic.
+     *
+     * <p>Get properties of an event subscription of a partner topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerTopicName Name of the partner topic.
+     * @param eventSubscriptionName Name of the event subscription to be found. Event subscription names must be between
+     *     3 and 100 characters in length and use alphanumeric letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of an event subscription of a partner topic.
+     */
+    EventSubscription get(String resourceGroupName, String partnerTopicName, String eventSubscriptionName);
+
+    /**
+     * Create or update an event subscription of a partner topic.
+     *
+     * <p>Asynchronously creates or updates an event subscription of a partner topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
@@ -62,7 +68,9 @@ public interface PartnerTopicEventSubscriptions {
         EventSubscriptionInner eventSubscriptionInfo);
 
     /**
-     * Asynchronously creates or updates an event subscription of a partner topic with the specified parameters.
+     * Create or update an event subscription of a partner topic.
+     *
+     * <p>Asynchronously creates or updates an event subscription of a partner topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
@@ -84,7 +92,9 @@ public interface PartnerTopicEventSubscriptions {
         Context context);
 
     /**
-     * Delete an existing event subscription of a partner topic.
+     * Delete an event subscription of a partner topic.
+     *
+     * <p>Delete an existing event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -97,7 +107,9 @@ public interface PartnerTopicEventSubscriptions {
     void delete(String resourceGroupName, String partnerTopicName, String eventSubscriptionName);
 
     /**
-     * Delete an existing event subscription of a partner topic.
+     * Delete an event subscription of a partner topic.
+     *
+     * <p>Delete an existing event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -111,7 +123,9 @@ public interface PartnerTopicEventSubscriptions {
     void delete(String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context);
 
     /**
-     * Update an existing event subscription of a partner topic.
+     * Update event subscription of a partner topic.
+     *
+     * <p>Update an existing event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -130,7 +144,9 @@ public interface PartnerTopicEventSubscriptions {
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters);
 
     /**
-     * Update an existing event subscription of a partner topic.
+     * Update event subscription of a partner topic.
+     *
+     * <p>Update an existing event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -151,22 +167,9 @@ public interface PartnerTopicEventSubscriptions {
         Context context);
 
     /**
-     * Get the full endpoint URL for an event subscription of a partner topic.
+     * Get full URL of an event subscription of a partner topic.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for an event subscription of a partner topic.
-     */
-    EventSubscriptionFullUrl getFullUrl(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName);
-
-    /**
-     * Get the full endpoint URL for an event subscription of a partner topic.
+     * <p>Get the full endpoint URL for an event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -182,7 +185,26 @@ public interface PartnerTopicEventSubscriptions {
         String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context);
 
     /**
-     * List event subscriptions that belong to a specific partner topic.
+     * Get full URL of an event subscription of a partner topic.
+     *
+     * <p>Get the full endpoint URL for an event subscription of a partner topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerTopicName Name of the partner topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL for an event subscription of a partner topic.
+     */
+    EventSubscriptionFullUrl getFullUrl(
+        String resourceGroupName, String partnerTopicName, String eventSubscriptionName);
+
+    /**
+     * List event subscriptions of a partner topic.
+     *
+     * <p>List event subscriptions that belong to a specific partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -194,7 +216,9 @@ public interface PartnerTopicEventSubscriptions {
     PagedIterable<EventSubscription> listByPartnerTopic(String resourceGroupName, String partnerTopicName);
 
     /**
-     * List event subscriptions that belong to a specific partner topic.
+     * List event subscriptions of a partner topic.
+     *
+     * <p>List event subscriptions that belong to a specific partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -216,22 +240,9 @@ public interface PartnerTopicEventSubscriptions {
         String resourceGroupName, String partnerTopicName, String filter, Integer top, Context context);
 
     /**
-     * Get all delivery attributes for an event subscription of a partner topic.
+     * Get delivery attributes for an event subscription of a partner topic.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription of a partner topic.
-     */
-    DeliveryAttributeListResult getDeliveryAttributes(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName);
-
-    /**
-     * Get all delivery attributes for an event subscription of a partner topic.
+     * <p>Get all delivery attributes for an event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -245,4 +256,21 @@ public interface PartnerTopicEventSubscriptions {
      */
     Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(
         String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context);
+
+    /**
+     * Get delivery attributes for an event subscription of a partner topic.
+     *
+     * <p>Get all delivery attributes for an event subscription of a partner topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerTopicName Name of the partner topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription of a partner topic.
+     */
+    DeliveryAttributeListResult getDeliveryAttributes(
+        String resourceGroupName, String partnerTopicName, String eventSubscriptionName);
 }

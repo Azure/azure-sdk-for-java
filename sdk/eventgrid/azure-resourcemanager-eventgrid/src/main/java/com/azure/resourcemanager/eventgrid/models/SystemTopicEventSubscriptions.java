@@ -12,7 +12,27 @@ import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
 /** Resource collection API of SystemTopicEventSubscriptions. */
 public interface SystemTopicEventSubscriptions {
     /**
-     * Get an event subscription.
+     * Get delivery attributes for an event subscription.
+     *
+     * <p>Get all delivery attributes for an event subscription.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param systemTopicName Name of the system topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription along with {@link Response}.
+     */
+    Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(
+        String resourceGroupName, String systemTopicName, String eventSubscriptionName, Context context);
+
+    /**
+     * Get delivery attributes for an event subscription.
+     *
+     * <p>Get all delivery attributes for an event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -21,12 +41,15 @@ public interface SystemTopicEventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an event subscription.
+     * @return all delivery attributes for an event subscription.
      */
-    EventSubscription get(String resourceGroupName, String systemTopicName, String eventSubscriptionName);
+    DeliveryAttributeListResult getDeliveryAttributes(
+        String resourceGroupName, String systemTopicName, String eventSubscriptionName);
 
     /**
-     * Get an event subscription.
+     * Get an event subscription of a system topic.
+     *
+     * <p>Get an event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -42,7 +65,25 @@ public interface SystemTopicEventSubscriptions {
         String resourceGroupName, String systemTopicName, String eventSubscriptionName, Context context);
 
     /**
-     * Asynchronously creates or updates an event subscription with the specified parameters. Existing event
+     * Get an event subscription of a system topic.
+     *
+     * <p>Get an event subscription.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param systemTopicName Name of the system topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an event subscription.
+     */
+    EventSubscription get(String resourceGroupName, String systemTopicName, String eventSubscriptionName);
+
+    /**
+     * Create or update an event subscription for a system topic.
+     *
+     * <p>Asynchronously creates or updates an event subscription with the specified parameters. Existing event
      * subscriptions will be updated with this API.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
@@ -62,7 +103,9 @@ public interface SystemTopicEventSubscriptions {
         EventSubscriptionInner eventSubscriptionInfo);
 
     /**
-     * Asynchronously creates or updates an event subscription with the specified parameters. Existing event
+     * Create or update an event subscription for a system topic.
+     *
+     * <p>Asynchronously creates or updates an event subscription with the specified parameters. Existing event
      * subscriptions will be updated with this API.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
@@ -84,7 +127,9 @@ public interface SystemTopicEventSubscriptions {
         Context context);
 
     /**
-     * Delete an existing event subscription of a system topic.
+     * Delete an event subscription of a system topic.
+     *
+     * <p>Delete an existing event subscription of a system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -97,7 +142,9 @@ public interface SystemTopicEventSubscriptions {
     void delete(String resourceGroupName, String systemTopicName, String eventSubscriptionName);
 
     /**
-     * Delete an existing event subscription of a system topic.
+     * Delete an event subscription of a system topic.
+     *
+     * <p>Delete an existing event subscription of a system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -111,7 +158,9 @@ public interface SystemTopicEventSubscriptions {
     void delete(String resourceGroupName, String systemTopicName, String eventSubscriptionName, Context context);
 
     /**
-     * Update an existing event subscription of a system topic.
+     * Update event subscription of a system topic.
+     *
+     * <p>Update an existing event subscription of a system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -130,7 +179,9 @@ public interface SystemTopicEventSubscriptions {
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters);
 
     /**
-     * Update an existing event subscription of a system topic.
+     * Update event subscription of a system topic.
+     *
+     * <p>Update an existing event subscription of a system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -151,21 +202,9 @@ public interface SystemTopicEventSubscriptions {
         Context context);
 
     /**
-     * Get the full endpoint URL for an event subscription of a system topic.
+     * Get full URL of an event subscription of a system topic
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for an event subscription of a system topic.
-     */
-    EventSubscriptionFullUrl getFullUrl(String resourceGroupName, String systemTopicName, String eventSubscriptionName);
-
-    /**
-     * Get the full endpoint URL for an event subscription of a system topic.
+     * <p>Get the full endpoint URL for an event subscription of a system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -181,7 +220,25 @@ public interface SystemTopicEventSubscriptions {
         String resourceGroupName, String systemTopicName, String eventSubscriptionName, Context context);
 
     /**
-     * List event subscriptions that belong to a specific system topic.
+     * Get full URL of an event subscription of a system topic
+     *
+     * <p>Get the full endpoint URL for an event subscription of a system topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param systemTopicName Name of the system topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL for an event subscription of a system topic.
+     */
+    EventSubscriptionFullUrl getFullUrl(String resourceGroupName, String systemTopicName, String eventSubscriptionName);
+
+    /**
+     * List event subscriptions of a system topic.
+     *
+     * <p>List event subscriptions that belong to a specific system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -193,7 +250,9 @@ public interface SystemTopicEventSubscriptions {
     PagedIterable<EventSubscription> listBySystemTopic(String resourceGroupName, String systemTopicName);
 
     /**
-     * List event subscriptions that belong to a specific system topic.
+     * List event subscriptions of a system topic.
+     *
+     * <p>List event subscriptions that belong to a specific system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -213,35 +272,4 @@ public interface SystemTopicEventSubscriptions {
      */
     PagedIterable<EventSubscription> listBySystemTopic(
         String resourceGroupName, String systemTopicName, String filter, Integer top, Context context);
-
-    /**
-     * Get all delivery attributes for an event subscription.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription.
-     */
-    DeliveryAttributeListResult getDeliveryAttributes(
-        String resourceGroupName, String systemTopicName, String eventSubscriptionName);
-
-    /**
-     * Get all delivery attributes for an event subscription.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription along with {@link Response}.
-     */
-    Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(
-        String resourceGroupName, String systemTopicName, String eventSubscriptionName, Context context);
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachineGroup;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for SqlVirtualMachineGroups Update. */
 public final class SqlVirtualMachineGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/UpdateSqlVirtualMachineGroup.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/UpdateSqlVirtualMachineGroup.json
      */
     /**
      * Sample code: Updates a SQL virtual machine group tags.
@@ -24,7 +23,7 @@ public final class SqlVirtualMachineGroupsUpdateSamples {
         SqlVirtualMachineGroup resource =
             manager
                 .sqlVirtualMachineGroups()
-                .getByResourceGroupWithResponse("testrg", "testvmgroup", Context.NONE)
+                .getByResourceGroupWithResponse("testrg", "testvmgroup", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("mytag", "myval")).apply();
     }

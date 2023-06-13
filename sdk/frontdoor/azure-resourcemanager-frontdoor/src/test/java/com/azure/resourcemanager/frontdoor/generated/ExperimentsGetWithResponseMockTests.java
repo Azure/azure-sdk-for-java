@@ -32,7 +32,7 @@ public final class ExperimentsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"dtj\",\"endpointA\":{\"name\":\"bcihxuuwhc\",\"endpoint\":\"xccybvpa\"},\"endpointB\":{\"name\":\"kudzpxgwj\",\"endpoint\":\"mag\"},\"enabledState\":\"Disabled\",\"resourceState\":\"Enabled\",\"status\":\"pfkyrkdbdgiogsj\",\"scriptFileUri\":\"nwqjnoba\"},\"location\":\"yhddvia\",\"tags\":{\"zdwvvbalxl\":\"fnmntfpmvmemfn\",\"fukuvsjcswsmystu\":\"lchpodbzevwrdn\",\"chpqbmfpjba\":\"uqypfcvle\",\"xsspuunnoxyhk\":\"widf\"},\"id\":\"g\",\"name\":\"ddrihpf\",\"type\":\"oqcaaewdaomdj\"}";
+            "{\"properties\":{\"description\":\"gsgbpfgzdjt\",\"endpointA\":{\"name\":\"flbqvgaq\",\"endpoint\":\"gafcqu\"},\"endpointB\":{\"name\":\"vetnwsdtutn\",\"endpoint\":\"duy\"},\"enabledState\":\"Disabled\",\"resourceState\":\"Deleting\",\"status\":\"rmewipmve\",\"scriptFileUri\":\"xukuqgsj\"},\"location\":\"xundxgk\",\"tags\":{\"gpmuneqsxvmhfbuz\":\"zhhzjhfjmhvvmu\",\"ms\":\"yihsasbhudypohyu\",\"ttymsjny\":\"ynsqyrpfoobr\",\"tilaxh\":\"qdnfwqzdz\"},\"id\":\"fhqlyvi\",\"name\":\"ouwivkxoyzunbixx\",\"type\":\"ti\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,15 +61,18 @@ public final class ExperimentsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Experiment response =
-            manager.experiments().getWithResponse("yw", "t", "gkxnyedabg", com.azure.core.util.Context.NONE).getValue();
+            manager
+                .experiments()
+                .getWithResponse("f", "fiwrxgkn", "uvyinzqodfvpgs", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("yhddvia", response.location());
-        Assertions.assertEquals("fnmntfpmvmemfn", response.tags().get("zdwvvbalxl"));
-        Assertions.assertEquals("dtj", response.description());
-        Assertions.assertEquals("bcihxuuwhc", response.endpointA().name());
-        Assertions.assertEquals("xccybvpa", response.endpointA().endpoint());
-        Assertions.assertEquals("kudzpxgwj", response.endpointB().name());
-        Assertions.assertEquals("mag", response.endpointB().endpoint());
+        Assertions.assertEquals("xundxgk", response.location());
+        Assertions.assertEquals("zhhzjhfjmhvvmu", response.tags().get("gpmuneqsxvmhfbuz"));
+        Assertions.assertEquals("gsgbpfgzdjt", response.description());
+        Assertions.assertEquals("flbqvgaq", response.endpointA().name());
+        Assertions.assertEquals("gafcqu", response.endpointA().endpoint());
+        Assertions.assertEquals("vetnwsdtutn", response.endpointB().name());
+        Assertions.assertEquals("duy", response.endpointB().endpoint());
         Assertions.assertEquals(State.DISABLED, response.enabledState());
     }
 }

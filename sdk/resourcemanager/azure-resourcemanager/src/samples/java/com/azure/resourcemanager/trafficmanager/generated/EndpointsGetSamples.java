@@ -4,12 +4,12 @@
 
 package com.azure.resourcemanager.trafficmanager.generated;
 
-import com.azure.core.util.Context;
+import com.azure.resourcemanager.trafficmanager.models.EndpointTypes;
 
 /** Samples for Endpoints Get. */
 public final class EndpointsGetSamples {
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-04-01/examples/Endpoint-GET-External-WithGeoMapping.json
+     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Endpoint-GET-External-WithGeoMapping.json
      */
     /**
      * Sample code: Endpoint-GET-External-WithGeoMapping.
@@ -25,13 +25,13 @@ public final class EndpointsGetSamples {
             .getWithResponse(
                 "azuresdkfornetautoresttrafficmanager2191",
                 "azuresdkfornetautoresttrafficmanager8224",
-                "ExternalEndpoints",
+                EndpointTypes.EXTERNAL_ENDPOINTS,
                 "My%20external%20endpoint",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-04-01/examples/Endpoint-GET-External-WithSubnetMapping.json
+     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Endpoint-GET-External-WithSubnetMapping.json
      */
     /**
      * Sample code: Endpoint-GET-External-WithSubnetMapping.
@@ -47,13 +47,13 @@ public final class EndpointsGetSamples {
             .getWithResponse(
                 "azuresdkfornetautoresttrafficmanager2191",
                 "azuresdkfornetautoresttrafficmanager8224",
-                "ExternalEndpoints",
+                EndpointTypes.EXTERNAL_ENDPOINTS,
                 "My%20external%20endpoint",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-04-01/examples/Endpoint-GET-External-WithLocation.json
+     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Endpoint-GET-External-WithLocation.json
      */
     /**
      * Sample code: Endpoint-GET-External-WithLocation.
@@ -69,8 +69,8 @@ public final class EndpointsGetSamples {
             .getWithResponse(
                 "azuresdkfornetautoresttrafficmanager1421",
                 "azsmnet6386",
-                "ExternalEndpoints",
+                EndpointTypes.EXTERNAL_ENDPOINTS,
                 "azsmnet7187",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

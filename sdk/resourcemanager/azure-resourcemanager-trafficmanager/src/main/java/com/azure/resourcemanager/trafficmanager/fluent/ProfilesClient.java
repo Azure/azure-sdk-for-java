@@ -83,9 +83,67 @@ public interface ProfilesClient
         CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters);
 
     /**
+     * Checks the availability of a Traffic Manager Relative DNS name.
+     *
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager Name Availability response along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<TrafficManagerNameAvailabilityInner>> checkTrafficManagerNameAvailabilityV2WithResponseAsync(
+        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters);
+
+    /**
+     * Checks the availability of a Traffic Manager Relative DNS name.
+     *
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager Name Availability response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<TrafficManagerNameAvailabilityInner> checkTrafficManagerNameAvailabilityV2Async(
+        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters);
+
+    /**
+     * Checks the availability of a Traffic Manager Relative DNS name.
+     *
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager Name Availability response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<TrafficManagerNameAvailabilityInner> checkTrafficManagerNameAvailabilityV2WithResponse(
+        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters, Context context);
+
+    /**
+     * Checks the availability of a Traffic Manager Relative DNS name.
+     *
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager Name Availability response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TrafficManagerNameAvailabilityInner checkTrafficManagerNameAvailabilityV2(
+        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters);
+
+    /**
      * Lists all Traffic Manager profiles within a resource group.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -97,7 +155,7 @@ public interface ProfilesClient
     /**
      * Lists all Traffic Manager profiles within a resource group.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -109,7 +167,7 @@ public interface ProfilesClient
     /**
      * Lists all Traffic Manager profiles within a resource group.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -154,7 +212,7 @@ public interface ProfilesClient
     /**
      * Gets a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -167,7 +225,7 @@ public interface ProfilesClient
     /**
      * Gets a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -180,7 +238,7 @@ public interface ProfilesClient
     /**
      * Gets a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -195,7 +253,7 @@ public interface ProfilesClient
     /**
      * Gets a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -208,7 +266,7 @@ public interface ProfilesClient
     /**
      * Create or update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -224,7 +282,7 @@ public interface ProfilesClient
     /**
      * Create or update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -238,7 +296,7 @@ public interface ProfilesClient
     /**
      * Create or update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
@@ -254,7 +312,7 @@ public interface ProfilesClient
     /**
      * Create or update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -268,7 +326,7 @@ public interface ProfilesClient
     /**
      * Deletes a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -282,7 +340,7 @@ public interface ProfilesClient
     /**
      * Deletes a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -295,7 +353,7 @@ public interface ProfilesClient
     /**
      * Deletes a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -310,7 +368,7 @@ public interface ProfilesClient
     /**
      * Deletes a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -323,7 +381,7 @@ public interface ProfilesClient
     /**
      * Update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -339,7 +397,7 @@ public interface ProfilesClient
     /**
      * Update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -353,7 +411,7 @@ public interface ProfilesClient
     /**
      * Update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @param context The context to associate with this operation.
@@ -369,7 +427,7 @@ public interface ProfilesClient
     /**
      * Update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

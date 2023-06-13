@@ -132,7 +132,7 @@ public class CosmosClientBuilder implements
     private ApiType apiType = null;
     private Boolean clientTelemetryEnabledOverride = null;
     private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
-    private CosmosE2EOperationRetryPolicyConfig cosmosE2EOperationRetryPolicyConfig;
+    private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -790,21 +790,21 @@ public class CosmosClientBuilder implements
     }
 
     /**
-     * Sets the {@link CosmosE2EOperationRetryPolicyConfig} on the client
-     * @param cosmosE2EOperationRetryPolicyConfig the {@link CosmosE2EOperationRetryPolicyConfig}
+     * Sets the {@link CosmosEndToEndOperationLatencyPolicyConfig} on the client
+     * @param cosmosEndToEndOperationLatencyPolicyConfig the {@link CosmosEndToEndOperationLatencyPolicyConfig}
      * @return current CosmosClientBuilder
      */
-    public CosmosClientBuilder endToEndOperationLatencyPolicyConfig(CosmosE2EOperationRetryPolicyConfig cosmosE2EOperationRetryPolicyConfig){
-        this.cosmosE2EOperationRetryPolicyConfig = cosmosE2EOperationRetryPolicyConfig;
+    public CosmosClientBuilder endToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig){
+        this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
         return this;
     }
 
     /**
-     * Gets the {@link CosmosE2EOperationRetryPolicyConfig}
-     * @return the {@link CosmosE2EOperationRetryPolicyConfig}
+     * Gets the {@link CosmosEndToEndOperationLatencyPolicyConfig}
+     * @return the {@link CosmosEndToEndOperationLatencyPolicyConfig}
      */
-    CosmosE2EOperationRetryPolicyConfig getEndToEndOperationConfig() {
-        return this.cosmosE2EOperationRetryPolicyConfig;
+    CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationConfig() {
+        return this.cosmosEndToEndOperationLatencyPolicyConfig;
     }
 
     /**
@@ -1048,7 +1048,6 @@ public class CosmosClientBuilder implements
             Preconditions.checkArgument(preferredRegions != null, "preferredRegions cannot be null when proactiveContainerInitConfig has been set");
             Preconditions.checkArgument(this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount() <= this.preferredRegions.size(), "no. of regions to proactively connect to " +
                     "cannot be greater than the no.of preferred regions");
-            Preconditions.checkArgument(this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 0, "no. of proactive connection regions should be greater than 0");
             if (this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 1) {
                 Preconditions.checkArgument(this.isEndpointDiscoveryEnabled(), "endpoint discovery should be enabled when no. " +
                         "of proactive regions is greater than 1");

@@ -21,13 +21,14 @@ public final class TransferConfigurationTests {
         TransferConfiguration model =
             BinaryData
                 .fromString(
-                    "{\"transferConfigurationType\":\"TransferUsingFilter\",\"transferFilterDetails\":{\"include\":{\"dataAccountType\":\"ManagedDisk\",\"filterFileDetails\":[]}},\"transferAllDetails\":{\"include\":{\"dataAccountType\":\"ManagedDisk\",\"transferAllBlobs\":false,\"transferAllFiles\":false}}}")
+                    "{\"transferConfigurationType\":\"TransferUsingFilter\",\"transferFilterDetails\":{\"include\":{\"dataAccountType\":\"StorageAccount\",\"filterFileDetails\":[]}},\"transferAllDetails\":{\"include\":{\"dataAccountType\":\"StorageAccount\",\"transferAllBlobs\":true,\"transferAllFiles\":false}}}")
                 .toObject(TransferConfiguration.class);
         Assertions.assertEquals(TransferConfigurationType.TRANSFER_USING_FILTER, model.transferConfigurationType());
         Assertions
-            .assertEquals(DataAccountType.MANAGED_DISK, model.transferFilterDetails().include().dataAccountType());
-        Assertions.assertEquals(DataAccountType.MANAGED_DISK, model.transferAllDetails().include().dataAccountType());
-        Assertions.assertEquals(false, model.transferAllDetails().include().transferAllBlobs());
+            .assertEquals(DataAccountType.STORAGE_ACCOUNT, model.transferFilterDetails().include().dataAccountType());
+        Assertions
+            .assertEquals(DataAccountType.STORAGE_ACCOUNT, model.transferAllDetails().include().dataAccountType());
+        Assertions.assertEquals(true, model.transferAllDetails().include().transferAllBlobs());
         Assertions.assertEquals(false, model.transferAllDetails().include().transferAllFiles());
     }
 
@@ -40,21 +41,22 @@ public final class TransferConfigurationTests {
                     new TransferConfigurationTransferFilterDetails()
                         .withInclude(
                             new TransferFilterDetails()
-                                .withDataAccountType(DataAccountType.MANAGED_DISK)
+                                .withDataAccountType(DataAccountType.STORAGE_ACCOUNT)
                                 .withFilterFileDetails(Arrays.asList())))
                 .withTransferAllDetails(
                     new TransferConfigurationTransferAllDetails()
                         .withInclude(
                             new TransferAllDetails()
-                                .withDataAccountType(DataAccountType.MANAGED_DISK)
-                                .withTransferAllBlobs(false)
+                                .withDataAccountType(DataAccountType.STORAGE_ACCOUNT)
+                                .withTransferAllBlobs(true)
                                 .withTransferAllFiles(false)));
         model = BinaryData.fromObject(model).toObject(TransferConfiguration.class);
         Assertions.assertEquals(TransferConfigurationType.TRANSFER_USING_FILTER, model.transferConfigurationType());
         Assertions
-            .assertEquals(DataAccountType.MANAGED_DISK, model.transferFilterDetails().include().dataAccountType());
-        Assertions.assertEquals(DataAccountType.MANAGED_DISK, model.transferAllDetails().include().dataAccountType());
-        Assertions.assertEquals(false, model.transferAllDetails().include().transferAllBlobs());
+            .assertEquals(DataAccountType.STORAGE_ACCOUNT, model.transferFilterDetails().include().dataAccountType());
+        Assertions
+            .assertEquals(DataAccountType.STORAGE_ACCOUNT, model.transferAllDetails().include().dataAccountType());
+        Assertions.assertEquals(true, model.transferAllDetails().include().transferAllBlobs());
         Assertions.assertEquals(false, model.transferAllDetails().include().transferAllFiles());
     }
 }
