@@ -23,6 +23,10 @@ public final class SqlStorageSettings {
     @JsonProperty(value = "defaultFilePath")
     private String defaultFilePath;
 
+    /** Creates an instance of SqlStorageSettings class. */
+    public SqlStorageSettings() {
+    }
+
     /**
      * Get the luns property: Logical Unit Numbers for the disks.
      *

@@ -4,14 +4,17 @@
 
 package com.azure.analytics.purview.sharing.models;
 
+import java.util.List;
+
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
-/** An ADLS Gen2 account artifact. */
+/**
+ * An Adls Gen2 storage account artifact.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "storeKind")
 @JsonTypeName("AdlsGen2Account")
 @JsonFlatten
@@ -24,17 +27,20 @@ public class AdlsGen2Artifact extends Artifact {
     private String location;
 
     /*
-     * A list of ADLS Gen2 storage account paths.
+     * A list of Adls Gen2 storage account paths.
      */
     @JsonProperty(value = "properties.paths", required = true)
     private List<StorageAccountPath> paths;
 
-    /** Creates an instance of AdlsGen2Artifact class. */
-    public AdlsGen2Artifact() {}
+    /**
+     * Creates an instance of AdlsGen2Artifact class.
+     */
+    public AdlsGen2Artifact() {
+    }
 
     /**
      * Get the location property: Location of the storage account.
-     *
+     * 
      * @return the location value.
      */
     public String getLocation() {
@@ -42,8 +48,8 @@ public class AdlsGen2Artifact extends Artifact {
     }
 
     /**
-     * Get the paths property: A list of ADLS Gen2 storage account paths.
-     *
+     * Get the paths property: A list of Adls Gen2 storage account paths.
+     * 
      * @return the paths value.
      */
     public List<StorageAccountPath> getPaths() {
@@ -51,8 +57,8 @@ public class AdlsGen2Artifact extends Artifact {
     }
 
     /**
-     * Set the paths property: A list of ADLS Gen2 storage account paths.
-     *
+     * Set the paths property: A list of Adls Gen2 storage account paths.
+     * 
      * @param paths the paths value to set.
      * @return the AdlsGen2Artifact object itself.
      */
@@ -61,7 +67,9 @@ public class AdlsGen2Artifact extends Artifact {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AdlsGen2Artifact setStoreReference(StoreReference storeReference) {
         super.setStoreReference(storeReference);

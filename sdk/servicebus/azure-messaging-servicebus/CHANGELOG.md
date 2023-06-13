@@ -78,6 +78,15 @@
 - Upgraded `azure-core` from `1.35.0` to `1.36.0`.
 - Upgraded `azure-core-amqp` from `2.8.1` to `2.8.2`.
 - Upgraded `azure-identity` from `1.7.3` to `1.8.0`.
+
+## 7.14.0-beta.1 (2023-01-31)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` to `2.9.0-beta.1`.
+
 ## 7.13.1 (2023-01-20)
 
 ### Bugs Fixed

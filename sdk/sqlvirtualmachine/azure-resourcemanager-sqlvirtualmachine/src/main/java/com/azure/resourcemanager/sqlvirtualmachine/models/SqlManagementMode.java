@@ -20,6 +20,15 @@ public final class SqlManagementMode extends ExpandableStringEnum<SqlManagementM
     public static final SqlManagementMode NO_AGENT = fromString("NoAgent");
 
     /**
+     * Creates a new instance of SqlManagementMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SqlManagementMode() {
+    }
+
+    /**
      * Creates or finds a SqlManagementMode from its string representation.
      *
      * @param name a name to look for.
