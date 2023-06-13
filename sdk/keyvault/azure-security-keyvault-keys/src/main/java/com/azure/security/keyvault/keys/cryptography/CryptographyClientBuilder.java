@@ -173,7 +173,32 @@ public final class CryptographyClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CryptographyClient buildClient() {
-        return new CryptographyClient(buildAsyncClient());
+        if (jsonWebKey == null) {
+            if (Strings.isNullOrEmpty(keyId)) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "An Azure Key Vault key identifier is required to build the cryptography client if a JSON Web Key"
+                        + " is not provided."));
+            }
+
+            CryptographyServiceVersion serviceVersion =
+                version != null ? version : CryptographyServiceVersion.getLatest();
+
+            if (pipeline != null) {
+                return new CryptographyClient(keyId, pipeline, serviceVersion);
+            }
+
+            if (credential == null) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "Azure Key Vault credentials are required to build the cryptography client if a JSON Web Key is not"
+                        + " provided."));
+            }
+
+            HttpPipeline pipeline = setupPipeline();
+
+            return new CryptographyClient(keyId, pipeline, serviceVersion);
+        } else {
+            return new CryptographyClient(jsonWebKey);
+        }
     }
 
     /**
@@ -205,7 +230,8 @@ public final class CryptographyClientBuilder implements
                         + " is not provided."));
             }
 
-            CryptographyServiceVersion serviceVersion = version != null ? version : CryptographyServiceVersion.getLatest();
+            CryptographyServiceVersion serviceVersion =
+                version != null ? version : CryptographyServiceVersion.getLatest();
 
             if (pipeline != null) {
                 return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);

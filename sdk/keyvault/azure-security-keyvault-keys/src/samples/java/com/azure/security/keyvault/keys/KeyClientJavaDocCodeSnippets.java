@@ -94,14 +94,14 @@ public final class KeyClientJavaDocCodeSnippets {
         System.out.printf("Created key with name: %s and id: %s%n", ecKey.getName(), ecKey.getId());
         // END: com.azure.security.keyvault.keys.KeyClient.createEcKey#CreateOctKeyOptions
 
-        // BEGIN: com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions
+        // BEGIN: com.azure.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions
         CreateOctKeyOptions createOctKeyOptions = new CreateOctKeyOptions("keyName")
             .setNotBefore(OffsetDateTime.now().plusDays(1))
             .setExpiresOn(OffsetDateTime.now().plusYears(1));
         KeyVaultKey octKey = keyClient.createOctKey(createOctKeyOptions);
 
         System.out.printf("Created key with name: %s and id: %s%n", octKey.getName(), octKey.getId());
-        // END: com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions
+        // END: com.azure.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions
     }
 
     /**
@@ -214,7 +214,7 @@ public final class KeyClientJavaDocCodeSnippets {
             createEcKeyResponse.getValue().getId());
         // END: com.azure.security.keyvault.keys.KeyClient.createEcKeyWithResponse#CreateEcKeyOptions-Context
 
-        // BEGIN: com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions-Context
+        // BEGIN: com.azure.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions-Context
         CreateOctKeyOptions createOctKeyOptions = new CreateOctKeyOptions("keyName")
             .setNotBefore(OffsetDateTime.now().plusDays(1))
             .setExpiresOn(OffsetDateTime.now().plusYears(1));
@@ -223,7 +223,7 @@ public final class KeyClientJavaDocCodeSnippets {
 
         System.out.printf("Created key with name: %s and: id %s%n", createOctKeyResponse.getValue().getName(),
             createOctKeyResponse.getValue().getId());
-        // END: com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions-Context
+        // END: com.azure.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions-Context
     }
 
     /**
