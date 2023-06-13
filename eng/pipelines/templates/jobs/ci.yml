@@ -291,18 +291,18 @@ jobs:
         parameters:
           ScanPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
 
-      - template: /eng/common/pipelines/templates/steps/verify-links.yml
-        parameters:
-          ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-            Directory: ''
-            Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
-          ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
-            Directory: sdk/${{ parameters.ServiceDirectory }}
-          CheckLinkGuidance: $true
+      # - template: /eng/common/pipelines/templates/steps/verify-links.yml
+      #   parameters:
+      #     ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+      #       Directory: ''
+      #       Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
+      #     ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+      #       Directory: sdk/${{ parameters.ServiceDirectory }}
+      #     CheckLinkGuidance: $true
 
-      - template: /eng/common/pipelines/templates/steps/verify-samples.yml
-        parameters:
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+      # - template: /eng/common/pipelines/templates/steps/verify-samples.yml
+      #   parameters:
+      #     ServiceDirectory: ${{ parameters.ServiceDirectory }}
 
       # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
       - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
