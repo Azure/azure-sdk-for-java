@@ -6,7 +6,7 @@ package com.azure.developer.loadtesting;
 
 import com.azure.core.util.ServiceVersion;
 
-/** Service version of LoadTestingClient. */
+/** Service version of Load TestingClient. */
 public enum LoadTestingServiceVersion implements ServiceVersion {
     /** Enum value 2022-11-01. */
     V2022_11_01("2022-11-01");
@@ -17,6 +17,7 @@ public enum LoadTestingServiceVersion implements ServiceVersion {
         this.version = version;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getVersion() {
         return this.version;
