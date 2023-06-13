@@ -85,15 +85,16 @@ public class TokenCacheTests {
             refreshes.incrementAndGet();
             return incrementalRemoteGetTokenAsync(new AtomicInteger(1));
         };
+        AtomicInteger atomicInteger = new AtomicInteger(0);
 
         // Token acquisition time grows in 1 sec, 2 sec... To make sure only one token acquisition is run
         AccessTokenCache cache = new AccessTokenCache(dummyCred);
 
         StepVerifier.create(Flux.range(1, 5).flatMap(ignored -> Mono.just(OffsetDateTime.now()))
-                .parallel(10)
+                .parallel(5)
                 // Runs cache.getToken() on 10 different threads
                 .runOn(Schedulers.boundedElastic())
-                .flatMap(start -> cache.getToken(new TokenRequestContext().addScopes("test" + start + "/.default"), true))
+                .flatMap(start -> cache.getToken(new TokenRequestContext().addScopes("test" + atomicInteger.incrementAndGet() + "/.default"), true))
                 .then())
             .verifyComplete();
 
