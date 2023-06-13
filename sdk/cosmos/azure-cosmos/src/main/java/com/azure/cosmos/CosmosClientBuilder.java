@@ -848,6 +848,16 @@ public class CosmosClientBuilder implements
      *     <li>In order to prioritize a local region for retries, use the hint {@link com.azure.cosmos.models.CosmosRegionSwitchHint#LOCAL_REGION_PREFERRED}</li>
      *     <li>In order to move retries to a remote region quicker, use the hint {@link com.azure.cosmos.models.CosmosRegionSwitchHint#REMOTE_REGION_PREFERRED}</li>
      * </ul>
+     * Operations supported:
+     * <ul>
+     *     <li>Read</li>
+     *     <li>Query</li>
+     *     <li>Create</li>
+     *     <li>Replace</li>
+     *     <li>Upsert</li>
+     *     <li>Delete</li>
+     *     <li>Patch</li>
+     * </ul>
      *
      * @param sessionRetryOptions The {@link CosmosSessionRetryOptions} instance.
      * @return current CosmosClientBuilder
