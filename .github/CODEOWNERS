@@ -164,7 +164,7 @@
 /sdk/monitor/azure-monitor-ingestion*/               @srnagar @lmolkova @jairmyree
 
 # PRLabel: %Mixed Reality Authentication
-/sdk/mixedreality/azure-mixedreality-authentication/ @craigktreasure
+/sdk/mixedreality/azure-mixedreality-authentication/ @RamonArguelles
 
 # PRLabel: %Open AI
 /sdk/openai/azure-ai-openai/                         @brandom-msft @jpalvarezl @mssfang
