@@ -32,10 +32,6 @@ steps:
             New-Item $dir -ItemType Directory -Force
             Push-Location $dir
 
-            # Turn off git GC for sparse checkout. Note: The devops checkout task does this
-            Write-Host "git config gc.auto 0"
-            git config gc.auto 0
-
             if (Test-Path .git/info/sparse-checkout) {
               $hasInitialized = $true
               Write-Host "Repository $($repository.Name) has already been initialized. Skipping this step."
