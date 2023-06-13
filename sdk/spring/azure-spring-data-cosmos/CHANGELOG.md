@@ -1,5 +1,15 @@
 ## Release History
 
+### 3.35.0-beta.2 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 3.35.0-beta.1 (Unreleased)
 
 #### Features Added
