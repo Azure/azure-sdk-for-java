@@ -12,12 +12,14 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager;
-import com.azure.resourcemanager.sqlvirtualmachine.models.AgConfiguration;
-import com.azure.resourcemanager.sqlvirtualmachine.models.AvailabilityGroupListener;
+import com.azure.resourcemanager.sqlvirtualmachine.fluent.models.SqlVmTroubleshootingInner;
+import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVmTroubleshooting;
+import com.azure.resourcemanager.sqlvirtualmachine.models.TroubleshootingAdditionalProperties;
+import com.azure.resourcemanager.sqlvirtualmachine.models.TroubleshootingScenario;
+import com.azure.resourcemanager.sqlvirtualmachine.models.UnhealthyReplicaInfo;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -25,15 +27,15 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class AvailabilityGroupListenersCreateOrUpdateTests {
+public final class SqlVirtualMachineTroubleshootsTroubleshootMockTests {
     @Test
-    public void testCreateOrUpdate() throws Exception {
+    public void testTroubleshoot() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"availabilityGroupName\":\"deoj\",\"loadBalancerConfigurations\":[],\"multiSubnetIpConfigurations\":[],\"createDefaultAvailabilityGroupIfNotExist\":true,\"port\":611656940,\"availabilityGroupConfiguration\":{\"replicas\":[]}},\"id\":\"ie\",\"name\":\"tfhvpesapskrdqmh\",\"type\":\"jdhtldwkyzxu\"}";
+            "{\"startTimeUtc\":\"2021-04-06T16:15:02Z\",\"endTimeUtc\":\"2021-05-15T05:32:47Z\",\"troubleshootingScenario\":\"UnhealthyReplica\",\"properties\":{\"unhealthyReplicaInfo\":{\"availabilityGroupName\":\"mwlxk\"}},\"virtualMachineResourceId\":\"gfhzovawjvzunlut\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,21 +63,24 @@ public final class AvailabilityGroupListenersCreateOrUpdateTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AvailabilityGroupListener response =
+        SqlVmTroubleshooting response =
             manager
-                .availabilityGroupListeners()
-                .define("lcuhxwtctyqiklb")
-                .withExistingSqlVirtualMachineGroup("xytxhpzxbz", "fzab")
-                .withAvailabilityGroupName("vmkfssxqu")
-                .withLoadBalancerConfigurations(Arrays.asList())
-                .withMultiSubnetIpConfigurations(Arrays.asList())
-                .withCreateDefaultAvailabilityGroupIfNotExist(false)
-                .withPort(1737094412)
-                .withAvailabilityGroupConfiguration(new AgConfiguration().withReplicas(Arrays.asList()))
-                .create();
+                .sqlVirtualMachineTroubleshoots()
+                .troubleshoot(
+                    "iwwroyqbexrmc",
+                    "ibycno",
+                    new SqlVmTroubleshootingInner()
+                        .withStartTimeUtc(OffsetDateTime.parse("2021-01-15T20:00:37Z"))
+                        .withEndTimeUtc(OffsetDateTime.parse("2021-02-06T03:19:14Z"))
+                        .withTroubleshootingScenario(TroubleshootingScenario.UNHEALTHY_REPLICA)
+                        .withProperties(
+                            new TroubleshootingAdditionalProperties()
+                                .withUnhealthyReplicaInfo(new UnhealthyReplicaInfo().withAvailabilityGroupName("vah"))),
+                    com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("deoj", response.availabilityGroupName());
-        Assertions.assertEquals(true, response.createDefaultAvailabilityGroupIfNotExist());
-        Assertions.assertEquals(611656940, response.port());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-06T16:15:02Z"), response.startTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-15T05:32:47Z"), response.endTimeUtc());
+        Assertions.assertEquals(TroubleshootingScenario.UNHEALTHY_REPLICA, response.troubleshootingScenario());
+        Assertions.assertEquals("mwlxk", response.properties().unhealthyReplicaInfo().availabilityGroupName());
     }
 }

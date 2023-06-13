@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -22,9 +21,9 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class SqlVirtualMachinesDeleteTests {
+public final class SqlVirtualMachinesRedeployMockTests {
     @Test
-    public void testDelete() throws Exception {
+    public void testRedeploy() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
@@ -57,6 +56,6 @@ public final class SqlVirtualMachinesDeleteTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.sqlVirtualMachines().delete("wdmhdlxyjrxs", "gafcnihgwqapnedg", Context.NONE);
+        manager.sqlVirtualMachines().redeploy("veual", "pjmkhfxobbc", com.azure.core.util.Context.NONE);
     }
 }

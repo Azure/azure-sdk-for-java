@@ -8,37 +8,36 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AssessmentDayOfWeek;
 import com.azure.resourcemanager.sqlvirtualmachine.models.Schedule;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ScheduleTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         Schedule model =
             BinaryData
                 .fromString(
-                    "{\"enable\":false,\"weeklyInterval\":945771375,\"monthlyOccurrence\":2032893006,\"dayOfWeek\":\"Monday\",\"startTime\":\"na\"}")
+                    "{\"enable\":false,\"weeklyInterval\":981074224,\"monthlyOccurrence\":586679230,\"dayOfWeek\":\"Wednesday\",\"startTime\":\"ugidyjrr\"}")
                 .toObject(Schedule.class);
         Assertions.assertEquals(false, model.enable());
-        Assertions.assertEquals(945771375, model.weeklyInterval());
-        Assertions.assertEquals(2032893006, model.monthlyOccurrence());
-        Assertions.assertEquals(AssessmentDayOfWeek.MONDAY, model.dayOfWeek());
-        Assertions.assertEquals("na", model.startTime());
+        Assertions.assertEquals(981074224, model.weeklyInterval());
+        Assertions.assertEquals(586679230, model.monthlyOccurrence());
+        Assertions.assertEquals(AssessmentDayOfWeek.WEDNESDAY, model.dayOfWeek());
+        Assertions.assertEquals("ugidyjrr", model.startTime());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Schedule model =
             new Schedule()
                 .withEnable(false)
-                .withWeeklyInterval(945771375)
-                .withMonthlyOccurrence(2032893006)
-                .withDayOfWeek(AssessmentDayOfWeek.MONDAY)
-                .withStartTime("na");
+                .withWeeklyInterval(981074224)
+                .withMonthlyOccurrence(586679230)
+                .withDayOfWeek(AssessmentDayOfWeek.WEDNESDAY)
+                .withStartTime("ugidyjrr");
         model = BinaryData.fromObject(model).toObject(Schedule.class);
         Assertions.assertEquals(false, model.enable());
-        Assertions.assertEquals(945771375, model.weeklyInterval());
-        Assertions.assertEquals(2032893006, model.monthlyOccurrence());
-        Assertions.assertEquals(AssessmentDayOfWeek.MONDAY, model.dayOfWeek());
-        Assertions.assertEquals("na", model.startTime());
+        Assertions.assertEquals(981074224, model.weeklyInterval());
+        Assertions.assertEquals(586679230, model.monthlyOccurrence());
+        Assertions.assertEquals(AssessmentDayOfWeek.WEDNESDAY, model.dayOfWeek());
+        Assertions.assertEquals("ugidyjrr", model.startTime());
     }
 }

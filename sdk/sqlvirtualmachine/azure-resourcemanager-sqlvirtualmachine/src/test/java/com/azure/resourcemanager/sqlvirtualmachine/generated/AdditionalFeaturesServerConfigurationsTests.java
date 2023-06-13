@@ -7,23 +7,22 @@ package com.azure.resourcemanager.sqlvirtualmachine.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AdditionalFeaturesServerConfigurations;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AdditionalFeaturesServerConfigurationsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AdditionalFeaturesServerConfigurations model =
             BinaryData
-                .fromString("{\"isRServicesEnabled\":false}")
+                .fromString("{\"isRServicesEnabled\":true}")
                 .toObject(AdditionalFeaturesServerConfigurations.class);
-        Assertions.assertEquals(false, model.isRServicesEnabled());
+        Assertions.assertEquals(true, model.isRServicesEnabled());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AdditionalFeaturesServerConfigurations model =
-            new AdditionalFeaturesServerConfigurations().withIsRServicesEnabled(false);
+            new AdditionalFeaturesServerConfigurations().withIsRServicesEnabled(true);
         model = BinaryData.fromObject(model).toObject(AdditionalFeaturesServerConfigurations.class);
-        Assertions.assertEquals(false, model.isRServicesEnabled());
+        Assertions.assertEquals(true, model.isRServicesEnabled());
     }
 }
