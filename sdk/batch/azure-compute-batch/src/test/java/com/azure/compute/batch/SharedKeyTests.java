@@ -1,7 +1,5 @@
-package com.azure.compute.batch.generated;
+package com.azure.compute.batch;
 
-import com.azure.compute.batch.BatchServiceClientBuilder;
-import com.azure.compute.batch.PoolClient;
 import com.azure.compute.batch.auth.BatchSharedKeyCredentials;
 import com.azure.compute.batch.models.*;
 import com.azure.core.credential.AccessToken;

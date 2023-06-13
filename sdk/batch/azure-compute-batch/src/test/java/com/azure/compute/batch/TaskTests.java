@@ -1,6 +1,5 @@
-package com.azure.compute.batch.generated;
+package com.azure.compute.batch;
 
-import com.azure.compute.batch.FileClient;
 import com.azure.compute.batch.models.*;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
@@ -66,7 +65,12 @@ public class TaskTests extends BatchServiceClientTestBase {
             Assertions.assertNotNull(task);
             Assertions.assertEquals(taskId, task.getId());
             Assertions.assertEquals("test-user", task.getUserIdentity().getUsername());
-            Assertions.assertEquals("msmpi", task.getApplicationPackageReferences().get(0).getApplicationId());
+
+            //Recording file automatically sanitizes Application Id - Only verify App Id in Record Mode
+            if (getTestMode() == TestMode.RECORD) {
+                Assertions.assertEquals("msmpi", task.getApplicationPackageReferences().get(0).getApplicationId());
+            }
+
 
         } finally {
             try {
@@ -103,10 +107,13 @@ public class TaskTests extends BatchServiceClientTestBase {
 
             //The Storage operations run only in Record mode.
             // Playback mode is configured to test Batch operations only.
-            if (getTestMode() == TestMode.RECORD) {
+            if (getTestMode() != TestMode.PLAYBACK) {
                 // Create storage container
                 container = createBlobContainer(storageAccountName, storageAccountKey, "testingtaskcreate");
                 sas = uploadFileToCloud(container, BLOB_FILE_NAME, temp.getAbsolutePath());
+            }
+            else {
+                sas = REDACTED;
             }
 
             // Associate resource file with task
@@ -165,8 +172,11 @@ public class TaskTests extends BatchServiceClientTestBase {
 
                 //The Storage operations run only in Record mode.
                 // Playback mode is configured to test Batch operations only.
-                if (getTestMode() == TestMode.RECORD) {
+                if (getTestMode() != TestMode.PLAYBACK) {
                     outputSas = generateContainerSasToken(container);
+                }
+                else {
+                    outputSas = REDACTED;
                 }
                 // UPLOAD LOG
                 UploadBatchServiceLogsConfiguration logsConfiguration = new UploadBatchServiceLogsConfiguration(outputSas, OffsetDateTime.now().minusMinutes(-10));
