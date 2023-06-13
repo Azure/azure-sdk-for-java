@@ -1,14 +1,10 @@
 # Release History
 
-## 2.9.0-beta.2 (Unreleased)
+## 2.9.0-beta.2 (2023-06-13)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Prefetch reliability redesign. Adds MessageFlux, new credit accounting, better connection caching that removes thread hopping, handling of disposition ack on arrival thread, and reduces the Reactor operator queues in the async pipelines.
 
 ## 2.8.6 (2023-06-02)
 
