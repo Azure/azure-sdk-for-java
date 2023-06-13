@@ -1540,7 +1540,7 @@ public class ImplementationBridgeHelpers {
 
             if (snapshot == null) {
                 logger.error("cosmosSessionRetryOptionsAccessor is not initialized yet!");
-                System.exit(9726); // Using a unique status code here to help debug the issue.
+                System.exit(9727); // Using a unique status code here to help debug the issue.
             }
 
             return snapshot;
