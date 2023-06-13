@@ -30,6 +30,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -436,6 +437,10 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
         if (interceptorManager.isRecordMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (interceptorManager.isPlaybackMode()) {
+            // since running in playback mode won't have the token credential, so skipping matching it.
+            interceptorManager.addMatchers(Arrays.asList(
+                new CustomMatcher().setExcludedHeaders(Arrays.asList("Authorization"))));
+
             clientBuilder.credential(new MockTokenCredential());
         }
         if (!interceptorManager.isPlaybackMode()) {
