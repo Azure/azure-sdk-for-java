@@ -420,7 +420,6 @@ public final class CosmosClientTelemetryConfig {
 
         String handlers = "()";
         if (!this.customDiagnosticHandlers.isEmpty()) {
-            StringBuilder sb = new StringBuilder();
             handlers = "(" + this.customDiagnosticHandlers
                 .stream()
                 .map(h -> h.getClass().getCanonicalName())
