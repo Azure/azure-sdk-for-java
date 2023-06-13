@@ -9,31 +9,26 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager;
-import com.azure.resourcemanager.sqlvirtualmachine.models.AvailabilityGroupListener;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class AvailabilityGroupListenersListByGroupTests {
+public final class SqlVirtualMachinesDeleteMockTests {
     @Test
-    public void testListByGroup() throws Exception {
+    public void testDelete() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"oxaepd\",\"availabilityGroupName\":\"jancu\",\"loadBalancerConfigurations\":[],\"multiSubnetIpConfigurations\":[],\"createDefaultAvailabilityGroupIfNotExist\":true,\"port\":2022437290,\"availabilityGroupConfiguration\":{\"replicas\":[]}},\"id\":\"wd\",\"name\":\"swzts\",\"type\":\"bpg\"}]}";
+        String responseStr = "{}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,11 +56,6 @@ public final class AvailabilityGroupListenersListByGroupTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AvailabilityGroupListener> response =
-            manager.availabilityGroupListeners().listByGroup("ckzywbiexzfeyue", "xibxujwbhqwalm", Context.NONE);
-
-        Assertions.assertEquals("jancu", response.iterator().next().availabilityGroupName());
-        Assertions.assertEquals(true, response.iterator().next().createDefaultAvailabilityGroupIfNotExist());
-        Assertions.assertEquals(2022437290, response.iterator().next().port());
+        manager.sqlVirtualMachines().delete("cjooxdjebwpucwwf", "ovbvmeueciv", com.azure.core.util.Context.NONE);
     }
 }
