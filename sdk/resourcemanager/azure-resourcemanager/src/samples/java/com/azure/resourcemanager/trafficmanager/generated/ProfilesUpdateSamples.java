@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.trafficmanager.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.trafficmanager.fluent.models.ProfileInner;
 import com.azure.resourcemanager.trafficmanager.models.MonitorConfig;
 import com.azure.resourcemanager.trafficmanager.models.MonitorConfigCustomHeadersItem;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 /** Samples for Profiles Update. */
 public final class ProfilesUpdateSamples {
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-04-01/examples/Profile-PATCH-MonitorConfig.json
+     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Profile-PATCH-MonitorConfig.json
      */
     /**
      * Sample code: Profile-PATCH-MonitorConfig.
@@ -46,6 +45,6 @@ public final class ProfilesUpdateSamples {
                                         new MonitorConfigCustomHeadersItem()
                                             .withName("header-2")
                                             .withValue("value-2")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

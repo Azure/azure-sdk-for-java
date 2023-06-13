@@ -28,6 +28,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.trafficmanager.fluent.EndpointsClient;
 import com.azure.resourcemanager.trafficmanager.fluent.models.DeleteOperationResultInner;
 import com.azure.resourcemanager.trafficmanager.fluent.models.EndpointInner;
+import com.azure.resourcemanager.trafficmanager.models.EndpointTypes;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EndpointsClient. */
@@ -55,18 +56,17 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "TrafficManagerManage")
-    private interface EndpointsService {
+    public interface EndpointsService {
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EndpointInner>> update(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("profileName") String profileName,
-            @PathParam("endpointType") String endpointType,
+            @PathParam("endpointType") EndpointTypes endpointType,
             @PathParam("endpointName") String endpointName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -76,15 +76,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EndpointInner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("profileName") String profileName,
-            @PathParam("endpointType") String endpointType,
+            @PathParam("endpointType") EndpointTypes endpointType,
             @PathParam("endpointName") String endpointName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -93,15 +92,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EndpointInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("profileName") String profileName,
-            @PathParam("endpointType") String endpointType,
+            @PathParam("endpointType") EndpointTypes endpointType,
             @PathParam("endpointName") String endpointName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -111,15 +109,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/{endpointType}/{endpointName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeleteOperationResultInner>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("profileName") String profileName,
-            @PathParam("endpointType") String endpointType,
+            @PathParam("endpointType") EndpointTypes endpointType,
             @PathParam("endpointName") String endpointName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -130,7 +127,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     /**
      * Update a Traffic Manager endpoint.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be updated.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
@@ -145,7 +142,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     public Mono<Response<EndpointInner>> updateWithResponseAsync(
         String resourceGroupName,
         String profileName,
-        String endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters) {
         if (this.client.getEndpoint() == null) {
@@ -200,7 +197,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     /**
      * Update a Traffic Manager endpoint.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be updated.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
@@ -216,7 +213,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     private Mono<Response<EndpointInner>> updateWithResponseAsync(
         String resourceGroupName,
         String profileName,
-        String endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters,
         Context context) {
@@ -269,7 +266,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     /**
      * Update a Traffic Manager endpoint.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be updated.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
@@ -283,7 +280,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     public Mono<EndpointInner> updateAsync(
         String resourceGroupName,
         String profileName,
-        String endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters) {
         return updateWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters)
@@ -293,7 +290,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     /**
      * Update a Traffic Manager endpoint.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be updated.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
@@ -308,7 +305,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     public Response<EndpointInner> updateWithResponse(
         String resourceGroupName,
         String profileName,
-        String endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters,
         Context context) {
@@ -319,7 +316,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     /**
      * Update a Traffic Manager endpoint.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be updated.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
@@ -333,7 +330,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     public EndpointInner update(
         String resourceGroupName,
         String profileName,
-        String endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters) {
         return updateWithResponse(resourceGroupName, profileName, endpointType, endpointName, parameters, Context.NONE)
@@ -343,7 +340,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     /**
      * Gets a Traffic Manager endpoint.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint.
      * @param endpointName The name of the Traffic Manager endpoint.
@@ -354,7 +351,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EndpointInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointType, String endpointName) {
+        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -401,7 +398,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     /**
      * Gets a Traffic Manager endpoint.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint.
      * @param endpointName The name of the Traffic Manager endpoint.
@@ -413,7 +410,11 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EndpointInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointType, String endpointName, Context context) {
+        String resourceGroupName,
+        String profileName,
+        EndpointTypes endpointType,
+        String endpointName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -457,7 +458,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     /**
      * Gets a Traffic Manager endpoint.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint.
      * @param endpointName The name of the Traffic Manager endpoint.
@@ -468,7 +469,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EndpointInner> getAsync(
-        String resourceGroupName, String profileName, String endpointType, String endpointName) {
+        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName) {
         return getWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -476,7 +477,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     /**
      * Gets a Traffic Manager endpoint.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint.
      * @param endpointName The name of the Traffic Manager endpoint.
@@ -488,14 +489,18 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointInner> getWithResponse(
-        String resourceGroupName, String profileName, String endpointType, String endpointName, Context context) {
+        String resourceGroupName,
+        String profileName,
+        EndpointTypes endpointType,
+        String endpointName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName, context).block();
     }
 
     /**
      * Gets a Traffic Manager endpoint.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint.
      * @param endpointName The name of the Traffic Manager endpoint.
@@ -505,15 +510,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @return a Traffic Manager endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EndpointInner get(String resourceGroupName, String profileName, String endpointType, String endpointName) {
+    public EndpointInner get(
+        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName) {
         return getWithResponse(resourceGroupName, profileName, endpointType, endpointName, Context.NONE).getValue();
     }
 
     /**
      * Create or update a Traffic Manager endpoint.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be created or
-     *     updated.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
@@ -528,7 +533,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     public Mono<Response<EndpointInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String profileName,
-        String endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters) {
         if (this.client.getEndpoint() == null) {
@@ -583,8 +588,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     /**
      * Create or update a Traffic Manager endpoint.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be created or
-     *     updated.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
@@ -600,7 +604,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     private Mono<Response<EndpointInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String profileName,
-        String endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters,
         Context context) {
@@ -653,8 +657,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     /**
      * Create or update a Traffic Manager endpoint.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be created or
-     *     updated.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
@@ -668,7 +671,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     public Mono<EndpointInner> createOrUpdateAsync(
         String resourceGroupName,
         String profileName,
-        String endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName, parameters)
@@ -678,8 +681,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     /**
      * Create or update a Traffic Manager endpoint.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be created or
-     *     updated.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
@@ -694,7 +696,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     public Response<EndpointInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String profileName,
-        String endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters,
         Context context) {
@@ -706,8 +708,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     /**
      * Create or update a Traffic Manager endpoint.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be created or
-     *     updated.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
@@ -721,7 +722,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     public EndpointInner createOrUpdate(
         String resourceGroupName,
         String profileName,
-        String endpointType,
+        EndpointTypes endpointType,
         String endpointName,
         EndpointInner parameters) {
         return createOrUpdateWithResponse(
@@ -732,7 +733,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     /**
      * Deletes a Traffic Manager endpoint.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
@@ -744,7 +745,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointType, String endpointName) {
+        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -791,7 +792,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     /**
      * Deletes a Traffic Manager endpoint.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
@@ -804,7 +805,11 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointType, String endpointName, Context context) {
+        String resourceGroupName,
+        String profileName,
+        EndpointTypes endpointType,
+        String endpointName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -848,7 +853,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     /**
      * Deletes a Traffic Manager endpoint.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
@@ -859,7 +864,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeleteOperationResultInner> deleteAsync(
-        String resourceGroupName, String profileName, String endpointType, String endpointName) {
+        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName) {
         return deleteWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -867,7 +872,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     /**
      * Deletes a Traffic Manager endpoint.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
@@ -879,14 +884,18 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeleteOperationResultInner> deleteWithResponse(
-        String resourceGroupName, String profileName, String endpointType, String endpointName, Context context) {
+        String resourceGroupName,
+        String profileName,
+        EndpointTypes endpointType,
+        String endpointName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, profileName, endpointType, endpointName, context).block();
     }
 
     /**
      * Deletes a Traffic Manager endpoint.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
@@ -897,7 +906,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeleteOperationResultInner delete(
-        String resourceGroupName, String profileName, String endpointType, String endpointName) {
+        String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName) {
         return deleteWithResponse(resourceGroupName, profileName, endpointType, endpointName, Context.NONE).getValue();
     }
 }
