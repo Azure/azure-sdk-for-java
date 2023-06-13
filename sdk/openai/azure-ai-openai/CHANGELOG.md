@@ -5,7 +5,6 @@
 ### Breaking Changes
 
 - Removed class `ChatMessageDelta` and replaced usage of it by `ChatMessage`. 
-- Models with relaxed constraints. Removed `required=true` from all model property constraints.
 
 ### Bugs Fixed
 - [PR#35336](https://github.com/Azure/azure-sdk-for-java/commit/bf4fdac9cea3c18362029df4589bc78b834a4348) fixed
