@@ -19,9 +19,9 @@ public final class CosmosSessionRetryOptionsBuilder {
      *
      * <p>
      * NOTES:
-     * <ol>
-     *     <li>null values are ignored.</li>
-     * </ol>
+     * <ul>
+     *     <li>{@code null} values are ignored</li>
+     * </ul>
      *
      * @param regionSwitchHint The region switch hint
      * @return This instance of {@link CosmosSessionRetryOptionsBuilder}

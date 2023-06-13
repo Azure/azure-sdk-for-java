@@ -804,8 +804,8 @@ public class CosmosClientBuilder implements
      * Sets the {@link CosmosSessionRetryOptions} instance on the client.
      * <p>
      * This setting helps in optimizing retry behavior associated with
-     * <i>NOT_FOUND / READ_SESSION_NOT_AVAILABLE</i> (404 / 1002) scenarios which happen
-     * when the targeted consistency used by the request is Session Consistency and a
+     * {@code NOT_FOUND / READ_SESSION_NOT_AVAILABLE} or {@code 404 / 1002} scenarios which happen
+     * when the targeted consistency used by the request is <i>Session Consistency</i> and a
      * request goes to a region that does not have recent enough data which the
      * request is looking for.
      * <p>
@@ -813,7 +813,7 @@ public class CosmosClientBuilder implements
      * for all operations or workload executed through this instance of the client.
      * <p>
      * For multi-write accounts:
-     * <ol>
+     * <ul>
      *     <li>
      *         For a read request going to a local read region, it is possible to optimize
      *         availability by having the request be retried on a remote write region.
@@ -826,9 +826,9 @@ public class CosmosClientBuilder implements
      *         For a write request going to a local write region, it may or may not help to
      *         switch to a different write region right away.
      *     </li>
-     * </ol>
+     * </ul>
      * For single-write accounts:
-     * <ol>
+     * <ul>
      *     <li>
      *         If a read request goes to a local read region, it helps to switch to a write region quicker.
      *     </li>
@@ -837,17 +837,17 @@ public class CosmosClientBuilder implements
      *         matter since the SDK routes the request to the same write region when switching regions.
      *     </li>
      *     <li>
-     *         For a write to a write region in a single-write account, READ_SESSION_NOT_AVAILABLE errors
+     *         For a write to a write region in a single-write account, {@code READ_SESSION_NOT_AVAILABLE} errors
      *         do not apply since the write-region always has the most recent version of the data
      *         and all writes go to the primary replica in this region. Therefore, replication lags causing errors
      *         is not applicable here.
      *     </li>
-     * </ol>
+     * </ul>
      * About region switch hints:
-     * <ol>
+     * <ul>
      *     <li>In order to prioritize a local region for retries, use the hint {@link com.azure.cosmos.models.CosmosRegionSwitchHint#LOCAL_REGION_PREFERRED}</li>
      *     <li>In order to move retries to a remote region quicker, use the hint {@link com.azure.cosmos.models.CosmosRegionSwitchHint#REMOTE_REGION_PREFERRED}</li>
-     * </ol>
+     * </ul>
      *
      * @param sessionRetryOptions The {@link CosmosSessionRetryOptions} instance.
      * @return current CosmosClientBuilder
