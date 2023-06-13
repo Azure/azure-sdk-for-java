@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AvailabilityGroupListeners Delete. */
 public final class AvailabilityGroupListenersDeleteSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/DeleteAvailabilityGroupListener.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/DeleteAvailabilityGroupListener.json
      */
     /**
      * Sample code: Deletes an availability group listener.
@@ -18,6 +16,8 @@ public final class AvailabilityGroupListenersDeleteSamples {
      */
     public static void deletesAnAvailabilityGroupListener(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager.availabilityGroupListeners().delete("testrg", "testvmgroup", "agl-test", Context.NONE);
+        manager
+            .availabilityGroupListeners()
+            .delete("testrg", "testvmgroup", "agl-test", com.azure.core.util.Context.NONE);
     }
 }

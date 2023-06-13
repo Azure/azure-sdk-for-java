@@ -22,22 +22,6 @@ public interface AvailabilityGroupListenersClient {
      *     the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an availability group listener.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AvailabilityGroupListenerInner get(
-        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName);
-
-    /**
-     * Gets an availability group listener.
-     *
-     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
-     * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
-     * @param availabilityGroupListenerName Name of the availability group listener.
      * @param expand The child resources to include in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -52,6 +36,22 @@ public interface AvailabilityGroupListenersClient {
         String availabilityGroupListenerName,
         String expand,
         Context context);
+
+    /**
+     * Gets an availability group listener.
+     *
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     *     the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
+     * @param availabilityGroupListenerName Name of the availability group listener.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an availability group listener.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AvailabilityGroupListenerInner get(
+        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName);
 
     /**
      * Creates or updates an availability group listener.

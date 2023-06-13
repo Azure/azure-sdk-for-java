@@ -86,6 +86,9 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
     /** @return whether the OS on a disk supports hibernation. */
     boolean isHibernationSupported();
 
+    /** @return logical sector size in bytes for Premium SSD v2 and Ultra disks. */
+    Integer logicalSectorSizeInBytes();
+
     /** The entirety of the managed disk definition. */
     interface Definition
         extends DefinitionStages.Blank,
@@ -430,6 +433,18 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
             WithCreate withHibernationSupport();
         }
 
+        /** The stage of the managed disk definition allowing to configure logical sector size for Premium SSD v2 and Ultra Disks. */
+        interface WithLogicalSectorSize {
+            /**
+             * Specifies the logical sector size in bytes for Premium SSD v2 and Ultra Disks.
+             * Supported values are 512 and 4096. 4096 is the default.
+             *
+             * @param logicalSectorSizeInBytes logical sector size in bytes
+             * @return the next stage of the definition
+             */
+            WithCreate withLogicalSectorSizeInBytes(int logicalSectorSizeInBytes);
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -440,7 +455,8 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
                 WithSku,
                 WithAvailabilityZone,
                 WithDiskEncryption,
-                WithHibernationSupport {
+                WithHibernationSupport,
+                WithLogicalSectorSize {
 
             /**
              * Begins creating the disk resource.

@@ -4,17 +4,47 @@
 
 package com.azure.resourcemanager.trafficmanager.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.trafficmanager.fluent.models.EndpointInner;
+import com.azure.resourcemanager.trafficmanager.models.AlwaysServe;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesCustomHeadersItem;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesSubnetsItem;
 import com.azure.resourcemanager.trafficmanager.models.EndpointStatus;
+import com.azure.resourcemanager.trafficmanager.models.EndpointTypes;
 import java.util.Arrays;
 
 /** Samples for Endpoints CreateOrUpdate. */
 public final class EndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-04-01/examples/Endpoint-PUT-External-WithSubnetMapping.json
+     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Endpoint-PUT-External-WithAlwaysServe.json
+     */
+    /**
+     * Sample code: Endpoint-PUT-External-WithAlwaysServe.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void endpointPUTExternalWithAlwaysServe(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .trafficManagerProfiles()
+            .manager()
+            .serviceClient()
+            .getEndpoints()
+            .createOrUpdateWithResponse(
+                "azuresdkfornetautoresttrafficmanager1421",
+                "azsmnet6386",
+                EndpointTypes.EXTERNAL_ENDPOINTS,
+                "azsmnet7187",
+                new EndpointInner()
+                    .withName("azsmnet7187")
+                    .withType("Microsoft.network/TrafficManagerProfiles/ExternalEndpoints")
+                    .withTarget("foobar.contoso.com")
+                    .withEndpointStatus(EndpointStatus.ENABLED)
+                    .withEndpointLocation("North Europe")
+                    .withAlwaysServe(AlwaysServe.ENABLED),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Endpoint-PUT-External-WithSubnetMapping.json
      */
     /**
      * Sample code: Endpoint-PUT-External-WithSubnetMapping.
@@ -30,7 +60,7 @@ public final class EndpointsCreateOrUpdateSamples {
             .createOrUpdateWithResponse(
                 "azuresdkfornetautoresttrafficmanager2191",
                 "azuresdkfornetautoresttrafficmanager8224",
-                "ExternalEndpoints",
+                EndpointTypes.EXTERNAL_ENDPOINTS,
                 "My%20external%20endpoint",
                 new EndpointInner()
                     .withName("My external endpoint")
@@ -42,11 +72,11 @@ public final class EndpointsCreateOrUpdateSamples {
                             .asList(
                                 new EndpointPropertiesSubnetsItem().withFirst("1.2.3.0").withScope(24),
                                 new EndpointPropertiesSubnetsItem().withFirst("25.26.27.28").withLast("29.30.31.32"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-04-01/examples/Endpoint-PUT-External-WithCustomHeaders.json
+     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Endpoint-PUT-External-WithCustomHeaders.json
      */
     /**
      * Sample code: Endpoint-PUT-External-WithCustomHeaders.
@@ -62,7 +92,7 @@ public final class EndpointsCreateOrUpdateSamples {
             .createOrUpdateWithResponse(
                 "azuresdkfornetautoresttrafficmanager1421",
                 "azsmnet6386",
-                "ExternalEndpoints",
+                EndpointTypes.EXTERNAL_ENDPOINTS,
                 "azsmnet7187",
                 new EndpointInner()
                     .withName("azsmnet7187")
@@ -75,11 +105,11 @@ public final class EndpointsCreateOrUpdateSamples {
                             .asList(
                                 new EndpointPropertiesCustomHeadersItem().withName("header-1").withValue("value-1"),
                                 new EndpointPropertiesCustomHeadersItem().withName("header-2").withValue("value-2"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-04-01/examples/Endpoint-PUT-External-WithLocation.json
+     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Endpoint-PUT-External-WithLocation.json
      */
     /**
      * Sample code: Endpoint-PUT-External-WithLocation.
@@ -95,7 +125,7 @@ public final class EndpointsCreateOrUpdateSamples {
             .createOrUpdateWithResponse(
                 "azuresdkfornetautoresttrafficmanager1421",
                 "azsmnet6386",
-                "ExternalEndpoints",
+                EndpointTypes.EXTERNAL_ENDPOINTS,
                 "azsmnet7187",
                 new EndpointInner()
                     .withName("azsmnet7187")
@@ -103,11 +133,11 @@ public final class EndpointsCreateOrUpdateSamples {
                     .withTarget("foobar.contoso.com")
                     .withEndpointStatus(EndpointStatus.ENABLED)
                     .withEndpointLocation("North Europe"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-04-01/examples/Endpoint-PUT-External-WithGeoMapping.json
+     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Endpoint-PUT-External-WithGeoMapping.json
      */
     /**
      * Sample code: Endpoint-PUT-External-WithGeoMapping.
@@ -123,7 +153,7 @@ public final class EndpointsCreateOrUpdateSamples {
             .createOrUpdateWithResponse(
                 "azuresdkfornetautoresttrafficmanager2191",
                 "azuresdkfornetautoresttrafficmanager8224",
-                "ExternalEndpoints",
+                EndpointTypes.EXTERNAL_ENDPOINTS,
                 "My%20external%20endpoint",
                 new EndpointInner()
                     .withName("My external endpoint")
@@ -131,6 +161,6 @@ public final class EndpointsCreateOrUpdateSamples {
                     .withTarget("foobar.contoso.com")
                     .withEndpointStatus(EndpointStatus.ENABLED)
                     .withGeoMapping(Arrays.asList("GEO-AS", "GEO-AF")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
