@@ -16,7 +16,10 @@ public enum SkuName {
     DATA_BOX_DISK("DataBoxDisk"),
 
     /** Enum value DataBoxHeavy. */
-    DATA_BOX_HEAVY("DataBoxHeavy");
+    DATA_BOX_HEAVY("DataBoxHeavy"),
+
+    /** Enum value DataBoxCustomerDisk. */
+    DATA_BOX_CUSTOMER_DISK("DataBoxCustomerDisk");
 
     /** The actual serialized value for a SkuName instance. */
     private final String value;

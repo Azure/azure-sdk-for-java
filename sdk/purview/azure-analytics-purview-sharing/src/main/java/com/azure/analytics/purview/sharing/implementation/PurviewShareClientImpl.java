@@ -87,6 +87,18 @@ public final class PurviewShareClientImpl {
         return this.sentShares;
     }
 
+    /** The ShareResourcesImpl object to access its operations. */
+    private final ShareResourcesImpl shareResources;
+
+    /**
+     * Gets the ShareResourcesImpl object to access its operations.
+     *
+     * @return the ShareResourcesImpl object.
+     */
+    public ShareResourcesImpl getShareResources() {
+        return this.shareResources;
+    }
+
     /**
      * Initializes an instance of PurviewShareClient client.
      *
@@ -137,5 +149,6 @@ public final class PurviewShareClientImpl {
         this.serviceVersion = serviceVersion;
         this.receivedShares = new ReceivedSharesImpl(this);
         this.sentShares = new SentSharesImpl(this);
+        this.shareResources = new ShareResourcesImpl(this);
     }
 }

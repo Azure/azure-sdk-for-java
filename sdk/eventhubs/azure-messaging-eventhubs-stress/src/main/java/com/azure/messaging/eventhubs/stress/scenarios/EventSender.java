@@ -35,7 +35,7 @@ public class EventSender extends EventHubsScenario {
     @Override
     public void run() {
         final String eventHubConnStr = options.getEventhubsConnectionString();
-        final String eventHub = options.getEventhubsEventHubName();
+        final String eventHub = options.getEventHubsEventHubName();
 
         final byte[] payload = new byte[payloadSize];
         RANDOM.nextBytes(payload);

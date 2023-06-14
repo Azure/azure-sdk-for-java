@@ -45,7 +45,6 @@ public final class SentSharesAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -71,8 +70,8 @@ public final class SentSharesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getAllSentShares(String referenceName, RequestOptions requestOptions) {
-        return this.serviceClient.getAllSentSharesAsync(referenceName, requestOptions);
+    public PagedFlux<BinaryData> listSentShares(String referenceName, RequestOptions requestOptions) {
+        return this.serviceClient.listSentSharesAsync(referenceName, requestOptions);
     }
 
     /**
@@ -190,7 +189,6 @@ public final class SentSharesAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -216,8 +214,8 @@ public final class SentSharesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getAllSentShareInvitations(String sentShareId, RequestOptions requestOptions) {
-        return this.serviceClient.getAllSentShareInvitationsAsync(sentShareId, requestOptions);
+    public PagedFlux<BinaryData> listSentShareInvitations(String sentShareId, RequestOptions requestOptions) {
+        return this.serviceClient.listSentShareInvitationsAsync(sentShareId, requestOptions);
     }
 
     /**

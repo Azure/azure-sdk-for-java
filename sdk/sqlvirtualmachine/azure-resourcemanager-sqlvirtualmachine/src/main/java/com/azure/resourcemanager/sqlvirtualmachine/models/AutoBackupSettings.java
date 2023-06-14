@@ -95,6 +95,10 @@ public final class AutoBackupSettings {
     @JsonProperty(value = "logBackupFrequency")
     private Integer logBackupFrequency;
 
+    /** Creates an instance of AutoBackupSettings class. */
+    public AutoBackupSettings() {
+    }
+
     /**
      * Get the enable property: Enable or disable autobackup on SQL virtual machine.
      *

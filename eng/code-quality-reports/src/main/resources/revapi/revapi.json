@@ -169,6 +169,12 @@
           "justification": "Skip customized getters on class when serialization and deserialization."
         },
         {
+          "regex": true,
+          "code": "java.annotation.added",
+          "new": "class com.azure.ai.textanalytics.models.HealthcareEntityRelationType",
+          "justification": "Skip JsonCreator annotation on the method fromString when serialization and deserialization."
+        },
+        {
           "code": "java.class.removed",
           "old": "enum com.azure.messaging.eventhubs.checkpointstore.blob.Messages",
           "justification": "Messages class was accidentally made public. Reverting the public change since this should be implementation detail."
@@ -247,6 +253,23 @@
           "code": "java\\.annotation\\.removed",
           "old": ".*? com\\.azure\\.security\\.keyvault\\.administration\\.models.*",
           "justification": "Removing Jackson annotations from KeyVault Administration in transition to stream-style."
+        },
+        {
+          "regex": true,
+          "code" : "java.field.enumConstantOrderChanged",
+          "old" : "field com.mysql.cj.conf.PropertyKey.*",
+          "new" : "field com.mysql.cj.conf.PropertyKey.*",
+          "justification" : "Fix enum constants reordered."
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method int com.mysql.cj.protocol.ServerSession::getOldStatusFlags()",
+          "justification" : "Fix method removed."
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method void com.mysql.cj.protocol.ServerSession::setOldStatusFlags(int)",
+          "justification" : "Fix method removed."
         }
       ]
     }

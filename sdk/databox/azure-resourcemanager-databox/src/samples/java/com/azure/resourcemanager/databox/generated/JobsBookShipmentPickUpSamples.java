@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 /** Samples for Jobs BookShipmentPickUp. */
 public final class JobsBookShipmentPickUpSamples {
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2021-03-01/examples/BookShipmentPickupPost.json
+     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/BookShipmentPickupPost.json
      */
     /**
      * Sample code: BookShipmentPickupPost.
@@ -21,8 +21,8 @@ public final class JobsBookShipmentPickUpSamples {
         manager
             .jobs()
             .bookShipmentPickUpWithResponse(
-                "bvttoolrg6",
-                "TJ-636646322037905056",
+                "YourResourceGroupName",
+                "TestJobName1",
                 new ShipmentPickUpRequest()
                     .withStartTime(OffsetDateTime.parse("2019-09-20T18:30:00Z"))
                     .withEndTime(OffsetDateTime.parse("2019-09-22T18:30:00Z"))

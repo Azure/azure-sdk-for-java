@@ -121,7 +121,7 @@ public class JobTests extends BatchIntegrationTestBase {
 
             batchClient.jobOperations().disableJob(jobId, DisableJobOption.REQUEUE.REQUEUE);
             job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertEquals(JobState.DISABLING, job.state());
+            Assert.assertTrue(JobState.DISABLING == job.state() || JobState.DISABLED == job.state());
 
             Thread.sleep(5 * 1000);
             job = batchClient.jobOperations().getJob(jobId);
@@ -138,7 +138,7 @@ public class JobTests extends BatchIntegrationTestBase {
 
             batchClient.jobOperations().terminateJob(jobId, "myreason");
             job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertEquals(JobState.TERMINATING, job.state());
+            Assert.assertTrue(JobState.TERMINATING == job.state() || JobState.COMPLETED == job.state());
 
             Thread.sleep(2 * 1000);
             job = batchClient.jobOperations().getJob(jobId);

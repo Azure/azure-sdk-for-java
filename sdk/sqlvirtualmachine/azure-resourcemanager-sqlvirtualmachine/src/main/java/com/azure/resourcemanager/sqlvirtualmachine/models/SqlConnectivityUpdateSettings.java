@@ -34,6 +34,10 @@ public final class SqlConnectivityUpdateSettings {
     @JsonProperty(value = "sqlAuthUpdatePassword")
     private String sqlAuthUpdatePassword;
 
+    /** Creates an instance of SqlConnectivityUpdateSettings class. */
+    public SqlConnectivityUpdateSettings() {
+    }
+
     /**
      * Get the connectivityType property: SQL Server connectivity option.
      *

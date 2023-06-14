@@ -12,7 +12,7 @@ public final class ApplianceNetworkConfigurationTests {
     public void testDeserialize() throws Exception {
         ApplianceNetworkConfiguration model =
             BinaryData
-                .fromString("{\"name\":\"oayqc\",\"macAddress\":\"rtzju\"}")
+                .fromString("{\"name\":\"cbxvwvxyslqbh\",\"macAddress\":\"xoblytkbl\"}")
                 .toObject(ApplianceNetworkConfiguration.class);
     }
 

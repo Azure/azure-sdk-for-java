@@ -22,6 +22,10 @@ public final class PrivateIpAddress {
     @JsonProperty(value = "subnetResourceId")
     private String subnetResourceId;
 
+    /** Creates an instance of PrivateIpAddress class. */
+    public PrivateIpAddress() {
+    }
+
     /**
      * Get the ipAddress property: Private IP address bound to the availability group listener.
      *
