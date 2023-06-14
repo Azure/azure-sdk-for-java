@@ -29,7 +29,6 @@ import java.util.List;
  * CosmosClient is thread-safe.
  * It's recommended to maintain a single instance of CosmosClient per lifetime of the application which enables efficient connection management and performance.
  * CosmosClient initialization is a heavy operation - don't use initialization CosmosClient instances as credentials or network connectivity validations.
- * <p/>
  */
 @ServiceClient(builder = CosmosClientBuilder.class)
 public final class CosmosClient implements Closeable {
