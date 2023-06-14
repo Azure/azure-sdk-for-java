@@ -2547,6 +2547,29 @@ class FileAPITest extends APISpec {
         destClient.getProperties()
     }
 
+    def "Rename sas token with leading question mark"() {
+        setup:
+        def permissions = new FileSystemSasPermission()
+            .setReadPermission(true)
+            .setMovePermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setAddPermission(true)
+            .setDeletePermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
+        def sas = "?" + fsc.generateSas(sasValues)
+        def client = getFileClient(sas, fsc.getFileSystemUrl(), fc.getFilePath())
+
+        when:
+        def destClient = client.rename(fsc.getFileSystemName(), generatePathName())
+
+        then:
+        notThrown(DataLakeStorageException)
+        destClient.getProperties()
+    }
+
     def "Append data min"() {
         when:
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
