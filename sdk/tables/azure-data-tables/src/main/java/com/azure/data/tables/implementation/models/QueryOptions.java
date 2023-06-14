@@ -5,36 +5,35 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 
 /** Parameter group. */
-@JacksonXmlRootElement(localName = "QueryOptions")
 @Fluent
-public final class QueryOptions {
+public final class QueryOptions implements JsonSerializable<QueryOptions> {
     /*
      * Specifies the media type for the response.
      */
-    @JsonProperty(value = "Format")
     private OdataMetadataFormat format;
 
     /*
      * Maximum number of records to return.
      */
-    @JsonProperty(value = "Top")
     private Integer top;
 
     /*
      * Select expression using OData notation. Limits the columns on each record to just those requested, e.g.
      * "$select=PolicyAssignmentId, ResourceId".
      */
-    @JsonProperty(value = "Select")
     private String select;
 
     /*
      * OData filter expression.
      */
-    @JsonProperty(value = "Filter")
     private String filter;
 
     /** Creates an instance of QueryOptions class. */
@@ -120,5 +119,48 @@ public final class QueryOptions {
     public QueryOptions setFilter(String filter) {
         this.filter = filter;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("Format", Objects.toString(this.format, null));
+        jsonWriter.writeNumberField("Top", this.top);
+        jsonWriter.writeStringField("Select", this.select);
+        jsonWriter.writeStringField("Filter", this.filter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryOptions if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QueryOptions.
+     */
+    public static QueryOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    QueryOptions deserializedQueryOptions = new QueryOptions();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("Format".equals(fieldName)) {
+                            deserializedQueryOptions.format = OdataMetadataFormat.fromString(reader.getString());
+                        } else if ("Top".equals(fieldName)) {
+                            deserializedQueryOptions.top = reader.getNullable(JsonReader::getInt);
+                        } else if ("Select".equals(fieldName)) {
+                            deserializedQueryOptions.select = reader.getString();
+                        } else if ("Filter".equals(fieldName)) {
+                            deserializedQueryOptions.filter = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedQueryOptions;
+                });
     }
 }

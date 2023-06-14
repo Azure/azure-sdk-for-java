@@ -4,6 +4,11 @@
 module com.azure.data.tables {
     requires transitive com.azure.core;
 
+    requires com.azure.json;
+    requires com.azure.xml;
+
+    requires java.xml;
+
     requires com.fasterxml.jackson.dataformat.xml;
 
     // public API surface area

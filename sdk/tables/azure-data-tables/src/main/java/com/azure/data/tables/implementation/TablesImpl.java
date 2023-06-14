@@ -20,7 +20,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
@@ -29,11 +28,13 @@ import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.SignedIdentifier;
+import com.azure.data.tables.implementation.models.SignedIdentifierWrapper;
 import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponse;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
+import com.azure.data.tables.implementation.models.TableServiceJsonErrorException;
 import com.azure.data.tables.implementation.models.TablesCreateHeaders;
 import com.azure.data.tables.implementation.models.TablesDeleteEntityHeaders;
 import com.azure.data.tables.implementation.models.TablesDeleteHeaders;
@@ -76,7 +77,7 @@ public final class TablesImpl {
     public interface TablesService {
         @Get("/Tables")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         Mono<ResponseBase<TablesQueryHeaders, TableQueryResponse>> query(
                 @HostParam("url") String url,
                 @HeaderParam("x-ms-version") String version,
@@ -92,7 +93,7 @@ public final class TablesImpl {
 
         @Get("/Tables")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         ResponseBase<TablesQueryHeaders, TableQueryResponse> querySync(
                 @HostParam("url") String url,
                 @HeaderParam("x-ms-version") String version,
@@ -108,7 +109,7 @@ public final class TablesImpl {
 
         @Post("/Tables")
         @ExpectedResponses({201, 204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         Mono<ResponseBase<TablesCreateHeaders, TableResponse>> create(
                 @HostParam("url") String url,
                 @HeaderParam("x-ms-version") String version,
@@ -122,7 +123,7 @@ public final class TablesImpl {
 
         @Post("/Tables")
         @ExpectedResponses({201, 204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         ResponseBase<TablesCreateHeaders, TableResponse> createSync(
                 @HostParam("url") String url,
                 @HeaderParam("x-ms-version") String version,
@@ -136,7 +137,7 @@ public final class TablesImpl {
 
         @Delete("/Tables('{table}')")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         Mono<ResponseBase<TablesDeleteHeaders, Void>> delete(
                 @HostParam("url") String url,
                 @HeaderParam("x-ms-version") String version,
@@ -147,7 +148,7 @@ public final class TablesImpl {
 
         @Delete("/Tables('{table}')")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         ResponseBase<TablesDeleteHeaders, Void> deleteSync(
                 @HostParam("url") String url,
                 @HeaderParam("x-ms-version") String version,
@@ -158,7 +159,7 @@ public final class TablesImpl {
 
         @Get("/{table}()")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         Mono<ResponseBase<TablesQueryEntitiesHeaders, TableEntityQueryResponse>> queryEntities(
                 @HostParam("url") String url,
                 @QueryParam("timeout") Integer timeout,
@@ -177,7 +178,7 @@ public final class TablesImpl {
 
         @Get("/{table}()")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         ResponseBase<TablesQueryEntitiesHeaders, TableEntityQueryResponse> queryEntitiesSync(
                 @HostParam("url") String url,
                 @QueryParam("timeout") Integer timeout,
@@ -196,7 +197,7 @@ public final class TablesImpl {
 
         @Get("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         Mono<ResponseBase<TablesQueryEntityWithPartitionAndRowKeyHeaders, Map<String, Object>>>
                 queryEntityWithPartitionAndRowKey(
                         @HostParam("url") String url,
@@ -215,7 +216,7 @@ public final class TablesImpl {
 
         @Get("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         ResponseBase<TablesQueryEntityWithPartitionAndRowKeyHeaders, Map<String, Object>>
                 queryEntityWithPartitionAndRowKeySync(
                         @HostParam("url") String url,
@@ -234,7 +235,7 @@ public final class TablesImpl {
 
         @Put("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         Mono<ResponseBase<TablesUpdateEntityHeaders, Void>> updateEntity(
                 @HostParam("url") String url,
                 @QueryParam("timeout") Integer timeout,
@@ -252,7 +253,7 @@ public final class TablesImpl {
 
         @Put("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         ResponseBase<TablesUpdateEntityHeaders, Void> updateEntitySync(
                 @HostParam("url") String url,
                 @QueryParam("timeout") Integer timeout,
@@ -270,7 +271,7 @@ public final class TablesImpl {
 
         @Patch("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         Mono<ResponseBase<TablesMergeEntityHeaders, Void>> mergeEntity(
                 @HostParam("url") String url,
                 @QueryParam("timeout") Integer timeout,
@@ -288,7 +289,7 @@ public final class TablesImpl {
 
         @Patch("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         ResponseBase<TablesMergeEntityHeaders, Void> mergeEntitySync(
                 @HostParam("url") String url,
                 @QueryParam("timeout") Integer timeout,
@@ -306,7 +307,7 @@ public final class TablesImpl {
 
         @Delete("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         Mono<ResponseBase<TablesDeleteEntityHeaders, Void>> deleteEntity(
                 @HostParam("url") String url,
                 @QueryParam("timeout") Integer timeout,
@@ -323,7 +324,7 @@ public final class TablesImpl {
 
         @Delete("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         ResponseBase<TablesDeleteEntityHeaders, Void> deleteEntitySync(
                 @HostParam("url") String url,
                 @QueryParam("timeout") Integer timeout,
@@ -340,7 +341,7 @@ public final class TablesImpl {
 
         @Post("/{table}")
         @ExpectedResponses({201, 204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         Mono<ResponseBase<TablesInsertEntityHeaders, Map<String, Object>>> insertEntity(
                 @HostParam("url") String url,
                 @QueryParam("timeout") Integer timeout,
@@ -356,7 +357,7 @@ public final class TablesImpl {
 
         @Post("/{table}")
         @ExpectedResponses({201, 204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         ResponseBase<TablesInsertEntityHeaders, Map<String, Object>> insertEntitySync(
                 @HostParam("url") String url,
                 @QueryParam("timeout") Integer timeout,
@@ -373,7 +374,7 @@ public final class TablesImpl {
         @Get("/{table}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<ResponseBase<TablesGetAccessPolicyHeaders, List<SignedIdentifier>>> getAccessPolicy(
+        Mono<ResponseBase<TablesGetAccessPolicyHeaders, SignedIdentifierWrapper>> getAccessPolicy(
                 @HostParam("url") String url,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
@@ -386,7 +387,7 @@ public final class TablesImpl {
         @Get("/{table}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        ResponseBase<TablesGetAccessPolicyHeaders, List<SignedIdentifier>> getAccessPolicySync(
+        ResponseBase<TablesGetAccessPolicyHeaders, SignedIdentifierWrapper> getAccessPolicySync(
                 @HostParam("url") String url,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
@@ -406,7 +407,7 @@ public final class TablesImpl {
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @PathParam("table") String table,
                 @QueryParam("comp") String comp,
-                @BodyParam("application/xml") SignedIdentifiersWrapper tableAcl,
+                @BodyParam("application/xml") List<SignedIdentifier> tableAcl,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -420,7 +421,7 @@ public final class TablesImpl {
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @PathParam("table") String table,
                 @QueryParam("comp") String comp,
-                @BodyParam("application/xml") SignedIdentifiersWrapper tableAcl,
+                @BodyParam("application/xml") List<SignedIdentifier> tableAcl,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -433,7 +434,7 @@ public final class TablesImpl {
      * @param nextTableName A table query continuation token from a previous call.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table query response along with {@link ResponseBase} on successful completion of
      *     {@link Mono}.
@@ -488,7 +489,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table query response along with {@link ResponseBase} on successful completion of
      *     {@link Mono}.
@@ -540,7 +541,7 @@ public final class TablesImpl {
      * @param nextTableName A table query continuation token from a previous call.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table query response on successful completion of {@link Mono}.
      */
@@ -559,7 +560,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table query response on successful completion of {@link Mono}.
      */
@@ -579,7 +580,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table query response along with {@link ResponseBase}.
      */
@@ -630,7 +631,7 @@ public final class TablesImpl {
      * @param nextTableName A table query continuation token from a previous call.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table query response.
      */
@@ -649,7 +650,7 @@ public final class TablesImpl {
      *     Possible values are return-no-content and return-content.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response for a single table along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -691,7 +692,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response for a single table along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -731,7 +732,7 @@ public final class TablesImpl {
      *     Possible values are return-no-content and return-content.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response for a single table on successful completion of {@link Mono}.
      */
@@ -756,7 +757,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response for a single table on successful completion of {@link Mono}.
      */
@@ -782,7 +783,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response for a single table along with {@link ResponseBase}.
      */
@@ -822,7 +823,7 @@ public final class TablesImpl {
      *     Possible values are return-no-content and return-content.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response for a single table.
      */
@@ -843,7 +844,7 @@ public final class TablesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -864,7 +865,7 @@ public final class TablesImpl {
      *     analytics logs when analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -882,7 +883,7 @@ public final class TablesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -899,7 +900,7 @@ public final class TablesImpl {
      *     analytics logs when analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -916,7 +917,7 @@ public final class TablesImpl {
      *     analytics logs when analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -933,7 +934,7 @@ public final class TablesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -952,7 +953,7 @@ public final class TablesImpl {
      * @param nextRowKey An entity query continuation token from a previous call.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table entity query response along with {@link ResponseBase} on successful
      *     completion of {@link Mono}.
@@ -1018,7 +1019,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table entity query response along with {@link ResponseBase} on successful
      *     completion of {@link Mono}.
@@ -1082,7 +1083,7 @@ public final class TablesImpl {
      * @param nextRowKey An entity query continuation token from a previous call.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table entity query response on successful completion of {@link Mono}.
      */
@@ -1110,7 +1111,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table entity query response on successful completion of {@link Mono}.
      */
@@ -1140,7 +1141,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table entity query response along with {@link ResponseBase}.
      */
@@ -1203,7 +1204,7 @@ public final class TablesImpl {
      * @param nextRowKey An entity query continuation token from a previous call.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table entity query response.
      */
@@ -1231,7 +1232,7 @@ public final class TablesImpl {
      *     analytics logs when analytics logging is enabled.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the other properties of the table entity along with {@link ResponseBase} on successful completion of
      *     {@link Mono}.
@@ -1292,7 +1293,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the other properties of the table entity along with {@link ResponseBase} on successful completion of
      *     {@link Mono}.
@@ -1351,7 +1352,7 @@ public final class TablesImpl {
      *     analytics logs when analytics logging is enabled.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the other properties of the table entity on successful completion of {@link Mono}.
      */
@@ -1380,7 +1381,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the other properties of the table entity on successful completion of {@link Mono}.
      */
@@ -1410,7 +1411,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the other properties of the table entity along with {@link ResponseBase}.
      */
@@ -1468,7 +1469,7 @@ public final class TablesImpl {
      *     analytics logs when analytics logging is enabled.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the other properties of the table entity.
      */
@@ -1501,7 +1502,7 @@ public final class TablesImpl {
      * @param tableEntityProperties The properties for the table entity.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1557,7 +1558,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1611,7 +1612,7 @@ public final class TablesImpl {
      * @param tableEntityProperties The properties for the table entity.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1647,7 +1648,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1692,7 +1693,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -1746,7 +1747,7 @@ public final class TablesImpl {
      * @param tableEntityProperties The properties for the table entity.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1787,7 +1788,7 @@ public final class TablesImpl {
      * @param tableEntityProperties The properties for the table entity.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1843,7 +1844,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1897,7 +1898,7 @@ public final class TablesImpl {
      * @param tableEntityProperties The properties for the table entity.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1933,7 +1934,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1978,7 +1979,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -2032,7 +2033,7 @@ public final class TablesImpl {
      * @param tableEntityProperties The properties for the table entity.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2070,7 +2071,7 @@ public final class TablesImpl {
      *     analytics logs when analytics logging is enabled.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2121,7 +2122,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2170,7 +2171,7 @@ public final class TablesImpl {
      *     analytics logs when analytics logging is enabled.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2201,7 +2202,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2234,7 +2235,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -2283,7 +2284,7 @@ public final class TablesImpl {
      *     analytics logs when analytics logging is enabled.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2310,7 +2311,7 @@ public final class TablesImpl {
      * @param tableEntityProperties The properties for the table entity.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the other properties of the table entity along with {@link ResponseBase} on successful completion of
      *     {@link Mono}.
@@ -2359,7 +2360,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the other properties of the table entity along with {@link ResponseBase} on successful completion of
      *     {@link Mono}.
@@ -2406,7 +2407,7 @@ public final class TablesImpl {
      * @param tableEntityProperties The properties for the table entity.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the other properties of the table entity on successful completion of {@link Mono}.
      */
@@ -2436,7 +2437,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the other properties of the table entity on successful completion of {@link Mono}.
      */
@@ -2467,7 +2468,7 @@ public final class TablesImpl {
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the other properties of the table entity along with {@link ResponseBase}.
      */
@@ -2513,7 +2514,7 @@ public final class TablesImpl {
      * @param tableEntityProperties The properties for the table entity.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the other properties of the table entity.
      */
@@ -2551,7 +2552,7 @@ public final class TablesImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<TablesGetAccessPolicyHeaders, List<SignedIdentifier>>> getAccessPolicyWithResponseAsync(
+    public Mono<ResponseBase<TablesGetAccessPolicyHeaders, SignedIdentifierWrapper>> getAccessPolicyWithResponseAsync(
             String table, Integer timeout, String requestId) {
         final String comp = "acl";
         final String accept = "application/xml";
@@ -2584,7 +2585,7 @@ public final class TablesImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<TablesGetAccessPolicyHeaders, List<SignedIdentifier>>> getAccessPolicyWithResponseAsync(
+    public Mono<ResponseBase<TablesGetAccessPolicyHeaders, SignedIdentifierWrapper>> getAccessPolicyWithResponseAsync(
             String table, Integer timeout, String requestId, Context context) {
         final String comp = "acl";
         final String accept = "application/xml";
@@ -2606,7 +2607,7 @@ public final class TablesImpl {
      * @return a collection of signed identifiers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<SignedIdentifier>> getAccessPolicyAsync(String table, Integer timeout, String requestId) {
+    public Mono<SignedIdentifierWrapper> getAccessPolicyAsync(String table, Integer timeout, String requestId) {
         return getAccessPolicyWithResponseAsync(table, timeout, requestId)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -2626,7 +2627,7 @@ public final class TablesImpl {
      * @return a collection of signed identifiers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<SignedIdentifier>> getAccessPolicyAsync(
+    public Mono<SignedIdentifierWrapper> getAccessPolicyAsync(
             String table, Integer timeout, String requestId, Context context) {
         return getAccessPolicyWithResponseAsync(table, timeout, requestId, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -2647,7 +2648,7 @@ public final class TablesImpl {
      * @return a collection of signed identifiers along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<TablesGetAccessPolicyHeaders, List<SignedIdentifier>> getAccessPolicyWithResponse(
+    public ResponseBase<TablesGetAccessPolicyHeaders, SignedIdentifierWrapper> getAccessPolicyWithResponse(
             String table, Integer timeout, String requestId, Context context) {
         final String comp = "acl";
         final String accept = "application/xml";
@@ -2669,7 +2670,7 @@ public final class TablesImpl {
      * @return a collection of signed identifiers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<SignedIdentifier> getAccessPolicy(String table, Integer timeout, String requestId) {
+    public SignedIdentifierWrapper getAccessPolicy(String table, Integer timeout, String requestId) {
         return getAccessPolicyWithResponse(table, timeout, requestId, Context.NONE).getValue();
     }
 
@@ -2691,7 +2692,6 @@ public final class TablesImpl {
             String table, Integer timeout, String requestId, List<SignedIdentifier> tableAcl) {
         final String comp = "acl";
         final String accept = "application/xml";
-        SignedIdentifiersWrapper tableAclConverted = new SignedIdentifiersWrapper(tableAcl);
         return FluxUtil.withContext(
                 context ->
                         service.setAccessPolicy(
@@ -2701,7 +2701,7 @@ public final class TablesImpl {
                                 requestId,
                                 table,
                                 comp,
-                                tableAclConverted,
+                                tableAcl,
                                 accept,
                                 context));
     }
@@ -2725,7 +2725,6 @@ public final class TablesImpl {
             String table, Integer timeout, String requestId, List<SignedIdentifier> tableAcl, Context context) {
         final String comp = "acl";
         final String accept = "application/xml";
-        SignedIdentifiersWrapper tableAclConverted = new SignedIdentifiersWrapper(tableAcl);
         return service.setAccessPolicy(
                 this.client.getUrl(),
                 timeout,
@@ -2733,7 +2732,7 @@ public final class TablesImpl {
                 requestId,
                 table,
                 comp,
-                tableAclConverted,
+                tableAcl,
                 accept,
                 context);
     }
@@ -2797,7 +2796,6 @@ public final class TablesImpl {
             String table, Integer timeout, String requestId, List<SignedIdentifier> tableAcl, Context context) {
         final String comp = "acl";
         final String accept = "application/xml";
-        SignedIdentifiersWrapper tableAclConverted = new SignedIdentifiersWrapper(tableAcl);
         return service.setAccessPolicySync(
                 this.client.getUrl(),
                 timeout,
@@ -2805,7 +2803,7 @@ public final class TablesImpl {
                 requestId,
                 table,
                 comp,
-                tableAclConverted,
+                tableAcl,
                 accept,
                 context);
     }

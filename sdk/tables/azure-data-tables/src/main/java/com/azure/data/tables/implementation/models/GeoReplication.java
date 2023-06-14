@@ -5,26 +5,29 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
 import java.time.OffsetDateTime;
+import java.util.Objects;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /** The GeoReplication model. */
-@JacksonXmlRootElement(localName = "GeoReplication")
 @Fluent
-public final class GeoReplication {
+public final class GeoReplication implements XmlSerializable<GeoReplication> {
     /*
      * The status of the secondary location.
      */
-    @JsonProperty(value = "Status", required = true)
     private GeoReplicationStatusType status;
 
     /*
      * A GMT date/time value, to the second. All primary writes preceding this value are guaranteed to be available for
      * read operations at the secondary. Primary writes after this point in time may or may not be available for reads.
      */
-    @JsonProperty(value = "LastSyncTime", required = true)
     private DateTimeRfc1123 lastSyncTime;
 
     /** Creates an instance of GeoReplication class. */
@@ -79,5 +82,67 @@ public final class GeoReplication {
             this.lastSyncTime = new DateTimeRfc1123(lastSyncTime);
         }
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "GeoReplication" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeStringElement("Status", Objects.toString(this.status, null));
+        xmlWriter.writeStringElement("LastSyncTime", Objects.toString(this.lastSyncTime, null));
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of GeoReplication from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of GeoReplication if the XmlReader was pointing to an instance of it, or null if it was
+     *     pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the GeoReplication.
+     */
+    public static GeoReplication fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of GeoReplication from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     *     cases where the model can deserialize from different root element names.
+     * @return An instance of GeoReplication if the XmlReader was pointing to an instance of it, or null if it was
+     *     pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the GeoReplication.
+     */
+    public static GeoReplication fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "GeoReplication" : rootElementName;
+        return xmlReader.readObject(
+                finalRootElementName,
+                reader -> {
+                    GeoReplication deserializedGeoReplication = new GeoReplication();
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        QName elementName = reader.getElementName();
+
+                        if ("Status".equals(elementName.getLocalPart())) {
+                            deserializedGeoReplication.status =
+                                    reader.getNullableElement(GeoReplicationStatusType::fromString);
+                        } else if ("LastSyncTime".equals(elementName.getLocalPart())) {
+                            deserializedGeoReplication.setLastSyncTime(
+                                    reader.getNullableElement(DateTimeRfc1123::new).getDateTime());
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+
+                    return deserializedGeoReplication;
+                });
     }
 }

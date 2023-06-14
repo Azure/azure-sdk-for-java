@@ -31,10 +31,11 @@ import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.SignedIdentifier;
+import com.azure.data.tables.implementation.models.SignedIdentifierWrapper;
 import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
-import com.azure.data.tables.implementation.models.TableServiceError;
+import com.azure.data.tables.implementation.models.TableServiceJsonError;
 import com.azure.data.tables.implementation.models.TablesGetAccessPolicyHeaders;
 import com.azure.data.tables.implementation.models.TablesQueryEntitiesHeaders;
 import com.azure.data.tables.implementation.models.TablesQueryEntityWithPartitionAndRowKeyHeaders;
@@ -1207,12 +1208,12 @@ public final class TableClient {
         Context contextValue = TableUtils.setContext(context, true);
 
         Callable<Response<TableAccessPolicies>> callable = () -> {
-            ResponseBase<TablesGetAccessPolicyHeaders, List<SignedIdentifier>> response =
+            ResponseBase<TablesGetAccessPolicyHeaders, SignedIdentifierWrapper> response =
                 tablesImplementation.getTables().getAccessPolicyWithResponse(
                     tableName, null, null, contextValue
             );
             return new SimpleResponse<>(response,
-                new TableAccessPolicies(response.getValue() == null ? null : response.getValue().stream()
+                new TableAccessPolicies(response.getValue() == null ? null : response.getValue().items().stream()
                     .map(TableUtils::toTableSignedIdentifier)
                     .collect(Collectors.toList())));
         };
@@ -1611,7 +1612,6 @@ public final class TableClient {
                 ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
                 : callable.call();
         } catch (Exception ex) {
-
             throw logger.logExceptionAsError((RuntimeException) TableUtils.interpretException(ex));
         }
     }
@@ -1635,8 +1635,8 @@ public final class TableClient {
     }
 
     private Response<List<TableTransactionActionResponse>> parseResponse(TransactionalBatchRequestBody requestBody,
-                                                                               ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]> response) {
-        TableServiceError error = null;
+        ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]> response) {
+        TableServiceJsonError error = null;
         String errorMessage = null;
         TransactionalBatchChangeSet changes = null;
         TransactionalBatchAction failedAction = null;
@@ -1657,8 +1657,8 @@ public final class TableClient {
 
             // If one sub-response was an error, we need to throw even though the service responded with 202
             if (subResponse.getStatusCode() >= 400 && error == null && errorMessage == null) {
-                if (subResponse.getValue() instanceof TableServiceError) {
-                    error = (TableServiceError) subResponse.getValue();
+                if (subResponse.getValue() instanceof TableServiceJsonError) {
+                    error = (TableServiceJsonError) subResponse.getValue();
 
                     // Make a best effort to locate the failed operation and include it in the message
                     if (changes != null && error.getOdataError() != null
