@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-- Fixed a bug in `DiagnosticSetting` initialization where category groups overwrite log settings
+- Fixed a bug in `DiagnosticSetting` initialization where category groups overwrite log settings.
 
 ### Other Changes
 
