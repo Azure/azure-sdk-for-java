@@ -407,7 +407,7 @@ public final class TablesImpl {
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @PathParam("table") String table,
                 @QueryParam("comp") String comp,
-                @BodyParam("application/xml") List<SignedIdentifier> tableAcl,
+                @BodyParam("application/xml") SignedIdentifierWrapper tableAcl,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -421,7 +421,7 @@ public final class TablesImpl {
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @PathParam("table") String table,
                 @QueryParam("comp") String comp,
-                @BodyParam("application/xml") List<SignedIdentifier> tableAcl,
+                @BodyParam("application/xml") SignedIdentifierWrapper tableAcl,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -2692,6 +2692,7 @@ public final class TablesImpl {
             String table, Integer timeout, String requestId, List<SignedIdentifier> tableAcl) {
         final String comp = "acl";
         final String accept = "application/xml";
+        SignedIdentifierWrapper tableAclConverted = new SignedIdentifierWrapper(tableAcl);
         return FluxUtil.withContext(
                 context ->
                         service.setAccessPolicy(
@@ -2701,7 +2702,7 @@ public final class TablesImpl {
                                 requestId,
                                 table,
                                 comp,
-                                tableAcl,
+                                tableAclConverted,
                                 accept,
                                 context));
     }
@@ -2725,6 +2726,7 @@ public final class TablesImpl {
             String table, Integer timeout, String requestId, List<SignedIdentifier> tableAcl, Context context) {
         final String comp = "acl";
         final String accept = "application/xml";
+        SignedIdentifierWrapper tableAclConverted = new SignedIdentifierWrapper(tableAcl);
         return service.setAccessPolicy(
                 this.client.getUrl(),
                 timeout,
@@ -2732,7 +2734,7 @@ public final class TablesImpl {
                 requestId,
                 table,
                 comp,
-                tableAcl,
+                tableAclConverted,
                 accept,
                 context);
     }
@@ -2796,6 +2798,7 @@ public final class TablesImpl {
             String table, Integer timeout, String requestId, List<SignedIdentifier> tableAcl, Context context) {
         final String comp = "acl";
         final String accept = "application/xml";
+        SignedIdentifierWrapper tableAclConverted = new SignedIdentifierWrapper(tableAcl);
         return service.setAccessPolicySync(
                 this.client.getUrl(),
                 timeout,
@@ -2803,7 +2806,7 @@ public final class TablesImpl {
                 requestId,
                 table,
                 comp,
-                tableAcl,
+                tableAclConverted,
                 accept,
                 context);
     }
