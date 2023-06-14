@@ -16,6 +16,10 @@ public final class DynamicDeliveryAttributeMappingProperties {
     @JsonProperty(value = "sourceField")
     private String sourceField;
 
+    /** Creates an instance of DynamicDeliveryAttributeMappingProperties class. */
+    public DynamicDeliveryAttributeMappingProperties() {
+    }
+
     /**
      * Get the sourceField property: JSON path in the event which contains attribute value.
      *

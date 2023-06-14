@@ -4,9 +4,12 @@ package com.azure.spring.cloud.feature.management.implementation.targeting;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Audience of a TargetingFilter rollout
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Audience {
 
     private List<String> users;
@@ -14,6 +17,8 @@ public class Audience {
     private List<GroupRollout> groups;
 
     private double defaultRolloutPercentage;
+
+    private Exclusion exclusion = new Exclusion();
 
     /**
      * @return the users
@@ -55,6 +60,20 @@ public class Audience {
      */
     public void setDefaultRolloutPercentage(double defaultRolloutPercentage) {
         this.defaultRolloutPercentage = defaultRolloutPercentage;
+    }
+
+    /**
+     * @return the exclusion
+     */
+    public Exclusion getExclusion() {
+        return exclusion;
+    }
+
+    /**
+     * @param exclusion the exclusion to set
+     */
+    public void setExclusion(Exclusion exclusion) {
+        this.exclusion = exclusion;
     }
 
 }

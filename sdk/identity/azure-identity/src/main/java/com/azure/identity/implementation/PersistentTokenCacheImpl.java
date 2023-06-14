@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
     private static final String DEFAULT_CACHE_FILE_NAME = "msal.cache";
     private static final String DEFAULT_CONFIDENTIAL_CACHE_FILE_NAME = "msal.confidential.cache";
-    private static final Path DEFAULT_CACHE_FILE_PATH = Platform.isWindows()
+    static final Path DEFAULT_CACHE_FILE_PATH = Platform.isWindows()
         ? Paths.get(System.getProperty("user.home"), "AppData", "Local", ".IdentityService")
         : Paths.get(System.getProperty("user.home"), ".IdentityService");
     private static final String DEFAULT_KEYCHAIN_SERVICE = "Microsoft.Developer.IdentityService";

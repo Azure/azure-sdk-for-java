@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.privatedns.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.privatedns.fluent.models.PrivateZoneInner;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,10 +27,10 @@ public final class PrivateZonesCreateOrUpdateSamples {
             .createOrUpdate(
                 "resourceGroup1",
                 "privatezone1.com",
-                new PrivateZoneInner().withLocation("Global").withTags(mapOf("key1", "value1")),
+                new PrivateZoneInner().withLocation("Global").withTags(mapOf("key1", "fakeTokenPlaceholder")),
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

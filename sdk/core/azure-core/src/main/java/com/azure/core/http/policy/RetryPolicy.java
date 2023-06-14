@@ -101,20 +101,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * @throws NullPointerException If {@code retryOptions} is null.
      */
     public RetryPolicy(RetryOptions retryOptions) {
-        this(getRetryStrategyFromOptions(retryOptions), null, null);
-    }
-
-    private static RetryStrategy getRetryStrategyFromOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-
-        if (retryOptions.getExponentialBackoffOptions() != null) {
-            return new ExponentialBackoff(retryOptions.getExponentialBackoffOptions());
-        } else if (retryOptions.getFixedDelayOptions() != null) {
-            return new FixedDelay(retryOptions.getFixedDelayOptions());
-        } else {
-            // This should never happen.
-            throw new IllegalArgumentException("'retryOptions' didn't define any retry strategy options");
-        }
+        this(ImplUtils.getRetryStrategyFromOptions(retryOptions), null, null);
     }
 
     @Override

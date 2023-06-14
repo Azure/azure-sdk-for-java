@@ -13,18 +13,18 @@ public final class HeavyScheduleAvailabilityRequestTests {
     public void testDeserialize() throws Exception {
         HeavyScheduleAvailabilityRequest model =
             BinaryData
-                .fromString("{\"skuName\":\"DataBoxHeavy\",\"storageLocation\":\"mwmbes\",\"country\":\"nkww\"}")
+                .fromString("{\"skuName\":\"DataBoxHeavy\",\"storageLocation\":\"xagl\",\"country\":\"imjwosyt\"}")
                 .toObject(HeavyScheduleAvailabilityRequest.class);
-        Assertions.assertEquals("mwmbes", model.storageLocation());
-        Assertions.assertEquals("nkww", model.country());
+        Assertions.assertEquals("xagl", model.storageLocation());
+        Assertions.assertEquals("imjwosyt", model.country());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HeavyScheduleAvailabilityRequest model =
-            new HeavyScheduleAvailabilityRequest().withStorageLocation("mwmbes").withCountry("nkww");
+            new HeavyScheduleAvailabilityRequest().withStorageLocation("xagl").withCountry("imjwosyt");
         model = BinaryData.fromObject(model).toObject(HeavyScheduleAvailabilityRequest.class);
-        Assertions.assertEquals("mwmbes", model.storageLocation());
-        Assertions.assertEquals("nkww", model.country());
+        Assertions.assertEquals("xagl", model.storageLocation());
+        Assertions.assertEquals("imjwosyt", model.country());
     }
 }

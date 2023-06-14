@@ -6,7 +6,6 @@ import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -33,26 +32,29 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public final class CosmosDiagnostics {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDiagnostics.class);
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String COSMOS_DIAGNOSTICS_KEY = "cosmosDiagnostics";
 
     private ClientSideRequestStatistics clientSideRequestStatistics;
     private FeedResponseDiagnostics feedResponseDiagnostics;
 
     private CosmosDiagnosticsContext diagnosticsContext;
-    private final AtomicBoolean diagnosticsCapturedInPagedFlux;
 
-    static final String USER_AGENT = Utils.getUserAgent();
+    private double samplingRateSnapshot;
+    private final AtomicBoolean diagnosticsCapturedInPagedFlux;
     static final String USER_AGENT_KEY = "userAgent";
+    static final String SAMPLING_RATE_SNAPSHOT_KEY = "samplingRateSnapshot";
 
     CosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
         this.diagnosticsCapturedInPagedFlux = new AtomicBoolean(false);
         this.clientSideRequestStatistics = new ClientSideRequestStatistics(diagnosticsClientContext);
+        this.samplingRateSnapshot = 1;
     }
 
     CosmosDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {
         this.diagnosticsCapturedInPagedFlux = new AtomicBoolean(false);
         this.feedResponseDiagnostics = feedResponseDiagnostics;
+        this.samplingRateSnapshot = 1;
     }
 
     CosmosDiagnostics(CosmosDiagnostics toBeCloned) {
@@ -65,6 +67,7 @@ public final class CosmosDiagnostics {
         }
 
         this.diagnosticsCapturedInPagedFlux = new AtomicBoolean(toBeCloned.diagnosticsCapturedInPagedFlux.get());
+        this.samplingRateSnapshot = toBeCloned.samplingRateSnapshot;
     }
 
     ClientSideRequestStatistics clientSideRequestStatistics() {
@@ -186,6 +189,18 @@ public final class CosmosDiagnostics {
         return this.clientSideRequestStatistics.getContactedRegionNames();
     }
 
+    /**
+     * Gets the UserAgent header value used by the client issueing this operation
+     * @return the UserAgent header value used for the client that issued this operation
+     */
+    public String getUserAgent() {
+        if (this.feedResponseDiagnostics != null) {
+            return this.feedResponseDiagnostics.getUserAgent();
+        }
+
+        return this.clientSideRequestStatistics.getUserAgent();
+    }
+
     FeedResponseDiagnostics getFeedResponseDiagnostics() {
         return feedResponseDiagnostics;
     }
@@ -253,20 +268,24 @@ public final class CosmosDiagnostics {
         return combinedStatistics;
     }
 
-
+    double getSamplingRateSnapshot() {
+        return this.samplingRateSnapshot;
+    }
 
     void fillCosmosDiagnostics(ObjectNode parentNode, StringBuilder stringBuilder) {
         if (this.feedResponseDiagnostics != null) {
+            feedResponseDiagnostics.setSamplingRateSnapshot(this.samplingRateSnapshot);
             if (parentNode != null) {
-                parentNode.put(USER_AGENT_KEY, USER_AGENT);
+                parentNode.put(USER_AGENT_KEY, this.feedResponseDiagnostics.getUserAgent());
                 parentNode.putPOJO(COSMOS_DIAGNOSTICS_KEY, feedResponseDiagnostics);
             }
 
             if (stringBuilder != null) {
-                stringBuilder.append(USER_AGENT_KEY + "=").append(USER_AGENT).append(System.lineSeparator());
+                stringBuilder.append(USER_AGENT_KEY + "=").append(this.feedResponseDiagnostics.getUserAgent()).append(System.lineSeparator());
                 stringBuilder.append(feedResponseDiagnostics);
             }
         } else {
+            clientSideRequestStatistics.setSamplingRateSnapshot(this.samplingRateSnapshot);
             if (parentNode != null) {
                 parentNode.putPOJO(COSMOS_DIAGNOSTICS_KEY, clientSideRequestStatistics);
             }
@@ -296,6 +315,11 @@ public final class CosmosDiagnostics {
 
         this.feedResponseDiagnostics
             .addClientSideRequestStatistics(requestStatistics);
+    }
+
+    CosmosDiagnostics setSamplingRateSnapshot(double samplingRate) {
+        this.samplingRateSnapshot = samplingRate;
+        return this;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -376,6 +400,20 @@ public final class CosmosDiagnostics {
 
                     cosmosDiagnostics
                         .addClientSideDiagnosticsToFeed(requestStatistics);
+                }
+
+                @Override
+                public void setSamplingRateSnapshot(CosmosDiagnostics cosmosDiagnostics, double samplingRate) {
+                    if (cosmosDiagnostics == null) {
+                        return;
+                    }
+
+                    cosmosDiagnostics.setSamplingRateSnapshot(samplingRate);
+                }
+
+                @Override
+                public CosmosDiagnostics create(DiagnosticsClientContext clientContext, double samplingRate) {
+                    return new CosmosDiagnostics(clientContext).setSamplingRateSnapshot(samplingRate);
                 }
             });
     }

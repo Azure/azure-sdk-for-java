@@ -129,11 +129,27 @@ try {
 }
 ```
 
+### List rooms
+Use the `list rooms` function to list all active rooms.
+
+```java readme-sample-listRooms
+try {
+    PagedIterable<CommunicationRoom> rooms = roomsClient.listRooms();
+
+    for (CommunicationRoom room : rooms) {
+        System.out.println("Room ID: " + room.getRoomId());
+    }
+} catch (Exception ex) {
+    System.out.println(ex);
+}
+```
+
 ### Add or Update participants an existing room
 Use the `addOrUpdateParticipants` function to add or update participants in an existing room.
 
 ```java readme-sample-addOrUpdateRoomParticipantsWithRoomId
 List<RoomParticipant> participantsToaddOrUpdate = new ArrayList<>();
+
 // New participant to add
 RoomParticipant participantToAdd = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 3>")).setRole(ParticipantRole.ATTENDEE);
 

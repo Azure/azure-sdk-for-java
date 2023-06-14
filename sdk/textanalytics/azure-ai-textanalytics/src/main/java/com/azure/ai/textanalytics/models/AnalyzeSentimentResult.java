@@ -3,7 +3,6 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.AnalyzeSentimentResultPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /**
@@ -12,13 +11,6 @@ import com.azure.core.annotation.Immutable;
 @Immutable
 public final class AnalyzeSentimentResult extends TextAnalyticsResult {
     private final DocumentSentiment documentSentiment;
-
-    private DetectedLanguage detectedLanguage;
-
-    static {
-        AnalyzeSentimentResultPropertiesHelper.setAccessor(
-            (documentResult, detectedLanguage) -> documentResult.setDetectedLanguage(detectedLanguage));
-    }
 
     /**
      * Creates a {@link AnalyzeSentimentResult} model that describes analyzed sentiment result.
@@ -45,19 +37,5 @@ public final class AnalyzeSentimentResult extends TextAnalyticsResult {
     public DocumentSentiment getDocumentSentiment() {
         throwExceptionIfError();
         return documentSentiment;
-    }
-
-    /**
-     * Get the detectedLanguage property: If 'language' is set to 'auto' for the document in the request this field will
-     * contain an object of the language detected for this document.
-     *
-     * @return the detectedLanguage value.
-     */
-    public DetectedLanguage getDetectedLanguage() {
-        return this.detectedLanguage;
-    }
-
-    private void setDetectedLanguage(DetectedLanguage detectedLanguage) {
-        this.detectedLanguage = detectedLanguage;
     }
 }

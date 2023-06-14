@@ -11,11 +11,11 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.LicenseType;
 import com.azure.resourcemanager.devcenter.models.LocalAdminStatus;
 import com.azure.resourcemanager.devcenter.models.Pool;
+import com.azure.resourcemanager.devcenter.models.StopOnDisconnectEnableStatus;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -34,7 +34,7 @@ public final class PoolsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"TransientFailure\",\"devBoxDefinitionName\":\"ihsasb\",\"networkConnectionName\":\"dyp\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Enabled\"},\"location\":\"slynsqyrpfoo\",\"tags\":{\"qdnfwqzdz\":\"ttymsjny\",\"fhqlyvi\":\"tilaxh\"},\"id\":\"ouwivkxoyzunbixx\",\"name\":\"ti\",\"type\":\"vcpwpgclrc\"}";
+            "{\"properties\":{\"healthStatus\":\"Pending\",\"healthStatusDetails\":[],\"provisioningState\":\"RolloutInProgress\",\"devBoxDefinitionName\":\"zkgimsid\",\"networkConnectionName\":\"sicddyvv\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Enabled\",\"stopOnDisconnect\":{\"status\":\"Enabled\",\"gracePeriodMinutes\":465426304}},\"location\":\"pqg\",\"tags\":{\"kzyb\":\"eaahhvjhhn\",\"yxkyxvx\":\"jjidjk\",\"lxunsmjbnkppxy\":\"vblbjednljlageua\"},\"id\":\"enlsvxeizzgwkln\",\"name\":\"rmffeyc\",\"type\":\"ckt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +62,19 @@ public final class PoolsGetWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Pool response = manager.pools().getWithResponse("hhzjhfj", "hvvmuvgpmun", "qsxvmhf", Context.NONE).getValue();
+        Pool response =
+            manager
+                .pools()
+                .getWithResponse("hlwigdivbkbxg", "mf", "juwasqvdaeyyguxa", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("slynsqyrpfoo", response.location());
-        Assertions.assertEquals("ttymsjny", response.tags().get("qdnfwqzdz"));
-        Assertions.assertEquals("ihsasb", response.devBoxDefinitionName());
-        Assertions.assertEquals("dyp", response.networkConnectionName());
+        Assertions.assertEquals("pqg", response.location());
+        Assertions.assertEquals("eaahhvjhhn", response.tags().get("kzyb"));
+        Assertions.assertEquals("zkgimsid", response.devBoxDefinitionName());
+        Assertions.assertEquals("sicddyvv", response.networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, response.licenseType());
         Assertions.assertEquals(LocalAdminStatus.ENABLED, response.localAdministrator());
+        Assertions.assertEquals(StopOnDisconnectEnableStatus.ENABLED, response.stopOnDisconnect().status());
+        Assertions.assertEquals(465426304, response.stopOnDisconnect().gracePeriodMinutes());
     }
 }

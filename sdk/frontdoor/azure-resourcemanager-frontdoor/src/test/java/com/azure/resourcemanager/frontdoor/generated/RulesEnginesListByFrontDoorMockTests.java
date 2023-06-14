@@ -31,7 +31,7 @@ public final class RulesEnginesListByFrontDoorMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"resourceState\":\"Creating\",\"rules\":[]},\"id\":\"f\",\"name\":\"oajvgcxtxjcs\",\"type\":\"eafidltugsresm\"}]}";
+            "{\"value\":[{\"properties\":{\"resourceState\":\"Disabling\",\"rules\":[]},\"id\":\"ylbf\",\"name\":\"ajlyjtlvofqzhv\",\"type\":\"cib\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class RulesEnginesListByFrontDoorMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<RulesEngine> response =
-            manager.rulesEngines().listByFrontDoor("bwnhhtql", "ehgpp", com.azure.core.util.Context.NONE);
+            manager.rulesEngines().listByFrontDoor("nbzoggcu", "apzwyrpgog", com.azure.core.util.Context.NONE);
     }
 }

@@ -2,14 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core.mapping.event;
 
-import static org.assertj.core.api.Assertions.*;
-
 import com.azure.spring.data.cosmos.domain.IPerson;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.domain.Student;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.NullNode;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CosmosEventListenerUnitTests {
 
@@ -39,7 +39,7 @@ public class CosmosEventListenerUnitTests {
         contactListener.onApplicationEvent(new AfterLoadEvent<>(NullNode.getInstance(), Person.class, "container-1"));
 
         assertThat(personListener.invokedOnAfterLoad).isTrue();
-        assertThat(contactListener.invokedOnAfterLoad).isTrue();
+        assertThat(contactListener.invokedOnAfterLoad).isFalse();
     }
 
     @Test

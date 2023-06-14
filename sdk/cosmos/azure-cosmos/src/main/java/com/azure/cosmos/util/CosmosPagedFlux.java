@@ -153,10 +153,11 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             return publisher;
         }
 
-        return tracerProvider.runUnderSpanInContext(publisher);
+        return tracerProvider.runUnderSpanInContext(publisher, pagedFluxOptions);
     }
 
     private void recordFeedResponse(
+        CosmosPagedFluxOptions pagedFluxOptions,
         Context traceCtx,
         DiagnosticsProvider tracerProvider,
         FeedResponse<T> response,
@@ -171,6 +172,11 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             cosmosDiagnosticsAccessor
                 .isDiagnosticsCapturedInPagedFlux(diagnostics)
                 .compareAndSet(false, true)) {
+
+            if (pagedFluxOptions.getSamplingRateSnapshot() < 1) {
+                cosmosDiagnosticsAccessor
+                    .setSamplingRateSnapshot(diagnostics, pagedFluxOptions.getSamplingRateSnapshot());
+            }
 
             if (isTracerEnabled(tracerProvider)) {
                 tracerProvider.recordPage(
@@ -211,7 +217,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 DiagnosticsProvider tracerProvider = pagedFluxOptions.getDiagnosticsProvider();
                 switch (signal.getType()) {
                     case ON_COMPLETE:
-                        this.recordFeedResponse(traceCtx, tracerProvider, response, feedResponseConsumerLatencyInNanos);
+                        this.recordFeedResponse(pagedFluxOptions, traceCtx, tracerProvider, response, feedResponseConsumerLatencyInNanos);
 
                         if (isTracerEnabled(tracerProvider)) {
                             tracerProvider.recordFeedResponseConsumerLatency(
@@ -223,7 +229,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
                         break;
                     case ON_NEXT:
-                        this.recordFeedResponse(traceCtx, tracerProvider, response, feedResponseConsumerLatencyInNanos);
+                        this.recordFeedResponse(pagedFluxOptions, traceCtx, tracerProvider, response, feedResponseConsumerLatencyInNanos);
 
                         break;
 
@@ -262,7 +268,10 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 pagedFluxOptions.getEffectiveConsistencyLevel(),
                 pagedFluxOptions.getMaxItemCount(),
                 pagedFluxOptions.getDiagnosticsThresholds(),
-                null);
+                null,
+                pagedFluxOptions.getConnectionMode(),
+                pagedFluxOptions.getUserAgent());
+            ctxAccessor.setSamplingRateSnapshot(cosmosCtx, pagedFluxOptions.getSamplingRateSnapshot());
 
             return Flux
                 .deferContextual(reactorCtx -> result

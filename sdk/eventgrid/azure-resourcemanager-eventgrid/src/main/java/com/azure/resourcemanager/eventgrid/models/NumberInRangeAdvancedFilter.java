@@ -21,6 +21,10 @@ public final class NumberInRangeAdvancedFilter extends AdvancedFilter {
     @JsonProperty(value = "values")
     private List<List<Double>> values;
 
+    /** Creates an instance of NumberInRangeAdvancedFilter class. */
+    public NumberInRangeAdvancedFilter() {
+    }
+
     /**
      * Get the values property: The set of filter values.
      *

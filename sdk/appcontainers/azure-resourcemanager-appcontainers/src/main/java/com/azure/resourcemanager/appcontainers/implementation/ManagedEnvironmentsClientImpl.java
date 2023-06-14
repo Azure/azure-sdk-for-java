@@ -68,7 +68,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerAppsApiClie")
-    private interface ManagedEnvironmentsService {
+    public interface ManagedEnvironmentsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.App/managedEnvironments")
         @ExpectedResponses({200})
@@ -82,8 +82,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/managedEnvironments")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ManagedEnvironmentsCollection>> listByResourceGroup(
@@ -96,8 +95,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/managedEnvironments/{environmentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ManagedEnvironmentInner>> getByResourceGroup(
@@ -111,8 +109,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/managedEnvironments/{environmentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -127,8 +124,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/managedEnvironments/{environmentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -142,9 +138,8 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/managedEnvironments/{environmentName}")
-        @ExpectedResponses({202})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}")
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
@@ -158,8 +153,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/managedEnvironments/{environmentName}/getAuthtoken")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/getAuthtoken")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<EnvironmentAuthTokenInner>> getAuthToken(
@@ -173,8 +167,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/managedEnvironments/{environmentName}/workloadProfileStates")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/workloadProfileStates")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<WorkloadProfileStatesCollection>> listWorkloadProfileStates(
@@ -904,7 +897,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedEnvironmentInner>, ManagedEnvironmentInner> beginCreateOrUpdate(
         String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope) {
-        return beginCreateOrUpdateAsync(resourceGroupName, environmentName, environmentEnvelope).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, environmentName, environmentEnvelope).getSyncPoller();
     }
 
     /**
@@ -927,7 +920,8 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
         String environmentName,
         ManagedEnvironmentInner environmentEnvelope,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, environmentName, environmentEnvelope, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, environmentName, environmentEnvelope, context)
             .getSyncPoller();
     }
 
@@ -1176,7 +1170,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String environmentName) {
-        return beginDeleteAsync(resourceGroupName, environmentName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, environmentName).getSyncPoller();
     }
 
     /**
@@ -1195,7 +1189,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String environmentName, Context context) {
-        return beginDeleteAsync(resourceGroupName, environmentName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, environmentName, context).getSyncPoller();
     }
 
     /**
@@ -1281,7 +1275,8 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return an environment for hosting container apps along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1341,7 +1336,8 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return an environment for hosting container apps along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1400,17 +1396,21 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of an environment for hosting container apps.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateAsync(
+    private PollerFlux<PollResult<ManagedEnvironmentInner>, ManagedEnvironmentInner> beginUpdateAsync(
         String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, environmentName, environmentEnvelope);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<ManagedEnvironmentInner, ManagedEnvironmentInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ManagedEnvironmentInner.class,
+                ManagedEnvironmentInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1425,10 +1425,10 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of an environment for hosting container apps.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateAsync(
+    private PollerFlux<PollResult<ManagedEnvironmentInner>, ManagedEnvironmentInner> beginUpdateAsync(
         String resourceGroupName,
         String environmentName,
         ManagedEnvironmentInner environmentEnvelope,
@@ -1438,7 +1438,12 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             updateWithResponseAsync(resourceGroupName, environmentName, environmentEnvelope, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<ManagedEnvironmentInner, ManagedEnvironmentInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ManagedEnvironmentInner.class,
+                ManagedEnvironmentInner.class,
+                context);
     }
 
     /**
@@ -1452,12 +1457,12 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of an environment for hosting container apps.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdate(
+    public SyncPoller<PollResult<ManagedEnvironmentInner>, ManagedEnvironmentInner> beginUpdate(
         String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope) {
-        return beginUpdateAsync(resourceGroupName, environmentName, environmentEnvelope).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, environmentName, environmentEnvelope).getSyncPoller();
     }
 
     /**
@@ -1472,15 +1477,15 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of an environment for hosting container apps.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdate(
+    public SyncPoller<PollResult<ManagedEnvironmentInner>, ManagedEnvironmentInner> beginUpdate(
         String resourceGroupName,
         String environmentName,
         ManagedEnvironmentInner environmentEnvelope,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, environmentName, environmentEnvelope, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, environmentName, environmentEnvelope, context).getSyncPoller();
     }
 
     /**
@@ -1494,10 +1499,10 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return an environment for hosting container apps on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateAsync(
+    private Mono<ManagedEnvironmentInner> updateAsync(
         String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope) {
         return beginUpdateAsync(resourceGroupName, environmentName, environmentEnvelope)
             .last()
@@ -1516,10 +1521,10 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return an environment for hosting container apps on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateAsync(
+    private Mono<ManagedEnvironmentInner> updateAsync(
         String resourceGroupName,
         String environmentName,
         ManagedEnvironmentInner environmentEnvelope,
@@ -1540,10 +1545,12 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an environment for hosting container apps.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope) {
-        updateAsync(resourceGroupName, environmentName, environmentEnvelope).block();
+    public ManagedEnvironmentInner update(
+        String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope) {
+        return updateAsync(resourceGroupName, environmentName, environmentEnvelope).block();
     }
 
     /**
@@ -1558,14 +1565,15 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an environment for hosting container apps.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(
+    public ManagedEnvironmentInner update(
         String resourceGroupName,
         String environmentName,
         ManagedEnvironmentInner environmentEnvelope,
         Context context) {
-        updateAsync(resourceGroupName, environmentName, environmentEnvelope, context).block();
+        return updateAsync(resourceGroupName, environmentName, environmentEnvelope, context).block();
     }
 
     /**
@@ -1723,17 +1731,17 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
     }
 
     /**
-     * Get all workload Profile States for a Premium Managed Environment..
+     * Get all workload Profile States for a Managed Environment..
      *
-     * <p>Get all workload Profile States for a Premium Managed Environment.
+     * <p>Get all workload Profile States for a Managed Environment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all workload Profile States for a Premium Managed Environment along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * @return all workload Profile States for a Managed Environment along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadProfileStatesInner>> listWorkloadProfileStatesSinglePageAsync(
@@ -1784,9 +1792,9 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
     }
 
     /**
-     * Get all workload Profile States for a Premium Managed Environment..
+     * Get all workload Profile States for a Managed Environment..
      *
-     * <p>Get all workload Profile States for a Premium Managed Environment.
+     * <p>Get all workload Profile States for a Managed Environment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -1794,8 +1802,8 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all workload Profile States for a Premium Managed Environment along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * @return all workload Profile States for a Managed Environment along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadProfileStatesInner>> listWorkloadProfileStatesSinglePageAsync(
@@ -1843,17 +1851,16 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
     }
 
     /**
-     * Get all workload Profile States for a Premium Managed Environment..
+     * Get all workload Profile States for a Managed Environment..
      *
-     * <p>Get all workload Profile States for a Premium Managed Environment.
+     * <p>Get all workload Profile States for a Managed Environment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all workload Profile States for a Premium Managed Environment as paginated response with {@link
-     *     PagedFlux}.
+     * @return all workload Profile States for a Managed Environment as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadProfileStatesInner> listWorkloadProfileStatesAsync(
@@ -1864,9 +1871,9 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
     }
 
     /**
-     * Get all workload Profile States for a Premium Managed Environment..
+     * Get all workload Profile States for a Managed Environment..
      *
-     * <p>Get all workload Profile States for a Premium Managed Environment.
+     * <p>Get all workload Profile States for a Managed Environment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -1874,8 +1881,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all workload Profile States for a Premium Managed Environment as paginated response with {@link
-     *     PagedFlux}.
+     * @return all workload Profile States for a Managed Environment as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadProfileStatesInner> listWorkloadProfileStatesAsync(
@@ -1886,17 +1892,16 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
     }
 
     /**
-     * Get all workload Profile States for a Premium Managed Environment..
+     * Get all workload Profile States for a Managed Environment..
      *
-     * <p>Get all workload Profile States for a Premium Managed Environment.
+     * <p>Get all workload Profile States for a Managed Environment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all workload Profile States for a Premium Managed Environment as paginated response with {@link
-     *     PagedIterable}.
+     * @return all workload Profile States for a Managed Environment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadProfileStatesInner> listWorkloadProfileStates(
@@ -1905,9 +1910,9 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
     }
 
     /**
-     * Get all workload Profile States for a Premium Managed Environment..
+     * Get all workload Profile States for a Managed Environment..
      *
-     * <p>Get all workload Profile States for a Premium Managed Environment.
+     * <p>Get all workload Profile States for a Managed Environment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -1915,8 +1920,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all workload Profile States for a Premium Managed Environment as paginated response with {@link
-     *     PagedIterable}.
+     * @return all workload Profile States for a Managed Environment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadProfileStatesInner> listWorkloadProfileStates(

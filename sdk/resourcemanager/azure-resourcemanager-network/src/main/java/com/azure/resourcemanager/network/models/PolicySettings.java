@@ -29,10 +29,28 @@ public final class PolicySettings {
     private Boolean requestBodyCheck;
 
     /*
+     * Max inspection limit in KB for request body inspection for WAF.
+     */
+    @JsonProperty(value = "requestBodyInspectLimitInKB")
+    private Integer requestBodyInspectLimitInKB;
+
+    /*
+     * Whether allow WAF to enforce request body limits.
+     */
+    @JsonProperty(value = "requestBodyEnforcement")
+    private Boolean requestBodyEnforcement;
+
+    /*
      * Maximum request body size in Kb for WAF.
      */
     @JsonProperty(value = "maxRequestBodySizeInKb")
     private Integer maxRequestBodySizeInKb;
+
+    /*
+     * Whether allow WAF to enforce file upload limits.
+     */
+    @JsonProperty(value = "fileUploadEnforcement")
+    private Boolean fileUploadEnforcement;
 
     /*
      * Maximum file upload size in Mb for WAF.
@@ -52,6 +70,12 @@ public final class PolicySettings {
      */
     @JsonProperty(value = "customBlockResponseBody")
     private String customBlockResponseBody;
+
+    /*
+     * To scrub sensitive log fields
+     */
+    @JsonProperty(value = "logScrubbing")
+    private PolicySettingsLogScrubbing logScrubbing;
 
     /** Creates an instance of PolicySettings class. */
     public PolicySettings() {
@@ -118,6 +142,46 @@ public final class PolicySettings {
     }
 
     /**
+     * Get the requestBodyInspectLimitInKB property: Max inspection limit in KB for request body inspection for WAF.
+     *
+     * @return the requestBodyInspectLimitInKB value.
+     */
+    public Integer requestBodyInspectLimitInKB() {
+        return this.requestBodyInspectLimitInKB;
+    }
+
+    /**
+     * Set the requestBodyInspectLimitInKB property: Max inspection limit in KB for request body inspection for WAF.
+     *
+     * @param requestBodyInspectLimitInKB the requestBodyInspectLimitInKB value to set.
+     * @return the PolicySettings object itself.
+     */
+    public PolicySettings withRequestBodyInspectLimitInKB(Integer requestBodyInspectLimitInKB) {
+        this.requestBodyInspectLimitInKB = requestBodyInspectLimitInKB;
+        return this;
+    }
+
+    /**
+     * Get the requestBodyEnforcement property: Whether allow WAF to enforce request body limits.
+     *
+     * @return the requestBodyEnforcement value.
+     */
+    public Boolean requestBodyEnforcement() {
+        return this.requestBodyEnforcement;
+    }
+
+    /**
+     * Set the requestBodyEnforcement property: Whether allow WAF to enforce request body limits.
+     *
+     * @param requestBodyEnforcement the requestBodyEnforcement value to set.
+     * @return the PolicySettings object itself.
+     */
+    public PolicySettings withRequestBodyEnforcement(Boolean requestBodyEnforcement) {
+        this.requestBodyEnforcement = requestBodyEnforcement;
+        return this;
+    }
+
+    /**
      * Get the maxRequestBodySizeInKb property: Maximum request body size in Kb for WAF.
      *
      * @return the maxRequestBodySizeInKb value.
@@ -134,6 +198,26 @@ public final class PolicySettings {
      */
     public PolicySettings withMaxRequestBodySizeInKb(Integer maxRequestBodySizeInKb) {
         this.maxRequestBodySizeInKb = maxRequestBodySizeInKb;
+        return this;
+    }
+
+    /**
+     * Get the fileUploadEnforcement property: Whether allow WAF to enforce file upload limits.
+     *
+     * @return the fileUploadEnforcement value.
+     */
+    public Boolean fileUploadEnforcement() {
+        return this.fileUploadEnforcement;
+    }
+
+    /**
+     * Set the fileUploadEnforcement property: Whether allow WAF to enforce file upload limits.
+     *
+     * @param fileUploadEnforcement the fileUploadEnforcement value to set.
+     * @return the PolicySettings object itself.
+     */
+    public PolicySettings withFileUploadEnforcement(Boolean fileUploadEnforcement) {
+        this.fileUploadEnforcement = fileUploadEnforcement;
         return this;
     }
 
@@ -202,10 +286,33 @@ public final class PolicySettings {
     }
 
     /**
+     * Get the logScrubbing property: To scrub sensitive log fields.
+     *
+     * @return the logScrubbing value.
+     */
+    public PolicySettingsLogScrubbing logScrubbing() {
+        return this.logScrubbing;
+    }
+
+    /**
+     * Set the logScrubbing property: To scrub sensitive log fields.
+     *
+     * @param logScrubbing the logScrubbing value to set.
+     * @return the PolicySettings object itself.
+     */
+    public PolicySettings withLogScrubbing(PolicySettingsLogScrubbing logScrubbing) {
+        this.logScrubbing = logScrubbing;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (logScrubbing() != null) {
+            logScrubbing().validate();
+        }
     }
 }

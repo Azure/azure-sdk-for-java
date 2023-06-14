@@ -4,15 +4,18 @@
 
 package com.azure.analytics.purview.sharing.models;
 
+import java.time.OffsetDateTime;
+
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
 
-/** A tenant email registration data transfer object. */
+/**
+ * A tenant email registration data transfer object.
+ */
 @JsonFlatten
 @Fluent
-public class TenantEmailRegistration extends Resource {
+public class TenantEmailRegistration extends ProxyResource {
     /*
      * Activation code for the registration.
      */
@@ -20,7 +23,8 @@ public class TenantEmailRegistration extends Resource {
     private String activationCode;
 
     /*
-     * Date of the activation expiration.
+     * Date of the activation expiration. Represented in the standard date-time format as defined by [RFC
+     * 3339](https://www.rfc-editor.org/rfc/rfc3339)
      */
     @JsonProperty(value = "properties.activationExpiration", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime activationExpiration;
@@ -32,16 +36,16 @@ public class TenantEmailRegistration extends Resource {
     private String email;
 
     /*
-     * Provisioning status of the resource
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
      * Defines the supported types for registration.
      */
     @JsonProperty(value = "properties.registrationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private TenantEmailRegistrationStatus registrationStatus;
+
+    /*
+     * State of the resource
+     */
+    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
+    private State state;
 
     /*
      * The tenant id to register.
@@ -49,12 +53,15 @@ public class TenantEmailRegistration extends Resource {
     @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
-    /** Creates an instance of TenantEmailRegistration class. */
-    public TenantEmailRegistration() {}
+    /**
+     * Creates an instance of TenantEmailRegistration class.
+     */
+    public TenantEmailRegistration() {
+    }
 
     /**
      * Get the activationCode property: Activation code for the registration.
-     *
+     * 
      * @return the activationCode value.
      */
     public String getActivationCode() {
@@ -63,7 +70,7 @@ public class TenantEmailRegistration extends Resource {
 
     /**
      * Set the activationCode property: Activation code for the registration.
-     *
+     * 
      * @param activationCode the activationCode value to set.
      * @return the TenantEmailRegistration object itself.
      */
@@ -73,8 +80,9 @@ public class TenantEmailRegistration extends Resource {
     }
 
     /**
-     * Get the activationExpiration property: Date of the activation expiration.
-     *
+     * Get the activationExpiration property: Date of the activation expiration. Represented in the standard date-time
+     * format as defined by [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339).
+     * 
      * @return the activationExpiration value.
      */
     public OffsetDateTime getActivationExpiration() {
@@ -83,7 +91,7 @@ public class TenantEmailRegistration extends Resource {
 
     /**
      * Get the email property: The email to register.
-     *
+     * 
      * @return the email value.
      */
     public String getEmail() {
@@ -91,17 +99,8 @@ public class TenantEmailRegistration extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning status of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState getProvisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
      * Get the registrationStatus property: Defines the supported types for registration.
-     *
+     * 
      * @return the registrationStatus value.
      */
     public TenantEmailRegistrationStatus getRegistrationStatus() {
@@ -109,8 +108,17 @@ public class TenantEmailRegistration extends Resource {
     }
 
     /**
+     * Get the state property: State of the resource.
+     * 
+     * @return the state value.
+     */
+    public State getState() {
+        return this.state;
+    }
+
+    /**
      * Get the tenantId property: The tenant id to register.
-     *
+     * 
      * @return the tenantId value.
      */
     public String getTenantId() {

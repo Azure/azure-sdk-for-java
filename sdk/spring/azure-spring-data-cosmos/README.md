@@ -99,7 +99,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.34.0</version>
+    <version>3.35.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -540,7 +540,7 @@ public class MyItem {
 - Azure-spring-data-cosmos supports [spring data custom queries][spring_data_custom_query]
 - Example, find operation, e.g., `findByAFieldAndBField`
 - Supports [Spring Data Pageable, Slice and Sort](https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.special-parameters).
-  - Based on available RUs on the database account, cosmosDB can return items less than or equal to the requested size.
+  - Based on available RUs on the database account, Cosmos DB can return items less than or equal to the requested size.
   - Due to this variable number of returned items in every iteration, user should not rely on the totalPageSize, and instead iterating over pageable should be done in this way.
 ```java readme-sample-findAllWithPageSize
 private List<T> findAllWithPageSize(int pageSize) {
@@ -1007,7 +1007,7 @@ For example, if you want to use spring logback as logging framework, add the fol
 
 ## Next steps
 - Read more about azure spring data cosmos [here][azure_spring_data_cosmos_docs].
-- [Read more about Azure CosmosDB Service][cosmos_docs]
+- [Read more about Azure Cosmos DB Service][cosmos_docs]
 
 ## Contributing
 
@@ -1041,7 +1041,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [local_emulator_export_ssl_certificates]: https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates
 [spring_data_commons_id_annotation]: https://github.com/spring-projects/spring-data-commons/blob/main/src/main/java/org/springframework/data/annotation/Id.java
 [azure_cosmos_db_partition]: https://docs.microsoft.com/azure/cosmos-db/partition-data
-[address_repository_it_test]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos-test/src/test/java/com/azure/spring/data/cosmos/repository/integration/AddressRepositoryIT.java
+[address_repository_it_test]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/src/test/java/com/azure/spring/data/cosmos/repository/integration/AddressRepositoryIT.java
 [azure_spring_data_cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sdk-java-spring-v3
 [spring_data_custom_query]: https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details
 [sql_queries_in_cosmos]: https://docs.microsoft.com/azure/cosmos-db/tutorial-query-sql-api

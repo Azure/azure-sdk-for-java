@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
@@ -303,7 +304,47 @@ public class StoreReader {
                 replicasToRead.set(replicaCountToRead - resultCollector.size());
             }
             return resultCollector;
+        })
+        .doFinally(signalType -> {
+            if (signalType != SignalType.CANCEL) {
+                return;
+            }
+
+            this.createAndRecordStoreResultForCancelledRequest(
+                entity,
+                requiresValidLsn,
+                readMode != ReadMode.Strong,
+                replicaStatusList);
         }).flux();
+    }
+
+    void createAndRecordStoreResultForCancelledRequest(
+        RxDocumentServiceRequest request,
+        boolean requiresValidLsn,
+        boolean useLocalLSNBasedHeaders,
+        List<String> replicaStatusList) {
+        // record the diagnostics for in-progress requests
+        for (CosmosException cosmosException : request.requestContext.rntbdCancelledRequestMap.values()) {
+            Uri storePhysicalAddress =
+                ImplementationBridgeHelpers
+                    .CosmosExceptionHelper
+                    .getCosmosExceptionAccessor()
+                    .getRequestUri(cosmosException);
+
+            this.createAndRecordStoreResult(
+                request,
+                null,
+                cosmosException,
+                requiresValidLsn,
+                useLocalLSNBasedHeaders,
+                storePhysicalAddress,
+                replicaStatusList
+            );
+
+            if (storePhysicalAddress != null) {
+                BridgeInternal.getContactedReplicas(request.requestContext.cosmosDiagnostics).add(storePhysicalAddress.getURI());
+            }
+        }
     }
 
     private ReadReplicaResult createReadReplicaResult(List<StoreResult> responseResult,
@@ -543,7 +584,10 @@ public class StoreReader {
                             entity.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
                         }
 
-                        Pair<Mono<StoreResponse>, Uri> storeResponseObsAndUri = this.readFromStoreAsync(primaryUri, entity);
+                        Pair<Mono<StoreResponse>, Uri> storeResponseObsAndUri =
+                            this.readFromStoreAsync(
+                                primaryUri,
+                                entity);
                         replicaStatusList.set(Arrays.asList(primaryUri.getHealthStatusDiagnosticString()));
 
                         return storeResponseObsAndUri.getLeft().flatMap(
@@ -596,6 +640,13 @@ public class StoreReader {
                 // RxJava1 doesn't allow throwing checked exception from Observable operators
                 return Mono.error(e);
             }
+        })
+        .doFinally(signalType -> {
+            if (signalType != SignalType.CANCEL) {
+                return;
+            }
+
+            this.createAndRecordStoreResultForCancelledRequest(entity, requiresValidLsn, true, replicaStatusList.get());
         });
 
         return storeResultObs.map(storeResult -> {
@@ -935,7 +986,9 @@ public class StoreReader {
                         || ((cosmosException.getStatusCode() != HttpConstants.StatusCodes.GONE || isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE))
                         && lsn >= 0),
                         // TODO: verify where exception.RequestURI is supposed to be set in .Net
-                        /* storePhysicalAddress: */ storePhysicalAddress == null ? BridgeInternal.getRequestUri(cosmosException) : storePhysicalAddress,
+                        /* storePhysicalAddress: */ storePhysicalAddress == null
+                            ? ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor().getRequestUri(cosmosException)
+                            : storePhysicalAddress,
                         /* globalCommittedLSN: */ globalCommittedLSN,
                         /* numberOfReadRegions: */ numberOfReadRegions,
                         /* itemLSN: */ -1,

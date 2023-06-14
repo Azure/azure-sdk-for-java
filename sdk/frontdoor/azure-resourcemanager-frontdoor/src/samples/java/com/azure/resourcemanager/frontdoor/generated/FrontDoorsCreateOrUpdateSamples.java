@@ -29,7 +29,7 @@ import java.util.Map;
 /** Samples for FrontDoors CreateOrUpdate. */
 public final class FrontDoorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorCreate.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorCreate.json
      */
     /**
      * Sample code: Create or update specific Front Door.

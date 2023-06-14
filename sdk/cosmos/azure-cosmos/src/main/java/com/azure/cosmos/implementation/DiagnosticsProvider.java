@@ -51,6 +51,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -90,6 +92,9 @@ public final class DiagnosticsProvider {
     private final Tracer tracer;
     private final CosmosTracer cosmosTracer;
 
+    private final CosmosClientTelemetryConfig telemetryConfig;
+
+
     public DiagnosticsProvider(
         CosmosClientTelemetryConfig clientTelemetryConfig,
         String clientId,
@@ -101,6 +106,7 @@ public final class DiagnosticsProvider {
         checkNotNull(userAgent, "Argument 'userAgent' must not be null.");
         checkNotNull(connectionMode, "Argument 'connectionMode' must not be null.");
 
+        this.telemetryConfig = clientTelemetryConfig;
         this.diagnosticHandlers = new ArrayList<>(
             clientTelemetryConfigAccessor.getDiagnosticHandlers(clientTelemetryConfig));
         Tracer tracerCandidate = clientTelemetryConfigAccessor.getOrCreateTracer(clientTelemetryConfig);
@@ -140,6 +146,10 @@ public final class DiagnosticsProvider {
 
     public boolean isRealTracer() {
         return this.tracer.isEnabled() && this.tracer != EnabledNoOpTracer.INSTANCE;
+    }
+
+    public CosmosClientTelemetryConfig getClientTelemetryConfig() {
+        return this.telemetryConfig;
     }
 
     /**
@@ -461,7 +471,14 @@ public final class DiagnosticsProvider {
             (r) -> r.getStatusCode(),
             (r) -> null,
             (r) -> r.getRequestCharge(),
-            (r) -> r.getDiagnostics(),
+            (r, samplingRate) -> {
+                CosmosDiagnostics diagnostics = r.getDiagnostics();
+                if (diagnostics != null) {
+                    diagnosticsAccessor.setSamplingRateSnapshot(diagnostics, samplingRate);
+                }
+
+                return diagnostics;
+            },
             thresholds);
     }
 
@@ -497,7 +514,14 @@ public final class DiagnosticsProvider {
             CosmosBatchResponse::getStatusCode,
             (r) -> null,
             CosmosBatchResponse::getRequestCharge,
-            CosmosBatchResponse::getDiagnostics,
+            (r, samplingRate) -> {
+                CosmosDiagnostics diagnostics = r.getDiagnostics();
+                if (diagnostics != null) {
+                    diagnosticsAccessor.setSamplingRateSnapshot(diagnostics, samplingRate);
+                }
+
+                return diagnostics;
+            },
             thresholds);
     }
 
@@ -534,7 +558,14 @@ public final class DiagnosticsProvider {
             CosmosItemResponse::getStatusCode,
             (r) -> null,
             CosmosItemResponse::getRequestCharge,
-            CosmosItemResponse::getDiagnostics,
+            (r, samplingRate) -> {
+                CosmosDiagnostics diagnostics = r.getDiagnostics();
+                if (diagnostics != null) {
+                    diagnosticsAccessor.setSamplingRateSnapshot(diagnostics, samplingRate);
+                }
+
+                return diagnostics;
+            },
             thresholds);
     }
 
@@ -547,9 +578,30 @@ public final class DiagnosticsProvider {
      * @param publisher publisher to run.
      * @return wrapped publisher.
      */
-    public <T> Flux<T> runUnderSpanInContext(Flux<T> publisher) {
+    public <T> Flux<T> runUnderSpanInContext(Flux<T> publisher, CosmosPagedFluxOptions options) {
+
+        final double samplingRateSnapshot = clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig);
+
+        options.setSamplingRateSnapshot(samplingRateSnapshot);
+
+        if (shouldSampleOutOperation(samplingRateSnapshot)) {
+            return publisher;
+        }
+
         return propagatingFlux
             .flatMap(ignored -> publisher);
+    }
+
+    private boolean shouldSampleOutOperation(double samplingRate) {
+        if (samplingRate == 1) {
+            return false;
+        }
+
+        if (samplingRate == 0) {
+            return true;
+        }
+
+        return ThreadLocalRandom.current().nextDouble() >= samplingRate;
     }
 
     private <T> Mono<T> diagnosticsEnabledPublisher(
@@ -560,10 +612,19 @@ public final class DiagnosticsProvider {
       Function<T, Integer> statusCodeFunc,
       Function<T, Integer> actualItemCountFunc,
       Function<T, Double> requestChargeFunc,
-      Function<T, CosmosDiagnostics> diagnosticsFunc
+      BiFunction<T, Double, CosmosDiagnostics> diagnosticsFunc
     ) {
 
         if (!isEnabled()) {
+            return resultPublisher;
+        }
+
+        final double samplingRateSnapshot = clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig);
+        if (cosmosCtx != null) {
+            ctxAccessor.setSamplingRateSnapshot(cosmosCtx, samplingRateSnapshot);
+        }
+
+        if (shouldSampleOutOperation(samplingRateSnapshot)) {
             return resultPublisher;
         }
 
@@ -588,7 +649,7 @@ public final class DiagnosticsProvider {
                             statusCodeFunc.apply(response),
                             actualItemCountFunc.apply(response),
                             requestChargeFunc.apply(response),
-                            diagnosticsFunc.apply(response));
+                            diagnosticsFunc.apply(response, samplingRateSnapshot));
                         break;
                     case ON_ERROR:
                         // not adding diagnostics on trace event for exception as this information is already there as
@@ -621,7 +682,7 @@ public final class DiagnosticsProvider {
                                                      Function<T, Integer> statusCodeFunc,
                                                      Function<T, Integer> actualItemCountFunc,
                                                      Function<T, Double> requestChargeFunc,
-                                                     Function<T, CosmosDiagnostics> diagnosticFunc,
+                                                     BiFunction<T, Double, CosmosDiagnostics> diagnosticFunc,
                                                      CosmosDiagnosticsThresholds thresholds) {
 
         CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
@@ -636,7 +697,9 @@ public final class DiagnosticsProvider {
             clientAccessor.getEffectiveConsistencyLevel(client, operationType, consistencyLevel),
             maxItemCount,
             thresholds,
-            trackingId);
+            trackingId,
+            clientAccessor.getConnectionMode(client),
+            clientAccessor.getUserAgent(client));
 
         return diagnosticsEnabledPublisher(
             cosmosCtx,
@@ -1188,7 +1251,7 @@ public final class DiagnosticsProvider {
                 }
 
                 String activityId = storeResponseDiagnostics.getActivityId();
-                if (requestSessionToken != null && !requestSessionToken.isEmpty()) {
+                if (activityId != null && !activityId.isEmpty()) {
                     attributes.put("rntbd.activity_id", activityId);
                 }
 

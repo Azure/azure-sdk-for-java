@@ -18,10 +18,10 @@ public final class MonitoringTagRulesListResponseTests {
         MonitoringTagRulesListResponse model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\"},\"id\":\"jcmmxdcufufsrp\",\"name\":\"mzidnsezcxtb\",\"type\":\"sgfyccsnew\"},{\"properties\":{\"provisioningState\":\"Deleted\"},\"id\":\"iachbo\",\"name\":\"sflnrosfqp\",\"type\":\"eeh\"},{\"properties\":{\"provisioningState\":\"Updating\"},\"id\":\"qrimzinpv\",\"name\":\"wjdk\",\"type\":\"rsoodqxhcrmnoh\"}],\"nextLink\":\"ckwhds\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"NotSpecified\"},\"id\":\"chboosflnrosf\",\"name\":\"pteehzzv\",\"type\":\"pyqr\"},{\"properties\":{\"provisioningState\":\"Updating\"},\"id\":\"vswjdk\",\"name\":\"rsoodqxhcrmnoh\",\"type\":\"t\"}],\"nextLink\":\"whdsoifiyip\"}")
                 .toObject(MonitoringTagRulesListResponse.class);
-        Assertions.assertEquals(ProvisioningState.CANCELED, model.value().get(0).properties().provisioningState());
-        Assertions.assertEquals("ckwhds", model.nextLink());
+        Assertions.assertEquals(ProvisioningState.NOT_SPECIFIED, model.value().get(0).properties().provisioningState());
+        Assertions.assertEquals("whdsoifiyip", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,18 +34,14 @@ public final class MonitoringTagRulesListResponseTests {
                             new MonitoringTagRulesInner()
                                 .withProperties(
                                     new MonitoringTagRulesProperties()
-                                        .withProvisioningState(ProvisioningState.CANCELED)),
-                            new MonitoringTagRulesInner()
-                                .withProperties(
-                                    new MonitoringTagRulesProperties()
-                                        .withProvisioningState(ProvisioningState.DELETED)),
+                                        .withProvisioningState(ProvisioningState.NOT_SPECIFIED)),
                             new MonitoringTagRulesInner()
                                 .withProperties(
                                     new MonitoringTagRulesProperties()
                                         .withProvisioningState(ProvisioningState.UPDATING))))
-                .withNextLink("ckwhds");
+                .withNextLink("whdsoifiyip");
         model = BinaryData.fromObject(model).toObject(MonitoringTagRulesListResponse.class);
-        Assertions.assertEquals(ProvisioningState.CANCELED, model.value().get(0).properties().provisioningState());
-        Assertions.assertEquals("ckwhds", model.nextLink());
+        Assertions.assertEquals(ProvisioningState.NOT_SPECIFIED, model.value().get(0).properties().provisioningState());
+        Assertions.assertEquals("whdsoifiyip", model.nextLink());
     }
 }

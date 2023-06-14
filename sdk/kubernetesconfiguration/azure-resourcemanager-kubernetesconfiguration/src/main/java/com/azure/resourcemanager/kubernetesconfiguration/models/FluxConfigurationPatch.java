@@ -18,6 +18,10 @@ public final class FluxConfigurationPatch {
     @JsonProperty(value = "properties")
     private FluxConfigurationPatchProperties innerProperties;
 
+    /** Creates an instance of FluxConfigurationPatch class. */
+    public FluxConfigurationPatch() {
+    }
+
     /**
      * Get the innerProperties property: Updatable properties of an Flux Configuration Patch Request.
      *
@@ -118,6 +122,29 @@ public final class FluxConfigurationPatch {
             this.innerProperties = new FluxConfigurationPatchProperties();
         }
         this.innerProperties().withBucket(bucket);
+        return this;
+    }
+
+    /**
+     * Get the azureBlob property: Parameters to reconcile to the AzureBlob source kind type.
+     *
+     * @return the azureBlob value.
+     */
+    public AzureBlobPatchDefinition azureBlob() {
+        return this.innerProperties() == null ? null : this.innerProperties().azureBlob();
+    }
+
+    /**
+     * Set the azureBlob property: Parameters to reconcile to the AzureBlob source kind type.
+     *
+     * @param azureBlob the azureBlob value to set.
+     * @return the FluxConfigurationPatch object itself.
+     */
+    public FluxConfigurationPatch withAzureBlob(AzureBlobPatchDefinition azureBlob) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FluxConfigurationPatchProperties();
+        }
+        this.innerProperties().withAzureBlob(azureBlob);
         return this;
     }
 

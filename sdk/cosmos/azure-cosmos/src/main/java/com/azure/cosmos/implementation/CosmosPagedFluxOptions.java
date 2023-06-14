@@ -30,7 +30,12 @@ public class CosmosPagedFluxOptions {
     private CosmosAsyncClient cosmosAsyncClient;
     private CosmosDiagnosticsThresholds thresholds;
     private String operationId;
+
+    private String userAgent;
+    private String connectionMode;
     public ConsistencyLevel effectiveConsistencyLevel;
+
+    public double samplingRateSnapshot = 1;
 
     public CosmosPagedFluxOptions() {}
 
@@ -150,6 +155,10 @@ public class CosmosPagedFluxOptions {
         return this.operationId;
     }
 
+    public String getUserAgent() { return this.userAgent; }
+
+    public String getConnectionMode() { return this.connectionMode; }
+
 
     public void setTracerInformation(
         String tracerSpanName,
@@ -173,6 +182,8 @@ public class CosmosPagedFluxOptions {
         this.spanName = tracerSpanName;
         this.tracerProvider  =  clientAccessor.getDiagnosticsProvider(cosmosAsyncClient);
         this.serviceEndpoint = clientAccessor.getAccountTagValue(cosmosAsyncClient);
+        this.connectionMode = clientAccessor.getConnectionMode(cosmosAsyncClient);
+        this.userAgent = clientAccessor.getUserAgent(cosmosAsyncClient);
         this.operationId = operationId;
         this.operationType = operationType;
         this.resourceType = resourceType;
@@ -200,6 +211,8 @@ public class CosmosPagedFluxOptions {
         checkNotNull(thresholds, "Argument 'thresholds' must not be NULL.");
         this.tracerProvider  =  clientAccessor.getDiagnosticsProvider(cosmosAsyncClient);
         this.serviceEndpoint = clientAccessor.getAccountTagValue(cosmosAsyncClient);
+        this.connectionMode = clientAccessor.getConnectionMode(cosmosAsyncClient);
+        this.userAgent = clientAccessor.getUserAgent(cosmosAsyncClient);
         this.spanName = tracerSpanName;
         this.databaseId = databaseId;
         this.containerId = containerId;
@@ -210,5 +223,13 @@ public class CosmosPagedFluxOptions {
         this.effectiveConsistencyLevel = clientAccessor
             .getEffectiveConsistencyLevel(cosmosAsyncClient, operationType, consistencyLevel);
         this.thresholds = thresholds;
+    }
+
+    public double getSamplingRateSnapshot() {
+        return this.samplingRateSnapshot;
+    }
+
+    public void setSamplingRateSnapshot(double samplingRateSnapshot) {
+        this.samplingRateSnapshot = samplingRateSnapshot;
     }
 }

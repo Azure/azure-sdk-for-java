@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.models.CheckNameAvailabilityRequest;
 
 /** Samples for ConnectedEnvironments CheckNameAvailability. */
 public final class ConnectedEnvironmentsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ConnectedEnvironmentsCertificates_CheckNameAvailability.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ConnectedEnvironmentsCertificates_CheckNameAvailability.json
      */
     /**
      * Sample code: Certificates_CheckNameAvailability.
@@ -27,6 +26,6 @@ public final class ConnectedEnvironmentsCheckNameAvailabilitySamples {
                 new CheckNameAvailabilityRequest()
                     .withName("testcertificatename")
                     .withType("Microsoft.App/connectedEnvironments/certificates"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

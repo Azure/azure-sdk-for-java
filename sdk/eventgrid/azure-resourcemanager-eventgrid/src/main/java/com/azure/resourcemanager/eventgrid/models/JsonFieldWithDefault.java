@@ -16,19 +16,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class JsonFieldWithDefault {
     /*
-     * Name of a field in the input event schema that's to be used as the
-     * source of a mapping.
+     * Name of a field in the input event schema that's to be used as the source of a mapping.
      */
     @JsonProperty(value = "sourceField")
     private String sourceField;
 
     /*
-     * The default value to be used for mapping when a SourceField is not
-     * provided or if there's no property with the specified name in the
-     * published JSON event payload.
+     * The default value to be used for mapping when a SourceField is not provided or if there's no property with the
+     * specified name in the published JSON event payload.
      */
     @JsonProperty(value = "defaultValue")
     private String defaultValue;
+
+    /** Creates an instance of JsonFieldWithDefault class. */
+    public JsonFieldWithDefault() {
+    }
 
     /**
      * Get the sourceField property: Name of a field in the input event schema that's to be used as the source of a

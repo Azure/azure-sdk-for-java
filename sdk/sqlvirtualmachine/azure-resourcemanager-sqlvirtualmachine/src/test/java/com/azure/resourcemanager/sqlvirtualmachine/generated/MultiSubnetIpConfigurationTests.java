@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.MultiSubnetIpConfiguration;
 import com.azure.resourcemanager.sqlvirtualmachine.models.PrivateIpAddress;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MultiSubnetIpConfigurationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         MultiSubnetIpConfiguration model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class MultiSubnetIpConfigurationTests {
         Assertions.assertEquals("akl", model.sqlVirtualMachineInstance());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         MultiSubnetIpConfiguration model =
             new MultiSubnetIpConfiguration()
                 .withPrivateIpAddress(
