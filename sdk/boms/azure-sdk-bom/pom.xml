@@ -52,7 +52,7 @@
       </dependency>
       <dependency>
         <groupId>com.azure</groupId>
-        <artifactId>azure-communication-room</artifactId>
+        <artifactId>azure-communication-rooms</artifactId>
         <version>1.0.0</version>
       </dependency>
       <dependency>
