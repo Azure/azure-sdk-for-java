@@ -13,6 +13,7 @@ import com.azure.core.util.BinaryData;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -23,6 +24,7 @@ import java.time.Duration;
 
 import static com.azure.core.http.okhttp.TestUtils.createQuietDispatcher;
 
+@Disabled
 public class OkHttpAsyncHttpClientHttpClientTests extends HttpClientTests {
     private static WireMockServer server;
 

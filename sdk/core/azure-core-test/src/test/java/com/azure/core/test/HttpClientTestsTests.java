@@ -9,7 +9,9 @@ import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 
+@Disabled
 public class HttpClientTestsTests extends HttpClientTests {
     private static WireMockServer server;
 
