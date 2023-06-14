@@ -5,11 +5,10 @@ package com.azure.spring.cloud.appconfiguration.config.web.implementation;
 import static com.azure.spring.cloud.appconfiguration.config.web.implementation.AppConfigurationWebConstants.DATA;
 import static com.azure.spring.cloud.appconfiguration.config.web.implementation.AppConfigurationWebConstants.SYNC_TOKEN;
 import static com.azure.spring.cloud.appconfiguration.config.web.implementation.AppConfigurationWebConstants.VALIDATION_CODE_KEY;
-import static com.azure.spring.cloud.appconfiguration.config.web.implementation.AppConfigurationWebConstants.VALIDATION_TOPIC;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.AccessToken;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.PushNotification;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -26,12 +24,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Common class for authenticating refresh requests.
  */
 public class AppConfigurationEndpoint {
+    
+    private static final String CONFIG_STORE_SUBJECT = "subject";
 
-    private static final String CONFIG_STORE_TOPIC = "configurationstores";
-
-    private final String endpoint;
-
-    private final String store;
+    private final URI endpoint;
 
     private final List<ConfigStore> configStores;
 
@@ -75,12 +71,10 @@ public class AppConfigurationEndpoint {
 
         validationResponse = requestBody.findValue(VALIDATION_CODE_KEY);
 
-        JsonNode requestTopic = requestBody.findValue(VALIDATION_TOPIC);
-        if (requestTopic != null) {
-            String topic = requestTopic.asText();
-            store = topic.substring(
-                topic.toLowerCase(Locale.ROOT).indexOf(CONFIG_STORE_TOPIC) + CONFIG_STORE_TOPIC.length() + 1);
-            endpoint = String.format("https://%s", store);
+        JsonNode requestSubject = requestBody.findValue(CONFIG_STORE_SUBJECT);
+        if (requestSubject != null) {
+            String subject = requestSubject.asText();
+            endpoint = URI.create(subject);
         } else {
             throw new IllegalArgumentException("Refresh request missing topic field.");
         }
@@ -94,7 +88,7 @@ public class AppConfigurationEndpoint {
      */
     public boolean authenticate() {
         for (ConfigStore configStore : configStores) {
-            if (configStore.getEndpoint().startsWith(endpoint)) {
+            if (configStore.containsEndpoint(getEndpoint())) {
                 PushNotification pushNotification = configStore.getMonitoring().getPushNotification();
 
                 // One of these need to be set
@@ -129,7 +123,7 @@ public class AppConfigurationEndpoint {
      */
     public boolean triggerRefresh() {
         for (ConfigStore configStore : configStores) {
-            if (configStore.getEndpoint().startsWith(endpoint) && configStore.getMonitoring().isEnabled()) {
+            if (configStore.containsEndpoint(getEndpoint()) && configStore.getMonitoring().isEnabled()) {
                 return true;
             }
         }
@@ -155,14 +149,6 @@ public class AppConfigurationEndpoint {
      * @return the endpoint
      */
     public String getEndpoint() {
-        return endpoint;
+        return endpoint.getScheme() + "://" + endpoint.getHost();
     }
-
-    /**
-     * @return the store
-     */
-    public String getStore() {
-        return store;
-    }
-
 }

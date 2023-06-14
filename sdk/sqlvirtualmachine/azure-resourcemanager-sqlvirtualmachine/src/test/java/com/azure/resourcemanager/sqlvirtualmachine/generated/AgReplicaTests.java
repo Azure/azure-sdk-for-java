@@ -11,11 +11,10 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.Failover;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ReadableSecondary;
 import com.azure.resourcemanager.sqlvirtualmachine.models.Role;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AgReplicaTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AgReplica model =
             BinaryData
                 .fromString(
@@ -28,8 +27,8 @@ public final class AgReplicaTests {
         Assertions.assertEquals(ReadableSecondary.ALL, model.readableSecondary());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AgReplica model =
             new AgReplica()
                 .withSqlVirtualMachineInstanceId("akhmsbzjhcrz")

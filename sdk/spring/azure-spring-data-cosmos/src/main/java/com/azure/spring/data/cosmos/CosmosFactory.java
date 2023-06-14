@@ -6,10 +6,11 @@ package com.azure.spring.data.cosmos;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.common.PropertyLoader;
-import java.lang.reflect.Field;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
+
+import java.lang.reflect.Field;
 
 /**
  * Factory class for CosmosDb to create client

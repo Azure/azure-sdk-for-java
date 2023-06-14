@@ -16,7 +16,7 @@ public final class ReceivedSharesListDetachedTests extends PurviewShareClientTes
     @Disabled
     public void testReceivedSharesListDetachedTests() {
         RequestOptions requestOptions = new RequestOptions().addQueryParam("filter", "Name eq 'testName'");
-        PagedIterable<BinaryData> response = receivedSharesClient.getAllDetachedReceivedShares(requestOptions);
+        PagedIterable<BinaryData> response = receivedSharesClient.listDetachedReceivedShares(requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
                 "Wed, 12 July 2022 18:04:32 GMT",
