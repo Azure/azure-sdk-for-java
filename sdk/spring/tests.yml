@@ -46,6 +46,29 @@ stages:
         China:
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
       TestResourceDirectories:
+        - spring/spring-cloud-azure-integration-test-appconfiguration-config
+      Artifacts:
+        - name: spring-cloud-azure-integration-test-appconfiguration-config
+          groupId: com.azure.spring
+          safeName: springcloudazureintegrationtestappconfigurationconfig
+      TimeoutInMinutes: 60
+      ServiceDirectory: spring
+      TestName: Spring_App_Config_IT
+      TestGoals: 'verify'
+      MatrixFilters:
+        - JavaTestVersion=^(?!1.8|1.11).*
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      SupportedClouds: 'Public,UsGov,China'
+      Clouds: 'Public'
+      CloudConfig:
+        Public:
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+        UsGov:
+          SubscriptionConfiguration: $(sub-config-gov-test-resources)
+        China:
+          SubscriptionConfiguration: $(sub-config-cn-test-resources)
+      TestResourceDirectories:
         - spring/spring-cloud-azure-integration-tests/test-resources/cosmos-spring
       Artifacts:
         - name: azure-spring-data-cosmos
