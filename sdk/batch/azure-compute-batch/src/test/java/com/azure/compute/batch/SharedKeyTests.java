@@ -45,8 +45,11 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
             clientBuilderWithSharedKey
                     .httpClient(interceptorManager.getPlaybackClient())
                     .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+
+            addTestRulesOnPlayback(interceptorManager);
         } else if (getTestMode() == TestMode.RECORD) {
             clientBuilderWithSharedKey.addPolicy(interceptorManager.getRecordPolicy());
+
         }
 
         poolClientWithSharedKey = clientBuilderWithSharedKey.buildPoolClient();

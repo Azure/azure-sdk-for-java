@@ -13,9 +13,10 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.InterceptorManager;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
@@ -69,8 +70,6 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
 
     protected ComputeNodeExtensionsClient computeNodeExtensionsClient;
 
-    protected static List<TestProxySanitizer> testProxySanitizers = new ArrayList<TestProxySanitizer>();
-
 	static final int MAX_LEN_ID = 64;
 
     static String REDACTED = "REDACTED";
@@ -91,6 +90,8 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
         	batchClientBuilder
                     .httpClient(interceptorManager.getPlaybackClient())
                     .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+
+            addTestRulesOnPlayback(interceptorManager);
         } else if (getTestMode() == TestMode.RECORD) {
         	batchClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
             addTestSanitizersAndRules(interceptorManager);
@@ -110,7 +111,15 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
         computeNodeExtensionsClient = batchClientBuilder.buildComputeNodeExtensionsClient();
     }
 
+    public void addTestRulesOnPlayback(InterceptorManager interceptorManager) {
+        List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
+        customMatchers.add(new CustomMatcher().setComparingBodies(false));
+        customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("ocp-date")));
+        interceptorManager.addMatchers(customMatchers);
+    }
+
     public void addTestSanitizersAndRules(InterceptorManager interceptorManager) {
+        List<TestProxySanitizer> testProxySanitizers = new ArrayList<TestProxySanitizer>();
         testProxySanitizers.add(new TestProxySanitizer("$..httpUrl", null,REDACTED, TestProxySanitizerType.BODY_KEY));
         testProxySanitizers.add(new TestProxySanitizer("$..containerUrl", null,REDACTED, TestProxySanitizerType.BODY_KEY));
         interceptorManager.addSanitizers(testProxySanitizers);
