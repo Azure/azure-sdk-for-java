@@ -92,7 +92,6 @@ public final class DefaultJsonReader extends JsonReader {
         this.parser = parser;
         this.parser.configure(JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS.mappedFeature(), nonNumericNumbersSupported)
             .configure(JsonReadFeature.ALLOW_JAVA_COMMENTS.mappedFeature(), allowComments)
-            .configure(JsonReadFeature.ALLOW_YAML_COMMENTS.mappedFeature(), allowComments)
             .configure(JsonReadFeature.ALLOW_TRAILING_COMMA.mappedFeature(), allowTrailingCommas)
             .configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), allowUnescapedControlCharacters);
         this.resetSupported = resetSupported;
