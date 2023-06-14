@@ -325,12 +325,9 @@ public final class QueueServiceClient {
             Supplier<PagedResponse<QueueItem>> operation = () ->
                 this.azureQueueStorage.getServices().listQueuesSegmentSinglePage(prefix, nextMarker,
                     pageSize == null ? maxResultsPerPage : pageSize, include, null, null, finalContext);
-            try {
-                return submitThreadPool(operation, timeout);
 
-            }  catch (RuntimeException e) {
-                throw LOGGER.logExceptionAsError(e);
-            }
+            return submitThreadPool(operation, LOGGER, timeout);
+
         };
 
         return new PagedIterable<>(pageSize -> retriever.apply(null, pageSize), retriever);
@@ -393,15 +390,10 @@ public final class QueueServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        try {
-            Supplier<Response<QueueServiceProperties>> operation =
-                () -> this.azureQueueStorage.getServices().getPropertiesWithResponse(null, null, finalContext);
+        Supplier<Response<QueueServiceProperties>> operation =
+            () -> this.azureQueueStorage.getServices().getPropertiesWithResponse(null, null, finalContext);
 
-            return submitThreadPool(operation, timeout);
-
-        } catch (RuntimeException e) {
-            throw LOGGER.logExceptionAsError(e);
-        }
+        return submitThreadPool(operation, LOGGER, timeout);
     }
 
     /**
@@ -532,14 +524,10 @@ public final class QueueServiceClient {
     public Response<Void> setPropertiesWithResponse(QueueServiceProperties properties, Duration timeout,
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        try {
-            Supplier<Response<Void>> operation = () ->
-                this.azureQueueStorage.getServices().setPropertiesWithResponse(properties, null, null, finalContext);
+        Supplier<Response<Void>> operation = () ->
+            this.azureQueueStorage.getServices().setPropertiesWithResponse(properties, null, null, finalContext);
 
-            return submitThreadPool(operation, timeout);
-        } catch (RuntimeException e) {
-            throw LOGGER.logExceptionAsError(e);
-        }
+        return submitThreadPool(operation, LOGGER, timeout);
     }
 
     /**
@@ -595,14 +583,9 @@ public final class QueueServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        try {
-            Supplier<ResponseBase<ServicesGetStatisticsHeaders, QueueServiceStatistics>> operation = () ->
-                this.azureQueueStorage.getServices().getStatisticsWithResponse(null, null, finalContext);
-
-            return submitThreadPool(operation, timeout);
-        } catch (RuntimeException e) {
-            throw LOGGER.logExceptionAsError(e);
-        }
+        Supplier<ResponseBase<ServicesGetStatisticsHeaders, QueueServiceStatistics>> operation = () ->
+            this.azureQueueStorage.getServices().getStatisticsWithResponse(null, null, finalContext);
+        return submitThreadPool(operation, LOGGER, timeout);
     }
 
 

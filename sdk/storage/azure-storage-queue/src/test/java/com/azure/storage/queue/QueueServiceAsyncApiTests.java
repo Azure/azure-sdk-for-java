@@ -25,7 +25,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import static com.azure.storage.queue.QueueTestHelper.assertAsyncResponseStatusCode;
@@ -33,7 +32,6 @@ import static com.azure.storage.queue.QueueTestHelper.assertExceptionStatusCodeA
 import static com.azure.storage.queue.QueueTestHelper.assertQueueServicePropertiesAreEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -133,13 +131,12 @@ public class QueueServiceAsyncApiTests extends QueueTestBase {
         }
 
         Flux<PagedResponse<QueueItem>> listQueuesResult = primaryQueueServiceAsyncClient.listQueues(options).byPage(2);
-
-        List<PagedResponse<QueueItem>> queueListIter = listQueuesResult.collectList().block();
-
-        assertNotNull(queueListIter);
-        for (PagedResponse<QueueItem> page : queueListIter) {
-            assertTrue(page.getValue().size() <= 2, "Expected page size to be less than or equal to 2.");
-        }
+        StepVerifier.create(listQueuesResult.collectList())
+            .assertNext(pages -> {
+                for (PagedResponse<QueueItem> page : pages) {
+                    assertTrue(page.getValue().size() <= 2, "Expected page size to be less than or equal to 2.");
+                }
+            }).verifyComplete();
     }
 
     @Test

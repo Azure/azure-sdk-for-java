@@ -447,13 +447,14 @@ public class StorageImplUtils {
         }
     }
 
-    public static <T> T submitThreadPool(Supplier<T> operation, Duration timeout) {
+    public static <T> T submitThreadPool(Supplier<T> operation, ClientLogger logger, Duration timeout) {
         try {
             return timeout != null
                 ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
-
         }  catch (InterruptedException | ExecutionException | TimeoutException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw logger.logExceptionAsError(new RuntimeException(e));
+        } catch (RuntimeException e) {
+        throw LOGGER.logExceptionAsError(e);
         }
     }
 

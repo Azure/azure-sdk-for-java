@@ -3,13 +3,16 @@
 
 package com.azure.storage.queue.implementation.util;
 
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.queue.QueueMessageEncoding;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
+import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueMessageItem;
+import com.azure.storage.queue.models.QueueProperties;
 
 import java.util.Base64;
 import java.util.Objects;
@@ -77,6 +80,11 @@ public class ModelHelper {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unsupported message encoding="
                     + messageEncoding));
         }
+    }
+
+    public static QueueProperties transformQueueProperties(QueuesGetPropertiesHeaders headers) {
+        return new QueueProperties(headers.getXMsMeta(),
+            headers.getXMsApproximateMessagesCount());
     }
 
 }
