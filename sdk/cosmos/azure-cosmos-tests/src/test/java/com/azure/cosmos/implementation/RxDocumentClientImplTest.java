@@ -78,7 +78,7 @@ public class RxDocumentClientImplTest {
     private RxPartitionKeyRangeCache partitionKeyRangeCacheMock;
     private IRetryPolicyFactory resetSessionTokenRetryPolicyMock;
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
-    private CosmosSessionRetryOptions retryStrategyMock;
+    private CosmosSessionRetryOptions sessionRetryOptionsMock;
 
     @BeforeClass(groups = "unit")
     public void setUp() {
@@ -99,7 +99,7 @@ public class RxDocumentClientImplTest {
         this.partitionKeyRangeCacheMock = Mockito.mock(RxPartitionKeyRangeCache.class);
         this.resetSessionTokenRetryPolicyMock = Mockito.mock(IRetryPolicyFactory.class);
         this.endToEndOperationLatencyPolicyConfig = Mockito.mock(CosmosEndToEndOperationLatencyPolicyConfig.class);
-        this.retryStrategyMock = Mockito.mock(CosmosSessionRetryOptions.class);
+        this.sessionRetryOptionsMock = Mockito.mock(CosmosSessionRetryOptions.class);
     }
 
     @Test(groups = {"unit"})
@@ -219,7 +219,7 @@ public class RxDocumentClientImplTest {
             this.cosmosClientTelemetryConfigMock,
             this.clientCorrelationIdMock,
             this.endToEndOperationLatencyPolicyConfig,
-            this.retryStrategyMock);
+            this.sessionRetryOptionsMock);
 
         ReflectionUtils.setCollectionCache(rxDocumentClient, this.collectionCacheMock);
         ReflectionUtils.setPartitionKeyRangeCache(rxDocumentClient, this.partitionKeyRangeCacheMock);

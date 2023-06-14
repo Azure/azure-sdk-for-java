@@ -102,7 +102,7 @@ public interface AsyncDocumentClient {
         CosmosClientTelemetryConfig clientTelemetryConfig;
         private String clientCorrelationId = null;
         private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
-        private CosmosSessionRetryOptions retryStrategy;
+        private CosmosSessionRetryOptions sessionRetryOptions;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -244,8 +244,8 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        public Builder withSessionRetryOptions(CosmosSessionRetryOptions retryStrategy) {
-            this.retryStrategy = retryStrategy;
+        public Builder withSessionRetryOptions(CosmosSessionRetryOptions sessionRetryOptions) {
+            this.sessionRetryOptions = sessionRetryOptions;
             return this;
         }
 
@@ -283,7 +283,7 @@ public interface AsyncDocumentClient {
                     clientTelemetryConfig,
                     clientCorrelationId,
                     cosmosEndToEndOperationLatencyPolicyConfig,
-                    retryStrategy);
+                sessionRetryOptions);
 
             client.init(state, null);
             return client;
