@@ -41,6 +41,8 @@ public final class AccessTokenCache {
     private final TokenCredential tokenCredential;
     // Stores the last authenticated token request context. The cached token is valid under this context.
     private TokenRequestContext tokenRequestContext;
+    private Supplier<Mono<AccessToken>> tokenSupplierAsync;
+    private Supplier<AccessToken> tokenSupplierSync;
     private final Predicate<AccessToken> shouldRefresh;
     // Used for sync flow.
     private Lock lock;
@@ -56,6 +58,8 @@ public final class AccessTokenCache {
         this.cacheInfo = new AtomicReference<>(new AccessTokenCacheInfo(null, OffsetDateTime.now()));
         this.shouldRefresh = accessToken -> OffsetDateTime.now()
             .isAfter(accessToken.getExpiresAt().minus(REFRESH_OFFSET));
+        this.tokenSupplierAsync = () -> tokenCredential.getToken(this.tokenRequestContext);
+        this.tokenSupplierSync = () -> tokenCredential.getTokenSync(this.tokenRequestContext);
         this.lock = new ReentrantLock();
     }
 
@@ -111,9 +115,6 @@ public final class AccessTokenCache {
                     boolean forceRefresh = (checkToForceFetchToken && checkIfForceRefreshRequired(tokenRequestContext))
                         || this.tokenRequestContext == null;
 
-                    Supplier<Mono<AccessToken>> tokenSupplier = () ->
-                        tokenCredential.getToken(this.tokenRequestContext);
-
                     if (forceRefresh) {
                         this.tokenRequestContext = tokenRequestContext;
                         tokenRefresh = Mono.defer(() -> tokenCredential.getToken(this.tokenRequestContext));
@@ -125,7 +126,7 @@ public final class AccessTokenCache {
                     } else if (cachedToken == null || cachedToken.isExpired()) {
                         // no token to use
                         // refresh immediately
-                        tokenRefresh = Mono.defer(tokenSupplier);
+                        tokenRefresh = Mono.defer(tokenSupplierAsync);
 
                         // cache doesn't exist or expired, no fallback
                         fallback = Mono.empty();
@@ -133,7 +134,7 @@ public final class AccessTokenCache {
                         // token available, but close to expiry
                         if (now.isAfter(cache.getNextTokenRefresh())) {
                             // refresh immediately
-                            tokenRefresh = Mono.defer(tokenSupplier);
+                            tokenRefresh = Mono.defer(tokenSupplierAsync);
                         } else {
                             // still in timeout, do not refresh
                             tokenRefresh = Mono.empty();
@@ -190,12 +191,9 @@ public final class AccessTokenCache {
             boolean forceRefresh = (checkToForceFetchToken && checkIfForceRefreshRequired(tokenRequestContext))
                 || this.tokenRequestContext == null;
 
-            Supplier<AccessToken> tokenSupplier = () ->
-                tokenCredential.getTokenSync(this.tokenRequestContext);
-
             if (forceRefresh) {
                 this.tokenRequestContext = tokenRequestContext;
-                tokenRefresh = tokenSupplier;
+                tokenRefresh = tokenSupplierSync;
                 fallback = null;
             } else if (cachedToken != null && !shouldRefresh.test(cachedToken)) {
                 // fresh cache & no need to refresh
@@ -204,7 +202,7 @@ public final class AccessTokenCache {
             } else if (cachedToken == null || cachedToken.isExpired()) {
                 // no token to use
                 // refresh immediately
-                tokenRefresh = tokenSupplier;
+                tokenRefresh = tokenSupplierSync;
 
                 // cache doesn't exist or expired, no fallback
                 fallback = null;
@@ -212,7 +210,7 @@ public final class AccessTokenCache {
                 // token available, but close to expiry
                 if (now.isAfter(cache.getNextTokenRefresh())) {
                     // refresh immediately
-                    tokenRefresh = tokenSupplier;
+                    tokenRefresh = tokenSupplierSync;
                 } else {
                     // still in timeout, do not refresh
                     tokenRefresh = null;
