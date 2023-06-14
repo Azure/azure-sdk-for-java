@@ -35,7 +35,7 @@ public final class CosmosClient implements Closeable {
     private final CosmosAsyncClient asyncClientWrapper;
 
     CosmosClient(CosmosClientBuilder builder) {
-        this.asyncClientWrapper = builder.buildAsyncClient();
+        this.asyncClientWrapper = builder.buildAsyncClient(false);
     }
 
     /**
