@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.trafficmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.trafficmanager.models.AllowedEndpointRecordType;
 import com.azure.resourcemanager.trafficmanager.models.DnsConfig;
 import com.azure.resourcemanager.trafficmanager.models.MonitorConfig;
 import com.azure.resourcemanager.trafficmanager.models.ProfileStatus;
@@ -52,6 +53,12 @@ public final class ProfileProperties {
      */
     @JsonProperty(value = "trafficViewEnrollmentStatus")
     private TrafficViewEnrollmentStatus trafficViewEnrollmentStatus;
+
+    /*
+     * The list of allowed endpoint record types.
+     */
+    @JsonProperty(value = "allowedEndpointRecordTypes")
+    private List<AllowedEndpointRecordType> allowedEndpointRecordTypes;
 
     /*
      * Maximum number of endpoints to be returned for MultiValue routing type.
@@ -184,6 +191,27 @@ public final class ProfileProperties {
      */
     public ProfileProperties withTrafficViewEnrollmentStatus(TrafficViewEnrollmentStatus trafficViewEnrollmentStatus) {
         this.trafficViewEnrollmentStatus = trafficViewEnrollmentStatus;
+        return this;
+    }
+
+    /**
+     * Get the allowedEndpointRecordTypes property: The list of allowed endpoint record types.
+     *
+     * @return the allowedEndpointRecordTypes value.
+     */
+    public List<AllowedEndpointRecordType> allowedEndpointRecordTypes() {
+        return this.allowedEndpointRecordTypes;
+    }
+
+    /**
+     * Set the allowedEndpointRecordTypes property: The list of allowed endpoint record types.
+     *
+     * @param allowedEndpointRecordTypes the allowedEndpointRecordTypes value to set.
+     * @return the ProfileProperties object itself.
+     */
+    public ProfileProperties withAllowedEndpointRecordTypes(
+        List<AllowedEndpointRecordType> allowedEndpointRecordTypes) {
+        this.allowedEndpointRecordTypes = allowedEndpointRecordTypes;
         return this;
     }
 
