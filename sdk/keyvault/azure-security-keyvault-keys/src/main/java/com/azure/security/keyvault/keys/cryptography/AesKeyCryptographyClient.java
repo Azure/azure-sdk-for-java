@@ -106,7 +106,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
                 new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
         }
 
-        this.key = getKey(jsonWebKey);
+        key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
             return Mono.error(new IllegalArgumentException("Key is empty."));
@@ -133,7 +133,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         try {
-            transform = symmetricEncryptionAlgorithm.createEncryptor(this.key, iv, additionalAuthenticatedData,
+            transform = symmetricEncryptionAlgorithm.createEncryptor(key, iv, additionalAuthenticatedData,
                 null);
         } catch (Exception e) {
             return Mono.error(e);
@@ -164,7 +164,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
                 new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
         }
 
-        this.key = getKey(jsonWebKey);
+        key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Key is empty."));
@@ -191,7 +191,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         try {
-            transform = symmetricEncryptionAlgorithm.createEncryptor(this.key, iv, additionalAuthenticatedData,
+            transform = symmetricEncryptionAlgorithm.createEncryptor(key, iv, additionalAuthenticatedData,
                 null);
         } catch (Exception e) {
             if (e instanceof RuntimeException) {
@@ -271,7 +271,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
                 new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
         }
 
-        this.key = getKey(jsonWebKey);
+        key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
             return Mono.error(new IllegalArgumentException("Key is empty."));
@@ -291,7 +291,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         Objects.requireNonNull(iv, "'iv' cannot be null in local decryption operations.");
 
         try {
-            transform = symmetricEncryptionAlgorithm.createDecryptor(this.key, iv, additionalAuthenticatedData,
+            transform = symmetricEncryptionAlgorithm.createDecryptor(key, iv, additionalAuthenticatedData,
                 authenticationTag);
         } catch (Exception e) {
             return Mono.error(e);
@@ -321,7 +321,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
                 new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
         }
 
-        this.key = getKey(jsonWebKey);
+        key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Key is empty."));
@@ -341,7 +341,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         Objects.requireNonNull(iv, "'iv' cannot be null in local decryption operations.");
 
         try {
-            transform = symmetricEncryptionAlgorithm.createDecryptor(this.key, iv, additionalAuthenticatedData,
+            transform = symmetricEncryptionAlgorithm.createDecryptor(key, iv, additionalAuthenticatedData,
                 authenticationTag);
         } catch (Exception e) {
             if (e instanceof RuntimeException) {
@@ -390,11 +390,11 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, JsonWebKey jsonWebKey, Context context) {
+    Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] keyToWrap, JsonWebKey jsonWebKey, Context context) {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
-        Objects.requireNonNull(key, "Key content to be wrapped cannot be null.");
+        Objects.requireNonNull(keyToWrap, "Key content to be wrapped cannot be null.");
 
-        this.key = getKey(jsonWebKey);
+        key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("key"));
@@ -412,7 +412,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         ICryptoTransform transform;
 
         try {
-            transform = localKeyWrapAlgorithm.createEncryptor(this.key, null, null);
+            transform = localKeyWrapAlgorithm.createEncryptor(key, null, null);
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -420,7 +420,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         byte[] encrypted;
 
         try {
-            encrypted = transform.doFinal(key);
+            encrypted = transform.doFinal(keyToWrap);
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -429,13 +429,13 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, JsonWebKey jsonWebKey, Context context) {
+    WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] keyToWrap, JsonWebKey jsonWebKey, Context context) {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
-        Objects.requireNonNull(key, "Key content to be wrapped cannot be null.");
+        Objects.requireNonNull(keyToWrap, "Key content to be wrapped cannot be null.");
 
         this.key = getKey(jsonWebKey);
 
-        if (key == null || key.length == 0) {
+        if (this.key == null || this.key.length == 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("key"));
         }
 
@@ -463,7 +463,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         byte[] encrypted;
 
         try {
-            encrypted = transform.doFinal(key);
+            encrypted = transform.doFinal(keyToWrap);
         } catch (Exception e) {
             if (e instanceof RuntimeException) {
                 throw LOGGER.logExceptionAsError((RuntimeException) e);

@@ -67,12 +67,13 @@ import static com.azure.security.keyvault.keys.cryptography.CryptographyClientIm
 public class CryptographyAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(CryptographyAsyncClient.class);
 
-    private final HttpPipeline pipeline;
+    private final String keyCollection;
     private final String keyId;
-    final CryptographyClientImpl implClient;
+    private final HttpPipeline pipeline;
 
     private LocalKeyCryptographyClient localKeyCryptographyClient;
-    private String keyCollection;
+
+    final CryptographyClientImpl implClient;
 
     JsonWebKey key;
 
@@ -112,14 +113,12 @@ public class CryptographyAsyncClient {
             throw new IllegalArgumentException("The JSON Web Key's key type property is not configured.");
         }
 
+        this.keyCollection = null;
         this.key = jsonWebKey;
         this.keyId = jsonWebKey.getId();
         this.pipeline = null;
         this.implClient = null;
-
-        if (this.localKeyCryptographyClient == null) {
-            this.localKeyCryptographyClient = initializeCryptoClient(key, null);
-        }
+        this.localKeyCryptographyClient = initializeCryptoClient(key, null);
     }
 
     /**
