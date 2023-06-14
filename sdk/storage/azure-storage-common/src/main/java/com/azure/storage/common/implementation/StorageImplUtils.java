@@ -454,7 +454,7 @@ public class StorageImplUtils {
         }  catch (InterruptedException | ExecutionException | TimeoutException e) {
             throw logger.logExceptionAsError(new RuntimeException(e));
         } catch (RuntimeException e) {
-        throw LOGGER.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 

@@ -3,7 +3,6 @@
 
 package com.azure.storage.queue.implementation.util;
 
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.queue.QueueMessageEncoding;
@@ -83,8 +82,7 @@ public class ModelHelper {
     }
 
     public static QueueProperties transformQueueProperties(QueuesGetPropertiesHeaders headers) {
-        return new QueueProperties(headers.getXMsMeta(),
-            headers.getXMsApproximateMessagesCount());
+        return new QueueProperties(headers.getXMsMeta(), headers.getXMsApproximateMessagesCount());
     }
 
 }
