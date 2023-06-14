@@ -13,7 +13,6 @@ GitHub repository, and documentation of how to set up and use the proxy can be f
     - [Start the proxy server](#start-the-proxy-server)
     - [Record or play back tests](#record-or-play-back-tests)
     - [Adding sanitizers](#adding-sanitizers)
-    - [Record test variables](#record-test-variables)
 - [Migrate management-plane tests](#migrate-management-plane-tests)
 - [Next steps](#next-steps)
 - [Advanced details](#advanced-details)
@@ -69,10 +68,6 @@ The `com.azure.core.test.TestProxyTestBase` method `setupTestProxy()` is respons
 ```java
  @BeforeAll
 public static void setupTestProxy(TestInfo testInfo) {
-    testMode = initializeTestMode();
-    Path testClassPath = Paths.get(toURI(testInfo.getTestClass().get().getResource(testInfo.getTestClass().get().getSimpleName() + ".class"), LOGGER));
-    if (isTestProxyEnabled() && (testMode == TestMode.PLAYBACK || testMode == TestMode.RECORD)) {
-    testProxyManager = new TestProxyManager(testClassPath);
     testProxyManager.startProxy();
     }
 }
@@ -114,7 +109,7 @@ static {
 @Override
 protected void beforeTest() {
     // add sanitizer to Test Proxy Policy
-    interceptorManager.addRecordSanitizers(customSanitizer);
+    interceptorManager.addSanitizers(customSanitizer);
 }
 ```
 
@@ -141,15 +136,6 @@ body matching is disabled, but not if it's enabled.
 
 Body matching can be turned off with the test proxy by calling the `setComparingBodies` method from
 [TestProxyRequestMatcher][test_proxy_matcher] on the Interceptor Manager for that particular test.
-
-### Record test variables
-
-To run recorded tests successfully when there's an element of non-secret randomness to them, the test proxy provides a
-[`variables` API][variables_api]. This makes it possible for a test to record the values of variables that were used
-during recording and use the same values in playback mode without a sanitizer.
-
-For example, imagine that a test uses a randomized `tableName` variable when creating resources. The same random value
-for `tableName` can be used in playback mode by using this `Variables` API.
 
 ## Migrate management-plane tests
 
@@ -228,9 +214,9 @@ the appropriate requests at the start and end of each test case.
 [test_proxy_migration]: https://github.com/Azure/azure-sdk-for-java/wiki/Test-Proxy-Migration#3-using-test-proxy-going-forward
 [test_proxy_sanitizer]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/models/TestProxySanitizer.java
 [test_proxy_manager]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/utils/TestProxyManager.java
+[test_proxy_base]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/TestProxyTestBase.java
 [test_proxy_record_policy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/policy/TestProxyRecordPolicy.java
 [test_proxy_playback_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/http/TestProxyPlaybackClient.java
 [test_proxy_installation]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#installation
 [test_proxy_integration]: https://github.com/Azure/azure-sdk-for-java/pull/33902
-
-[variables]: https://github.com/Azure/azure-sdk-tools/tree/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy#storing-variables
+[test_proxy_matcher]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/models/TestProxyMatcher.java
