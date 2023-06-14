@@ -26,7 +26,7 @@ pr:
 # library in the Artifacts list and uses the parameter to set the releaseInBatch
 # boolean for each library. Note: AdditionalModules are never to have
 # parameter entries as those are not releasing libraries.
-variables:
+parameters:
   - name: release_azurespringdatacosmos
     displayName: 'azure-spring-data-cosmos'
     type: boolean
