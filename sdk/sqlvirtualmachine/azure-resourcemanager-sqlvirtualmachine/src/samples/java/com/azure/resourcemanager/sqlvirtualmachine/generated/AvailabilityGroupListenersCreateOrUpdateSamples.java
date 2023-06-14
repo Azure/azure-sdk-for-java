@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for AvailabilityGroupListeners CreateOrUpdate. */
 public final class AvailabilityGroupListenersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/CreateOrUpdateAvailabilityGroupListener.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/CreateOrUpdateAvailabilityGroupListener.json
      */
     /**
      * Sample code: Creates or updates an availability group listener using load balancer. This is used for VMs present
@@ -50,7 +50,7 @@ public final class AvailabilityGroupListenersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/CreateOrUpdateAvailabilityGroupListenerWithMultiSubnet.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/CreateOrUpdateAvailabilityGroupListenerWithMultiSubnet.json
      */
     /**
      * Sample code: Creates or updates an availability group listener. This is used for VMs present in multi subnet.

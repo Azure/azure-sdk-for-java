@@ -21,25 +21,6 @@ public final class HeatMapModelInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private HeatMapProperties innerProperties;
 
-    /*
-     * Fully qualified resource Id for the resource. Ex -
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}
-     */
-    @JsonProperty(value = "id")
-    private String id;
-
-    /*
-     * The name of the resource
-     */
-    @JsonProperty(value = "name")
-    private String name;
-
-    /*
-     * The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
-     */
-    @JsonProperty(value = "type")
-    private String type;
-
     /** Creates an instance of HeatMapModelInner class. */
     public HeatMapModelInner() {
     }
@@ -51,68 +32,6 @@ public final class HeatMapModelInner extends ProxyResource {
      */
     private HeatMapProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the id property: Fully qualified resource Id for the resource. Ex -
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}.
-     *
-     * @return the id value.
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Set the id property: Fully qualified resource Id for the resource. Ex -
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}.
-     *
-     * @param id the id value to set.
-     * @return the HeatMapModelInner object itself.
-     */
-    public HeatMapModelInner withId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     *
-     * @return the name value.
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the resource.
-     *
-     * @param name the name value to set.
-     * @return the HeatMapModelInner object itself.
-     */
-    public HeatMapModelInner withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Get the type property: The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
-     *
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Set the type property: The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
-     *
-     * @param type the type value to set.
-     * @return the HeatMapModelInner object itself.
-     */
-    public HeatMapModelInner withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**

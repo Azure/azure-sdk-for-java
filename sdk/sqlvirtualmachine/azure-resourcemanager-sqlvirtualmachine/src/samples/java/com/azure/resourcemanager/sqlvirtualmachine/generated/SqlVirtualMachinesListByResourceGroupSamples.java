@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlVirtualMachines ListByResourceGroup. */
 public final class SqlVirtualMachinesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/ListByResourceGroupSqlVirtualMachine.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/ListByResourceGroupSqlVirtualMachine.json
      */
     /**
      * Sample code: Gets all SQL virtual machines in a resource group.
@@ -18,6 +16,6 @@ public final class SqlVirtualMachinesListByResourceGroupSamples {
      */
     public static void getsAllSQLVirtualMachinesInAResourceGroup(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager.sqlVirtualMachines().listByResourceGroup("testrg", Context.NONE);
+        manager.sqlVirtualMachines().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }

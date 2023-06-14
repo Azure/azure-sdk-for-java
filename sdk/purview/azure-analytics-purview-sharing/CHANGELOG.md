@@ -1,6 +1,14 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.2 (2023-06-12)
+
+### Features Added
+
+- Added the new share resource capability that allows listing resources associated with sent and received shares.
+
+### Breaking Changes
+
+- Renamed all client method starting with getAll to start with list.
 
 ### Other Changes
 
@@ -10,4 +18,4 @@
 
 ### New Features
 
-- Initial release of the Purview Share client library for Java
+- Initial release of the Microsoft Purview Share client library for Java

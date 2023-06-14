@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Supported `withLogicalSectorSizeInBytes` in `Disk`.
+- Supported `PREMIUM_V2_LRS` in `DiskSkuTypes`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

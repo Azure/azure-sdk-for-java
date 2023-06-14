@@ -21,6 +21,7 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.SqlServerLicenseType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachine;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachineUpdate;
 import com.azure.resourcemanager.sqlvirtualmachine.models.StorageConfigurationSettings;
+import com.azure.resourcemanager.sqlvirtualmachine.models.TroubleshootingStatus;
 import com.azure.resourcemanager.sqlvirtualmachine.models.WsfcDomainCredentials;
 import java.util.Collections;
 import java.util.Map;
@@ -122,6 +123,10 @@ public final class SqlVirtualMachineImpl
 
     public StorageConfigurationSettings storageConfigurationSettings() {
         return this.innerModel().storageConfigurationSettings();
+    }
+
+    public TroubleshootingStatus troubleshootingStatus() {
+        return this.innerModel().troubleshootingStatus();
     }
 
     public AssessmentSettings assessmentSettings() {

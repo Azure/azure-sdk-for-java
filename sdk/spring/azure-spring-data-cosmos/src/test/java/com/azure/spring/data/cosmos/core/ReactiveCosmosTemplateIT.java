@@ -71,7 +71,6 @@ import static com.azure.spring.data.cosmos.common.TestConstants.HOBBIES;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_1;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.NEW_PASSPORT_IDS_BY_COUNTRY;
-import static com.azure.spring.data.cosmos.common.TestConstants.NOT_EXIST_ID;
 import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_COUNTRY;
 import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_AGE_1;
 import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_AGE_INCREMENT;
@@ -649,6 +648,7 @@ public class ReactiveCosmosTemplateIT {
         assertNotNull(throughput);
         assertEquals(Integer.parseInt(TestConstants.AUTOSCALE_MAX_THROUGHPUT),
             throughput.getProperties().getAutoscaleMaxThroughput());
+        cosmosTemplate.deleteContainer(autoScaleSampleInfo.getContainerName());
     }
 
     @Test
@@ -669,6 +669,7 @@ public class ReactiveCosmosTemplateIT {
         final CosmosAsyncDatabase database = client.getDatabase(configuredThroughputDbName);
         final ThroughputResponse response = database.readThroughput().block();
         assertEquals(expectedRequestUnits, response.getProperties().getManualThroughput());
+        deleteDatabaseIfExists(configuredThroughputDbName);
     }
 
     @Test

@@ -40,6 +40,10 @@ public final class AgReplica {
     @JsonProperty(value = "readableSecondary")
     private ReadableSecondary readableSecondary;
 
+    /** Creates an instance of AgReplica class. */
+    public AgReplica() {
+    }
+
     /**
      * Get the sqlVirtualMachineInstanceId property: Sql VirtualMachine Instance Id.
      *

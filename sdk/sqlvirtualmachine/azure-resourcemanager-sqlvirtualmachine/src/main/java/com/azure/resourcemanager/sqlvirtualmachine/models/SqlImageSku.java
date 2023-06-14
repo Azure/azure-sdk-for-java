@@ -26,6 +26,15 @@ public final class SqlImageSku extends ExpandableStringEnum<SqlImageSku> {
     public static final SqlImageSku WEB = fromString("Web");
 
     /**
+     * Creates a new instance of SqlImageSku value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SqlImageSku() {
+    }
+
+    /**
      * Creates or finds a SqlImageSku from its string representation.
      *
      * @param name a name to look for.
