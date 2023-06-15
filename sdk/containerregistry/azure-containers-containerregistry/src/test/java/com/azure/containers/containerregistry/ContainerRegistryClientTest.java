@@ -115,7 +115,6 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
         assertEquals(HTTP_STATUS_CODE_202, response.getStatusCode());
     }
 
-
     @Test
     public void deleteRepositoryByRegistryClient() {
         // This should not throw.
