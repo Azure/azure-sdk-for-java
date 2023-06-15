@@ -15,8 +15,8 @@ public final class CosmosRegionSwitchHint {
 
     /**
      * {@link  CosmosRegionSwitchHint#CURRENT_REGION_PREFERRED} corresponds to a hint
-     * which will result in internal retry policies biasing the current region more
-     * than different regions.
+     * which will result in internal retry policies biasing the current region of a request
+     * more than different regions.
      * */
     public static final CosmosRegionSwitchHint CURRENT_REGION_PREFERRED =
             new CosmosRegionSwitchHint("currentRegionPreferred");
