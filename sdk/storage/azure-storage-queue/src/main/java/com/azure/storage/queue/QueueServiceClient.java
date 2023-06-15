@@ -128,9 +128,12 @@ public final class QueueServiceClient {
      * @return QueueClient that interacts with the specified queue
      */
     public QueueClient getQueueClient(String queueName) {
+        QueueAsyncClient asyncClient = new QueueAsyncClient(azureQueueStorage, queueName, accountName,
+            getServiceVersion(), getMessageEncoding(), processMessageDecodingErrorAsyncHandler,
+            processMessageDecodingErrorHandler, null);
         return new QueueClient(this.azureQueueStorage, queueName, accountName,
             serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler,
-            processMessageDecodingErrorHandler);
+            processMessageDecodingErrorHandler, asyncClient);
     }
 
     /**
@@ -187,8 +190,7 @@ public final class QueueServiceClient {
         Duration timeout, Context context) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         try {
-            QueueClient queueClient = new QueueClient(azureQueueStorage, queueName, accountName, getServiceVersion(),
-                getMessageEncoding(), processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
+            QueueClient queueClient = getQueueClient(queueName);
             Response<Void> response = queueClient.createWithResponse(metadata, timeout, context);
             return new SimpleResponse<>(response, queueClient);
         } catch (RuntimeException e) {
@@ -245,8 +247,7 @@ public final class QueueServiceClient {
     public Response<Void> deleteQueueWithResponse(String queueName, Duration timeout, Context context) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         try {
-            QueueClient queueClient = new QueueClient(azureQueueStorage, queueName, accountName, getServiceVersion(),
-                getMessageEncoding(), processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
+            QueueClient queueClient = getQueueClient(queueName);
             return queueClient.deleteWithResponse(timeout, context);
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);

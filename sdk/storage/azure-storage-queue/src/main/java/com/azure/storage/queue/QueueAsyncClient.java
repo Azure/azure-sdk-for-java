@@ -91,6 +91,7 @@ public final class QueueAsyncClient {
     private final QueueMessageEncoding messageEncoding;
     private final Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler;
     private final Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler;
+    private final QueueClient queueClient;
 
     /**
      * Creates a QueueAsyncClient that sends requests to the storage queue service at {@link #getQueueUrl() endpoint}.
@@ -102,7 +103,7 @@ public final class QueueAsyncClient {
     QueueAsyncClient(AzureQueueStorageImpl client, String queueName, String accountName,
         QueueServiceVersion serviceVersion, QueueMessageEncoding messageEncoding,
         Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler,
-        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
+        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler, QueueClient queueClient) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.queueName = queueName;
         this.client = client;
@@ -111,6 +112,7 @@ public final class QueueAsyncClient {
         this.messageEncoding = messageEncoding;
         this.processMessageDecodingErrorAsyncHandler = processMessageDecodingErrorAsyncHandler;
         this.processMessageDecodingErrorHandler = processMessageDecodingErrorHandler;
+        this.queueClient = queueClient;
     }
 
     /**
@@ -1120,9 +1122,6 @@ public final class QueueAsyncClient {
             queueMessageInternalItems = Collections.emptyList();
         }
 
-        // creating queue client to pass in when the catch block is executed
-        QueueClient queueClient = new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding,
-            processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
         return Flux.fromIterable(queueMessageInternalItems)
             .flatMapSequential(queueMessageItemInternal -> Mono.fromCallable(() ->
                         ModelHelper.transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding))
@@ -1249,10 +1248,6 @@ public final class QueueAsyncClient {
         if (peekedMessageInternalItems == null) {
             peekedMessageInternalItems = Collections.emptyList();
         }
-
-        // creating queue client to pass in when the catch block is executed
-        QueueClient queueClient = new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding,
-            processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
 
         return Flux.fromIterable(peekedMessageInternalItems)
             .flatMapSequential(peekedMessageItemInternal ->

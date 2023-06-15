@@ -200,9 +200,16 @@ public final class QueueClientBuilder implements
                     + "but not both.")
             );
         }
+        if (processMessageDecodingErrorAsyncHandler != null) {
+            LOGGER.logExceptionAsWarning(new IllegalArgumentException(
+                "Please use processMessageDecodingErrorHandler for QueueClient."));
+        }
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
-        return new QueueClient(createAzureQueueStorageImpl(serviceVersion), queueName, accountName, serviceVersion,
-            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
+        AzureQueueStorageImpl queueStorage = createAzureQueueStorageImpl(serviceVersion);
+        QueueAsyncClient asyncClient = new QueueAsyncClient(queueStorage, queueName, accountName, serviceVersion,
+            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, null);
+        return new QueueClient(queueStorage, queueName, accountName, serviceVersion, messageEncoding,
+            processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, asyncClient);
     }
 
     /**
@@ -231,9 +238,16 @@ public final class QueueClientBuilder implements
                     + "but not both.")
             );
         }
+        if (processMessageDecodingErrorHandler != null) {
+            LOGGER.logExceptionAsWarning(new IllegalArgumentException(
+                "Please use processMessageDecodingErrorAsyncHandler for QueueAsyncClient."));
+        }
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
-        return new QueueAsyncClient(createAzureQueueStorageImpl(serviceVersion), queueName, accountName, serviceVersion,
-            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
+        AzureQueueStorageImpl queueStorage = createAzureQueueStorageImpl(serviceVersion);
+        QueueClient queueClient = new QueueClient(queueStorage, queueName, accountName, serviceVersion, messageEncoding,
+            processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, null);
+        return new QueueAsyncClient(queueStorage, queueName, accountName, serviceVersion, messageEncoding,
+            processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, queueClient);
     }
 
     /**

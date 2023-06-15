@@ -85,6 +85,7 @@ public final class QueueClient {
     private final QueueMessageEncoding messageEncoding;
     private final Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler;
     private final Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler;
+    private final QueueAsyncClient asyncClient;
 
     /**
      * Creates a QueueClient.
@@ -101,7 +102,7 @@ public final class QueueClient {
     QueueClient(AzureQueueStorageImpl azureQueueStorage, String queueName, String accountName,
         QueueServiceVersion serviceVersion, QueueMessageEncoding messageEncoding, Function<QueueMessageDecodingError,
         Mono<Void>> processMessageDecodingErrorAsyncHandler,
-        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
+        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler, QueueAsyncClient asyncClient) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.azureQueueStorage = azureQueueStorage;
         this.queueName = queueName;
@@ -110,6 +111,7 @@ public final class QueueClient {
         this.messageEncoding = messageEncoding;
         this.processMessageDecodingErrorAsyncHandler = processMessageDecodingErrorAsyncHandler;
         this.processMessageDecodingErrorHandler = processMessageDecodingErrorHandler;
+        this.asyncClient = asyncClient;
     }
 
     /**
@@ -1041,10 +1043,6 @@ public final class QueueClient {
         }
         List<QueueMessageItem> messageItems = new ArrayList<>();
 
-        // creating async client to pass in when the catch block is executed
-        QueueAsyncClient asyncClient = new QueueAsyncClient(azureQueueStorage, queueName, accountName, serviceVersion,
-            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
-
         for (QueueMessageItemInternal queueMessageInternalItem : queueMessageInternalItems) {
             try {
                 QueueMessageItem decodedMessage =
@@ -1171,10 +1169,6 @@ public final class QueueClient {
             peekedMessageInternalItems = Collections.emptyList();
         }
         List<PeekedMessageItem> messageItems = new ArrayList<>();
-
-        // creating async client to pass in when the catch block is executed
-        QueueAsyncClient asyncClient = new QueueAsyncClient(azureQueueStorage, queueName, accountName, serviceVersion,
-            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
 
         for (PeekedMessageItemInternal peekedMessageInternalItem : peekedMessageInternalItems) {
             try {
