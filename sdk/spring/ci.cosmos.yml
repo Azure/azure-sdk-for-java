@@ -30,8 +30,8 @@ extends:
     ServiceDirectory: spring
     EnableBatchRelease: true
     SDKType: client
+    MatrixFilters:
+      - Language=.*(Spring).*
     AdditionalModules:
       - name: azure-spring-data-cosmos
         groupId: com.azure
-    MatrixFilters:
-      - AdditionalArgs=.*(-Dspring-e2e).*
