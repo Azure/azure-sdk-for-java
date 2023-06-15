@@ -37,9 +37,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
         asyncClient = setupAsyncClient(builder, "sendSmsUsingConnectionString");
         assertNotNull(asyncClient);
         StepVerifier.create(asyncClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE))
-            .assertNext(sendResult -> {
-                assertHappyPath(sendResult);
-            })
+            .assertNext(this::assertHappyPath)
             .verifyComplete();
     }
 
@@ -51,9 +49,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
         asyncClient = setupAsyncClient(builder, "sendSmsUsingTokenCredential");
         assertNotNull(asyncClient);
         StepVerifier.create(asyncClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE))
-            .assertNext(sendResult -> {
-                assertHappyPath(sendResult);
-            })
+            .assertNext(this::assertHappyPath)
             .verifyComplete();
     }
 
@@ -104,9 +100,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
         // Action & Assert
         Mono<SmsSendResult> response = asyncClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE);
         StepVerifier.create(response)
-            .assertNext(sendResult -> {
-                assertHappyPath(sendResult);
-            })
+            .assertNext(this::assertHappyPath)
             .verifyComplete();
     }
 
@@ -122,9 +116,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
 
         // Action & Assert
         StepVerifier.create(asyncClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options))
-            .assertNext((SmsSendResult sendResult) -> {
-                assertHappyPath(sendResult);
-            })
+            .assertNext(this::assertHappyPath)
             .verifyComplete();
     }
 
