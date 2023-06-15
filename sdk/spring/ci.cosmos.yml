@@ -30,6 +30,11 @@ extends:
     ServiceDirectory: spring
     EnableBatchRelease: true
     SDKType: client
+    Artifacts:
+      - name: azure-spring-data-cosmos
+        groupId: com.azure
+        safeName: azurespringdatacosmos
+        releaseInBatch: true
     MatrixFilters:
       - Language=.*(Spring).*
     AdditionalModules:
