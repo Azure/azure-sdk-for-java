@@ -7,6 +7,7 @@ package com.azure.spring.data.cosmos;
  * LINE NUMBERS OF EXISTING CODE SAMPLES.
  */
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "azure.cosmos")
@@ -27,6 +28,14 @@ public class CosmosProperties {
     private int maxBufferedItemCount;
 
     private int responseContinuationTokenLimitInKb;
+
+    private int pointOperationLatencyThreshold;
+
+    private int nonPointOperationLatencyThreshold;
+
+    private int requestChargeThreshold;
+
+    private int payloadSizeInBytesThreshold;
 
     public String getUri() {
         return uri;
@@ -72,23 +81,55 @@ public class CosmosProperties {
         return maxDegreeOfParallelism;
     }
 
-    public int getMaxBufferedItemCount() {
-        return maxBufferedItemCount;
-    }
-
-    public int getResponseContinuationTokenLimitInKb() {
-        return responseContinuationTokenLimitInKb;
-    }
-
     public void setMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
         this.maxDegreeOfParallelism = maxDegreeOfParallelism;
+    }
+
+    public int getMaxBufferedItemCount() {
+        return maxBufferedItemCount;
     }
 
     public void setMaxBufferedItemCount(int maxBufferedItemCount) {
         this.maxBufferedItemCount = maxBufferedItemCount;
     }
 
+    public int getResponseContinuationTokenLimitInKb() {
+        return responseContinuationTokenLimitInKb;
+    }
+
     public void setResponseContinuationTokenLimitInKb(int responseContinuationTokenLimitInKb) {
         this.responseContinuationTokenLimitInKb = responseContinuationTokenLimitInKb;
+    }
+
+    public int getPointOperationLatencyThreshold() {
+        return pointOperationLatencyThreshold;
+    }
+
+    public void setPointOperationLatencyThreshold(int pointOperationLatencyThreshold) {
+        this.pointOperationLatencyThreshold = pointOperationLatencyThreshold;
+    }
+
+    public int getNonPointOperationLatencyThreshold() {
+        return nonPointOperationLatencyThreshold;
+    }
+
+    public void setNonPointOperationLatencyThreshold(int nonPointOperationLatencyThreshold) {
+        this.nonPointOperationLatencyThreshold = nonPointOperationLatencyThreshold;
+    }
+
+    public int getRequestChargeThreshold() {
+        return requestChargeThreshold;
+    }
+
+    public void setRequestChargeThreshold(int requestChargeThreshold) {
+        this.requestChargeThreshold = requestChargeThreshold;
+    }
+
+    public int getPayloadSizeInBytesThreshold() {
+        return payloadSizeInBytesThreshold;
+    }
+
+    public void setPayloadSizeInBytesThreshold(int payloadSizeInBytesThreshold) {
+        this.payloadSizeInBytesThreshold = payloadSizeInBytesThreshold;
     }
 }

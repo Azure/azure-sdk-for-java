@@ -124,6 +124,7 @@ Set `maxDegreeOfParallelism` flag to an integer in application.properties to all
 Set `maxBufferedItemCount` flag to an integer in application.properties to allow the user to set the max number of items that can be buffered during parallel query execution; if set to less than 0, the system automatically decides the number of items to buffer.
 NOTE: Setting this to a very high value can result in high memory consumption.
 Set `responseContinuationTokenLimitInKb` flag to an integer in application.properties to allow the user to limit the length of the continuation token in the query response. The continuation token contains both required and optional fields. The required fields are necessary for resuming the execution from where it was stoped. The optional fields may contain serialized index lookup work that was done but not yet utilized. This avoids redoing the work again in subsequent continuations and hence improve the query performance. Setting the maximum continuation size to 1KB, the Azure Cosmos DB service will only serialize required fields. Starting from 2KB, the Azure Cosmos DB service would serialize as much as it could fit till it reaches the maximum specified size.
+Set `pointOperationLatencyThreshold`, `nonPointOperationLatencyThreshold`, `requestChargeThreshold` and `payloadSizeInBytesThreshold` to enable diagnostics at the client level when these thresholds are exceeded.
 
 ```java readme-sample-AppConfiguration
 @Configuration
@@ -156,6 +157,18 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
     @Value("${azure.cosmos.responseContinuationTokenLimitInKb}")
     private int responseContinuationTokenLimitInKb;
 
+    @Value("${cosmos.diagnosticsThresholds.pointOperationLatencyThreshold}")
+    private int pointOperationLatencyThreshold;
+    
+    @Value("${cosmos.diagnosticsThresholds.nonPointOperationLatencyThreshold}")
+    private int nonPointOperationLatencyThreshold;
+    
+    @Value("${cosmos.diagnosticsThresholds.requestChargeThreshold}")
+    private int requestChargeThreshold;
+    
+    @Value("${cosmos.diagnosticsThresholds.payloadSizeInBytesThreshold}")
+    private int payloadSizeInBytesThreshold;
+
     private AzureKeyCredential azureKeyCredential;
 
     @Bean
@@ -166,7 +179,17 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
         return new CosmosClientBuilder()
             .endpoint(uri)
             .credential(azureKeyCredential)
-            .directMode(directConnectionConfig, gatewayConnectionConfig);
+            .directMode(directConnectionConfig, gatewayConnectionConfig)
+            .clientTelemetryConfig(
+                new CosmosClientTelemetryConfig()
+                    .diagnosticsThresholds(
+                        new CosmosDiagnosticsThresholds()
+                            .setNonPointOperationLatencyThreshold(Duration.ofSeconds(nonPointOperationLatencyThreshold))
+                            .setNonPointOperationLatencyThreshold(Duration.ofSeconds(pointOperationLatencyThreshold))
+                            .setPayloadSizeThreshold(payloadSizeInBytesThreshold)
+                            .setRequestChargeThreshold(requestChargeThreshold)
+                    )
+                    .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
     }
 
     @Override
@@ -210,7 +233,17 @@ public CosmosClientBuilder getCosmosClientBuilder() {
     GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
     return new CosmosClientBuilder()
         .endpoint(uri)
-        .directMode(directConnectionConfig, gatewayConnectionConfig);
+        .directMode(directConnectionConfig, gatewayConnectionConfig)
+        .clientTelemetryConfig(
+                new CosmosClientTelemetryConfig()
+                    .diagnosticsThresholds(
+                        new CosmosDiagnosticsThresholds()
+                            .setNonPointOperationLatencyThreshold(Duration.ofSeconds(nonPointOperationLatencyThreshold))
+                            .setNonPointOperationLatencyThreshold(Duration.ofSeconds(pointOperationLatencyThreshold))
+                            .setPayloadSizeThreshold(payloadSizeInBytesThreshold)
+                            .setRequestChargeThreshold(requestChargeThreshold)
+                    )
+                    .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
 }
 
 @Override
@@ -654,7 +687,17 @@ public class PrimaryDatasourceConfiguration extends AbstractCosmosConfiguration{
     public CosmosClientBuilder primaryClientBuilder(@Qualifier("primary") CosmosProperties primaryProperties) {
         return new CosmosClientBuilder()
             .key(primaryProperties.getKey())
-            .endpoint(primaryProperties.getUri());
+            .endpoint(primaryProperties.getUri())
+            .clientTelemetryConfig(
+                new CosmosClientTelemetryConfig()
+                    .diagnosticsThresholds(
+                        new CosmosDiagnosticsThresholds()
+                            .setNonPointOperationLatencyThreshold(Duration.ofSeconds(primaryProperties.nonPointOperationLatencyThreshold))
+                            .setNonPointOperationLatencyThreshold(Duration.ofSeconds(primaryProperties.pointOperationLatencyThreshold))
+                            .setPayloadSizeThreshold(primaryProperties.payloadSizeInBytesThreshold)
+                            .setRequestChargeThreshold(primaryProperties.requestChargeThreshold)
+                    )
+                    .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
     }
 
     @Bean
@@ -689,7 +732,17 @@ public class SecondaryDatasourceConfiguration {
     public CosmosAsyncClient getCosmosAsyncClient(@Qualifier("secondary") CosmosProperties secondaryProperties) {
         return CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder()
             .key(secondaryProperties.getKey())
-            .endpoint(secondaryProperties.getUri()));
+            .endpoint(secondaryProperties.getUri())
+            .clientTelemetryConfig(
+                new CosmosClientTelemetryConfig()
+                    .diagnosticsThresholds(
+                        new CosmosDiagnosticsThresholds()
+                            .setNonPointOperationLatencyThreshold(Duration.ofSeconds(secondaryProperties.nonPointOperationLatencyThreshold))
+                            .setNonPointOperationLatencyThreshold(Duration.ofSeconds(secondaryProperties.pointOperationLatencyThreshold))
+                            .setPayloadSizeThreshold(secondaryProperties.payloadSizeInBytesThreshold)
+                            .setRequestChargeThreshold(secondaryProperties.requestChargeThreshold)
+                    )
+                    .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER)));
     }
 
     @Bean("secondaryCosmosConfig")
@@ -727,7 +780,17 @@ public class SecondaryDatasourceConfiguration {
 public CosmosAsyncClient getCosmosAsyncClient(@Qualifier("secondary") CosmosProperties secondaryProperties) {
     return CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder()
         .key(secondaryProperties.getKey())
-        .endpoint(secondaryProperties.getUri()));
+        .endpoint(secondaryProperties.getUri())
+        .clientTelemetryConfig(
+            new CosmosClientTelemetryConfig()
+            .diagnosticsThresholds(
+                new CosmosDiagnosticsThresholds()
+                .setNonPointOperationLatencyThreshold(Duration.ofSeconds(secondaryProperties.nonPointOperationLatencyThreshold))
+                .setNonPointOperationLatencyThreshold(Duration.ofSeconds(secondaryProperties.pointOperationLatencyThreshold))
+                .setPayloadSizeThreshold(secondaryProperties.payloadSizeInBytesThreshold)
+                .setRequestChargeThreshold(secondaryProperties.requestChargeThreshold)
+            )
+            .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER)));
 }
 
 @Bean("secondaryCosmosConfig")
@@ -844,7 +907,17 @@ public class DatasourceConfiguration {
     public CosmosClientBuilder primaryClientBuilder(CosmosProperties cosmosProperties) {
         return new CosmosClientBuilder()
             .key(cosmosProperties.getKey())
-            .endpoint(cosmosProperties.getUri());
+            .endpoint(cosmosProperties.getUri())
+            .clientTelemetryConfig(
+                new CosmosClientTelemetryConfig()
+                    .diagnosticsThresholds(
+                        new CosmosDiagnosticsThresholds()
+                            .setNonPointOperationLatencyThreshold(Duration.ofSeconds(cosmosProperties.nonPointOperationLatencyThreshold))
+                            .setNonPointOperationLatencyThreshold(Duration.ofSeconds(cosmosProperties.pointOperationLatencyThreshold))
+                            .setPayloadSizeThreshold(cosmosProperties.payloadSizeInBytesThreshold)
+                            .setRequestChargeThreshold(cosmosProperties.requestChargeThreshold)
+                    )
+                    .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
     }
 
     @EnableReactiveCosmosRepositories(basePackages = "com.azure.spring.sample.cosmos.multi.database.repository1",

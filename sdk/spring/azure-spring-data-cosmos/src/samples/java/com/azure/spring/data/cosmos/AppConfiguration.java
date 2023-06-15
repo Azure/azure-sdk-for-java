@@ -4,8 +4,11 @@ package com.azure.spring.data.cosmos;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosDiagnosticsHandler;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
@@ -17,6 +20,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.Nullable;
+
+import java.time.Duration;
 
 // BEGIN: readme-sample-AppConfiguration
 @Configuration
@@ -49,6 +54,19 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
     @Value("${azure.cosmos.responseContinuationTokenLimitInKb}")
     private int responseContinuationTokenLimitInKb;
 
+    @Value("${cosmos.diagnosticsThresholds.pointOperationLatencyThreshold}")
+    private int pointOperationLatencyThreshold;
+
+    @Value("${cosmos.diagnosticsThresholds.nonPointOperationLatencyThreshold}")
+    private int nonPointOperationLatencyThreshold;
+
+    @Value("${cosmos.diagnosticsThresholds.requestChargeThreshold}")
+    private int requestChargeThreshold;
+
+    @Value("${cosmos.diagnosticsThresholds.payloadSizeInBytesThreshold}")
+    private int payloadSizeInBytesThreshold;
+
+
     private AzureKeyCredential azureKeyCredential;
 
     @Bean
@@ -59,7 +77,17 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
         return new CosmosClientBuilder()
             .endpoint(uri)
             .credential(azureKeyCredential)
-            .directMode(directConnectionConfig, gatewayConnectionConfig);
+            .directMode(directConnectionConfig, gatewayConnectionConfig)
+            .clientTelemetryConfig(
+                new CosmosClientTelemetryConfig()
+                    .diagnosticsThresholds(
+                        new CosmosDiagnosticsThresholds()
+                            .setNonPointOperationLatencyThreshold(Duration.ofSeconds(nonPointOperationLatencyThreshold))
+                            .setNonPointOperationLatencyThreshold(Duration.ofSeconds(pointOperationLatencyThreshold))
+                            .setPayloadSizeThreshold(payloadSizeInBytesThreshold)
+                            .setRequestChargeThreshold(requestChargeThreshold)
+                    )
+                    .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
     }
 
     @Override
