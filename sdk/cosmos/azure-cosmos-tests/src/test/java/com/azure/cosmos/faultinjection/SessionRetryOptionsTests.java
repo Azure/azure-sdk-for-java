@@ -81,10 +81,10 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
     @DataProvider(name = "nonWriteOperationContextProvider")
     public Object[][] nonWriteOperationContextProvider() {
         return new Object[][]{
-            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, CosmosRegionSwitchHint.DIFFERENT_REGION_PREFERRED},
-            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, CosmosRegionSwitchHint.DIFFERENT_REGION_PREFERRED},
-            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, CosmosRegionSwitchHint.CURRENT_REGION_PREFERRED},
-            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, CosmosRegionSwitchHint.CURRENT_REGION_PREFERRED},
+            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
+            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
+            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
+            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
             {OperationType.Read, FaultInjectionOperationType.READ_ITEM, null},
             {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, null}
         };
@@ -93,16 +93,16 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
     @DataProvider(name = "writeOperationContextProvider")
     public Object[][] writeOperationContextProvider() {
         return new Object[][]{
-            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, CosmosRegionSwitchHint.DIFFERENT_REGION_PREFERRED},
-            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, CosmosRegionSwitchHint.DIFFERENT_REGION_PREFERRED},
-            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, CosmosRegionSwitchHint.DIFFERENT_REGION_PREFERRED},
-            {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, CosmosRegionSwitchHint.DIFFERENT_REGION_PREFERRED},
-            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, CosmosRegionSwitchHint.DIFFERENT_REGION_PREFERRED},
-            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, CosmosRegionSwitchHint.CURRENT_REGION_PREFERRED},
-            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, CosmosRegionSwitchHint.CURRENT_REGION_PREFERRED},
-            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, CosmosRegionSwitchHint.CURRENT_REGION_PREFERRED},
-            {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, CosmosRegionSwitchHint.CURRENT_REGION_PREFERRED},
-            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, CosmosRegionSwitchHint.CURRENT_REGION_PREFERRED},
+            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
+            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
+            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
+            {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
+            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
+            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
+            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
+            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
+            {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
+            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
             {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, null},
             {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, null},
             {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, null},
@@ -414,9 +414,9 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
             assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.OK);
         }
 
-        if (regionSwitchHint == CosmosRegionSwitchHint.DIFFERENT_REGION_PREFERRED) {
+        if (regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED) {
             assertThat(executionDuration).isLessThan(sessionTokenMismatchDefaultWaitTimePerRegion);
-        } else if (regionSwitchHint == CosmosRegionSwitchHint.CURRENT_REGION_PREFERRED || regionSwitchHint == null) {
+        } else if (regionSwitchHint == CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED || regionSwitchHint == null) {
             assertThat(executionDuration).isGreaterThan(sessionTokenMismatchDefaultWaitTimePerRegion);
         }
     }

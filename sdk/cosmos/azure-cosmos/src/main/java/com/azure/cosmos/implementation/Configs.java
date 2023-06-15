@@ -141,8 +141,8 @@ public class Configs {
     private static final String OPEN_CONNECTIONS_CONCURRENCY = "COSMOS.OPEN_CONNECTIONS_CONCURRENCY";
     private static final int DEFAULT_OPEN_CONNECTIONS_CONCURRENCY = 1;
 
-    private static final String MAX_RETRIES_IN_CURRENT_REGION_WHEN_DIFFERENT_REGION_PREFERRED = "COSMOS.MAX_RETRIES_IN_CURRENT_REGION_WHEN_DIFFERENT_REGION_PREFERRED";
-    private static final int DEFAULT_MAX_RETRIES_IN_CURRENT_REGION_WHEN_DIFFERENT_REGION_PREFERRED = 1;
+    private static final String MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = "COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED";
+    private static final int DEFAULT_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = 1;
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -394,8 +394,8 @@ public class Configs {
         return getIntValue(System.getProperty(AGGRESSIVE_WARMUP_CONCURRENCY), DEFAULT_AGGRESSIVE_WARMUP_CONCURRENCY);
     }
 
-    public static int getMaxRetriesInCurrentRegionWhenDifferentRegionPreferred() {
-        return getIntValue(System.getProperty(MAX_RETRIES_IN_CURRENT_REGION_WHEN_DIFFERENT_REGION_PREFERRED),
-            DEFAULT_MAX_RETRIES_IN_CURRENT_REGION_WHEN_DIFFERENT_REGION_PREFERRED);
+    public static int getMaxRetriesInLocalRegionWhenRemoteRegionPreferred() {
+        return getIntValue(System.getProperty(MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED),
+            DEFAULT_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED);
     }
 }

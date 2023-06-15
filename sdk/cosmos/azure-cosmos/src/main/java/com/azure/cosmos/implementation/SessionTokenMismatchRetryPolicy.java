@@ -34,7 +34,7 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         this.retryCount = new AtomicInteger();
         this.retryCount.set(0);
         this.currentBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchInitialBackoffTimeInMs());
-        this.maxRetryAttemptsInCurrentRegion = new AtomicInteger(Configs.getMaxRetriesInCurrentRegionWhenDifferentRegionPreferred());
+        this.maxRetryAttemptsInCurrentRegion = new AtomicInteger(Configs.getMaxRetriesInLocalRegionWhenRemoteRegionPreferred());
         this.retryContext = BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics);
     }
 
@@ -74,7 +74,7 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         //      to the write region then region switch using ClientRetryPolicy will route
         //      the retry to the same write region again, therefore the DIFFERENT_REGION_PREFERRED
         //      hint causes quicker switch to the same write region which is reasonable
-        if (!shouldRetryInCurrentRegion(request, retryCount.get())) {
+        if (!shouldRetryLocally(request, retryCount.get())) {
 
             LOGGER.debug("SessionTokenMismatchRetryPolicy not retrying because it a retry attempt for the current region and " +
                 "fallback to a different region is preferred ");
@@ -120,7 +120,7 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         return backoff;
     }
 
-    private boolean shouldRetryInCurrentRegion(RxDocumentServiceRequest request, int retryCountForRegion) {
+    private boolean shouldRetryLocally(RxDocumentServiceRequest request, int retryCountForRegion) {
 
         CosmosSessionRetryOptions sessionRetryOptions = request.requestContext.getSessionRetryOptions();
 
@@ -133,11 +133,11 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
             .getCosmosSessionRetryOptionsAccessor()
             .getRegionSwitchHint(sessionRetryOptions);
 
-        if (regionSwitchHint == null || regionSwitchHint == CosmosRegionSwitchHint.CURRENT_REGION_PREFERRED) {
+        if (regionSwitchHint == null || regionSwitchHint == CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED) {
             return true;
         }
 
-        return !(regionSwitchHint == CosmosRegionSwitchHint.DIFFERENT_REGION_PREFERRED
+        return !(regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED
             && retryCountForRegion == this.maxRetryAttemptsInCurrentRegion.get());
     }
 }

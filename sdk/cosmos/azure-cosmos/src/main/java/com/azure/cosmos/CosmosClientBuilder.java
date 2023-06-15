@@ -845,8 +845,8 @@ public class CosmosClientBuilder implements
      * </ul>
      * About region switch hints:
      * <ul>
-     *     <li>In order to prioritize the current region for retries as the original request, use the hint {@link CosmosRegionSwitchHint#CURRENT_REGION_PREFERRED}</li>
-     *     <li>In order to move retries to a different region quicker, use the hint {@link CosmosRegionSwitchHint#DIFFERENT_REGION_PREFERRED}</li>
+     *     <li>In order to prioritize the local region for retries, use the hint {@link CosmosRegionSwitchHint#LOCAL_REGION_PREFERRED}</li>
+     *     <li>In order to move retries to a different / remote region quicker, use the hint {@link CosmosRegionSwitchHint#REMOTE_REGION_PREFERRED}</li>
      * </ul>
      * Operations supported:
      * <ul>
