@@ -108,11 +108,16 @@ private case class ChangeFeedPartitionReader
     private def changeFeedItemFactoryMethod(jsonNode: JsonNode): ChangeFeedSparkRowItem = {
       val objectNode = cosmosRowConverter.ensureObjectNode(jsonNode)
 
+      val pkValue = partitionKeyDefinition match {
+        case Some(pkDef) => Some(PartitionKeyHelper.getPartitionKeyPath(objectNode, pkDef))
+        case None => None
+      }
+
       val row = cosmosRowConverter.fromObjectNodeToRow(readSchema,
           objectNode,
           readConfig.schemaConversionMode)
 
-      ChangeFeedSparkRowItem(row, objectNode.get(LsnPropertyName).asText())
+      ChangeFeedSparkRowItem(row, pkValue, objectNode.get(LsnPropertyName).asText())
     }
 
     private def changeFeedItemFactoryMethodV1(jsonNode: JsonNode): ChangeFeedSparkRowItem = {

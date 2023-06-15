@@ -65,7 +65,8 @@ class SparkE2EChangeFeedITest
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.maxItemCount" -> "2",
-      "spark.cosmos.read.inferSchema.enabled" -> "false"
+      "spark.cosmos.read.inferSchema.enabled" -> "false",
+      "spark.cosmos.diagnostics" -> "feed_details"
     )
 
     val df = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()

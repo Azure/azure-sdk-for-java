@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.{HttpConstants, OperationType, RxDocument
 
 // scalastyle:off multiple.string.literals
 private[spark] class SimpleDiagnosticsSlf4jLogger(classType: Class[_])
-  extends FeedDiagnosticsSlf4jLogger(classType: Class[_]) {
+  extends FeedDiagnosticsSlf4jLogger(classType: Class[_], false) {
 
   override def logItemWriteCompletion(writeOperation: WriteOperation): Unit = {
     logInfo(s"$writeOperation completed")
