@@ -59,7 +59,7 @@ public class UniqueKeyPolicyIT {
     @Autowired
     ReactiveCosmosTemplate reactiveTemplate;
 
-    CosmosEntityInformation<UniqueKeyPolicyEntity, String> information =
+    private CosmosEntityInformation<UniqueKeyPolicyEntity, String> information =
         new CosmosEntityInformation<>(UniqueKeyPolicyEntity.class);
 
     @Before

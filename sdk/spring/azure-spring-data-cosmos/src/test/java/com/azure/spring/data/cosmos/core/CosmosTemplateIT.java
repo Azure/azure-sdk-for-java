@@ -30,6 +30,7 @@ import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.domain.AuditableEntity;
 import com.azure.spring.data.cosmos.domain.AutoScaleSample;
+import com.azure.spring.data.cosmos.domain.BasicItem;
 import com.azure.spring.data.cosmos.domain.GenIdEntity;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
@@ -103,9 +104,13 @@ public class CosmosTemplateIT {
     private static final Person TEST_PERSON_3 = new Person(ID_3, NEW_FIRST_NAME, NEW_LAST_NAME, HOBBIES,
         ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
+    private static final BasicItem BASIC_ITEM = new BasicItem(ID_1);
+
     private static final String PRECONDITION_IS_NOT_MET = "is not met";
 
     private static final String WRONG_ETAG = "WRONG_ETAG";
+
+    private static final String INVALID_ID = "http://xxx.html";
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final JsonNode NEW_PASSPORT_IDS_BY_COUNTRY_JSON = OBJECT_MAPPER.convertValue(NEW_PASSPORT_IDS_BY_COUNTRY, JsonNode.class);
@@ -135,6 +140,7 @@ public class CosmosTemplateIT {
 
     private Person insertedPerson;
 
+    private BasicItem pointReadItem;
     @Autowired
     private ApplicationContext applicationContext;
     @Autowired
@@ -157,9 +163,11 @@ public class CosmosTemplateIT {
         }
 
         collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, Person.class,
-                                                          GenIdEntity.class, AuditableEntity.class);
+                                                          GenIdEntity.class, AuditableEntity.class, BasicItem.class);
         insertedPerson = cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
             new PartitionKey(TEST_PERSON.getLastName()));
+        pointReadItem = cosmosTemplate.insert(BasicItem.class.getSimpleName(), BASIC_ITEM,
+            new PartitionKey(BASIC_ITEM.getId()));
     }
 
     private CosmosTemplate createCosmosTemplate(CosmosConfig config, String dbName) throws ClassNotFoundException {
@@ -187,6 +195,7 @@ public class CosmosTemplateIT {
         }
     }
 
+
     @Test(expected = CosmosAccessException.class)
     public void testInsertShouldFailIfColumnNotAnnotatedWithAutoGenerate() {
         final Person person = new Person(null, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
@@ -213,6 +222,20 @@ public class CosmosTemplateIT {
     }
 
     @Test
+    public void testFindByIdPointRead() {
+        final BasicItem result = cosmosTemplate.findById(BasicItem.class.getSimpleName(),
+            BASIC_ITEM.getId(), BasicItem.class);
+        assertEquals(result, BASIC_ITEM);
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        final BasicItem nullResult = cosmosTemplate.findById(BasicItem.class.getSimpleName(),
+            NOT_EXIST_ID, BasicItem.class);
+        assertThat(nullResult).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics().toString().contains("\"requestOperationType\":\"Read\"")).isTrue();
+    }
+
+    @Test
     public void testFindById() {
         final Person result = cosmosTemplate.findById(Person.class.getSimpleName(),
             TEST_PERSON.getId(), Person.class);
@@ -225,6 +248,17 @@ public class CosmosTemplateIT {
             NOT_EXIST_ID, Person.class);
         assertThat(nullResult).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+    }
+
+    @Test
+    public void testFindByIdWithInvalidId() {
+        try {
+            cosmosTemplate.findById(BasicItem.class.getSimpleName(),
+                INVALID_ID, BasicItem.class);
+            fail();
+        } catch (CosmosAccessException ex) {
+            assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        }
     }
 
     @Test
@@ -933,6 +967,7 @@ public class CosmosTemplateIT {
         assertNotNull(throughput);
         assertEquals(Integer.parseInt(TestConstants.AUTOSCALE_MAX_THROUGHPUT),
             throughput.getProperties().getAutoscaleMaxThroughput());
+        collectionManager.deleteContainer(autoScaleSampleInfo);
     }
 
     @Test
@@ -953,6 +988,7 @@ public class CosmosTemplateIT {
         final CosmosAsyncDatabase database = client.getDatabase(configuredThroughputDbName);
         final ThroughputResponse response = database.readThroughput().block();
         assertEquals(expectedRequestUnits, response.getProperties().getManualThroughput());
+        deleteDatabaseIfExists(configuredThroughputDbName);
     }
 
     @Test

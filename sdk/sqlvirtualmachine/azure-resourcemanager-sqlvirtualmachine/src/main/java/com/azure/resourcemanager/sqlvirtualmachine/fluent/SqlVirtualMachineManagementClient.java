@@ -71,4 +71,11 @@ public interface SqlVirtualMachineManagementClient {
      * @return the SqlVirtualMachinesClient object.
      */
     SqlVirtualMachinesClient getSqlVirtualMachines();
+
+    /**
+     * Gets the SqlVirtualMachineTroubleshootsClient object to access its operations.
+     *
+     * @return the SqlVirtualMachineTroubleshootsClient object.
+     */
+    SqlVirtualMachineTroubleshootsClient getSqlVirtualMachineTroubleshoots();
 }

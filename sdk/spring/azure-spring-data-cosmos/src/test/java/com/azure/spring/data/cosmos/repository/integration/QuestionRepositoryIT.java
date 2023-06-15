@@ -3,6 +3,7 @@
 package com.azure.spring.data.cosmos.repository.integration;
 
 import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Question;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
@@ -21,6 +22,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class QuestionRepositoryIT {
@@ -28,6 +31,8 @@ public class QuestionRepositoryIT {
     private static final String QUESTION_ID = "question-id";
 
     private static final String QUESTION_URL = "http://xxx.html";
+
+    private static final String NULL_ID = "null-id";
 
     private static final Question QUESTION = new Question(QUESTION_ID, QUESTION_URL);
 
@@ -40,6 +45,9 @@ public class QuestionRepositoryIT {
     @Autowired
     private QuestionRepository repository;
 
+    @Autowired
+    private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
+
     @Before
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Question.class);
@@ -49,14 +57,14 @@ public class QuestionRepositoryIT {
     @Test
     public void testFindById() {
         final Optional<Question> optional = this.repository.findById(QUESTION_ID);
-
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         Assert.assertTrue(optional.isPresent());
         Assert.assertEquals(QUESTION, optional.get());
     }
 
     @Test
     public void testFindByIdNull() {
-        final Optional<Question> byId = this.repository.findById(QUESTION_URL);
+        final Optional<Question> byId = this.repository.findById(NULL_ID);
         Assert.assertFalse(byId.isPresent());
     }
 

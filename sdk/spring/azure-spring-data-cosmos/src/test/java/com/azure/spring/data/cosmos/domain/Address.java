@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
 
-@Container()
+@Container(ru = TestConstants.DEFAULT_MINIMUM_RU)
 public class Address {
 
     public static final Address TEST_ADDRESS1_PARTITION1 = new Address(

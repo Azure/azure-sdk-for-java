@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AvailabilityGroupListeners Get. */
 public final class AvailabilityGroupListenersGetSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/GetAvailabilityGroupListener.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/GetAvailabilityGroupListener.json
      */
     /**
      * Sample code: Gets an availability group listener.
@@ -18,6 +16,8 @@ public final class AvailabilityGroupListenersGetSamples {
      */
     public static void getsAnAvailabilityGroupListener(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager.availabilityGroupListeners().getWithResponse("testrg", "testvmgroup", "agl-test", null, Context.NONE);
+        manager
+            .availabilityGroupListeners()
+            .getWithResponse("testrg", "testvmgroup", "agl-test", null, com.azure.core.util.Context.NONE);
     }
 }

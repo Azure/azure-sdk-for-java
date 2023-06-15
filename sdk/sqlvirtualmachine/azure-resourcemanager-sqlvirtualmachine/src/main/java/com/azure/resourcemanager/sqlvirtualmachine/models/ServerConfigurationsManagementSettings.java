@@ -40,6 +40,16 @@ public final class ServerConfigurationsManagementSettings {
     @JsonProperty(value = "sqlInstanceSettings")
     private SqlInstanceSettings sqlInstanceSettings;
 
+    /*
+     * Azure AD authentication Settings.
+     */
+    @JsonProperty(value = "azureAdAuthenticationSettings")
+    private AadAuthenticationSettings azureAdAuthenticationSettings;
+
+    /** Creates an instance of ServerConfigurationsManagementSettings class. */
+    public ServerConfigurationsManagementSettings() {
+    }
+
     /**
      * Get the sqlConnectivityUpdateSettings property: SQL connectivity type settings.
      *
@@ -145,6 +155,27 @@ public final class ServerConfigurationsManagementSettings {
     }
 
     /**
+     * Get the azureAdAuthenticationSettings property: Azure AD authentication Settings.
+     *
+     * @return the azureAdAuthenticationSettings value.
+     */
+    public AadAuthenticationSettings azureAdAuthenticationSettings() {
+        return this.azureAdAuthenticationSettings;
+    }
+
+    /**
+     * Set the azureAdAuthenticationSettings property: Azure AD authentication Settings.
+     *
+     * @param azureAdAuthenticationSettings the azureAdAuthenticationSettings value to set.
+     * @return the ServerConfigurationsManagementSettings object itself.
+     */
+    public ServerConfigurationsManagementSettings withAzureAdAuthenticationSettings(
+        AadAuthenticationSettings azureAdAuthenticationSettings) {
+        this.azureAdAuthenticationSettings = azureAdAuthenticationSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -164,6 +195,9 @@ public final class ServerConfigurationsManagementSettings {
         }
         if (sqlInstanceSettings() != null) {
             sqlInstanceSettings().validate();
+        }
+        if (azureAdAuthenticationSettings() != null) {
+            azureAdAuthenticationSettings().validate();
         }
     }
 }

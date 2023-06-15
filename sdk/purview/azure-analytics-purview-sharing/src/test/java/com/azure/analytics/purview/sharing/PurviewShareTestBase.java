@@ -3,7 +3,6 @@
 
 package com.azure.analytics.purview.sharing;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -15,26 +14,26 @@ import com.azure.analytics.purview.sharing.models.SentShare;
 import com.azure.analytics.purview.sharing.models.ServiceInvitation;
 import com.azure.analytics.purview.sharing.models.StorageAccountPath;
 import com.azure.analytics.purview.sharing.models.StoreReference;
-import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import reactor.core.publisher.Mono;
-
-class PurviewShareTestBase extends TestBase {
+class PurviewShareTestBase extends TestProxyTestBase {
 
     protected ReceivedSharesClient receivedSharesClient;
 
     protected SentSharesClient sentSharesClient;
+
+    protected ShareResourcesClient shareResourcesClient;
 
     protected String clientId;
 
@@ -53,12 +52,18 @@ class PurviewShareTestBase extends TestBase {
 
         this.initializeSentShareClient();
         this.initializeReceivedShareClient();
+        this.initializeShareResourceClient();
 
-        clientId = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID", "6a2919d0-880a-4ed8-B50d-7abe4d74291c");
-        targetActiveDirectoryId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID", "4653a7b2-02ff-4155-8e55-2d0c7f3178a1");
-        targetObjectId = Configuration.getGlobalConfiguration().get("TARGET_OBJECT_ID", "68700464-b46c-4ec0-88ff-6061da36da69");
-        providerStorageAccountResourceId = Configuration.getGlobalConfiguration().get("PROVIDER_STORAGE_RESOURCE_ID", "/subscriptions/8af54e97-8629-48cd-A92e-24753982bf92/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/providerstorage");
-        consumerStorageAccountResourceId = Configuration.getGlobalConfiguration().get("CONSUMER_STORAGE_RESOURCE_ID", "/subscriptions/8af54e97-8629-48cd-A92e-24753982bf92/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/consumerstorage");
+        clientId = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID",
+                "6a2919d0-880a-4ed8-B50d-7abe4d74291c");
+        targetActiveDirectoryId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID",
+                "4653a7b2-02ff-4155-8e55-2d0c7f3178a1");
+        targetObjectId = Configuration.getGlobalConfiguration().get("TARGET_OBJECT_ID",
+                "789516ef-5d52-4d56-806d-3ab2d49b0356");
+        providerStorageAccountResourceId = Configuration.getGlobalConfiguration().get("PROVIDER_STORAGE_RESOURCE_ID",
+                "/subscriptions/8af54e97-8629-48cd-A92e-24753982bf92/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/providerstorage");
+        consumerStorageAccountResourceId = Configuration.getGlobalConfiguration().get("CONSUMER_STORAGE_RESOURCE_ID",
+                "/subscriptions/8af54e97-8629-48cd-A92e-24753982bf92/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/consumerstorage");
         consumerEmail = Configuration.getGlobalConfiguration().get("CONSUMER_EMAIL", "consumer@contoso.com");
     }
 
@@ -110,12 +115,13 @@ class PurviewShareTestBase extends TestBase {
 
     private void initializeReceivedShareClient() {
         ReceivedSharesClientBuilder receivedSharesClientbuilder = new ReceivedSharesClientBuilder()
-                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://account.purview.azure.com/share"))
+                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT",
+                        "https://account.purview.azure.com/share"))
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             receivedSharesClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+                    .credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             receivedSharesClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                     .credential(new DefaultAzureCredentialBuilder().build());
@@ -128,12 +134,13 @@ class PurviewShareTestBase extends TestBase {
 
     private void initializeSentShareClient() {
         SentSharesClientBuilder sentSharesClientbuilder = new SentSharesClientBuilder()
-                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://account.purview.azure.com/share"))
+                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT",
+                        "https://account.purview.azure.com/share"))
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             sentSharesClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+                    .credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             sentSharesClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                     .credential(new DefaultAzureCredentialBuilder().build());
@@ -142,5 +149,24 @@ class PurviewShareTestBase extends TestBase {
         }
 
         sentSharesClient = sentSharesClientbuilder.buildClient();
+    }
+
+    private void initializeShareResourceClient() {
+        ShareResourcesClientBuilder shareResourcesClientbuilder = new ShareResourcesClientBuilder()
+                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT",
+                        "https://account.purview.azure.com/share"))
+                .httpClient(HttpClient.createDefault())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            shareResourcesClientbuilder.httpClient(interceptorManager.getPlaybackClient())
+                    .credential(new MockTokenCredential());
+        } else if (getTestMode() == TestMode.RECORD) {
+            shareResourcesClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+                    .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            shareResourcesClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+
+        shareResourcesClient = shareResourcesClientbuilder.buildClient();
     }
 }
