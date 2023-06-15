@@ -28,16 +28,6 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
         this.serviceManager = serviceManager;
     }
 
-    public SqlVirtualMachineGroup getByResourceGroup(String resourceGroupName, String sqlVirtualMachineGroupName) {
-        SqlVirtualMachineGroupInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, sqlVirtualMachineGroupName);
-        if (inner != null) {
-            return new SqlVirtualMachineGroupImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SqlVirtualMachineGroup> getByResourceGroupWithResponse(
         String resourceGroupName, String sqlVirtualMachineGroupName, Context context) {
         Response<SqlVirtualMachineGroupInner> inner =
@@ -48,6 +38,16 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SqlVirtualMachineGroupImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SqlVirtualMachineGroup getByResourceGroup(String resourceGroupName, String sqlVirtualMachineGroupName) {
+        SqlVirtualMachineGroupInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, sqlVirtualMachineGroupName);
+        if (inner != null) {
+            return new SqlVirtualMachineGroupImpl(inner, this.manager());
         } else {
             return null;
         }

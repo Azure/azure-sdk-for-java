@@ -28,6 +28,10 @@ public final class SqlStorageUpdateSettings {
     @JsonProperty(value = "diskConfigurationType")
     private DiskConfigurationType diskConfigurationType;
 
+    /** Creates an instance of SqlStorageUpdateSettings class. */
+    public SqlStorageUpdateSettings() {
+    }
+
     /**
      * Get the diskCount property: Virtual machine disk count.
      *

@@ -2,13 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.domain;
 
+import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
 import java.util.UUID;
 
-@Container
+@Container(ru = TestConstants.DEFAULT_MINIMUM_RU)
 public class UUIDIdDomain {
 
     @Id

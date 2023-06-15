@@ -27,7 +27,9 @@ import java.util.Collection;
 
 /**
  * Performs certificate-related operations on an Azure Batch account.
+ * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
  */
+@Deprecated
 public class CertificateOperations implements IInheritedBehaviors {
 
     private Collection<BatchClientBehavior> customBehaviors;

@@ -149,12 +149,39 @@ public class PagedIterableTest {
     }
 
     @ParameterizedTest
+    @ValueSource(ints = {0, 1, 2, 3, 4, 5})
+    public void streamByPageMapSync(int numberOfPages) {
+        PagedIterable<Integer> integerPagedIterable = getIntegerPagedIterable(numberOfPages);
+        List<PagedResponse<String>> pages = integerPagedIterable.mapPage(String::valueOf).streamByPage()
+            .collect(Collectors.toList());
+
+        assertEquals(numberOfPages, pages.size());
+        for (int i = 0; i < numberOfPages; i++) {
+            assertEquals(pagedStringResponses.get(i).getValue(), pages.get(i).getValue());
+        }
+    }
+
+    @ParameterizedTest
     @ValueSource(ints = {0, 5})
     public void iterateByPageMap(int numberOfPages) {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(numberOfPages);
         PagedIterable<Integer> pagedIterable = new PagedIterable<>(pagedFlux);
         List<PagedResponse<String>> pages = new ArrayList<>();
         pagedIterable.mapPage(String::valueOf).iterableByPage().iterator().forEachRemaining(pages::add);
+
+        assertEquals(numberOfPages, pages.size());
+        for (int i = 0; i < numberOfPages; i++) {
+            assertEquals(pagedStringResponses.get(i).getValue(), pages.get(i).getValue());
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 2, 3, 4, 5})
+    public void iterateByPageMapSync(int numberOfPages) {
+        PagedIterable<Integer> integerPagedIterable = getIntegerPagedIterable(numberOfPages);
+
+        List<PagedResponse<String>> pages = new ArrayList<>();
+        integerPagedIterable.mapPage(String::valueOf).iterableByPage().iterator().forEachRemaining(pages::add);
 
         assertEquals(numberOfPages, pages.size());
         for (int i = 0; i < numberOfPages; i++) {
@@ -175,10 +202,33 @@ public class PagedIterableTest {
     }
 
     @ParameterizedTest
+    @ValueSource(ints = {0, 1, 2, 3, 4, 5})
+    public void streamByTMapSync(int numberOfPages) {
+        PagedIterable<Integer> pagedIterable = getIntegerPagedIterable(numberOfPages);
+        List<String> values = pagedIterable.mapPage(String::valueOf).stream().collect(Collectors.toList());
+
+        assertEquals(numberOfPages * 3, values.size());
+        assertEquals(Stream.iterate(0, i -> i + 1).limit(numberOfPages * 3L).map(String::valueOf)
+            .collect(Collectors.toList()), values);
+    }
+
+    @ParameterizedTest
     @ValueSource(ints = {0, 5})
     public void iterateByTMap(int numberOfPages) {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(numberOfPages);
         PagedIterable<Integer> pagedIterable = new PagedIterable<>(pagedFlux);
+        List<String> values = new ArrayList<>();
+        pagedIterable.mapPage(String::valueOf).iterator().forEachRemaining(values::add);
+
+        assertEquals(numberOfPages * 3, values.size());
+        assertEquals(Stream.iterate(0, i -> i + 1).limit(numberOfPages * 3L).map(String::valueOf)
+            .collect(Collectors.toList()), values);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 5})
+    public void iterateByTMapSync(int numberOfPages) {
+        PagedIterable<Integer> pagedIterable = getIntegerPagedIterable(numberOfPages);
         List<String> values = new ArrayList<>();
         pagedIterable.mapPage(String::valueOf).iterator().forEachRemaining(values::add);
 

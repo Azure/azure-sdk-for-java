@@ -6,7 +6,6 @@ import com.azure.cosmos.models.IndexingMode;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
-import com.azure.spring.data.cosmos.core.mapping.CosmosUniqueKeyPolicy;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.springframework.data.annotation.Id;
 
@@ -25,7 +24,7 @@ import java.util.Objects;
         TestConstants.EXCLUDED_PATH_2,
     })
 @Container(containerName = TestConstants.ROLE_COLLECTION_NAME,
-    autoCreateContainer = false)
+    autoCreateContainer = false, ru = TestConstants.DEFAULT_MINIMUM_RU)
 public class Role {
     @Id
     String id;

@@ -17,7 +17,6 @@ import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
-import com.azure.cosmos.CosmosDiagnosticsSystemUsageSnapshot;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
@@ -31,6 +30,7 @@ import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnectionMetadata;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.patch.PatchOperation;
@@ -216,6 +216,9 @@ public class ImplementationBridgeHelpers {
             DirectConnectionConfig setHealthCheckTimeoutDetectionEnabled(
                 DirectConnectionConfig directConnectionConfig, boolean timeoutDetectionEnabled);
             boolean isHealthCheckTimeoutDetectionEnabled(DirectConnectionConfig directConnectionConfig);
+            DirectConnectionConfig setMinConnectionPoolSizePerEndpoint(DirectConnectionConfig directConnectionConfig, int minConnectionPoolSizePerEndpoint);
+
+            int getMinConnectionPoolSizePerEndpoint(DirectConnectionConfig directConnectionConfig);
         }
     }
 
@@ -416,6 +419,10 @@ public class ImplementationBridgeHelpers {
             int getMaxMicroBatchSize(CosmosBulkExecutionOptions options);
 
             CosmosBulkExecutionOptions setMaxMicroBatchSize(CosmosBulkExecutionOptions options, int maxMicroBatchSize);
+
+            int getMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options);
+
+            CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options, int maxMicroBatchPayloadSizeInBytes);
 
             int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options);
 
@@ -1510,7 +1517,7 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosContainerProactiveInitConfigAccessor {
-            Map<String, Integer> getContainerLinkToMinConnectionsMap(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig);
+            Map<CosmosContainerIdentity, ContainerDirectConnectionMetadata> getContainerPropertiesMap(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig);
         }
     }
 }

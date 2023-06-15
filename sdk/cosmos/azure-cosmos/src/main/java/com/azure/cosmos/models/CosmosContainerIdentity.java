@@ -10,6 +10,8 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
+import java.util.Objects;
+
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
 /**
@@ -38,6 +40,19 @@ public final class CosmosContainerIdentity {
         this.containerLink = StringUtils.strip(
                 Utils.joinPath(databaseLink, Paths.COLLECTIONS_PATH_SEGMENT) + containerName,
                 Constants.Properties.PATH_SEPARATOR);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CosmosContainerIdentity that = (CosmosContainerIdentity) o;
+        return Objects.equals(containerLink, that.containerLink);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(containerLink);
     }
 
     static void initialize() {

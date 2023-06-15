@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,39 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.4 (2023-06-13)
+
+- Azure Resource Manager SqlVirtualMachine client library for Java. This package contains Microsoft Azure SDK for SqlVirtualMachine Management SDK. The SQL virtual machine management API provides a RESTful set of web APIs that interact with Azure Compute, Network & Storage services to manage your SQL Server virtual machine. The API enables users to create, delete and retrieve a SQL virtual machine, SQL virtual machine group or availability group listener. Package tag package-preview-2022-08. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.TroubleshootingScenario` was added
+
+* `models.TroubleshootingStatus` was added
+
+* `models.UnhealthyReplicaInfo` was added
+
+* `models.SqlVirtualMachineTroubleshoots` was added
+
+* `models.SqlVmTroubleshooting` was added
+
+* `models.AadAuthenticationSettings` was added
+
+* `models.TroubleshootingAdditionalProperties` was added
+
+#### `SqlVirtualMachineManager` was modified
+
+* `sqlVirtualMachineTroubleshoots()` was added
+
+#### `models.ServerConfigurationsManagementSettings` was modified
+
+* `azureAdAuthenticationSettings()` was added
+* `withAzureAdAuthenticationSettings(models.AadAuthenticationSettings)` was added
+
+#### `models.SqlVirtualMachine` was modified
+
+* `troubleshootingStatus()` was added
 
 ## 1.0.0-beta.3 (2022-09-20)
 

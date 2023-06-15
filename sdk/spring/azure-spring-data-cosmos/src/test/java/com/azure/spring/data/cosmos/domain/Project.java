@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.domain;
 
+import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
@@ -9,7 +10,7 @@ import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
 
-@Container()
+@Container(ru = TestConstants.DEFAULT_MINIMUM_RU)
 @CosmosIndexingPolicy()
 public class Project {
 
