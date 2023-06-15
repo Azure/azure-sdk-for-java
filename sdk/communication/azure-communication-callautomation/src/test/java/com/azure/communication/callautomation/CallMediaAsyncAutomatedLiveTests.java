@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
@@ -20,7 +19,6 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
-import com.azure.communication.identity.CommunicationIdentityClientBuilder;
 import com.azure.communication.phonenumbers.PhoneNumbersClient;
 import com.azure.communication.phonenumbers.PhoneNumbersClientBuilder;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
@@ -137,13 +135,14 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
         disabledReason = "Requires environment to be set up")
     public void dtmfActionsInACallAutomatedTest(HttpClient httpClient) {
         /* Test case:  Continuous Dtmf start, Stop and Send Dtmf in an ACS to ACS PSTN call
-            * 1. Create a CallAutomationClient.
-            * 2. Create a call from source to one ACS target.
-            * 3. Get updated call properties and check for the connected state.
-            * 4. Start continuous Dtmf detection on source, expect no failure(exception)
-            * 5. Send Dtmf tones to target, expect SendDtmfCompleted event and no failure(exception)
-            * 6. Stop continuous Dtmf detection on source, expect ContinuousDtmfDetectionStopped event and no failure(exception)
-            *
+         * 1. Create a CallAutomationClient.
+         * 2. Create a call from source to one ACS target.
+         * 3. Get updated call properties and check for the connected state.
+         * 4. Start continuous Dtmf detection on source, expect no failure(exception)
+         * 5. Send Dtmf tones to target, expect SendDtmfCompleted event and no failure(exception)
+         * 6. Stop continuous Dtmf detection on source, expect ContinuousDtmfDetectionStopped event and no failure(exception)
+         * 7. Hang up the call.
+         *
          */
 
         CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
@@ -159,7 +158,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             if (getTestMode() == TestMode.PLAYBACK) {
                 caller = new PhoneNumberIdentifier("Sanitized");
                 receiver = new PhoneNumberIdentifier("Sanitized");
-            } else{
+            } else {
                 PhoneNumbersClient phoneNumberClient = new PhoneNumbersClientBuilder()
                     .connectionString(CONNECTION_STRING)
                     .httpClient(getHttpClientOrUsePlayback(httpClient))
@@ -174,7 +173,6 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             CommunicationIdentifier receiver = CommunicationIdentifier.fromRawId("4:+18447649276");*/
 
 
-
             CallAutomationAsyncClient client = getCallAutomationClientUsingConnectionString(httpClient)
                 .addPolicy((context, next) -> logHeaders("dtmfActionsInACallAutomatedTest", next))
                 .sourceIdentity(identityAsyncClient.createUser().block())
@@ -183,7 +181,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             String uniqueId = serviceBusWithNewCall(caller, receiver);
 
             // create a call
-            CallInvite invite = new CallInvite((PhoneNumberIdentifier)receiver, (PhoneNumberIdentifier)caller);
+            CallInvite invite = new CallInvite((PhoneNumberIdentifier) receiver, (PhoneNumberIdentifier) caller);
             CreateCallResult createCallResult = client.createCall(invite, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).block();
 
             // validate the call
