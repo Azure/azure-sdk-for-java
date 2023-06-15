@@ -16,6 +16,8 @@ import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
+import com.azure.resourcemanager.keyvault.KeyVaultManager;
+import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -36,6 +38,7 @@ public class MonitorManagementTest extends ResourceManagerTestBase {
     protected StorageManager storageManager;
     protected EventHubsManager eventHubManager;
     protected AppServiceManager appServiceManager;
+    protected KeyVaultManager keyVaultManager;
 
     @Override
     protected HttpPipeline buildHttpPipeline(
@@ -66,6 +69,7 @@ public class MonitorManagementTest extends ResourceManagerTestBase {
         storageManager = buildManager(StorageManager.class, httpPipeline, profile);
         eventHubManager = buildManager(EventHubsManager.class, httpPipeline, profile);
         resourceManager = monitorManager.resourceManager();
+        keyVaultManager = buildManager(KeyVaultManager.class, httpPipeline, profile);
         setInternalContext(internalContext, computeManager);
     }
 
@@ -83,6 +87,16 @@ public class MonitorManagementTest extends ResourceManagerTestBase {
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
+            .create();
+    }
+
+    protected Vault ensureVault(Region region, String rgName) {
+        return keyVaultManager
+            .vaults()
+            .define(generateRandomResourceName("jmonitorvt", 18))
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withEmptyAccessPolicy()
             .create();
     }
 }

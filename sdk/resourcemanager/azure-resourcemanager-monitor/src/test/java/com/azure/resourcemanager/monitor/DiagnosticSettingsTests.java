@@ -6,12 +6,13 @@ package com.azure.resourcemanager.monitor;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
+import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsResourceInner;
 import com.azure.resourcemanager.monitor.models.DiagnosticSetting;
-import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategory;
 import com.azure.resourcemanager.monitor.models.LogSettings;
 import com.azure.resourcemanager.monitor.models.MetricSettings;
@@ -199,7 +200,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
     }
 
     @Test
-    public void canCRUDDiagnosticSettingsForStorageAccount() {
+    public void canCRUDDiagnosticSettingsForVault() {
 
         Region region = Region.US_WEST;
 
@@ -210,52 +211,42 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
                 .withTag("tag1", "value1")
                 .create();
 
+        Vault vault = ensureVault(region, rgName);
+
         // clean all diagnostic settings.
-        List<DiagnosticSetting> dsList = monitorManager.diagnosticSettings().listByResource(sa.id()).stream().collect(Collectors.toList());
+        List<DiagnosticSetting> dsList = monitorManager.diagnosticSettings().listByResource(vault.id()).stream().collect(Collectors.toList());
         for (DiagnosticSetting dsd : dsList) {
             monitorManager.diagnosticSettings().deleteById(dsd.id());
         }
 
-        EventHubNamespace namespace = eventHubManager.namespaces()
-                .define(ehName)
-                // EventHub should be in the same region as resource
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withNewManageRule("mngRule1")
-                .withNewSendRule("sndRule1")
-                .create();
-
-        EventHubNamespaceAuthorizationRule evenHubNsRule = namespace.listAuthorizationRules().iterator().next();
-
         List<DiagnosticSettingsCategory> categories = monitorManager.diagnosticSettings()
-                .listCategoriesByResource(sa.id());
+                .listCategoriesByResource(vault.id());
 
         Assertions.assertNotNull(categories);
         Assertions.assertFalse(categories.isEmpty());
 
         DiagnosticSetting setting = monitorManager.diagnosticSettings()
                 .define(dsName)
-                .withResource(sa.id())
-                .withEventHub(evenHubNsRule.id())
+                .withResource(vault.id())
+                .withStorageAccount(sa.id())
                 .withLogsAndMetrics(categories, Duration.ofMinutes(5), 7)
                 .create();
 
-        Assertions.assertTrue(sa.id().equalsIgnoreCase(setting.resourceId()));
-        Assertions.assertNull(setting.storageAccountId());
-        Assertions.assertTrue(evenHubNsRule.id().equalsIgnoreCase(setting.eventHubAuthorizationRuleId()));
+        Assertions.assertTrue(vault.id().equalsIgnoreCase(setting.resourceId()));
+        Assertions.assertNotNull(setting.storageAccountId());
+        Assertions.assertNull(setting.eventHubAuthorizationRuleId());
         Assertions.assertNull(setting.eventHubName());
         Assertions.assertNull(setting.workspaceId());
         Assertions.assertFalse(setting.logs().isEmpty());
         Assertions.assertFalse(setting.metrics().isEmpty());
 
         setting.update()
-                .withoutStorageAccount()
                 .withoutLogs()
                 .apply();
 
-        Assertions.assertTrue(sa.id().equalsIgnoreCase(setting.resourceId()));
-        Assertions.assertTrue(evenHubNsRule.id().equalsIgnoreCase(setting.eventHubAuthorizationRuleId()));
-        Assertions.assertNull(setting.storageAccountId());
+        Assertions.assertTrue(vault.id().equalsIgnoreCase(setting.resourceId()));
+        Assertions.assertNotNull(setting.storageAccountId());
+        Assertions.assertNull(setting.eventHubAuthorizationRuleId());
         Assertions.assertNull(setting.eventHubName());
         Assertions.assertNull(setting.workspaceId());
         Assertions.assertTrue(setting.logs().isEmpty());
@@ -267,7 +258,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         DiagnosticSetting ds2 = monitorManager.diagnosticSettings().getById(setting.id());
         checkDiagnosticSettingValues(setting, ds2);
 
-        dsList = monitorManager.diagnosticSettings().listByResource(sa.id()).stream().collect(Collectors.toList());
+        dsList = monitorManager.diagnosticSettings().listByResource(vault.id()).stream().collect(Collectors.toList());
         Assertions.assertNotNull(dsList);
         Assertions.assertEquals(1, dsList.size());
         DiagnosticSetting ds3 = dsList.get(0);
@@ -275,7 +266,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
 
         monitorManager.diagnosticSettings().deleteById(setting.id());
 
-        dsList = monitorManager.diagnosticSettings().listByResource(sa.id()).stream().collect(Collectors.toList());
+        dsList = monitorManager.diagnosticSettings().listByResource(vault.id()).stream().collect(Collectors.toList());
         Assertions.assertNotNull(dsList);
         Assertions.assertTrue(dsList.isEmpty());
     }
