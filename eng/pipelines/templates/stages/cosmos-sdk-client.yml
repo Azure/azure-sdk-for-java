@@ -27,6 +27,9 @@ parameters:
 - name: UseEsrpRelease
   type: boolean
   default: true
+- name: LanguageFilter
+  type: object
+  default: [ ]
 - name: MatrixFilters
   type: object
   default: []
@@ -58,6 +61,7 @@ stages:
             GenerateVMJobs: true
         MatrixFilters: 
           - TestFromSource=^$|false
+          - ${{ parameters.MatrixFilters }}
         MatrixReplace:
           - AZURE_TEST.*=.*/
         BuildParallelization: 1
@@ -76,6 +80,7 @@ stages:
             Selection: all
             GenerateVMJobs: true
         MatrixFilters: 
+          - ${{ parameters.LanguageFilter }}
           - ${{ parameters.MatrixFilters }}
         AdditionalParameters:
           BuildParallelization: 1
