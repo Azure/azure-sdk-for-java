@@ -170,7 +170,7 @@ com.azure:azure-spring-data-cosmos;3.35.0;3.36.0-beta.1
 com.azure:azure-storage-blob;12.22.2;12.22.3
 com.azure:azure-storage-blob-batch;12.18.2;12.18.3
 com.azure:azure-storage-blob-changefeed;12.0.0-beta.18;12.0.0-beta.19
-com.azure:azure-storage-blob-cryptography;12.21.2;12.22.0-beta.2
+com.azure:azure-storage-blob-cryptography;12.21.2;12.21.3
 com.azure:azure-storage-blob-nio;12.0.0-beta.19;12.0.0-beta.20
 com.azure:azure-storage-common;12.21.1;12.21.2
 com.azure:azure-storage-file-share;12.18.1;12.19.0-beta.2
