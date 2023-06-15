@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a bug that would cause authentication failures when trying to rename a path object while authenticating with a sas token that contained a leading question mark.
 
 ### Other Changes
 
