@@ -142,7 +142,6 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
          * 5. Send Dtmf tones to target, expect SendDtmfCompleted event and no failure(exception)
          * 6. Stop continuous Dtmf detection on source, expect ContinuousDtmfDetectionStopped event and no failure(exception)
          * 7. Hang up the call.
-         *
          */
 
         CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
@@ -167,11 +166,6 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
                 receiver = new PhoneNumberIdentifier(phoneNumbers.get(1));
                 caller = new PhoneNumberIdentifier(phoneNumbers.get(0));
             }
-
-            // create caller and receiver
-            /*CommunicationIdentifier caller = CommunicationIdentifier.fromRawId("4:+18662315126");
-            CommunicationIdentifier receiver = CommunicationIdentifier.fromRawId("4:+18447649276");*/
-
 
             CallAutomationAsyncClient client = getCallAutomationClientUsingConnectionString(httpClient)
                 .addPolicy((context, next) -> logHeaders("dtmfActionsInACallAutomatedTest", next))
