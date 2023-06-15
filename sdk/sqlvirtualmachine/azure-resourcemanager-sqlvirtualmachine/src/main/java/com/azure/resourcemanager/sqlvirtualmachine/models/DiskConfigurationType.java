@@ -20,6 +20,15 @@ public final class DiskConfigurationType extends ExpandableStringEnum<DiskConfig
     public static final DiskConfigurationType ADD = fromString("ADD");
 
     /**
+     * Creates a new instance of DiskConfigurationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiskConfigurationType() {
+    }
+
+    /**
      * Creates or finds a DiskConfigurationType from its string representation.
      *
      * @param name a name to look for.

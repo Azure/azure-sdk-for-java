@@ -5,22 +5,17 @@ package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.TextAnalyticsServiceVersion;
 import com.azure.ai.textanalytics.implementation.models.AbstractiveSummarizationResult;
-import com.azure.ai.textanalytics.implementation.models.AbstractiveSummaryDocumentResultWithDetectedLanguage;
-import com.azure.ai.textanalytics.implementation.models.AgeResolution;
+import com.azure.ai.textanalytics.implementation.models.AbstractiveSummaryDocumentResult;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextTaskResult;
-import com.azure.ai.textanalytics.implementation.models.AreaResolution;
 import com.azure.ai.textanalytics.implementation.models.Association;
-import com.azure.ai.textanalytics.implementation.models.BaseResolution;
 import com.azure.ai.textanalytics.implementation.models.Certainty;
 import com.azure.ai.textanalytics.implementation.models.ClassificationResult;
 import com.azure.ai.textanalytics.implementation.models.Conditionality;
-import com.azure.ai.textanalytics.implementation.models.CurrencyResolution;
 import com.azure.ai.textanalytics.implementation.models.CustomEntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.CustomEntitiesResultDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.CustomLabelClassificationResult;
 import com.azure.ai.textanalytics.implementation.models.CustomLabelClassificationResultDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.CustomSingleClassificationResult;
-import com.azure.ai.textanalytics.implementation.models.DateTimeResolution;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
@@ -28,7 +23,7 @@ import com.azure.ai.textanalytics.implementation.models.DocumentSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.DocumentStatistics;
 import com.azure.ai.textanalytics.implementation.models.DocumentWarning;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
-import com.azure.ai.textanalytics.implementation.models.EntitiesResultWithDetectedLanguage;
+import com.azure.ai.textanalytics.implementation.models.EntitiesResultDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.EntitiesTaskResult;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingTaskResult;
@@ -36,16 +31,13 @@ import com.azure.ai.textanalytics.implementation.models.Error;
 import com.azure.ai.textanalytics.implementation.models.ErrorCode;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponse;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
-import com.azure.ai.textanalytics.implementation.models.ExtractedSummaryDocumentResultWithDetectedLanguage;
+import com.azure.ai.textanalytics.implementation.models.ExtractedSummaryDocumentResult;
 import com.azure.ai.textanalytics.implementation.models.ExtractedSummarySentence;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationResult;
-import com.azure.ai.textanalytics.implementation.models.FhirVersion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareAssertion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
-import com.azure.ai.textanalytics.implementation.models.InformationResolution;
 import com.azure.ai.textanalytics.implementation.models.InnerErrorCode;
 import com.azure.ai.textanalytics.implementation.models.InnerErrorModel;
-import com.azure.ai.textanalytics.implementation.models.InputError;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResultDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseTaskResult;
@@ -54,15 +46,10 @@ import com.azure.ai.textanalytics.implementation.models.LanguageDetectionResult;
 import com.azure.ai.textanalytics.implementation.models.LanguageDetectionTaskResult;
 import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
-import com.azure.ai.textanalytics.implementation.models.LengthResolution;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
-import com.azure.ai.textanalytics.implementation.models.NumberResolution;
-import com.azure.ai.textanalytics.implementation.models.NumericRangeResolution;
-import com.azure.ai.textanalytics.implementation.models.OrdinalResolution;
 import com.azure.ai.textanalytics.implementation.models.PiiCategory;
 import com.azure.ai.textanalytics.implementation.models.PiiResult;
 import com.azure.ai.textanalytics.implementation.models.PiiTaskResult;
-import com.azure.ai.textanalytics.implementation.models.RelationType;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.SentenceAssessment;
 import com.azure.ai.textanalytics.implementation.models.SentenceSentimentValue;
@@ -71,26 +58,18 @@ import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScore
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponseDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.SentimentTaskResult;
-import com.azure.ai.textanalytics.implementation.models.SpeedResolution;
 import com.azure.ai.textanalytics.implementation.models.TargetConfidenceScoreLabel;
 import com.azure.ai.textanalytics.implementation.models.TargetRelationType;
-import com.azure.ai.textanalytics.implementation.models.TemperatureResolution;
-import com.azure.ai.textanalytics.implementation.models.TemporalSpanResolution;
-import com.azure.ai.textanalytics.implementation.models.VolumeResolution;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
-import com.azure.ai.textanalytics.implementation.models.WeightResolution;
 import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
 import com.azure.ai.textanalytics.models.AbstractiveSummary;
-import com.azure.ai.textanalytics.models.AgeUnit;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
-import com.azure.ai.textanalytics.models.AreaUnit;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.ClassificationCategory;
 import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
-import com.azure.ai.textanalytics.models.DateTimeSubKind;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
@@ -107,31 +86,22 @@ import com.azure.ai.textanalytics.models.HealthcareEntityCategory;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
-import com.azure.ai.textanalytics.models.InformationUnit;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
-import com.azure.ai.textanalytics.models.LengthUnit;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.NumberKind;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
-import com.azure.ai.textanalytics.models.RangeKind;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
-import com.azure.ai.textanalytics.models.RelativeTo;
-import com.azure.ai.textanalytics.models.ScriptKind;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
-import com.azure.ai.textanalytics.models.SpeedUnit;
 import com.azure.ai.textanalytics.models.AbstractiveSummaryContext;
 import com.azure.ai.textanalytics.models.ExtractiveSummarySentence;
 import com.azure.ai.textanalytics.models.TargetSentiment;
-import com.azure.ai.textanalytics.models.TemperatureUnit;
-import com.azure.ai.textanalytics.models.TemporalModifier;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -140,9 +110,7 @@ import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.TextSentiment;
-import com.azure.ai.textanalytics.models.VolumeUnit;
 import com.azure.ai.textanalytics.models.WarningCode;
-import com.azure.ai.textanalytics.models.WeightUnit;
 import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
@@ -496,7 +464,7 @@ public final class Utility {
                 )));
         }
         // Document errors
-        for (InputError documentError : languageResult.getErrors()) {
+        for (DocumentError documentError : languageResult.getErrors()) {
             detectLanguageResults.add(new DetectLanguageResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
@@ -511,10 +479,6 @@ public final class Utility {
         DetectedLanguage detectedLanguage = new DetectedLanguage(detectedLanguageImpl.getName(),
             detectedLanguageImpl.getIso6391Name(), detectedLanguageImpl.getConfidenceScore(),
             null);
-        if (detectedLanguageImpl.getScript() != null) {
-            DetectedLanguagePropertiesHelper.setScriptKind(detectedLanguage,
-                ScriptKind.fromString(detectedLanguageImpl.getScript().toString()));
-        }
         return detectedLanguage;
     }
 
@@ -536,7 +500,7 @@ public final class Utility {
                         warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList())))));
         }
         // Document errors
-        for (InputError documentError : keyPhraseResult.getErrors()) {
+        for (DocumentError documentError : keyPhraseResult.getErrors()) {
             keyPhraseResultList.add(new ExtractKeyPhraseResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
@@ -564,7 +528,7 @@ public final class Utility {
                         warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList())))));
         }
         // Document errors
-        for (InputError documentError : keyPhraseResult.getErrors()) {
+        for (DocumentError documentError : keyPhraseResult.getErrors()) {
             keyPhraseResultList.add(new ExtractKeyPhraseResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
@@ -583,7 +547,7 @@ public final class Utility {
         entitiesResult.getDocuments().forEach(documentEntities ->
             recognizeEntitiesResults.add(toRecognizeEntitiesResult(documentEntities)));
         // Document errors
-        for (InputError documentError : entitiesResult.getErrors()) {
+        for (DocumentError documentError : entitiesResult.getErrors()) {
             recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
@@ -630,165 +594,20 @@ public final class Utility {
                                     entity.getSubcategory(), entity.getConfidenceScore());
                             CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
                             CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
-                            CategorizedEntityPropertiesHelper.setResolutions(categorizedEntity,
-                                    toBaseResolutions(entity.getResolutions()));
                             return categorizedEntity;
                         }).collect(Collectors.toList())),
                         new IterableStream<>(
                             documentEntities.getWarnings().stream()
                                 .map(warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))))));
         // Document errors
-        for (InputError documentError : results.getErrors()) {
+        for (DocumentError documentError : results.getErrors()) {
             recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
         return recognizeEntitiesResults;
     }
 
-    public static IterableStream<com.azure.ai.textanalytics.models.BaseResolution> toBaseResolutions(
-            List<BaseResolution> resolutions) {
-        if (resolutions == null) {
-            return null;
-        }
-
-        List<com.azure.ai.textanalytics.models.BaseResolution> baseResolutions = new ArrayList<>();
-        resolutions.forEach(resolution -> baseResolutions.add(toBaseResolution(resolution)));
-        return new IterableStream<>(baseResolutions);
-    }
-
-    public static com.azure.ai.textanalytics.models.BaseResolution toBaseResolution(BaseResolution resolution) {
-        if (resolution instanceof AgeResolution) {
-            AgeResolution ageResolutionImpl = (AgeResolution) resolution;
-            com.azure.ai.textanalytics.models.AgeResolution ageResolution =
-                new com.azure.ai.textanalytics.models.AgeResolution();
-            AgeResolutionPropertiesHelper.setUnit(ageResolution,
-                AgeUnit.fromString(ageResolutionImpl.getUnit().toString()));
-            AgeResolutionPropertiesHelper.setValue(ageResolution, ageResolutionImpl.getValue());
-            return ageResolution;
-        } else if (resolution instanceof VolumeResolution) {
-            VolumeResolution volumeResolutionImpl = (VolumeResolution) resolution;
-            com.azure.ai.textanalytics.models.VolumeResolution volumeResolution =
-                new com.azure.ai.textanalytics.models.VolumeResolution();
-            VolumeResolutionPropertiesHelper.setUnit(volumeResolution,
-                VolumeUnit.fromString(volumeResolutionImpl.getUnit().toString()));
-            VolumeResolutionPropertiesHelper.setValue(volumeResolution, volumeResolutionImpl.getValue());
-            return volumeResolution;
-        } else if (resolution instanceof SpeedResolution) {
-            SpeedResolution speedResolutionImpl = (SpeedResolution) resolution;
-            com.azure.ai.textanalytics.models.SpeedResolution speedResolution =
-                new com.azure.ai.textanalytics.models.SpeedResolution();
-            SpeedResolutionPropertiesHelper.setUnit(speedResolution,
-                SpeedUnit.fromString(speedResolutionImpl.getUnit().toString()));
-            SpeedResolutionPropertiesHelper.setValue(speedResolution, speedResolutionImpl.getValue());
-            return speedResolution;
-        } else if (resolution instanceof AreaResolution) {
-            AreaResolution areaResolutionImpl = (AreaResolution) resolution;
-            com.azure.ai.textanalytics.models.AreaResolution areaResolution =
-                new com.azure.ai.textanalytics.models.AreaResolution();
-            AreaResolutionPropertiesHelper.setUnit(areaResolution,
-                AreaUnit.fromString(areaResolutionImpl.getUnit().toString()));
-            AreaResolutionPropertiesHelper.setValue(areaResolution, areaResolutionImpl.getValue());
-            return areaResolution;
-        } else if (resolution instanceof LengthResolution) {
-            LengthResolution lengthResolutionImpl = (LengthResolution) resolution;
-            com.azure.ai.textanalytics.models.LengthResolution lengthResolution =
-                new com.azure.ai.textanalytics.models.LengthResolution();
-            LengthResolutionPropertiesHelper.setUnit(lengthResolution,
-                LengthUnit.fromString(lengthResolutionImpl.getUnit().toString()));
-            LengthResolutionPropertiesHelper.setValue(lengthResolution, lengthResolutionImpl.getValue());
-            return lengthResolution;
-        } else if (resolution instanceof InformationResolution) {
-            InformationResolution informationResolutionImpl = (InformationResolution) resolution;
-            final com.azure.ai.textanalytics.models.InformationResolution informationResolution =
-                new com.azure.ai.textanalytics.models.InformationResolution();
-            InformationResolutionPropertiesHelper.setUnit(informationResolution,
-                InformationUnit.fromString(informationResolutionImpl.getUnit().toString()));
-            InformationResolutionPropertiesHelper.setValue(informationResolution, informationResolutionImpl.getValue());
-            return informationResolution;
-        } else if (resolution instanceof TemperatureResolution) {
-            TemperatureResolution temperatureResolutionImpl = (TemperatureResolution) resolution;
-            com.azure.ai.textanalytics.models.TemperatureResolution temperatureResolution =
-                new com.azure.ai.textanalytics.models.TemperatureResolution();
-            TemperatureResolutionPropertiesHelper.setUnit(temperatureResolution,
-                TemperatureUnit.fromString(temperatureResolutionImpl.getUnit().toString()));
-            TemperatureResolutionPropertiesHelper.setValue(temperatureResolution, temperatureResolutionImpl.getValue());
-            return temperatureResolution;
-        } else if (resolution instanceof WeightResolution) {
-            WeightResolution weightResolutionImpl = (WeightResolution) resolution;
-            com.azure.ai.textanalytics.models.WeightResolution weightResolution =
-                new com.azure.ai.textanalytics.models.WeightResolution();
-            WeightResolutionPropertiesHelper.setUnit(weightResolution,
-                WeightUnit.fromString(weightResolutionImpl.getUnit().toString()));
-            WeightResolutionPropertiesHelper.setValue(weightResolution, weightResolutionImpl.getValue());
-            return weightResolution;
-        } else if (resolution instanceof CurrencyResolution) {
-            CurrencyResolution currencyResolutionImpl = (CurrencyResolution) resolution;
-            com.azure.ai.textanalytics.models.CurrencyResolution currencyResolution
-                    = new com.azure.ai.textanalytics.models.CurrencyResolution();
-            CurrencyResolutionPropertiesHelper.setISO4217(currencyResolution, currencyResolutionImpl.getIso4217());
-            CurrencyResolutionPropertiesHelper.setUnit(currencyResolution, currencyResolutionImpl.getUnit());
-            CurrencyResolutionPropertiesHelper.setValue(currencyResolution, currencyResolutionImpl.getValue());
-            return currencyResolution;
-        } else if (resolution instanceof DateTimeResolution) {
-            DateTimeResolution dateTimeResolutionImpl = (DateTimeResolution) resolution;
-            com.azure.ai.textanalytics.models.DateTimeResolution dateTimeResolution
-                    = new com.azure.ai.textanalytics.models.DateTimeResolution();
-            DateTimeResolutionPropertiesHelper.setTimex(dateTimeResolution, dateTimeResolutionImpl.getTimex());
-            DateTimeResolutionPropertiesHelper.setDateTimeSubKind(dateTimeResolution,
-                DateTimeSubKind.fromString(dateTimeResolutionImpl.getDateTimeSubKind().toString()));
-            DateTimeResolutionPropertiesHelper.setValue(dateTimeResolution, dateTimeResolutionImpl.getValue());
-            DateTimeResolutionPropertiesHelper.setModifier(dateTimeResolution,
-                    TemporalModifier.fromString(dateTimeResolutionImpl.getModifier().toString()));
-            return dateTimeResolution;
-        } else if (resolution instanceof NumberResolution) {
-            NumberResolution numberResolutionImpl = (NumberResolution) resolution;
-            com.azure.ai.textanalytics.models.NumberResolution numberResolution =
-                new com.azure.ai.textanalytics.models.NumberResolution();
-            NumberResolutionPropertiesHelper.setNumberKind(numberResolution,
-                NumberKind.fromString(numberResolutionImpl.getNumberKind().toString()));
-            NumberResolutionPropertiesHelper.setValue(numberResolution, numberResolutionImpl.getValue());
-            return numberResolution;
-        } else if (resolution instanceof OrdinalResolution) {
-            OrdinalResolution ordinalResolutionImpl = (OrdinalResolution) resolution;
-            com.azure.ai.textanalytics.models.OrdinalResolution ordinalResolution =
-                new com.azure.ai.textanalytics.models.OrdinalResolution();
-            OrdinalResolutionPropertiesHelper.setOffset(ordinalResolution, ordinalResolutionImpl.getOffset());
-            OrdinalResolutionPropertiesHelper.setRelativeTo(ordinalResolution,
-                RelativeTo.fromString(ordinalResolutionImpl.getRelativeTo().toString()));
-            OrdinalResolutionPropertiesHelper.setValue(ordinalResolution, ordinalResolutionImpl.getValue());
-            return ordinalResolution;
-        } else if (resolution instanceof TemporalSpanResolution) {
-            TemporalSpanResolution temporalSpanResolutionImpl = (TemporalSpanResolution) resolution;
-            com.azure.ai.textanalytics.models.TemporalSpanResolution temporalSpanResolution
-                    = new com.azure.ai.textanalytics.models.TemporalSpanResolution();
-            TemporalSpanResolutionPropertiesHelper.setBegin(temporalSpanResolution,
-                    temporalSpanResolutionImpl.getBegin());
-            TemporalSpanResolutionPropertiesHelper.setEnd(temporalSpanResolution,
-                    temporalSpanResolutionImpl.getEnd());
-            TemporalSpanResolutionPropertiesHelper.setDuration(temporalSpanResolution,
-                    temporalSpanResolutionImpl.getDuration());
-            TemporalSpanResolutionPropertiesHelper.setModifier(temporalSpanResolution,
-                    TemporalModifier.fromString(temporalSpanResolutionImpl.getModifier().toString()));
-            return temporalSpanResolution;
-        } else if (resolution instanceof NumericRangeResolution) {
-            NumericRangeResolution numericRangeResolutionImpl = (NumericRangeResolution) resolution;
-            com.azure.ai.textanalytics.models.NumericRangeResolution numericRangeResolution =
-                new com.azure.ai.textanalytics.models.NumericRangeResolution();
-            NumericRangeResolutionPropertiesHelper.setRangeKind(numericRangeResolution,
-                RangeKind.fromString(numericRangeResolutionImpl.getRangeKind().toString()));
-            NumericRangeResolutionPropertiesHelper.setMinimum(numericRangeResolution,
-                numericRangeResolutionImpl.getMinimum());
-            NumericRangeResolutionPropertiesHelper.setMaximum(numericRangeResolution,
-                numericRangeResolutionImpl.getMaximum());
-            return numericRangeResolution;
-        } else {
-            // else throw exception
-            throw LOGGER.logExceptionAsError(new RuntimeException("Unknown Resolution type: " + resolution.getClass()));
-        }
-    }
-
-    public static RecognizeEntitiesResult toRecognizeEntitiesResult(
-        EntitiesResultWithDetectedLanguage documentEntities) {
+    public static RecognizeEntitiesResult toRecognizeEntitiesResult(EntitiesResultDocumentsItem documentEntities) {
         final RecognizeEntitiesResult recognizeEntitiesResult = new RecognizeEntitiesResult(
             documentEntities.getId(),
             documentEntities.getStatistics() == null ? null
@@ -801,16 +620,10 @@ public final class Utility {
                         entity.getConfidenceScore());
                     CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
                     CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
-                    CategorizedEntityPropertiesHelper.setResolutions(categorizedEntity, toBaseResolutions(
-                        entity.getResolutions()));
                     return categorizedEntity;
                 }).collect(Collectors.toList())),
                 new IterableStream<>(documentEntities.getWarnings().stream().map(
                     warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))));
-        if (documentEntities.getDetectedLanguage() != null) {
-            RecognizeEntitiesResultPropertiesHelper.setDetectedLanguage(recognizeEntitiesResult,
-                toDetectedLanguage(documentEntities.getDetectedLanguage()));
-        }
         return recognizeEntitiesResult;
     }
 
@@ -827,16 +640,10 @@ public final class Utility {
                         entity.getConfidenceScore());
                     CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
                     CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
-                    CategorizedEntityPropertiesHelper.setResolutions(categorizedEntity,
-                        toBaseResolutions(entity.getResolutions()));
                     return categorizedEntity;
                 }).collect(Collectors.toList())),
                 new IterableStream<>(documentEntities.getWarnings().stream().map(
                     warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))));
-        if (documentEntities.getDetectedLanguage() != null) {
-            RecognizeEntitiesResultPropertiesHelper.setDetectedLanguage(recognizeEntitiesResult,
-                toDetectedLanguage(documentEntities.getDetectedLanguage()));
-        }
         return recognizeEntitiesResult;
     }
 
@@ -878,20 +685,17 @@ public final class Utility {
                 null,
                 new PiiEntityCollection(new IterableStream<>(piiEntities), documentEntities.getRedactedText(),
                     new IterableStream<>(warnings)));
-            if (documentEntities.getDetectedLanguage() != null) {
-                RecognizePiiEntitiesResultPropertiesHelper.setDetectedLanguage(recognizePiiEntitiesResult,
-                    toDetectedLanguage(documentEntities.getDetectedLanguage()));
-            }
             // Document result list
             recognizePiiEntitiesResults.add(recognizePiiEntitiesResult);
         });
         // Document errors
-        for (InputError documentError : piiEntitiesResult.getErrors()) {
+        for (DocumentError documentError : piiEntitiesResult.getErrors()) {
             recognizePiiEntitiesResults.add(new RecognizePiiEntitiesResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
 
-        return new RecognizePiiEntitiesResultCollection(recognizePiiEntitiesResults, piiEntitiesResult.getModelVersion(),
+        return new RecognizePiiEntitiesResultCollection(recognizePiiEntitiesResults,
+            piiEntitiesResult.getModelVersion(),
             piiEntitiesResult.getStatistics() == null ? null : toBatchStatistics(piiEntitiesResult.getStatistics()));
     }
 
@@ -909,15 +713,11 @@ public final class Utility {
                     new IterableStream<>(documentKeyPhrases.getKeyPhrases()),
                     new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(
                         warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))));
-            if (documentKeyPhrases.getDetectedLanguage() != null) {
-                ExtractKeyPhraseResultPropertiesHelper.setDetectedLanguage(extractKeyPhraseResult,
-                    toDetectedLanguage(documentKeyPhrases.getDetectedLanguage()));
-            }
             // Document result list
             keyPhraseResultList.add(extractKeyPhraseResult);
         }
         // Document errors
-        for (InputError documentError : keyPhraseResult.getErrors()) {
+        for (DocumentError documentError : keyPhraseResult.getErrors()) {
             keyPhraseResultList.add(new ExtractKeyPhraseResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
@@ -974,15 +774,11 @@ public final class Utility {
                                 }).collect(Collectors.toList())),
                             new IterableStream<>(documentLinkedEntities.getWarnings().stream().map(
                                 warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))));
-                    if (documentLinkedEntities.getDetectedLanguage() != null) {
-                        RecognizeLinkedEntitiesResultPropertiesHelper.setDetectedLanguage(recognizeLinkedEntitiesResult,
-                            toDetectedLanguage(documentLinkedEntities.getDetectedLanguage()));
-                    }
                     return recognizeLinkedEntitiesResult;
                 }).collect(Collectors.toList());
 
         // Document errors
-        for (InputError documentError : entityLinkingResult.getErrors()) {
+        for (DocumentError documentError : entityLinkingResult.getErrors()) {
             linkedEntitiesResults.add(new RecognizeLinkedEntitiesResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
@@ -1006,7 +802,7 @@ public final class Utility {
         for (SentimentResponseDocumentsItem documentSentiment : documentSentiments) {
             analyzeSentimentResults.add(toAnalyzeSentimentResult(documentSentiment, documentSentiments));
         }
-        for (InputError documentError : sentimentResponse.getErrors()) {
+        for (DocumentError documentError : sentimentResponse.getErrors()) {
             analyzeSentimentResults.add(new AnalyzeSentimentResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
@@ -1088,7 +884,7 @@ public final class Utility {
                         healthcareRelation -> {
                             final HealthcareEntityRelation entityRelation = new HealthcareEntityRelation();
                             // Healthcare relation type
-                            final RelationType relationType = healthcareRelation.getRelationType();
+                            final HealthcareEntityRelationType relationType = healthcareRelation.getRelationType();
                             if (relationType != null) {
                                 HealthcareEntityRelationPropertiesHelper.setRelationType(entityRelation,
                                     HealthcareEntityRelationType.fromString(relationType.toString()));
@@ -1114,16 +910,7 @@ public final class Utility {
                         }).collect(Collectors.toList());
                 AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntityRelations(analyzeHealthcareEntitiesResult,
                     IterableStream.of(healthcareEntityRelations));
-                AnalyzeHealthcareEntitiesResultPropertiesHelper.setFhirBundle(analyzeHealthcareEntitiesResult,
-                    documentEntities.getFhirBundle());
-                if (documentEntities.getDetectedLanguage() != null) {
-                    AnalyzeHealthcareEntitiesResultPropertiesHelper.setDetectedLanguage(analyzeHealthcareEntitiesResult,
-                        toDetectedLanguage(
-                            // TODO: https://github.com/Azure/azure-sdk-for-java/issues/32252
-                            new com.azure.ai.textanalytics.implementation.models.DetectedLanguage()
-                                .setName(documentEntities.getDetectedLanguage())
-                        ));
-                }
+
                 analyzeHealthcareEntitiesResults.add(analyzeHealthcareEntitiesResult);
             });
         // Document errors
@@ -1132,10 +919,6 @@ public final class Utility {
                 documentError.getId(), null, toTextAnalyticsError(documentError.getError())))
         );
         return new AnalyzeHealthcareEntitiesResultCollection(IterableStream.of(analyzeHealthcareEntitiesResults));
-    }
-
-    public static FhirVersion toFhirVersion(com.azure.ai.textanalytics.models.FhirVersion fhirVersion) {
-        return fhirVersion == null ? null : FhirVersion.fromString(fhirVersion.toString());
     }
 
     public static HealthcareEntityAssertion toHealthcareEntityAssertion(HealthcareAssertion healthcareAssertion) {
@@ -1321,11 +1104,6 @@ public final class Utility {
                 new IterableStream<>(sentenceSentiments),
                 new IterableStream<>(warnings)
             ));
-
-        if (documentSentiment.getDetectedLanguage() != null) {
-            AnalyzeSentimentResultPropertiesHelper.setDetectedLanguage(analyzeSentimentResult,
-                toDetectedLanguage(documentSentiment.getDetectedLanguage()));
-        }
         return analyzeSentimentResult;
     }
 
@@ -1484,10 +1262,6 @@ public final class Utility {
         }
         ClassifyDocumentResultPropertiesHelper.setWarnings(classifyDocumentResult,
             new IterableStream<>(warnings));
-        if (singleClassificationDocument.getDetectedLanguage() != null) {
-            ClassifyDocumentResultPropertiesHelper.setDetectedLanguage(classifyDocumentResult,
-                toDetectedLanguage(singleClassificationDocument.getDetectedLanguage()));
-        }
         return classifyDocumentResult;
     }
 
@@ -1505,14 +1279,14 @@ public final class Utility {
 
     public static AbstractiveSummaryResultCollection toAbstractiveSummaryResultCollection(
         AbstractiveSummarizationResult abstractiveSummarizationResult) {
-        List<AbstractiveSummaryDocumentResultWithDetectedLanguage> documentResults = abstractiveSummarizationResult.getDocuments();
+        List<AbstractiveSummaryDocumentResult> documentResults = abstractiveSummarizationResult.getDocuments();
         List<AbstractiveSummaryResult> summaryResults = new ArrayList<>();
-        for (AbstractiveSummaryDocumentResultWithDetectedLanguage documentResult : documentResults) {
+        for (AbstractiveSummaryDocumentResult documentResult : documentResults) {
             summaryResults.add(toAbstractiveSummaryResult(documentResult));
         }
 
         // Document errors
-        for (InputError documentError : abstractiveSummarizationResult.getErrors()) {
+        for (DocumentError documentError : abstractiveSummarizationResult.getErrors()) {
             summaryResults.add(new AbstractiveSummaryResult(documentError.getId(), null,
                     toTextAnalyticsError(documentError.getError())));
         }
@@ -1527,7 +1301,7 @@ public final class Utility {
     }
 
     public static AbstractiveSummaryResult toAbstractiveSummaryResult(
-        AbstractiveSummaryDocumentResultWithDetectedLanguage documentResult) {
+        AbstractiveSummaryDocumentResult documentResult) {
         AbstractiveSummaryResult summaryResult = new AbstractiveSummaryResult(
             documentResult.getId(),
             documentResult.getStatistics() == null ? null : toTextDocumentStatistics(documentResult.getStatistics()),
@@ -1536,11 +1310,6 @@ public final class Utility {
 
         AbstractiveSummaryResultPropertiesHelper.setSummaries(summaryResult,
             new IterableStream<>(toAbstractiveSummaries(documentResult.getSummaries())));
-        if (documentResult.getDetectedLanguage() != null) {
-            AbstractiveSummaryResultPropertiesHelper.setDetectedLanguage(summaryResult,
-                toDetectedLanguage(documentResult.getDetectedLanguage()));
-        }
-
         // Warnings
         final List<TextAnalyticsWarning> warnings = documentResult.getWarnings().stream().map(
                 warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
@@ -1587,13 +1356,13 @@ public final class Utility {
     public static ExtractiveSummaryResultCollection toExtractiveSummaryResultCollection(
         ExtractiveSummarizationResult extractiveSummarizationResult) {
         final List<ExtractiveSummaryResult> extractiveSummaryResults = new ArrayList<>();
-        final List<ExtractedSummaryDocumentResultWithDetectedLanguage> extractedDocumentSummaries =
+        final List<ExtractedSummaryDocumentResult> extractedDocumentSummaries =
             extractiveSummarizationResult.getDocuments();
 
-        for (ExtractedSummaryDocumentResultWithDetectedLanguage documentSummary : extractedDocumentSummaries) {
+        for (ExtractedSummaryDocumentResult documentSummary : extractedDocumentSummaries) {
             extractiveSummaryResults.add(toExtractiveSummaryResult(documentSummary));
         }
-        for (InputError documentError : extractiveSummarizationResult.getErrors()) {
+        for (DocumentError documentError : extractiveSummarizationResult.getErrors()) {
             extractiveSummaryResults.add(new ExtractiveSummaryResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError())));
         }
@@ -1608,7 +1377,7 @@ public final class Utility {
     }
 
     private static ExtractiveSummaryResult toExtractiveSummaryResult(
-        ExtractedSummaryDocumentResultWithDetectedLanguage documentSummary) {
+        ExtractedSummaryDocumentResult documentSummary) {
         final List<ExtractedSummarySentence> sentences = documentSummary.getSentences();
         final List<ExtractiveSummarySentence> extractiveSummarySentences = sentences.stream().map(sentence -> {
             final ExtractiveSummarySentence extractiveSummarySentence = new ExtractiveSummarySentence();
@@ -1632,11 +1401,6 @@ public final class Utility {
             new IterableStream<>(extractiveSummarySentences));
         ExtractiveSummaryResultPropertiesHelper.setWarnings(extractiveSummaryResult,
             new IterableStream<>(warnings));
-
-        if (documentSummary.getDetectedLanguage() != null) {
-            ExtractiveSummaryResultPropertiesHelper.setDetectedLanguage(extractiveSummaryResult,
-                toDetectedLanguage(documentSummary.getDetectedLanguage()));
-        }
         return extractiveSummaryResult;
     }
 

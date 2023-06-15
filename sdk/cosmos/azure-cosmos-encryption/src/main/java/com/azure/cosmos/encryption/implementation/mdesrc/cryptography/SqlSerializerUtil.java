@@ -516,9 +516,9 @@ final class SqlSerializerUtil {
             }
 
             case DATETIME: {
-                int ticksSinceMidnight = (readInt(decryptedValue, 4) * 10 + 1) / 3;
+                long ticksSinceMidnight = ((long)readInt(decryptedValue, 4) * 10 + 1) / 3;
 
-                if (8 != decryptedValue.length || Integer.MAX_VALUE < ticksSinceMidnight) {
+                if (8 != decryptedValue.length || Integer.MAX_VALUE < ticksSinceMidnight || ticksSinceMidnight < 0) {
                     MessageFormat form = new MessageFormat(
                             MicrosoftDataEncryptionExceptionResource.getResource("R_InvalidDataType"));
                     Object[] msgArgs = {ssType};

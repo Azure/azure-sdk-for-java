@@ -18,9 +18,7 @@ import com.azure.ai.textanalytics.implementation.models.AnalyzeTextsSubmitJobHea
 import com.azure.ai.textanalytics.implementation.models.CancelHealthJobHeaders;
 import com.azure.ai.textanalytics.implementation.models.Error;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
-import com.azure.ai.textanalytics.implementation.models.FhirVersion;
 import com.azure.ai.textanalytics.implementation.models.HealthHeaders;
-import com.azure.ai.textanalytics.implementation.models.HealthcareDocumentType;
 import com.azure.ai.textanalytics.implementation.models.HealthcareJobState;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROResult;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROTask;
@@ -76,7 +74,6 @@ import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
 import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeHealthcareEntitiesResultCollection;
-import static com.azure.ai.textanalytics.implementation.Utility.toFhirVersion;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.models.State.CANCELLED;
 import static com.azure.ai.textanalytics.implementation.models.State.NOT_STARTED;
@@ -120,9 +117,6 @@ class AnalyzeHealthcareEntityUtilClient {
             final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
             final String finalModelVersion = options.getModelVersion();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
-            final FhirVersion finalFhirVersion = toFhirVersion(options.getFhirVersion());
-            final HealthcareDocumentType finalDocumentType = options.getDocumentType() == null ? null
-                : HealthcareDocumentType.fromString(options.getDocumentType().toString());
 
             if (service != null) {
                 final String displayName = options.getDisplayName();
@@ -137,8 +131,6 @@ class AnalyzeHealthcareEntityUtilClient {
                                 .setTasks(Arrays.asList(
                                     new HealthcareLROTask().setParameters(
                                         new HealthcareTaskParameters()
-                                            .setDocumentType(finalDocumentType)
-                                            .setFhirVersion(finalFhirVersion)
                                             .setStringIndexType(finalStringIndexType)
                                             .setModelVersion(finalModelVersion)
                                             .setLoggingOptOut(finalLoggingOptOut)))),
@@ -204,16 +196,11 @@ class AnalyzeHealthcareEntityUtilClient {
             final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
             final String finalModelVersion = options.getModelVersion();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
-            final FhirVersion finalFhirVersion = toFhirVersion(options.getFhirVersion());
-            final HealthcareDocumentType finalDocumentType = options.getDocumentType() == null ? null
-                : HealthcareDocumentType.fromString(options.getDocumentType().toString());
 
             if (service != null) {
                 final String displayName = options.getDisplayName();
                 final HealthcareLROTask task = new HealthcareLROTask().setParameters(
                     new HealthcareTaskParameters()
-                        .setFhirVersion(finalFhirVersion)
-                        .setDocumentType(finalDocumentType)
                         .setStringIndexType(finalStringIndexType)
                         .setModelVersion(finalModelVersion)
                         .setLoggingOptOut(finalLoggingOptOut));

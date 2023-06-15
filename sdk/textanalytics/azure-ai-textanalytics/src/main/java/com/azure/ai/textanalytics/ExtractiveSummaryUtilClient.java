@@ -19,7 +19,6 @@ import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationLROResult;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationLROTask;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationResult;
-import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationSortingCriteria;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
@@ -114,7 +113,7 @@ class ExtractiveSummaryUtilClient {
                                     new ExtractiveSummarizationTaskParameters()
                                         .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                                         .setSortBy(orderBy == null ? null
-                                            : ExtractiveSummarizationSortingCriteria.fromString(orderBy.toString()))
+                                            : ExtractiveSummarySentencesOrder.fromString(orderBy.toString()))
                                         .setSentenceCount(options.getMaxSentenceCount())
                                         .setModelVersion(options.getModelVersion())
                                         .setLoggingOptOut(options.isServiceLogsDisabled())
@@ -156,8 +155,7 @@ class ExtractiveSummaryUtilClient {
             final ExtractiveSummarizationLROTask task = new ExtractiveSummarizationLROTask().setParameters(
                 new ExtractiveSummarizationTaskParameters()
                     .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
-                    .setSortBy(orderBy == null ? null
-                        : ExtractiveSummarizationSortingCriteria.fromString(orderBy.toString()))
+                    .setSortBy(orderBy == null ? null : ExtractiveSummarySentencesOrder.fromString(orderBy.toString()))
                     .setSentenceCount(options.getMaxSentenceCount())
                     .setModelVersion(options.getModelVersion())
                     .setLoggingOptOut(options.isServiceLogsDisabled()));
@@ -419,6 +417,6 @@ class ExtractiveSummaryUtilClient {
             Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1,
                 TextAnalyticsServiceVersion.V2022_05_01),
             getUnsupportedServiceApiVersionMessage("Extractive Summarization", serviceVersion,
-                TextAnalyticsServiceVersion.V2022_10_01_PREVIEW));
+                TextAnalyticsServiceVersion.V2023_04_01));
     }
 }

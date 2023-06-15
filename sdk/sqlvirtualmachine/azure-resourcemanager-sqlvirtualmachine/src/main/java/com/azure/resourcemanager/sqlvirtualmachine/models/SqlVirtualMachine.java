@@ -172,7 +172,14 @@ public interface SqlVirtualMachine {
     StorageConfigurationSettings storageConfigurationSettings();
 
     /**
-     * Gets the assessmentSettings property: Assessment Settings.
+     * Gets the troubleshootingStatus property: Troubleshooting status.
+     *
+     * @return the troubleshootingStatus value.
+     */
+    TroubleshootingStatus troubleshootingStatus();
+
+    /**
+     * Gets the assessmentSettings property: SQL best practices Assessment Settings.
      *
      * @return the assessmentSettings value.
      */
@@ -454,9 +461,9 @@ public interface SqlVirtualMachine {
         /** The stage of the SqlVirtualMachine definition allowing to specify assessmentSettings. */
         interface WithAssessmentSettings {
             /**
-             * Specifies the assessmentSettings property: Assessment Settings..
+             * Specifies the assessmentSettings property: SQL best practices Assessment Settings..
              *
-             * @param assessmentSettings Assessment Settings.
+             * @param assessmentSettings SQL best practices Assessment Settings.
              * @return the next definition stage.
              */
             WithCreate withAssessmentSettings(AssessmentSettings assessmentSettings);
@@ -525,7 +532,7 @@ public interface SqlVirtualMachine {
     SqlVirtualMachine refresh(Context context);
 
     /**
-     * Starts Assessment on SQL virtual machine.
+     * Starts SQL best practices Assessment on SQL virtual machine.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -533,7 +540,7 @@ public interface SqlVirtualMachine {
     void startAssessment();
 
     /**
-     * Starts Assessment on SQL virtual machine.
+     * Starts SQL best practices Assessment on SQL virtual machine.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -543,7 +550,7 @@ public interface SqlVirtualMachine {
     void startAssessment(Context context);
 
     /**
-     * Uninstalls and reinstalls the SQL Iaas Extension.
+     * Uninstalls and reinstalls the SQL IaaS Extension.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -551,7 +558,7 @@ public interface SqlVirtualMachine {
     void redeploy();
 
     /**
-     * Uninstalls and reinstalls the SQL Iaas Extension.
+     * Uninstalls and reinstalls the SQL IaaS Extension.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

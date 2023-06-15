@@ -36,6 +36,7 @@ Tests:
 - Test: download-file
   Class: downloadblobtofile
   Arguments: &file-sizes
+  - --size 10240 --parallel 64
   - --size 10485760 --parallel 32
 
 - Test: upload

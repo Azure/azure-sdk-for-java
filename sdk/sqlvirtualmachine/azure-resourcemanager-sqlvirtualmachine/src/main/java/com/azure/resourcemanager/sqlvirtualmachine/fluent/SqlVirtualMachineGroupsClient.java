@@ -22,20 +22,6 @@ public interface SqlVirtualMachineGroupsClient {
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
      *     the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL virtual machine group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlVirtualMachineGroupInner getByResourceGroup(String resourceGroupName, String sqlVirtualMachineGroupName);
-
-    /**
-     * Gets a SQL virtual machine group.
-     *
-     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
-     * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,6 +31,20 @@ public interface SqlVirtualMachineGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SqlVirtualMachineGroupInner> getByResourceGroupWithResponse(
         String resourceGroupName, String sqlVirtualMachineGroupName, Context context);
+
+    /**
+     * Gets a SQL virtual machine group.
+     *
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     *     the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a SQL virtual machine group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SqlVirtualMachineGroupInner getByResourceGroup(String resourceGroupName, String sqlVirtualMachineGroupName);
 
     /**
      * Creates or updates a SQL virtual machine group.

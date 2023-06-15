@@ -61,10 +61,7 @@ import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationLROResult;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationLROTask;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationResult;
-import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationSortingCriteria;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationTaskParameters;
-import com.azure.ai.textanalytics.implementation.models.FhirVersion;
-import com.azure.ai.textanalytics.implementation.models.HealthcareDocumentType;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROResult;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROTask;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
@@ -564,13 +561,7 @@ class AnalyzeActionsUtilClient {
     }
 
     private HealthcareTaskParameters getHealthcareTaskParameters(AnalyzeHealthcareEntitiesAction action) {
-        final com.azure.ai.textanalytics.models.FhirVersion fhirVersion = action.getFhirVersion();
-        final FhirVersion fhirVersionImpl = fhirVersion == null ? null : FhirVersion.fromString(fhirVersion.toString());
-        final HealthcareDocumentType documentTypeImpl = action.getDocumentType() == null ? null
-            : HealthcareDocumentType.fromString(action.getDocumentType().toString());
         return new HealthcareTaskParameters()
-            .setDocumentType(documentTypeImpl)
-            .setFhirVersion(fhirVersionImpl)
             .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
             .setModelVersion(action.getModelVersion())
             .setLoggingOptOut(action.isServiceLogsDisabled());
@@ -772,7 +763,7 @@ class AnalyzeActionsUtilClient {
             .setModelVersion(action.getModelVersion())
             .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
             .setSentenceCount(action.getMaxSentenceCount())
-            .setSortBy(orderBy == null ? null : ExtractiveSummarizationSortingCriteria.fromString(orderBy.toString()));
+            .setSortBy(orderBy == null ? null : ExtractiveSummarySentencesOrder.fromString(orderBy.toString()));
     }
 
     private AbstractiveSummarizationLROTask toAbstractiveSummarizationLROTask(AbstractiveSummaryAction action) {
