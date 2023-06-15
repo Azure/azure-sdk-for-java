@@ -1,5 +1,15 @@
 # Release History
 
+## 12.8.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 12.7.2 (2023-06-14)
 
 ### Other Changes
