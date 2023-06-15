@@ -33,5 +33,5 @@ extends:
     AdditionalModules:
       - name: azure-spring-data-cosmos
         groupId: com.azure
-  MatrixFilters:
-    - AdditionalArgs=^(?!-Dspring-e2e).*
+    MatrixFilters:
+      - AdditionalArgs=^(?!-Dspring-e2e).*
