@@ -59,8 +59,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     public interface PrivateLinkResourcesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks"
-                + "/workspaces/{workspaceName}/privateLinkResources")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/privateLinkResources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorInfoException.class)
         Mono<Response<PrivateLinkResourcesList>> list(
@@ -74,8 +73,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks"
-                + "/workspaces/{workspaceName}/privateLinkResources/{groupId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/privateLinkResources/{groupId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorInfoException.class)
         Mono<Response<GroupIdInformationInner>> get(
@@ -134,6 +132,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -143,7 +142,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -195,6 +194,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -202,7 +202,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context)
@@ -331,6 +331,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -340,7 +341,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             groupId,
                             accept,
@@ -388,6 +389,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -395,7 +397,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 groupId,
                 accept,

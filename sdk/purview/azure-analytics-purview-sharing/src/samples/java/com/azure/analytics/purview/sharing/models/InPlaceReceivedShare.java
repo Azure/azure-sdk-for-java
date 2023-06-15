@@ -4,14 +4,17 @@
 
 package com.azure.analytics.purview.sharing.models;
 
+import java.time.OffsetDateTime;
+
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.time.OffsetDateTime;
 
-/** An InPlace received share kind. */
+/**
+ * An InPlace received share kind.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "shareKind")
 @JsonTypeName("InPlace")
 @JsonFlatten
@@ -26,11 +29,12 @@ public class InPlaceReceivedShare extends ReceivedShare {
     /*
      * The types of asset.
      */
-    @JsonProperty(value = "properties.assetStoreKind", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.assetStoreKind")
     private StoreKind assetStoreKind;
 
     /*
-     * Time at which the received share was created.
+     * Time at which the received share was created. Represented in the standard date-time format as defined by [RFC
+     * 3339](https://www.rfc-editor.org/rfc/rfc3339)
      */
     @JsonProperty(value = "properties.createdAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdAt;
@@ -42,16 +46,11 @@ public class InPlaceReceivedShare extends ReceivedShare {
     private String displayName;
 
     /*
-     * The expiration date of the received share.
+     * The expiration date of the received share. Represented in the standard date-time format as defined by [RFC
+     * 3339](https://www.rfc-editor.org/rfc/rfc3339)
      */
     @JsonProperty(value = "properties.expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expirationDate;
-
-    /*
-     * Provisioning status of the resource
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
 
     /*
      * Email of the user/receiver who received the sent share invitation
@@ -96,7 +95,8 @@ public class InPlaceReceivedShare extends ReceivedShare {
     private String sentShareDescription;
 
     /*
-     * Time at which the sent share was shared.
+     * Time at which the sent share was shared. Represented in the standard date-time format as defined by [RFC
+     * 3339](https://www.rfc-editor.org/rfc/rfc3339)
      */
     @JsonProperty(value = "properties.sharedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime sharedAt;
@@ -104,21 +104,30 @@ public class InPlaceReceivedShare extends ReceivedShare {
     /*
      * Share status.
      */
-    @JsonProperty(value = "properties.shareStatus", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.shareStatus")
     private ShareStatus shareStatus;
 
     /*
-     * Received share sink
+     * Holds details on the destination of the mapped artifact
      */
     @JsonProperty(value = "properties.sink")
     private Sink sink;
 
-    /** Creates an instance of InPlaceReceivedShare class. */
-    public InPlaceReceivedShare() {}
+    /*
+     * State of the resource
+     */
+    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
+    private State state;
+
+    /**
+     * Creates an instance of InPlaceReceivedShare class.
+     */
+    public InPlaceReceivedShare() {
+    }
 
     /**
      * Get the assetLocation property: Location of the shared Asset.
-     *
+     * 
      * @return the assetLocation value.
      */
     public String getAssetLocation() {
@@ -127,7 +136,7 @@ public class InPlaceReceivedShare extends ReceivedShare {
 
     /**
      * Get the assetStoreKind property: The types of asset.
-     *
+     * 
      * @return the assetStoreKind value.
      */
     public StoreKind getAssetStoreKind() {
@@ -136,7 +145,7 @@ public class InPlaceReceivedShare extends ReceivedShare {
 
     /**
      * Set the assetStoreKind property: The types of asset.
-     *
+     * 
      * @param assetStoreKind the assetStoreKind value to set.
      * @return the InPlaceReceivedShare object itself.
      */
@@ -146,8 +155,9 @@ public class InPlaceReceivedShare extends ReceivedShare {
     }
 
     /**
-     * Get the createdAt property: Time at which the received share was created.
-     *
+     * Get the createdAt property: Time at which the received share was created. Represented in the standard date-time
+     * format as defined by [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339).
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime getCreatedAt() {
@@ -156,7 +166,7 @@ public class InPlaceReceivedShare extends ReceivedShare {
 
     /**
      * Get the displayName property: Received Share Name.
-     *
+     * 
      * @return the displayName value.
      */
     public String getDisplayName() {
@@ -165,7 +175,7 @@ public class InPlaceReceivedShare extends ReceivedShare {
 
     /**
      * Set the displayName property: Received Share Name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the InPlaceReceivedShare object itself.
      */
@@ -175,8 +185,9 @@ public class InPlaceReceivedShare extends ReceivedShare {
     }
 
     /**
-     * Get the expirationDate property: The expiration date of the received share.
-     *
+     * Get the expirationDate property: The expiration date of the received share. Represented in the standard
+     * date-time format as defined by [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339).
+     * 
      * @return the expirationDate value.
      */
     public OffsetDateTime getExpirationDate() {
@@ -184,17 +195,8 @@ public class InPlaceReceivedShare extends ReceivedShare {
     }
 
     /**
-     * Get the provisioningState property: Provisioning status of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState getProvisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
      * Get the receiverEmail property: Email of the user/receiver who received the sent share invitation.
-     *
+     * 
      * @return the receiverEmail value.
      */
     public String getReceiverEmail() {
@@ -203,7 +205,7 @@ public class InPlaceReceivedShare extends ReceivedShare {
 
     /**
      * Get the receiverName property: Name of the user/receiver who received the sent share invitation.
-     *
+     * 
      * @return the receiverName value.
      */
     public String getReceiverName() {
@@ -212,7 +214,7 @@ public class InPlaceReceivedShare extends ReceivedShare {
 
     /**
      * Get the receiverTenantName property: Tenant name of the user/receiver who received the sent share invitation.
-     *
+     * 
      * @return the receiverTenantName value.
      */
     public String getReceiverTenantName() {
@@ -221,7 +223,7 @@ public class InPlaceReceivedShare extends ReceivedShare {
 
     /**
      * Get the senderEmail property: Email of the sender who created the sent share invitation.
-     *
+     * 
      * @return the senderEmail value.
      */
     public String getSenderEmail() {
@@ -230,7 +232,7 @@ public class InPlaceReceivedShare extends ReceivedShare {
 
     /**
      * Get the senderName property: Name of the sender who created the sent share invitation.
-     *
+     * 
      * @return the senderName value.
      */
     public String getSenderName() {
@@ -239,7 +241,7 @@ public class InPlaceReceivedShare extends ReceivedShare {
 
     /**
      * Get the senderTenantName property: Tenant name of the sender who created the sent share invitation.
-     *
+     * 
      * @return the senderTenantName value.
      */
     public String getSenderTenantName() {
@@ -248,7 +250,7 @@ public class InPlaceReceivedShare extends ReceivedShare {
 
     /**
      * Get the sentShareDescription property: Share description.
-     *
+     * 
      * @return the sentShareDescription value.
      */
     public String getSentShareDescription() {
@@ -256,8 +258,9 @@ public class InPlaceReceivedShare extends ReceivedShare {
     }
 
     /**
-     * Get the sharedAt property: Time at which the sent share was shared.
-     *
+     * Get the sharedAt property: Time at which the sent share was shared. Represented in the standard date-time format
+     * as defined by [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339).
+     * 
      * @return the sharedAt value.
      */
     public OffsetDateTime getSharedAt() {
@@ -266,7 +269,7 @@ public class InPlaceReceivedShare extends ReceivedShare {
 
     /**
      * Get the shareStatus property: Share status.
-     *
+     * 
      * @return the shareStatus value.
      */
     public ShareStatus getShareStatus() {
@@ -275,7 +278,7 @@ public class InPlaceReceivedShare extends ReceivedShare {
 
     /**
      * Set the shareStatus property: Share status.
-     *
+     * 
      * @param shareStatus the shareStatus value to set.
      * @return the InPlaceReceivedShare object itself.
      */
@@ -285,8 +288,8 @@ public class InPlaceReceivedShare extends ReceivedShare {
     }
 
     /**
-     * Get the sink property: Received share sink.
-     *
+     * Get the sink property: Holds details on the destination of the mapped artifact.
+     * 
      * @return the sink value.
      */
     public Sink getSink() {
@@ -294,13 +297,22 @@ public class InPlaceReceivedShare extends ReceivedShare {
     }
 
     /**
-     * Set the sink property: Received share sink.
-     *
+     * Set the sink property: Holds details on the destination of the mapped artifact.
+     * 
      * @param sink the sink value to set.
      * @return the InPlaceReceivedShare object itself.
      */
     public InPlaceReceivedShare setSink(Sink sink) {
         this.sink = sink;
         return this;
+    }
+
+    /**
+     * Get the state property: State of the resource.
+     * 
+     * @return the state value.
+     */
+    public State getState() {
+        return this.state;
     }
 }

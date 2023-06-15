@@ -1,5 +1,5 @@
 # Encryption plugin library for Azure Cosmos DB Java SDK for Java
-The Azure Cosmos Encryption Plugin is used for encrypting data with a user-provided key before saving into CosmosDB and decrypting it when reading back from the database.
+The Azure Cosmos Encryption Plugin is used for encrypting data with a user-provided key before saving into Cosmos DB and decrypting it when reading back from the database.
 
 [Source code][encryption_source_code] | [Package (Maven)][cosmos_encryption_maven] | [API reference documentation][encryption_api_documentation] | [Product documentation][cosmos_docs] |
 [Samples][getting_started_encryption]
@@ -12,7 +12,7 @@ The Azure Cosmos Encryption Plugin is used for encrypting data with a user-provi
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-encryption</artifactId>
-  <version>2.1.0</version>
+  <version>2.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -36,7 +36,7 @@ The SDK provides Reactor Core-based async APIs. You can read more about Reactor 
 
 ## Key concepts
 
-The Azure Cosmos Encryption Plugin is used for encrypting data with a user-provided key before saving into CosmosDB and decrypting it when reading back from the database. Underneath it uses Azure Cosmos DB Java SDK which provides client-side logical representation to access the Azure Cosmos DB SQL API.
+The Azure Cosmos Encryption Plugin is used for encrypting data with a user-provided key before saving into Cosmos DB and decrypting it when reading back from the database. Underneath it uses Azure Cosmos DB Java SDK which provides client-side logical representation to access the Azure Cosmos DB SQL API.
 A Cosmos DB account contains zero or more databases, a database (DB) contains zero or more containers, and a container contains zero or more items.
 You may read more about databases, containers, and items [here](https://docs.microsoft.com/azure/cosmos-db/databases-containers-items).
 A few important properties are defined at the level of the container, among them are provisioned throughput and partition key.
@@ -190,8 +190,8 @@ log4j.appender.A1.layout.ConversionPattern=%d %5X{pid} [%t] %-5p %c - %m%n
 ## Next steps
 
 - Cosmos encryption sample program is [here][getting_started_encryption]
-- Quick start of CosmosDB core java sdk [quickstart][quickstart] - Building a java app to manage CosmosDB SQL API data
-- [Read more about Azure CosmosDB Service][cosmos_docs]
+- Quick start of Cosmos DB core java sdk [quickstart][quickstart] - Building a java app to manage Cosmos DB SQL API data
+- [Read more about Azure Cosmos DB Service][cosmos_docs]
 
 ## Contributing
 

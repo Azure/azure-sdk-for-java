@@ -88,6 +88,18 @@ public final class WorkspaceProperties {
     private ManagedIdentityConfiguration storageAccountIdentity;
 
     /*
+     * The details of Managed Identity of Disk Encryption Set used for Managed Disk Encryption
+     */
+    @JsonProperty(value = "managedDiskIdentity")
+    private ManagedIdentityConfiguration managedDiskIdentity;
+
+    /*
+     * The resource Id of the managed disk encryption set.
+     */
+    @JsonProperty(value = "diskEncryptionSetId", access = JsonProperty.Access.WRITE_ONLY)
+    private String diskEncryptionSetId;
+
+    /*
      * Encryption properties for databricks workspace
      */
     @JsonProperty(value = "encryption")
@@ -300,6 +312,37 @@ public final class WorkspaceProperties {
     }
 
     /**
+     * Get the managedDiskIdentity property: The details of Managed Identity of Disk Encryption Set used for Managed
+     * Disk Encryption.
+     *
+     * @return the managedDiskIdentity value.
+     */
+    public ManagedIdentityConfiguration managedDiskIdentity() {
+        return this.managedDiskIdentity;
+    }
+
+    /**
+     * Set the managedDiskIdentity property: The details of Managed Identity of Disk Encryption Set used for Managed
+     * Disk Encryption.
+     *
+     * @param managedDiskIdentity the managedDiskIdentity value to set.
+     * @return the WorkspaceProperties object itself.
+     */
+    public WorkspaceProperties withManagedDiskIdentity(ManagedIdentityConfiguration managedDiskIdentity) {
+        this.managedDiskIdentity = managedDiskIdentity;
+        return this;
+    }
+
+    /**
+     * Get the diskEncryptionSetId property: The resource Id of the managed disk encryption set.
+     *
+     * @return the diskEncryptionSetId value.
+     */
+    public String diskEncryptionSetId() {
+        return this.diskEncryptionSetId;
+    }
+
+    /**
      * Get the encryption property: Encryption properties for databricks workspace.
      *
      * @return the encryption value.
@@ -400,6 +443,9 @@ public final class WorkspaceProperties {
         }
         if (storageAccountIdentity() != null) {
             storageAccountIdentity().validate();
+        }
+        if (managedDiskIdentity() != null) {
+            managedDiskIdentity().validate();
         }
         if (encryption() != null) {
             encryption().validate();

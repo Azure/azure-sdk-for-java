@@ -68,6 +68,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB service.
  * This asynchronous client is used to configure and execute requests against the service.
+ * <p>
+ * CosmosAsyncClient is thread-safe.
+ * It's recommended to maintain a single instance of CosmosAsyncClient per lifetime of the application which enables efficient connection management and performance.
+ * CosmosAsyncClient initialization is a heavy operation - don't use initialization CosmosAsyncClient instances as credentials or network connectivity validations.
  */
 @ServiceClient(
     builder = CosmosClientBuilder.class,
@@ -838,6 +842,16 @@ public final class CosmosAsyncClient implements Closeable {
                 @Override
                 public boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client) {
                     return client.connectionPolicy.isEndpointDiscoveryEnabled();
+                }
+
+                @Override
+                public String getConnectionMode(CosmosAsyncClient client) {
+                    return client.connectionPolicy.getConnectionMode().toString();
+                }
+
+                @Override
+                public String getUserAgent(CosmosAsyncClient client) {
+                    return client.getUserAgent();
                 }
 
                 @Override

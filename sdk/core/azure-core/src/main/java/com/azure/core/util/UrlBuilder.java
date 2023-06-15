@@ -208,9 +208,11 @@ public final class UrlBuilder {
     }
 
     /**
-     * Get the query that has been assigned to this UrlBuilder.
+     * Get a view of the query that has been assigned to this UrlBuilder.
+     * <p>
+     * Changes to the {@link Map} returned by this API won't be reflected in the UrlBuilder.
      *
-     * @return the query that has been assigned to this UrlBuilder.
+     * @return A view of the query that has been assigned to this UrlBuilder.
      */
     public Map<String, String> getQuery() {
         initializeQuery();

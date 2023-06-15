@@ -30,6 +30,7 @@ import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnectionMetadata;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.patch.PatchOperation;
@@ -215,6 +216,9 @@ public class ImplementationBridgeHelpers {
             DirectConnectionConfig setHealthCheckTimeoutDetectionEnabled(
                 DirectConnectionConfig directConnectionConfig, boolean timeoutDetectionEnabled);
             boolean isHealthCheckTimeoutDetectionEnabled(DirectConnectionConfig directConnectionConfig);
+            DirectConnectionConfig setMinConnectionPoolSizePerEndpoint(DirectConnectionConfig directConnectionConfig, int minConnectionPoolSizePerEndpoint);
+
+            int getMinConnectionPoolSizePerEndpoint(DirectConnectionConfig directConnectionConfig);
         }
     }
 
@@ -267,6 +271,10 @@ public class ImplementationBridgeHelpers {
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosQueryRequestOptions options);
             void applyMaxItemCount(CosmosQueryRequestOptions requestOptions, CosmosPagedFluxOptions fluxOptions);
             CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(CosmosQueryRequestOptions options);
+            List<CosmosDiagnostics> getCancelledRequestDiagnosticsTracker(CosmosQueryRequestOptions options);
+            void setCancelledRequestDiagnosticsTracker(
+                CosmosQueryRequestOptions options,
+                List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker);
         }
     }
 
@@ -411,6 +419,10 @@ public class ImplementationBridgeHelpers {
             int getMaxMicroBatchSize(CosmosBulkExecutionOptions options);
 
             CosmosBulkExecutionOptions setMaxMicroBatchSize(CosmosBulkExecutionOptions options, int maxMicroBatchSize);
+
+            int getMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options);
+
+            CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options, int maxMicroBatchPayloadSizeInBytes);
 
             int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options);
 
@@ -763,7 +775,15 @@ public class ImplementationBridgeHelpers {
                 ConsistencyLevel consistencyLevel,
                 Integer maxItemCount,
                 CosmosDiagnosticsThresholds thresholds,
-                String trackingId);
+                String trackingId,
+                String connectionMode,
+                String userAgent);
+
+            CosmosDiagnosticsSystemUsageSnapshot createSystemUsageSnapshot(
+                String cpu,
+                String used,
+                String available,
+                int cpuCount);
 
             void startOperation(CosmosDiagnosticsContext ctx);
 
@@ -1202,6 +1222,8 @@ public class ImplementationBridgeHelpers {
             boolean isSendClientTelemetryToServiceEnabled(CosmosAsyncClient client);
             List<String> getPreferredRegions(CosmosAsyncClient client);
             boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client);
+            String getConnectionMode(CosmosAsyncClient client);
+            String getUserAgent(CosmosAsyncClient client);
             CosmosMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMetricName name);
             boolean isEffectiveContentResponseOnWriteEnabled(
                 CosmosAsyncClient client,
@@ -1495,7 +1517,7 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosContainerProactiveInitConfigAccessor {
-            Map<String, Integer> getContainerLinkToMinConnectionsMap(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig);
+            Map<CosmosContainerIdentity, ContainerDirectConnectionMetadata> getContainerPropertiesMap(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig);
         }
     }
 }

@@ -17,6 +17,15 @@ public final class ProfileStatus extends ExpandableStringEnum<ProfileStatus> {
     public static final ProfileStatus DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of ProfileStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProfileStatus() {
+    }
+
+    /**
      * Creates or finds a ProfileStatus from its string representation.
      *
      * @param name a name to look for.

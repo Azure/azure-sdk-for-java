@@ -10,6 +10,7 @@ Use the client library for Azure Event Grid to:
 - Publish events to the Event Grid service using the Event Grid Event, Cloud Event 1.0, or custom schemas
 - Consume events that have been delivered to event handlers
 - Generate SAS tokens to authenticate the client publishing events to Azure Event Grid topics
+
 [Sources][sources] |
 [API Reference Documentation][javadocs] |
 [Product Documentation][service_docs] | 

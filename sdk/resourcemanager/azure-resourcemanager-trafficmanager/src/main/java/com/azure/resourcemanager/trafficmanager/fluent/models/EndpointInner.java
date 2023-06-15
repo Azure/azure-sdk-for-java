@@ -6,6 +6,7 @@ package com.azure.resourcemanager.trafficmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.resourcemanager.trafficmanager.models.AlwaysServe;
 import com.azure.resourcemanager.trafficmanager.models.EndpointMonitorStatus;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesCustomHeadersItem;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesSubnetsItem;
@@ -319,6 +320,60 @@ public final class EndpointInner extends ProxyResource {
     }
 
     /**
+     * Get the minChildEndpointsIPv4 property: The minimum number of IPv4 (DNS record type A) endpoints that must be
+     * available in the child profile in order for the parent profile to be considered available. Only applicable to
+     * endpoint of type 'NestedEndpoints'.
+     *
+     * @return the minChildEndpointsIPv4 value.
+     */
+    public Long minChildEndpointsIPv4() {
+        return this.innerProperties() == null ? null : this.innerProperties().minChildEndpointsIPv4();
+    }
+
+    /**
+     * Set the minChildEndpointsIPv4 property: The minimum number of IPv4 (DNS record type A) endpoints that must be
+     * available in the child profile in order for the parent profile to be considered available. Only applicable to
+     * endpoint of type 'NestedEndpoints'.
+     *
+     * @param minChildEndpointsIPv4 the minChildEndpointsIPv4 value to set.
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withMinChildEndpointsIPv4(Long minChildEndpointsIPv4) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointProperties();
+        }
+        this.innerProperties().withMinChildEndpointsIPv4(minChildEndpointsIPv4);
+        return this;
+    }
+
+    /**
+     * Get the minChildEndpointsIPv6 property: The minimum number of IPv6 (DNS record type AAAA) endpoints that must be
+     * available in the child profile in order for the parent profile to be considered available. Only applicable to
+     * endpoint of type 'NestedEndpoints'.
+     *
+     * @return the minChildEndpointsIPv6 value.
+     */
+    public Long minChildEndpointsIPv6() {
+        return this.innerProperties() == null ? null : this.innerProperties().minChildEndpointsIPv6();
+    }
+
+    /**
+     * Set the minChildEndpointsIPv6 property: The minimum number of IPv6 (DNS record type AAAA) endpoints that must be
+     * available in the child profile in order for the parent profile to be considered available. Only applicable to
+     * endpoint of type 'NestedEndpoints'.
+     *
+     * @param minChildEndpointsIPv6 the minChildEndpointsIPv6 value to set.
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withMinChildEndpointsIPv6(Long minChildEndpointsIPv6) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointProperties();
+        }
+        this.innerProperties().withMinChildEndpointsIPv6(minChildEndpointsIPv6);
+        return this;
+    }
+
+    /**
      * Get the geoMapping property: The list of countries/regions mapped to this endpoint when using the 'Geographic'
      * traffic routing method. Please consult Traffic Manager Geographic documentation for a full list of accepted
      * values.
@@ -390,6 +445,31 @@ public final class EndpointInner extends ProxyResource {
             this.innerProperties = new EndpointProperties();
         }
         this.innerProperties().withCustomHeaders(customHeaders);
+        return this;
+    }
+
+    /**
+     * Get the alwaysServe property: If Always Serve is enabled, probing for endpoint health will be disabled and
+     * endpoints will be included in the traffic routing method.
+     *
+     * @return the alwaysServe value.
+     */
+    public AlwaysServe alwaysServe() {
+        return this.innerProperties() == null ? null : this.innerProperties().alwaysServe();
+    }
+
+    /**
+     * Set the alwaysServe property: If Always Serve is enabled, probing for endpoint health will be disabled and
+     * endpoints will be included in the traffic routing method.
+     *
+     * @param alwaysServe the alwaysServe value to set.
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withAlwaysServe(AlwaysServe alwaysServe) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointProperties();
+        }
+        this.innerProperties().withAlwaysServe(alwaysServe);
         return this;
     }
 
