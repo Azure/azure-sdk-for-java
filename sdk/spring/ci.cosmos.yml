@@ -9,6 +9,7 @@ trigger:
       - release/*
   paths:
     include:
+      - sdk/spring/ci.cosmos.yml
       - sdk/spring/
 pr:
   branches:
@@ -19,6 +20,7 @@ pr:
       - release/*
   paths:
     include:
+      - sdk/spring/ci.cosmos.yml
       - sdk/spring/
 
 extends:
