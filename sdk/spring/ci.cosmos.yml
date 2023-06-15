@@ -10,7 +10,7 @@ trigger:
   paths:
     include:
       - sdk/spring/ci.cosmos.yml
-      - sdk/spring/
+      - sdk/spring/azure-spring-data-cosmos/
 pr:
   branches:
     include:
@@ -21,7 +21,7 @@ pr:
   paths:
     include:
       - sdk/spring/ci.cosmos.yml
-      - sdk/spring/
+      - sdk/spring/azure-spring-data-cosmos/
 
 extends:
   # NOTE: This is for running spring data cosmos emulator tests
