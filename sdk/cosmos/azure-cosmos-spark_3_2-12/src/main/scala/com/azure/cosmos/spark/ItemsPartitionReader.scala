@@ -5,9 +5,9 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, SparkBridgeImplementationInternal, SparkRowItem, Strings}
-import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions, DedicatedGatewayRequestOptions, ModelBridgeInternal}
+import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions, DedicatedGatewayRequestOptions, ModelBridgeInternal, PartitionKeyDefinition}
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo
-import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
+import com.azure.cosmos.spark.diagnostics.{DetailedFeedDiagnosticsProvider, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
 import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.Row
@@ -39,11 +39,37 @@ private case class ItemsPartitionReader
     .CosmosQueryRequestOptionsHelper
     .getCosmosQueryRequestOptionsAccessor
     .disallowQueryPlanRetrieval(new CosmosQueryRequestOptions())
-    
-  private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)  
+
+  private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   ThroughputControlHelper.populateThroughputControlGroupName(queryOptions, readConfig.throughputControlConfig)
 
-  private val operationContext = initializeOperationContext()
+  private val operationContext = {
+    val taskContext = TaskContext.get
+    assert(taskContext != null)
+
+    SparkTaskContext(diagnosticsContext.correlationActivityId,
+      taskContext.stageId(),
+      taskContext.partitionId(),
+      taskContext.taskAttemptId(),
+      feedRange.toString + " " + cosmosQuery.toString)
+  }
+
+  private var operationContextAndListenerTuple: Option[OperationContextAndListenerTuple] = {
+    if (diagnosticsConfig.mode.isDefined) {
+      val listener =
+        DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
+
+      val ctxAndListener = new OperationContextAndListenerTuple(operationContext, listener)
+
+      ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper
+        .getCosmosQueryRequestOptionsAccessor
+        .setOperationContext(queryOptions, ctxAndListener)
+
+      Some(ctxAndListener)
+    } else {
+      None
+    }
+  }
 
   log.logInfo(s"Instantiated ${this.getClass.getSimpleName}, Context: ${operationContext.toString} ${getThreadInfo}")
 
@@ -73,10 +99,17 @@ private case class ItemsPartitionReader
       throughputControlClientCacheItemOpt)
   SparkUtils.safeOpenConnectionInitCaches(cosmosAsyncContainer, log)
 
+  private val partitionKeyDefinition: Option[PartitionKeyDefinition] =
+    if (diagnosticsConfig.mode.isDefined &&
+      diagnosticsConfig.mode.get.equalsIgnoreCase(classOf[DetailedFeedDiagnosticsProvider].getName)) {
+
+      Option.apply(cosmosAsyncContainer.read().block().getProperties.getPartitionKeyDefinition)
+    } else {
+      None
+    }
+
   private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
   private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
-
-  private var operationContextAndListenerTuple: Option[OperationContextAndListenerTuple] = None
 
   private def initializeOperationContext(): SparkTaskContext = {
     val taskContext = TaskContext.get
@@ -114,11 +147,17 @@ private case class ItemsPartitionReader
     .setItemFactoryMethod(
       queryOptions,
       jsonNode => {
+        val objectNode = cosmosRowConverter.ensureObjectNode(jsonNode)
         val row = cosmosRowConverter.fromObjectNodeToRow(readSchema,
-          cosmosRowConverter.ensureObjectNode(jsonNode),
+          objectNode,
           readConfig.schemaConversionMode)
 
-        SparkRowItem(row)
+        val pkValue = partitionKeyDefinition match {
+          case Some(pkDef) => Some(PartitionKeyHelper.getPartitionKeyPath(objectNode, pkDef))
+          case None => None
+        }
+
+        SparkRowItem(row, pkValue)
       })
 
   private lazy val iterator = new TransientIOErrorsRetryingIterator(

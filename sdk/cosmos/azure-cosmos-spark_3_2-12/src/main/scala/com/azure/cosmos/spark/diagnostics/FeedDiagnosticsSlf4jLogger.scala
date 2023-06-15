@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark.diagnostics
 
-import com.azure.cosmos.implementation.ChangeFeedSparkRowItem
+import com.azure.cosmos.implementation.{ChangeFeedSparkRowItem, SparkRowItem}
 import com.azure.cosmos.implementation.spark.OperationContext
 import com.azure.cosmos.models.{FeedResponse, PartitionKeyDefinition}
 
 import java.util.concurrent.atomic.AtomicLong
+import scala.reflect.ClassTag
+import scala.reflect.runtime.universe.{TypeTag, typeOf}
 
 private[spark] class FeedDiagnosticsSlf4jLogger(classType: Class[_], includeDetails: Boolean)
   extends DefaultMinimalSlf4jLogger(classType: Class[_]) {
@@ -15,9 +17,15 @@ private[spark] class FeedDiagnosticsSlf4jLogger(classType: Class[_], includeDeta
 
   private[this] def extractIdentities(response: FeedResponse[_]): Option[String] = {
 
-    if (!response.isInstanceOf[FeedResponse[ChangeFeedSparkRowItem]]) {
-      None
+    val firstItem = if (response.getResults.size() > 0) {
+      Some(response.getResults.get(0))
     } else {
+      None
+    }
+
+    if (firstItem.isEmpty) {
+      None
+    } else if (ChangeFeedSparkRowItem.getClass.getName.equals(s"${firstItem.get.getClass.getName}$$")) {
       val changeFeedResponse = response.asInstanceOf[FeedResponse[ChangeFeedSparkRowItem]]
       val sb = new StringBuilder()
       changeFeedResponse.getResults.forEach(item => {
@@ -39,6 +47,29 @@ private[spark] class FeedDiagnosticsSlf4jLogger(classType: Class[_], includeDeta
       })
 
       Some(sb.toString)
+
+    } else if (SparkRowItem.getClass.getName.equals(s"${firstItem.get.getClass.getName}$$")) {
+      val queryResponse = response.asInstanceOf[FeedResponse[SparkRowItem]]
+      val sb = new StringBuilder()
+      queryResponse.getResults.forEach(item => {
+        if (sb.length > 0) {
+          sb.append(", (")
+        } else {
+          sb.append("(")
+        }
+
+        item.pkValue match {
+          case Some(pk) => sb.append(pk.toString)
+          case None => sb.append("n/a")
+        }
+        sb.append(", ")
+        sb.append(item.row.getAs[String]("id"))
+        sb.append(")")
+      })
+
+      Some(sb.toString)
+    } else {
+      None
     }
   }
 
@@ -54,7 +85,7 @@ private[spark] class FeedDiagnosticsSlf4jLogger(classType: Class[_], includeDeta
       if (includeDetails) {
         logInfo(
           s"Received - ItemCount: ${response.getResults.size} CT: ${getContinuationTokenHash(response)}, " +
-            s"In-flight-responses: $inFlightResponses Context: $context Items: ${extractIdentities(response)}")
+            s"In-flight-responses: $inFlightResponses Context: $context Items: ${extractIdentities(response).getOrElse("")}")
 
       } else {
         logInfo(
@@ -76,7 +107,7 @@ private[spark] class FeedDiagnosticsSlf4jLogger(classType: Class[_], includeDeta
       if (includeDetails) {
         logInfo(
           s"Processed - ItemCount: ${response.getResults.size} CT: ${getContinuationTokenHash(response)}, " +
-            s"In-flight-responses: $inFlightResponses Context: $context Items: ${extractIdentities(response)}")
+            s"In-flight-responses: $inFlightResponses Context: $context Items: ${extractIdentities(response).getOrElse("")}")
       } else {
         logInfo(
           s"Processed - ItemCount: ${response.getResults.size} CT: ${getContinuationTokenHash(response)}, " +
