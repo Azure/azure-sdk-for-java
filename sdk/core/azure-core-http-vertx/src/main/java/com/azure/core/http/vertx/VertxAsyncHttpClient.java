@@ -12,17 +12,22 @@ import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.Unpooled;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
+import io.vertx.core.http.HttpClosedException;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.RequestOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoSink;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.retry.Retry;
+import reactor.util.retry.RetrySpec;
 
 import java.nio.ByteBuffer;
 import java.util.Objects;
@@ -31,6 +36,7 @@ import java.util.Objects;
  * {@link HttpClient} implementation for the Vert.x {@link io.vertx.core.http.HttpClient}.
  */
 class VertxAsyncHttpClient implements HttpClient {
+    private static final ClientLogger LOGGER = new ClientLogger(VertxAsyncHttpClient.class);
     private final Scheduler scheduler;
     final io.vertx.core.http.HttpClient client;
 
@@ -60,9 +66,9 @@ class VertxAsyncHttpClient implements HttpClient {
             .setMethod(HttpMethod.valueOf(request.getHttpMethod().name()))
             .setAbsoluteURI(request.getUrl());
 
-        return Mono.create(sink -> client.request(options, requestResult -> {
+        Mono<HttpResponse> httpResponseMono = Mono.create(sink -> client.request(options, requestResult -> {
             if (requestResult.failed()) {
-                sink.error(requestResult.cause());
+                emitErrorSignal(sink, requestResult.cause());
                 return;
             }
 
@@ -79,7 +85,7 @@ class VertxAsyncHttpClient implements HttpClient {
             vertxHttpRequest.response(event -> {
                 if (event.succeeded()) {
                     HttpClientResponse vertxHttpResponse = event.result();
-                    vertxHttpResponse.exceptionHandler(sink::error);
+                    vertxHttpResponse.exceptionHandler(error -> emitErrorSignal(sink, requestResult.cause()));
 
                     // TODO (alzimmer)
                     // For now Vertx will always use a buffered response until reliability issues when using streaming
@@ -88,22 +94,25 @@ class VertxAsyncHttpClient implements HttpClient {
                         if (bodyEvent.succeeded()) {
                             sink.success(new BufferedVertxHttpResponse(request, vertxHttpResponse, bodyEvent.result()));
                         } else {
-                            sink.error(bodyEvent.cause());
+                            emitErrorSignal(sink, bodyEvent.cause());
                         }
                     });
                 } else {
-                    sink.error(event.cause());
+                    emitErrorSignal(sink, event.cause());
                 }
             });
 
             // TODO (alzimmer)
-            // For now Vertx will always use a buffered request until reliability issues when using streamin can be
+            // For now Vertx will always use a buffered request until reliability issues when using streaming can be
             // resolved.
             Flux<ByteBuffer> requestBody = request.getBody();
             if (requestBody == null) {
                 vertxHttpRequest.end();
             } else {
                 if (progressReporter != null) {
+                    // reset progress report if the request is retried.
+                    progressReporter.reset();
+
                     requestBody = requestBody.map(buffer -> {
                         progressReporter.reportProgress(buffer.remaining());
                         return buffer;
@@ -113,13 +122,20 @@ class VertxAsyncHttpClient implements HttpClient {
                 FluxUtil.collectBytesFromNetworkResponse(requestBody, request.getHeaders())
                     .subscribeOn(scheduler)
                     .subscribe(bytes -> vertxHttpRequest.write(Buffer.buffer(Unpooled.wrappedBuffer(bytes))),
-                        sink::error, vertxHttpRequest::end);
+                        error -> emitErrorSignal(sink, error), vertxHttpRequest::end);
             }
         }));
+
+        // retry on HttpClosedException
+        RetrySpec retrySpec = Retry
+            .max(2)
+            .filter(throwable -> throwable instanceof HttpClosedException)
+            .onRetryExhaustedThrow((ignoredSpec, signal) -> signal.failure());
+
+        return httpResponseMono.retryWhen(retrySpec);
     }
 
-    @Override
-    public HttpResponse sendSync(HttpRequest request, Context context) {
-        return send(request, context).block();
+    private static void emitErrorSignal(MonoSink<HttpResponse> sink, Throwable error) {
+        sink.error(LOGGER.logThrowableAsError(error));
     }
 }
