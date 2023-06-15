@@ -30,6 +30,9 @@ parameters:
 - name: MatrixFilters
   type: object
   default: []
+- name: LanguageFilter
+  type: object
+  default: []
 
 variables:
   - template: /eng/pipelines/templates/variables/globals.yml
@@ -56,9 +59,9 @@ stages:
             Selection: sparse
             NonSparseParameters: Agent
             GenerateVMJobs: true
-        MatrixFilters: 
+        MatrixFilters:
           - TestFromSource=^$|false
-          - JavaTestVersion=^(?!1.8|1.11).*
+          - ${{ parameters.MatrixFilters }}
         MatrixReplace:
           - AZURE_TEST.*=.*/
         BuildParallelization: 1
@@ -76,7 +79,8 @@ stages:
             Path: eng/pipelines/templates/stages/cosmos-emulator-matrix.json
             Selection: all
             GenerateVMJobs: true
-        MatrixFilters: 
+        MatrixFilters:
+          - ${{ parameters.LanguageFilter }}
           - ${{ parameters.MatrixFilters }}
         AdditionalParameters:
           BuildParallelization: 1
