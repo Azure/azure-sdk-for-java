@@ -24,7 +24,7 @@ import java.util.Random;
 
 public class IotCentralManagerTests extends TestBase {
     private static final Random RANDOM = new Random();
-    private static final Region REGION = Region.US_WEST2;
+    private static final Region REGION = Region.US_WEST;
     private String resourceGroupName = "rg" + randomPadding();
     private IotCentralManager iotCentralManager;
     private ResourceManager resourceManager;
