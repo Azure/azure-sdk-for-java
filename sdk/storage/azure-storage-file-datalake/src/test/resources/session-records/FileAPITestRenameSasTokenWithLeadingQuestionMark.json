@@ -44,7 +44,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/d4604e1a0d4604e1a787977563036b8b2abb64ca5bac/d4604e1a2d4604e1a78780217a4b2a8d910104f64877?mode=legacy&sv=2023-01-03&se=2023-06-15T19%3A15%3A17Z&sr=c&sp=racwdm&sig=O2c2KxDiie8iO4f9PLvhw0mbVaVI2jk9FistzY4bg9M%3D",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/d4604e1a0d4604e1a787977563036b8b2abb64ca5bac/d4604e1a2d4604e1a78780217a4b2a8d910104f64877?mode=legacy&sv=2023-01-03&se=2023-06-15T19%3A15%3A17Z&sr=c&sp=racwdm&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2023-01-03",
       "x-ms-client-request-id" : "85a23f9a-25c8-49cc-b7ca-d94bd26f8977",
@@ -65,7 +65,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/d4604e1a0d4604e1a787977563036b8b2abb64ca5bac/d4604e1a2d4604e1a78780217a4b2a8d910104f64877?sv=2023-01-03&se=2023-06-15T19%3A15%3A17Z&sr=c&sp=racwdm&sig=O2c2KxDiie8iO4f9PLvhw0mbVaVI2jk9FistzY4bg9M%3D",
+    "Uri" : "https://REDACTED.blob.core.windows.net/d4604e1a0d4604e1a787977563036b8b2abb64ca5bac/d4604e1a2d4604e1a78780217a4b2a8d910104f64877?sv=2023-01-03&se=2023-06-15T19%3A15%3A17Z&sr=c&sp=racwdm&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2023-01-03",
       "x-ms-client-request-id" : "babcad7e-ac4d-4eb4-9b6c-71e3c254b513",
