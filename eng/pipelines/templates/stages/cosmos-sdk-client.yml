@@ -57,7 +57,6 @@ stages:
             NonSparseParameters: Agent
             GenerateVMJobs: true
         MatrixFilters: 
-          - ${{ parameters.MatrixFilters }}
           - TestFromSource=^$|false
         MatrixReplace:
           - AZURE_TEST.*=.*/
@@ -76,6 +75,8 @@ stages:
             Path: eng/pipelines/templates/stages/cosmos-emulator-matrix.json
             Selection: all
             GenerateVMJobs: true
+        MatrixFilters: 
+          - ${{ parameters.MatrixFilters }}
         AdditionalParameters:
           BuildParallelization: 1
           DisableAzureResourceCreation: true
