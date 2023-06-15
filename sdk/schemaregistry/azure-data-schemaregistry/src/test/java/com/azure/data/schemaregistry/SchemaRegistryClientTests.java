@@ -59,6 +59,9 @@ public class SchemaRegistryClientTests extends TestBase {
                 });
             });
 
+            when(tokenCredential.getTokenSync(any(TokenRequestContext.class)))
+                .thenAnswer(invocationOnMock -> new AccessToken("foo", OffsetDateTime.now().plusMinutes(20)));
+
             endpoint = "https://foo.servicebus.windows.net";
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
