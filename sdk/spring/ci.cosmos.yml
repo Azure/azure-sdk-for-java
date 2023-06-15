@@ -35,7 +35,7 @@ extends:
         groupId: com.azure
         safeName: azurespringdatacosmos
         releaseInBatch: true
-    MatrixFilters:
+    LanguageFilter:
       - Language=.*(Spring).*
     AdditionalModules:
       - name: azure-spring-data-cosmos
