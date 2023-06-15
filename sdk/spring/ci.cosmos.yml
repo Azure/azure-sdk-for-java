@@ -36,6 +36,7 @@ extends:
         safeName: azurespringdatacosmos
         releaseInBatch: true
     MatrixFilters:
+      - JavaTestVersion=^(?!1.8|1.11).*
       - Language=.*(Spring).*
     AdditionalModules:
       - name: azure-spring-data-cosmos
