@@ -1,6 +1,16 @@
 # Release History
 
-## 5.3.0 (Unreleased)
+## 5.4.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 5.3.0 (2023-06-15)
 
 This version of the client library defaults to the service API version 2023-04-01.
 
@@ -42,10 +52,12 @@ This version of the client library defaults to the service API version 2023-04-0
   `getAbstractSummaryResults` to `getAbstractiveSummaryResults`,
   `getExtractSummaryResults` to `getExtractiveSummaryResults`
 
-### Bugs Fixed
-
 ### Other Changes
-- Migrate test recordings to assets repo.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
 
 ## 5.2.7 (2023-05-23)
 
