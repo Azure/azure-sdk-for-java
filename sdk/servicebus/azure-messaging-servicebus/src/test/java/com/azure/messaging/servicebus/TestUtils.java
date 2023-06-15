@@ -26,13 +26,13 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Collections;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -223,33 +223,6 @@ public class TestUtils {
      */
     public static String getEntityName(String baseName, int index) {
         return String.join("-", baseName, String.valueOf(index));
-    }
-
-    /**
-     * The azure application client id
-     *
-     * @return The application client id.
-     */
-    public static String getAzureClientId() {
-        return getPropertyValue("AZURE_CLIENT_ID");
-    }
-
-    /**
-     * The azure application client secret
-     *
-     * @return The application client secret.
-     */
-    public static String getAzureClientSecret() {
-        return getPropertyValue("AZURE_CLIENT_SECRET");
-    }
-
-    /**
-     * The azure application tenant id
-     *
-     * @return The application tenant id.
-     */
-    public static String getAzureTenantId() {
-        return getPropertyValue("AZURE_TENANT_ID");
     }
 
     public static Configuration getGlobalConfiguration() {

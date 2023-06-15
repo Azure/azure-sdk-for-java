@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.administration;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -13,8 +14,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
-import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
@@ -93,20 +93,17 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     @ParameterizedTest
     @MethodSource("createHttpClients")
     void azureIdentityCredentials(HttpClient httpClient) {
-        assumeTrue(interceptorManager.isLiveMode(), "Azure Identity test is for live test only");
+
         final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
 
         assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
             "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
 
-        final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
-            .clientId(TestUtils.getAzureClientId())
-            .clientSecret(TestUtils.getAzureClientSecret())
-            .tenantId(TestUtils.getAzureTenantId())
-            .build();
+        final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
         ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
             .httpClient(httpClient)
-            .credential(fullyQualifiedDomainName, clientSecretCredential)
+            .credential(fullyQualifiedDomainName, tokenCredential)
             .buildClient();
         NamespaceProperties np = client.getNamespaceProperties();
         assertNotNull(np.getName());
