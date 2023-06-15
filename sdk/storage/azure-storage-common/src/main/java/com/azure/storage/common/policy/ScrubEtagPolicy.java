@@ -7,7 +7,6 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
@@ -17,18 +16,6 @@ import reactor.core.publisher.Mono;
  * standardize the value.
  */
 public class ScrubEtagPolicy implements HttpPipelinePolicy {
-
-    /**
-     * Wraps any potential error responses from the service and applies post-processing of the response's eTag header to
-     * standardize the value.
-     *
-     * @return an updated response with post-processing steps applied.
-     */
-    @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        HttpResponse response = next.processSync();
-        return scrubETagHeader(response);
-    }
 
     /**
      * Wraps any potential error responses from the service and applies post-processing of the response's eTag header to
@@ -67,6 +54,7 @@ public class ScrubEtagPolicy implements HttpPipelinePolicy {
         } else if (endsWithQuote) {
             unprocessedResponse.getHeaders().set(HttpHeaderName.ETAG, etag.substring(0, etag.length() - 1));
         }
+
         return unprocessedResponse;
     }
 }
