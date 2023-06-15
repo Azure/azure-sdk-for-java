@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
+import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -37,8 +38,12 @@ import java.util.Objects;
 import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
 
 /**
- * Helper class to build CosmosAsyncClient {@link CosmosAsyncClient} and CosmosClient {@link CosmosClient}
+ * Helper class to build {@link CosmosAsyncClient} and {@link CosmosClient}
  * instances as logical representation of the Azure Cosmos database service.
+ * <p>
+ * CosmosAsyncClient and CosmosClient are thread-safe.
+ * It's recommended to maintain a single instance of CosmosClient or CosmosAsyncClient per lifetime of the application which enables efficient connection management and performance.
+ * CosmosAsyncClient and CosmosClient initializations are heavy operations - don't use initialization CosmosAsyncClient or CosmosClient instances as credentials or network connectivity validations.
  * <p>
  * When building client, endpoint() and key() are mandatory APIs, without these the initialization will fail.
  * <p>
@@ -954,6 +959,15 @@ public class CosmosClientBuilder implements
      * @return CosmosAsyncClient
      */
     public CosmosAsyncClient buildAsyncClient() {
+        return buildAsyncClient(true);
+    }
+
+    /**
+     * Builds a cosmos async client with the provided properties
+     *
+     * @return CosmosAsyncClient
+     */
+    CosmosAsyncClient buildAsyncClient(boolean logStartupInfo) {
         StopWatch stopwatch = new StopWatch();
         stopwatch.start();
         validateConfig();
@@ -976,7 +990,9 @@ public class CosmosClientBuilder implements
             cosmosAsyncClient.recordOpenConnectionsAndInitCachesCompleted(new ArrayList<>());
         }
 
-        logStartupInfo(stopwatch, cosmosAsyncClient);
+        if (logStartupInfo) {
+            logStartupInfo(stopwatch, cosmosAsyncClient);
+        }
         return cosmosAsyncClient;
     }
 
@@ -1090,15 +1106,26 @@ public class CosmosClientBuilder implements
 
         if (logger.isInfoEnabled()) {
             long time = stopwatch.getTime();
+            String diagnosticsCfg = "";
+            String tracingCfg = "";
+            if (client.getClientTelemetryConfig() != null) {
+                diagnosticsCfg = client.getClientTelemetryConfig().toString();
+            }
+
+            DiagnosticsProvider provider = client.getDiagnosticsProvider();
+            if (provider != null) {
+                tracingCfg = provider.isEnabled() + ", " + provider.isRealTracer();
+            }
+
             // NOTE: if changing the logging below - do not log any confidential info like master key credentials etc.
             logger.info("Cosmos Client with (Correlation) ID [{}] started up in [{}] ms with the following " +
                     "configuration: serviceEndpoint [{}], preferredRegions [{}], connectionPolicy [{}], " +
                     "consistencyLevel [{}], contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
-                    "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}], proactiveContainerInit [{}].",
+                    "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}], proactiveContainerInit [{}], diagnostics [{}], tracing [{}]",
                 client.getContextClient().getClientCorrelationId(), time, getEndpoint(), getPreferredRegions(),
                 getConnectionPolicy(), getConsistencyLevel(), isContentResponseOnWriteEnabled(),
                 isSessionCapturingOverrideEnabled(), isConnectionSharingAcrossClientsEnabled(),
-                isClientTelemetryEnabled(), getProactiveContainerInitConfig());
+                isClientTelemetryEnabled(), getProactiveContainerInitConfig(), diagnosticsCfg, tracingCfg);
         }
     }
 
