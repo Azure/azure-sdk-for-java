@@ -7,7 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosSessionRetryOptions;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
-import com.azure.cosmos.models.CosmosRegionSwitchHint;
+import com.azure.cosmos.CosmosRegionSwitchHint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -25,7 +25,7 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
     private Duration currentBackoff;
     private RetryContext retryContext;
     private final RxDocumentServiceRequest request;
-    private final AtomicInteger maxRetryAttemptsInLocalRegion;
+    private final AtomicInteger maxRetryAttemptsInCurrentRegion;
 
     public SessionTokenMismatchRetryPolicy(RxDocumentServiceRequest request) {
         this.waitTimeTimeoutHelper = new TimeoutHelper(Duration.ofMillis(Configs.getSessionTokenMismatchDefaultWaitTimeInMs()));
@@ -34,7 +34,7 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         this.retryCount = new AtomicInteger();
         this.retryCount.set(0);
         this.currentBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchInitialBackoffTimeInMs());
-        this.maxRetryAttemptsInLocalRegion = new AtomicInteger(Configs.getMaxRetriesLocalRegionWhenRemoteRegionPreferred());
+        this.maxRetryAttemptsInCurrentRegion = new AtomicInteger(Configs.getMaxRetriesInCurrentRegionWhenDifferentRegionPreferred());
         this.retryContext = BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics);
     }
 
@@ -66,30 +66,20 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
-        // when sessionTokenMismatchRetryAttempt == 0, this is a request routed
-        // to some possible local region (first region from preferredRegions) or
-        // first read-available (for read requests) region or first write-available
-        // (for write requests) region
-        // when sessionTokenMismatchRetryAttempt > 0, this is a request possibly routed to
-        // a different region which is not a local region
-        boolean isRequestForPossibleLocalRegion = request.requestContext.sessionTokenMismatchRetryAttempt == 0;
+        // when retry is directed to the current region
+        // we should use the region-switch hint to determine
+        // to move to a different region
+        // special case of switching to the same region again:
+        //   1. for single-write account, if the original read request is directed
+        //      to the write region then region switch using ClientRetryPolicy will route
+        //      the retry to the same write region again, therefore the DIFFERENT_REGION_PREFERRED
+        //      hint causes quicker switch to the same write region which is reasonable
+        if (!shouldRetryInCurrentRegion(request, retryCount.get())) {
 
-        if (isRequestForPossibleLocalRegion) {
-            // when request is directed to a possible local region
-            // we should use the region-switch hint to determine
-            // to move to a different region
-            // special case of switching to the same region again:
-            //   1. for single-write account, if the original read request is directed
-            //      to the write region then region switch using ClientRetryPolicy will route
-            //      the retry to the same write region again, therefore the REMOTE_REGION_PREFERRED
-            //      hint causes quicker switch to the same write region which is reasonable
-            if (!shouldRetryInPossibleLocalRegion(request, retryCount.get())) {
+            LOGGER.debug("SessionTokenMismatchRetryPolicy not retrying because it a retry attempt for the current region and " +
+                "fallback to a different region is preferred ");
 
-                LOGGER.debug("SessionTokenMismatchRetryPolicy not retrying because it a retry attempt for a local region and " +
-                    "fallback to remote region is preferred ");
-
-                return Mono.just(ShouldRetryResult.noRetry());
-            }
+            return Mono.just(ShouldRetryResult.noRetry());
         }
 
         Duration effectiveBackoff = Duration.ZERO;
@@ -130,7 +120,7 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         return backoff;
     }
 
-    private boolean shouldRetryInPossibleLocalRegion(RxDocumentServiceRequest request, int retryCountForRegion) {
+    private boolean shouldRetryInCurrentRegion(RxDocumentServiceRequest request, int retryCountForRegion) {
 
         CosmosSessionRetryOptions sessionRetryOptions = request.requestContext.getSessionRetryOptions();
 
@@ -143,11 +133,11 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
             .getCosmosSessionRetryOptionsAccessor()
             .getRegionSwitchHint(sessionRetryOptions);
 
-        if (regionSwitchHint == null || regionSwitchHint == CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED) {
+        if (regionSwitchHint == null || regionSwitchHint == CosmosRegionSwitchHint.CURRENT_REGION_PREFERRED) {
             return true;
         }
 
-        return !(regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED
-            && retryCountForRegion == this.maxRetryAttemptsInLocalRegion.get());
+        return !(regionSwitchHint == CosmosRegionSwitchHint.DIFFERENT_REGION_PREFERRED
+            && retryCountForRegion == this.maxRetryAttemptsInCurrentRegion.get());
     }
 }

@@ -3,8 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.models.CosmosRegionSwitchHint;
-
 /**
  * A {@link CosmosSessionRetryOptionsBuilder} instance will be used to build
  * a {@link CosmosSessionRetryOptions} instance.

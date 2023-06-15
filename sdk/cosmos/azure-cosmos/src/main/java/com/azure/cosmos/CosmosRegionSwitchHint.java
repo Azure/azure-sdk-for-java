@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.models;
+package com.azure.cosmos;
 
 import java.util.Objects;
 
@@ -14,20 +14,20 @@ public final class CosmosRegionSwitchHint {
     private final String hintRepresentation;
 
     /**
-     * {@link  CosmosRegionSwitchHint#LOCAL_REGION_PREFERRED} corresponds to a hint
-     * which will result in internal retry policies biasing the local region more
-     * than remote regions.
+     * {@link  CosmosRegionSwitchHint#CURRENT_REGION_PREFERRED} corresponds to a hint
+     * which will result in internal retry policies biasing the current region more
+     * than different regions.
      * */
-    public static final CosmosRegionSwitchHint LOCAL_REGION_PREFERRED =
-            new CosmosRegionSwitchHint("localRegionPreferred");
+    public static final CosmosRegionSwitchHint CURRENT_REGION_PREFERRED =
+            new CosmosRegionSwitchHint("currentRegionPreferred");
 
     /**
-     * {@link CosmosRegionSwitchHint#REMOTE_REGION_PREFERRED} corresponds to a hint
-     * which will result in internal retry policies biasing remote regions more
-     * than a local region.
+     * {@link CosmosRegionSwitchHint#DIFFERENT_REGION_PREFERRED} corresponds to a hint
+     * which will result in internal retry policies biasing different regions more
+     * than the current region.
      * */
-    public static final CosmosRegionSwitchHint REMOTE_REGION_PREFERRED =
-            new CosmosRegionSwitchHint("remoteRegionPreferred");
+    public static final CosmosRegionSwitchHint DIFFERENT_REGION_PREFERRED =
+            new CosmosRegionSwitchHint("differentRegionPreferred");
 
     private CosmosRegionSwitchHint(String hintRepresentation) {
         this.hintRepresentation = hintRepresentation;

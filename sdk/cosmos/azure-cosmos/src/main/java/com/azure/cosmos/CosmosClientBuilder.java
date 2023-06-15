@@ -816,7 +816,7 @@ public class CosmosClientBuilder implements
      * <ul>
      *     <li>
      *         For a read request going to a local read region, it is possible to optimize
-     *         availability by having the request be retried on a remote write region.
+     *         availability by having the request be retried on a different write region.
      *     </li>
      *     <li>
      *         For a read request going to a local write region, it may or may not help to
@@ -830,7 +830,7 @@ public class CosmosClientBuilder implements
      * For single-write accounts:
      * <ul>
      *     <li>
-     *         If a read request goes to a local read region, it helps to switch to a write region quicker.
+     *         If a read request goes to a local read region, it helps to switch to the write region quicker.
      *     </li>
      *     <li>
      *         If a read request goes to a write region, the {@link CosmosSessionRetryOptions} setting does not
@@ -845,8 +845,8 @@ public class CosmosClientBuilder implements
      * </ul>
      * About region switch hints:
      * <ul>
-     *     <li>In order to prioritize a local region for retries, use the hint {@link com.azure.cosmos.models.CosmosRegionSwitchHint#LOCAL_REGION_PREFERRED}</li>
-     *     <li>In order to move retries to a remote region quicker, use the hint {@link com.azure.cosmos.models.CosmosRegionSwitchHint#REMOTE_REGION_PREFERRED}</li>
+     *     <li>In order to prioritize the current region for retries as the original request, use the hint {@link CosmosRegionSwitchHint#CURRENT_REGION_PREFERRED}</li>
+     *     <li>In order to move retries to a different region quicker, use the hint {@link CosmosRegionSwitchHint#DIFFERENT_REGION_PREFERRED}</li>
      * </ul>
      * Operations supported:
      * <ul>

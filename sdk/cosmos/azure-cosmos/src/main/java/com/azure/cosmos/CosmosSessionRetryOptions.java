@@ -4,7 +4,6 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.models.CosmosRegionSwitchHint;
 
 /**
  * {@link CosmosSessionRetryOptions} encapsulates hints which influence
@@ -20,11 +19,15 @@ public final class CosmosSessionRetryOptions {
     }
 
     static void initialize() {
-        ImplementationBridgeHelpers.CosmosSessionRetryOptionsHelper.setSessionRetryOptionsAccessor(new ImplementationBridgeHelpers.CosmosSessionRetryOptionsHelper.CosmosSessionRetryOptionsAccessor() {
-            @Override
-            public CosmosRegionSwitchHint getRegionSwitchHint(CosmosSessionRetryOptions sessionRetryOptions) {
-                return sessionRetryOptions.regionSwitchHint;
-            }
-        });
+        ImplementationBridgeHelpers.CosmosSessionRetryOptionsHelper.setCosmosSessionRetryOptionsAccessor(
+
+            new ImplementationBridgeHelpers.CosmosSessionRetryOptionsHelper.CosmosSessionRetryOptionsAccessor() {
+                @Override
+                public CosmosRegionSwitchHint getRegionSwitchHint(CosmosSessionRetryOptions sessionRetryOptions) {
+                    return sessionRetryOptions.regionSwitchHint;
+                }
+            });
     }
+
+    static { initialize(); }
 }

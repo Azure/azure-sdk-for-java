@@ -54,7 +54,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.CosmosRegionSwitchHint;
+import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -1524,19 +1524,19 @@ public class ImplementationBridgeHelpers {
     }
 
     public static final class CosmosSessionRetryOptionsHelper {
-        private static final AtomicReference<Boolean> cosmosSessionRetryOptionsAccessorLoaded = new AtomicReference<>();
-        private static final AtomicReference<CosmosSessionRetryOptionsAccessor> sessionRetryOptionsAccessor = new AtomicReference<>();
+        private static final AtomicReference<Boolean> cosmosSessionRetryOptionsClassLoaded = new AtomicReference<>(false);
+        private static final AtomicReference<CosmosSessionRetryOptionsAccessor> accessor = new AtomicReference<>();
 
         private CosmosSessionRetryOptionsHelper() {}
 
         public static CosmosSessionRetryOptionsAccessor getCosmosSessionRetryOptionsAccessor() {
 
-            if (!cosmosSessionRetryOptionsAccessorLoaded.get()) {
+            if (!cosmosSessionRetryOptionsClassLoaded.get()) {
                 logger.debug("Initializing cosmosSessionRetryOptionsAccessor...");
                 initializeAllAccessors();
             }
 
-            CosmosSessionRetryOptionsAccessor snapshot = sessionRetryOptionsAccessor.get();
+            CosmosSessionRetryOptionsAccessor snapshot = accessor.get();
 
             if (snapshot == null) {
                 logger.error("cosmosSessionRetryOptionsAccessor is not initialized yet!");
@@ -1546,21 +1546,20 @@ public class ImplementationBridgeHelpers {
             return snapshot;
         }
 
-        public static void setSessionRetryOptionsAccessor(final CosmosSessionRetryOptionsAccessor newAccessor) {
+        public static void setCosmosSessionRetryOptionsAccessor(final CosmosSessionRetryOptionsAccessor newAccessor) {
 
             assert (newAccessor != null);
 
-            if (!sessionRetryOptionsAccessor.compareAndSet(null, newAccessor)) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosSessionRetryOptionsAccessor already initialized!");
             } else {
                 logger.debug("Setting CosmosSessionRetryOptionsAccessor...");
-                cosmosSessionRetryOptionsAccessorLoaded.set(true);
+                cosmosSessionRetryOptionsClassLoaded.set(true);
             }
         }
 
         public interface CosmosSessionRetryOptionsAccessor {
             CosmosRegionSwitchHint getRegionSwitchHint(CosmosSessionRetryOptions sessionRetryOptions);
         }
-
     }
 }
