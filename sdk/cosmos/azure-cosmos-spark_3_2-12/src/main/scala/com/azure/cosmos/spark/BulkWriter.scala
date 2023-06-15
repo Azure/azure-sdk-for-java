@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 // scalastyle:off underscore.import
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.models._
-import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, MultipleBulkOperationFailedExceptions, bulkWriterBoundedElastic, getThreadInfo}
+import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, bulkWriterBoundedElastic, getThreadInfo}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
 import com.azure.cosmos._
 import reactor.core.scheduler.Scheduler
@@ -721,22 +721,12 @@ private object BulkWriter {
     s"Thread[Name: ${t.getName}, Group: $group, IsDaemon: ${t.isDaemon} Id: ${t.getId}]"
   }
 
-  private class BulkOperationFailedException(statusCode: Int, subStatusCode: Int, message:String, cause: Throwable,
+  class BulkOperationFailedException(statusCode: Int, subStatusCode: Int, message:String, cause: Throwable,
                                    id: String, partitionKey: PartitionKey)
     extends CosmosException(statusCode, message, null, cause) {
     val itemId = id
     val partitionKeyValue = partitionKey
     BridgeInternal.setSubStatusCode(this, subStatusCode)
-  }
-
-  private class MultipleBulkOperationFailedExceptions(exceptions: List[Throwable]) extends
-      CosmosException(0, "Multiple bulk operation failures") {
-      def getExceptions: List[Throwable] = exceptions
-
-      override def getMessage: String = {
-          val exceptionMessages = exceptions.toArray.map(_.asInstanceOf[BulkOperationFailedException].getMessage)
-          s"Multiple bulk operation failed: ${exceptionMessages.mkString(", ")}"
-      }
   }
 }
 
