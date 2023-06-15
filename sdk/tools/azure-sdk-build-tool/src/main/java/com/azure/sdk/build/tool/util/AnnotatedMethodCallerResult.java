@@ -18,6 +18,10 @@ public class AnnotatedMethodCallerResult {
         this.callingMember = Objects.requireNonNull(callingMember);
     }
 
+    public Method getAnnotatedMethod() {
+        return annotatedMethod;
+    }
+
     @Override
     public String toString() {
         return "Method " + annotatedMethod + " is annotated with @" + annotation.getSimpleName() + " and called by " + callingMember;
