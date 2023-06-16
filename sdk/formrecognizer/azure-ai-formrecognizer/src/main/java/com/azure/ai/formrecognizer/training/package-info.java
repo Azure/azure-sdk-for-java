@@ -151,7 +151,7 @@
  * <h2>Manage custom models</h2>
  *
  * <p>Operations that can be executed are:</p>
- * <br/>
+ *
  * <ol>
  *     <li> Check the number of models in the FormRecognizer resource account, and the maximum number of models that
  *     can be stored. </li>
