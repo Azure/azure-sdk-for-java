@@ -54,7 +54,7 @@ public final class RecognizeCompleted extends CallAutomationEventBaseWithReasonC
 
         } else if (this.recognitionType == CallMediaRecognitionType.CHOICES) {
             return Optional.ofNullable(this.collectChoiceResult);
-        } else if (this.recognitionType == CallMediaRecognitionType.SPEECH || this.recognitionType == CallMediaRecognitionType.SPEECH_OR_DTMF) {
+        } else if (this.recognitionType == CallMediaRecognitionType.SPEECH) {
             return Optional.ofNullable(this.speechResult);
         }
 

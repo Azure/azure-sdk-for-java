@@ -1,5 +1,8 @@
 package com.azure.sdk.build.tool.util;
 
+import com.azure.sdk.build.tool.models.BuildError;
+import com.azure.sdk.build.tool.models.BuildErrorCode;
+import com.azure.sdk.build.tool.models.BuildErrorLevel;
 import com.azure.sdk.build.tool.mojo.AzureSdkMojo;
 import org.apache.maven.artifact.Artifact;
 
@@ -44,11 +47,17 @@ public final class MojoUtils {
         return MessageFormat.format(getString(key), parameters);
     }
 
-    public static void failOrWarn(Supplier<Boolean> condition, String message) {
+    public static void failOrWarn(Supplier<Boolean> condition, BuildErrorCode errorCode, String message) {
+        failOrWarn(condition, errorCode, message, null);
+    }
+
+    public static void failOrWarn(Supplier<Boolean> condition, BuildErrorCode errorCode, String message, List<String> additionalDetails) {
+        BuildError buildError;
         if (condition.get()) {
-            AzureSdkMojo.MOJO.getReport().addFailureMessage(message);
+            buildError = new BuildError(message, errorCode, BuildErrorLevel.ERROR, additionalDetails);
         } else {
-            AzureSdkMojo.MOJO.getReport().addWarningMessage(message);
+            buildError = new BuildError(message, errorCode, BuildErrorLevel.WARNING, additionalDetails);
         }
+        AzureSdkMojo.MOJO.getReport().addError(buildError);
     }
 }
