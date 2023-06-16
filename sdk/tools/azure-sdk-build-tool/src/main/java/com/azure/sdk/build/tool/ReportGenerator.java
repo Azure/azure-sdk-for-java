@@ -1,5 +1,7 @@
 package com.azure.sdk.build.tool;
 
+import com.azure.sdk.build.tool.models.BuildError;
+import com.azure.sdk.build.tool.models.BuildErrorLevel;
 import com.azure.sdk.build.tool.models.BuildReport;
 import com.azure.sdk.build.tool.mojo.AzureSdkMojo;
 import com.azure.sdk.build.tool.util.AnnotatedMethodCallerResult;
@@ -10,13 +12,14 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.DependencyManagement;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.io.*;
+import java.lang.reflect.Method;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.sdk.build.tool.util.MojoUtils.getAllDependencies;
@@ -34,23 +37,14 @@ public class ReportGenerator {
         this.report = report;
     }
 
+    public BuildReport getReport() {
+        return this.report;
+    }
+
     public void generateReport() {
-        if (!report.getWarningMessages().isEmpty() && LOGGER.isWarnEnabled()) {
-            report.getWarningMessages().forEach(LOGGER::warn);
-        }
-        if (!report.getErrorMessages().isEmpty() && LOGGER.isErrorEnabled()) {
-            report.getErrorMessages().forEach(LOGGER::error);
-        }
         report.setBomVersion(computeBomVersion());
         report.setAzureDependencies(computeAzureDependencies());
-
         createJsonReport();
-        // we throw a single runtime exception encapsulating all failure messages into one
-        if (!report.getFailureMessages().isEmpty()) {
-            StringBuilder sb = new StringBuilder("Build failure for the following reasons:\n");
-            report.getFailureMessages().forEach(s -> sb.append(" - " + s + "\n"));
-            throw new RuntimeException(sb.toString());
-        }
     }
 
     private String computeBomVersion() {
@@ -58,8 +52,8 @@ public class ReportGenerator {
         Optional<Dependency> bomDependency = Optional.empty();
         if (depMgmt != null) {
             bomDependency = depMgmt.getDependencies().stream()
-                    .filter(d -> d.getArtifactId().equals(AZURE_SDK_BOM_ARTIFACT_ID))
-                    .findAny();
+                .filter(d -> d.getArtifactId().equals(AZURE_SDK_BOM_ARTIFACT_ID))
+                .findAny();
         }
 
         if (bomDependency.isPresent()) {
@@ -75,10 +69,9 @@ public class ReportGenerator {
             JsonGenerator generator = new JsonFactory().createGenerator(writer).useDefaultPrettyPrinter();
 
             generator.writeStartObject();
-            generator.writeStringField("group", AzureSdkMojo.MOJO.getProject().getGroupId());
-            generator.writeStringField("artifact", AzureSdkMojo.MOJO.getProject().getArtifactId());
-            generator.writeStringField("version", AzureSdkMojo.MOJO.getProject().getVersion());
-            generator.writeStringField("name", AzureSdkMojo.MOJO.getProject().getName());
+            generator.writeStringField("group", getMd5(AzureSdkMojo.MOJO.getProject().getGroupId()));
+            generator.writeStringField("artifact", getMd5(AzureSdkMojo.MOJO.getProject().getArtifactId()));
+            generator.writeStringField("version", getMd5(AzureSdkMojo.MOJO.getProject().getVersion()));
             if (report.getBomVersion() != null && !report.getBomVersion().isEmpty()) {
                 generator.writeStringField("bomVersion", report.getBomVersion());
             }
@@ -87,30 +80,16 @@ public class ReportGenerator {
             }
 
             if (report.getServiceMethodCalls() != null && !report.getServiceMethodCalls().isEmpty()) {
-                writeArray("serviceMethodCalls", report.getServiceMethodCalls()
-                        .stream()
-                        .map(AnnotatedMethodCallerResult::toString)
-                        .collect(Collectors.toList()), generator);
+                writeArray(generator, "serviceMethodCalls", report.getServiceMethodCalls());
             }
 
             if (report.getBetaMethodCalls() != null && !report.getBetaMethodCalls().isEmpty()) {
-                writeArray("betaMethodCalls", report.getBetaMethodCalls()
-                        .stream()
-                        .map(AnnotatedMethodCallerResult::toString)
-                        .collect(Collectors.toList()), generator);
+                writeArray(generator, "betaMethodCalls", report.getBetaMethodCalls());
             }
 
 
-            if (!report.getErrorMessages().isEmpty()) {
-                writeArray("errorMessages", report.getErrorMessages(), generator);
-            }
-
-            if (!report.getWarningMessages().isEmpty()) {
-                writeArray("warningMessages", report.getWarningMessages(), generator);
-            }
-
-            if (!report.getFailureMessages().isEmpty()) {
-                writeArray("failureMessages", report.getFailureMessages(), generator);
+            if(!report.getErrors().isEmpty()) {
+                writeErrors(generator, "errors", report.getErrors());
             }
 
             generator.writeEndObject();
@@ -130,6 +109,49 @@ public class ReportGenerator {
         }
     }
 
+    private void writeErrors(JsonGenerator generator, String key, List<BuildError> errors)  throws IOException {
+        generator.writeFieldName(key);
+        generator.writeStartArray();
+
+        errors.forEach(error -> {
+            try {
+                generator.writeStartObject();
+                generator.writeStringField("code", error.getCode().toString());
+                generator.writeStringField("level", error.getLevel().toString());
+                if (error.getAdditionalDetails() != null && !error.getAdditionalDetails().isEmpty()) {
+                    writeArray("additionalDetails", error.getAdditionalDetails(), generator);
+                }
+                generator.writeEndObject();
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        });
+        generator.writeEndArray();
+    }
+
+    private void writeArray(JsonGenerator generator, String serviceMethodCalls, Set<AnnotatedMethodCallerResult> report) throws IOException {
+        generator.writeFieldName(serviceMethodCalls);
+        generator.writeStartArray();
+
+        Map<String, Integer> methodCallFrequency = report
+            .stream()
+            .map(AnnotatedMethodCallerResult::getAnnotatedMethod)
+            .map(Method::toGenericString)
+            .sorted()
+            .collect(Collectors.groupingBy(Function.identity(), Collectors.summingInt(e -> 1)));
+
+        methodCallFrequency.forEach((key, value) -> {
+            try {
+                generator.writeStartObject();
+                generator.writeStringField("methodName", key);
+                generator.writeNumberField("frequency", value);
+                generator.writeEndObject();
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        });
+        generator.writeEndArray();
+    }
     private void writeArray(String fieldName, Collection<String> values, JsonGenerator generator) throws IOException {
         generator.writeFieldName(fieldName);
         generator.writeStartArray();
@@ -141,10 +163,22 @@ public class ReportGenerator {
 
     private List<String> computeAzureDependencies() {
         return getAllDependencies().stream()
-                // this includes Track 2 mgmt libraries, spring libraries and data plane libraries
-                .filter(artifact -> artifact.getGroupId().startsWith(AZURE_DEPENDENCY_GROUP))
-                .map(MavenUtils::toGAV)
-                .collect(Collectors.toList());
+            // this includes Track 2 mgmt libraries, spring libraries and data plane libraries
+            .filter(artifact -> artifact.getGroupId().startsWith(AZURE_DEPENDENCY_GROUP))
+            .map(MavenUtils::toGAV)
+            .collect(Collectors.toList());
     }
+
+    private String getMd5(String inputText) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] digest = md.digest(inputText.getBytes(StandardCharsets.UTF_8));
+            return String.format("%032x", new BigInteger(1, digest));
+        } catch (NoSuchAlgorithmException exception) {
+            return "Unknown";
+        }
+
+    }
+
 }
 

@@ -39,7 +39,7 @@ If you want to see the full code for these snippets check out our [samples folde
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -99,7 +99,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.9.0</version>
+    <version>1.9.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -217,7 +217,7 @@ IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletion
 chatCompletionsStream.forEach(chatCompletions -> {
     System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
     for (ChatChoice choice : chatCompletions.getChoices()) {
-        ChatMessageDelta message = choice.getDelta();
+        ChatMessage message = choice.getDelta();
         if (message != null) {
             System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
             System.out.println("Message:");

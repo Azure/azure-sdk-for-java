@@ -1,16 +1,63 @@
 # Release History
 
-## 5.3.0-beta.3 (Unreleased)
+## 5.4.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added `values()` methods to all ExpandableStringEnum models.
 
 ### Breaking Changes
-- Removed `Dynamic Classification` feature, which was introduced in the previous beta release.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 5.3.0 (2023-06-15)
+
+This version of the client library defaults to the service API version 2023-04-01.
+
+### Features Added
+- Added `values()` methods to all ExpandableStringEnum models.
+- Added more values to enum class: `HealthcareEntityCategory` and `HealthcareEntityRelationType`.
+
+### Breaking Changes
+> Note: The following changes are only breaking from the previous beta. They are not breaking against previous stable versions.
+- Removed `Auto Language Detection`, `Dynamic Classification`, `Entity Resoluton`, and `Healthcare FHIR` features,
+  which were introduced in the previous beta releases.
+- Renamed class:
+  `SummaryContext` to `AbstractiveSummaryContext`,
+  `SummarySentence` to `ExtractiveSummarySentence`,
+  `SummarySentencesOrder` to `ExtractiveSummarySentencesOrder`,
+  `ExtractSummaryOptions` to `ExtractiveSummaryOptions`,
+  `ExtractSummaryAction` to `ExtractiveSummaryAction`,
+  `ExtractSummaryActionResult` to `ExtractiveSummaryActionResult`,
+  `ExtractSummaryResult` to `ExtractiveSummaryResult`,
+  `ExtractSummaryResultCollection` to `ExtractiveSummaryResultCollection`,
+  `ExtractSummaryOperationDetail` to `ExtractiveSummaryOperationDetail`,
+  `ExtractSummaryPagedFlux` to `ExtractiveSummaryPagedFlux`,
+  `ExtractSummaryPagedIterable` to `ExtractiveSummaryPagedIterable`,
+  `AbstractSummaryOptions` to `AbstractiveSummaryOptions`,
+  `AbstractSummaryAction` to `AbstractiveSummaryAction`,
+  `AbstractSummaryActionResult` to `AbtractiveSummaryActionResult`,
+  `AbstractSummaryResultCollection` to `AbstractiveSummaryResultCollection`
+  `AbstractSummaryResult` to `AbstractiveSummaryResult`,
+  `AbstractSummaryOperationDetail` to `AbstractiveSummaryOperationDetail`,
+  `AbstractSummaryPagedFlux` to `AbstractiveSummaryPagedFlux`,
+  `AbstractSummaryPagedIterable` to `AbstractiveSummaryPagedIterable`,
+- Renamed methods:
+  `getExtractSummaryActions()` to `getExtractiveSummaryActions()`,
+  `getAbstractSummaryActions()` to `getAbstractiveSummaryActions()`,
+  `setAbstractSummaryActions(AbstractSummaryAction... abstractSummaryActions)` to 
+  `setAbstractiveSummaryActions(AbstractiveSummaryAction... abstractiveSummaryActions)`,
+  `setExtractSummaryActions(ExtractSummaryAction... extractSummaryActions)` to
+  `setExtractiveSummaryActions(ExtractiveSummaryAction... extractiveSummaryActions)`,
+  `getAbstractSummaryResults` to `getAbstractiveSummaryResults`,
+  `getExtractSummaryResults` to `getExtractiveSummaryResults`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
 
 ## 5.2.7 (2023-05-23)
 
@@ -29,6 +76,15 @@
 
 - Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
 - Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+
+## 5.2.5 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
 
 ## 5.3.0-beta.2 (2023-03-07)
 
@@ -50,15 +106,6 @@
 ### Other Changes
 - Integrate synchronous workflow for sync clients so that they do not block on async client APIs. 
   It simplifies stack traces and improves debugging experience.
-
-## 5.2.5 (2023-03-16)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
-- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
 
 ## 5.2.4 (2023-02-16)
 

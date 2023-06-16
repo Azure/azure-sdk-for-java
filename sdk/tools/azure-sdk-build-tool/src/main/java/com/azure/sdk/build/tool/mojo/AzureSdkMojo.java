@@ -4,8 +4,11 @@ import com.azure.core.util.CoreUtils;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import com.azure.sdk.build.tool.ReportGenerator;
 import com.azure.sdk.build.tool.Tools;
+import com.azure.sdk.build.tool.models.BuildError;
+import com.azure.sdk.build.tool.models.BuildErrorLevel;
 import com.azure.sdk.build.tool.models.BuildReport;
 import com.azure.sdk.build.tool.util.logging.Logger;
+import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
@@ -21,6 +24,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -35,7 +39,7 @@ public class AzureSdkMojo extends AbstractMojo {
 
     public static AzureSdkMojo MOJO;
     private static final Logger LOGGER = Logger.getInstance();
-    private static final String APP_INSIGHTS_CONNECTION_STRING = "InstrumentationKey=bccfcc21-ff29-4316-9d65-dc40e7934e59;IngestionEndpoint=https://westus2-2.in.applicationinsights.azure.com/";
+    private static final String APP_INSIGHTS_CONNECTION_STRING = "InstrumentationKey=1d377c0e-44f8-4d56-bee7-7f13a3fef594;IngestionEndpoint=https://centralus-2.in.applicationinsights.azure.com/;LiveEndpoint=https://centralus.livediagnostics.monitor.azure.com/ ";
 
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
     private MavenProject project;
@@ -85,22 +89,38 @@ public class AzureSdkMojo extends AbstractMojo {
         getLog().info("= Running the Azure SDK Maven Build Tool                               =");
         getLog().info("========================================================================");
 
-        // Run all of the tools. They will collect their results in the report.
-        if (sendToMicrosoft) {
-            // front-load pinging App Insights asynchronously to avoid any blocking at the end of the plugin execution
-            pingAppInsights();
-        }
         Tools.getTools().forEach(Runnable::run);
         ReportGenerator reportGenerator = new ReportGenerator(buildReport);
         reportGenerator.generateReport();
+        BuildReport report = reportGenerator.getReport();
+        if (sendToMicrosoft) {
+            sendReportToAppInsights(report);
+        }
+
+        StringBuilder sb = new StringBuilder("Build failure for the following reasons:\n");
+        boolean hasErrors = false;
+        for (BuildError error : report.getErrors()) {
+            if (BuildErrorLevel.WARNING.equals(error.getLevel())) {
+                getLog().warn(error.getMessage());
+            } else if (BuildErrorLevel.ERROR.equals(error.getLevel())){
+                hasErrors = true;
+                sb.append(" - " + error.getMessage() + "\n");
+            }
+        }
+        // we throw a single runtime exception encapsulating all failure messages into one
+        if (hasErrors) {
+            throw new RuntimeException(sb.toString());
+        }
     }
 
-    private void pingAppInsights() {
+    private void sendReportToAppInsights(BuildReport report) {
         try {
-            LOGGER.info("Sending ping message to Application Insights");
+            CountDownLatch countDownLatch = new CountDownLatch(1);
             SpanExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
-                    .connectionString(APP_INSIGHTS_CONNECTION_STRING)
-                    .buildTraceExporter();
+                .connectionString(APP_INSIGHTS_CONNECTION_STRING)
+                .addHttpPipelinePolicy((context, next) -> next.process()
+                    .doAfterTerminate(() -> countDownLatch.countDown()))
+                .buildTraceExporter();
 
             SpanProcessor processor = SimpleSpanProcessor.create(azureMonitorExporter);
             SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
@@ -112,22 +132,19 @@ public class AzureSdkMojo extends AbstractMojo {
                 .get("version");
             Tracer tracer = tracerProvider.get("AzureSDKMavenBuildTool", version);
             tracer.spanBuilder("azsdk-maven-build-tool")
+                .setAttribute("build-report", report.getJsonReport())
+                .setSpanKind(SpanKind.SERVER)
                 .startSpan()
                 .end();
 
             CompletableResultCode completionCode = processor.forceFlush().join(30, TimeUnit.SECONDS);
-            if (completionCode.isSuccess()) {
-                LOGGER.info("Successfully sent ping message to Application Insights");
-            } else {
-                if (LOGGER.isWarnEnabled()) {
-                    LOGGER.warn("Failed to send ping message to Application Insights");
-                }
+            if (!completionCode.isSuccess()) {
+                getLog().warn("Failed to send report to Application Insights");
             }
-            processor.shutdown();
+            processor.close();
+            countDownLatch.await(10, TimeUnit.SECONDS);
         } catch (Exception ex) {
-            if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn("Unable to send ping message to Application Insights. " + ex.getMessage());
-            }
+            getLog().warn("Unable to send report to Application Insights. " + ex.getMessage());
         }
     }
 

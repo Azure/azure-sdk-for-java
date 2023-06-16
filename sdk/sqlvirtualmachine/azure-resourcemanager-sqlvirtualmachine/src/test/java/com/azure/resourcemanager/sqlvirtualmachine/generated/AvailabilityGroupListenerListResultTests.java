@@ -6,11 +6,10 @@ package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AvailabilityGroupListenerListResult;
-import org.junit.jupiter.api.Test;
 
 public final class AvailabilityGroupListenerListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AvailabilityGroupListenerListResult model =
             BinaryData
                 .fromString(
@@ -18,8 +17,8 @@ public final class AvailabilityGroupListenerListResultTests {
                 .toObject(AvailabilityGroupListenerListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AvailabilityGroupListenerListResult model = new AvailabilityGroupListenerListResult();
         model = BinaryData.fromObject(model).toObject(AvailabilityGroupListenerListResult.class);
     }

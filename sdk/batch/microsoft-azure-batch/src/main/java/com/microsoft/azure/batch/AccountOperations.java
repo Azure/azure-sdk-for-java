@@ -52,7 +52,7 @@ public class AccountOperations implements IInheritedBehaviors {
     /**
      * Lists the node agent SKU values supported by the Batch service.
      *
-     * @return A list of {@link NodeAgentSku} objects.
+     * @return A list of {@link ImageInformation} objects.
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException         Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
@@ -64,7 +64,7 @@ public class AccountOperations implements IInheritedBehaviors {
      * Lists the node agent SKU values supported by the Batch service.
      *
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
-     * @return A list of {@link NodeAgentSku} objects.
+     * @return A list of {@link ImageInformation} objects.
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException         Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
@@ -77,7 +77,7 @@ public class AccountOperations implements IInheritedBehaviors {
      *
      * @param detailLevel         A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return A list of {@link NodeAgentSku} objects.
+     * @return A list of {@link ImageInformation} objects.
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException         Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
@@ -93,7 +93,7 @@ public class AccountOperations implements IInheritedBehaviors {
     /**
      * Gets the number of nodes in each state, grouped by pool.
      *
-     * @return A list of {@link NodeAgentSku} objects.
+     * @return A list of {@link PoolNodeCounts} objects.
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException         Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */

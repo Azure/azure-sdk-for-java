@@ -18,9 +18,9 @@ public class ReceivedSharesListDetached {
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("accountName.purview.azure.com/share")
                         .buildClient();
-        // BEGIN:com.azure.analytics.purview.sharing.generated.receivedsharesgetalldetachedreceivedshares.receivedshareslistdetached
+        // BEGIN:com.azure.analytics.purview.sharing.generated.receivedshareslistdetachedreceivedshares.receivedshareslistdetached
         RequestOptions requestOptions = new RequestOptions().addQueryParam("filter", "Name eq 'testName'");
-        PagedIterable<BinaryData> response = receivedSharesClient.getAllDetachedReceivedShares(requestOptions);
-        // END:com.azure.analytics.purview.sharing.generated.receivedsharesgetalldetachedreceivedshares.receivedshareslistdetached
+        PagedIterable<BinaryData> response = receivedSharesClient.listDetachedReceivedShares(requestOptions);
+        // END:com.azure.analytics.purview.sharing.generated.receivedshareslistdetachedreceivedshares.receivedshareslistdetached
     }
 }

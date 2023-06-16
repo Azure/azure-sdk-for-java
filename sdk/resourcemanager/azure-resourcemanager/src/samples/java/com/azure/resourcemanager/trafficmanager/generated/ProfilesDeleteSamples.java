@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.trafficmanager.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Profiles Delete. */
 public final class ProfilesDeleteSamples {
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-04-01/examples/Profile-DELETE.json
+     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Profile-DELETE.json
      */
     /**
      * Sample code: Profile-DELETE.
@@ -23,6 +21,8 @@ public final class ProfilesDeleteSamples {
             .serviceClient()
             .getProfiles()
             .deleteWithResponse(
-                "azuresdkfornetautoresttrafficmanager1323", "azuresdkfornetautoresttrafficmanager3880", Context.NONE);
+                "azuresdkfornetautoresttrafficmanager1323",
+                "azuresdkfornetautoresttrafficmanager3880",
+                com.azure.core.util.Context.NONE);
     }
 }

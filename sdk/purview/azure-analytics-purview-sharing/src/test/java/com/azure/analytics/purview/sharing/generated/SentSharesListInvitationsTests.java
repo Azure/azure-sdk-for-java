@@ -17,7 +17,7 @@ public final class SentSharesListInvitationsTests extends PurviewShareClientTest
     public void testSentSharesListInvitationsTests() {
         RequestOptions requestOptions = new RequestOptions().addQueryParam("filter", "Name eq 'testName'");
         PagedIterable<BinaryData> response =
-                sentSharesClient.getAllSentShareInvitations("FF4A2AAE-8755-47BB-9C00-A774B5A7006E", requestOptions);
+                sentSharesClient.listSentShareInvitations("FF4A2AAE-8755-47BB-9C00-A774B5A7006E", requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
                 "Wed, 13 Sep 2017 17:33:55 GMT",

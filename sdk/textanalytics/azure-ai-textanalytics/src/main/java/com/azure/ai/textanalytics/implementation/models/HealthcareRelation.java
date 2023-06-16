@@ -4,6 +4,7 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
+import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -18,7 +19,7 @@ public final class HealthcareRelation {
      * Type of relation. Examples include: `DosageOfMedication` or 'FrequencyOfMedication', etc.
      */
     @JsonProperty(value = "relationType", required = true)
-    private RelationType relationType;
+    private HealthcareEntityRelationType relationType;
 
     /*
      * Confidence score between 0 and 1 of the extracted relation.
@@ -41,7 +42,7 @@ public final class HealthcareRelation {
      *
      * @return the relationType value.
      */
-    public RelationType getRelationType() {
+    public HealthcareEntityRelationType getRelationType() {
         return this.relationType;
     }
 
@@ -52,7 +53,7 @@ public final class HealthcareRelation {
      * @param relationType the relationType value to set.
      * @return the HealthcareRelation object itself.
      */
-    public HealthcareRelation setRelationType(RelationType relationType) {
+    public HealthcareRelation setRelationType(HealthcareEntityRelationType relationType) {
         this.relationType = relationType;
         return this;
     }
