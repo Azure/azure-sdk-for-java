@@ -70,12 +70,11 @@ public final class TableUtils {
     }
 
     /**
-     * Convert an implementation {@link com.azure.data.tables.implementation.models.TableServiceError} to a public
-     * {@link TableServiceError}. This function maps the service returned
-     * {@link com.azure.data.tables.implementation.models.TableServiceErrorOdataError inner OData error} and its
-     * contents to the top level {@link TableServiceError error}.
+     * Convert an implementation {@link TableServiceJsonError} to a public {@link TableServiceError}. This function maps
+     * the service returned {@link TableServiceJsonError inner OData error} and its contents to the top level
+     * {@link TableServiceError error}.
      *
-     * @param tableServiceJsonError The {@link TableServiceOdataError} returned by the service.
+     * @param tableServiceJsonError The {@link TableServiceJsonError} returned by the service.
      * @return The {@link TableServiceError} returned by the SDK.
      */
     public static TableServiceError toTableServiceError(TableServiceJsonError tableServiceJsonError) {

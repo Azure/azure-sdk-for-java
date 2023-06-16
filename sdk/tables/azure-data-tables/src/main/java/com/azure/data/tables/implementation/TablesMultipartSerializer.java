@@ -43,7 +43,7 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
             TableTransactionActionResponse response =
                 TableTransactionActionResponseAccessHelper.createTableTransactionActionResponse(statusCode, value);
 
-            headers.forEach(h -> response.getHeaders().set(h.getName(), h.getValue()));
+            headers.setAllHttpHeaders(response.getHeaders());
 
             return response;
         }

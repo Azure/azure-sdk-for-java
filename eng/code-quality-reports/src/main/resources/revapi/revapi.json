@@ -270,6 +270,12 @@
           "code" : "java.method.removed",
           "old" : "method void com.mysql.cj.protocol.ServerSession::setOldStatusFlags(int)",
           "justification" : "Fix method removed."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.data\\.tables\\.models.*",
+          "justification": "Removing Jackson annotations from Tables in transition to stream-style."
         }
       ]
     }
