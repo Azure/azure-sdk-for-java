@@ -151,9 +151,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void createQueueExistingName(HttpClient httpClient) {
         // Arrange
-        final String queueName = interceptorManager.isPlaybackMode()
-            ? "queue-5"
-            : getEntityName(TestUtils.getQueueBaseName(), 5);
+        final String queueName = getEntityName(TestUtils.getQueueBaseName(), 5);
         final CreateQueueOptions options = new CreateQueueOptions();
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
 
@@ -169,9 +167,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String queueName = testResourceNamer.randomName("test", 10);
-        final String forwardToEntityName = interceptorManager.isPlaybackMode()
-            ? "queue-5"
-            : getEntityName(TestUtils.getQueueBaseName(), 5);
+        final String forwardToEntityName = getEntityName(TestUtils.getQueueBaseName(), 5);
         final CreateQueueOptions expected = new CreateQueueOptions()
             .setForwardTo(forwardToEntityName)
             .setForwardDeadLetteredMessagesTo(forwardToEntityName);
@@ -245,12 +241,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
 
         final String ruleName = testResourceNamer.randomName("rule", 10);
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-13"
-            : getEntityName(getTopicBaseName(), 13);
-        final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription"
-            : getSubscriptionBaseName();
+        final String topicName = getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = getSubscriptionBaseName();
         final SqlRuleAction action = new SqlRuleAction("SET Label = 'test'");
         final CreateRuleOptions options = new CreateRuleOptions()
             .setAction(action)
@@ -281,12 +273,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
 
         final String ruleName = testResourceNamer.randomName("rule", 10);
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-13"
-            : getEntityName(getTopicBaseName(), 13);
-        final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription"
-            : getSubscriptionBaseName();
+        final String topicName = getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = getSubscriptionBaseName();
 
         // Act & Assert
         StepVerifier.create(client.createRule(topicName, subscriptionName, ruleName))
@@ -305,12 +293,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
 
         final String ruleName = testResourceNamer.randomName("rule", 10);
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-13"
-            : getEntityName(getTopicBaseName(), 13);
-        final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription"
-            : getSubscriptionBaseName();
+        final String topicName = getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = getSubscriptionBaseName();
 
         final SqlRuleFilter filter = new SqlRuleFilter("sys.To=@MyParameter OR sys.MessageId IS NULL");
         filter.getParameters().put("@MyParameter", "My-Parameter-Value");
@@ -346,9 +330,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     void createSubscription(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-0"
-            : getEntityName(getTopicBaseName(), 0);
+        final String topicName = getEntityName(getTopicBaseName(), 0);
         final String subscriptionName = testResourceNamer.randomName("sub", 10);
         final CreateSubscriptionOptions expected = new CreateSubscriptionOptions()
             .setMaxDeliveryCount(7)
@@ -375,12 +357,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void createSubscriptionExistingName(HttpClient httpClient) {
         // Arrange
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-1"
-            : getEntityName(getTopicBaseName(), 1);
-        final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription-session"
-            : getSessionSubscriptionBaseName();
+        final String topicName = getEntityName(getTopicBaseName(), 1);
+        final String subscriptionName = getSessionSubscriptionBaseName();
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
 
         // Act & Assert
@@ -394,28 +372,14 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     void createSubscriptionWithForwarding(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-0"
-            : getEntityName(getTopicBaseName(), 99);
+        final String topicName = getEntityName(getTopicBaseName(), 3);
         final String subscriptionName = testResourceNamer.randomName("sub", 50);
-        final String forwardToTopic = interceptorManager.isPlaybackMode()
-            ? "topic-1"
-            : getEntityName(getTopicBaseName(), 1);
+        final String forwardToTopic = getEntityName(getTopicBaseName(), 4);
         final CreateSubscriptionOptions expected = new CreateSubscriptionOptions()
             .setForwardTo(forwardToTopic)
             .setForwardDeadLetteredMessagesTo(forwardToTopic);
 
         // Act & Assert
-        if (!interceptorManager.isPlaybackMode()) {
-            client.createTopic(topicName)
-                .onErrorResume(ResourceExistsException.class, error -> Mono.empty())
-                .block(TIMEOUT);
-
-            client.createTopic(forwardToTopic)
-                .onErrorResume(ResourceExistsException.class, error -> Mono.empty())
-                .block(TIMEOUT);
-        }
-
         StepVerifier.create(client.createSubscription(topicName, subscriptionName, expected))
             .assertNext(actual -> {
                 assertEquals(topicName, actual.getTopicName());
@@ -486,12 +450,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String ruleName = testResourceNamer.randomName("rule-", 11);
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-13"
-            : getEntityName(getTopicBaseName(), 13);
-        final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription"
-            : getSubscriptionBaseName();
+        final String topicName = getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = getSubscriptionBaseName();
 
         client.createRule(topicName, subscriptionName, ruleName).block(TIMEOUT);
 
@@ -535,9 +495,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     void getQueue(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
-        final String queueName = interceptorManager.isPlaybackMode()
-            ? "queue-5"
-            : getEntityName(TestUtils.getQueueBaseName(), 5);
+        final String queueName = getEntityName(TestUtils.getQueueBaseName(), 5);
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         // Act & Assert
@@ -597,9 +555,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     void getQueueExists(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
-        final String queueName = interceptorManager.isPlaybackMode()
-            ? "queue-2"
-            : getEntityName(TestUtils.getQueueBaseName(), 2);
+        final String queueName = getEntityName(TestUtils.getQueueBaseName(), 2);
 
         // Act & Assert
         StepVerifier.create(client.getQueueExists(queueName))
@@ -625,9 +581,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     void getQueueRuntimeProperties(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
-        final String queueName = interceptorManager.isPlaybackMode()
-            ? "queue-2"
-            : getEntityName(TestUtils.getQueueBaseName(), 2);
+        final String queueName = getEntityName(TestUtils.getQueueBaseName(), 2);
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         // Act & Assert
@@ -650,12 +604,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
 
         // There is a single default rule created.
         final String ruleName = "$Default";
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-13"
-            : getEntityName(getTopicBaseName(), 13);
-        final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription"
-            : getSubscriptionBaseName();
+        final String topicName = getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = getSubscriptionBaseName();
 
         // Act & Assert
         StepVerifier.create(client.getRuleWithResponse(topicName, subscriptionName, ruleName))
@@ -680,10 +630,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     void getSubscription(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-1" : getEntityName(getTopicBaseName(), 1);
-        final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription-session"
-            : getSessionSubscriptionBaseName();
+        final String topicName = getEntityName(getTopicBaseName(), 1);
+        final String subscriptionName = getSessionSubscriptionBaseName();
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         // Act & Assert
@@ -708,7 +656,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     void getSubscriptionDoesNotExist(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-1" : getEntityName(getTopicBaseName(), 1);
+        final String topicName = getEntityName(getTopicBaseName(), 1);
         final String subscriptionName = "subscription-session-not-exist";
 
         // Act & Assert
@@ -722,12 +670,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     void getSubscriptionExists(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-1"
-            : getEntityName(getTopicBaseName(), 1);
-        final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription-session"
-            : getSessionSubscriptionBaseName();
+        final String topicName = getEntityName(getTopicBaseName(), 1);
+        final String subscriptionName = getSessionSubscriptionBaseName();
 
         // Act & Assert
         StepVerifier.create(client.getSubscriptionExists(topicName, subscriptionName))
@@ -740,7 +684,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     void getSubscriptionExistsFalse(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-1" : getEntityName(getTopicBaseName(), 1);
+        final String topicName = getEntityName(getTopicBaseName(), 1);
         final String subscriptionName = "subscription-session-not-exist";
 
         // Act & Assert
@@ -754,10 +698,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     void getSubscriptionRuntimeProperties(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
-        final String topicName = interceptorManager.isPlaybackMode() ? "topic-1" : getEntityName(getTopicBaseName(), 1);
-        final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription-session"
-            : getSessionSubscriptionBaseName();
+        final String topicName = getEntityName(getTopicBaseName(), 1);
+        final String subscriptionName = getSessionSubscriptionBaseName();
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         // Act & Assert
@@ -784,9 +726,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     void getTopic(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-1"
-            : getEntityName(getTopicBaseName(), 1);
+        final String topicName = getEntityName(getTopicBaseName(), 1);
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         // Act & Assert
@@ -836,9 +776,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     void getTopicExists(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-1"
-            : getEntityName(getTopicBaseName(), 1);
+        final String topicName = getEntityName(getTopicBaseName(), 1);
 
         // Act & Assert
         StepVerifier.create(client.getTopicExists(topicName))
@@ -864,9 +802,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     void getTopicRuntimeProperties(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-1"
-            : getEntityName(getTopicBaseName(), 1);
+        final String topicName = getEntityName(getTopicBaseName(), 1);
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         // Act & Assert
@@ -918,12 +854,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
 
         final ServiceBusAdministrationAsyncClient client = builder.buildAsyncClient();
 
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-1"
-            : getEntityName(getTopicBaseName(), 1);
-        final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription"
-            : getSubscriptionBaseName();
+        final String topicName = getEntityName(getTopicBaseName(), 1);
+        final String subscriptionName = getSubscriptionBaseName();
 
         // Act & Assert
         StepVerifier.create(client.getSubscriptionRuntimeProperties(topicName, subscriptionName))
@@ -938,12 +870,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
 
         // There is a single default rule created.
         final String ruleName = "$Default";
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-13"
-            : getEntityName(getTopicBaseName(), 13);
-        final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription"
-            : getSubscriptionBaseName();
+        final String topicName = getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = getSubscriptionBaseName();
 
         // Act & Assert
         StepVerifier.create(client.listRules(topicName, subscriptionName))
@@ -983,9 +911,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     void listSubscriptions(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-1"
-            : getEntityName(getTopicBaseName(), 1);
+        final String topicName = getEntityName(getTopicBaseName(), 1);
 
         // Act & Assert
         StepVerifier.create(client.listSubscriptions(topicName))
@@ -1023,12 +949,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
 
         final String ruleName = testResourceNamer.randomName("rule", 15);
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-12"
-            : getEntityName(getTopicBaseName(), 12);
-        final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription"
-            : getSubscriptionBaseName();
+        final String topicName = getEntityName(getTopicBaseName(), 12);
+        final String subscriptionName = getSubscriptionBaseName();
         final SqlRuleAction expectedAction = new SqlRuleAction("SET MessageId = 'matching-id'");
         final SqlRuleFilter expectedFilter = new SqlRuleFilter("sys.To = 'telemetry-event'");
 
@@ -1076,5 +998,4 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
 
         return builder.buildAsyncClient();
     }
-
 }

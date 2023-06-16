@@ -165,7 +165,7 @@ public class TestUtils {
      * @return The Service Bus queue name.
      */
     public static String getQueueBaseName() {
-        return getPropertyValue("AZURE_SERVICEBUS_QUEUE_NAME");
+        return getPropertyValue("AZURE_SERVICEBUS_QUEUE_NAME", "queue");
     }
 
     /**
@@ -174,7 +174,7 @@ public class TestUtils {
      * @return The Service Bus rule name.
      */
     public static String getRuleBaseName() {
-        return getPropertyValue("AZURE_SERVICEBUS_RULE_NAME");
+        return getPropertyValue("AZURE_SERVICEBUS_RULE_NAME", "rule");
     }
 
     /**
@@ -183,7 +183,7 @@ public class TestUtils {
      * @return The Service Bus queue name.
      */
     public static String getSessionQueueBaseName() {
-        return getPropertyValue("AZURE_SERVICEBUS_SESSION_QUEUE_NAME");
+        return getPropertyValue("AZURE_SERVICEBUS_SESSION_QUEUE_NAME", "queue-session");
     }
 
     /**
@@ -192,7 +192,7 @@ public class TestUtils {
      * @return The Service Bus subscription name.
      */
     public static String getSubscriptionBaseName() {
-        return getPropertyValue("AZURE_SERVICEBUS_SUBSCRIPTION_NAME");
+        return getPropertyValue("AZURE_SERVICEBUS_SUBSCRIPTION_NAME", "subscription");
     }
 
     /**
@@ -201,7 +201,7 @@ public class TestUtils {
      * @return The Service Bus subscription name.
      */
     public static String getTopicBaseName() {
-        return getPropertyValue("AZURE_SERVICEBUS_TOPIC_NAME");
+        return getPropertyValue("AZURE_SERVICEBUS_TOPIC_NAME", "topic");
     }
 
     /**
@@ -210,7 +210,7 @@ public class TestUtils {
      * @return The Service Bus subscription name.
      */
     public static String getSessionSubscriptionBaseName() {
-        return getPropertyValue("AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME");
+        return getPropertyValue("AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME", "subscription-session");
     }
 
     /**
@@ -359,7 +359,6 @@ public class TestUtils {
             assertAuthorizationRules(expectedItem, actualItem);
         }
     }
-
 
     public static String getPropertyValue(String propertyName) {
         return GLOBAL_CONFIGURATION.get(propertyName, System.getenv(propertyName));
