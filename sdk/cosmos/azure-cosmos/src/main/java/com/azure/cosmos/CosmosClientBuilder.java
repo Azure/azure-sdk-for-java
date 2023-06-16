@@ -816,15 +816,18 @@ public class CosmosClientBuilder implements
      * <ul>
      *     <li>
      *         For a read request going to a local read region, it is possible to optimize
-     *         availability by having the request be retried on a different write region.
+     *         availability by having the request be retried on a different write region since
+     *         some write region will have more updated.
      *     </li>
      *     <li>
-     *         For a read request going to a local write region, it may or may not help to
-     *         switch to a different write region right away.
+     *         For a read request going to a local write region, it could help to
+     *         switch to a different write region right away provided the local write region
+     *         does not have the most up to date data.
      *     </li>
      *     <li>
-     *         For a write request going to a local write region, it may or may not help to
-     *         switch to a different write region right away.
+     *         For a write request going to a local write region, it could help to
+     *         switch to a different write region right away provided the local write region
+     *         does not have the most up to date data.
      *     </li>
      * </ul>
      * For single-write accounts:
@@ -834,7 +837,7 @@ public class CosmosClientBuilder implements
      *     </li>
      *     <li>
      *         If a read request goes to a write region, the {@link CosmosSessionRetryOptions} setting does not
-     *         matter since the SDK routes the request to the same write region when switching regions.
+     *         matter since the write region in a single-write account has the most up to date data.
      *     </li>
      *     <li>
      *         For a write to a write region in a single-write account, {@code READ_SESSION_NOT_AVAILABLE} errors
