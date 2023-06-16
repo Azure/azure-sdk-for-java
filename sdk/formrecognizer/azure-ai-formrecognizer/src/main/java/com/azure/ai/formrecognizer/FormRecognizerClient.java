@@ -92,9 +92,9 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
  * </pre>
  * <!-- end readme-sample-createFormRecognizerClient  -->
  *
- * {@link com.azure.ai.formrecognizer}
- * {@link FormRecognizerClientBuilder}
- * {@link FormRecognizerAsyncClient}
+ * @see com.azure.ai.formrecognizer
+ * @see FormRecognizerClientBuilder
+ * @see FormRecognizerAsyncClient
  */
 @ServiceClient(builder = FormRecognizerClientBuilder.class)
 public final class FormRecognizerClient {
