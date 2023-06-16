@@ -152,7 +152,7 @@ public class TestUtils {
      * @return The fully qualified domain name for the service bus resource.
      */
     public static String getFullyQualifiedDomainName() {
-        return getPropertyValue("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME");
+        return getPropertyValue("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME", "REDACTED.servicebus.windows.net");
     }
 
     public static String getEndpoint() {

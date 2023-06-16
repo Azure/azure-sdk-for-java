@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -12,6 +13,7 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
@@ -50,6 +52,7 @@ import java.util.regex.Pattern;
 import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
 import static com.azure.messaging.servicebus.TestUtils.getConnectionString;
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
+import static com.azure.messaging.servicebus.TestUtils.getFullyQualifiedDomainName;
 import static com.azure.messaging.servicebus.TestUtils.getQueueBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getRuleBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
@@ -67,7 +70,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  */
 @Tag("integration")
 public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
-    protected static final Duration TIMEOUT = Duration.ofSeconds(20);
+    private static final Duration TIMEOUT = Duration.ofSeconds(20);
 
     /**
      * Test to connect to the service bus with an azure sas credential.
@@ -192,8 +195,12 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
 
         assertEquals(expected.isDeadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
         assertEquals(expected.isSessionRequired(), actual.isSessionRequired());
-        assertEquals(expected.getForwardTo(), actual.getForwardTo());
-        assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
+
+        // URLs are redacted so they will not match.
+        if (!interceptorManager.isPlaybackMode()) {
+            assertEquals(expected.getForwardTo(), actual.getForwardTo());
+            assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
+        }
     }
 
     @Test
@@ -202,7 +209,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
 
         final String ruleName = testResourceNamer.randomName("rule", 5);
         final String topicName = getEntityName(getTopicBaseName(), 2);
-        final String subscriptionName = getSubscriptionBaseName();
+        final String subscriptionName = getEntityName(getSubscriptionBaseName(), 2);
         final SqlRuleAction action = new SqlRuleAction("SET Label = 'test'");
         final CreateRuleOptions options = new CreateRuleOptions()
             .setAction(action)
@@ -493,7 +500,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     void getSubscriptionExists() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 2);
-        final String subscriptionName = getSubscriptionBaseName();
+        final String subscriptionName = getEntityName(getSubscriptionBaseName(), 2);
 
         assertTrue(client.getSubscriptionExists(topicName, subscriptionName));
     }
@@ -502,7 +509,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     void getSubscriptionRuntimeProperties() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 2);
-        final String subscriptionName = getSubscriptionBaseName();
+        final String subscriptionName = getEntityName(getSubscriptionBaseName(), 2);
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         final SubscriptionRuntimeProperties properties = client.getSubscriptionRuntimeProperties(topicName, subscriptionName);
@@ -542,7 +549,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationClient client = builder.buildClient();
 
         final String topicName = getEntityName(getTopicBaseName(), 2);
-        final String subscriptionName = getSubscriptionBaseName();
+        final String subscriptionName = getEntityName(getSubscriptionBaseName(), 2);
 
         ServiceBusManagementErrorException exception = assertThrows(ServiceBusManagementErrorException.class,
             () -> client.getSubscriptionRuntimeProperties(topicName, subscriptionName),
@@ -586,7 +593,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationClient client = getClient();
         final String ruleName = getEntityName(getRuleBaseName(), 9);
         final String topicName = getEntityName(getTopicBaseName(), 2);
-        final String subscriptionName = getSubscriptionBaseName();
+        final String subscriptionName = getEntityName(getSubscriptionBaseName(), 2);
         client.createRule(topicName, subscriptionName, ruleName);
 
         client.deleteRule(topicName, subscriptionName, ruleName);
@@ -677,7 +684,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
 
     private ServiceBusAdministrationClient getClient() {
         final String connectionString = interceptorManager.isPlaybackMode()
-            ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
+            ? "Endpoint=sb://" + getFullyQualifiedDomainName() + ";SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
             : TestUtils.getConnectionString(false);
 
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
@@ -687,9 +694,21 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
-        } else if (!interceptorManager.isLiveMode()) {
+        } else if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
         return builder.buildClient();
+    }
+
+    private TokenCredential getTokenCredential() {
+        final DefaultAzureCredentialBuilder builder = new DefaultAzureCredentialBuilder();
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder.build();
     }
 }

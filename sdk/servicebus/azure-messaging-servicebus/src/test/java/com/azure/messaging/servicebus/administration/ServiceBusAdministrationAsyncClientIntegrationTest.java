@@ -99,7 +99,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
             "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
 
-        final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        final TokenCredential tokenCredential = getTokenCredential();
 
         ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
             .httpClient(httpClient)
@@ -385,8 +385,11 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
                 assertEquals(topicName, actual.getTopicName());
                 assertEquals(subscriptionName, actual.getSubscriptionName());
 
-                assertEquals(expected.getForwardTo(), actual.getForwardTo());
-                assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
+                // URLs are redacted so they will not match.
+                if (!interceptorManager.isPlaybackMode()) {
+                    assertEquals(expected.getForwardTo(), actual.getForwardTo());
+                    assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
+                }
             })
             .expectComplete()
             .verify(TIMEOUT);
@@ -810,11 +813,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
             .assertNext(RuntimeProperties -> {
                 assertEquals(topicName, RuntimeProperties.getName());
 
-                if (interceptorManager.isPlaybackMode()) {
-                    assertEquals(3, RuntimeProperties.getSubscriptionCount());
-                } else {
-                    assertTrue(RuntimeProperties.getSubscriptionCount() > 1);
-                }
+                assertTrue(RuntimeProperties.getSubscriptionCount() > 1);
 
                 assertNotNull(RuntimeProperties.getCreatedAt());
                 assertTrue(nowUtc.isAfter(RuntimeProperties.getCreatedAt()));
@@ -855,7 +854,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationAsyncClient client = builder.buildAsyncClient();
 
         final String topicName = getEntityName(getTopicBaseName(), 1);
-        final String subscriptionName = getSubscriptionBaseName();
+        final String subscriptionName = getEntityName(getSubscriptionBaseName(), 2);
 
         // Act & Assert
         StepVerifier.create(client.getSubscriptionRuntimeProperties(topicName, subscriptionName))
@@ -997,5 +996,17 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         }
 
         return builder.buildAsyncClient();
+    }
+
+    private TokenCredential getTokenCredential() {
+        final DefaultAzureCredentialBuilder builder = new DefaultAzureCredentialBuilder();
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder.build();
     }
 }
