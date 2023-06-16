@@ -76,7 +76,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  *   operation or registering callbacks to receive notifications when the analysis is complete.</li>
  * </ol>
  *
- * <p><strong>Note:</strong>This client only supports
+ * <p><strong>Note: </strong>This client only supports
  * {@link com.azure.ai.formrecognizer.FormRecognizerServiceVersion#V2_1} and lower.
  * Recommended to use a newer service version,
  * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient} and
@@ -123,9 +123,9 @@ import static com.azure.core.util.FluxUtil.monoError;
  * </pre>
  * <!-- end readme-sample-createFormRecognizerAsyncClient  -->
  *
- * {@link com.azure.ai.formrecognizer}
- * {@link FormRecognizerClientBuilder}
- * {@link FormRecognizerClient}
+ * @see com.azure.ai.formrecognizer
+ * @see FormRecognizerClientBuilder
+ * @see FormRecognizerClient
  */
 @ServiceClient(builder = FormRecognizerClientBuilder.class, isAsync = true)
 public final class FormRecognizerAsyncClient {
