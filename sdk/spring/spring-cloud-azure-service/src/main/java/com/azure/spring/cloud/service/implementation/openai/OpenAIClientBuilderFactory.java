@@ -26,11 +26,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 
+/**
+ * Azure OpenAI client builder factory, it builds the OpenAI client according the configuration context
+ * and OpenAI properties.
+ */
 public class OpenAIClientBuilderFactory extends AbstractAzureHttpClientBuilderFactory<OpenAIClientBuilder> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OpenAIClientBuilderFactory.class);
     private final OpenAIClientProperties openAIClientProperties;
 
+    /**
+     * Create a {@link OpenAIClientBuilderFactory} instance with a {@link OpenAIClientProperties}.
+     * @param openAIClientProperties the properties for the OpenAI client.
+     */
     public OpenAIClientBuilderFactory(OpenAIClientProperties openAIClientProperties) {
         this.openAIClientProperties = openAIClientProperties;
     }

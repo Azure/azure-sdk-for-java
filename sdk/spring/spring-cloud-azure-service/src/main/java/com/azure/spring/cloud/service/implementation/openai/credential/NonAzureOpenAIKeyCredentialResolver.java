@@ -9,6 +9,9 @@ import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.service.implementation.openai.OpenAIClientProperties;
 import org.springframework.util.StringUtils;
 
+/**
+ * Resolve the Non Azure OpenAI Key Credential according to the {@link OpenAIClientProperties}.
+ */
 public class NonAzureOpenAIKeyCredentialResolver implements AzureCredentialResolver<NonAzureOpenAIKeyCredential> {
 
     @Override

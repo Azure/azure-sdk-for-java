@@ -7,16 +7,31 @@ import com.azure.ai.openai.OpenAIServiceVersion;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureHttpConfigurationProperties;
 import com.azure.spring.cloud.service.implementation.openai.OpenAIClientProperties;
 
+/**
+ * Configuration properties for Azure OpenAI.
+ */
 public class AzureOpenAIProperties extends AbstractAzureHttpConfigurationProperties implements OpenAIClientProperties {
 
     public static final String PREFIX = "spring.cloud.azure.openai";
 
+    /**
+     * Endpoint of the Azure OpenAI.
+     */
     private String endpoint;
 
+    /**
+     * The service version of OpenAIClient.
+     */
     private OpenAIServiceVersion serviceVersion;
 
+    /**
+     * The NonAzureOpenAiKeyCredential used for public OpenAi authentication.
+     */
     private String nonAzureOpenAIKeyCredential;
 
+    /**
+     * The AzureKeyCredential used for authentication.
+     */
     private String key;
 
     public String getEndpoint() {
