@@ -5,7 +5,7 @@
  * <p><a href="https://aka.ms/form-recognizer-3.0.0">
  * Azure Form Recognizer</a> is a cloud-based service provided by Microsoft Azure that utilizes machine learning to
  * extract information from various types of documents. Form Recognizer applies machine-learning-based optical
- * character recognition (OCR)  * and document understanding technologies to classify documents, extract text, tables,
+ * character recognition (OCR) and document understanding technologies to classify documents, extract text, tables,
  * structure, and key-value pairs from documents. You can also label and train custom models to automate data
  * extraction from structured, semi-structured, and unstructured documents.</p>
  *
@@ -291,9 +291,9 @@
  * </pre>
  * <!-- end readme-sample-build-analyze -->
  *
- * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient}
- * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient}
- * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder}
- * {@link com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult}
+ * @see com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient
+ * @see com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient
+ * @see com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder
+ * @see com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult
  */
 package com.azure.ai.formrecognizer.documentanalysis;
