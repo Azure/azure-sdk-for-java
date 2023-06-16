@@ -222,7 +222,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
      * It's required because the dispatcher app receives the incoming call context for PSTN calls
      * with the + as unicode in it and builds the topic id with it to send the event.*/
     protected static String removeAllNonChar(String input) {
-        return input.replace("+","u002B").replaceAll("[^a-zA-Z0-9_-]", "");
+        return input.replace("+", "u002B").replaceAll("[^a-zA-Z0-9_-]", "");
     }
 
     protected String waitForIncomingCallContext(String uniqueId, Duration timeOut) throws InterruptedException {
