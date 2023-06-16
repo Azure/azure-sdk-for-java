@@ -44,7 +44,7 @@
  * and {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient} to
  * build and manage models from custom documents.</p>
  *
- * <p><strong>Note:</strong>This client only supports
+ * <p><strong>Note: </strong>This client only supports
  * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion#V2022_08_31} and newer.
  * To use an older service version, {@link com.azure.ai.formrecognizer.training.FormTrainingClient} and
  * {@link com.azure.ai.formrecognizer.training.FormTrainingAsyncClient}</p>
@@ -203,8 +203,8 @@
  * </pre>
  * <!-- end readme-sample-manageModels -->
  *
- * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient}
- * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient}
- * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder}
+ * @see com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient
+ * @see com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient
+ * @see com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder
  */
 package com.azure.ai.formrecognizer.documentanalysis.administration;
