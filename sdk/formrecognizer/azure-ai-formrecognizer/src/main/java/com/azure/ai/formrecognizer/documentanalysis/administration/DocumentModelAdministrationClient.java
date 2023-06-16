@@ -153,9 +153,9 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.U
  * </pre>
  * <!-- end readme-sample-createDocumentModelAdministrationAsyncClient  -->
  *
- * {@link com.azure.ai.formrecognizer.documentanalysis.administration}
- * {@link DocumentModelAdministrationClientBuilder}
- * {@link DocumentModelAdministrationAsyncClient}
+ * @see com.azure.ai.formrecognizer.documentanalysis.administration
+ * @see DocumentModelAdministrationClientBuilder
+ * @see DocumentModelAdministrationAsyncClient
  */
 @ServiceClient(builder = DocumentModelAdministrationClientBuilder.class)
 public final class DocumentModelAdministrationClient {
