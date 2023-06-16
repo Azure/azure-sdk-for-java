@@ -8,6 +8,8 @@ import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.WebApplicationFirewallPolicyInner;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
+import com.azure.resourcemanager.network.models.KnownManagedRuleSet;
+import com.azure.resourcemanager.network.models.ManagedRuleGroupOverride;
 import com.azure.resourcemanager.network.models.ManagedRuleSet;
 import com.azure.resourcemanager.network.models.ManagedRulesDefinition;
 import com.azure.resourcemanager.network.models.PolicySettings;
@@ -20,8 +22,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -89,7 +93,7 @@ public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
         return this.innerModel().applicationGateways()
             .stream()
             .map(ApplicationGatewayInner::id)
-            .collect(Collectors.toUnmodifiableList());
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -195,17 +199,67 @@ public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
     }
 
     @Override
-    public void beforeGroupCreateOrUpdate() {
-        if (isInCreateMode()) {
-            ensureDefaultCoreRuleSet();
-        }
-    }
-
-    @Override
     public Mono<WebApplicationFirewallPolicy> createResourceAsync() {
         return this.manager().serviceClient().getWebApplicationFirewallPolicies()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
+    }
+
+    @Override
+    public WebApplicationFirewallPolicyImpl withManagedRuleSet(KnownManagedRuleSet managedRuleSet) {
+        Objects.requireNonNull(managedRuleSet);
+        return withManagedRuleSet(managedRuleSet.type(), managedRuleSet.version());
+    }
+
+    @Override
+    public WebApplicationFirewallPolicyImpl withManagedRuleSet(KnownManagedRuleSet managedRuleSet,
+                                                               ManagedRuleGroupOverride... managedRuleGroupOverrides) {
+        Objects.requireNonNull(managedRuleSet);
+        return withManagedRuleSet(managedRuleSet.type(), managedRuleSet.version(), managedRuleGroupOverrides);
+    }
+
+    @Override
+    public WebApplicationFirewallPolicyImpl withManagedRuleSet(String type, String version) {
+        return withManagedRuleSet(type, version, (ManagedRuleGroupOverride[]) null);
+    }
+
+    @Override
+    public WebApplicationFirewallPolicyImpl withManagedRuleSet(String type, String version,
+                                                               ManagedRuleGroupOverride... managedRuleGroupOverrides) {
+        ManagedRuleSet managedRuleSet = new ManagedRuleSet().withRuleSetType(type).withRuleSetVersion(version);
+        if (managedRuleGroupOverrides != null) {
+            managedRuleSet.withRuleGroupOverrides(Arrays.stream(managedRuleGroupOverrides).collect(Collectors.toList()));
+        }
+        return withManagedRuleSet(managedRuleSet);
+    }
+
+    @Override
+    public WebApplicationFirewallPolicyImpl withManagedRuleSet(ManagedRuleSet managedRuleSet) {
+        Objects.requireNonNull(managedRuleSet);
+        ManagedRulesDefinition managedRules = ensureManagedRules();
+
+        // deduplicate by type and version
+        withoutManagedRuleSet(managedRuleSet.ruleSetType(), managedRuleSet.ruleSetVersion());
+
+        managedRules.managedRuleSets().add(managedRuleSet);
+        return this;
+    }
+
+    @Override
+    public WebApplicationFirewallPolicyImpl withoutManagedRuleSet(KnownManagedRuleSet managedRuleSet) {
+        Objects.requireNonNull(managedRuleSet);
+        return withoutManagedRuleSet(managedRuleSet.type(), managedRuleSet.version());
+    }
+
+    @Override
+    public WebApplicationFirewallPolicyImpl withoutManagedRuleSet(String type, String version) {
+        Objects.requireNonNull(type);
+        Objects.requireNonNull(version);
+        if (this.innerModel().managedRules() != null && this.innerModel().managedRules().managedRuleSets() != null) {
+            this.innerModel().managedRules().managedRuleSets().removeIf(ruleSet -> type.equals(ruleSet.ruleSetType())
+                && version.equals(ruleSet.ruleSetVersion()));
+        }
+        return this;
     }
 
     @Override
@@ -235,19 +289,5 @@ public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
             }
         }
         return managedRulesDefinition;
-    }
-
-    private void ensureDefaultCoreRuleSet() {
-        ensureManagedRules();
-        if (this.innerModel().managedRules()
-            .managedRuleSets()
-            .stream()
-            .noneMatch(ruleSet -> MANAGED_RULE_SET_TYPE_DEFAULT.equals(ruleSet.ruleSetType()))) {
-            ManagedRuleSet defaultRuleSet =
-                new ManagedRuleSet()
-                    .withRuleSetType(MANAGED_RULE_SET_TYPE_DEFAULT)
-                    .withRuleSetVersion(MANAGED_RULE_SET_VERSION_DEFAULT);
-            this.innerModel().managedRules().managedRuleSets().add(defaultRuleSet);
-        }
     }
 }

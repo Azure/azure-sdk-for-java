@@ -74,7 +74,8 @@ public interface WebApplicationFirewallPolicy
         extends DefinitionStages.Blank,
         DefinitionStages.WithGroup,
         DefinitionStages.WithCreate,
-        DefinitionStages.WithRequestBodyOrCreate {
+        DefinitionStages.WithRequestBodyOrCreate,
+        DefinitionStages.WithManagedRulesOrCreate {
     }
 
     /** Grouping of Web Application Gateway stages. */
@@ -84,11 +85,68 @@ public interface WebApplicationFirewallPolicy
         }
 
         /** The stage of a Web Application Firewall Policy definition allowing to specify the resource group. */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate>{
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithManagedRules>{
+        }
+
+        /** The stage of a Web Application Firewall Policy definition allowing to specify the managed rules. */
+        interface WithManagedRules {
+            /**
+             * Specifies a known managed rule set to be added to the Web Application Firewall.
+             *
+             * @param managedRuleSet known managed rule set
+             * @return the next stage of the definition
+             */
+            WithManagedRulesOrCreate withManagedRuleSet(KnownManagedRuleSet managedRuleSet);
+
+            /**
+             * Specifies a known managed rule set to be added to the Web Application Firewall, with a rule group override
+             * configuration.
+             *
+             * @param managedRuleSet known managed rule set
+             * @param managedRuleGroupOverrides rule group override configuration
+             * @return the next stage of the definition
+             */
+            WithManagedRulesOrCreate withManagedRuleSet(KnownManagedRuleSet managedRuleSet,
+                                                        ManagedRuleGroupOverride... managedRuleGroupOverrides);
+
+            /**
+             * Specifies a managed rule set to be added to the Web Application Firewall.
+             *
+             * @param type managed rule set type
+             * @param version managed rule set version
+             * @return the next stage of the definition
+             */
+            WithManagedRulesOrCreate withManagedRuleSet(String type, String version);
+
+            /**
+             * Specifies a managed rule set to be added to the Web Application Firewall, with a rule group override
+             * configuration.
+             *
+             * @param type managed rule set type
+             * @param version managed rule set version
+             * @param managedRuleGroupOverrides rule group override configuration
+             * @return the next stage of the definition
+             */
+            WithManagedRulesOrCreate withManagedRuleSet(String type, String version,
+                                                        ManagedRuleGroupOverride... managedRuleGroupOverrides);
+
+            /**
+             * Specifies a managed rule set to be added to the Web Application Firewall, with full configuration.
+             *
+             * @param managedRuleSet managed rule set with full configuration
+             * @return the next stage of the definition
+             */
+            WithManagedRulesOrCreate withManagedRuleSet(ManagedRuleSet managedRuleSet);
+        }
+
+        /** The stage of a Web Application Firewall Policy definition allowing to specify the managed rules along with
+         * any other optional settings to be specified during creation.
+         */
+        interface WithManagedRulesOrCreate extends WithManagedRules, WithCreate {
         }
 
         /**
-         * The stage of a Web Application Firewall Policy definition allowing wo specify the mode of the policy.
+         * The stage of a Web Application Firewall Policy definition allowing to specify the mode of the policy.
          */
         interface WithMode {
             /**
@@ -229,6 +287,7 @@ public interface WebApplicationFirewallPolicy
         interface WithCreate
             extends Creatable<WebApplicationFirewallPolicy>,
             Resource.DefinitionWithTags<WithCreate>,
+            WithManagedRules,
             WithMode,
             WithState,
             WithBotProtection,
@@ -239,7 +298,77 @@ public interface WebApplicationFirewallPolicy
     /** Grouping of Web Application Firewall Policy update stages. */
     interface UpdateStages {
         /**
-         * The stage of a Web Application Firewall Policy update allowing wo specify the mode of the policy.
+         * The stage of a Web Application Firewall Policy update allowing to specify the managed rules.
+         */
+        interface WithManagedRuleSet {
+            /**
+             * Specifies a known managed rule set to be added to the Web Application Firewall.
+             *
+             * @param managedRuleSet known managed rule set
+             * @return the next stage of the update
+             */
+            Update withManagedRuleSet(KnownManagedRuleSet managedRuleSet);
+
+            /**
+             * Specifies a known managed rule set to be added to the Web Application Firewall, with a rule group override
+             * configuration.
+             *
+             * @param managedRuleSet known managed rule set
+             * @param managedRuleGroupOverrides rule group override configuration
+             * @return the next stage of the update
+             */
+            Update withManagedRuleSet(KnownManagedRuleSet managedRuleSet,
+                                      ManagedRuleGroupOverride... managedRuleGroupOverrides);
+
+            /**
+             * Specifies a managed rule set to be added to the Web Application Firewall.
+             *
+             * @param type managed rule set type
+             * @param version managed rule set version
+             * @return the next stage of the update
+             */
+            Update withManagedRuleSet(String type, String version);
+
+            /**
+             * Specifies a managed rule set to be added to the Web Application Firewall, with a rule group override
+             * configuration.
+             *
+             * @param type managed rule set type
+             * @param version managed rule set version
+             * @param managedRuleGroupOverrides rule group override configuration
+             * @return the next stage of the update
+             */
+            Update withManagedRuleSet(String type, String version,
+                                      ManagedRuleGroupOverride... managedRuleGroupOverrides);
+
+            /**
+             * Specifies a managed rule set to be added to the Web Application Firewall, with full configuration.
+             *
+             * @param managedRuleSet managed rule set with full configuration
+             * @return the next stage of the update
+             */
+            Update withManagedRuleSet(ManagedRuleSet managedRuleSet);
+
+            /**
+             * Removes the specified managed rule set from the Web Application Firewall.
+             *
+             * @param managedRuleSet managed rule set to be removed
+             * @return the next stage of the update
+             */
+            Update withoutManagedRuleSet(KnownManagedRuleSet managedRuleSet);
+
+            /**
+             * Removes the specified managed rule set from the Web Application Firewall.
+             *
+             * @param type type of the managed rule set to be removed
+             * @param version version of the managed rule set to be removed
+             * @return the next stage of the update
+             */
+            Update withoutManagedRuleSet(String type, String version);
+        }
+
+        /**
+         * The stage of a Web Application Firewall Policy update allowing to specify the mode of the policy.
          */
         interface WithMode {
             /**
@@ -398,6 +527,7 @@ public interface WebApplicationFirewallPolicy
         UpdateStages.WithState,
         UpdateStages.WithBotProtection,
         UpdateStages.WithInspectRequestBody,
-        UpdateStages.WithRequestBody {
+        UpdateStages.WithRequestBody,
+        UpdateStages.WithManagedRuleSet {
     }
 }

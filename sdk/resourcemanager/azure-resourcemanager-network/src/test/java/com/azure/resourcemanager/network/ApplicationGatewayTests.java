@@ -18,6 +18,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallMode;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySkuName;
 import com.azure.resourcemanager.network.models.ApplicationGatewayTier;
 import com.azure.resourcemanager.network.models.ApplicationGatewayWebApplicationFirewallConfiguration;
+import com.azure.resourcemanager.network.models.KnownManagedRuleSet;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.network.models.PublicIPSkuType;
@@ -529,6 +530,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                 .define(wafPolicyName)
                 .withRegion(Region.US_EAST)
                 .withExistingResourceGroup(rgName)
+                .withManagedRuleSet(KnownManagedRuleSet.OWASP_3_2)
                 .create();
 
         ApplicationGateway appGateway =
@@ -596,7 +598,8 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                         .webApplicationFirewallPolicies()
                         .define(invalidPolicyName)
                         .withRegion(Region.US_EAST)
-                        .withExistingResourceGroup(rgName))
+                        .withExistingResourceGroup(rgName)
+                        .withManagedRuleSet(KnownManagedRuleSet.OWASP_3_2))
                 .withWebApplicationFirewall(true, ApplicationGatewayFirewallMode.PREVENTION)
                 .create();
         });
