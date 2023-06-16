@@ -311,12 +311,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription"
             : getSubscriptionBaseName();
-        final SqlRuleFilter filter = !interceptorManager.isLiveMode()
-            ? new SqlRuleFilter("sys.To=[parameters('bar')] OR sys.MessageId IS NULL")
-            : new SqlRuleFilter("sys.To='foo' OR sys.MessageId IS NULL");
-        if (!interceptorManager.isLiveMode()) {
-            filter.getParameters().put("bar", "foo");
-        }
+
+        final SqlRuleFilter filter = new SqlRuleFilter("sys.To=@MyParameter OR sys.MessageId IS NULL");
+        filter.getParameters().put("@MyParameter", "My-Parameter-Value");
+
         final CreateRuleOptions options = new CreateRuleOptions()
             .setAction(new EmptyRuleAction())
             .setFilter(filter);
