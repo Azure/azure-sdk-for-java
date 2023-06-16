@@ -256,14 +256,16 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     void createRuleResponse() {
         final ServiceBusAdministrationClient client = getClient();
 
-        final String ruleName = testResourceNamer.randomName("rule", 7);
+        final String ruleName = testResourceNamer.randomName("rule", 10);
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-2"
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-2"
             : getSubscriptionBaseName();
-        final SqlRuleFilter filter = new SqlRuleFilter("sys.To='foo' OR sys.MessageId IS NULL");
+
+        final SqlRuleFilter filter = new SqlRuleFilter("sys.To=@MyParameter OR sys.MessageId IS NULL");
+        filter.getParameters().put("@MyParameter", "My-Parameter-Value");
 
         final CreateRuleOptions options = new CreateRuleOptions()
             .setAction(new EmptyRuleAction())
