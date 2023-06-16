@@ -80,9 +80,6 @@ public class FluidRelayManagerTests extends TestBase {
                 .define(serverName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
-                .withIdentity(new Identity().withType(ResourceIdentityType.NONE))
-                .withStoragesku(StorageSku.STANDARD)
-                .withProvisioningState(ProvisioningState.SUCCEEDED)
                 .create();
             // @embedmeEnd
             server.refresh();
