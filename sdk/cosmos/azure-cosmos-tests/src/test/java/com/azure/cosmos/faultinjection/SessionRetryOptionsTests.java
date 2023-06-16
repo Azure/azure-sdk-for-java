@@ -120,57 +120,61 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         assertThat(preferredLocations).isNotNull();
         assertThat(preferredLocations.size()).isEqualTo(2);
 
-        CosmosAsyncClient clientWithPreferredRegions = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .consistencyLevel(BridgeInternal.getContextClient(this.cosmosAsyncClient).getConsistencyLevel())
-            .preferredRegions(preferredLocations)
-            .sessionRetryOptions(new CosmosSessionRetryOptionsBuilder()
-                .setRegionSwitchHint(regionSwitchHint)
-                .build()
-            )
-            .directMode()
-            .buildAsyncClient();
+        CosmosAsyncClient clientWithPreferredRegions = null;
 
-        CosmosAsyncContainer containerForClientWithPreferredRegions = clientWithPreferredRegions
-            .getDatabase(this.cosmosAsyncContainer.getDatabase().getId())
-            .getContainer(this.cosmosAsyncContainer.getId());
+        try {
+            clientWithPreferredRegions = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .consistencyLevel(BridgeInternal.getContextClient(this.cosmosAsyncClient).getConsistencyLevel())
+                .preferredRegions(preferredLocations)
+                .sessionRetryOptions(new CosmosSessionRetryOptionsBuilder()
+                    .setRegionSwitchHint(regionSwitchHint)
+                    .build()
+                )
+                .directMode()
+                .buildAsyncClient();
 
-        TestItem createdItem = TestItem.createNewItem();
-        containerForClientWithPreferredRegions.createItem(createdItem).block();
+            CosmosAsyncContainer containerForClientWithPreferredRegions = clientWithPreferredRegions
+                .getDatabase(this.cosmosAsyncContainer.getDatabase().getId())
+                .getContainer(this.cosmosAsyncContainer.getId());
 
-        FaultInjectionRuleBuilder badSessionTokenRuleBuilder = new FaultInjectionRuleBuilder("serverErrorRule-bad-session-token-" + UUID.randomUUID());
+            TestItem createdItem = TestItem.createNewItem();
+            containerForClientWithPreferredRegions.createItem(createdItem).block();
 
-        FaultInjectionCondition faultInjectionConditionForReadsInPrimaryRegion = new FaultInjectionConditionBuilder()
-            .operationType(faultInjectionOperationType)
-            .connectionType(FaultInjectionConnectionType.DIRECT)
-            .region(preferredLocations.get(0))
-            .build();
+            FaultInjectionRuleBuilder badSessionTokenRuleBuilder = new FaultInjectionRuleBuilder("serverErrorRule-bad-session-token-" + UUID.randomUUID());
 
-        FaultInjectionServerErrorResult badSessionTokenServerErrorResult = FaultInjectionResultBuilders
-            .getResultBuilder(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
-            .build();
+            FaultInjectionCondition faultInjectionConditionForReadsInPrimaryRegion = new FaultInjectionConditionBuilder()
+                .operationType(faultInjectionOperationType)
+                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .region(preferredLocations.get(0))
+                .build();
 
-        FaultInjectionRule badSessionTokenRule = badSessionTokenRuleBuilder
-            .condition(faultInjectionConditionForReadsInPrimaryRegion)
-            .result(badSessionTokenServerErrorResult)
-            .duration(Duration.ofSeconds(10))
-            .build();
+            FaultInjectionServerErrorResult badSessionTokenServerErrorResult = FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                .build();
 
-        CosmosFaultInjectionHelper
-            .configureFaultInjectionRules(containerForClientWithPreferredRegions, Arrays.asList(badSessionTokenRule))
-            .block();
+            FaultInjectionRule badSessionTokenRule = badSessionTokenRuleBuilder
+                .condition(faultInjectionConditionForReadsInPrimaryRegion)
+                .result(badSessionTokenServerErrorResult)
+                .duration(Duration.ofSeconds(10))
+                .build();
 
-        validateOperationExecutionResult(
-            performDocumentOperation(
-                containerForClientWithPreferredRegions,
-                createdItem,
-                operationType
-            ),
-            sessionTokenMismatchDefaultWaitTime,
-            regionSwitchHint);
+            CosmosFaultInjectionHelper
+                .configureFaultInjectionRules(containerForClientWithPreferredRegions, Arrays.asList(badSessionTokenRule))
+                .block();
 
-        safeCloseAsync(clientWithPreferredRegions);
+            validateOperationExecutionResult(
+                performDocumentOperation(
+                    containerForClientWithPreferredRegions,
+                    createdItem,
+                    operationType
+                ),
+                sessionTokenMismatchDefaultWaitTime,
+                regionSwitchHint);
+        } finally {
+            safeCloseAsync(clientWithPreferredRegions);
+        }
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "writeOperationContextProvider", timeOut = TIMEOUT)
@@ -186,50 +190,54 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         assertThat(preferredRegions).isNotNull();
         assertThat(preferredRegions.size()).isEqualTo(2);
 
-        CosmosAsyncClient clientWithPreferredRegions = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .contentResponseOnWriteEnabled(true)
-            .preferredRegions(preferredRegions)
-            .sessionRetryOptions(new CosmosSessionRetryOptionsBuilder().setRegionSwitchHint(regionSwitchHint).build())
-            .buildAsyncClient();
+        CosmosAsyncClient clientWithPreferredRegions = null;
 
-        CosmosAsyncContainer asyncContainerFromClientWithPreferredRegions = clientWithPreferredRegions
-            .getDatabase(cosmosAsyncContainer.getDatabase().getId())
-            .getContainer(cosmosAsyncContainer.getId());
+        try {
+            clientWithPreferredRegions = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .preferredRegions(preferredRegions)
+                .sessionRetryOptions(new CosmosSessionRetryOptionsBuilder().setRegionSwitchHint(regionSwitchHint).build())
+                .buildAsyncClient();
 
-        FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
-            .operationType(faultInjectionOperationType)
-            .connectionType(FaultInjectionConnectionType.DIRECT)
-            .region(preferredRegions.get(0))
-            .build();
+            CosmosAsyncContainer asyncContainerFromClientWithPreferredRegions = clientWithPreferredRegions
+                .getDatabase(cosmosAsyncContainer.getDatabase().getId())
+                .getContainer(cosmosAsyncContainer.getId());
 
-        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
-            .getResultBuilder(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
-            .build();
+            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
+                .operationType(faultInjectionOperationType)
+                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .region(preferredRegions.get(0))
+                .build();
 
-        FaultInjectionRule badSessionTokenRule = new FaultInjectionRuleBuilder("bad-session-token-rule-" + UUID.randomUUID())
-            .condition(faultInjectionCondition)
-            .result(faultInjectionServerErrorResult)
-            .duration(Duration.ofSeconds(10))
-            .build();
+            FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                .build();
 
-        CosmosFaultInjectionHelper
-            .configureFaultInjectionRules(asyncContainerFromClientWithPreferredRegions, Arrays.asList(badSessionTokenRule))
-            .block();
+            FaultInjectionRule badSessionTokenRule = new FaultInjectionRuleBuilder("bad-session-token-rule-" + UUID.randomUUID())
+                .condition(faultInjectionCondition)
+                .result(faultInjectionServerErrorResult)
+                .duration(Duration.ofSeconds(10))
+                .build();
 
-        TestItem testItem = TestItem.createNewItem();
+            CosmosFaultInjectionHelper
+                .configureFaultInjectionRules(asyncContainerFromClientWithPreferredRegions, Arrays.asList(badSessionTokenRule))
+                .block();
 
-        validateOperationExecutionResult(
-            performDocumentOperation(
-                asyncContainerFromClientWithPreferredRegions,
-                testItem,
-                operationType
-            ),
-            sessionTokenMismatchDefaultWaitTime,
-            regionSwitchHint);
+            TestItem testItem = TestItem.createNewItem();
 
-        safeCloseAsync(clientWithPreferredRegions);
+            validateOperationExecutionResult(
+                performDocumentOperation(
+                    asyncContainerFromClientWithPreferredRegions,
+                    testItem,
+                    operationType
+                ),
+                sessionTokenMismatchDefaultWaitTime,
+                regionSwitchHint);
+        } finally {
+            safeCloseAsync(clientWithPreferredRegions);
+        }
     }
 
     @AfterClass(groups = {"multi-region", "multi-master"}, timeOut = SHUTDOWN_TIMEOUT)
