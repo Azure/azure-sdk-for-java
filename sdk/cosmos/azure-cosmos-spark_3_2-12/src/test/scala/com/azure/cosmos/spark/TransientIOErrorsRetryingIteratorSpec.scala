@@ -81,7 +81,8 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
       cosmosRowConverter.fromObjectNodeToRow(
         ItemsTable.defaultSchemaForInferenceDisabled,
         node,
-        SchemaConversionModes.Strict),
+        SchemaConversionModes.Strict
+      ),
       None)
   }
 
