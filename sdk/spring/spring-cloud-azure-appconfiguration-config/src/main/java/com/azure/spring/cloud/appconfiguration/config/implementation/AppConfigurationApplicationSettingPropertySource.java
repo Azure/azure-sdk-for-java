@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -27,27 +26,47 @@ import com.fasterxml.jackson.core.JsonProcessingException;
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
  *
  * <p>
- * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be
- * created.
+ * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.
  * </p>
  */
 final class AppConfigurationApplicationSettingPropertySource extends AppConfigurationPropertySource {
 
-    private static final Logger LOGGER =
-        LoggerFactory.getLogger(AppConfigurationApplicationSettingPropertySource.class);
+    private static final Logger LOGGER = LoggerFactory
+        .getLogger(AppConfigurationApplicationSettingPropertySource.class);
 
     private final AppConfigurationKeyVaultClientFactory keyVaultClientFactory;
 
     private final int maxRetryTime;
 
+    protected final String keyFilter;
+
+    protected final String[] labelFilter;
+
+    protected final String snapshotName;
+
     AppConfigurationApplicationSettingPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient,
-        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String keyFilter, String[] labelFilter, String snapshotName,
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String keyFilter, String[] labelFilter,
         int maxRetryTime) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
-        super(originEndpoint, replicaClient, keyFilter, labelFilter, snapshotName);
+        super(keyFilter + originEndpoint + "/" + getLabelName(labelFilter), replicaClient);
         this.keyVaultClientFactory = keyVaultClientFactory;
         this.maxRetryTime = maxRetryTime;
+        this.keyFilter = keyFilter;
+        this.labelFilter = labelFilter;
+        this.snapshotName = null;
+    }
+
+    AppConfigurationApplicationSettingPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient,
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String snapshotName, int maxRetryTime) {
+        // The context alone does not uniquely define a PropertySource, append storeName
+        // and label to uniquely define a PropertySource
+        super(snapshotName + originEndpoint + "/", replicaClient);
+        this.keyVaultClientFactory = keyVaultClientFactory;
+        this.maxRetryTime = maxRetryTime;
+        this.keyFilter = null;
+        this.labelFilter = null;
+        this.snapshotName = snapshotName;
     }
 
     /**
@@ -67,7 +86,8 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
             Collections.reverse(labels);
 
             for (String label : labels) {
-                SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter + "*").setLabelFilter(label);
+                SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter + "*")
+                    .setLabelFilter(label);
 
                 // * for wildcard match
                 processConfigurationSettings(replicaClient.listSettings(settingSelector));
@@ -99,8 +119,7 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
     }
 
     /**
-     * Given a Setting's Key Vault Reference stored in the Settings value, it will get its entry in Key
-     * Vault.
+     * Given a Setting's Key Vault Reference stored in the Settings value, it will get its entry in Key Vault.
      *
      * @param secretReference {"uri": "&lt;your-vault-url&gt;/secret/&lt;secret&gt;/&lt;version&gt;"}
      * @return Key Vault Secret Value

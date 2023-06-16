@@ -104,8 +104,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             if (configStore.isEnabled() && loadNewPropertySources) {
                 // There is only one Feature Set for all AppConfigurationPropertySources
 
-                List<AppConfigurationReplicaClient> clients =
-                    clientFactory.getAvailableClients(configStore.getEndpoint(), true);
+                List<AppConfigurationReplicaClient> clients = clientFactory
+                    .getAvailableClients(configStore.getEndpoint(), true);
 
                 boolean generatedPropertySources = false;
 
@@ -258,9 +258,9 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
         if (store.getFeatureFlags().getEnabled()) {
             for (FeatureFlagKeyValueSelector selectedKeys : store.getFeatureFlags().getSelects()) {
-                AppConfigurationFeatureManagementPropertySource propertySource =
-                    new AppConfigurationFeatureManagementPropertySource(store.getEndpoint(), client,
-                        selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
+                AppConfigurationFeatureManagementPropertySource propertySource = new AppConfigurationFeatureManagementPropertySource(
+                    store.getEndpoint(), client,
+                    selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
 
                 propertySource.initProperties();
                 sourceList.add(propertySource);
@@ -268,9 +268,15 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         }
 
         for (AppConfigurationKeyValueSelector selectedKeys : selects) {
-            AppConfigurationApplicationSettingPropertySource propertySource =
-                new AppConfigurationApplicationSettingPropertySource(store.getEndpoint(), client, keyVaultClientFactory,
-                    selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles), selectedKeys.getSnapshotName(), appProperties.getMaxRetryTime());
+            AppConfigurationApplicationSettingPropertySource propertySource;
+            if (StringUtils.hasText(selectedKeys.getSnapshotName())) {
+                propertySource = new AppConfigurationApplicationSettingPropertySource(store.getEndpoint(), client,
+                    keyVaultClientFactory, selectedKeys.getSnapshotName(), appProperties.getMaxRetryTime());
+            } else {
+                propertySource = new AppConfigurationApplicationSettingPropertySource(store.getEndpoint(), client,
+                    keyVaultClientFactory, selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles),
+                    appProperties.getMaxRetryTime());
+            }
             propertySource.initProperties();
             sourceList.add(propertySource);
 
