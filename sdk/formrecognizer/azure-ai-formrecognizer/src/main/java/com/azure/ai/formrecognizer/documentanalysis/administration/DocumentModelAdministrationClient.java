@@ -104,7 +104,7 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.U
  * </ol>
  *
  *
- * <p><strong>Note:</strong>This client only supports
+ * <p><strong>Note: </strong>This client only supports
  * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion#V2022_08_31} and newer.
  * To use an older service version, {@link com.azure.ai.formrecognizer.FormRecognizerClient} and {@link com.azure.ai
  * .formrecognizer.training.FormTrainingClient}.</p>
