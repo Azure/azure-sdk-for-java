@@ -70,7 +70,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * <p>This client also provides different methods based on inputs from a URL and inputs from a stream.</p>
  *
- * <p><strong>Note:</strong>This client only supports
+ * <p><strong>Note: </strong>This client only supports
  * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion#V2022_08_31} and newer.
  * To use an older service version, {@link com.azure.ai.formrecognizer.FormRecognizerClient} and {@link com.azure.ai
  * .formrecognizer.training.FormTrainingClient}.</p>
@@ -114,9 +114,9 @@ import static com.azure.core.util.FluxUtil.monoError;
  * </pre>
  * <!-- end readme-sample-asyncClient  -->
  *
- * {@link com.azure.ai.formrecognizer.documentanalysis}
- * {@link DocumentAnalysisClientBuilder}
- * {@link DocumentAnalysisClient}
+ * @see com.azure.ai.formrecognizer.documentanalysis
+ * @see DocumentAnalysisClientBuilder
+ * @see DocumentAnalysisClient
  */
 @ServiceClient(builder = DocumentAnalysisClientBuilder.class, isAsync = true)
 public final class DocumentAnalysisAsyncClient {
