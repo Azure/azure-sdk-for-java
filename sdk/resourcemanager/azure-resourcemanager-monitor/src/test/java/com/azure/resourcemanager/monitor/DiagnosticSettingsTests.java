@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -263,6 +264,30 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         Assertions.assertEquals(1, dsList.size());
         DiagnosticSetting ds3 = dsList.get(0);
         checkDiagnosticSettingValues(setting, ds3);
+
+        DiagnosticSettingsResourceInner inner = setting.innerModel();
+        inner.withLogs(new ArrayList<>())
+            .logs().add(new LogSettings().withEnabled(true).withCategoryGroup("audit"));
+        monitorManager.serviceClient().getDiagnosticSettingsOperations().createOrUpdate(vault.id(), setting.name(), inner);
+
+        setting.refresh();
+
+        Assertions.assertTrue(setting.logs().stream().anyMatch(logSettings -> "audit".equals(logSettings.categoryGroup())));
+
+        // verify category logs and category group logs can both be present during update
+        // issue: https://github.com/Azure/azure-sdk-for-java/issues/35425
+        // mixture of category group and category logs aren't supported
+        Assertions.assertThrows(ManagementException.class,
+            () -> setting.update()
+                .withLog("AuditEvent", 7)
+                .apply());
+
+        setting.refresh();
+
+        Assertions.assertTrue(setting.logs().stream().anyMatch(logSettings -> "audit".equals(logSettings.categoryGroup())));
+        Assertions.assertTrue(setting.logs().stream().noneMatch(logSettings -> "AuditEvent".equals(logSettings.category())));
+        Assertions.assertTrue(setting.logs().stream().allMatch(logSettings -> logSettings.category() == null));
+        Assertions.assertFalse(setting.metrics().isEmpty());
 
         monitorManager.diagnosticSettings().deleteById(setting.id());
 
