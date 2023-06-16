@@ -24,18 +24,22 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
     private final AtomicInteger retryCount;
     private Duration currentBackoff;
     private RetryContext retryContext;
-    private final RxDocumentServiceRequest request;
     private final AtomicInteger maxRetryAttemptsInCurrentRegion;
+    private final CosmosSessionRetryOptions sessionRetryOptions;
 
-    public SessionTokenMismatchRetryPolicy(RxDocumentServiceRequest request) {
+    public SessionTokenMismatchRetryPolicy(RetryContext retryContext, int waitTimeInMilliseconds, CosmosSessionRetryOptions sessionRetryOptions) {
         this.waitTimeTimeoutHelper = new TimeoutHelper(Duration.ofMillis(Configs.getSessionTokenMismatchDefaultWaitTimeInMs()));
         this.maximumBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchMaximumBackoffTimeInMs());
-        this.request = request;
         this.retryCount = new AtomicInteger();
         this.retryCount.set(0);
         this.currentBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchInitialBackoffTimeInMs());
         this.maxRetryAttemptsInCurrentRegion = new AtomicInteger(Configs.getMaxRetriesInLocalRegionWhenRemoteRegionPreferred());
-        this.retryContext = BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics);
+        this.retryContext = retryContext;
+        this.sessionRetryOptions = sessionRetryOptions;
+    }
+
+    public SessionTokenMismatchRetryPolicy(RetryContext retryContext, CosmosSessionRetryOptions sessionRetryOptions) {
+        this(retryContext, Configs.getSessionTokenMismatchDefaultWaitTimeInMs(), sessionRetryOptions);
     }
 
     @Override
@@ -74,7 +78,7 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         //      to the write region then region switch using ClientRetryPolicy will route
         //      the retry to the same write region again, therefore the DIFFERENT_REGION_PREFERRED
         //      hint causes quicker switch to the same write region which is reasonable
-        if (!shouldRetryLocally(request, retryCount.get())) {
+        if (!shouldRetryLocally(sessionRetryOptions, retryCount.get())) {
 
             LOGGER.debug("SessionTokenMismatchRetryPolicy not retrying because it a retry attempt for the current region and " +
                 "fallback to a different region is preferred ");
@@ -120,9 +124,7 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         return backoff;
     }
 
-    private boolean shouldRetryLocally(RxDocumentServiceRequest request, int retryCountForRegion) {
-
-        CosmosSessionRetryOptions sessionRetryOptions = request.requestContext.getSessionRetryOptions();
+    private boolean shouldRetryLocally(CosmosSessionRetryOptions sessionRetryOptions, int retryCountForRegion) {
 
         if (sessionRetryOptions == null) {
             return true;
