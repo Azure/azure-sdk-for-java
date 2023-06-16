@@ -82,6 +82,11 @@
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.40.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventgrid</artifactId>
       <version>4.16.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;dependency} -->
     </dependency>
