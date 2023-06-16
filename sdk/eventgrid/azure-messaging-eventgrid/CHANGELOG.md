@@ -3,6 +3,7 @@
 ## 4.17.0-beta.1 (Unreleased)
 
 ### Features Added
+- New Container Service events
 
 ### Breaking Changes
 
