@@ -1,15 +1,11 @@
 # Release History
 
-## 4.17.0-beta.1 (Unreleased)
+## 1.17.0 (2023-06-16)
 
 ### Features Added
 - New Container Service events
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes 
+### Other Changes
 
 #### Dependency Updates
 
