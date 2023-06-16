@@ -3,12 +3,18 @@
 ## 4.17.0-beta.1 (Unreleased)
 
 ### Features Added
+- New Container Service events
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
-### Other Changes
+### Other Changes 
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+- Upgraded `azure-core` from `1.39.0` to version `1.41.0`.
 
 ## 4.16.0 (2023-05-22)
 
