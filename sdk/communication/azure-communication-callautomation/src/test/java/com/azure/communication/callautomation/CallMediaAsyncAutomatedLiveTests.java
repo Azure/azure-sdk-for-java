@@ -197,7 +197,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
             assertNotNull(answerCallResult.getCallConnectionProperties());
-            var targetConnectionId = answerCallResult.getCallConnectionProperties().getCallConnectionId();
+            String targetConnectionId = answerCallResult.getCallConnectionProperties().getCallConnectionId();
             callDestructors.add(answerCallResult.getCallConnectionAsync());
 
             // wait for callConnected
