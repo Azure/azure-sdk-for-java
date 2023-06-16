@@ -92,8 +92,8 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.pipeline.instantiation -->
  *
- * {@link DocumentModelAdministrationAsyncClient}
- * {@link DocumentModelAdministrationClient}
+ * @see DocumentModelAdministrationAsyncClient
+ * @see DocumentModelAdministrationClient
  */
 @ServiceClientBuilder(serviceClients = {DocumentModelAdministrationAsyncClient.class, DocumentModelAdministrationClient.class})
 public final class DocumentModelAdministrationClientBuilder implements
