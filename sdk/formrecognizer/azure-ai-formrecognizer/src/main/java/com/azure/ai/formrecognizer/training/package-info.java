@@ -42,7 +42,7 @@
  * and {@link com.azure.ai.formrecognizer.training.FormTrainingAsyncClient} to build and manage models from custom
  * documents.</p>
  *
- * <p><strong>Note:</strong>This client only supports
+ * <p><strong>Note: </strong>This client only supports
  * {@link com.azure.ai.formrecognizer.FormRecognizerServiceVersion#V2_1} and lower.
  * Recommended to use a newer service version,
  * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient} and
@@ -201,8 +201,8 @@
  * <p>For a suggested approach to extracting information from custom forms with known fields, see
  * <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/v3/StronglyTypedRecognizedForm.java">strongly-typing a recognized form</a>.</p>
  *
- * {@link com.azure.ai.formrecognizer.training.FormTrainingClient}
- * {@link com.azure.ai.formrecognizer.training.FormTrainingAsyncClient}
- * {@link com.azure.ai.formrecognizer.training.FormTrainingClientBuilder}
+ * @see com.azure.ai.formrecognizer.training.FormTrainingClient
+ * @see com.azure.ai.formrecognizer.training.FormTrainingAsyncClient
+ * @see com.azure.ai.formrecognizer.training.FormTrainingClientBuilder
  */
 package com.azure.ai.formrecognizer.training;
