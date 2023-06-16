@@ -75,7 +75,7 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.U
  *
  * <p>This client also provides different methods based on inputs from a URL and inputs from a stream.</p>
  *
- * <p><strong>Note:</strong>This client only supports
+ * <p><strong>Note: </strong>This client only supports
  * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion#V2022_08_31} and newer.
  * To use an older service version, {@link com.azure.ai.formrecognizer.FormRecognizerClient} and
  * {@link com.azure.ai.formrecognizer.training.FormTrainingClient}.</p>
@@ -119,9 +119,9 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.U
  * </pre>
  * <!-- end readme-sample-createDocumentAnalysisClient  -->
  *
- * {@link com.azure.ai.formrecognizer.documentanalysis}
- * {@link DocumentAnalysisClientBuilder}
- * {@link DocumentAnalysisAsyncClient}
+ * @see com.azure.ai.formrecognizer.documentanalysis
+ * @see DocumentAnalysisClientBuilder
+ * @see DocumentAnalysisAsyncClient
  */
 @ServiceClient(builder = DocumentAnalysisClientBuilder.class)
 public final class DocumentAnalysisClient {
