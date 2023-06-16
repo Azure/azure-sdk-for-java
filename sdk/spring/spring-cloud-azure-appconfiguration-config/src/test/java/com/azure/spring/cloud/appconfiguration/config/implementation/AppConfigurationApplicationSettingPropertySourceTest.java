@@ -91,7 +91,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         String[] labelFilter = { "\0" };
 
         propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock,
-            keyVaultClientFactoryMock, KEY_FILTER, labelFilter, 60);
+            keyVaultClientFactoryMock, KEY_FILTER, labelFilter, "", 60);
     }
 
     @AfterEach

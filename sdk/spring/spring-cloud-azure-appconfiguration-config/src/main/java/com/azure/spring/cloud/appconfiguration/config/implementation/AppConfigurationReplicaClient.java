@@ -5,13 +5,16 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.springframework.util.StringUtils;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.ConfigurationClient;
+import com.azure.data.appconfiguration.models.CompositionType;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 
@@ -121,6 +124,40 @@ class AppConfigurationReplicaClient {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         try {
             PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(settingSelector);
+            this.failedAttempts = 0;
+            settings.forEach(setting -> configurationSettings.add(NormalizeNull.normalizeNullLabel(setting)));
+            return configurationSettings;
+        } catch (HttpResponseException e) {
+            if (e.getResponse() != null) {
+                int statusCode = e.getResponse().getStatusCode();
+
+                if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
+                    throw new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
+                }
+            }
+            throw e;
+        } catch (Exception e) { // TODO (mametcal) This should be an UnknownHostException, but currently it isn't
+            // catchable.
+            if (e.getMessage().startsWith("java.net.UnknownHostException")
+                || e.getMessage().startsWith("java.net.WebSocketHandshakeException")
+                || e.getMessage().startsWith("java.net.SocketException")
+                || e.getMessage().startsWith("java.io.IOException") || e.getMessage()
+                    .startsWith("io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused")) {
+                throw new AppConfigurationStatusException(e.getMessage(), null, null);
+            }
+            throw e;
+        }
+    }
+    
+    List<ConfigurationSetting> listSettingSnapshot(String snapshotName) {
+        ConfigurationSettingSnapshot snapshot = client.getSnapshot(snapshotName);
+        if (!CompositionType.KEY.equals(snapshot.getCompositionType())) {
+            throw new IllegalArgumentException("Snapshot " + snapshotName + " needs to be of type Key.");
+        }
+        
+        List<ConfigurationSetting> configurationSettings = new ArrayList<>();
+        try {
+            PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettingsForSnapshot(snapshotName);
             this.failedAttempts = 0;
             settings.forEach(setting -> configurationSettings.add(NormalizeNull.normalizeNullLabel(setting)));
             return configurationSettings;

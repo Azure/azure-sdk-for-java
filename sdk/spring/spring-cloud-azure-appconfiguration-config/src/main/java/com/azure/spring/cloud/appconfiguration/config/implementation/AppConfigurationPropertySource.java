@@ -14,7 +14,8 @@ import com.azure.data.appconfiguration.ConfigurationClient;
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
  *
  * <p>
- * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.
+ * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be
+ * created.
  * </p>
  */
 abstract class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
@@ -23,19 +24,21 @@ abstract class AppConfigurationPropertySource extends EnumerablePropertySource<C
 
     protected final String[] labelFilter;
 
+    protected final String snapshotName;
+
     protected final Map<String, Object> properties = new LinkedHashMap<>();
 
     protected final AppConfigurationReplicaClient replicaClient;
 
     AppConfigurationPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient, String keyFilter,
-        String[] labelFilter) {
+        String[] labelFilter, String snapshotName) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
-        super(
-            keyFilter + originEndpoint + "/" + getLabelName(labelFilter));
+        super(keyFilter + snapshotName + originEndpoint + "/" + getLabelName(labelFilter));
         this.replicaClient = replicaClient;
         this.keyFilter = keyFilter;
         this.labelFilter = labelFilter;
+        this.snapshotName = snapshotName;
     }
 
     @Override
@@ -50,6 +53,9 @@ abstract class AppConfigurationPropertySource extends EnumerablePropertySource<C
     }
 
     private static String getLabelName(String[] labelFilter) {
+        if (labelFilter == null) {
+            return "";
+        }
         StringBuilder labelName = new StringBuilder();
         for (String label : labelFilter) {
 
