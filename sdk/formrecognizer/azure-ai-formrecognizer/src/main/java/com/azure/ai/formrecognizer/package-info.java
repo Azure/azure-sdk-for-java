@@ -238,8 +238,8 @@
  * see
  * <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/v3/StronglyTypedRecognizedForm.java">strongly-typing a recognized form</a>.</p>
  *
- * {@link com.azure.ai.formrecognizer.FormRecognizerClient}
- * {@link com.azure.ai.formrecognizer.FormRecognizerAsyncClient}
- * {@link com.azure.ai.formrecognizer.FormRecognizerClientBuilder}
+ * @see com.azure.ai.formrecognizer.FormRecognizerClient
+ * @see com.azure.ai.formrecognizer.FormRecognizerAsyncClient
+ * @see com.azure.ai.formrecognizer.FormRecognizerClientBuilder
  */
 package com.azure.ai.formrecognizer;
