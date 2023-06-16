@@ -8,16 +8,12 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.util.BinaryDataHelper;
-import com.azure.core.implementation.util.FileContent;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
-import com.azure.core.test.implementation.mocking.MockAsynchronousFileChannel;
-import com.azure.core.test.implementation.mocking.MockFileContent;
-import com.azure.core.test.implementation.mocking.MockPath;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.io.IOUtils;
@@ -56,9 +52,11 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -87,16 +85,54 @@ public abstract class HttpClientTests {
     protected static final String ECHO_RESPONSE = "echo";
 
     private static final byte[] EXPECTED_RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
-    private static final byte[] LARGE_BINARY_DATA_BYTES;
-    private static final byte[] LARGE_SLICE_FILE_BINARY_DATA_BYTES;
+
+    private static final Map<Integer, byte[]> SHARED_DATA;
+    private static final Map<Integer, Path> SHARED_TEST_FILES;
+    private static final Map<Integer, Path> SHARED_TEST_SLICE_FILES;
 
     static {
-        int largeSize = 10 * 1024 * 1024 + 13;
-        LARGE_BINARY_DATA_BYTES = new byte[largeSize];
-        LARGE_SLICE_FILE_BINARY_DATA_BYTES = new byte[LARGE_BINARY_DATA_BYTES.length + 16384];
-        ThreadLocalRandom random = ThreadLocalRandom.current();
-        random.nextBytes(LARGE_BINARY_DATA_BYTES);
-        System.arraycopy(LARGE_BINARY_DATA_BYTES, 0, LARGE_SLICE_FILE_BINARY_DATA_BYTES, 8192, largeSize);
+        SHARED_DATA = new HashMap<>();
+        SHARED_TEST_FILES = new HashMap<>();
+        SHARED_TEST_SLICE_FILES = new HashMap<>();
+        byte[] copyBytes = new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+        List<Integer> fileSizes = Arrays.asList(1, 2, 10, 127, 1024, 1024 + 157, 8 * 1024 + 3, 10 * 1024 * 1024 + 13);
+        for (int fileSize : fileSizes) {
+            byte[] sharedData = new byte[fileSize];
+            createCopyBytesArray(sharedData, copyBytes);
+            SHARED_DATA.put(fileSize, sharedData);
+
+            SHARED_TEST_FILES.put(fileSize, createFile("sharedHttpClientTestsFile" + CoreUtils.randomUuid(),
+                sharedData));
+
+            byte[] sliceFileData = new byte[8192 + fileSize + 8192];
+            System.arraycopy(sharedData, 0, sliceFileData, 8192, fileSize);
+            SHARED_TEST_SLICE_FILES.put(fileSize, createFile("sharedHttpClientTestsSliceFile" + CoreUtils.randomUuid(),
+                sliceFileData));
+        }
+    }
+
+    private static void createCopyBytesArray(byte[] array, byte[] copyBytes) {
+        int loops = array.length / copyBytes.length;
+        int remainder = array.length % copyBytes.length;
+
+        for (int i = 0; i < loops; i++) {
+            System.arraycopy(copyBytes, 0, array, i * copyBytes.length, copyBytes.length);
+        }
+
+        System.arraycopy(copyBytes, 0, array, loops * copyBytes.length, remainder);
+    }
+
+    private static Path createFile(String fileName, byte[] data) {
+        try {
+            Path sharedFile = Files.createTempFile(fileName, String.valueOf(data.length));
+            sharedFile.toFile().deleteOnExit();
+            Files.write(sharedFile, data);
+
+            return sharedFile;
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
     }
 
     /**
@@ -115,6 +151,7 @@ public abstract class HttpClientTests {
 
     /**
      * Get a flag indicating if communication should be secured or not (https or http).
+     *
      * @return A flag indicating if communication should be secured or not (https or http).
      */
     protected boolean isSecure() {
@@ -273,6 +310,7 @@ public abstract class HttpClientTests {
 
     /**
      * Tests that unbuffered response body can be accessed.
+     *
      * @throws IOException When IO fails.
      */
     @SyncAsyncTest
@@ -331,6 +369,7 @@ public abstract class HttpClientTests {
 
     /**
      * Tests that buffered response is indeed buffered, i.e. content can be accessed many times.
+     *
      * @throws IOException When IO fails.
      */
     @SyncAsyncTest
@@ -406,8 +445,8 @@ public abstract class HttpClientTests {
             testDataBinaryData.getBinaryData());
 
         StepVerifier.create(createHttpClient()
-            .send(request)
-            .flatMap(HttpResponse::getBodyAsByteArray))
+                .send(request)
+                .flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(responseBytes -> assertArrayEquals(testDataBinaryData.getBytes(), responseBytes))
             .verifyComplete();
     }
@@ -563,13 +602,7 @@ public abstract class HttpClientTests {
     private static Stream<BinaryDataTestData> getBinaryDataBodyVariants() {
         return Stream.of(1, 2, 10, 127, 1024, 1024 + 157, 8 * 1024 + 3, 10 * 1024 * 1024 + 13)
             .flatMap(size -> {
-                byte[] bytes;
-                if (size == 10 * 1024 * 1024 + 13) {
-                    bytes = LARGE_BINARY_DATA_BYTES;
-                } else {
-                    bytes = new byte[size];
-                    ThreadLocalRandom.current().nextBytes(bytes);
-                }
+                byte[] bytes = SHARED_DATA.get(size);
 
                 BinaryData byteArrayData = BinaryData.fromBytes(bytes);
 
@@ -587,36 +620,28 @@ public abstract class HttpClientTests {
                 }
 
                 BinaryData fluxBinaryData = BinaryData.fromFlux(Flux.fromIterable(bufferList)
-                    .map(ByteBuffer::duplicate), null, false)
+                        .map(ByteBuffer::duplicate), null, false)
                     .block();
 
                 BinaryData fluxBinaryDataWithLength = BinaryData.fromFlux(Flux.fromIterable(bufferList)
-                    .map(ByteBuffer::duplicate), size.longValue(), false)
+                        .map(ByteBuffer::duplicate), size.longValue(), false)
                     .block();
 
                 BinaryData asyncFluxBinaryData = BinaryData.fromFlux(Flux.fromIterable(bufferList)
-                    .map(ByteBuffer::duplicate)
-                    .delayElements(Duration.ofNanos(10)), null, false)
+                        .map(ByteBuffer::duplicate)
+                        .delayElements(Duration.ofNanos(10)), null, false)
                     .block();
 
                 BinaryData asyncFluxBinaryDataWithLength = BinaryData.fromFlux(Flux.fromIterable(bufferList)
-                    .map(ByteBuffer::duplicate)
-                    .delayElements(Duration.ofNanos(10)), size.longValue(), false)
+                        .map(ByteBuffer::duplicate)
+                        .delayElements(Duration.ofNanos(10)), size.longValue(), false)
                     .block();
 
                 BinaryData objectBinaryData = BinaryData.fromObject(bytes, new ByteArraySerializer());
 
-                BinaryData fileData = createMockFileBinaryData(bytes, 0L, (long) bytes.length);
+                BinaryData fileData = BinaryData.fromFile(SHARED_TEST_FILES.get(size));
 
-                BinaryData sliceFileData;
-                if (size == 10 * 1024 * 1024 + 13) {
-                    sliceFileData = createMockFileBinaryData(LARGE_SLICE_FILE_BINARY_DATA_BYTES, 8192L,
-                        (long) bytes.length);
-                } else {
-                    byte[] sliceFileBytes = new byte[8192 + bytes.length + 8192];
-                    System.arraycopy(bytes, 0, sliceFileBytes, 8192, bytes.length);
-                    sliceFileData = createMockFileBinaryData(sliceFileBytes, 8192L, (long) bytes.length);
-                }
+                BinaryData sliceFileData = BinaryData.fromFile(SHARED_TEST_SLICE_FILES.get(size), 8192L, (long) size);
 
                 return Stream.of(
                     new BinaryDataTestData(byteArrayData, bytes),
@@ -648,6 +673,7 @@ public abstract class HttpClientTests {
 
     /**
      * Gets the request URL for given path.
+     *
      * @param requestPath The path.
      * @return The request URL for given path.
      * @throws RuntimeException if url is invalid.
@@ -704,18 +730,5 @@ public abstract class HttpClientTests {
         public Mono<Void> serializeAsync(OutputStream stream, Object value) {
             return Mono.fromRunnable(() -> serialize(stream, value));
         }
-    }
-
-    private static BinaryData createMockFileBinaryData(byte[] fileData, Long position, Long size) {
-        MockAsynchronousFileChannel mockFileChannel = new MockAsynchronousFileChannel(fileData, fileData.length);
-        FileContent fileContent = new MockFileContent(new MockPath("fakeFile", fileData, fileData.length), 8192,
-            position, size) {
-            @Override
-            public AsynchronousFileChannel openAsynchronousFileChannel() {
-                return mockFileChannel;
-            }
-        };
-
-        return BinaryDataHelper.createBinaryData(fileContent);
     }
 }
