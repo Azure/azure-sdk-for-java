@@ -25,7 +25,6 @@ import java.util.List;
 import static java.time.OffsetDateTime.now;
 
 public class SharedKeyTests extends BatchServiceClientTestBase {
-    private static BatchServiceClientBuilder clientBuilderWithSharedKey;
     private static PoolClient poolClientWithSharedKey;
     private final String sharedKeyPoolId = "SharedKey-testpool";
     private final String vmSize = "STANDARD_D1_V2";
@@ -33,26 +32,10 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
 
     @Override
     protected void beforeTest() {
+        super.beforeTest();
         BatchSharedKeyCredentials sharedKeyCred = getSharedKeyCredentials();
-        clientBuilderWithSharedKey =
-                new BatchServiceClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("AZURE_BATCH_ENDPOINT", "endpoint"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-                        .credential(sharedKeyCred);
-
-        if (getTestMode() == TestMode.PLAYBACK) {
-            clientBuilderWithSharedKey
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-
-            addTestRulesOnPlayback(interceptorManager);
-        } else if (getTestMode() == TestMode.RECORD) {
-            clientBuilderWithSharedKey.addPolicy(interceptorManager.getRecordPolicy());
-
-        }
-
-        poolClientWithSharedKey = clientBuilderWithSharedKey.buildPoolClient();
+        batchClientBuilder.credential(sharedKeyCred);
+        poolClientWithSharedKey = batchClientBuilder.buildPoolClient();
     }
 
     @Test
