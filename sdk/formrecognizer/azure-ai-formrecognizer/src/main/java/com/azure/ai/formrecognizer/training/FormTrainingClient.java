@@ -44,7 +44,7 @@ import java.util.List;
  *     operation or registering callbacks to receive notifications when the analysis is complete.</li>
  * </ol>
  *
- * <p><strong>Note:</strong>This client only supports
+ * <p><strong>Note: </strong>This client only supports
  * {@link com.azure.ai.formrecognizer.FormRecognizerServiceVersion#V2_1} and lower.
  * Recommended to use a newer service version,
  * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient} and
@@ -91,9 +91,9 @@ import java.util.List;
  * </pre>
  * <!-- end readme-sample-createFormTrainingClient  -->
  *
- * {@link com.azure.ai.formrecognizer.training}
- * {@link FormTrainingClientBuilder}
- * {@link FormTrainingAsyncClient}
+ * @see com.azure.ai.formrecognizer.training
+ * @see FormTrainingClientBuilder
+ * @see FormTrainingAsyncClient
  */
 @ServiceClient(builder = FormTrainingClientBuilder.class)
 public final class FormTrainingClient {
