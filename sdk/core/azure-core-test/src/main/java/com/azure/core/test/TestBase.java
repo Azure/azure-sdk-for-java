@@ -41,7 +41,6 @@ import static com.azure.core.test.utils.TestUtils.toURI;
  * Base class for running live and playback tests using {@link InterceptorManager}.
  */
 public abstract class TestBase implements BeforeEachCallback {
-    private static final ClientLogger LOGGER = new ClientLogger(TestBase.class);
     // Environment variable name used to determine the TestMode.
     private static final String AZURE_TEST_HTTP_CLIENTS = "AZURE_TEST_HTTP_CLIENTS";
 
@@ -153,7 +152,7 @@ public abstract class TestBase implements BeforeEachCallback {
         } else if (testInfo.getTags().contains("Live")) {
             localTestMode = TestMode.LIVE;
         }
-        Path testClassPath = Paths.get(toURI(testInfo.getTestClass().get().getResource(testInfo.getTestClass().get().getSimpleName() + ".class"), LOGGER));
+        Path testClassPath = Paths.get(toURI(testInfo.getTestClass().get().getResource(testInfo.getTestClass().get().getSimpleName() + ".class")));
         this.testContextManager =
             new TestContextManager(testInfo.getTestMethod().get(),
                 localTestMode,

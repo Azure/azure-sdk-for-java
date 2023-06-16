@@ -17,11 +17,10 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.ReadableSecondary;
 import com.azure.resourcemanager.sqlvirtualmachine.models.Role;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AvailabilityGroupListenerPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AvailabilityGroupListenerProperties model =
             BinaryData
                 .fromString(
@@ -56,8 +55,8 @@ public final class AvailabilityGroupListenerPropertiesTests {
                 ReadableSecondary.NO, model.availabilityGroupConfiguration().replicas().get(0).readableSecondary());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AvailabilityGroupListenerProperties model =
             new AvailabilityGroupListenerProperties()
                 .withAvailabilityGroupName("cmpoyfdkfogkny")

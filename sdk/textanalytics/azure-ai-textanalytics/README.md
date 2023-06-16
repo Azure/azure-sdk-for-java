@@ -62,18 +62,18 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-textanalytics</artifactId>
-    <version>5.2.7</version>
+    <version>5.3.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-**Note:** This version of the client library defaults to the `2022-10-01-preview` version of the service.
+**Note:** This version of the client library defaults to the `2023-04-01` version of the service.
 It is a newer version than `3_0`, `3_1` and `2022-05-01`.
 
 This table shows the relationship between SDK services and supported API versions of the service:
 
 |SDK version|Supported API version of service
 |-|-
-|5.3.x | 3.0, 3.1, 2022-05-01, 2022-10-01-preview (default)
+|5.3.x | 3.0, 3.1, 2022-05-01, 2023-04-01 (default)
 |5.2.x | 3.0, 3.1, 2022-05-01
 |5.1.x | 3.0, 3.1 
 |5.0.x | 3.0
@@ -141,7 +141,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.8.2</version>
+    <version>1.9.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -372,8 +372,8 @@ set of documents. Currently, the supported features are:
 - Custom Entity Recognition (API version 2022-05-01 and newer)
 - Custom Single-Label Classification (API version 2022-05-01 and newer)
 - Custom Multi-Label Classification (API version 2022-05-01 and newer)
-- Abstractive Text Summarization (API version 2022-10-01-preview and newer)
-- Extractive Text Summarization (API version 2022-10-01-preview and newer)
+- Abstractive Text Summarization (API version 2023-04-01 and newer)
+- Extractive Text Summarization (API version 2023-04-01 and newer)
 
 
 Sample: [Multiple action analysis][multiple_actions_analysis_sample]

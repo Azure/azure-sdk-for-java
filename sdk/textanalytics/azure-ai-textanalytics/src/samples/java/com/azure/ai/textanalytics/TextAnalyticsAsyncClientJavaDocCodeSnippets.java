@@ -3,9 +3,9 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AbstractSummaryOperationDetail;
-import com.azure.ai.textanalytics.models.AbstractSummaryOptions;
-import com.azure.ai.textanalytics.models.AbstractSummaryResult;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryOptions;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
 import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
@@ -23,9 +23,9 @@ import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
-import com.azure.ai.textanalytics.models.ExtractSummaryOperationDetail;
-import com.azure.ai.textanalytics.models.ExtractSummaryOptions;
-import com.azure.ai.textanalytics.models.ExtractSummaryResult;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryOptions;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
@@ -37,9 +37,9 @@ import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
-import com.azure.ai.textanalytics.models.SummaryContext;
-import com.azure.ai.textanalytics.models.SummarySentence;
-import com.azure.ai.textanalytics.models.SummarySentencesOrder;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryContext;
+import com.azure.ai.textanalytics.models.ExtractiveSummarySentence;
+import com.azure.ai.textanalytics.models.ExtractiveSummarySentencesOrder;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -1409,7 +1409,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     /**
      * Code snippet for {@link TextAnalyticsAsyncClient#beginExtractSummary(Iterable)}.
      */
-    public void abstractSummaryStringInput() {
+    public void abstractiveSummaryStringInput() {
         // BEGIN: AsyncClient.beginAbstractSummary#Iterable
         List<String> documents = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
@@ -1435,7 +1435,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         }
         textAnalyticsAsyncClient.beginAbstractSummary(documents)
             .flatMap(result -> {
-                AbstractSummaryOperationDetail operationDetail = result.getValue();
+                AbstractiveSummaryOperationDetail operationDetail = result.getValue();
                 System.out.printf("Operation created time: %s, expiration time: %s.%n",
                     operationDetail.getCreatedAt(), operationDetail.getExpiresAt());
                 return result.getFinalResult();
@@ -1443,13 +1443,13 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .flatMap(pagedFlux -> pagedFlux) // this unwrap the Mono<> of Mono<PagedFlux<T>> to return PagedFlux<T>
             .subscribe(
                 resultCollection -> {
-                    for (AbstractSummaryResult documentResult : resultCollection) {
-                        System.out.println("\tAbstract summary sentences:");
+                    for (AbstractiveSummaryResult documentResult : resultCollection) {
+                        System.out.println("\tAbstractive summary sentences:");
                         for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
                             System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
-                            for (SummaryContext summaryContext : summarySentence.getContexts()) {
+                            for (AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts()) {
                                 System.out.printf("\t\t offset: %d, length: %d%n",
-                                    summaryContext.getOffset(), summaryContext.getLength());
+                                    abstractiveSummaryContext.getOffset(), abstractiveSummaryContext.getLength());
                             }
                         }
                     }
@@ -1460,10 +1460,10 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#beginAbstractSummary(Iterable, String, AbstractSummaryOptions)}.
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginAbstractSummary(Iterable, String, AbstractiveSummaryOptions)}.
      */
-    public void abstractSummaryStringInputWithOption() {
-        // BEGIN: AsyncClient.beginAbstractSummary#Iterable-String-AbstractSummaryOptions
+    public void abstractiveSummaryStringInputWithOption() {
+        // BEGIN: AsyncClient.beginAbstractSummary#Iterable-String-AbstractiveSummaryOptions
         List<String> documents = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             documents.add(
@@ -1486,10 +1486,10 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     + "foundational component of this aspiration, if grounded with external knowledge sources in "
                     + "the downstream AI tasks.");
         }
-        AbstractSummaryOptions options = new AbstractSummaryOptions().setSentenceCount(4);
+        AbstractiveSummaryOptions options = new AbstractiveSummaryOptions().setSentenceCount(4);
         textAnalyticsAsyncClient.beginAbstractSummary(documents, "en", options)
             .flatMap(result -> {
-                AbstractSummaryOperationDetail operationDetail = result.getValue();
+                AbstractiveSummaryOperationDetail operationDetail = result.getValue();
                 System.out.printf("Operation created time: %s, expiration time: %s.%n",
                     operationDetail.getCreatedAt(), operationDetail.getExpiresAt());
                 return result.getFinalResult();
@@ -1497,27 +1497,27 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .flatMap(pagedFlux -> pagedFlux) // this unwrap the Mono<> of Mono<PagedFlux<T>> to return PagedFlux<T>
             .subscribe(
                 resultCollection -> {
-                    for (AbstractSummaryResult documentResult : resultCollection) {
-                        System.out.println("\tAbstract summary sentences:");
+                    for (AbstractiveSummaryResult documentResult : resultCollection) {
+                        System.out.println("\tAbstractive summary sentences:");
                         for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
                             System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
-                            for (SummaryContext summaryContext : summarySentence.getContexts()) {
+                            for (AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts()) {
                                 System.out.printf("\t\t offset: %d, length: %d%n",
-                                    summaryContext.getOffset(), summaryContext.getLength());
+                                    abstractiveSummaryContext.getOffset(), abstractiveSummaryContext.getLength());
                             }
                         }
                     }
                 },
                 ex -> System.out.println("Error listing pages: " + ex.getMessage()),
                 () -> System.out.println("Successfully listed all pages"));
-        // END: AsyncClient.beginAbstractSummary#Iterable-String-AbstractSummaryOptions
+        // END: AsyncClient.beginAbstractSummary#Iterable-String-AbstractiveSummaryOptions
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#beginAbstractSummary(Iterable, AbstractSummaryOptions)}.
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginAbstractSummary(Iterable, AbstractiveSummaryOptions)}.
      */
-    public void abstractSummaryMaxOverload() {
-        // BEGIN: AsyncClient.beginAbstractSummary#Iterable-AbstractSummaryOptions
+    public void abstractiveSummaryMaxOverload() {
+        // BEGIN: AsyncClient.beginAbstractSummary#Iterable-AbstractiveSummaryOptions
         List<TextDocumentInput> documents = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             documents.add(new TextDocumentInput(Integer.toString(i),
@@ -1540,10 +1540,10 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     + "foundational component of this aspiration, if grounded with external knowledge sources in "
                     + "the downstream AI tasks."));
         }
-        AbstractSummaryOptions options = new AbstractSummaryOptions().setSentenceCount(4);
+        AbstractiveSummaryOptions options = new AbstractiveSummaryOptions().setSentenceCount(4);
         textAnalyticsAsyncClient.beginAbstractSummary(documents, options)
             .flatMap(result -> {
-                AbstractSummaryOperationDetail operationDetail = result.getValue();
+                AbstractiveSummaryOperationDetail operationDetail = result.getValue();
                 System.out.printf("Operation created time: %s, expiration time: %s.%n",
                     operationDetail.getCreatedAt(), operationDetail.getExpiresAt());
                 return result.getFinalResult();
@@ -1551,27 +1551,27 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .flatMap(pagedFlux -> pagedFlux) // this unwrap the Mono<> of Mono<PagedFlux<T>> to return PagedFlux<T>
             .subscribe(
                 resultCollection -> {
-                    for (AbstractSummaryResult documentResult : resultCollection) {
-                        System.out.println("\tAbstract summary sentences:");
+                    for (AbstractiveSummaryResult documentResult : resultCollection) {
+                        System.out.println("\tAbstractive summary sentences:");
                         for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
                             System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
-                            for (SummaryContext summaryContext : summarySentence.getContexts()) {
+                            for (AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts()) {
                                 System.out.printf("\t\t offset: %d, length: %d%n",
-                                    summaryContext.getOffset(), summaryContext.getLength());
+                                    abstractiveSummaryContext.getOffset(), abstractiveSummaryContext.getLength());
                             }
                         }
                     }
                 },
                 ex -> System.out.println("Error listing pages: " + ex.getMessage()),
                 () -> System.out.println("Successfully listed all pages"));
-        // END: AsyncClient.beginAbstractSummary#Iterable-AbstractSummaryOptions
+        // END: AsyncClient.beginAbstractSummary#Iterable-AbstractiveSummaryOptions
     }
 
     // Extractive Summarization
     /**
      * Code snippet for {@link TextAnalyticsAsyncClient#beginExtractSummary(Iterable)}.
      */
-    public void extractSummaryStringInput() {
+    public void extractiveSummaryStringInput() {
         // BEGIN: AsyncClient.beginExtractSummary#Iterable
         List<String> documents = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
@@ -1597,7 +1597,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         }
         textAnalyticsAsyncClient.beginExtractSummary(documents)
             .flatMap(result -> {
-                ExtractSummaryOperationDetail operationDetail = result.getValue();
+                ExtractiveSummaryOperationDetail operationDetail = result.getValue();
                 System.out.printf("Operation created time: %s, expiration time: %s.%n",
                     operationDetail.getCreatedAt(), operationDetail.getExpiresAt());
                 return result.getFinalResult();
@@ -1605,12 +1605,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .flatMap(pagedFlux -> pagedFlux) // this unwrap the Mono<> of Mono<PagedFlux<T>> to return PagedFlux<T>
             .subscribe(
                 resultCollection -> {
-                    for (ExtractSummaryResult documentResult : resultCollection) {
-                        for (SummarySentence summarySentence : documentResult.getSentences()) {
+                    for (ExtractiveSummaryResult documentResult : resultCollection) {
+                        for (ExtractiveSummarySentence extractiveSummarySentence : documentResult.getSentences()) {
                             System.out.printf(
                                 "Sentence text: %s, length: %d, offset: %d, rank score: %f.%n",
-                                summarySentence.getText(), summarySentence.getLength(),
-                                summarySentence.getOffset(), summarySentence.getRankScore());
+                                extractiveSummarySentence.getText(), extractiveSummarySentence.getLength(),
+                                extractiveSummarySentence.getOffset(), extractiveSummarySentence.getRankScore());
                         }
                     }
                 },
@@ -1620,9 +1620,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#beginExtractSummary(Iterable, String, ExtractSummaryOptions)}.
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginExtractSummary(Iterable, String, ExtractiveSummaryOptions)}.
      */
-    public void extractSummaryStringInputWithOption() {
+    public void extractiveSummaryStringInputWithOption() {
         // BEGIN: AsyncClient.beginExtractSummary#Iterable-String-ExtractSummaryOptions
         List<String> documents = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
@@ -1646,11 +1646,11 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     + "foundational component of this aspiration, if grounded with external knowledge sources in "
                     + "the downstream AI tasks.");
         }
-        ExtractSummaryOptions options =
-            new ExtractSummaryOptions().setMaxSentenceCount(4).setOrderBy(SummarySentencesOrder.RANK);
+        ExtractiveSummaryOptions options =
+            new ExtractiveSummaryOptions().setMaxSentenceCount(4).setOrderBy(ExtractiveSummarySentencesOrder.RANK);
         textAnalyticsAsyncClient.beginExtractSummary(documents, "en", options)
             .flatMap(result -> {
-                ExtractSummaryOperationDetail operationDetail = result.getValue();
+                ExtractiveSummaryOperationDetail operationDetail = result.getValue();
                 System.out.printf("Operation created time: %s, expiration time: %s.%n",
                     operationDetail.getCreatedAt(), operationDetail.getExpiresAt());
                 return result.getFinalResult();
@@ -1658,12 +1658,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .flatMap(pagedFlux -> pagedFlux) // this unwrap the Mono<> of Mono<PagedFlux<T>> to return PagedFlux<T>
             .subscribe(
                 resultCollection -> {
-                    for (ExtractSummaryResult documentResult : resultCollection) {
-                        for (SummarySentence summarySentence : documentResult.getSentences()) {
+                    for (ExtractiveSummaryResult documentResult : resultCollection) {
+                        for (ExtractiveSummarySentence extractiveSummarySentence : documentResult.getSentences()) {
                             System.out.printf(
                                 "Sentence text: %s, length: %d, offset: %d, rank score: %f.%n",
-                                summarySentence.getText(), summarySentence.getLength(),
-                                summarySentence.getOffset(), summarySentence.getRankScore());
+                                extractiveSummarySentence.getText(), extractiveSummarySentence.getLength(),
+                                extractiveSummarySentence.getOffset(), extractiveSummarySentence.getRankScore());
                         }
                     }
                 },
@@ -1673,7 +1673,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#beginExtractSummary(Iterable, ExtractSummaryOptions)}.
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginExtractSummary(Iterable, ExtractiveSummaryOptions)}.
      */
     public void extractSummaryMaxOverload() {
         // BEGIN: AsyncClient.beginExtractSummary#Iterable-ExtractSummaryOptions
@@ -1699,11 +1699,11 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     + "foundational component of this aspiration, if grounded with external knowledge sources in "
                     + "the downstream AI tasks."));
         }
-        ExtractSummaryOptions options =
-            new ExtractSummaryOptions().setMaxSentenceCount(4).setOrderBy(SummarySentencesOrder.RANK);
+        ExtractiveSummaryOptions options =
+            new ExtractiveSummaryOptions().setMaxSentenceCount(4).setOrderBy(ExtractiveSummarySentencesOrder.RANK);
         textAnalyticsAsyncClient.beginExtractSummary(documents, options)
             .flatMap(result -> {
-                ExtractSummaryOperationDetail operationDetail = result.getValue();
+                ExtractiveSummaryOperationDetail operationDetail = result.getValue();
                 System.out.printf("Operation created time: %s, expiration time: %s.%n",
                     operationDetail.getCreatedAt(), operationDetail.getExpiresAt());
                 return result.getFinalResult();
@@ -1711,12 +1711,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .flatMap(pagedFlux -> pagedFlux) // this unwrap the Mono<> of Mono<PagedFlux<T>> to return PagedFlux<T>
             .subscribe(
                 resultCollection -> {
-                    for (ExtractSummaryResult documentResult : resultCollection) {
-                        for (SummarySentence summarySentence : documentResult.getSentences()) {
+                    for (ExtractiveSummaryResult documentResult : resultCollection) {
+                        for (ExtractiveSummarySentence extractiveSummarySentence : documentResult.getSentences()) {
                             System.out.printf(
                                 "Sentence text: %s, length: %d, offset: %d, rank score: %f.%n",
-                                summarySentence.getText(), summarySentence.getLength(),
-                                summarySentence.getOffset(), summarySentence.getRankScore());
+                                extractiveSummarySentence.getText(), extractiveSummarySentence.getLength(),
+                                extractiveSummarySentence.getOffset(), extractiveSummarySentence.getRankScore());
                         }
                     }
                 },

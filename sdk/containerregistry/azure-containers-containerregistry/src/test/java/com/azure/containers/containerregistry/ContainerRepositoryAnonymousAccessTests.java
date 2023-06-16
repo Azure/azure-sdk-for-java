@@ -42,7 +42,7 @@ public class ContainerRepositoryAnonymousAccessTests extends ContainerRegistryCl
         Assumptions.assumeFalse(ANONYMOUS_REGISTRY_ENDPOINT == null);
         Assumptions.assumeTrue(getAuthority(ANONYMOUS_REGISTRY_ENDPOINT).equals(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD));
 
-        ContainerRegistryClient client = getContainerRegistryBuilder(buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient), null, ANONYMOUS_REGISTRY_ENDPOINT).buildClient();
+        ContainerRegistryClient client = getContainerRegistryBuilder(buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), null, ANONYMOUS_REGISTRY_ENDPOINT).buildClient();
         List<String> repositories = client.listRepositoryNames().stream().collect(Collectors.toList());
         assertTrue(repositories.stream().anyMatch(HELLO_WORLD_REPOSITORY_NAME::equals));
     }

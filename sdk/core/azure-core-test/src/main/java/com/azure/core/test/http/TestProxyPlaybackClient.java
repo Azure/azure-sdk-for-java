@@ -100,9 +100,15 @@ public class TestProxyPlaybackClient implements HttpClient {
             // the key. See TestProxyRecordPolicy.serializeVariables.
             // This deserializes the map returned from the test proxy and creates an ordered list
             // based on the key.
+            Map<String, String> variables = SERIALIZER.deserialize(body, Map.class, SerializerEncoding.JSON);
             List<Map.Entry<String, String>> toSort;
-            toSort = new ArrayList<>(SERIALIZER.<Map<String, String>>deserialize(body, Map.class, SerializerEncoding.JSON).entrySet());
-            toSort.sort(Comparator.comparingInt(e -> Integer.parseInt(e.getKey())));
+            if (variables == null) {
+                toSort = new ArrayList<>();
+            } else {
+                toSort = new ArrayList<>(variables.entrySet());
+                toSort.sort(Comparator.comparingInt(e -> Integer.parseInt(e.getKey())));
+            }
+
             LinkedList<String> strings = new LinkedList<>();
             for (Map.Entry<String, String> stringStringEntry : toSort) {
                 String value = stringStringEntry.getValue();

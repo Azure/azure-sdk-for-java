@@ -6,20 +6,19 @@ package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.models.OperationInner;
-import org.junit.jupiter.api.Test;
 
 public final class OperationInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationInner model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"hurokftyxoln\",\"display\":{\"provider\":\"wcukjfkgiawxk\",\"resource\":\"ypl\",\"operation\":\"kbasyypn\",\"description\":\"hsgcbacphejkot\"},\"origin\":\"user\",\"properties\":{}}")
+                    "{\"name\":\"yb\",\"display\":{\"provider\":\"e\",\"resource\":\"ytb\",\"operation\":\"qfou\",\"description\":\"mmnkzsmodmgl\"},\"origin\":\"system\",\"properties\":{\"cuertu\":\"datakwtmutduqktapspw\"}}")
                 .toObject(OperationInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationInner model = new OperationInner();
         model = BinaryData.fromObject(model).toObject(OperationInner.class);
     }

@@ -10,7 +10,7 @@
         - artifactId: spring-cloud-azure-dependencies
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: Bill of Materials (BOM) for Spring Cloud Azure support.
           type: spring
           links:
@@ -55,7 +55,7 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-dependencies
-                version: 5.1.0
+                version: 5.2.0
 - name: Active Directory
   content:
     - name: Active Directory
@@ -67,7 +67,7 @@
         - artifactId: spring-cloud-azure-starter-active-directory
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Boot Starter provides the most optimal way to connect your Web
             application to an Azure Active Directory (AAD for short) tenant and protect resource
@@ -99,7 +99,7 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory
-                version: 5.1.0
+                version: 5.2.0
 - name: Active Directory B2C
   content:
     - name: Active Directory B2C
@@ -112,7 +112,7 @@
         - artifactId: spring-cloud-azure-starter-active-directory-b2c
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           type: spring
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.8.0/sdk/spring/spring-cloud-azure-starter-active-directory-b2c
@@ -139,7 +139,7 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory-b2c
-                version: 5.1.0
+                version: 5.2.0
 - name: App Configuration
   content:
     - name: App Configuration
@@ -155,7 +155,7 @@
         - artifactId: spring-cloud-azure-starter-appconfiguration
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure App Configuration.
@@ -185,11 +185,11 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration
-                version: 5.1.0
+                version: 5.2.0
         - artifactId: spring-cloud-azure-starter-appconfiguration-config
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: Microsoft's Spring Boot Starter helps developers to load properties
             and manage features from Azure App Configuration service for Spring Application.
           type: spring
@@ -217,7 +217,7 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration-config
-                version: 5.1.0
+                version: 5.2.0
 - name: Cosmos DB
   content:
     - name: Spring Data Cosmos
@@ -272,7 +272,7 @@
         - artifactId: spring-cloud-azure-starter-cosmos
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Cosmos DB, which enables developers to easily integrate with Azure Cosmos DB SQL API.
@@ -302,7 +302,7 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-cosmos
-                version: 5.1.0
+                version: 5.2.0
 - name: Key Vault
   content:
     - name: Key Vault
@@ -313,7 +313,7 @@
         - artifactId: spring-cloud-azure-starter-keyvault
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Key Vault.
@@ -343,7 +343,7 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault
-                version: 5.1.0
+                version: 5.2.0
     - name: Key Vault - Certificates
       description: |-
         Azure Key Vault enables Microsoft Azure applications and users to store and use certificates, which are
@@ -356,7 +356,7 @@
         - artifactId: spring-cloud-azure-starter-keyvault-certificates
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Key Vault Certificates.
@@ -385,7 +385,7 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-certificates
-                version: 5.1.0
+                version: 5.2.0
         - artifactId: azure-security-keyvault-jca
           groupId: com.azure
           versionGA: 2.7.1
@@ -410,7 +410,7 @@
         - artifactId: spring-cloud-azure-starter-keyvault-secrets
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Key Vault Secrets, and adds Azure Key Vault as one of Spring PropertySource.
@@ -442,7 +442,7 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-secrets
-                version: 5.1.0
+                version: 5.2.0
 - name: Storage
   content:
     - name: Storage
@@ -452,7 +452,7 @@
         - artifactId: spring-cloud-azure-starter-storage
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Storage, and implements Spring Resource abstraction for Azure Storage
@@ -483,7 +483,7 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage
-                version: 5.1.0
+                version: 5.2.0
     - name: Storage - Blobs
       description: |-
         Azure Blob Storage is Microsoft's object storage solution for the cloud. Blob Storage
@@ -498,7 +498,7 @@
         - artifactId: spring-cloud-azure-starter-storage-blob
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Storage Blob, and implements Spring Resource abstraction for Azure Storage
@@ -529,7 +529,7 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-blob
-                version: 5.1.0
+                version: 5.2.0
     - name: Storage - Files Shares
       description: |-
         Azure File Share storage offers fully managed file shares in the cloud that are
@@ -545,7 +545,7 @@
         - artifactId: spring-cloud-azure-starter-storage-file-share
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Storage File Share, and implements Spring Resource abstraction for Azure Storage
@@ -576,7 +576,7 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-file-share
-                version: 5.1.0
+                version: 5.2.0
     - name: Storage - Queues
       description: |-
         Azure Queue Storage is a service for storing large numbers of messages. You access
@@ -592,7 +592,7 @@
         - artifactId: spring-cloud-azure-starter-storage-queue
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Storage Queue.
@@ -622,11 +622,11 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-queue
-                version: 5.1.0
+                version: 5.2.0
         - artifactId: spring-cloud-azure-starter-integration-storage-queue
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Spring Integration Azure Storage Queue.
@@ -656,11 +656,11 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-storage-queue
-                version: 5.1.0
+                version: 5.2.0
         - artifactId: spring-integration-azure-storage-queue
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Integration extension for Azure Storage Queue. Spring Integration extends
             the Spring programming modoel to support well-known Enterprise Integration Patterns.
@@ -691,7 +691,7 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-storage-queue
-                version: 5.1.0
+                version: 5.2.0
 - name: Service Bus
   content:
     - name: Service Bus
@@ -708,7 +708,7 @@
         - artifactId: spring-cloud-azure-starter-servicebus
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Service Bus.
@@ -738,11 +738,11 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus
-                version: 5.1.0
+                version: 5.2.0
         - artifactId: spring-cloud-azure-starter-integration-servicebus
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Spring Integration Azure Service Bus.
@@ -772,11 +772,11 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-servicebus
-                version: 5.1.0
+                version: 5.2.0
         - artifactId: spring-integration-azure-servicebus
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Integration extension for Azure Service Bus. Spring Integration extends
             the Spring programming modoel to support well-known Enterprise Integration Patterns.
@@ -807,11 +807,11 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-servicebus
-                version: 5.1.0
+                version: 5.2.0
         - artifactId: spring-cloud-azure-stream-binder-servicebus
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Cloud Stream Binder provides Spring Cloud Stream Binder for Azure
             Service Bus which allows you to build message-driven microservice using Spring Cloud
@@ -843,7 +843,7 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-servicebus
-                version: 5.1.0
+                version: 5.2.0
     - name: Service Bus JMS
       description: |-
         Microsoft Azure Service Bus is a fully managed enterprise integration message broker.
@@ -855,7 +855,7 @@
         - artifactId: spring-cloud-azure-starter-servicebus-jms
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Spring JMS with Azure Service Bus Queue and Topic.
@@ -885,7 +885,7 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus-jms
-                version: 5.1.0
+                version: 5.2.0
 - name: Event Hubs
   content:
     - name: Event Hubs
@@ -902,7 +902,7 @@
         - artifactId: spring-cloud-azure-starter-eventhubs
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Event Hubs.
@@ -932,11 +932,11 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-eventhubs
-                version: 5.1.0
+                version: 5.2.0
         - artifactId: spring-cloud-azure-starter-integration-eventhubs
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Spring Integration Azure Event Hubs.
@@ -966,11 +966,11 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-eventhubs
-                version: 5.1.0
+                version: 5.2.0
         - artifactId: spring-integration-azure-eventhubs
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Integration extension for Azure Event Hubs. Spring Integration extends
             the Spring programming modoel to support well-known Enterprise Integration Patterns.
@@ -1001,11 +1001,11 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-eventhubs
-                version: 5.1.0
+                version: 5.2.0
         - artifactId: spring-cloud-azure-stream-binder-eventhubs
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Cloud Stream Binder provides Spring Cloud Stream Binder for Azure
             Event Hubs which allows you to build message-driven microservice using Spring Cloud
@@ -1037,7 +1037,7 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-eventhubs
-                version: 5.1.0
+                version: 5.2.0
 - name: MySQL
   content:
     - name: Database for MySQL
@@ -1050,7 +1050,7 @@
         - artifactId: spring-cloud-azure-starter-jdbc-mysql
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Database for MySQL.
@@ -1080,7 +1080,7 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-mysql
-                version: 5.1.0
+                version: 5.2.0
 - name: PostgreSQL
   content:
     - name: Database for PostgreSQL
@@ -1093,7 +1093,7 @@
         - artifactId: spring-cloud-azure-starter-jdbc-postgresql
           groupId: com.azure.spring
           versionGA: 4.8.0
-          versionPreview: 5.1.0
+          versionPreview: 5.2.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Database for PostgreSQL.
@@ -1123,4 +1123,4 @@
               - compatibilityRange: "[3.0.0,3.0.6]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-postgresql
-                version: 5.1.0
+                version: 5.2.0

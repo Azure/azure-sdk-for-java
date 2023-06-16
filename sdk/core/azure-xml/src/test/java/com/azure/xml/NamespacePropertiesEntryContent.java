@@ -6,6 +6,8 @@ package com.azure.xml;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
+import static com.azure.xml.AzureXmlTestUtils.getRootElementName;
+
 public class NamespacePropertiesEntryContent implements XmlSerializable<NamespacePropertiesEntryContent> {
     private String type;
     private NamespaceProperties namespaceProperties;
@@ -52,7 +54,12 @@ public class NamespacePropertiesEntryContent implements XmlSerializable<Namespac
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("content");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        xmlWriter.writeStartElement(getRootElementName(rootElementName, "content"));
         xmlWriter.writeNamespace("http://www.w3.org/2005/Atom");
         xmlWriter.writeStringAttribute("type", type);
 
@@ -62,37 +69,28 @@ public class NamespacePropertiesEntryContent implements XmlSerializable<Namespac
     }
 
     public static NamespacePropertiesEntryContent fromXml(XmlReader xmlReader) throws XMLStreamException {
-        if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
-            xmlReader.nextElement();
-        }
+        return fromXml(xmlReader, null);
+    }
 
-        if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
-            throw new IllegalStateException("Illegal start of XML deserialization. "
-                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken." + xmlReader.currentToken() + "'.");
-        }
+    public static NamespacePropertiesEntryContent fromXml(XmlReader xmlReader, String rootElementName)
+        throws XMLStreamException {
+        return xmlReader.readObject("http://www.w3.org/2005/Atom", getRootElementName(rootElementName, "content"),
+            reader -> {
+                String type = xmlReader.getStringAttribute(null, "type");
+                NamespaceProperties namespaceProperties = null;
 
-        QName qName = xmlReader.getElementName();
-        if (!"content".equals(qName.getLocalPart())
-            || !"http://www.w3.org/2005/Atom".equals(qName.getNamespaceURI())) {
-            throw new IllegalStateException("Expected XML element to be 'content' in namespace "
-                + "'http://www.w3.org/2005/Atom' but it was: "
-                + "{'" + qName.getNamespaceURI() + "'}'" + qName.getLocalPart() + "'.");
-        }
+                while (xmlReader.nextElement() != XmlToken.END_ELEMENT) {
+                    QName qName = xmlReader.getElementName();
+                    String localPart = qName.getLocalPart();
+                    String namespaceUri = qName.getNamespaceURI();
 
-        String type = xmlReader.getStringAttribute(null, "type");
-        NamespaceProperties namespaceProperties = null;
+                    if ("NamespaceInfo".equals(localPart)
+                        && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect".equals(namespaceUri)) {
+                        namespaceProperties = NamespaceProperties.fromXml(xmlReader);
+                    }
+                }
 
-        while (xmlReader.nextElement() != XmlToken.END_ELEMENT) {
-            qName = xmlReader.getElementName();
-            String localPart = qName.getLocalPart();
-            String namespaceUri = qName.getNamespaceURI();
-
-            if ("NamespaceInfo".equals(localPart)
-                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect".equals(namespaceUri)) {
-                namespaceProperties = NamespaceProperties.fromXml(xmlReader);
-            }
-        }
-
-        return new NamespacePropertiesEntryContent().setType(type).setNamespaceProperties(namespaceProperties);
+                return new NamespacePropertiesEntryContent().setType(type).setNamespaceProperties(namespaceProperties);
+            });
     }
 }
