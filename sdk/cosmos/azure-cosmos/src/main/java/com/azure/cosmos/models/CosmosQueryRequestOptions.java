@@ -344,12 +344,13 @@ public class CosmosQueryRequestOptions {
     }
 
     /**
-     * Sets the regions to exclude as a hint for retries
+     * List of regions to be excluded for the request/retries. Example "East US" or "East US, West US"
+     * These regions will be excluded from the preferred regions list
      *
      * @param excludeRegions the regions to exclude
-     * @return the CosmosQueryRequestOptions
+     * @return the {@link CosmosQueryRequestOptions}
      */
-    public CosmosQueryRequestOptions setExcludeRegions(List<String> excludeRegions) {
+    public CosmosQueryRequestOptions setExcludedRegions(List<String> excludeRegions) {
         this.excludeRegions = excludeRegions;
         return this;
     }
@@ -359,7 +360,7 @@ public class CosmosQueryRequestOptions {
      *
      * @return the regions to exclude
      */
-    List<String> getExcludeRegions() {
+    List<String> getExcludedRegions() {
         return this.excludeRegions;
     }
 
@@ -875,7 +876,7 @@ public class CosmosQueryRequestOptions {
 
                 @Override
                 public List<String> getExcludeRegions(CosmosQueryRequestOptions options) {
-                    return options.getExcludeRegions();
+                    return options.getExcludedRegions();
                 }
             });
     }

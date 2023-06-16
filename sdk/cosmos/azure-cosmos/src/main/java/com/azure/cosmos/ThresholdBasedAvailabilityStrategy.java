@@ -4,16 +4,15 @@
 package com.azure.cosmos;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * The type Threshold based retry availability strategy.
  */
-public class ThresholdBasedAvailabilityStrategy extends AvailabilityStrategy{
-    private static final Duration DEFAULT_THRESHOLD_IN_MILLISECONDS = Duration.ofMillis(500);
-    private static final Duration DEFAULT_THRESHOLD_STEP_IN_MILLISECONDS = Duration.ofMillis(100);
+public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrategy{
+    private static final Duration DEFAULT_THRESHOLD = Duration.ofMillis(500);
+    private static final Duration DEFAULT_THRESHOLD_STEP = Duration.ofMillis(100);
     private Duration threshold;
     private Duration thresholdStep;
 
@@ -21,8 +20,8 @@ public class ThresholdBasedAvailabilityStrategy extends AvailabilityStrategy{
      * Instantiates a new Threshold based retry availability strategy.
      */
     public ThresholdBasedAvailabilityStrategy() {
-        this.threshold = DEFAULT_THRESHOLD_IN_MILLISECONDS;
-        this.thresholdStep = DEFAULT_THRESHOLD_STEP_IN_MILLISECONDS;
+        this.threshold = DEFAULT_THRESHOLD;
+        this.thresholdStep = DEFAULT_THRESHOLD_STEP;
     }
 
     /**
@@ -82,11 +81,11 @@ public class ThresholdBasedAvailabilityStrategy extends AvailabilityStrategy{
                 .subList(0, this.numberOfRegionsToTry);
         }
 
-        return preferredRegions
+        List<String> collectList = preferredRegions
             .stream()
             .filter(region -> !excludeRegions.contains(region))
-            .collect(Collectors.toList())
-            .subList(0, Math.min(numberOfRegionsToTry, preferredRegions.size()));
+            .collect(Collectors.toList());
+        return collectList.subList(0, Math.min(numberOfRegionsToTry, collectList.size()));
     }
 
 }

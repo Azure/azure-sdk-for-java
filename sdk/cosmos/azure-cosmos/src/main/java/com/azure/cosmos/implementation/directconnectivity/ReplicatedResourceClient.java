@@ -3,7 +3,12 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.*;
+import com.azure.cosmos.AvailabilityStrategy;
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.DefaultAvailabilityStrategy;
+import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -19,7 +24,6 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.speculativeprocessors.SpeculativeProcessor;
 import com.azure.cosmos.implementation.directconnectivity.speculativeprocessors.ThresholdBasedSpeculation;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import org.slf4j.Logger;
@@ -35,7 +39,6 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * ReplicatedResourceClient uses the ConsistencyReader to make requests to
@@ -165,24 +168,27 @@ public class ReplicatedResourceClient {
         }
 
         List<Mono<StoreResponse>> monoList = new ArrayList<>();
-        List<RxDocumentServiceRequest> requests = new ArrayList<>();
 
         if (speculativeProcessor != null) {
             List<String> effectiveRetryRegions = strategy.getEffectiveRetryRegions(preferredRegions,
                 request.requestContext.getExcludeRegions());
-            if (effectiveRetryRegions.size() > BridgeInternal.getNumberOfRegionsToTry(strategy)){
-                effectiveRetryRegions = effectiveRetryRegions.subList(0, BridgeInternal.getNumberOfRegionsToTry(strategy));
+            if (effectiveRetryRegions.size() > strategy.getNumberOfRegionsToTry()) {
+                effectiveRetryRegions = effectiveRetryRegions.subList(0, strategy.getNumberOfRegionsToTry());
             }
+
             effectiveRetryRegions
                 .forEach(regionName -> {
                     URI locationURI = getLocationURIFromAvailableEndPoints(regionName, request);
                     if (locationURI != null) {
                         RxDocumentServiceRequest newRequest = request.clone();
                         newRequest.requestContext.routeToLocation(locationURI);
-                        requests.add(newRequest);
-                        monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout)
-                            .delaySubscription(speculativeProcessor.getThreshold(config)
-                                .plus(speculativeProcessor.getThresholdStepDuration(config, monoList.size() - 1))));
+                        if (monoList.isEmpty()) {
+                            monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout));
+                        } else {
+                            monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout)
+                                .delaySubscription(speculativeProcessor.getThreshold(config)
+                                    .plus(speculativeProcessor.getThresholdStepDuration(config, monoList.size() - 1))));
+                        }
                     }
                 });
         } else {
@@ -193,7 +199,6 @@ public class ReplicatedResourceClient {
                 if (locationURI != null) {
                     RxDocumentServiceRequest newRequest = request.clone();
                     newRequest.requestContext.routeToLocation(locationURI);
-                    requests.add(newRequest);
                     monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout));
                 }
             }
@@ -202,14 +207,12 @@ public class ReplicatedResourceClient {
         // If the above conditions are not met, then we will just return the original request
         if (monoList.isEmpty()) {
             monoList.add(getStoreResponseMono(request, forceRefreshAndTimeout));
-            requests.add(request);
         }
 
         return Mono.firstWithValue(monoList);
     }
 
     private URI getLocationURIFromAvailableEndPoints(String regionName, RxDocumentServiceRequest request) {
-        //TODO: return the index of the region in the preferred regions list
         List<URI> availableWriteEndpoints = this.transportClient.getGlobalEndpointManager().getAvailableWriteEndpoints();
         List<URI> availableReadEndpoints = this.transportClient.getGlobalEndpointManager().getAvailableReadEndpoints();
         if (request.isReadOnlyRequest()) {

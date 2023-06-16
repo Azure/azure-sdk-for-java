@@ -379,10 +379,11 @@ public class CosmosItemRequestOptions {
     /**
      * List of regions to be excluded for the request/retries. Example "East US" or "East US, West US"
      * These regions will be excluded from the preferred regions list
+     *
      * @param excludeRegions list of regions
-     * @return the @link(CosmosItemRequestOptions)
+     * @return the {@link CosmosItemRequestOptions}
      */
-    public CosmosItemRequestOptions setExcludeRegions(List<String> excludeRegions) {
+    public CosmosItemRequestOptions setExcludedRegions(List<String> excludeRegions) {
         this.excludeRegions = excludeRegions;
         return this;
     }
@@ -526,7 +527,7 @@ public class CosmosItemRequestOptions {
         return this.operationContextAndListenerTuple;
     }
 
-    List<String> getExcludeRegions() {
+    List<String> getExcludedRegions() {
         return excludeRegions;
     }
 

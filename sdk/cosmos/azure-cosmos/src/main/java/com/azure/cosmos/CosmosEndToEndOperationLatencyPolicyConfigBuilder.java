@@ -13,17 +13,17 @@ import java.time.Duration;
 public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
     private boolean isEnabled = true;
     private final Duration endToEndOperationTimeout;
-    private Duration endToEndFeedOperationTimeout;
+    private Duration endToEndNonPointOperationTimeout;
     private AvailabilityStrategy availabilityStrategy;
 
     /**
      * Create a builder for {@link CosmosEndToEndOperationLatencyPolicyConfig} with end to end operation timeout
-     * @param endToEndOperationTimeout the timeout for request cancellation in Duration. Setting very low timeouts
+     * @param endToEndPointOperationTimeout the timeout for request cancellation in Duration. Setting very low timeouts
      *                                can cause the request to never succeed.
      */
-    public CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration endToEndOperationTimeout) {
-        this.endToEndOperationTimeout = endToEndOperationTimeout;
-        endToEndFeedOperationTimeout = endToEndOperationTimeout;
+    public CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration endToEndPointOperationTimeout) {
+        this.endToEndOperationTimeout = endToEndPointOperationTimeout;
+        endToEndNonPointOperationTimeout = endToEndPointOperationTimeout;
     }
 
     /**
@@ -32,7 +32,7 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
      * @return the {@link CosmosEndToEndOperationLatencyPolicyConfig}
      */
     public CosmosEndToEndOperationLatencyPolicyConfig build() {
-        return new CosmosEndToEndOperationLatencyPolicyConfig(isEnabled, endToEndOperationTimeout, endToEndFeedOperationTimeout, availabilityStrategy);
+        return new CosmosEndToEndOperationLatencyPolicyConfig(isEnabled, endToEndOperationTimeout, endToEndNonPointOperationTimeout, availabilityStrategy);
     }
 
     /**
@@ -54,29 +54,20 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
      * @param availabilityStrategy the availability strategy to be used for the policy
      * @return current CosmosEndToEndOperationConfigBuilder
      */
-    public CosmosEndToEndOperationLatencyPolicyConfigBuilder setAvailabilityStrategy(
+    public CosmosEndToEndOperationLatencyPolicyConfigBuilder availabilityStrategy(
         AvailabilityStrategy availabilityStrategy) {
         this.availabilityStrategy = availabilityStrategy;
         return this;
     }
 
     /**
-     * Gets end to end feed operation timeout.
-     *
-     * @return the end to end feed operation timeout
-     */
-    public Duration getEndToEndFeedOperationTimeout() {
-        return endToEndFeedOperationTimeout;
-    }
-
-    /**
      * Sets the feed operation timeout. Defaults to endToEndOperationTimeout. Use this if you need to set a different timeout
      * for feed operations
-     * @param endToEndFeedOperationTimeout feed operatoin timeout Duration
+     * @param endToEndNonPointOperationTimeout feed operatoin timeout Duration
      * @return current CosmosEndToEndOperationConfigBuilder
      */
-    public CosmosEndToEndOperationLatencyPolicyConfigBuilder setEndToEndFeedOperationTimeout(Duration endToEndFeedOperationTimeout) {
-        this.endToEndFeedOperationTimeout = endToEndFeedOperationTimeout;
+    public CosmosEndToEndOperationLatencyPolicyConfigBuilder endToEndNonPointOperationTimeout(Duration endToEndNonPointOperationTimeout) {
+        this.endToEndNonPointOperationTimeout = endToEndNonPointOperationTimeout;
         return this;
     }
 }
