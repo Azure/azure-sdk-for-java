@@ -61,14 +61,19 @@ For more details on proxy startup, please refer to the [proxy documentation][det
 
 ### Start the proxy server
 
-The test proxy has to be available in order for tests to work in live or playback mode.
+The test proxy has to be available in order for tests to work; this is done automatically when the test is extended from
+`TestProxyTestBase`.
 
-The `com.azure.core.test.TestProxyTestBase` method `setupTestProxy()` is responsible for starting test proxy.
+The `com.azure.core.test.TestProxyTestBase#setupTestProxy()` method is responsible for starting test proxy and
+downloading if not present already.
 
 ```java
- @BeforeAll
-public static void setupTestProxy(TestInfo testInfo) {
-    testProxyManager.startProxy();
+public class MyTest extends TestProxyTestBase {
+    // method in TestProxyTestBase 
+    @BeforeAll
+    public static void setupTestProxy(TestInfo testInfo) {
+        // Start the test proxy server
+        testProxyManager.startProxy();
     }
 }
 ```

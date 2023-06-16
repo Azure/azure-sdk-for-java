@@ -1,6 +1,7 @@
 # Azure Core Test shared library for Java
 
 This library contains core classes used to test Azure SDK client libraries.
+
 Newer SDK tests utilize the [Azure SDK Tools Test Proxy][test-proxy-readme] to record and playback HTTP interactions.
 To migrate from existing [TestBase][TestBase.java] to use the test proxy, or to learn more about using the test proxy,
 refer to the [test proxy migration guide][test-proxy-migration-guide].
@@ -10,14 +11,14 @@ refer to the [test proxy migration guide][test-proxy-migration-guide].
 - [Getting started](#getting-started)
 - [Key concepts](#key-concepts)
 - [Write or run tests](#write-or-run-tests)
-  - [Set up test resources](#set-up-test-resources)
-  - [Configure credentials](#configure-credentials)
-  - [Start the test proxy server](#start-the-test-proxy-server)
-  - [Write your tests](#write-your-tests)
-  - [Configure live or playback testing mode](#configure-live-or-playback-testing-mode)
-  - [Run and record tests](#run-and-record-tests)
-  - [Run tests with out-of-repo recordings](#run-tests-with-out-of-repo-recordings)
-  - [Sanitize secrets](#sanitize-secrets)
+    - [Set up test resources](#set-up-test-resources)
+    - [Configure credentials](#configure-credentials)
+    - [Start the test proxy server](#start-the-test-proxy-server)
+    - [Write your tests](#write-your-tests)
+    - [Configure live or playback testing mode](#configure-live-or-playback-testing-mode)
+    - [Run and record tests](#run-and-record-tests)
+    - [Run tests with out-of-repo recordings](#run-tests-with-out-of-repo-recordings)
+    - [Sanitize secrets](#sanitize-secrets)
 - [Troubleshooting](#troubleshooting)
 - [Next steps](#next-steps)
 - [Contributing](#contributing)
@@ -53,17 +54,18 @@ To use this package, add the following to your _pom.xml_.
   Sensitive information means content like passwords, unique identifiers or personal information should be cleaned up
   from the recordings.
 * [TestProxyTestBase][TestProxyTestBase.java]: Base test class that creates an `InterceptorManager` and enables the test
-  to use `test-proxy` for each unit test. It either plays back test session data or records the test session.
-  Each session's file name is determined using the name of the test.
+  to use [`test-proxy`][test-proxy-readme] for running the test. It either plays back test session data or records the
+  test session.
 * [InterceptorManager][InterceptorManager.java]: A class that keeps track of network calls by either reading the data
   from an existing test session record or recording the network calls in memory. Test session records are saved or read
-  from "<i>.assets/{library-level}/src/test/resources/session-records/{@code testName}.json</i>".
+  from "<i>.assets/{library-level}/src/test/resources/session-records/TestFileName.testName}.json</i>".
 * [TestProxyRecordPolicy][TestProxyRecordPolicy.java]: Pipeline policy that records network calls using
-  the `test-proxy`.
+  the [`test-proxy`][test-proxy-readme].
 * [TestProxyPlaybackClient][TestProxyPlaybackClient.java]: HTTP client that plays back responses from the recorded data
   of session-record using test proxy.
 
 ## Write or run tests
+
 Newer SDK tests utilize the [Azure SDK Tools Test Proxy][test-proxy-readme] to record and playback HTTP interactions.
 To migrate from existing [TestBase][TestBase.java] to use the test proxy, or to learn more about using the test proxy,
 refer to the [test proxy migration guide][test-proxy-migration-guide].
@@ -75,7 +77,7 @@ Live Azure resources will be necessary in order to run live tests and produce re
 If you haven't yet set up a `test-resources.json` file for test resource deployment and/or want to use test resources of
 your own, you can just configure credentials to target these resources instead.
 
-To create a `test-resources` file:
+To create a `test-resources.json` file:
 
 1. Create an Azure Resource Management Template for your specific service and the configuration you need. This can be
    done in the [Portal][azure_portal] by creating a resource, and at the very last step (Review + Create), clicking
@@ -83,9 +85,9 @@ To create a `test-resources` file:
 2. Save this template to a `test-resources.json` file under the directory that contains your package
    (`sdk/<my-service>/test-resources.json`) file. You can refer to
    [Table's][tables-test-resources] as an example.
-3. Add templates for any additional resources in a grouped `"resources"` section of `test-resources`
+3. Add templates for any additional resources in a grouped `"resources"` section of `test-resources.json`
    ([example][tables-test-resources-resources]).
-4. Add an `"outputs"` section to `test-resources` that describes any environment variables necessary for accessing
+4. Add an `"outputs"` section to `test-resources.json` that describes any environment variables necessary for accessing
    these resources ([example][tables-test-resources-outputs]).
 
 ### Configure credentials
@@ -98,7 +100,7 @@ environment
 variables -- with appropriate formatting -- your credentials and test configuration variables will be set in your
 environment when running tests.
 
-If your service doesn't have a `test-resources` file for test deployment, you'll need to set environment variables
+If your service doesn't have a `test-resources.json` file for test deployment, you'll need to set environment variables
 for `AZURE_SUBSCRIPTION_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, and `AZURE_CLIENT_SECRET` at minimum.
 
 1. Set the `AZURE_SUBSCRIPTION_ID` variable to your organization's subscription ID. You can find it in the "Overview"
@@ -120,7 +122,7 @@ and `AZURE_CLIENT_SECRET` in your environment variables.
 
 The test proxy has to be available in order for tests to work; this is done automatically when the test is extended from
 `TestProxyTestBase`.
-The `com.azure.core.test.TestProxyTestBase` method `setupTestProxy()` is responsible for starting test proxy.
+The `com.azure.core.test.TestProxyTestBase#setupTestProxy()` method is responsible for starting test proxy.
 
 ```java
 public class MyTest extends TestProxyTestBase {
@@ -133,21 +135,20 @@ public class MyTest extends TestProxyTestBase {
 }
 ```
 
-For more details about how this fixture starts up the test proxy, or the test proxy itself, refer to the
+For more details about how this starts up the test proxy, or the test proxy itself, refer to the
 [test proxy migration guide][test-proxy-migration-guide].
 
 ## Write your tests
 
-Each of the SDK's should at least sync and async testing in their`tests` directory (`sdk/{service}/{package}/tests`)
-with the naming pattern `<ClientName>ClientTest.java` and `<ClientName>AsyncClientTest.java`.
-The `<ClientName>ClientTest` will be responsible for testing the synchronous client, and
-the `<ServiceName>AsyncClientTest`.
-will be responsible for testing the asynchronous client. The `<ClientName>ClientTest` and
-the `<ServiceName>AsyncClientTest`
-will extend the`<ServiceName>ClientTestBase`  will extend the `TestProxyTestBase` class.
-The `<ServiceName>ClientTestBase` will be responsible for initializing the clients, preparing test data etc.
-(in this example we use Tables SDK for the sake of demonstration):
-### Examples:
+Each of the SDKs should include client sync and async testing in their `tests` directory (`sdk/{service}/{package}/tests`)
+with the naming pattern `{ServiceName}ClientTest.java` and `{ServiceName}AsyncClientTest.java`.
+The `{ServiceName}ClientTest` will be responsible for testing the synchronous client, and
+the `{ServiceName}AsyncClientTest` will be responsible for testing the asynchronous client. 
+The `{ServiceName}ClientTest` and the `{ServiceName}AsyncClientTest` both will extend the `{ServiceName}ClientTestBase` 
+which then extends the `TestProxyTestBase` class.
+The `{ServiceName}ClientTestBase` will be responsible for initializing the clients, preparing test data, registering
+sanitizers/matchers etc. (in this example we use Tables SDK for the sake of demonstration):
+
 ```java
 public abstract class TableServiceClientTestBase extends TestProxyTestBase {
     protected static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
@@ -164,12 +165,13 @@ public abstract class TableServiceClientTestBase extends TestProxyTestBase {
             tableServiceClientBuilder.httpClient(buildAssertingClient(playbackClient));
         } else {
             tableServiceClientBuilder.httpClient(buildAssertingClient(DEFAULT_HTTP_CLIENT));
-            if (!interceptorManager.isLiveMode()) {
-                recordPolicy = interceptorManager.getRecordPolicy();
+            if (interceptorManager.isRecordMode()) {
                 tableServiceClientBuilder.addPolicy(recordPolicy);
             }
         }
-        TestUtils.addTestProxyTestSanitizersAndMatchers(interceptorManager);
+        if (!interceptorManager.isLiveMode()) {
+            TestUtils.addTestProxyTestSanitizersAndMatchers(interceptorManager);
+        }
         return tableServiceClientBuilder;
     }
 }
@@ -188,7 +190,7 @@ To run tests in playback, set `AZURE_TEST_MODE` to `PLAYBACK` or leave it unset.
 
 Set the environment variable `AZURE_TEST_MODE` to `RECORD` to run your test(s) in record mode.
 
-After tests finish running, there should folder called `src/test/resources/session-records` inside your package
+After tests finish running, there should folder called `src/test/resources/session-records` in your package
 directory.
 Each recording in this folder will be a `.json` file that captures the HTTP traffic that was
 generated while running the test matching the file's name. If you set the `AZURE_TEST_MODE` environment variable to "
@@ -199,7 +201,8 @@ the recorded data from json recording file).
 ### Run tests with out-of-repo recordings
 
 If the package being tested stores its recordings outside the `azure-sdk-for-java` repository -- i.e. the
-[recording migration guide][recording-migration] has been followed and the package contains an `assets.json` file -- there
+[recording migration guide][recording-migration] has been followed and the package contains an `assets.json` file --
+there
 won't be a `src/test/resources/session-records` folder in the `tests` directory. Instead, the package's `assets.json`
 file will point to a tag
 in the `azure-sdk-assets` repository that contains the recordings. This is the preferred recording configuration.
@@ -207,9 +210,9 @@ in the `azure-sdk-assets` repository that contains the recordings. This is the p
 Running live or playback tests is the same in this configuration as it was in the previous section. The only changes are
 to the process of updating recordings.
 
-#### Update test recordings
+### Update test recordings
 
-##### Environment prerequisites
+#### Prerequisites
 
 - The targeted library is already migrated to use the test proxy.
 - Git version > 2.30.0 is to on the machine and in the path. Git is used by the script and test proxy.
@@ -238,8 +241,7 @@ The recording directory in this case is `2Wm2Z8745`, the string between the two 
 
 After verifying that your recording updates look correct, you can use the `test-proxy push -a assets.json` command
 to push these recordings to the `azure-sdk-assets` repo. This command should be provided a **relative** path to your
-package's `assets.json` file (this path is optional, and simply `assets.json`
-by default). For example, from the root of the `azure-sdk-for-java` repo:
+package's `assets.json` file. For example, from the root of the `azure-sdk-for-java` repo:
 
 ```
 test-proxy push -a sdk/{service}/{package}/assets.json
@@ -266,7 +268,7 @@ There are two primary ways to keep secrets from being written into recordings:
 1. [Default sanitizers][default_sanitizers], similar to the use of the RecordingRedactor are already registered in the
    TestProxyUtils for default redactions.
 2. Custom sanitizers can be added
-   using `[TestProxySanitizer][test_proxy_sanitizer]` & `interceptorManager.addSanitizers()` method for addressing
+   using `[TestProxySanitizer]`[test_proxy_sanitizer] & `interceptorManager.addSanitizers()` method for addressing
    specific service sanitization needs.
    For example, registering a custom sanitizer for redacting the value of json key modelId from the response body looks
    like the following:.
@@ -277,8 +279,11 @@ There are two primary ways to keep secrets from being written into recordings:
     // add sanitizer to Test Proxy Policy
     interceptorManager.addSanitizers(customSanitizer);
    ```
-Note: Sanitizers must only be added once the playback client or record policy is registered. 
-Look at the [TableClientTestBase] class for example. 
+
+Note: Sanitizers must only be added once the playback client or record policy is registered.
+Look at the [TableClientTestBase][TableClientTestBase] class for example.
+
+## Examples
 
 ## Troubleshooting
 
@@ -295,14 +300,13 @@ Other useful packages are:
 
 ## Contributing
 
-For details on contributing to this repository, see
-the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
+For details on contributing to this repository, see the [contributing guide][cg].
 
-1. Fork it
-1. Create your feature branch (`git checkout -b my-new-feature`)
-1. Commit your changes (`git commit -am 'Add some feature'`)
-1. Push to the branch (`git push origin my-new-feature`)
-1. Create new Pull Request
+This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit <https://cla.microsoft.com>.
+
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repositories using our CLA.
+
+This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact <opencode@microsoft.com> with any additional questions or comments.
 
 [azure_portal]: https://portal.azure.com/
 [azure_cli_service_principal]: https://docs.microsoft.com/cli/azure/ad/sp?view=azure-cli-latest#az-ad-sp-create-for-rbac
@@ -318,6 +322,7 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 [TestProxyRecordPolicy.java]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/policy/TestProxyRecordPolicy.java
 [TestBase.java]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/TestProxyTestBase.java
 [TestProxyTestBase.java]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/TestProxyTestBase.java
+[TableClientTestBase]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/azure-data-tables/src/test/java/com/azure/data/tables/TableClientTestBase.java#L61
 [tables-test-resources]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/test-resources.json
 [tables-test-resources-resources]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/test-resources.json#L42
 [tables-test-resources-outputs]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/test-resources.json#L115
