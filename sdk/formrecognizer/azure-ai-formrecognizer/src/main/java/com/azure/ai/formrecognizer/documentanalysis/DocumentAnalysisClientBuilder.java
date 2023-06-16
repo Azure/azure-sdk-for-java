@@ -91,8 +91,8 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.pipeline.instantiation -->
  *
- * {@link DocumentAnalysisAsyncClient}
- * {@link DocumentAnalysisClient}
+ * @see DocumentAnalysisAsyncClient
+ * @see DocumentAnalysisClient
  */
 @ServiceClientBuilder(serviceClients = {DocumentAnalysisAsyncClient.class, DocumentAnalysisClient.class})
 public final class DocumentAnalysisClientBuilder implements
