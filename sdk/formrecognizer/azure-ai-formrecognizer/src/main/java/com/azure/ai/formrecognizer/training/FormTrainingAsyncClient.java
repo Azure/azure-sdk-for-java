@@ -80,7 +80,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     operation or registering callbacks to receive notifications when the analysis is complete.</li>
  * </ol>
  *
- * <p><strong>Note:</strong>This client only supports
+ * <p><strong>Note: </strong>This client only supports
  * {@link com.azure.ai.formrecognizer.FormRecognizerServiceVersion#V2_1} and lower.
  * Recommended to use a newer service version,
  * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient} and
@@ -127,9 +127,9 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end readme-sample-createFormTrainingAsyncClient  -->
  *
- * {@link com.azure.ai.formrecognizer.training}
- * {@link FormTrainingClientBuilder}
- * {@link FormTrainingClient}
+ * @see com.azure.ai.formrecognizer.training
+ * @see FormTrainingClientBuilder
+ * @see FormTrainingClient
  */
 @ServiceClient(builder = FormTrainingClientBuilder.class, isAsync = true)
 public final class FormTrainingAsyncClient {
