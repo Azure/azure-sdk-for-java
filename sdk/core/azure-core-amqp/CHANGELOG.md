@@ -1,6 +1,6 @@
 # Release History
 
-## 2.9.0-beta.1 (Unreleased)
+## 2.9.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.8.6 (2023-06-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to `1.40.0`.
 
 ## 2.8.5 (2023-05-04)
 
@@ -50,6 +58,12 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.35.0` to `1.36.0`.
+
+## 2.9.0-beta.1 (2023-01-30)
+
+### Features Added
+
+- Added ReactorConnectionCache to simplify the Amqp Connection recovery ([#33224](https://github.com/Azure/azure-sdk-for-java/issues/33224))
 
 ## 2.8.1 (2023-01-05)
 

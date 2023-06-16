@@ -46,6 +46,10 @@ public final class StorageConfigurationSettings {
     @JsonProperty(value = "storageWorkloadType")
     private StorageWorkloadType storageWorkloadType;
 
+    /** Creates an instance of StorageConfigurationSettings class. */
+    public StorageConfigurationSettings() {
+    }
+
     /**
      * Get the sqlDataSettings property: SQL Server Data Storage Settings.
      *

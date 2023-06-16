@@ -85,6 +85,22 @@ public final class CosmosMetricTagName {
         EnumSet.of(TagName.ServiceAddress));
 
     /**
+     * The PartitionId (Guid)
+     * Applicable to requests
+     */
+    public static final CosmosMetricTagName PARTITION_ID = new CosmosMetricTagName(
+        "PartitionId",
+        EnumSet.of(TagName.PartitionId));
+
+    /**
+     * The ReplicaId (int identifier plus suffix "s" (secondary - read-only - replica) or "p" (primary- write - replica)
+     * Applicable to requests
+     */
+    public static final CosmosMetricTagName REPLICA_ID = new CosmosMetricTagName(
+        "ReplicaId",
+        EnumSet.of(TagName.ReplicaId));
+
+    /**
      * The region names of the regions handling the operation/request
      * Applicable to requests and operations
      */
@@ -99,6 +115,14 @@ public final class CosmosMetricTagName {
     public static final CosmosMetricTagName OPERATION_STATUS_CODE = new CosmosMetricTagName(
         "OperationStatusCode",
         EnumSet.of(TagName.OperationStatusCode));
+
+    /**
+     * Operation sub-status code.
+     * Applicable to operations
+     */
+    public static final CosmosMetricTagName OPERATION_SUB_STATUS_CODE = new CosmosMetricTagName(
+        "OperationSubStatusCode",
+        EnumSet.of(TagName.OperationSubStatusCode));
 
     /**
      * Operation type
@@ -179,6 +203,7 @@ public final class CosmosMetricTagName {
             case "serviceendpoint": return CosmosMetricTagName.SERVICE_ENDPOINT;
             case "regionname": return CosmosMetricTagName.REGION_NAME;
             case "operationstatuscode": return CosmosMetricTagName.OPERATION_STATUS_CODE;
+            case "operationsubstatuscode": return CosmosMetricTagName.OPERATION_SUB_STATUS_CODE;
             case "operation": return CosmosMetricTagName.OPERATION;
             case "requeststatuscode": return CosmosMetricTagName.REQUEST_STATUS_CODE;
             case "requestoperationtype": return CosmosMetricTagName.REQUEST_OPERATION_TYPE;
@@ -187,6 +212,8 @@ public final class CosmosMetricTagName {
             case "isforcecollectionroutingmaprefresh":
                 return CosmosMetricTagName.ADDRESS_RESOLUTION_COLLECTION_MAP_REFRESH;
             case "partitionkeyrangeid": return CosmosMetricTagName.PARTITION_KEY_RANGE_ID;
+            case "partitionid": return CosmosMetricTagName.PARTITION_ID;
+            case "replicaid": return CosmosMetricTagName.REPLICA_ID;
 
             default:
                 String errorMessage = String.format(
@@ -236,6 +263,7 @@ public final class CosmosMetricTagName {
             .add(CosmosMetricTagName.SERVICE_ENDPOINT.name)
             .add(CosmosMetricTagName.REGION_NAME.name)
             .add(CosmosMetricTagName.OPERATION_STATUS_CODE.name)
+            .add(CosmosMetricTagName.OPERATION_SUB_STATUS_CODE.name)
             .add(CosmosMetricTagName.OPERATION.name)
             .add(CosmosMetricTagName.REQUEST_STATUS_CODE.name)
             .add(CosmosMetricTagName.REQUEST_OPERATION_TYPE.name)
@@ -243,6 +271,8 @@ public final class CosmosMetricTagName {
             .add(CosmosMetricTagName.ADDRESS_RESOLUTION_FORCED_REFRESH.name)
             .add(CosmosMetricTagName.ADDRESS_RESOLUTION_COLLECTION_MAP_REFRESH.name)
             .add(CosmosMetricTagName.PARTITION_KEY_RANGE_ID.name)
+            .add(CosmosMetricTagName.PARTITION_ID.name)
+            .add(CosmosMetricTagName.REPLICA_ID.name)
             .toString();
     }
 

@@ -10,8 +10,6 @@ import com.azure.ai.openai.models.ChatMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
-import com.azure.ai.openai.models.CompletionsFinishReason;
-import com.azure.ai.openai.models.CompletionsLogProbabilityModel;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
@@ -20,8 +18,10 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Test;
 
@@ -32,6 +32,8 @@ import java.util.function.BiConsumer;
 
 import static com.azure.ai.openai.TestUtils.FAKE_API_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -81,10 +83,22 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
 
     @Test
-    public abstract void getCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+    public abstract void testGetCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
 
     @Test
-    public abstract void getCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+    public abstract void testGetCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
+    @Test
+    public abstract void testGetChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
+    @Test
+    public abstract void testGetChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
+    @Test
+    public abstract void testGetEmbeddings(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
+    @Test
+    public abstract void testGetEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
 
     void getCompletionsRunner(BiConsumer<String, List<String>> testRunner) {
         String deploymentId = "text-davinci-003";
@@ -99,42 +113,20 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept(deploymentId, prompt);
     }
 
-    static void assertCompletions(int[] index, CompletionsLogProbabilityModel[] logprobs,
-        CompletionsFinishReason[] finishReason, Completions actual) {
-        assertNotNull(actual.getId());
-        assertChoices(index, logprobs, finishReason, actual.getChoices());
-        assertNotNull(actual.getUsage());
-    }
-
-    static void assertChoices(int[] index, CompletionsLogProbabilityModel[] logprobs,
-        CompletionsFinishReason[] finishReason, List<Choice> actual) {
-        assertEquals(index.length, actual.size());
-
-        for (int i = 0; i < actual.size(); i++) {
-            assertChoice(index[i], null, null, actual.get(i));
-        }
-    }
-
-    static void assertChoice(int index, CompletionsLogProbabilityModel logprobs,
-                             CompletionsFinishReason finishReason, Choice actual) {
-        assertNotNull(actual.getText());
-        assertEquals(index, actual.getIndex());
-
-        // TODO: add more assertions for the additional properties
-    }
-
-    @Test
-    public abstract void getChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
-
-    @Test
-    public abstract void getChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
-
     void getChatCompletionsRunner(BiConsumer<String, List<ChatMessage>> testRunner) {
         testRunner.accept("gpt-35-turbo", getChatMessages());
     }
 
     void getChatCompletionsForNonAzureRunner(BiConsumer<String, List<ChatMessage>> testRunner) {
         testRunner.accept("gpt-3.5-turbo", getChatMessages());
+    }
+
+    void getEmbeddingRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
+        testRunner.accept("embedding", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
+    }
+
+    void getEmbeddingNonAzureRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
+        testRunner.accept("text-embedding-ada-002", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
     }
 
     private List<ChatMessage> getChatMessages() {
@@ -146,41 +138,86 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         return chatMessages;
     }
 
-    static void assertChatCompletions(int[] indexArray, ChatRole[] chatRoleArray, ChatCompletions actual) {
-        List<ChatChoice> choices = actual.getChoices();
-        assertNotNull(choices);
-        assertTrue(choices.size() > 0);
-        assertChatChoices(indexArray, chatRoleArray, choices);
+    static void assertCompletions(int choicesPerPrompt, Completions actual) {
+        assertCompletions(choicesPerPrompt, "stop", actual);
+    }
+
+    static void assertCompletions(int choicesPerPrompt, String expectedFinishReason, Completions actual) {
+        assertNotNull(actual);
+        assertInstanceOf(Completions.class, actual);
+        assertChoices(choicesPerPrompt, expectedFinishReason, actual.getChoices());
         assertNotNull(actual.getUsage());
     }
 
-    static void assertChatChoices(int[] indexArray, ChatRole[] chatRoleArray, List<ChatChoice> actual) {
-        assertEquals(indexArray.length, actual.size());
+    static <T> T assertAndGetValueFromResponse(Response<BinaryData> actualResponse, Class<T> clazz, int expectedCode) {
+        assertNotNull(actualResponse);
+        assertEquals(expectedCode, actualResponse.getStatusCode());
+        assertInstanceOf(Response.class, actualResponse);
+        BinaryData binaryData = actualResponse.getValue();
+        assertNotNull(binaryData);
+        T object = binaryData.toObject(clazz);
+        assertNotNull(object);
+        assertInstanceOf(clazz, object);
+        return object;
+    }
+
+    static void assertChoices(int choicesPerPrompt, String expectedFinishReason, List<Choice> actual) {
+        assertEquals(choicesPerPrompt, actual.size());
         for (int i = 0; i < actual.size(); i++) {
-            assertChatChoice(indexArray[i], chatRoleArray[i], actual.get(i));
+            assertChoice(i, expectedFinishReason, actual.get(i));
         }
     }
 
-    static void assertChatChoice(int index, ChatRole chatRole, ChatChoice actual) {
+    static void assertChoice(int index, String expectedFinishReason, Choice actual) {
+        assertNotNull(actual.getText());
+        assertEquals(index, actual.getIndex());
+        assertEquals(expectedFinishReason, actual.getFinishReason().toString());
+    }
+
+    static void assertChatCompletions(int choiceCount, ChatCompletions actual) {
+        List<ChatChoice> choices = actual.getChoices();
+        assertNotNull(choices);
+        assertTrue(choices.size() > 0);
+        assertChatChoices(choiceCount, "stop", ChatRole.ASSISTANT, choices);
+        assertNotNull(actual.getUsage());
+    }
+
+    // We are currently using the same model. Eventually we will have a separate one for the streaming scenario
+    static void assertChatCompletionsStream(ChatCompletions chatCompletions) {
+        assertNotNull(chatCompletions.getId());
+        assertNotNull(chatCompletions.getChoices());
+        assertFalse(chatCompletions.getChoices().isEmpty());
+        assertNotNull(chatCompletions.getChoices().get(0).getDelta());
+    }
+
+    // We are currently using the same model. Eventually we will have a separate one for the streaming scenario
+    static void assertCompletionsStream(Completions completions) {
+        assertNotNull(completions.getId());
+        assertNotNull(completions.getChoices());
+        assertFalse(completions.getChoices().isEmpty());
+        assertNotNull(completions.getChoices().get(0).getText());
+    }
+
+    static void assertChatCompletions(int choiceCount, String expectedFinishReason, ChatRole chatRole, ChatCompletions actual) {
+        List<ChatChoice> choices = actual.getChoices();
+        assertNotNull(choices);
+        assertTrue(choices.size() > 0);
+        assertChatChoices(choiceCount, expectedFinishReason, chatRole, choices);
+        assertNotNull(actual.getUsage());
+    }
+
+    static void assertChatChoices(int choiceCount, String expectedFinishReason, ChatRole chatRole, List<ChatChoice> actual) {
+        assertEquals(choiceCount, actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            assertChatChoice(i, expectedFinishReason, chatRole, actual.get(i));
+        }
+    }
+
+    static void assertChatChoice(int index, String expectedFinishReason, ChatRole chatRole, ChatChoice actual) {
         assertEquals(index, actual.getIndex());
         assertEquals(chatRole, actual.getMessage().getRole());
         assertNotNull(actual.getMessage().getContent());
-        // TODO: verify if the finish reason is "stop" or "stopped"
-//        assertEquals(CompletionsFinishReason.STOPPED, actual.getFinishReason());
-    }
-
-    @Test
-    public abstract void getEmbeddings(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
-
-    @Test
-    public abstract void getEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
-
-    void getEmbeddingRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
-        testRunner.accept("embedding", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
-    }
-
-    void getEmbeddingNonAzureRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
-        testRunner.accept("text-embedding-ada-002", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
+        assertEquals(expectedFinishReason, actual.getFinishReason().toString());
     }
 
     static void assertEmbeddings(Embeddings actual) {

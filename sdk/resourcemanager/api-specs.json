@@ -275,7 +275,7 @@
     "dir": "azure-resourcemanager-trafficmanager",
     "source": "specification/trafficmanager/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.trafficmanager",
-    "args": "--tag=package-2018-04"
+    "args": "--tag=package-2022-04 --rename-model=EndpointType:EndpointTypes"
   },
   "msi": {
     "dir": "azure-resourcemanager-msi",

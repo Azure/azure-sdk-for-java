@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Entity model. */
 @Fluent
-public class Entity {
+public final class Entity {
     /*
      * Entity text as appears in the request.
      */

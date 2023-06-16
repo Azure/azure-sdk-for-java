@@ -305,7 +305,7 @@ Not all credentials require this configuration. Credentials that authenticate th
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.workloadidentitycredential?view=azure-java-stable">WorkloadIdentityCredential</a></code></td>
       <td>supports <a href="https://learn.microsoft.com/azure/aks/workload-identity-overview">Azure AD workload identity</a> on Kubernetes</td>
-      <td></td>
+      <td><a href="https://learn.microsoft.com/java/api/com.azure.identity.workloadidentitycredential?view=azure-java-stable">example</a></td>
     </tr>
   </tbody>
 </table>

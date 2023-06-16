@@ -25,10 +25,17 @@ public class ReadmeSamples {
      */
     public void createSynchronousEventHubProducer() {
         // BEGIN: readme-sample-createSynchronousEventHubProducer
-        String connectionString = "<< CONNECTION STRING FOR THE EVENT HUBS NAMESPACE >>";
-        String eventHubName = "<< NAME OF THE EVENT HUB >>";
+        // The credential used is DefaultAzureCredential because it combines commonly used credentials
+        // in deployment and development and chooses the credential to used based on its running environment.
+        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
+        TokenCredential credential = new DefaultAzureCredentialBuilder()
+            .build();
+
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventHubProducerClient producer = new EventHubClientBuilder()
-            .connectionString(connectionString, eventHubName)
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
             .buildProducerClient();
         // END: readme-sample-createSynchronousEventHubProducer
     }
@@ -38,15 +45,17 @@ public class ReadmeSamples {
      */
     public void useAadAuthorization() {
         // BEGIN: readme-sample-useAadAuthorization
+        // The credential used is DefaultAzureCredential because it combines commonly used credentials
+        // in deployment and development and chooses the credential to used based on its running environment.
+        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
         TokenCredential credential = new DefaultAzureCredentialBuilder()
             .build();
 
-        // The fully qualified namespace for the Event Hubs instance. This is likely to be similar to:
-        // {your-namespace}.servicebus.windows.net
-        String fullyQualifiedNamespace = "my-test-eventhubs.servicebus.windows.net";
-        String eventHubName = "<< NAME OF THE EVENT HUB >>";
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventHubProducerClient client = new EventHubClientBuilder()
-            .credential(fullyQualifiedNamespace, eventHubName, credential)
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
             .buildProducerClient();
         // END: readme-sample-useAadAuthorization
     }
@@ -57,8 +66,15 @@ public class ReadmeSamples {
      */
     public void publishEvents() {
         // BEGIN: readme-sample-publishEvents
+        // The credential used is DefaultAzureCredential because it combines commonly used credentials
+        // in deployment and development and chooses the credential to used based on its running environment.
+        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
+        TokenCredential credential = new DefaultAzureCredentialBuilder()
+            .build();
+
         EventHubProducerClient producer = new EventHubClientBuilder()
-            .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
             .buildProducerClient();
 
         List<EventData> allEvents = Arrays.asList(new EventData("Foo"), new EventData("Bar"));
@@ -88,8 +104,15 @@ public class ReadmeSamples {
      */
     public void publishEventsToPartition() {
         // BEGIN: readme-sample-publishEventsToPartition
+        // The credential used is DefaultAzureCredential because it combines commonly used credentials
+        // in deployment and development and chooses the credential to used based on its running environment.
+        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
+        TokenCredential credential = new DefaultAzureCredentialBuilder()
+            .build();
+
         EventHubProducerClient producer = new EventHubClientBuilder()
-            .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
             .buildProducerClient();
 
         CreateBatchOptions options = new CreateBatchOptions().setPartitionId("0");
@@ -105,8 +128,15 @@ public class ReadmeSamples {
      */
     public void publishEventsWithPartitionKey() {
         // BEGIN: readme-sample-publishEventsWithPartitionKey
+        // The credential used is DefaultAzureCredential because it combines commonly used credentials
+        // in deployment and development and chooses the credential to used based on its running environment.
+        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
+        TokenCredential credential = new DefaultAzureCredentialBuilder()
+            .build();
+
         EventHubProducerClient producer = new EventHubClientBuilder()
-            .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
             .buildProducerClient();
 
         CreateBatchOptions batchOptions = new CreateBatchOptions().setPartitionKey("grouping-key");
@@ -123,7 +153,8 @@ public class ReadmeSamples {
     public void consumeEventsFromPartition() {
         // BEGIN: readme-sample-consumeEventsFromPartition
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
-            .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                new DefaultAzureCredentialBuilder().build())
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .buildAsyncConsumerClient();
 
@@ -141,8 +172,15 @@ public class ReadmeSamples {
      */
     public void consumeEventsFromPartitionUsingSyncClient() {
         // BEGIN: readme-sample-consumeEventsFromPartitionUsingSyncClient
+        // The credential used is DefaultAzureCredential because it combines commonly used credentials
+        // in deployment and development and chooses the credential to used based on its running environment.
+        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
+        TokenCredential credential = new DefaultAzureCredentialBuilder()
+            .build();
+
         EventHubConsumerClient consumer = new EventHubClientBuilder()
-            .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .buildConsumerClient();
 
@@ -163,9 +201,16 @@ public class ReadmeSamples {
      */
     public void consumeEventsUsingEventProcessor() throws InterruptedException {
         // BEGIN: readme-sample-consumeEventsUsingEventProcessor
+        // The credential used is DefaultAzureCredential because it combines commonly used credentials
+        // in deployment and development and chooses the credential to used based on its running environment.
+        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
+        TokenCredential credential = new DefaultAzureCredentialBuilder()
+            .build();
+
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .consumerGroup("<< CONSUMER GROUP NAME >>")
-            .connectionString("<< EVENT HUB CONNECTION STRING >>")
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
             .checkpointStore(new SampleCheckpointStore())
             .processEvent(eventContext -> {
                 System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "

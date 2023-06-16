@@ -4,12 +4,50 @@
 
 package com.azure.resourcemanager.trafficmanager.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Profiles GetByResourceGroup. */
 public final class ProfilesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-04-01/examples/Profile-GET-WithEndpoints.json
+     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Profile-GET-WithTrafficViewEnabled.json
+     */
+    /**
+     * Sample code: Profile-GET-WithTrafficViewEnabled.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void profileGETWithTrafficViewEnabled(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .trafficManagerProfiles()
+            .manager()
+            .serviceClient()
+            .getProfiles()
+            .getByResourceGroupWithResponse(
+                "azuresdkfornetautoresttrafficmanager1323",
+                "azuresdkfornetautoresttrafficmanager3880",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Profile-GET-WithTrafficViewDisabled.json
+     */
+    /**
+     * Sample code: Profile-GET-WithTrafficViewDisabled.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void profileGETWithTrafficViewDisabled(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .trafficManagerProfiles()
+            .manager()
+            .serviceClient()
+            .getProfiles()
+            .getByResourceGroupWithResponse(
+                "azuresdkfornetautoresttrafficmanager1323",
+                "azuresdkfornetautoresttrafficmanager3880",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Profile-GET-WithEndpoints.json
      */
     /**
      * Sample code: Profile-GET-WithEndpoints.
@@ -23,6 +61,8 @@ public final class ProfilesGetByResourceGroupSamples {
             .serviceClient()
             .getProfiles()
             .getByResourceGroupWithResponse(
-                "azuresdkfornetautoresttrafficmanager1323", "azuresdkfornetautoresttrafficmanager3880", Context.NONE);
+                "azuresdkfornetautoresttrafficmanager1323",
+                "azuresdkfornetautoresttrafficmanager3880",
+                com.azure.core.util.Context.NONE);
     }
 }

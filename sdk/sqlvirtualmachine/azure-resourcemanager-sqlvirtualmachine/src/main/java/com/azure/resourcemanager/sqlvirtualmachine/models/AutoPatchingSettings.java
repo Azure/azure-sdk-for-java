@@ -34,6 +34,10 @@ public final class AutoPatchingSettings {
     @JsonProperty(value = "maintenanceWindowDuration")
     private Integer maintenanceWindowDuration;
 
+    /** Creates an instance of AutoPatchingSettings class. */
+    public AutoPatchingSettings() {
+    }
+
     /**
      * Get the enable property: Enable or disable autopatching on SQL virtual machine.
      *

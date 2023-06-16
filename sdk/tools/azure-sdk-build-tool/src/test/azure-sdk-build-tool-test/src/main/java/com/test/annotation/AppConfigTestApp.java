@@ -16,7 +16,6 @@ public class AppConfigTestApp {
         System.out.println("Setting configuration");
         ConfigurationSetting setting = configurationClient.setConfigurationSetting("key", "label", "value");
         System.out.println("Done: " + setting.getLastModified());
-
         setting = configurationClient.getConfigurationSetting("key", "label");
         System.out.println("Retrieved setting again, value is " + setting.getValue());
     }
