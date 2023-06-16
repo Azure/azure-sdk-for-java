@@ -85,7 +85,7 @@ public final class QueueClient {
     private final QueueMessageEncoding messageEncoding;
     private final Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler;
     private final Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler;
-    private final QueueAsyncClient asyncClient;
+    private QueueAsyncClient asyncClient;
 
     /**
      * Creates a QueueClient.
@@ -102,7 +102,7 @@ public final class QueueClient {
     QueueClient(AzureQueueStorageImpl azureQueueStorage, String queueName, String accountName,
         QueueServiceVersion serviceVersion, QueueMessageEncoding messageEncoding, Function<QueueMessageDecodingError,
         Mono<Void>> processMessageDecodingErrorAsyncHandler,
-        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler, QueueAsyncClient asyncClient) {
+        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.azureQueueStorage = azureQueueStorage;
         this.queueName = queueName;
@@ -111,7 +111,6 @@ public final class QueueClient {
         this.messageEncoding = messageEncoding;
         this.processMessageDecodingErrorAsyncHandler = processMessageDecodingErrorAsyncHandler;
         this.processMessageDecodingErrorHandler = processMessageDecodingErrorHandler;
-        this.asyncClient = asyncClient;
     }
 
     /**
@@ -1050,6 +1049,11 @@ public final class QueueClient {
                 messageItems.add(decodedMessage);
 
             } catch (IllegalArgumentException e) {
+                if (asyncClient == null) {
+                    asyncClient = new QueueAsyncClient(azureQueueStorage, queueName, accountName, serviceVersion,
+                        messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
+                }
+
                 if (processMessageDecodingErrorAsyncHandler != null) {
                     QueueMessageItem transformedQueueMessageItem =
                         ModelHelper.transformQueueMessageItemInternal(
@@ -1177,6 +1181,10 @@ public final class QueueClient {
                 messageItems.add(peekedMessageItem);
 
             } catch (IllegalArgumentException e) {
+                if (asyncClient == null) {
+                    asyncClient = new QueueAsyncClient(azureQueueStorage, queueName, accountName, serviceVersion,
+                        messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
+                }
                 if (processMessageDecodingErrorAsyncHandler != null) {
                     PeekedMessageItem transformedPeekedMessageItem =
                         ModelHelper.transformPeekedMessageItemInternal(peekedMessageInternalItem,

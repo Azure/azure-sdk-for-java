@@ -124,10 +124,8 @@ public final class QueueServiceAsyncClient {
      * @return QueueAsyncClient that interacts with the specified queue
      */
     public QueueAsyncClient getQueueAsyncClient(String queueName) {
-        QueueClient queueClient = new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding,
-            processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, null);
         return new QueueAsyncClient(client, queueName, accountName, serviceVersion, messageEncoding,
-            processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, queueClient);
+            processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
     }
 
     /**

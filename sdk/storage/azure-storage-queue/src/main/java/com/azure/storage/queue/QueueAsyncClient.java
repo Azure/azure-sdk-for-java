@@ -91,7 +91,7 @@ public final class QueueAsyncClient {
     private final QueueMessageEncoding messageEncoding;
     private final Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler;
     private final Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler;
-    private final QueueClient queueClient;
+    private QueueClient queueClient;
 
     /**
      * Creates a QueueAsyncClient that sends requests to the storage queue service at {@link #getQueueUrl() endpoint}.
@@ -103,7 +103,7 @@ public final class QueueAsyncClient {
     QueueAsyncClient(AzureQueueStorageImpl client, String queueName, String accountName,
         QueueServiceVersion serviceVersion, QueueMessageEncoding messageEncoding,
         Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler,
-        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler, QueueClient queueClient) {
+        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.queueName = queueName;
         this.client = client;
@@ -112,7 +112,6 @@ public final class QueueAsyncClient {
         this.messageEncoding = messageEncoding;
         this.processMessageDecodingErrorAsyncHandler = processMessageDecodingErrorAsyncHandler;
         this.processMessageDecodingErrorHandler = processMessageDecodingErrorHandler;
-        this.queueClient = queueClient;
     }
 
     /**
@@ -1126,6 +1125,11 @@ public final class QueueAsyncClient {
             .flatMapSequential(queueMessageItemInternal -> Mono.fromCallable(() ->
                         ModelHelper.transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding))
                 .onErrorResume(IllegalArgumentException.class, e -> {
+                    if (queueClient == null) {
+                        queueClient = new QueueClient(client, queueName, getAccountName(), serviceVersion,
+                            messageEncoding, processMessageDecodingErrorAsyncHandler,
+                            processMessageDecodingErrorHandler);
+                    }
                     if (processMessageDecodingErrorAsyncHandler != null) {
                         return Mono.fromCallable(() ->
                                 ModelHelper.transformQueueMessageItemInternal(queueMessageItemInternal,
@@ -1134,15 +1138,14 @@ public final class QueueAsyncClient {
                                 new QueueMessageDecodingError(this, queueClient, messageItem, null, e)))
                             .then(Mono.empty());
                     } else if (processMessageDecodingErrorHandler != null) {
-                        return
-                            Mono.fromCallable(() ->
-                                    ModelHelper.transformQueueMessageItemInternal(queueMessageItemInternal,
-                                        QueueMessageEncoding.NONE))
+                        return Mono.fromCallable(() -> ModelHelper.transformQueueMessageItemInternal(
+                            queueMessageItemInternal, QueueMessageEncoding.NONE))
                             .flatMap(messageItem -> {
                                 try {
-                                    processMessageDecodingErrorHandler.accept(
-                                        new QueueMessageDecodingError(this, queueClient, messageItem, null, e));
-                                    return Mono.<QueueMessageItem>empty();
+                                    return Mono.fromRunnable(() -> processMessageDecodingErrorHandler.accept(
+                                        new QueueMessageDecodingError(this, queueClient, messageItem, null, e)))
+                                        .subscribeOn(Schedulers.boundedElastic())
+                                        .then(Mono.empty());
                                 } catch (RuntimeException re) {
                                     return FluxUtil.<QueueMessageItem>monoError(LOGGER, re);
                                 }
@@ -1254,6 +1257,11 @@ public final class QueueAsyncClient {
                 Mono.fromCallable(() ->
                         ModelHelper.transformPeekedMessageItemInternal(peekedMessageItemInternal, messageEncoding))
                     .onErrorResume(IllegalArgumentException.class, e -> {
+                        if (queueClient == null) {
+                            queueClient = new QueueClient(client, queueName, getAccountName(), serviceVersion,
+                                messageEncoding, processMessageDecodingErrorAsyncHandler,
+                                processMessageDecodingErrorHandler);
+                        }
                         if (processMessageDecodingErrorAsyncHandler != null) {
                             return Mono.fromCallable(() ->
                                     ModelHelper.transformPeekedMessageItemInternal(peekedMessageItemInternal,
@@ -1269,9 +1277,10 @@ public final class QueueAsyncClient {
 
                                 .flatMap(messageItem -> {
                                     try {
-                                        processMessageDecodingErrorHandler.accept(
-                                            new QueueMessageDecodingError(this,  queueClient, null, messageItem, e));
-                                        return Mono.<PeekedMessageItem>empty();
+                                        return Mono.fromRunnable(() -> processMessageDecodingErrorHandler.accept(
+                                                new QueueMessageDecodingError(this, queueClient, null, messageItem, e)))
+                                            .subscribeOn(Schedulers.boundedElastic())
+                                            .then(Mono.empty());
                                     } catch (RuntimeException re) {
                                         return FluxUtil.<PeekedMessageItem>monoError(LOGGER, re);
                                     }

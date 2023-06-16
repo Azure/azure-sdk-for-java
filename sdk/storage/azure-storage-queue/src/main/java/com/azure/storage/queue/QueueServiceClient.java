@@ -128,12 +128,8 @@ public final class QueueServiceClient {
      * @return QueueClient that interacts with the specified queue
      */
     public QueueClient getQueueClient(String queueName) {
-        QueueAsyncClient asyncClient = new QueueAsyncClient(azureQueueStorage, queueName, accountName,
-            getServiceVersion(), getMessageEncoding(), processMessageDecodingErrorAsyncHandler,
-            processMessageDecodingErrorHandler, null);
-        return new QueueClient(this.azureQueueStorage, queueName, accountName,
-            serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler,
-            processMessageDecodingErrorHandler, asyncClient);
+        return new QueueClient(this.azureQueueStorage, queueName, accountName, serviceVersion, messageEncoding,
+            processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
     }
 
     /**

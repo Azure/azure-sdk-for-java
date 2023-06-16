@@ -192,6 +192,9 @@ public final class QueueServiceClientBuilder implements
                     + "but not both.")
             );
         }
+        if (processMessageDecodingErrorHandler != null) {
+            LOGGER.warning("Please use processMessageDecodingErrorAsyncHandler for QueueAsyncClient.");
+        }
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
         return new QueueServiceAsyncClient(createAzureQueueStorageImpl(serviceVersion), accountName, serviceVersion,
             messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
@@ -221,6 +224,9 @@ public final class QueueServiceClientBuilder implements
                 "Either processMessageDecodingError or processMessageDecodingAsyncError should be specified"
                     + "but not both.")
             );
+        }
+        if (processMessageDecodingErrorAsyncHandler != null) {
+            LOGGER.warning("Please use processMessageDecodingErrorHandler for QueueClient.");
         }
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
         return new QueueServiceClient(createAzureQueueStorageImpl(serviceVersion), accountName, serviceVersion,
