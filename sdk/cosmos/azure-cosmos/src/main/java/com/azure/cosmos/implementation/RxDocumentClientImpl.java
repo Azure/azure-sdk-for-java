@@ -684,7 +684,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.sessionContainer,
                 this.gatewayConfigurationReader,
                 this,
-                this.useMultipleWriteLocations);
+                this.useMultipleWriteLocations,
+                this.sessionRetryOptions);
 
         this.storeModel = new ServerStoreModel(storeClient);
     }
@@ -1241,8 +1242,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // If endToEndOperationLatencyPolicy is set in the query request options,
         // then it should have been populated into request context already
         // otherwise set them here with the client level policy
-
-        request.requestContext.setSessionRetryOptions(this.sessionRetryOptions);
 
         return populateHeadersAsync(request, RequestVerb.POST)
             .flatMap(requestPopulated ->
@@ -1966,8 +1965,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 requestObs.flatMap(request -> {
                     CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
 
-                    request.requestContext.setSessionRetryOptions(this.sessionRetryOptions);
-
                     Mono<RxDocumentServiceResponse> rxDocumentServiceResponseMono = create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options));
                     return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, rxDocumentServiceResponseMono);
                 });
@@ -2023,8 +2020,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Mono<RxDocumentServiceResponse> responseObservable = reqObs.flatMap(request -> {
                 CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
-
-                request.requestContext.setSessionRetryOptions(this.sessionRetryOptions);
 
                 return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)));
             });
@@ -2147,8 +2142,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 .map(resp -> toResourceResponse(resp, Document.class));
             CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
 
-            request.requestContext.setSessionRetryOptions(this.sessionRetryOptions);
-
             return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, resourceResponseMono);
         });
     }
@@ -2202,8 +2195,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
 
-        request.requestContext.setSessionRetryOptions(this.sessionRetryOptions);
-
         if (retryPolicyInstance != null) {
             retryPolicyInstance.onBeforeSendRequest(request);
         }
@@ -2253,8 +2244,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Document, OperationType.Delete);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
                 OperationType.Delete, ResourceType.Document, path, requestHeaders, options);
-
-            request.requestContext.setSessionRetryOptions(this.sessionRetryOptions);
 
             if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
                 request.setNonIdempotentWriteRetriesEnabled(true);
@@ -2343,7 +2332,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
 
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndPolicyConfig);
-            request.requestContext.setSessionRetryOptions(this.sessionRetryOptions);
 
             return requestObs.flatMap(req -> {
                 Mono<ResourceResponse<Document>> resourceResponseMono = this.read(request, retryPolicyInstance).map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
