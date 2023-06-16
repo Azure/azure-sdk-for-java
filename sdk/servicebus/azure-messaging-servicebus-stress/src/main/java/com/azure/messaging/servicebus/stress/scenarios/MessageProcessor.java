@@ -5,10 +5,12 @@ package com.azure.messaging.servicebus.stress.scenarios;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.blockingWait;
 import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.getProcessorBuilder;
@@ -21,7 +23,11 @@ public class MessageProcessor extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageProcessor.class);
 
     @Value("${DURATION_IN_MINUTES:15}")
-    private int durationInMinutes;
+    private int testDurationInMinutes;
+
+    // lock duration is 10 sec, so in some cases lock will be lost by default
+    @Value("${PROCESS_CALLBACK_DURATION_MAX_IN_SECONDS:12")
+    private int processMessageDurationMaxInSeconds;
 
     @Value("${MAX_CONCURRENT_CALLS:20}")
     private int maxConcurrentCalls;
@@ -34,14 +40,24 @@ public class MessageProcessor extends ServiceBusScenario {
         ServiceBusProcessorClient processor = getProcessorBuilder(options)
             .maxConcurrentCalls(maxConcurrentCalls)
             .prefetchCount(prefetchCount)
-            .processMessage(messageContext -> messageContext.complete())
+            .processMessage(this::process)
             .processError(err -> {
                 throw LOGGER.logExceptionAsError(new RuntimeException(err.getException()));
             })
             .buildProcessorClient();
 
         processor.start();
-        blockingWait(Duration.ofMinutes(durationInMinutes));
+        blockingWait(Duration.ofMinutes(testDurationInMinutes));
         processor.close();
+    }
+
+    private void process(ServiceBusReceivedMessageContext messageContext) {
+        int processTimeMs = ThreadLocalRandom.current().nextInt(processMessageDurationMaxInSeconds * 1000);
+        try {
+            Thread.sleep(processTimeMs);
+        } catch (InterruptedException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+        messageContext.complete();
     }
 }

@@ -12,6 +12,7 @@ var serviceBusSessionQueueName = 'test-session-queue'
 var serviceBusTopicName = 'test-topic'
 var serviceBusSubscriptionName = 'test-subscription'
 var serviceBusSessionSubscriptionName = 'test-session-subscription'
+var serviceBusMessageLockDuration = 'PT10S'
 
 resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
   name: baseName
@@ -38,6 +39,9 @@ resource serviceBusAuthRules 'Microsoft.ServiceBus/namespaces/AuthorizationRules
 resource serviceBusQueue 'Microsoft.ServiceBus/namespaces/queues@2021-11-01' = {
   parent: serviceBusNamespace
   name: serviceBusQueueName
+  properties: {
+    lockDuration: serviceBusMessageLockDuration
+  }
 }
 
 resource serviceBusSessionQueue 'Microsoft.ServiceBus/namespaces/queues@2021-11-01' = {
@@ -56,6 +60,9 @@ resource serviceBusTopic 'Microsoft.ServiceBus/namespaces/topics@2021-11-01' = {
 resource serviceBusSubscription 'Microsoft.ServiceBus/namespaces/topics/subscriptions@2021-11-01' = {
   parent: serviceBusTopic
   name: serviceBusSubscriptionName
+  properties: {
+    lockDuration: serviceBusMessageLockDuration
+  }
 }
 
 resource serviceBusSessionSubscription 'Microsoft.ServiceBus/namespaces/topics/subscriptions@2021-11-01' = {
