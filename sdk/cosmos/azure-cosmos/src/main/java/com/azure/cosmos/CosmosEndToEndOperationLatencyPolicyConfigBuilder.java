@@ -23,7 +23,8 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
      */
     public CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration endToEndPointOperationTimeout) {
         this.endToEndOperationTimeout = endToEndPointOperationTimeout;
-        endToEndNonPointOperationTimeout = endToEndPointOperationTimeout;
+        this.endToEndNonPointOperationTimeout = endToEndPointOperationTimeout;
+        this.availabilityStrategy = new DefaultAvailabilityStrategy();
     }
 
     /**

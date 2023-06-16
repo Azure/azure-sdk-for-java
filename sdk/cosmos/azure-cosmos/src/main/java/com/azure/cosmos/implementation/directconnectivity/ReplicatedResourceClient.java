@@ -59,7 +59,6 @@ public class ReplicatedResourceClient {
     private final boolean enableReadRequestsFallback;
     private final GatewayServiceConfigurationReader serviceConfigReader;
     private final Configs configs;
-    private SpeculativeProcessor speculativeProcessor;
 
     public ReplicatedResourceClient(
             DiagnosticsClientContext diagnosticsClientContext,
@@ -160,16 +159,9 @@ public class ReplicatedResourceClient {
         CosmosEndToEndOperationLatencyPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
         List<String> preferredRegions = this.transportClient.getGlobalEndpointManager().getPreferredRegions();
         AvailabilityStrategy strategy = config.getAvailabilityStrategy();
-        if (strategy == null){
-            strategy = new DefaultAvailabilityStrategy();
-        }
-        if (strategy instanceof ThresholdBasedAvailabilityStrategy) {
-                speculativeProcessor = new ThresholdBasedSpeculation();
-        }
-
         List<Mono<StoreResponse>> monoList = new ArrayList<>();
 
-        if (speculativeProcessor != null) {
+        if (strategy instanceof ThresholdBasedAvailabilityStrategy) {
             List<String> effectiveRetryRegions = strategy.getEffectiveRetryRegions(preferredRegions,
                 request.requestContext.getExcludeRegions());
             if (effectiveRetryRegions.size() > strategy.getNumberOfRegionsToTry()) {
@@ -186,8 +178,9 @@ public class ReplicatedResourceClient {
                             monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout));
                         } else {
                             monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout)
-                                .delaySubscription(speculativeProcessor.getThreshold(config)
-                                    .plus(speculativeProcessor.getThresholdStepDuration(config, monoList.size() - 1))));
+                                .delaySubscription(((ThresholdBasedAvailabilityStrategy) strategy).getThreshold()
+                                    .plus(((ThresholdBasedAvailabilityStrategy) strategy)
+                                        .getThresholdStep().multipliedBy(monoList.size() - 1))));
                         }
                     }
                 });
