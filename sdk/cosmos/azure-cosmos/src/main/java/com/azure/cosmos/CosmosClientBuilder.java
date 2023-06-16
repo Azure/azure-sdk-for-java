@@ -860,6 +860,8 @@ public class CosmosClientBuilder implements
      *     <li>Upsert</li>
      *     <li>Delete</li>
      *     <li>Patch</li>
+     *     <li>Batch</li>
+     *     <li>Bulk</li>
      * </ul>
      *
      * @param sessionRetryOptions The {@link CosmosSessionRetryOptions} instance.
