@@ -270,6 +270,12 @@
           "code" : "java.method.removed",
           "old" : "method void com.mysql.cj.protocol.ServerSession::setOldStatusFlags(int)",
           "justification" : "Fix method removed."
+        },
+        {
+          "regex": true,
+          "code" : "java.class.externalClassExposedInAPI",
+          "new" : "(class|enum) com.azure.ai.openai.(OpenAIAsyncClient|OpenAIClient|OpenAIClientBuilder|OpenAIServiceVersion|models.*)",
+          "justification" : "external class in API"
         }
       ]
     }

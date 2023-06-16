@@ -113,7 +113,7 @@ class OpenAIClientBuilderFactoryTests
 
     static class OpenAIClientBuilderFactoryTestsExt extends OpenAIClientBuilderFactory {
 
-        public OpenAIClientBuilderFactoryTestsExt(OpenAIClientProperties openAIClientProperties) {
+        OpenAIClientBuilderFactoryTestsExt(OpenAIClientProperties openAIClientProperties) {
             super(openAIClientProperties);
         }
 
