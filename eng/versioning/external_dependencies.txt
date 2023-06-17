@@ -25,7 +25,7 @@ com.github.spotbugs:spotbugs-maven-plugin;4.2.2
 com.google.code.gson:gson;2.10
 com.google.guava:guava;32.0.1-jre
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
-com.microsoft.azure:applicationinsights-core;3.4.13
+com.microsoft.azure:applicationinsights-core;3.4.1
 com.microsoft.azure:azure-annotations;1.7.0
 com.microsoft.azure:azure-arm-client-runtime;1.7.14
 com.microsoft.azure:azure-client-authentication;1.7.14

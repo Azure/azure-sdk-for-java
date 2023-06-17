@@ -20,7 +20,7 @@ import java.util.stream.IntStream;
 
 final class TestUtils {
     private static final Random RANDOM = new Random();
-    private static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10));
+    private static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(5));
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
     static ServiceBusClientBuilder.ServiceBusSenderClientBuilder getSenderBuilder(ScenarioOptions options, boolean session) {
         ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder = getBuilder(options)

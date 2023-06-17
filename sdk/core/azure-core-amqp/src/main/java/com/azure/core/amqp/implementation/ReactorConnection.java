@@ -127,15 +127,14 @@ public class ReactorConnection implements AmqpConnection {
         this.senderSettleMode = senderSettleMode;
         this.receiverSettleMode = receiverSettleMode;
 
-        String timeoutMessage = String.format(
-            "Connection '%s' not opened within AmqpRetryOptions.tryTimeout(): %s", connectionId,
-            operationTimeout);
-        this.connectionMono = RetryUtil.withRetry(Mono.fromCallable(this::getOrCreateConnection), retryPolicy.getRetryOptions(), timeoutMessage)
+        this.connectionMono = Mono.fromCallable(this::getOrCreateConnection)
             .flatMap(reactorConnection -> {
                 final Mono<AmqpEndpointState> activeEndpoint = getEndpointStates()
                     .filter(state -> state == AmqpEndpointState.ACTIVE)
                     .next()
-                    .timeout(operationTimeout, Mono.error(() -> new AmqpException(true, timeoutMessage, handler.getErrorContext())));
+                    .timeout(operationTimeout, Mono.error(() -> new AmqpException(true, String.format(
+                        "Connection '%s' not opened within AmqpRetryOptions.tryTimeout(): %s", connectionId,
+                        operationTimeout), handler.getErrorContext())));
                 return activeEndpoint.thenReturn(reactorConnection);
             })
             .doOnError(error -> {

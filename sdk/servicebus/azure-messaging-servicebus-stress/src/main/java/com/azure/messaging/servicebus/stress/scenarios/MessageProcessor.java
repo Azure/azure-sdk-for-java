@@ -25,8 +25,8 @@ public class MessageProcessor extends ServiceBusScenario {
     @Value("${DURATION_IN_MINUTES:15}")
     private int testDurationInMinutes;
 
-    // lock duration is 10 sec, so in some cases lock will be lost by default
-    @Value("${PROCESS_CALLBACK_DURATION_MAX_IN_SECONDS:12")
+    // lock duration is 10 sec, so in some cases we'll do lock renewal
+    @Value("${PROCESS_CALLBACK_DURATION_MAX_IN_SECONDS:12}")
     private int processMessageDurationMaxInSeconds;
 
     @Value("${MAX_CONCURRENT_CALLS:20}")
@@ -38,6 +38,7 @@ public class MessageProcessor extends ServiceBusScenario {
     @Override
     public void run() {
         ServiceBusProcessorClient processor = getProcessorBuilder(options)
+            .maxAutoLockRenewDuration(Duration.ofSeconds(processMessageDurationMaxInSeconds + 5))
             .maxConcurrentCalls(maxConcurrentCalls)
             .prefetchCount(prefetchCount)
             .processMessage(this::process)
@@ -52,11 +53,13 @@ public class MessageProcessor extends ServiceBusScenario {
     }
 
     private void process(ServiceBusReceivedMessageContext messageContext) {
-        int processTimeMs = ThreadLocalRandom.current().nextInt(processMessageDurationMaxInSeconds * 1000);
-        try {
-            Thread.sleep(processTimeMs);
-        } catch (InterruptedException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        if (processMessageDurationMaxInSeconds != 0) {
+            int processTimeMs = ThreadLocalRandom.current().nextInt(processMessageDurationMaxInSeconds * 1000);
+            try {
+                Thread.sleep(processTimeMs);
+            } catch (InterruptedException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
         }
         messageContext.complete();
     }

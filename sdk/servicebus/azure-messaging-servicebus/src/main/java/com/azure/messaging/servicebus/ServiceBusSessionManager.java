@@ -230,7 +230,6 @@ class ServiceBusSessionManager implements AutoCloseable {
                 final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
                     deadLetterDescription, propertiesToModify, transactionContext);
 
-                // TODO (limolkova) instrument settlement
                 return receiver.updateDisposition(lockToken, deliveryState).thenReturn(true);
             }));
     }
