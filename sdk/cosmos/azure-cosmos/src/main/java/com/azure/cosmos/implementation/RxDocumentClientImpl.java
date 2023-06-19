@@ -1614,6 +1614,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
 
+        request.requestContext.setExcludeRegions(options.getExcludeRegions());
+
         if (requestRetryPolicy != null) {
             requestRetryPolicy.onBeforeSendRequest(request);
         }
@@ -1942,8 +1944,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return ObservableHelper.inlineIfPossibleAsObs(() -> createDocumentInternal(collectionLink, document, options, disableAutomaticIdGeneration, finalRetryPolicyInstance), requestRetryPolicy);
     }
 
-    private Mono<ResourceResponse<Document>> createDocumentInternal(String collectionLink, Object document,
-                                                                    RequestOptions options, boolean disableAutomaticIdGeneration, DocumentClientRetryPolicy requestRetryPolicy) {
+    private Mono<ResourceResponse<Document>> createDocumentInternal(
+        String collectionLink,
+        Object document,
+        RequestOptions options,
+        boolean disableAutomaticIdGeneration,
+        DocumentClientRetryPolicy requestRetryPolicy) {
         try {
             logger.debug("Creating a Document. collectionLink: [{}]", collectionLink);
 
@@ -2112,6 +2118,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
+
+        request.requestContext.setExcludeRegions(options.getExcludeRegions());
+
         if (retryPolicyInstance != null) {
             retryPolicyInstance.onBeforeSendRequest(request);
         }
@@ -2180,6 +2189,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
+        request.requestContext.setExcludeRegions(options.getExcludeRegions());
 
         if (retryPolicyInstance != null) {
             retryPolicyInstance.onBeforeSendRequest(request);
@@ -2234,6 +2244,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
                 request.setNonIdempotentWriteRetriesEnabled(true);
             }
+
+            request.requestContext.setExcludeRegions(options.getExcludeRegions());
 
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
@@ -2307,6 +2319,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Document, OperationType.Read);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
                 OperationType.Read, ResourceType.Document, path, requestHeaders, options);
+            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
@@ -2316,7 +2330,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
             CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndPolicyConfig);
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
             return requestObs.flatMap(req -> {
                 Mono<ResourceResponse<Document>> resourceResponseMono = this.read(request, retryPolicyInstance).map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
                 return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, resourceResponseMono);
