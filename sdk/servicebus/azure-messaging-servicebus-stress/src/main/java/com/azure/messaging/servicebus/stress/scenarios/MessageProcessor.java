@@ -29,7 +29,7 @@ public class MessageProcessor extends ServiceBusScenario {
     @Value("${PROCESS_CALLBACK_DURATION_MAX_IN_SECONDS:12}")
     private int processMessageDurationMaxInSeconds;
 
-    @Value("${MAX_CONCURRENT_CALLS:20}")
+    @Value("${MAX_CONCURRENT_CALLS:70}")
     private int maxConcurrentCalls;
 
     @Value("${PREFETCH_COUNT:0}")
@@ -37,9 +37,15 @@ public class MessageProcessor extends ServiceBusScenario {
 
     @Override
     public void run() {
+        //com.azure.messaging.servicebus.nonSession.asyncReceive.v2
         ServiceBusProcessorClient processor = getProcessorBuilder(options)
-            .maxAutoLockRenewDuration(Duration.ofSeconds(processMessageDurationMaxInSeconds + 5))
+            // 7 sec
+            // service 10 sec
+            // max processing is 12
+            .maxAutoLockRenewDuration(Duration.ofSeconds(processMessageDurationMaxInSeconds - 5))
+            //
             .maxConcurrentCalls(maxConcurrentCalls)
+            //
             .prefetchCount(prefetchCount)
             .processMessage(this::process)
             .processError(err -> {
