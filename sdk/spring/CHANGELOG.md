@@ -1,6 +1,7 @@
 # Release History
 
 ## 5.3.0-beta.1 (Unreleased)
+Upgrade Spring Boot dependencies version to 3.1.0 and Spring Cloud dependencies version to 2022.0.3
 
 ### Features Added
 
