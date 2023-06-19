@@ -113,7 +113,8 @@ public interface Cluster {
     String preferredPrimaryZone();
 
     /**
-     * Gets the enableShardsOnCoordinator property: If shards on coordinator is enabled or not for the cluster.
+     * Gets the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be
+     * set to 'true' on single node clusters. Requires shard rebalancing after value is changed.
      *
      * @return the enableShardsOnCoordinator value.
      */
@@ -418,10 +419,11 @@ public interface Cluster {
         /** The stage of the Cluster definition allowing to specify enableShardsOnCoordinator. */
         interface WithEnableShardsOnCoordinator {
             /**
-             * Specifies the enableShardsOnCoordinator property: If shards on coordinator is enabled or not for the
-             * cluster..
+             * Specifies the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not.
+             * Should be set to 'true' on single node clusters. Requires shard rebalancing after value is changed..
              *
-             * @param enableShardsOnCoordinator If shards on coordinator is enabled or not for the cluster.
+             * @param enableShardsOnCoordinator If distributed tables are placed on coordinator or not. Should be set to
+             *     'true' on single node clusters. Requires shard rebalancing after value is changed.
              * @return the next definition stage.
              */
             WithCreate withEnableShardsOnCoordinator(Boolean enableShardsOnCoordinator);
@@ -658,10 +660,11 @@ public interface Cluster {
         /** The stage of the Cluster update allowing to specify enableShardsOnCoordinator. */
         interface WithEnableShardsOnCoordinator {
             /**
-             * Specifies the enableShardsOnCoordinator property: If shards on coordinator is enabled or not for the
-             * cluster..
+             * Specifies the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not.
+             * Should be set to 'true' on single node clusters. Requires shard rebalancing after value is changed..
              *
-             * @param enableShardsOnCoordinator If shards on coordinator is enabled or not for the cluster.
+             * @param enableShardsOnCoordinator If distributed tables are placed on coordinator or not. Should be set to
+             *     'true' on single node clusters. Requires shard rebalancing after value is changed.
              * @return the next definition stage.
              */
             Update withEnableShardsOnCoordinator(Boolean enableShardsOnCoordinator);
