@@ -361,7 +361,7 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT, enabled = false)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void readManyWithMultiplePartitionsAndSome404s() throws JsonProcessingException {
 
         CosmosClient readManyClient = null;
@@ -400,13 +400,20 @@ public class CosmosItemTest extends TestSuiteBase {
             }
 
             List<FeedRange> feedRanges = readManyContainer.getFeedRanges();
+
+            assertThat(feedRanges).isNotNull();
             assertThat(feedRanges.size()).isGreaterThan(1);
 
-            for (int faultyIdCount = 0; faultyIdCount <= feedRanges.size(); faultyIdCount++) {
+            int feedRangeCount = feedRanges.size();
+
+            // select 1 document per feed range
+            // increase the no. of documents with faulty ids
+            // see if documents fetched is (feed range count) - (faulty documents)
+            for (int faultyIdCount = 0; faultyIdCount <= feedRangeCount; faultyIdCount++) {
                 final Set<Integer> faultyIds = new HashSet<>();
 
                 while (faultyIds.size() != faultyIdCount) {
-                    faultyIds.add(random.nextInt(feedRanges.size()));
+                    faultyIds.add(random.nextInt(feedRangeCount));
                 }
 
                 SqlQuerySpec sqlQuerySpec = new SqlQuerySpec();
@@ -414,7 +421,7 @@ public class CosmosItemTest extends TestSuiteBase {
 
                 List<ImmutablePair<String, String>> pkToIdPairs = new ArrayList<>();
 
-                for (int k = 0; k < feedRanges.size(); k++) {
+                for (int k = 0; k < feedRangeCount; k++) {
                     CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
                     cosmosQueryRequestOptions.setFeedRange(feedRanges.get(k));
 
@@ -434,7 +441,7 @@ public class CosmosItemTest extends TestSuiteBase {
                         });
                 }
 
-                if (pkToIdPairs.size() == feedRanges.size()) {
+                if (pkToIdPairs.size() == feedRangeCount) {
                     List<CosmosItemIdentity> cosmosItemIdentities = pkToIdPairs
                         .stream()
                         .map(pkToIdPair -> new CosmosItemIdentity(new PartitionKey(pkToIdPair.getRight()), pkToIdPair.getLeft()))
@@ -443,9 +450,11 @@ public class CosmosItemTest extends TestSuiteBase {
                     FeedResponse<InternalObjectNode> readManyResult = readManyContainer
                         .readMany(cosmosItemIdentities, InternalObjectNode.class);
 
-                    assertThat(readManyResult.getResults().size()).isEqualTo(feedRanges.size() - faultyIdCount);
+                    assertThat(readManyResult).isNotNull();
+                    assertThat(readManyResult.getResults()).isNotNull();
+                    assertThat(readManyResult.getResults().size()).isEqualTo(feedRangeCount - faultyIdCount);
                 } else {
-                    fail("Not all physical partition have data!");
+                    fail("Not all physical partitions have data!");
                 }
             }
 
