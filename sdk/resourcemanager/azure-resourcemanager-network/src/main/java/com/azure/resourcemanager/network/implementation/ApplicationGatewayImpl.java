@@ -59,6 +59,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -101,10 +102,11 @@ class ApplicationGatewayImpl
     private Map<String, String> creatablePipsByFrontend;
     private String creatableWafPolicy;
     // whether legacy waf configuration is explicitly specified by the user during creation
-    boolean legacyWafConfigurationSpecified = false;
+    private boolean legacyWafConfigurationSpecifiedInCreate = false;
 
     ApplicationGatewayImpl(String name, final ApplicationGatewayInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
+        Files.readAllLines()
     }
 
     // Verbs
@@ -445,13 +447,13 @@ class ApplicationGatewayImpl
     }
 
     private void ensureNoMixedWaf() {
-        String errorMessage = "Can't have a mixture of legacy WAF configuration and WAF policy. "
+        String errorMessage = "A mixture of legacy WAF configuration and WAF policy is not allowed. "
             + "If you are using legacy WAF configuration, you are strongly encouraged to upgrade to WAF Policy "
             + "for easier management, better scale, and a richer feature set at no additional cost. "
             + "See https://learn.microsoft.com/azure/web-application-firewall/ag/upgrade-ag-waf-policy";
         if (this.creatableWafPolicy != null || this.innerModel().firewallPolicy() != null) {
             if (isInCreateMode()) {
-                if (this.legacyWafConfigurationSpecified) {
+                if (this.legacyWafConfigurationSpecifiedInCreate) {
                     throw new IllegalStateException(errorMessage);
                 }
             } else {
@@ -774,7 +776,7 @@ class ApplicationGatewayImpl
                     .withFirewallMode(mode)
                     .withRuleSetType("OWASP")
                     .withRuleSetVersion("3.0"));
-        this.legacyWafConfigurationSpecified = true;
+        this.legacyWafConfigurationSpecifiedInCreate = true;
         return this;
     }
 
@@ -782,7 +784,7 @@ class ApplicationGatewayImpl
     public ApplicationGatewayImpl withWebApplicationFirewall(
         ApplicationGatewayWebApplicationFirewallConfiguration config) {
         this.innerModel().withWebApplicationFirewallConfiguration(config);
-        this.legacyWafConfigurationSpecified = true;
+        this.legacyWafConfigurationSpecifiedInCreate = true;
         return this;
     }
 

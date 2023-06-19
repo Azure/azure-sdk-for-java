@@ -26,6 +26,9 @@ public class WebApplicationFirewallPolicyTests extends NetworkManagementTest {
 
         defaultPolicy.refresh();
 
+        Assertions.assertTrue(defaultPolicy.getManagedRules().managedRuleSets()
+            .stream()
+            .anyMatch(managedRuleSet -> managedRuleSet.ruleSetType().equals("Microsoft_DefaultRuleSet")));
         Assertions.assertNotNull(defaultPolicy.getPolicySettings());
         Assertions.assertEquals(WebApplicationFirewallMode.DETECTION, defaultPolicy.mode());
         Assertions.assertTrue(defaultPolicy.isRequestBodyInspectionEnabled());

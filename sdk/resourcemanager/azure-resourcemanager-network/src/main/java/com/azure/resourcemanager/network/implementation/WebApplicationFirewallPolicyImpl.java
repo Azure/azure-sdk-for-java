@@ -36,8 +36,8 @@ public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
     WebApplicationFirewallPolicy.UpdateStages.WithRequestBodyOrUpdate {
     private static final String BOT_DETECTION_RULE_SET_TYPE = "Microsoft_BotManagerRuleSet";
     private static final String BOT_DETECTION_RULE_SET_VERSION_DEFAULT = "0.1";
-    private static final String DEFAULT_MANAGED_RULE_SET = "OWASP";
-    private static final String DEFAULT_MANAGED_RULE_SET_VERSION = "3.2";
+    private static final String MANAGED_RULE_SET_TYPE_DEFAULT = "OWASP";
+    private static final String MANAGED_RULE_SET_VERSION_DEFAULT = "3.2";
 
     protected WebApplicationFirewallPolicyImpl(String name, WebApplicationFirewallPolicyInner innerObject, NetworkManager manager) {
         super(name, innerObject, manager);
@@ -89,7 +89,7 @@ public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
         return this.innerModel().applicationGateways()
             .stream()
             .map(ApplicationGatewayInner::id)
-            .collect(Collectors.toList());
+            .collect(Collectors.toUnmodifiableList());
     }
 
     @Override
@@ -196,8 +196,9 @@ public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
 
     @Override
     public void beforeGroupCreateOrUpdate() {
-        super.beforeGroupCreateOrUpdate();
-        ensureDefaultCoreRuleSet();
+        if (isInCreateMode()) {
+            ensureDefaultCoreRuleSet();
+        }
     }
 
     @Override
@@ -241,11 +242,11 @@ public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
         if (this.innerModel().managedRules()
             .managedRuleSets()
             .stream()
-            .allMatch(ruleSet -> BOT_DETECTION_RULE_SET_TYPE.equals(ruleSet.ruleSetType()))) {
+            .noneMatch(ruleSet -> MANAGED_RULE_SET_TYPE_DEFAULT.equals(ruleSet.ruleSetType()))) {
             ManagedRuleSet defaultRuleSet =
                 new ManagedRuleSet()
-                    .withRuleSetType(DEFAULT_MANAGED_RULE_SET)
-                    .withRuleSetVersion(DEFAULT_MANAGED_RULE_SET_VERSION);
+                    .withRuleSetType(MANAGED_RULE_SET_TYPE_DEFAULT)
+                    .withRuleSetVersion(MANAGED_RULE_SET_VERSION_DEFAULT);
             this.innerModel().managedRules().managedRuleSets().add(defaultRuleSet);
         }
     }
