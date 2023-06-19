@@ -439,6 +439,7 @@ public class TestProxyTests extends TestProxyTestBase {
         environment.put("LOGGING__LOGLEVEL", "Information");
         environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Warning");
         environment.put("LOGGING__LOGLEVEL__DEFAULT", "Information");
+        builder.directory(engRepoRoot.toFile());
         Process process = builder.start();
         BufferedReader reader =
             new BufferedReader(new InputStreamReader(process.getInputStream()));
