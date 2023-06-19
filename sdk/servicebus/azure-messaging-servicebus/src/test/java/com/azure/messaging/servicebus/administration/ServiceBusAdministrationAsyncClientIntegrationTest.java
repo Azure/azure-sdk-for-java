@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
@@ -100,12 +99,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isLiveMode()) {
-            builder.httpClient(httpClient)
-                .addPolicy(new RetryPolicy());
+            builder.httpClient(httpClient);
         } else {
             builder.httpClient(httpClient)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy());
+                .addPolicy(interceptorManager.getRecordPolicy());
         }
 
         final ServiceBusAdministrationAsyncClient client = builder
@@ -867,12 +864,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isLiveMode()) {
-            builder.httpClient(httpClient)
-                .addPolicy(new RetryPolicy());
+            builder.httpClient(httpClient);
         } else {
             builder.httpClient(httpClient)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy());
+                .addPolicy(interceptorManager.getRecordPolicy());
         }
 
         final ServiceBusAdministrationAsyncClient client = builder.buildAsyncClient();
@@ -1011,12 +1006,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isLiveMode()) {
-            builder.httpClient(httpClient)
-                .addPolicy(new RetryPolicy());
+            builder.httpClient(httpClient);
         } else {
             builder.httpClient(httpClient)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy());
+                .addPolicy(interceptorManager.getRecordPolicy());
         }
 
         return builder.buildAsyncClient();
