@@ -31,10 +31,9 @@ public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrate
      * @param thresholdStep        the threshold step
      * @param numberOfRegionsToTry the number of regions to retry
      */
-    public ThresholdBasedAvailabilityStrategy(Duration threshold, Duration thresholdStep, int numberOfRegionsToTry) {
+    public ThresholdBasedAvailabilityStrategy(Duration threshold, Duration thresholdStep) {
         this.threshold = threshold;
         this.thresholdStep = thresholdStep;
-        this.numberOfRegionsToTry = numberOfRegionsToTry;
     }
 
     /**
@@ -72,20 +71,6 @@ public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrate
      */
     public void setThresholdStep(Duration thresholdStep) {
         this.thresholdStep = thresholdStep;
-    }
-
-    @Override
-    public List<String> getEffectiveRetryRegions(List<String> preferredRegions, List<String> excludeRegions) {
-        if (excludeRegions == null) {
-            return preferredRegions
-                .subList(0, this.numberOfRegionsToTry);
-        }
-
-        List<String> collectList = preferredRegions
-            .stream()
-            .filter(region -> !excludeRegions.contains(region))
-            .collect(Collectors.toList());
-        return collectList.subList(0, Math.min(numberOfRegionsToTry, collectList.size()));
     }
 
 }

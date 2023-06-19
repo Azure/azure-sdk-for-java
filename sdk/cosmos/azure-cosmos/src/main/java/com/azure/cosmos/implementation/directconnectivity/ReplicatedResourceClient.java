@@ -7,7 +7,6 @@ import com.azure.cosmos.AvailabilityStrategy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
-import com.azure.cosmos.DefaultAvailabilityStrategy;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
@@ -21,8 +20,6 @@ import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.directconnectivity.speculativeprocessors.SpeculativeProcessor;
-import com.azure.cosmos.implementation.directconnectivity.speculativeprocessors.ThresholdBasedSpeculation;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
@@ -39,6 +36,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * ReplicatedResourceClient uses the ConsistencyReader to make requests to
@@ -162,11 +160,8 @@ public class ReplicatedResourceClient {
         List<Mono<StoreResponse>> monoList = new ArrayList<>();
 
         if (strategy instanceof ThresholdBasedAvailabilityStrategy) {
-            List<String> effectiveRetryRegions = strategy.getEffectiveRetryRegions(preferredRegions,
+            List<String> effectiveRetryRegions = getEffectiveRetryRegions(preferredRegions,
                 request.requestContext.getExcludeRegions());
-            if (effectiveRetryRegions.size() > strategy.getNumberOfRegionsToTry()) {
-                effectiveRetryRegions = effectiveRetryRegions.subList(0, strategy.getNumberOfRegionsToTry());
-            }
 
             effectiveRetryRegions
                 .forEach(regionName -> {
@@ -185,7 +180,7 @@ public class ReplicatedResourceClient {
                     }
                 });
         } else {
-            Optional<String> first = strategy.getEffectiveRetryRegions(preferredRegions,
+            Optional<String> first = getEffectiveRetryRegions(preferredRegions,
                 request.requestContext.getExcludeRegions()).stream().findFirst();
             if (first.isPresent()) {
                 URI locationURI = getLocationURIFromAvailableEndPoints(first.get(), request);
@@ -222,6 +217,17 @@ public class ReplicatedResourceClient {
             }
         }
         return null;
+    }
+
+    private List<String> getEffectiveRetryRegions(List<String> preferredRegions, List<String> excludeRegions) {
+        if (excludeRegions == null) {
+            return preferredRegions;
+        }
+        // return preferredRegions without excludeRegions
+        return preferredRegions
+            .stream()
+            .filter(region -> !excludeRegions.contains(region))
+            .collect(Collectors.toList());
     }
 
     private boolean shouldSpeculate(RxDocumentServiceRequest request) {

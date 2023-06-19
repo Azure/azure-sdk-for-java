@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
     private boolean isEnabled = true;
-    private final Duration endToEndOperationTimeout;
+    private final Duration endToEndPointOperationTimeout;
     private Duration endToEndNonPointOperationTimeout;
     private AvailabilityStrategy availabilityStrategy;
 
@@ -22,9 +22,8 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
      *                                can cause the request to never succeed.
      */
     public CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration endToEndPointOperationTimeout) {
-        this.endToEndOperationTimeout = endToEndPointOperationTimeout;
+        this.endToEndPointOperationTimeout = endToEndPointOperationTimeout;
         this.endToEndNonPointOperationTimeout = endToEndPointOperationTimeout;
-        this.availabilityStrategy = new DefaultAvailabilityStrategy();
     }
 
     /**
@@ -33,7 +32,7 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
      * @return the {@link CosmosEndToEndOperationLatencyPolicyConfig}
      */
     public CosmosEndToEndOperationLatencyPolicyConfig build() {
-        return new CosmosEndToEndOperationLatencyPolicyConfig(isEnabled, endToEndOperationTimeout, endToEndNonPointOperationTimeout, availabilityStrategy);
+        return new CosmosEndToEndOperationLatencyPolicyConfig(isEnabled, endToEndPointOperationTimeout, endToEndNonPointOperationTimeout, availabilityStrategy);
     }
 
     /**
@@ -55,14 +54,14 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
      * @param availabilityStrategy the availability strategy to be used for the policy
      * @return current CosmosEndToEndOperationConfigBuilder
      */
-    public CosmosEndToEndOperationLatencyPolicyConfigBuilder availabilityStrategy(
+    public CosmosEndToEndOperationLatencyPolicyConfigBuilder availabilityStrategy (
         AvailabilityStrategy availabilityStrategy) {
         this.availabilityStrategy = availabilityStrategy;
         return this;
     }
 
     /**
-     * Sets the feed operation timeout. Defaults to endToEndOperationTimeout. Use this if you need to set a different timeout
+     * Sets the feed operation timeout. Defaults to endToEndPointOperationTimeout. Use this if you need to set a different timeout
      * for feed operations
      * @param endToEndNonPointOperationTimeout feed operatoin timeout Duration
      * @return current CosmosEndToEndOperationConfigBuilder

@@ -96,7 +96,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
 
         // Now try the same request with Threshold based availability strategy
         CosmosEndToEndOperationLatencyPolicyConfig config = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(3))
-            .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(Duration.ofMillis(100), Duration.ofMillis(200), 2))
+            .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(Duration.ofMillis(100), Duration.ofMillis(200)))
             .build();
         options.setCosmosEndToEndOperationLatencyPolicyConfig(config);
         cosmosItemResponseMono =
@@ -161,7 +161,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
 
         // Setting threshold based availability strategy should not timeout
         CosmosEndToEndOperationLatencyPolicyConfig config = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(3))
-            .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(Duration.ofMillis(100), Duration.ofMillis(200), 2))
+            .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(Duration.ofMillis(100), Duration.ofMillis(200)))
             .build();
         options.setCosmosEndToEndOperationLatencyPolicyConfig(config);
         queryPagedFlux = createdContainer.queryItems(sqlQuerySpec, options, TestObject.class);
