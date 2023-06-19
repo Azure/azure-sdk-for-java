@@ -1335,34 +1335,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
         });
     }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void createSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
-        client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        // Prepare a setting before creating a snapshot
-        addConfigurationSettingRunner((expected) ->
-            StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
-                .assertNext(response -> assertConfigurationEquals(expected, response))
-                .verifyComplete());
-
-        createSnapshotRunner((name, filters) -> {
-            SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
-                client.beginCreateSnapshot(name, filters).getSyncPoller();
-            poller.setPollInterval(Duration.ofSeconds(10));
-            poller.waitForCompletion();
-            ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
-
-            assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
-                DEFAULT_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
-
-            // Archived the snapshot, it will be deleted automatically when retention period expires.
-            StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response -> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
-                .verifyComplete();
-        });
-    }
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void getSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
