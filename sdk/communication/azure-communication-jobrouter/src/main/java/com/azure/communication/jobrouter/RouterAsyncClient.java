@@ -21,6 +21,8 @@ import com.azure.communication.jobrouter.models.WorkerStateSelector;
 import com.azure.communication.jobrouter.models.options.CloseJobOptions;
 import com.azure.communication.jobrouter.models.options.CreateJobOptions;
 import com.azure.communication.jobrouter.models.options.CreateWorkerOptions;
+import com.azure.communication.jobrouter.models.options.ListJobsOptions;
+import com.azure.communication.jobrouter.models.options.ListWorkersOptions;
 import com.azure.communication.jobrouter.models.options.UnassignJobOptions;
 import com.azure.communication.jobrouter.models.options.UpdateJobOptions;
 import com.azure.communication.jobrouter.models.options.UpdateWorkerOptions;
@@ -579,20 +581,20 @@ public final class RouterAsyncClient {
     /**
      * Retrieves list of jobs based on filter parameters.
      *
-     * @param jobStateSelector (Optional) If specified, filter jobs by status.
-     * @param queueId (Optional) If specified, filter jobs by queue.
-     * @param channelId (Optional) If specified, filter jobs by channel.
-     * @param classificationPolicyId If specified, filter jobs by classificationPolicyId.
-     * @param maxPageSize Number of objects to return per page.
+     * @param listJobsOptions options for listJobs.
      * @return a paged collection of jobs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterJobItem> listJobs(JobStateSelector jobStateSelector, String queueId, String channelId, String classificationPolicyId, Integer maxPageSize) {
+    public PagedFlux<RouterJobItem> listJobs(ListJobsOptions listJobsOptions) {
         try {
-            return jobRouter.listJobsAsync(jobStateSelector, queueId, channelId, classificationPolicyId, maxPageSize);
+            return jobRouter.listJobsAsync(listJobsOptions.getJobStateSelector(),
+                listJobsOptions.getQueueId(),
+                listJobsOptions.getChannelId(),
+                listJobsOptions.getClassificationPolicyId(),
+                listJobsOptions.getMaxPageSize());
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -1035,22 +1037,20 @@ public final class RouterAsyncClient {
     /**
      * Retrieves existing workers.
      *
-     * @param workerStateSelector (Optional) If specified, select workers by worker status.
-     * @param channelId (Optional) If specified, select workers who have a channel configuration with this channel.
-     * @param queueId (Optional) If specified, select workers who are assigned to this queue.
-     * @param hasCapacity (Optional) If set to true, select only workers who have capacity for the channel specified by
-     * `channelId` or for any channel if `channelId` not specified. If set to false, then will return all workers
-     * including workers without any capacity for jobs. Defaults to false.
-     * @param maxPageSize Number of objects to return per page.
+     * @param listWorkersOptions options for listWorkers.
      * @return a paged collection of workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterWorkerItem> listWorkers(WorkerStateSelector workerStateSelector, String channelId, String queueId, Boolean hasCapacity, Integer maxPageSize) {
+    public PagedFlux<RouterWorkerItem> listWorkers(ListWorkersOptions listWorkersOptions) {
         try {
-            return jobRouter.listWorkersAsync(workerStateSelector, channelId, queueId, hasCapacity, maxPageSize);
+            return jobRouter.listWorkersAsync(listWorkersOptions.getWorkerStateSelector(),
+                listWorkersOptions.getChannelId(),
+                listWorkersOptions.getQueueId(),
+                listWorkersOptions.getHasCapacity(),
+                listWorkersOptions.getMaxPageSize());
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }

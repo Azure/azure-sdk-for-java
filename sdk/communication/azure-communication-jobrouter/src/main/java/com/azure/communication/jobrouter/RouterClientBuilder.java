@@ -137,6 +137,7 @@ public final class RouterClientBuilder implements ConfigurationTrait<RouterClien
      * @param credential valid credential as a string
      * @return the updated RouterClientBuilder object
      */
+    @Override
     public RouterClientBuilder credential(AzureKeyCredential credential) {
         this.credential = Objects.requireNonNull(
             credential, "'credential' cannot be null.");
