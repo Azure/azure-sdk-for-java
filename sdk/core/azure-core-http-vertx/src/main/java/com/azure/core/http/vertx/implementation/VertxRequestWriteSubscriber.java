@@ -29,14 +29,15 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
     private final ProgressReporter progressReporter;
 
     // This subscriber is effectively synchronous so there is no need for these fields to be volatile.
-    private Subscription subscription;
+    private volatile Subscription subscription;
 
     private volatile State state = State.UNINITIALIZED;
     private volatile Throwable error;
 
     public VertxRequestWriteSubscriber(HttpClientRequest request, MonoSink<HttpResponse> emitter,
         ProgressReporter progressReporter) {
-        this.request = request.exceptionHandler(this::onError);
+        this.request = request.exceptionHandler(this::onError)
+            .drainHandler(ignored -> requestNext());
         this.emitter = emitter;
         this.progressReporter = progressReporter;
     }
@@ -71,31 +72,35 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
     private void write(ByteBuffer bytes) {
         int remaining = bytes.remaining();
         request.write(Buffer.buffer(Unpooled.wrappedBuffer(bytes)), result -> {
+            State state = this.state;
+            if (state == State.WRITING) {
+                this.state = State.UNINITIALIZED;
+            }
+
             if (result.succeeded()) {
                 if (progressReporter != null) {
                     progressReporter.reportProgress(remaining);
                 }
-
-                State state = this.state;
                 if (state == State.WRITING) {
-                    this.state = State.UNINITIALIZED;
-                    if (request.writeQueueFull()) {
-                        request.drainHandler(ignored -> subscription.request(1));
-                    } else {
-                        subscription.request(1);
+                    if (!request.writeQueueFull()) {
+                        requestNext();
                     }
-                } else if (state == State.COMPLETE_DURING_WRITE) {
-                    this.state = State.COMPLETE;
+                } else if (state == State.COMPLETE) {
                     endRequest();
-                } else if (state == State.ERROR_DURING_WRITE) {
-                    this.state = State.ERROR;
+                } else if (state == State.ERROR) {
                     resetRequest(error);
                 }
             } else {
                 this.state = State.ERROR;
-                onErrorInternal(result.cause());
+                resetRequest(result.cause());
             }
         });
+    }
+
+    private void requestNext() {
+        if (state == State.UNINITIALIZED) {
+            subscription.request(1);
+        }
     }
 
     @Override
@@ -110,12 +115,11 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
             Operators.onErrorDropped(throwable, Context.of(emitter.contextView()));
         }
 
-        if (state == State.WRITING) {
-            this.state = State.ERROR_DURING_WRITE;
-            this.error = throwable;
-        } else {
-            this.state = State.ERROR;
+        this.state = State.ERROR;
+        if (state != State.WRITING) {
             resetRequest(throwable);
+        } else {
+            error = throwable;
         }
     }
 
@@ -135,10 +139,8 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
             return;
         }
 
-        if (state == State.WRITING) {
-            this.state = State.COMPLETE_DURING_WRITE;
-        } else {
-            this.state = State.COMPLETE;
+        this.state = State.COMPLETE;
+        if (state != State.WRITING) {
             endRequest();
         }
     }
@@ -154,10 +156,8 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
     private enum State {
         UNINITIALIZED(0),
         WRITING(1),
-        COMPLETE_DURING_WRITE(2),
-        ERROR_DURING_WRITE(3),
-        COMPLETE(4),
-        ERROR(5);
+        COMPLETE(2),
+        ERROR(3);
 
         private final int code;
 

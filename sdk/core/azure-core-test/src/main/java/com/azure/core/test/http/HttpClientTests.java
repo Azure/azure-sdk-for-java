@@ -20,15 +20,8 @@ import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
-import org.junit.jupiter.api.TestTemplate;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.Extension;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.ParameterContext;
-import org.junit.jupiter.api.extension.ParameterResolutionException;
-import org.junit.jupiter.api.extension.ParameterResolver;
-import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
-import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -53,12 +46,12 @@ import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -438,8 +431,8 @@ public abstract class HttpClientTests {
      *
      * @param testDataBinaryData The test data.
      */
-    @TestTemplate
-    @ExtendWith(RepeatedParameterizedTestTemplate.class)
+    @ParameterizedTest
+    @MethodSource("getBinaryDataBodyVariants")
     public void canSendBinaryData(BinaryDataTestData testDataBinaryData) {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
             testDataBinaryData.getBinaryData());
@@ -456,8 +449,8 @@ public abstract class HttpClientTests {
      *
      * @param testDataBinaryData The test data.
      */
-    @TestTemplate
-    @ExtendWith(RepeatedParameterizedTestTemplate.class)
+    @ParameterizedTest
+    @MethodSource("getBinaryDataBodyVariants")
     public void canSendBinaryDataSync(BinaryDataTestData testDataBinaryData) {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
             testDataBinaryData.getBinaryData());
@@ -474,8 +467,8 @@ public abstract class HttpClientTests {
      *
      * @param testDataBinaryData The test data.
      */
-    @TestTemplate
-    @ExtendWith(RepeatedParameterizedTestTemplate.class)
+    @ParameterizedTest
+    @MethodSource("getBinaryDataBodyVariants")
     public void canSendBinaryDataWithProgressReporting(BinaryDataTestData testDataBinaryData) {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
             testDataBinaryData.getBinaryData());
@@ -497,8 +490,8 @@ public abstract class HttpClientTests {
      *
      * @param testDataBinaryData The test data.
      */
-    @TestTemplate
-    @ExtendWith(RepeatedParameterizedTestTemplate.class)
+    @ParameterizedTest
+    @MethodSource("getBinaryDataBodyVariants")
     public void canSendBinaryDataWithProgressReportingSync(BinaryDataTestData testDataBinaryData) {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
             testDataBinaryData.getBinaryData());
@@ -513,52 +506,6 @@ public abstract class HttpClientTests {
 
             assertArrayEquals(testDataBinaryData.getBytes(), responseBytes);
             assertEquals(testDataBinaryData.getBytes().length, progress.intValue());
-        }
-    }
-
-    private static final class RepeatedParameterizedTestTemplate implements TestTemplateInvocationContextProvider {
-
-        @Override
-        public boolean supportsTestTemplate(ExtensionContext context) {
-            return true;
-        }
-
-        @Override
-        public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
-            // Repeat BinaryData tests 100 times for validation.
-            Stream<TestTemplateInvocationContext> stream = Stream.empty();
-            for (int i = 0; i < 100; i++) {
-                stream = Stream.concat(stream, getBinaryDataBodyVariants()
-                    .map(RepeatedParameterizedTestTemplate::createInvocationContext));
-            }
-
-            return stream;
-        }
-
-        private static TestTemplateInvocationContext createInvocationContext(BinaryDataTestData testData) {
-            return new TestTemplateInvocationContext() {
-                @Override
-                public String getDisplayName(int invocationIndex) {
-                    return TestTemplateInvocationContext.super.getDisplayName(invocationIndex);
-                }
-
-                @Override
-                public List<Extension> getAdditionalExtensions() {
-                    return Collections.singletonList(new ParameterResolver() {
-                        @Override
-                        public boolean supportsParameter(ParameterContext parameterContext,
-                            ExtensionContext extensionContext) throws ParameterResolutionException {
-                            return true;
-                        }
-
-                        @Override
-                        public Object resolveParameter(ParameterContext parameterContext,
-                            ExtensionContext extensionContext) throws ParameterResolutionException {
-                            return testData;
-                        }
-                    });
-                }
-            };
         }
     }
 
@@ -600,61 +547,64 @@ public abstract class HttpClientTests {
     }
 
     private static Stream<BinaryDataTestData> getBinaryDataBodyVariants() {
-        return Stream.of(1, 2, 10, 127, 1024, 1024 + 157, 8 * 1024 + 3, 10 * 1024 * 1024 + 13)
-            .flatMap(size -> {
-                byte[] bytes = SHARED_DATA.get(size);
+        return IntStream.range(0, 100)
+            .mapToObj(i -> i)
+            .flatMap(ignored -> Stream.of(1, 2, 10, 127, 1024, 1024 + 157, 8 * 1024 + 3, 10 * 1024 * 1024 + 13)
+                .flatMap(size -> {
+                    byte[] bytes = SHARED_DATA.get(size);
 
-                BinaryData byteArrayData = BinaryData.fromBytes(bytes);
+                    BinaryData byteArrayData = BinaryData.fromBytes(bytes);
 
-                String randomString = new String(bytes, StandardCharsets.UTF_8);
-                byte[] randomStringBytes = randomString.getBytes(StandardCharsets.UTF_8);
-                BinaryData stringBinaryData = BinaryData.fromString(randomString);
+                    String randomString = new String(bytes, StandardCharsets.UTF_8);
+                    byte[] randomStringBytes = randomString.getBytes(StandardCharsets.UTF_8);
+                    BinaryData stringBinaryData = BinaryData.fromString(randomString);
 
-                BinaryData streamData = BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length);
+                    BinaryData streamData = BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length);
 
-                List<ByteBuffer> bufferList = new ArrayList<>();
-                int bufferSize = 1023;
-                for (int startIndex = 0; startIndex < bytes.length; startIndex += bufferSize) {
-                    bufferList.add(ByteBuffer.wrap(bytes, startIndex,
-                        Math.min(bytes.length - startIndex, bufferSize)));
-                }
+                    List<ByteBuffer> bufferList = new ArrayList<>();
+                    int bufferSize = 1023;
+                    for (int startIndex = 0; startIndex < bytes.length; startIndex += bufferSize) {
+                        bufferList.add(ByteBuffer.wrap(bytes, startIndex,
+                            Math.min(bytes.length - startIndex, bufferSize)));
+                    }
 
-                BinaryData fluxBinaryData = BinaryData.fromFlux(Flux.fromIterable(bufferList)
-                        .map(ByteBuffer::duplicate), null, false)
-                    .block();
+                    BinaryData fluxBinaryData = BinaryData.fromFlux(Flux.fromIterable(bufferList)
+                            .map(ByteBuffer::duplicate), null, false)
+                        .block();
 
-                BinaryData fluxBinaryDataWithLength = BinaryData.fromFlux(Flux.fromIterable(bufferList)
-                        .map(ByteBuffer::duplicate), size.longValue(), false)
-                    .block();
+                    BinaryData fluxBinaryDataWithLength = BinaryData.fromFlux(Flux.fromIterable(bufferList)
+                            .map(ByteBuffer::duplicate), size.longValue(), false)
+                        .block();
 
-                BinaryData asyncFluxBinaryData = BinaryData.fromFlux(Flux.fromIterable(bufferList)
-                        .map(ByteBuffer::duplicate)
-                        .delayElements(Duration.ofNanos(10)), null, false)
-                    .block();
+                    BinaryData asyncFluxBinaryData = BinaryData.fromFlux(Flux.fromIterable(bufferList)
+                            .map(ByteBuffer::duplicate)
+                            .delayElements(Duration.ofNanos(10)), null, false)
+                        .block();
 
-                BinaryData asyncFluxBinaryDataWithLength = BinaryData.fromFlux(Flux.fromIterable(bufferList)
-                        .map(ByteBuffer::duplicate)
-                        .delayElements(Duration.ofNanos(10)), size.longValue(), false)
-                    .block();
+                    BinaryData asyncFluxBinaryDataWithLength = BinaryData.fromFlux(Flux.fromIterable(bufferList)
+                            .map(ByteBuffer::duplicate)
+                            .delayElements(Duration.ofNanos(10)), size.longValue(), false)
+                        .block();
 
-                BinaryData objectBinaryData = BinaryData.fromObject(bytes, new ByteArraySerializer());
+                    BinaryData objectBinaryData = BinaryData.fromObject(bytes, new ByteArraySerializer());
 
-                BinaryData fileData = BinaryData.fromFile(SHARED_TEST_FILES.get(size));
+                    BinaryData fileData = BinaryData.fromFile(SHARED_TEST_FILES.get(size));
 
-                BinaryData sliceFileData = BinaryData.fromFile(SHARED_TEST_SLICE_FILES.get(size), 8192L, (long) size);
+                    BinaryData sliceFileData = BinaryData.fromFile(SHARED_TEST_SLICE_FILES.get(size), 8192L,
+                        (long) size);
 
-                return Stream.of(
-                    new BinaryDataTestData(byteArrayData, bytes),
-                    new BinaryDataTestData(stringBinaryData, randomStringBytes),
-                    new BinaryDataTestData(streamData, bytes),
-                    new BinaryDataTestData(fluxBinaryData, bytes),
-                    new BinaryDataTestData(fluxBinaryDataWithLength, bytes),
-                    new BinaryDataTestData(asyncFluxBinaryData, bytes),
-                    new BinaryDataTestData(asyncFluxBinaryDataWithLength, bytes),
-                    new BinaryDataTestData(objectBinaryData, bytes),
-                    new BinaryDataTestData(fileData, bytes),
-                    new BinaryDataTestData(sliceFileData, bytes));
-            });
+                    return Stream.of(
+                        new BinaryDataTestData(byteArrayData, bytes),
+                        new BinaryDataTestData(stringBinaryData, randomStringBytes),
+                        new BinaryDataTestData(streamData, bytes),
+                        new BinaryDataTestData(fluxBinaryData, bytes),
+                        new BinaryDataTestData(fluxBinaryDataWithLength, bytes),
+                        new BinaryDataTestData(asyncFluxBinaryData, bytes),
+                        new BinaryDataTestData(asyncFluxBinaryDataWithLength, bytes),
+                        new BinaryDataTestData(objectBinaryData, bytes),
+                        new BinaryDataTestData(fileData, bytes),
+                        new BinaryDataTestData(sliceFileData, bytes));
+                }));
     }
 
     private Mono<String> sendRequest(String requestPath) {

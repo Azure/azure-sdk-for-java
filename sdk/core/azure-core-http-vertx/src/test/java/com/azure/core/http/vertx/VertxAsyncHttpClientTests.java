@@ -133,17 +133,24 @@ public class VertxAsyncHttpClientTests {
             .verify();
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(1000)
     public void testRequestBodyEndsInErrorShouldPropagateToResponse() {
         HttpClient client = new VertxAsyncHttpClientProvider().createInstance();
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
+        Flux<ByteBuffer> body = Flux.generate(() -> 0, (count, generator) -> {
+            if (count >= 100) {
+                generator.error(new RuntimeException("boo"));
+                return count;
+            } else {
+                generator.next(ByteBuffer.wrap(contentChunk.getBytes(StandardCharsets.UTF_8)));
+                return count + 1;
+            }
+        });
+
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1)))
-            .setBody(Flux.just(contentChunk)
-                .repeat(repetitions)
-                .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
-                .concatWith(Flux.error(new RuntimeException("boo"))));
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * repetitions))
+            .setBody(body);
 
         try {
             StepVerifier.create(client.send(request))
