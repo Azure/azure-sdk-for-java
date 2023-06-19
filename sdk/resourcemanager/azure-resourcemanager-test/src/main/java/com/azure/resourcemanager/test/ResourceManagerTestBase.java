@@ -13,7 +13,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.TimeoutPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.utils.ResourceNamer;

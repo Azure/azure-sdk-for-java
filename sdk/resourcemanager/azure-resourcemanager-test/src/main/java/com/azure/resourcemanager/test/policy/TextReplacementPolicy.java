@@ -99,8 +99,7 @@ public class TextReplacementPolicy implements HttpPipelinePolicy {
                     if (body != null && body.contains("<Status>InProgress</Status>")
                         || Integer.parseInt(responseData.get(STATUS_CODE)) == HttpURLConnection.HTTP_MOVED_TEMP) {
                         logger.info("Waiting for a response or redirection.");
-                    }
-                    else if(recordedData != null) { // when using testproxy, recordedData will be set to null
+                    } else if (recordedData != null) { // when using testproxy, recordedData will be set to null
                         recordedData.addNetworkCall(networkCallRecord);
                     }
 
