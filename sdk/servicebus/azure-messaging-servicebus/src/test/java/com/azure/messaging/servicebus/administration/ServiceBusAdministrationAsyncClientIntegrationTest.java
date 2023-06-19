@@ -23,7 +23,6 @@ import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOp
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.administration.models.EmptyRuleAction;
 import com.azure.messaging.servicebus.administration.models.FalseRuleFilter;
-import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
 import com.azure.messaging.servicebus.administration.models.NamespaceType;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
@@ -59,7 +58,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * Tests {@link ServiceBusAdministrationAsyncClient}.
@@ -95,18 +93,40 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     void azureIdentityCredentials(HttpClient httpClient) {
 
         final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
-
-        assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
-            "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
-
         final TokenCredential tokenCredential = getTokenCredential();
 
-        ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
-            .httpClient(httpClient)
+        final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder();
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (interceptorManager.isLiveMode()) {
+            builder.httpClient(httpClient)
+                .addPolicy(new RetryPolicy());
+        } else {
+            builder.httpClient(httpClient)
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .addPolicy(new RetryPolicy());
+        }
+
+        final ServiceBusAdministrationAsyncClient client = builder
             .credential(fullyQualifiedDomainName, tokenCredential)
-            .buildClient();
-        NamespaceProperties np = client.getNamespaceProperties();
-        assertNotNull(np.getName());
+            .buildAsyncClient();
+
+        StepVerifier.create(client.getNamespaceProperties())
+            .assertNext(properties -> {
+                assertNotNull(properties);
+
+                final String expectedName;
+                if (interceptorManager.isPlaybackMode()) {
+                    expectedName = TestUtils.TEST_NAMESPACE;
+                } else {
+                    final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
+                    expectedName = split[0];
+                }
+
+                assertEquals(expectedName, properties.getName());
+            })
+            .verifyComplete();
     }
 
     @ParameterizedTest
@@ -176,8 +196,12 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         StepVerifier.create(client.createQueue(queueName, expected))
             .assertNext(actual -> {
                 assertEquals(queueName, actual.getName());
-                assertEquals(expected.getForwardTo(), actual.getForwardTo());
-                assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
+
+                // The URLs will be fake in playback mode.
+                if (!interceptorManager.isPlaybackMode()) {
+                    assertEquals(expected.getForwardTo(), actual.getForwardTo());
+                    assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
+                }
 
                 final QueueRuntimeProperties runtimeProperties = new QueueRuntimeProperties(actual);
                 assertNotNull(runtimeProperties.getCreatedAt());
@@ -525,7 +549,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String expectedName;
         if (interceptorManager.isPlaybackMode()) {
-            expectedName = "ShivangiServiceBus";
+            expectedName = TestUtils.TEST_NAMESPACE;
         } else {
             final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
             expectedName = split[0];

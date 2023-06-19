@@ -134,8 +134,11 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         assertEquals(expected.isPartitioningEnabled(), actual.isPartitioningEnabled());
         assertEquals(expected.isDuplicateDetectionRequired(), actual.isDuplicateDetectionRequired());
 
-        assertEquals(expected.getForwardTo(), actual.getForwardTo());
-        assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
+        // The URL will be fake, so we can't compare them.
+        if (!interceptorManager.isPlaybackMode()) {
+            assertEquals(expected.getForwardTo(), actual.getForwardTo());
+            assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
+        }
 
         assertAuthorizationRules(expected.getAuthorizationRules(), actual.getAuthorizationRules());
 
@@ -331,7 +334,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationClient client = getClient();
         final String expectedName;
         if (interceptorManager.isPlaybackMode()) {
-            expectedName = "ServiceBusTest";
+            expectedName = TestUtils.TEST_NAMESPACE;
         } else {
             final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
             expectedName = split[0];
