@@ -699,8 +699,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
-        interceptorManager.addSanitizers(ServiceBusAdministrationAsyncClientIntegrationTest.TEST_PROXY_SANITIZERS);
-        interceptorManager.addMatchers(ServiceBusAdministrationAsyncClientIntegrationTest.TEST_PROXY_REQUEST_MATCHERS);
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(ServiceBusAdministrationAsyncClientIntegrationTest.TEST_PROXY_SANITIZERS);
+            interceptorManager.addMatchers(ServiceBusAdministrationAsyncClientIntegrationTest.TEST_PROXY_REQUEST_MATCHERS);
+        }
 
         return builder.buildClient();
     }

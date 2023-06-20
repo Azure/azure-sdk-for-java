@@ -1051,8 +1051,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 .addPolicy(interceptorManager.getRecordPolicy());
         }
 
-        interceptorManager.addSanitizers(TEST_PROXY_SANITIZERS);
-        interceptorManager.addMatchers(TEST_PROXY_REQUEST_MATCHERS);
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(TEST_PROXY_SANITIZERS);
+            interceptorManager.addMatchers(TEST_PROXY_REQUEST_MATCHERS);
+        }
 
         return builder.buildAsyncClient();
     }
