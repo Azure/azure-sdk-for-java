@@ -21,4 +21,5 @@ public enum CosmosRegionSwitchHint {
      * which will result in internal retry policies biasing remote regions more
      * than the local region.
      * */
-    REMOTE_REGION_PREFERRED}
+    REMOTE_REGION_PREFERRED
+}
