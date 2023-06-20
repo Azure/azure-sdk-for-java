@@ -72,7 +72,7 @@ spec:
   mode: all
   action: loss
   loss:
-    loss: '20'
+    loss: '0'
     correlation: '95'
   direction: to
   target:
