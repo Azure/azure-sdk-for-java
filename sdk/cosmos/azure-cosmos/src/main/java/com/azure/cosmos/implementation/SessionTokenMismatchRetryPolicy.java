@@ -139,7 +139,12 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
             return true;
         }
 
+        // SessionTokenMismatchRetryPolicy is invoked after 1 attempt on a region
+        // sessionTokenMismatchRetryAttempts increments only after shouldRetry triggers
+        // another attempt on the same region
+        // hence to curb the retry attempts on a region,
+        // compare sessionTokenMismatchRetryAttempts with max retry attempts allowed on the region - 1
         return !(regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED
-            && (sessionTokenMismatchRetryAttempts == this.maxRetryAttemptsInCurrentRegion.get() - 1));
+            && sessionTokenMismatchRetryAttempts == (this.maxRetryAttemptsInCurrentRegion.get() - 1));
     }
 }
