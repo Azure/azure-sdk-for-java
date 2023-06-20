@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.compute.batch.generated;
+package com.azure.compute.batch;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import com.azure.compute.batch.JobClient;
 import com.azure.compute.batch.models.AutoPoolSpecification;
 import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchPool;
