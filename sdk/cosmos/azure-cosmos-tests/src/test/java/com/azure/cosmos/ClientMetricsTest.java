@@ -112,7 +112,8 @@ public class ClientMetricsTest extends BatchTestBase {
             .configureDefaultTagNames(
                 CosmosMetricTagName.DEFAULT,
                 CosmosMetricTagName.PARTITION_ID,
-                CosmosMetricTagName.REPLICA_ID);
+                CosmosMetricTagName.REPLICA_ID,
+                CosmosMetricTagName.OPERATION_SUB_STATUS_CODE);
 
         this.inputClientTelemetryConfig = new CosmosClientTelemetryConfig()
             .metricsOptions(this.inputMetricsOptions);
@@ -235,6 +236,8 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag expectedOperationTag = Tag.of(TagName.OperationStatusCode.toString(), "201");
                 // Latency meter can be disabled
                 this.assertMetrics("cosmos.client.op.latency", !disableLatencyMeter, expectedOperationTag);
+                Tag expectedSubStatusCodeOperationTag = Tag.of(TagName.OperationSubStatusCode.toString(), "0");
+                this.assertMetrics("cosmos.client.op.latency", !disableLatencyMeter, expectedSubStatusCodeOperationTag);
 
                 // Calls meter is never disabled - should always show up
                 this.assertMetrics("cosmos.client.op.calls", true, expectedOperationTag);
@@ -413,9 +416,12 @@ public class ClientMetricsTest extends BatchTestBase {
                 .setPointOperationLatencyThreshold(Duration.ofDays(1));
 
             Tag operationTag = Tag.of(TagName.OperationStatusCode.toString(), "200");
+            Tag expectedSubStatusCodeOperationTag = Tag.of(TagName.OperationSubStatusCode.toString(), "0");
             Tag requestTag = Tag.of(TagName.RequestStatusCode.toString(), "200/0");
             this.assertMetrics("cosmos.client.op.latency", true, operationTag);
+            this.assertMetrics("cosmos.client.op.latency", true, expectedSubStatusCodeOperationTag);
             this.assertMetrics("cosmos.client.op.calls", true, operationTag);
+            this.assertMetrics("cosmos.client.op.calls", true, expectedSubStatusCodeOperationTag);
             this.assertMetrics("cosmos.client.req.rntbd.latency", expectRequestMetrics, requestTag);
             this.assertMetrics("cosmos.client.req.rntbd.backendLatency", expectRequestMetrics, requestTag);
             this.assertMetrics("cosmos.client.req.rntbd.requests", expectRequestMetrics, requestTag);
@@ -1264,6 +1270,14 @@ public class ClientMetricsTest extends BatchTestBase {
     private void validateMetrics(Tag expectedOperationTag, Tag expectedRequestTag, int minRu, int maxRu) {
         this.assertMetrics("cosmos.client.op.latency", true, expectedOperationTag);
         this.assertMetrics("cosmos.client.op.calls", true, expectedOperationTag);
+
+        if (expectedOperationTag.getKey() == "OperationStatusCode" &&
+            ("200".equals(expectedOperationTag.getValue()) || "201".equals(expectedOperationTag.getValue()))) {
+
+            Tag expectedSubStatusCodeOperationTag = Tag.of(TagName.OperationSubStatusCode.toString(), "0");
+            this.assertMetrics("cosmos.client.op.latency", true, expectedSubStatusCodeOperationTag);
+            this.assertMetrics("cosmos.client.op.calls", true, expectedSubStatusCodeOperationTag);
+        }
         Meter reportedOpRequestCharge = this.assertMetrics(
             "cosmos.client.op.RUs", true, expectedOperationTag);
         validateReasonableRUs(reportedOpRequestCharge, minRu, maxRu);

@@ -42,7 +42,7 @@ public final class LanguageDetectionResult extends PreBuiltResult {
 
     /** {@inheritDoc} */
     @Override
-    public LanguageDetectionResult setErrors(List<InputError> errors) {
+    public LanguageDetectionResult setErrors(List<DocumentError> errors) {
         super.setErrors(errors);
         return this;
     }

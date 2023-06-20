@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
 import java.util.List;
 
 /**
- * Bounding polygon on a specific page of the input.
+ * Model representing the bounding polygon on a specific page of the input.
  */
 @Immutable
 public final class BoundingRegion {

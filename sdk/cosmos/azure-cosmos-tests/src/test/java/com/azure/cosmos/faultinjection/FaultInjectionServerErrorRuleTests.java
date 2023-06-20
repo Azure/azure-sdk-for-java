@@ -296,7 +296,6 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             assertThat(writeRegionServerGoneErrorRule.getRegionEndpoints().size()).isEqualTo(this.writeRegionMap.size() + 1);
 
             CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, operationType, createdItem);
-            System.out.println(cosmosDiagnostics.toString());
             if (operationType.isWriteOperation()) {
                 this.validateHitCount(writeRegionServerGoneErrorRule, 1, operationType, ResourceType.Document);
                 this.validateFaultInjectionRuleApplied(

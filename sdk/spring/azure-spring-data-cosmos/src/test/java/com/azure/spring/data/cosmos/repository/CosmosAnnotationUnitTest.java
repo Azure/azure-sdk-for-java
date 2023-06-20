@@ -3,7 +3,6 @@
 package com.azure.spring.data.cosmos.repository;
 
 import com.azure.cosmos.models.IndexingPolicy;
-import com.azure.cosmos.models.UniqueKey;
 import com.azure.cosmos.models.UniqueKeyPolicy;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.mapping.Container;
@@ -15,8 +14,6 @@ import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.util.Assert;
-
-import java.util.List;
 
 
 public class CosmosAnnotationUnitTest {

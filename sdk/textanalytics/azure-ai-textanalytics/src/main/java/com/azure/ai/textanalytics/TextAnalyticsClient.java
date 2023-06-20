@@ -2562,7 +2562,7 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of abstractive summary for the provided list of {@link String document}.
      *
-     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2023_04_01}.</p>
      *
      * This method will use the default language that can be set by using method
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
@@ -2624,7 +2624,7 @@ public final class TextAnalyticsClient {
      * @throws UnsupportedOperationException if {@code beginAbstractSummary} is called with
      * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
      * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
-     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW} and newer.
+     * {@link TextAnalyticsServiceVersion#V2023_04_01} and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2702,7 +2702,7 @@ public final class TextAnalyticsClient {
      * @throws UnsupportedOperationException if {@code beginAbstractSummary} is called with
      * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
      * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
-     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}  and newer.
+     * {@link TextAnalyticsServiceVersion#V2023_04_01}  and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2720,7 +2720,7 @@ public final class TextAnalyticsClient {
      * Returns a list of abstractive summary for the provided list of {@link TextDocumentInput document} with
      * provided request options.
      *
-     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2023_04_01}.</p>
      *
      * <p><strong>Code Sample</strong></p>
      * <!-- src_embed Client.beginAbstractSummary#Iterable-AbstractiveSummaryOptions-Context -->
@@ -2783,7 +2783,7 @@ public final class TextAnalyticsClient {
      * @throws UnsupportedOperationException if {@code beginAbstractSummary} is called with
      * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
      * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
-     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}  and newer.
+     * {@link TextAnalyticsServiceVersion#V2023_04_01}  and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2796,7 +2796,7 @@ public final class TextAnalyticsClient {
     /**
      * Returns a list of extract summaries for the provided list of {@link String document}.
      *
-     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2023_04_01}.</p>
      *
      * This method will use the default language that can be set by using method
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
@@ -2857,7 +2857,7 @@ public final class TextAnalyticsClient {
      * @throws UnsupportedOperationException if {@code beginExtractSummary} is called with
      * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
      * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
-     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}  and newer.
+     * {@link TextAnalyticsServiceVersion#V2023_04_01}  and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2870,7 +2870,7 @@ public final class TextAnalyticsClient {
      * Returns a list of  extract summaries for the provided list of {@link String document} with
      * provided request options.
      *
-     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2023_04_01}.</p>
      *
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
@@ -2935,7 +2935,7 @@ public final class TextAnalyticsClient {
      * @throws UnsupportedOperationException if {@code beginExtractSummary} is called with
      * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
      * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
-     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}  and newer.
+     * {@link TextAnalyticsServiceVersion#V2023_04_01}  and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2953,7 +2953,7 @@ public final class TextAnalyticsClient {
      * Returns a list of extract summaries for the provided list of {@link TextDocumentInput document} with
      * provided request options.
      *
-     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2023_04_01}.</p>
      *
      * <p><strong>Code Sample</strong></p>
      * <!-- src_embed Client.beginExtractSummary#Iterable-ExtractSummaryOptions-Context -->
@@ -3015,7 +3015,7 @@ public final class TextAnalyticsClient {
      * @throws UnsupportedOperationException if {@code beginExtractSummary} is called with
      * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
      * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
-     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}  and newer.
+     * {@link TextAnalyticsServiceVersion#V2023_04_01}  and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)

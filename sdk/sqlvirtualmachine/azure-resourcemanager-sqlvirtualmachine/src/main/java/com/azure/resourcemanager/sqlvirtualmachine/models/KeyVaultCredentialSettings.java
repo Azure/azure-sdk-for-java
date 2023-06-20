@@ -40,6 +40,10 @@ public final class KeyVaultCredentialSettings {
     @JsonProperty(value = "servicePrincipalSecret")
     private String servicePrincipalSecret;
 
+    /** Creates an instance of KeyVaultCredentialSettings class. */
+    public KeyVaultCredentialSettings() {
+    }
+
     /**
      * Get the enable property: Enable or disable key vault credential setting.
      *

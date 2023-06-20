@@ -30,6 +30,10 @@ public final class SqlVirtualMachineGroupInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of SqlVirtualMachineGroupInner class. */
+    public SqlVirtualMachineGroupInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

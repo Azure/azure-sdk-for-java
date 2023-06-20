@@ -11,11 +11,10 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.LoadBalancerConfigurat
 import com.azure.resourcemanager.sqlvirtualmachine.models.MultiSubnetIpConfiguration;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AvailabilityGroupListenerInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AvailabilityGroupListenerInner model =
             BinaryData
                 .fromString(
@@ -32,8 +31,8 @@ public final class AvailabilityGroupListenerInnerTests {
         Assertions.assertEquals(609105572, model.port());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AvailabilityGroupListenerInner model =
             new AvailabilityGroupListenerInner()
                 .withAvailabilityGroupName("gjxpybczmehmt")

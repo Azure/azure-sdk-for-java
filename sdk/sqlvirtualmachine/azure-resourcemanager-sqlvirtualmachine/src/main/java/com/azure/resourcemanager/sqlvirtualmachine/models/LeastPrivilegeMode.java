@@ -13,6 +13,18 @@ public final class LeastPrivilegeMode extends ExpandableStringEnum<LeastPrivileg
     /** Static value Enabled for LeastPrivilegeMode. */
     public static final LeastPrivilegeMode ENABLED = fromString("Enabled");
 
+    /** Static value NotSet for LeastPrivilegeMode. */
+    public static final LeastPrivilegeMode NOT_SET = fromString("NotSet");
+
+    /**
+     * Creates a new instance of LeastPrivilegeMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LeastPrivilegeMode() {
+    }
+
     /**
      * Creates or finds a LeastPrivilegeMode from its string representation.
      *

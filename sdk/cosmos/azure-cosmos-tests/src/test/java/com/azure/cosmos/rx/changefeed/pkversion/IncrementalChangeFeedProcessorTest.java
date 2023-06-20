@@ -43,6 +43,7 @@ import reactor.core.scheduler.Schedulers;
 import reactor.util.retry.Retry;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
@@ -1194,6 +1196,81 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
+    @Test(groups = { "emulator" }, timeOut = 2 * TIMEOUT)
+    public void readFeedDocuments_pollDelay() throws InterruptedException {
+        // This test is used to test that changeFeedProcessor will keep exhausting all available changes before delay based on pollDelay
+        CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
+        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
+        int maxItemCount = 1;
+        int pollDelayInSeconds = 10;
+        int feedCount = 2;
+
+        try {
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+            Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+            List<Instant> invokeTimeList = new ArrayList<>();
+            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, feedCount);
+
+            changeFeedProcessor = new ChangeFeedProcessorBuilder()
+                .hostName(hostName)
+                .handleChanges(
+                    changeFeedProcessorHandlerWithCallback(
+                        receivedDocuments,
+                        () -> invokeTimeList.add(Instant.now())))
+                .feedContainer(createdFeedCollection)
+                .leaseContainer(createdLeaseCollection)
+                .options(new ChangeFeedProcessorOptions()
+                    .setLeaseRenewInterval(Duration.ofSeconds(20))
+                    .setLeaseAcquireInterval(Duration.ofSeconds(10))
+                    .setLeaseExpirationInterval(Duration.ofSeconds(30))
+                    .setFeedPollDelay(Duration.ofSeconds(pollDelayInSeconds)) // use a relative high value here
+                    .setLeasePrefix("TEST")
+                    .setMaxItemCount(maxItemCount) // use 1 here so that it requires two pages to read all changes
+                    .setStartFromBeginning(true)
+                    .setMaxScaleCount(0) // unlimited
+                )
+                .buildChangeFeedProcessor();
+
+            try {
+                changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
+                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .subscribe();
+            } catch (Exception ex) {
+                log.error("Change feed processor did not start in the expected time", ex);
+                throw ex;
+            }
+
+            // Wait for the feed processor to receive and process the documents.
+            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+            assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
+            changeFeedProcessor
+                .stop()
+                .subscribeOn(Schedulers.boundedElastic())
+                .timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT))
+                .subscribe();
+
+            for (InternalObjectNode item : createdDocuments) {
+                assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
+            }
+
+            // assert the time between each invoke time is less than pollDelay
+            assertThat(invokeTimeList.size()).isGreaterThanOrEqualTo(feedCount / maxItemCount);
+            for (int i = 1; i < invokeTimeList.size(); i++) {
+                long timeDifferenceInMillis = Duration.between(invokeTimeList.get(i - 1), invokeTimeList.get(i)).toMillis();
+                assertThat(timeDifferenceInMillis).isLessThan(pollDelayInSeconds * 1000);
+            }
+
+            // Wait for the feed processor to shutdown.
+            Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+        } finally {
+            safeDeleteCollection(createdFeedCollection);
+            safeDeleteCollection(createdLeaseCollection);
+
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
     void validateChangeFeedProcessing(ChangeFeedProcessor changeFeedProcessor, List<InternalObjectNode> createdDocuments, Map<String, JsonNode> receivedDocuments, int sleepTime) throws InterruptedException {
         try {
             changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
@@ -1235,7 +1312,23 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     }
 
     private Consumer<List<JsonNode>> changeFeedProcessorHandler(Map<String, JsonNode> receivedDocuments) {
+        return changeFeedProcessorHandlerWithCallback(receivedDocuments, null);
+    }
+
+    private Consumer<List<JsonNode>> changeFeedProcessorHandlerWithCallback(
+        Map<String, JsonNode> receivedDocuments,
+        Callable<Boolean> callBackFunc) {
+
         return docs -> {
+
+            if (callBackFunc != null) {
+                try {
+                    callBackFunc.call();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
             log.info("START processing from thread in test {}", Thread.currentThread().getId());
             for (JsonNode item : docs) {
                 processItem(item, receivedDocuments);

@@ -14,7 +14,8 @@ public final class AscOperationPropertiesTests {
     public void testDeserialize() throws Exception {
         AscOperationProperties model =
             BinaryData
-                .fromString("{\"output\":{\"ppofmxaxcfjpgdd\":\"databfkgukdkex\",\"zxibqeoj\":\"dataocjjxhvpmouexh\"}}")
+                .fromString(
+                    "{\"output\":{\"lsicohoqqnwv\":\"datalwh\",\"yxzk\":\"dataryavwhheunmmqh\",\"koklya\":\"datanoc\"}}")
                 .toObject(AscOperationProperties.class);
     }
 
@@ -22,7 +23,7 @@ public final class AscOperationPropertiesTests {
     public void testSerialize() throws Exception {
         AscOperationProperties model =
             new AscOperationProperties()
-                .withOutput(mapOf("ppofmxaxcfjpgdd", "databfkgukdkex", "zxibqeoj", "dataocjjxhvpmouexh"));
+                .withOutput(mapOf("lsicohoqqnwv", "datalwh", "yxzk", "dataryavwhheunmmqh", "koklya", "datanoc"));
         model = BinaryData.fromObject(model).toObject(AscOperationProperties.class);
     }
 

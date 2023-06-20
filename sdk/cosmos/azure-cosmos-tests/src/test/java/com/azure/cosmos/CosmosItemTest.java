@@ -85,6 +85,7 @@ public class CosmosItemTest extends TestSuiteBase {
         validateItemResponse(properties, itemResponse);
 
         properties = getDocumentDefinition(UUID.randomUUID().toString());
+        logger.info("Testing log");
         CosmosItemResponse<InternalObjectNode> itemResponse1 = container.createItem(properties, new CosmosItemRequestOptions());
         validateItemResponse(properties, itemResponse1);
     }
