@@ -502,6 +502,10 @@ public class ClientSideRequestStatistics {
         return supplementalResponseStatisticsList;
     }
 
+    public String getActivityId() {
+        return this.activityId;
+    }
+
     public Map<String, AddressResolutionStatistics> getAddressResolutionStatistics() {
         return addressResolutionStatistics;
     }
@@ -570,29 +574,6 @@ public class ClientSideRequestStatistics {
         }
     }
 
-    public static class SystemInformation {
-        private String usedMemory;
-        private String availableMemory;
-        private String systemCpuLoad;
-        private int availableProcessors;
-
-        public String getUsedMemory() {
-            return usedMemory;
-        }
-
-        public String getAvailableMemory() {
-            return availableMemory;
-        }
-
-        public String getSystemCpuLoad() {
-            return systemCpuLoad;
-        }
-
-        public int getAvailableProcessors() {
-            return availableProcessors;
-        }
-    }
-
     public static class ClientSideRequestStatisticsSerializer extends StdSerializer<ClientSideRequestStatistics> {
 
         private static final long serialVersionUID = -2746532297176812860L;
@@ -625,7 +606,7 @@ public class ClientSideRequestStatistics {
             generator.writeObjectField("samplingRateSnapshot", statistics.samplingRateSnapshot);
 
             try {
-                SystemInformation systemInformation = fetchSystemInformation();
+                CosmosDiagnosticsSystemUsageSnapshot systemInformation = fetchSystemInformation();
                 generator.writeObjectField("systemInformation", systemInformation);
             } catch (Exception e) {
                 // Error while evaluating system information, do nothing
@@ -755,20 +736,25 @@ public class ClientSideRequestStatistics {
         public int getResponsePayloadSizeInBytes() { return this.responsePayloadSizeInBytes; }
     }
 
-    public static SystemInformation fetchSystemInformation() {
-        SystemInformation systemInformation = new SystemInformation();
+    public static CosmosDiagnosticsSystemUsageSnapshot fetchSystemInformation() {
         Runtime runtime = Runtime.getRuntime();
         long totalMemory = runtime.totalMemory() / 1024;
         long freeMemory = runtime.freeMemory() / 1024;
         long maxMemory = runtime.maxMemory() / 1024;
-        systemInformation.usedMemory = totalMemory - freeMemory + " KB";
-        systemInformation.availableMemory = (maxMemory - (totalMemory - freeMemory)) + " KB";
-        systemInformation.availableProcessors = runtime.availableProcessors();
+
 
         // TODO: other system related info also can be captured using a similar approach
-        systemInformation.systemCpuLoad = CpuMemoryMonitor
+        String systemCpu = CpuMemoryMonitor
             .getCpuLoad()
             .toString();
-        return systemInformation;
+
+        return ImplementationBridgeHelpers
+            .CosmosDiagnosticsContextHelper
+            .getCosmosDiagnosticsContextAccessor()
+            .createSystemUsageSnapshot(
+                systemCpu,
+                totalMemory - freeMemory + " KB",
+                (maxMemory - (totalMemory - freeMemory)) + " KB",
+                runtime.availableProcessors());
     }
 }

@@ -110,7 +110,7 @@ public class Configs {
 
     private static final String DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS_NAME =
         "COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS";
-    private static final int DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS = 50;
+    private static final int DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS = 500;
 
     // Whether to process the response on a different thread
     private static final String SWITCH_OFF_IO_THREAD_FOR_RESPONSE_NAME = "COSMOS.SWITCH_OFF_IO_THREAD_FOR_RESPONSE";
@@ -138,8 +138,8 @@ public class Configs {
     private static final String AGGRESSIVE_WARMUP_CONCURRENCY = "COSMOS.AGGRESSIVE_WARMUP_CONCURRENCY";
     private static final int DEFAULT_AGGRESSIVE_WARMUP_CONCURRENCY = Configs.getCPUCnt();
 
-    private static final String DEFENSIVE_WARMUP_CONCURRENCY = "COSMOS.DEFENSIVE_WARMUP_CONCURRENCY";
-    private static final int DEFAULT_DEFENSIVE_WARMUP_CONCURRENCY = 1;
+    private static final String OPEN_CONNECTIONS_CONCURRENCY = "COSMOS.OPEN_CONNECTIONS_CONCURRENCY";
+    private static final int DEFAULT_OPEN_CONNECTIONS_CONCURRENCY = 1;
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -383,8 +383,8 @@ public class Configs {
         return getIntValue(System.getProperty(MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT), DEFAULT_MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT);
     }
 
-    public static int getDefensiveWarmupConcurrency() {
-        return getIntValue(System.getProperty(DEFENSIVE_WARMUP_CONCURRENCY), DEFAULT_DEFENSIVE_WARMUP_CONCURRENCY);
+    public static int getOpenConnectionsConcurrency() {
+        return getIntValue(System.getProperty(OPEN_CONNECTIONS_CONCURRENCY), DEFAULT_OPEN_CONNECTIONS_CONCURRENCY);
     }
 
     public static int getAggressiveWarmupConcurrency() {

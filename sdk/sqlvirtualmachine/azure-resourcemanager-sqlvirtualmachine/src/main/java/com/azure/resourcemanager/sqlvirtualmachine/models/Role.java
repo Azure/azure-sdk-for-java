@@ -17,6 +17,15 @@ public final class Role extends ExpandableStringEnum<Role> {
     public static final Role SECONDARY = fromString("SECONDARY");
 
     /**
+     * Creates a new instance of Role value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Role() {
+    }
+
+    /**
      * Creates or finds a Role from its string representation.
      *
      * @param name a name to look for.

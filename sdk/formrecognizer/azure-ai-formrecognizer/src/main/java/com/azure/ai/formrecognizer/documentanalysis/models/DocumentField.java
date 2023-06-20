@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * An object representing the content and location of a field value.
+ * Model representing the content and location of a field value.
  */
 @Immutable
 public final class DocumentField extends TypedDocumentField<Object> {

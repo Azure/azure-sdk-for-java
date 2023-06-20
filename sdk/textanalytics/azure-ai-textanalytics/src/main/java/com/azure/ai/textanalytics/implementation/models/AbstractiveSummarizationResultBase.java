@@ -15,7 +15,7 @@ public class AbstractiveSummarizationResultBase {
      * Response by document
      */
     @JsonProperty(value = "documents", required = true)
-    private List<AbstractiveSummaryDocumentResultWithDetectedLanguage> documents;
+    private List<AbstractiveSummaryDocumentResult> documents;
 
     /** Creates an instance of AbstractiveSummarizationResultBase class. */
     public AbstractiveSummarizationResultBase() {}
@@ -25,7 +25,7 @@ public class AbstractiveSummarizationResultBase {
      *
      * @return the documents value.
      */
-    public List<AbstractiveSummaryDocumentResultWithDetectedLanguage> getDocuments() {
+    public List<AbstractiveSummaryDocumentResult> getDocuments() {
         return this.documents;
     }
 
@@ -35,8 +35,7 @@ public class AbstractiveSummarizationResultBase {
      * @param documents the documents value to set.
      * @return the AbstractiveSummarizationResultBase object itself.
      */
-    public AbstractiveSummarizationResultBase setDocuments(
-            List<AbstractiveSummaryDocumentResultWithDetectedLanguage> documents) {
+    public AbstractiveSummarizationResultBase setDocuments(List<AbstractiveSummaryDocumentResult> documents) {
         this.documents = documents;
         return this;
     }

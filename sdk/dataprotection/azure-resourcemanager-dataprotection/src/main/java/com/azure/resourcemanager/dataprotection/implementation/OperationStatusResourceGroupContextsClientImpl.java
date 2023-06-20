@@ -23,7 +23,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.dataprotection.fluent.OperationStatusResourceGroupContextsClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.OperationResourceInner;
-import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /**
@@ -62,15 +61,14 @@ public final class OperationStatusResourceGroupContextsClientImpl
     public interface OperationStatusResourceGroupContextsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection"
-                + "/operationStatus/{operationId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/operationStatus/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationResourceInner>> getByResourceGroup(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("operationId") String operationId,
             @HeaderParam("Accept") String accept,
             Context context);
