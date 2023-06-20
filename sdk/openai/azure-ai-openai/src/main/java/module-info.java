@@ -4,8 +4,7 @@
 
 module com.azure.ai.openai {
     requires transitive com.azure.core;
-    // TODO: got to be able to uncomment this
-//    requires transitive com.azure.core.experimental;
+    requires transitive com.azure.core.experimental;
 
     // TODO figure out why we are getting wrong package duplicates
     exports com.azure.ai.openai;
