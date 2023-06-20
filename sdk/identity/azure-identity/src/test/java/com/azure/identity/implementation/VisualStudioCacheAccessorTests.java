@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import java.util.Map;
 
-public class Vigit asualStudioCacheAccessorTests {
+public class VisualStudioCacheAccessorTests {
 
     @Test
     public void testReadJsonFile() throws Exception {
