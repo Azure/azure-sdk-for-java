@@ -11,7 +11,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
@@ -67,7 +67,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * Tests {@link ServiceBusAdministrationClient}.
  */
 @Tag("integration")
-public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
+public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(20);
 
     /**
