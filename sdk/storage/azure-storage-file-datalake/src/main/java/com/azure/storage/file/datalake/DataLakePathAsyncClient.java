@@ -1633,7 +1633,17 @@ public class DataLakePathAsyncClient {
         DataLakePathAsyncClient dataLakePathAsyncClient = getPathAsyncClient(destinationFileSystem, destinationPath);
 
         String renameSource = "/" + this.fileSystemName + "/" + Utility.urlEncode(pathName);
-        renameSource = this.sasToken != null ? renameSource + "?" + this.sasToken.getSignature() : renameSource;
+
+        String signature = null;
+        if (this.sasToken != null) {
+            if (this.sasToken.getSignature().startsWith("?")) {
+                signature = this.sasToken.getSignature().substring(1);
+            } else {
+                signature = this.sasToken.getSignature();
+            }
+        }
+
+        renameSource = signature != null ? renameSource + "?" + signature : renameSource;
 
         return dataLakePathAsyncClient.dataLakeStorage.getPaths().createWithResponseAsync(
                 null /* request id */, null /* timeout */, null /* pathResourceType */,

@@ -18,12 +18,12 @@ public class SentSharesList {
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("accountName.purview.azure.com/share")
                         .buildClient();
-        // BEGIN:com.azure.analytics.purview.sharing.generated.sentsharesgetallsentshares.sentshareslist
+        // BEGIN:com.azure.analytics.purview.sharing.generated.sentshareslistsentshares.sentshareslist
         RequestOptions requestOptions = new RequestOptions().addQueryParam("filter", "Name eq 'testName'");
         PagedIterable<BinaryData> response =
-                sentSharesClient.getAllSentShares(
+                sentSharesClient.listSentShares(
                         "/subscriptions/de06c3a0-4610-4ca0-8cbb-bbdac204bd65/resourceGroups/sender-storage-rg/providers/Microsoft.Storage/storageAccounts/providerstorage",
                         requestOptions);
-        // END:com.azure.analytics.purview.sharing.generated.sentsharesgetallsentshares.sentshareslist
+        // END:com.azure.analytics.purview.sharing.generated.sentshareslistsentshares.sentshareslist
     }
 }

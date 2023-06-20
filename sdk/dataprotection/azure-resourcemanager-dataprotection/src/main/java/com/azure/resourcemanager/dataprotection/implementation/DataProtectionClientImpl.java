@@ -30,6 +30,7 @@ import com.azure.resourcemanager.dataprotection.fluent.DataProtectionClient;
 import com.azure.resourcemanager.dataprotection.fluent.DataProtectionOperationsClient;
 import com.azure.resourcemanager.dataprotection.fluent.DataProtectionsClient;
 import com.azure.resourcemanager.dataprotection.fluent.DeletedBackupInstancesClient;
+import com.azure.resourcemanager.dataprotection.fluent.DppResourceGuardProxiesClient;
 import com.azure.resourcemanager.dataprotection.fluent.ExportJobsClient;
 import com.azure.resourcemanager.dataprotection.fluent.ExportJobsOperationResultsClient;
 import com.azure.resourcemanager.dataprotection.fluent.JobsClient;
@@ -46,7 +47,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -54,14 +54,14 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = DataProtectionClientBuilder.class)
 public final class DataProtectionClientImpl implements DataProtectionClient {
     /** The ID of the target subscription. The value must be an UUID. */
-    private final UUID subscriptionId;
+    private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
-    public UUID getSubscriptionId() {
+    public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
@@ -329,6 +329,18 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
         return this.resourceGuards;
     }
 
+    /** The DppResourceGuardProxiesClient object to access its operations. */
+    private final DppResourceGuardProxiesClient dppResourceGuardProxies;
+
+    /**
+     * Gets the DppResourceGuardProxiesClient object to access its operations.
+     *
+     * @return the DppResourceGuardProxiesClient object.
+     */
+    public DppResourceGuardProxiesClient getDppResourceGuardProxies() {
+        return this.dppResourceGuardProxies;
+    }
+
     /**
      * Initializes an instance of DataProtectionClient client.
      *
@@ -344,7 +356,7 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
         SerializerAdapter serializerAdapter,
         Duration defaultPollInterval,
         AzureEnvironment environment,
-        UUID subscriptionId,
+        String subscriptionId,
         String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
@@ -369,6 +381,7 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
         this.exportJobsOperationResults = new ExportJobsOperationResultsClientImpl(this);
         this.deletedBackupInstances = new DeletedBackupInstancesClientImpl(this);
         this.resourceGuards = new ResourceGuardsClientImpl(this);
+        this.dppResourceGuardProxies = new DppResourceGuardProxiesClientImpl(this);
     }
 
     /**

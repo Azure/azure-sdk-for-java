@@ -5,8 +5,8 @@ import org.reflections8.Reflections;
 import org.reflections8.ReflectionsException;
 import org.reflections8.scanners.MemberUsageScanner;
 import org.reflections8.scanners.MethodAnnotationsScanner;
-import org.reflections8.util.ClasspathHelper;
 import org.reflections8.util.ConfigurationBuilder;
+import org.reflections8.util.Utils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Member;
@@ -21,6 +21,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static org.reflections8.util.Utils.index;
+import static org.reflections8.util.Utils.name;
 
 /**
  * Utility class to check for annotations.
@@ -58,38 +61,19 @@ public final class AnnotationUtils {
                                                                               final Stream<Path> paths,
                                                                               final Set<String> interestedPackages,
                                                                               final boolean recursive) {
-
         final ConfigurationBuilder config = new ConfigurationBuilder()
                 .setScanners(new MethodAnnotationsScanner(), new MemberUsageScanner());
 
         final List<URL> urls = paths.map(AnnotationUtils::pathToUrl).collect(Collectors.toList());
         config.addUrls(urls);
-        config.addClassLoader(URLClassLoader.newInstance(urls.toArray(new URL[0])));
-
-        // This is extremely ugly code, but it is necessary as the reflections library throws away the classloader
-        // I have built above, and so when it goes looking for classes it cannot always find them. What I am doing here
-        // is augmenting the actual context class loader with the additional urls, so that when the reflections library
-        // falls back to using the context class loader (which it does by default, because it throws away the proper
-        // class loader I built above), it can still find the classes I want it to find.
-        final URLClassLoader contextClassLoader = (URLClassLoader) ClasspathHelper.contextClassLoader();
-        try {
-            final Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-            method.setAccessible(true);
-            for (final URL url : urls) {
-                method.invoke(contextClassLoader, url);
-            }
-        } catch (Exception e) {
-            if (LOGGER.isErrorEnabled()) {
-                LOGGER.error("Unable to reflectively call addURL method on URL class. " + e.getMessage());
-            }
-        }
-
+        URLClassLoader classLoader = URLClassLoader.newInstance(urls.toArray(new URL[0]));
+        config.addClassLoader(classLoader);
         final Reflections reflections = new Reflections(config);
         final Set<Method> annotatedMethods = reflections.getMethodsAnnotatedWith(annotation);
         final Set<AnnotatedMethodCallerResult> results = new HashSet<>();
 
         annotatedMethods.forEach(method -> {
-            checkMethod(reflections, annotation, method, interestedPackages, recursive, results);
+            checkMethod(reflections, annotation, method, interestedPackages, recursive, results, classLoader);
         });
 
         return results;
@@ -100,10 +84,13 @@ public final class AnnotationUtils {
                                     final Method method,
                                     final Set<String> interestedPackages,
                                     final boolean recursive,
-                                    final Set<AnnotatedMethodCallerResult> results) {
+                                    final Set<AnnotatedMethodCallerResult> results,
+    ClassLoader classLoader) {
         final Set<Member> callingMethods;
         try {
-            callingMethods = reflections.getMethodUsage(method);
+            String methodName = name(method);
+            Iterable<String> values = reflections.getStore().get(index(MemberUsageScanner.class), methodName);
+            callingMethods = Utils.getMembersFromDescriptors(values, classLoader);
         } catch (ReflectionsException e) {
             LOGGER.info("Unable to get method usage for method " + method.getName() + ". " + e.getMessage());
             return;
@@ -125,7 +112,7 @@ public final class AnnotationUtils {
                         // we are looking at code that we know calls an annotated service method, but it is not
                         // within one of the packages we are interested in. We recurse here, finding all methods
                         // that call this method, until such time that we run out of methods to check.
-                        checkMethod(reflections, annotation, methodMember, interestedPackages, recursive, results);
+                        checkMethod(reflections, annotation, methodMember, interestedPackages, recursive, results, classLoader);
                     }
                 }
             }

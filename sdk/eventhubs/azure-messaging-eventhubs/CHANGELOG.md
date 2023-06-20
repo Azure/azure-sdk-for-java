@@ -1,6 +1,6 @@
 # Release History
 
-## 5.16.0-beta.1 (Unreleased)
+## 5.16.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -59,6 +59,14 @@
 
 - Upgraded `azure-core` to `1.36.0`.
 - Upgraded `azure-core-amqp` to `2.8.2`.
+
+## 5.16.0-beta.1 (2023-01-31)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` to `2.9.0-beta.1`.
 
 ## 5.15.1 (2023-01-18)
 
