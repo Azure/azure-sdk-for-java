@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 /**
  * The type Threshold based retry availability strategy.
  */
-public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrategy{
+public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrategy {
     private static final Duration DEFAULT_THRESHOLD = Duration.ofMillis(500);
     private static final Duration DEFAULT_THRESHOLD_STEP = Duration.ofMillis(100);
     private Duration threshold;
@@ -29,7 +29,6 @@ public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrate
      *
      * @param threshold            the threshold
      * @param thresholdStep        the threshold step
-     * @param numberOfRegionsToTry the number of regions to retry
      */
     public ThresholdBasedAvailabilityStrategy(Duration threshold, Duration thresholdStep) {
         this.threshold = threshold;

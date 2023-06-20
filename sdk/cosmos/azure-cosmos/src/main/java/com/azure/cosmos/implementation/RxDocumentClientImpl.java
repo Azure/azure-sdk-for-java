@@ -1614,7 +1614,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
 
-        request.requestContext.setExcludeRegions(options.getExcludeRegions());
+        if( options != null) {
+            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+        }
 
         if (requestRetryPolicy != null) {
             requestRetryPolicy.onBeforeSendRequest(request);
@@ -2119,7 +2121,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
 
-        request.requestContext.setExcludeRegions(options.getExcludeRegions());
+        if (options != null) {
+            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+        }
 
         if (retryPolicyInstance != null) {
             retryPolicyInstance.onBeforeSendRequest(request);
@@ -2189,7 +2193,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
-        request.requestContext.setExcludeRegions(options.getExcludeRegions());
+        if (options != null) {
+            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+        }
 
         if (retryPolicyInstance != null) {
             retryPolicyInstance.onBeforeSendRequest(request);
@@ -2245,7 +2251,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 request.setNonIdempotentWriteRetriesEnabled(true);
             }
 
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            if (options != null) {
+                request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            }
 
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);

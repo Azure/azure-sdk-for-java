@@ -9,7 +9,6 @@ import java.util.List;
  * The type Availability strategy.
  */
 public class AvailabilityStrategy {
-    boolean isEnabled = false;
     AvailabilityStrategy() {
     }
 

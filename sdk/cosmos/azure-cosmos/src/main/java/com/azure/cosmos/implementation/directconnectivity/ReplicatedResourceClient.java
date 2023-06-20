@@ -151,7 +151,6 @@ public class ReplicatedResourceClient {
 
     private Mono<StoreResponse> getStoreResponseMonoWithSpeculation(RxDocumentServiceRequest request, Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {
         CosmosEndToEndOperationLatencyPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
-        List<String> preferredRegions = this.transportClient.getGlobalEndpointManager().getPreferredRegions();
         AvailabilityStrategy strategy = config.getAvailabilityStrategy();
         List<Mono<StoreResponse>> monoList = new ArrayList<>();
 
