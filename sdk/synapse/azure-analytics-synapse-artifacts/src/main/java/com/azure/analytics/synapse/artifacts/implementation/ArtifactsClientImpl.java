@@ -4,16 +4,47 @@
 
 package com.azure.analytics.synapse.artifacts.implementation;
 
+import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
+import com.azure.analytics.synapse.artifacts.models.DDLBatch;
+import com.azure.analytics.synapse.artifacts.models.DatabaseEntity;
+import com.azure.analytics.synapse.artifacts.models.MDEntity;
+import com.azure.analytics.synapse.artifacts.models.QueryArtifactsResponse;
+import com.azure.analytics.synapse.artifacts.models.SASEntityType;
+import com.azure.analytics.synapse.artifacts.models.SyMsapiddlResponse;
+import com.azure.analytics.synapse.artifacts.models.SyMsapiddlResponses;
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
+import com.azure.core.annotation.Put;
+import com.azure.core.annotation.QueryParam;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.RestProxy;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the ArtifactsClient type. */
 public final class ArtifactsClientImpl {
+    /** The proxy service used to perform REST calls. */
+    private final ArtifactsClientService service;
+
     /** The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net. */
     private final String endpoint;
 
@@ -60,6 +91,18 @@ public final class ArtifactsClientImpl {
      */
     public LinkConnectionsImpl getLinkConnections() {
         return this.linkConnections;
+    }
+
+    /** The RunNotebooksImpl object to access its operations. */
+    private final RunNotebooksImpl runNotebooks;
+
+    /**
+     * Gets the RunNotebooksImpl object to access its operations.
+     *
+     * @return the RunNotebooksImpl object.
+     */
+    public RunNotebooksImpl getRunNotebooks() {
+        return this.runNotebooks;
     }
 
     /** The KqlScriptsImpl object to access its operations. */
@@ -362,6 +405,7 @@ public final class ArtifactsClientImpl {
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.linkConnections = new LinkConnectionsImpl(this);
+        this.runNotebooks = new RunNotebooksImpl(this);
         this.kqlScripts = new KqlScriptsImpl(this);
         this.kqlScriptsOperations = new KqlScriptsOperationsImpl(this);
         this.metastores = new MetastoresImpl(this);
@@ -384,5 +428,3356 @@ public final class ArtifactsClientImpl {
         this.triggers = new TriggersImpl(this);
         this.triggerRuns = new TriggerRunsImpl(this);
         this.workspaces = new WorkspacesImpl(this);
+        this.service = RestProxy.create(ArtifactsClientService.class, this.httpPipeline, this.getSerializerAdapter());
+    }
+
+    /**
+     * The interface defining all the services for ArtifactsClient to be used by the proxy service to perform REST
+     * calls.
+     */
+    @Host("{endpoint}")
+    @ServiceInterface(name = "ArtifactsClient")
+    public interface ArtifactsClientService {
+        @Post("/databases/ExecuteChange")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<SyMsapiddlResponses>> executeChange(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") DDLBatch createArtifactsPayload,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/databases/ExecuteChangeWithValidation")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<Void>> executeChangeWithValidation(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("validationType") String validationType,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") DDLBatch createArtifactsPayload,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/databases")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<QueryArtifactsResponse>> listDatabases(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("continuationToken") String continuationToken,
+                @QueryParam("maxPageSize") Long maxPageSize,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/databases/{databaseName}/{artifactType}s")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<QueryArtifactsResponse>> listArtifacts(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("databaseName") String databaseName,
+                @PathParam("artifactType") SASEntityType artifactType,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("continuationToken") String continuationToken,
+                @QueryParam("maxPageSize") Long maxPageSize,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/databases/{databaseName}/schemas/{schemaName}/{artifactType}s")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<QueryArtifactsResponse>> listArtifactsInSchemaByType(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("databaseName") String databaseName,
+                @PathParam("schemaName") String schemaName,
+                @PathParam("artifactType") SASEntityType artifactType,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("continuationToken") String continuationToken,
+                @QueryParam("maxPageSize") Long maxPageSize,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/databases/{databaseName}/tables/{tableName}/partitionInfos")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<QueryArtifactsResponse>> listPartitionInfosForTable(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("databaseName") String databaseName,
+                @PathParam("tableName") String tableName,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("continuationToken") String continuationToken,
+                @QueryParam("maxPageSize") Long maxPageSize,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/databases/{databaseName}/views/{viewName}/partitionInfos")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<QueryArtifactsResponse>> listPartitionInfosForView(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("databaseName") String databaseName,
+                @PathParam("viewName") String viewName,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("continuationToken") String continuationToken,
+                @QueryParam("maxPageSize") Long maxPageSize,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/partitionInfos")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<QueryArtifactsResponse>> listPartitionInfosForSchemaAndTable(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("databaseName") String databaseName,
+                @PathParam("schemaName") String schemaName,
+                @PathParam("tableName") String tableName,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("continuationToken") String continuationToken,
+                @QueryParam("maxPageSize") Long maxPageSize,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/databases/{databaseName}/schemas/{schemaName}/views/{viewName}/partitionInfos")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<QueryArtifactsResponse>> listPartitionInfosForSchemaAndView(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("databaseName") String databaseName,
+                @PathParam("schemaName") String schemaName,
+                @PathParam("viewName") String viewName,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("continuationToken") String continuationToken,
+                @QueryParam("maxPageSize") Long maxPageSize,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/databases/{databaseName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<DatabaseEntity>> getDatabase(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("databaseName") String databaseName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/databases/{databaseName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<SyMsapiddlResponse>> putDatabase(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("databaseName") String databaseName,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") DatabaseEntity createArtifactsPayload,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Delete("/databases/{databaseName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<Void>> deleteDatabase(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("databaseName") String databaseName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/databases/{databaseName}/{artifactType}s/{artifactName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<MDEntity>> getArtifactFromDB(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("databaseName") String databaseName,
+                @PathParam("artifactType") SASEntityType artifactType,
+                @PathParam("artifactName") String artifactName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/databases/{databaseName}/{artifactType}s/{artifactName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<SyMsapiddlResponse>> putArtifactInDB(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("databaseName") String databaseName,
+                @PathParam("artifactType") SASEntityType artifactType,
+                @PathParam("artifactName") String artifactName,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("continuationToken") String continuationToken,
+                @QueryParam("maxPageSize") Long maxPageSize,
+                @BodyParam("application/json") MDEntity createArtifactsPayload,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Delete("/databases/{databaseName}/{artifactType}s/{artifactName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<Void>> deleteArtifactForDB(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("databaseName") String databaseName,
+                @PathParam("artifactType") SASEntityType artifactType,
+                @PathParam("artifactName") String artifactName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/databases/{databaseName}/schemas/{schemaName}/{artifactType}s/{artifactName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<MDEntity>> getArtifactFromSchema(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("databaseName") String databaseName,
+                @PathParam("schemaName") String schemaName,
+                @PathParam("artifactType") SASEntityType artifactType,
+                @PathParam("artifactName") String artifactName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/databases/{databaseName}/schemas/{schemaName}/{artifactType}s/{artifactName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<SyMsapiddlResponse>> putArtifactInSchema(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("databaseName") String databaseName,
+                @PathParam("schemaName") String schemaName,
+                @PathParam("artifactType") SASEntityType artifactType,
+                @PathParam("artifactName") String artifactName,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") MDEntity createArtifactsPayload,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Delete("/databases/{databaseName}/schemas/{schemaName}/{artifactType}s/{artifactName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<Void>> deleteArtifactFromSchema(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("databaseName") String databaseName,
+                @PathParam("schemaName") String schemaName,
+                @PathParam("artifactType") SASEntityType artifactType,
+                @PathParam("artifactName") String artifactName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/databases/operations/{operationId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<QueryArtifactsResponse>> getSyMSOperationStatus(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("operationId") String operationId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+    }
+
+    /**
+     * Batch execution of DDL Payload.
+     *
+     * <p>Batch execution of DDL Payload.
+     *
+     * @param createArtifactsPayload DDLBatch payload containing artifact drafts to be created or deleted or modified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the publish response along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SyMsapiddlResponses>> executeChangeWithResponseAsync(DDLBatch createArtifactsPayload) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.executeChange(this.getEndpoint(), apiVersion, createArtifactsPayload, accept, context));
+    }
+
+    /**
+     * Batch execution of DDL Payload.
+     *
+     * <p>Batch execution of DDL Payload.
+     *
+     * @param createArtifactsPayload DDLBatch payload containing artifact drafts to be created or deleted or modified.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the publish response along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SyMsapiddlResponses>> executeChangeWithResponseAsync(
+            DDLBatch createArtifactsPayload, Context context) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return service.executeChange(this.getEndpoint(), apiVersion, createArtifactsPayload, accept, context);
+    }
+
+    /**
+     * Batch execution of DDL Payload.
+     *
+     * <p>Batch execution of DDL Payload.
+     *
+     * @param createArtifactsPayload DDLBatch payload containing artifact drafts to be created or deleted or modified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the publish response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SyMsapiddlResponses> executeChangeAsync(DDLBatch createArtifactsPayload) {
+        return executeChangeWithResponseAsync(createArtifactsPayload).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Batch execution of DDL Payload.
+     *
+     * <p>Batch execution of DDL Payload.
+     *
+     * @param createArtifactsPayload DDLBatch payload containing artifact drafts to be created or deleted or modified.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the publish response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SyMsapiddlResponses> executeChangeAsync(DDLBatch createArtifactsPayload, Context context) {
+        return executeChangeWithResponseAsync(createArtifactsPayload, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Batch execution of DDL Payload.
+     *
+     * <p>Batch execution of DDL Payload.
+     *
+     * @param createArtifactsPayload DDLBatch payload containing artifact drafts to be created or deleted or modified.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the publish response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SyMsapiddlResponses> executeChangeWithResponse(DDLBatch createArtifactsPayload, Context context) {
+        return executeChangeWithResponseAsync(createArtifactsPayload, context).block();
+    }
+
+    /**
+     * Batch execution of DDL Payload.
+     *
+     * <p>Batch execution of DDL Payload.
+     *
+     * @param createArtifactsPayload DDLBatch payload containing artifact drafts to be created or deleted or modified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the publish response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyMsapiddlResponses executeChange(DDLBatch createArtifactsPayload) {
+        return executeChangeWithResponse(createArtifactsPayload, Context.NONE).getValue();
+    }
+
+    /**
+     * Batch execution of DDL Payload.
+     *
+     * <p>Batch execution of DDL Payload.
+     *
+     * @param validationType Validation Type - Currently only IDWValidation is supported.
+     * @param createArtifactsPayload DDLBatch containing artifacts to be Created or Deleted or Modified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> executeChangeWithValidationWithResponseAsync(
+            String validationType, DDLBatch createArtifactsPayload) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.executeChangeWithValidation(
+                                this.getEndpoint(),
+                                validationType,
+                                apiVersion,
+                                createArtifactsPayload,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Batch execution of DDL Payload.
+     *
+     * <p>Batch execution of DDL Payload.
+     *
+     * @param validationType Validation Type - Currently only IDWValidation is supported.
+     * @param createArtifactsPayload DDLBatch containing artifacts to be Created or Deleted or Modified.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> executeChangeWithValidationWithResponseAsync(
+            String validationType, DDLBatch createArtifactsPayload, Context context) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return service.executeChangeWithValidation(
+                this.getEndpoint(), validationType, apiVersion, createArtifactsPayload, accept, context);
+    }
+
+    /**
+     * Batch execution of DDL Payload.
+     *
+     * <p>Batch execution of DDL Payload.
+     *
+     * @param validationType Validation Type - Currently only IDWValidation is supported.
+     * @param createArtifactsPayload DDLBatch containing artifacts to be Created or Deleted or Modified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> executeChangeWithValidationAsync(String validationType, DDLBatch createArtifactsPayload) {
+        return executeChangeWithValidationWithResponseAsync(validationType, createArtifactsPayload)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Batch execution of DDL Payload.
+     *
+     * <p>Batch execution of DDL Payload.
+     *
+     * @param validationType Validation Type - Currently only IDWValidation is supported.
+     * @param createArtifactsPayload DDLBatch containing artifacts to be Created or Deleted or Modified.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> executeChangeWithValidationAsync(
+            String validationType, DDLBatch createArtifactsPayload, Context context) {
+        return executeChangeWithValidationWithResponseAsync(validationType, createArtifactsPayload, context)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Batch execution of DDL Payload.
+     *
+     * <p>Batch execution of DDL Payload.
+     *
+     * @param validationType Validation Type - Currently only IDWValidation is supported.
+     * @param createArtifactsPayload DDLBatch containing artifacts to be Created or Deleted or Modified.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> executeChangeWithValidationWithResponse(
+            String validationType, DDLBatch createArtifactsPayload, Context context) {
+        return executeChangeWithValidationWithResponseAsync(validationType, createArtifactsPayload, context).block();
+    }
+
+    /**
+     * Batch execution of DDL Payload.
+     *
+     * <p>Batch execution of DDL Payload.
+     *
+     * @param validationType Validation Type - Currently only IDWValidation is supported.
+     * @param createArtifactsPayload DDLBatch containing artifacts to be Created or Deleted or Modified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void executeChangeWithValidation(String validationType, DDLBatch createArtifactsPayload) {
+        executeChangeWithValidationWithResponse(validationType, createArtifactsPayload, Context.NONE);
+    }
+
+    /**
+     * Get all databases in a workspace.
+     *
+     * <p>Get all databases in a workspace.
+     *
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all databases in a workspace along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<QueryArtifactsResponse>> listDatabasesWithResponseAsync(
+            String continuationToken, Long maxPageSize) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.listDatabases(
+                                this.getEndpoint(), apiVersion, continuationToken, maxPageSize, accept, context));
+    }
+
+    /**
+     * Get all databases in a workspace.
+     *
+     * <p>Get all databases in a workspace.
+     *
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all databases in a workspace along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<QueryArtifactsResponse>> listDatabasesWithResponseAsync(
+            String continuationToken, Long maxPageSize, Context context) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return service.listDatabases(this.getEndpoint(), apiVersion, continuationToken, maxPageSize, accept, context);
+    }
+
+    /**
+     * Get all databases in a workspace.
+     *
+     * <p>Get all databases in a workspace.
+     *
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all databases in a workspace on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listDatabasesAsync(String continuationToken, Long maxPageSize) {
+        return listDatabasesWithResponseAsync(continuationToken, maxPageSize)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get all databases in a workspace.
+     *
+     * <p>Get all databases in a workspace.
+     *
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all databases in a workspace on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listDatabasesAsync() {
+        final String continuationToken = null;
+        final Long maxPageSize = null;
+        return listDatabasesWithResponseAsync(continuationToken, maxPageSize)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get all databases in a workspace.
+     *
+     * <p>Get all databases in a workspace.
+     *
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all databases in a workspace on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listDatabasesAsync(
+            String continuationToken, Long maxPageSize, Context context) {
+        return listDatabasesWithResponseAsync(continuationToken, maxPageSize, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get all databases in a workspace.
+     *
+     * <p>Get all databases in a workspace.
+     *
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all databases in a workspace along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<QueryArtifactsResponse> listDatabasesWithResponse(
+            String continuationToken, Long maxPageSize, Context context) {
+        return listDatabasesWithResponseAsync(continuationToken, maxPageSize, context).block();
+    }
+
+    /**
+     * Get all databases in a workspace.
+     *
+     * <p>Get all databases in a workspace.
+     *
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all databases in a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueryArtifactsResponse listDatabases(String continuationToken, Long maxPageSize) {
+        return listDatabasesWithResponse(continuationToken, maxPageSize, Context.NONE).getValue();
+    }
+
+    /**
+     * Get all databases in a workspace.
+     *
+     * <p>Get all databases in a workspace.
+     *
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all databases in a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueryArtifactsResponse listDatabases() {
+        final String continuationToken = null;
+        final Long maxPageSize = null;
+        return listDatabasesWithResponse(continuationToken, maxPageSize, Context.NONE).getValue();
+    }
+
+    /**
+     * List all Artifacts of a type in a database.
+     *
+     * <p>List all Artifacts of a type in a database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<QueryArtifactsResponse>> listArtifactsWithResponseAsync(
+            String databaseName, SASEntityType artifactType, String continuationToken, Long maxPageSize) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.listArtifacts(
+                                this.getEndpoint(),
+                                databaseName,
+                                artifactType,
+                                apiVersion,
+                                continuationToken,
+                                maxPageSize,
+                                accept,
+                                context));
+    }
+
+    /**
+     * List all Artifacts of a type in a database.
+     *
+     * <p>List all Artifacts of a type in a database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<QueryArtifactsResponse>> listArtifactsWithResponseAsync(
+            String databaseName,
+            SASEntityType artifactType,
+            String continuationToken,
+            Long maxPageSize,
+            Context context) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return service.listArtifacts(
+                this.getEndpoint(),
+                databaseName,
+                artifactType,
+                apiVersion,
+                continuationToken,
+                maxPageSize,
+                accept,
+                context);
+    }
+
+    /**
+     * List all Artifacts of a type in a database.
+     *
+     * <p>List all Artifacts of a type in a database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listArtifactsAsync(
+            String databaseName, SASEntityType artifactType, String continuationToken, Long maxPageSize) {
+        return listArtifactsWithResponseAsync(databaseName, artifactType, continuationToken, maxPageSize)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all Artifacts of a type in a database.
+     *
+     * <p>List all Artifacts of a type in a database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listArtifactsAsync(String databaseName, SASEntityType artifactType) {
+        final String continuationToken = null;
+        final Long maxPageSize = null;
+        return listArtifactsWithResponseAsync(databaseName, artifactType, continuationToken, maxPageSize)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all Artifacts of a type in a database.
+     *
+     * <p>List all Artifacts of a type in a database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listArtifactsAsync(
+            String databaseName,
+            SASEntityType artifactType,
+            String continuationToken,
+            Long maxPageSize,
+            Context context) {
+        return listArtifactsWithResponseAsync(databaseName, artifactType, continuationToken, maxPageSize, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all Artifacts of a type in a database.
+     *
+     * <p>List all Artifacts of a type in a database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<QueryArtifactsResponse> listArtifactsWithResponse(
+            String databaseName,
+            SASEntityType artifactType,
+            String continuationToken,
+            Long maxPageSize,
+            Context context) {
+        return listArtifactsWithResponseAsync(databaseName, artifactType, continuationToken, maxPageSize, context)
+                .block();
+    }
+
+    /**
+     * List all Artifacts of a type in a database.
+     *
+     * <p>List all Artifacts of a type in a database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueryArtifactsResponse listArtifacts(
+            String databaseName, SASEntityType artifactType, String continuationToken, Long maxPageSize) {
+        return listArtifactsWithResponse(databaseName, artifactType, continuationToken, maxPageSize, Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * List all Artifacts of a type in a database.
+     *
+     * <p>List all Artifacts of a type in a database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueryArtifactsResponse listArtifacts(String databaseName, SASEntityType artifactType) {
+        final String continuationToken = null;
+        final Long maxPageSize = null;
+        return listArtifactsWithResponse(databaseName, artifactType, continuationToken, maxPageSize, Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * List all artifacts in schema by type.
+     *
+     * <p>List all Artifacts in schema by type.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<QueryArtifactsResponse>> listArtifactsInSchemaByTypeWithResponseAsync(
+            String databaseName,
+            String schemaName,
+            SASEntityType artifactType,
+            String continuationToken,
+            Long maxPageSize) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.listArtifactsInSchemaByType(
+                                this.getEndpoint(),
+                                databaseName,
+                                schemaName,
+                                artifactType,
+                                apiVersion,
+                                continuationToken,
+                                maxPageSize,
+                                accept,
+                                context));
+    }
+
+    /**
+     * List all artifacts in schema by type.
+     *
+     * <p>List all Artifacts in schema by type.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<QueryArtifactsResponse>> listArtifactsInSchemaByTypeWithResponseAsync(
+            String databaseName,
+            String schemaName,
+            SASEntityType artifactType,
+            String continuationToken,
+            Long maxPageSize,
+            Context context) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return service.listArtifactsInSchemaByType(
+                this.getEndpoint(),
+                databaseName,
+                schemaName,
+                artifactType,
+                apiVersion,
+                continuationToken,
+                maxPageSize,
+                accept,
+                context);
+    }
+
+    /**
+     * List all artifacts in schema by type.
+     *
+     * <p>List all Artifacts in schema by type.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listArtifactsInSchemaByTypeAsync(
+            String databaseName,
+            String schemaName,
+            SASEntityType artifactType,
+            String continuationToken,
+            Long maxPageSize) {
+        return listArtifactsInSchemaByTypeWithResponseAsync(
+                        databaseName, schemaName, artifactType, continuationToken, maxPageSize)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all artifacts in schema by type.
+     *
+     * <p>List all Artifacts in schema by type.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listArtifactsInSchemaByTypeAsync(
+            String databaseName, String schemaName, SASEntityType artifactType) {
+        final String continuationToken = null;
+        final Long maxPageSize = null;
+        return listArtifactsInSchemaByTypeWithResponseAsync(
+                        databaseName, schemaName, artifactType, continuationToken, maxPageSize)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all artifacts in schema by type.
+     *
+     * <p>List all Artifacts in schema by type.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listArtifactsInSchemaByTypeAsync(
+            String databaseName,
+            String schemaName,
+            SASEntityType artifactType,
+            String continuationToken,
+            Long maxPageSize,
+            Context context) {
+        return listArtifactsInSchemaByTypeWithResponseAsync(
+                        databaseName, schemaName, artifactType, continuationToken, maxPageSize, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all artifacts in schema by type.
+     *
+     * <p>List all Artifacts in schema by type.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<QueryArtifactsResponse> listArtifactsInSchemaByTypeWithResponse(
+            String databaseName,
+            String schemaName,
+            SASEntityType artifactType,
+            String continuationToken,
+            Long maxPageSize,
+            Context context) {
+        return listArtifactsInSchemaByTypeWithResponseAsync(
+                        databaseName, schemaName, artifactType, continuationToken, maxPageSize, context)
+                .block();
+    }
+
+    /**
+     * List all artifacts in schema by type.
+     *
+     * <p>List all Artifacts in schema by type.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueryArtifactsResponse listArtifactsInSchemaByType(
+            String databaseName,
+            String schemaName,
+            SASEntityType artifactType,
+            String continuationToken,
+            Long maxPageSize) {
+        return listArtifactsInSchemaByTypeWithResponse(
+                        databaseName, schemaName, artifactType, continuationToken, maxPageSize, Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * List all artifacts in schema by type.
+     *
+     * <p>List all Artifacts in schema by type.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueryArtifactsResponse listArtifactsInSchemaByType(
+            String databaseName, String schemaName, SASEntityType artifactType) {
+        final String continuationToken = null;
+        final Long maxPageSize = null;
+        return listArtifactsInSchemaByTypeWithResponse(
+                        databaseName, schemaName, artifactType, continuationToken, maxPageSize, Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * List all partition information for a table.
+     *
+     * <p>List all partition information for a table.
+     *
+     * @param databaseName Database name.
+     * @param tableName Table name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<QueryArtifactsResponse>> listPartitionInfosForTableWithResponseAsync(
+            String databaseName, String tableName, String continuationToken, Long maxPageSize) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.listPartitionInfosForTable(
+                                this.getEndpoint(),
+                                databaseName,
+                                tableName,
+                                apiVersion,
+                                continuationToken,
+                                maxPageSize,
+                                accept,
+                                context));
+    }
+
+    /**
+     * List all partition information for a table.
+     *
+     * <p>List all partition information for a table.
+     *
+     * @param databaseName Database name.
+     * @param tableName Table name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<QueryArtifactsResponse>> listPartitionInfosForTableWithResponseAsync(
+            String databaseName, String tableName, String continuationToken, Long maxPageSize, Context context) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return service.listPartitionInfosForTable(
+                this.getEndpoint(),
+                databaseName,
+                tableName,
+                apiVersion,
+                continuationToken,
+                maxPageSize,
+                accept,
+                context);
+    }
+
+    /**
+     * List all partition information for a table.
+     *
+     * <p>List all partition information for a table.
+     *
+     * @param databaseName Database name.
+     * @param tableName Table name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listPartitionInfosForTableAsync(
+            String databaseName, String tableName, String continuationToken, Long maxPageSize) {
+        return listPartitionInfosForTableWithResponseAsync(databaseName, tableName, continuationToken, maxPageSize)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all partition information for a table.
+     *
+     * <p>List all partition information for a table.
+     *
+     * @param databaseName Database name.
+     * @param tableName Table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listPartitionInfosForTableAsync(String databaseName, String tableName) {
+        final String continuationToken = null;
+        final Long maxPageSize = null;
+        return listPartitionInfosForTableWithResponseAsync(databaseName, tableName, continuationToken, maxPageSize)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all partition information for a table.
+     *
+     * <p>List all partition information for a table.
+     *
+     * @param databaseName Database name.
+     * @param tableName Table name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listPartitionInfosForTableAsync(
+            String databaseName, String tableName, String continuationToken, Long maxPageSize, Context context) {
+        return listPartitionInfosForTableWithResponseAsync(
+                        databaseName, tableName, continuationToken, maxPageSize, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all partition information for a table.
+     *
+     * <p>List all partition information for a table.
+     *
+     * @param databaseName Database name.
+     * @param tableName Table name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<QueryArtifactsResponse> listPartitionInfosForTableWithResponse(
+            String databaseName, String tableName, String continuationToken, Long maxPageSize, Context context) {
+        return listPartitionInfosForTableWithResponseAsync(
+                        databaseName, tableName, continuationToken, maxPageSize, context)
+                .block();
+    }
+
+    /**
+     * List all partition information for a table.
+     *
+     * <p>List all partition information for a table.
+     *
+     * @param databaseName Database name.
+     * @param tableName Table name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueryArtifactsResponse listPartitionInfosForTable(
+            String databaseName, String tableName, String continuationToken, Long maxPageSize) {
+        return listPartitionInfosForTableWithResponse(
+                        databaseName, tableName, continuationToken, maxPageSize, Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * List all partition information for a table.
+     *
+     * <p>List all partition information for a table.
+     *
+     * @param databaseName Database name.
+     * @param tableName Table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueryArtifactsResponse listPartitionInfosForTable(String databaseName, String tableName) {
+        final String continuationToken = null;
+        final Long maxPageSize = null;
+        return listPartitionInfosForTableWithResponse(
+                        databaseName, tableName, continuationToken, maxPageSize, Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * List all partition information for a view.
+     *
+     * <p>List all partition information for a view.
+     *
+     * @param databaseName Database name.
+     * @param viewName View name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<QueryArtifactsResponse>> listPartitionInfosForViewWithResponseAsync(
+            String databaseName, String viewName, String continuationToken, Long maxPageSize) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.listPartitionInfosForView(
+                                this.getEndpoint(),
+                                databaseName,
+                                viewName,
+                                apiVersion,
+                                continuationToken,
+                                maxPageSize,
+                                accept,
+                                context));
+    }
+
+    /**
+     * List all partition information for a view.
+     *
+     * <p>List all partition information for a view.
+     *
+     * @param databaseName Database name.
+     * @param viewName View name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<QueryArtifactsResponse>> listPartitionInfosForViewWithResponseAsync(
+            String databaseName, String viewName, String continuationToken, Long maxPageSize, Context context) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return service.listPartitionInfosForView(
+                this.getEndpoint(),
+                databaseName,
+                viewName,
+                apiVersion,
+                continuationToken,
+                maxPageSize,
+                accept,
+                context);
+    }
+
+    /**
+     * List all partition information for a view.
+     *
+     * <p>List all partition information for a view.
+     *
+     * @param databaseName Database name.
+     * @param viewName View name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listPartitionInfosForViewAsync(
+            String databaseName, String viewName, String continuationToken, Long maxPageSize) {
+        return listPartitionInfosForViewWithResponseAsync(databaseName, viewName, continuationToken, maxPageSize)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all partition information for a view.
+     *
+     * <p>List all partition information for a view.
+     *
+     * @param databaseName Database name.
+     * @param viewName View name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listPartitionInfosForViewAsync(String databaseName, String viewName) {
+        final String continuationToken = null;
+        final Long maxPageSize = null;
+        return listPartitionInfosForViewWithResponseAsync(databaseName, viewName, continuationToken, maxPageSize)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all partition information for a view.
+     *
+     * <p>List all partition information for a view.
+     *
+     * @param databaseName Database name.
+     * @param viewName View name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listPartitionInfosForViewAsync(
+            String databaseName, String viewName, String continuationToken, Long maxPageSize, Context context) {
+        return listPartitionInfosForViewWithResponseAsync(
+                        databaseName, viewName, continuationToken, maxPageSize, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all partition information for a view.
+     *
+     * <p>List all partition information for a view.
+     *
+     * @param databaseName Database name.
+     * @param viewName View name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<QueryArtifactsResponse> listPartitionInfosForViewWithResponse(
+            String databaseName, String viewName, String continuationToken, Long maxPageSize, Context context) {
+        return listPartitionInfosForViewWithResponseAsync(
+                        databaseName, viewName, continuationToken, maxPageSize, context)
+                .block();
+    }
+
+    /**
+     * List all partition information for a view.
+     *
+     * <p>List all partition information for a view.
+     *
+     * @param databaseName Database name.
+     * @param viewName View name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueryArtifactsResponse listPartitionInfosForView(
+            String databaseName, String viewName, String continuationToken, Long maxPageSize) {
+        return listPartitionInfosForViewWithResponse(
+                        databaseName, viewName, continuationToken, maxPageSize, Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * List all partition information for a view.
+     *
+     * <p>List all partition information for a view.
+     *
+     * @param databaseName Database name.
+     * @param viewName View name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueryArtifactsResponse listPartitionInfosForView(String databaseName, String viewName) {
+        final String continuationToken = null;
+        final Long maxPageSize = null;
+        return listPartitionInfosForViewWithResponse(
+                        databaseName, viewName, continuationToken, maxPageSize, Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * List all partition information for table in schema.
+     *
+     * <p>List all partition information for a table in schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param tableName Table name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<QueryArtifactsResponse>> listPartitionInfosForSchemaAndTableWithResponseAsync(
+            String databaseName, String schemaName, String tableName, String continuationToken, Long maxPageSize) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.listPartitionInfosForSchemaAndTable(
+                                this.getEndpoint(),
+                                databaseName,
+                                schemaName,
+                                tableName,
+                                apiVersion,
+                                continuationToken,
+                                maxPageSize,
+                                accept,
+                                context));
+    }
+
+    /**
+     * List all partition information for table in schema.
+     *
+     * <p>List all partition information for a table in schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param tableName Table name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<QueryArtifactsResponse>> listPartitionInfosForSchemaAndTableWithResponseAsync(
+            String databaseName,
+            String schemaName,
+            String tableName,
+            String continuationToken,
+            Long maxPageSize,
+            Context context) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return service.listPartitionInfosForSchemaAndTable(
+                this.getEndpoint(),
+                databaseName,
+                schemaName,
+                tableName,
+                apiVersion,
+                continuationToken,
+                maxPageSize,
+                accept,
+                context);
+    }
+
+    /**
+     * List all partition information for table in schema.
+     *
+     * <p>List all partition information for a table in schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param tableName Table name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listPartitionInfosForSchemaAndTableAsync(
+            String databaseName, String schemaName, String tableName, String continuationToken, Long maxPageSize) {
+        return listPartitionInfosForSchemaAndTableWithResponseAsync(
+                        databaseName, schemaName, tableName, continuationToken, maxPageSize)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all partition information for table in schema.
+     *
+     * <p>List all partition information for a table in schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param tableName Table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listPartitionInfosForSchemaAndTableAsync(
+            String databaseName, String schemaName, String tableName) {
+        final String continuationToken = null;
+        final Long maxPageSize = null;
+        return listPartitionInfosForSchemaAndTableWithResponseAsync(
+                        databaseName, schemaName, tableName, continuationToken, maxPageSize)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all partition information for table in schema.
+     *
+     * <p>List all partition information for a table in schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param tableName Table name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listPartitionInfosForSchemaAndTableAsync(
+            String databaseName,
+            String schemaName,
+            String tableName,
+            String continuationToken,
+            Long maxPageSize,
+            Context context) {
+        return listPartitionInfosForSchemaAndTableWithResponseAsync(
+                        databaseName, schemaName, tableName, continuationToken, maxPageSize, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all partition information for table in schema.
+     *
+     * <p>List all partition information for a table in schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param tableName Table name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<QueryArtifactsResponse> listPartitionInfosForSchemaAndTableWithResponse(
+            String databaseName,
+            String schemaName,
+            String tableName,
+            String continuationToken,
+            Long maxPageSize,
+            Context context) {
+        return listPartitionInfosForSchemaAndTableWithResponseAsync(
+                        databaseName, schemaName, tableName, continuationToken, maxPageSize, context)
+                .block();
+    }
+
+    /**
+     * List all partition information for table in schema.
+     *
+     * <p>List all partition information for a table in schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param tableName Table name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueryArtifactsResponse listPartitionInfosForSchemaAndTable(
+            String databaseName, String schemaName, String tableName, String continuationToken, Long maxPageSize) {
+        return listPartitionInfosForSchemaAndTableWithResponse(
+                        databaseName, schemaName, tableName, continuationToken, maxPageSize, Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * List all partition information for table in schema.
+     *
+     * <p>List all partition information for a table in schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param tableName Table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueryArtifactsResponse listPartitionInfosForSchemaAndTable(
+            String databaseName, String schemaName, String tableName) {
+        final String continuationToken = null;
+        final Long maxPageSize = null;
+        return listPartitionInfosForSchemaAndTableWithResponse(
+                        databaseName, schemaName, tableName, continuationToken, maxPageSize, Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * List all partition information for a view in schema.
+     *
+     * <p>List all partition information for a view in schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param viewName View name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<QueryArtifactsResponse>> listPartitionInfosForSchemaAndViewWithResponseAsync(
+            String databaseName, String schemaName, String viewName, String continuationToken, Long maxPageSize) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.listPartitionInfosForSchemaAndView(
+                                this.getEndpoint(),
+                                databaseName,
+                                schemaName,
+                                viewName,
+                                apiVersion,
+                                continuationToken,
+                                maxPageSize,
+                                accept,
+                                context));
+    }
+
+    /**
+     * List all partition information for a view in schema.
+     *
+     * <p>List all partition information for a view in schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param viewName View name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<QueryArtifactsResponse>> listPartitionInfosForSchemaAndViewWithResponseAsync(
+            String databaseName,
+            String schemaName,
+            String viewName,
+            String continuationToken,
+            Long maxPageSize,
+            Context context) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return service.listPartitionInfosForSchemaAndView(
+                this.getEndpoint(),
+                databaseName,
+                schemaName,
+                viewName,
+                apiVersion,
+                continuationToken,
+                maxPageSize,
+                accept,
+                context);
+    }
+
+    /**
+     * List all partition information for a view in schema.
+     *
+     * <p>List all partition information for a view in schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param viewName View name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listPartitionInfosForSchemaAndViewAsync(
+            String databaseName, String schemaName, String viewName, String continuationToken, Long maxPageSize) {
+        return listPartitionInfosForSchemaAndViewWithResponseAsync(
+                        databaseName, schemaName, viewName, continuationToken, maxPageSize)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all partition information for a view in schema.
+     *
+     * <p>List all partition information for a view in schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param viewName View name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listPartitionInfosForSchemaAndViewAsync(
+            String databaseName, String schemaName, String viewName) {
+        final String continuationToken = null;
+        final Long maxPageSize = null;
+        return listPartitionInfosForSchemaAndViewWithResponseAsync(
+                        databaseName, schemaName, viewName, continuationToken, maxPageSize)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all partition information for a view in schema.
+     *
+     * <p>List all partition information for a view in schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param viewName View name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> listPartitionInfosForSchemaAndViewAsync(
+            String databaseName,
+            String schemaName,
+            String viewName,
+            String continuationToken,
+            Long maxPageSize,
+            Context context) {
+        return listPartitionInfosForSchemaAndViewWithResponseAsync(
+                        databaseName, schemaName, viewName, continuationToken, maxPageSize, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all partition information for a view in schema.
+     *
+     * <p>List all partition information for a view in schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param viewName View name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<QueryArtifactsResponse> listPartitionInfosForSchemaAndViewWithResponse(
+            String databaseName,
+            String schemaName,
+            String viewName,
+            String continuationToken,
+            Long maxPageSize,
+            Context context) {
+        return listPartitionInfosForSchemaAndViewWithResponseAsync(
+                        databaseName, schemaName, viewName, continuationToken, maxPageSize, context)
+                .block();
+    }
+
+    /**
+     * List all partition information for a view in schema.
+     *
+     * <p>List all partition information for a view in schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param viewName View name.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueryArtifactsResponse listPartitionInfosForSchemaAndView(
+            String databaseName, String schemaName, String viewName, String continuationToken, Long maxPageSize) {
+        return listPartitionInfosForSchemaAndViewWithResponse(
+                        databaseName, schemaName, viewName, continuationToken, maxPageSize, Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * List all partition information for a view in schema.
+     *
+     * <p>List all partition information for a view in schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param viewName View name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query artifacts response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueryArtifactsResponse listPartitionInfosForSchemaAndView(
+            String databaseName, String schemaName, String viewName) {
+        final String continuationToken = null;
+        final Long maxPageSize = null;
+        return listPartitionInfosForSchemaAndViewWithResponse(
+                        databaseName, schemaName, viewName, continuationToken, maxPageSize, Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * Get details about a database.
+     *
+     * <p>Get details about a database.
+     *
+     * @param databaseName Database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about a database along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DatabaseEntity>> getDatabaseWithResponseAsync(String databaseName) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context -> service.getDatabase(this.getEndpoint(), databaseName, apiVersion, accept, context));
+    }
+
+    /**
+     * Get details about a database.
+     *
+     * <p>Get details about a database.
+     *
+     * @param databaseName Database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about a database along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DatabaseEntity>> getDatabaseWithResponseAsync(String databaseName, Context context) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return service.getDatabase(this.getEndpoint(), databaseName, apiVersion, accept, context);
+    }
+
+    /**
+     * Get details about a database.
+     *
+     * <p>Get details about a database.
+     *
+     * @param databaseName Database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about a database on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DatabaseEntity> getDatabaseAsync(String databaseName) {
+        return getDatabaseWithResponseAsync(databaseName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get details about a database.
+     *
+     * <p>Get details about a database.
+     *
+     * @param databaseName Database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about a database on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DatabaseEntity> getDatabaseAsync(String databaseName, Context context) {
+        return getDatabaseWithResponseAsync(databaseName, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get details about a database.
+     *
+     * <p>Get details about a database.
+     *
+     * @param databaseName Database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about a database along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DatabaseEntity> getDatabaseWithResponse(String databaseName, Context context) {
+        return getDatabaseWithResponseAsync(databaseName, context).block();
+    }
+
+    /**
+     * Get details about a database.
+     *
+     * <p>Get details about a database.
+     *
+     * @param databaseName Database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about a database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatabaseEntity getDatabase(String databaseName) {
+        return getDatabaseWithResponse(databaseName, Context.NONE).getValue();
+    }
+
+    /**
+     * Put a database.
+     *
+     * <p>Put a database.
+     *
+     * @param databaseName Database name.
+     * @param createArtifactsPayload Database entity payload to create or update a Database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response for create/publish operation on DDL payload along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SyMsapiddlResponse>> putDatabaseWithResponseAsync(
+            String databaseName, DatabaseEntity createArtifactsPayload) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.putDatabase(
+                                this.getEndpoint(), databaseName, apiVersion, createArtifactsPayload, accept, context));
+    }
+
+    /**
+     * Put a database.
+     *
+     * <p>Put a database.
+     *
+     * @param databaseName Database name.
+     * @param createArtifactsPayload Database entity payload to create or update a Database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response for create/publish operation on DDL payload along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SyMsapiddlResponse>> putDatabaseWithResponseAsync(
+            String databaseName, DatabaseEntity createArtifactsPayload, Context context) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return service.putDatabase(
+                this.getEndpoint(), databaseName, apiVersion, createArtifactsPayload, accept, context);
+    }
+
+    /**
+     * Put a database.
+     *
+     * <p>Put a database.
+     *
+     * @param databaseName Database name.
+     * @param createArtifactsPayload Database entity payload to create or update a Database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response for create/publish operation on DDL payload on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SyMsapiddlResponse> putDatabaseAsync(String databaseName, DatabaseEntity createArtifactsPayload) {
+        return putDatabaseWithResponseAsync(databaseName, createArtifactsPayload)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Put a database.
+     *
+     * <p>Put a database.
+     *
+     * @param databaseName Database name.
+     * @param createArtifactsPayload Database entity payload to create or update a Database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response for create/publish operation on DDL payload on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SyMsapiddlResponse> putDatabaseAsync(
+            String databaseName, DatabaseEntity createArtifactsPayload, Context context) {
+        return putDatabaseWithResponseAsync(databaseName, createArtifactsPayload, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Put a database.
+     *
+     * <p>Put a database.
+     *
+     * @param databaseName Database name.
+     * @param createArtifactsPayload Database entity payload to create or update a Database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response for create/publish operation on DDL payload along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SyMsapiddlResponse> putDatabaseWithResponse(
+            String databaseName, DatabaseEntity createArtifactsPayload, Context context) {
+        return putDatabaseWithResponseAsync(databaseName, createArtifactsPayload, context).block();
+    }
+
+    /**
+     * Put a database.
+     *
+     * <p>Put a database.
+     *
+     * @param databaseName Database name.
+     * @param createArtifactsPayload Database entity payload to create or update a Database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response for create/publish operation on DDL payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyMsapiddlResponse putDatabase(String databaseName, DatabaseEntity createArtifactsPayload) {
+        return putDatabaseWithResponse(databaseName, createArtifactsPayload, Context.NONE).getValue();
+    }
+
+    /**
+     * Delete a database.
+     *
+     * <p>Delete a database.
+     *
+     * @param databaseName Database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteDatabaseWithResponseAsync(String databaseName) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context -> service.deleteDatabase(this.getEndpoint(), databaseName, apiVersion, accept, context));
+    }
+
+    /**
+     * Delete a database.
+     *
+     * <p>Delete a database.
+     *
+     * @param databaseName Database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteDatabaseWithResponseAsync(String databaseName, Context context) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return service.deleteDatabase(this.getEndpoint(), databaseName, apiVersion, accept, context);
+    }
+
+    /**
+     * Delete a database.
+     *
+     * <p>Delete a database.
+     *
+     * @param databaseName Database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteDatabaseAsync(String databaseName) {
+        return deleteDatabaseWithResponseAsync(databaseName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete a database.
+     *
+     * <p>Delete a database.
+     *
+     * @param databaseName Database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteDatabaseAsync(String databaseName, Context context) {
+        return deleteDatabaseWithResponseAsync(databaseName, context).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete a database.
+     *
+     * <p>Delete a database.
+     *
+     * @param databaseName Database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteDatabaseWithResponse(String databaseName, Context context) {
+        return deleteDatabaseWithResponseAsync(databaseName, context).block();
+    }
+
+    /**
+     * Delete a database.
+     *
+     * <p>Delete a database.
+     *
+     * @param databaseName Database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteDatabase(String databaseName) {
+        deleteDatabaseWithResponse(databaseName, Context.NONE);
+    }
+
+    /**
+     * Get an artifact from database.
+     *
+     * <p>Get an artifact from database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an artifact from database along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MDEntity>> getArtifactFromDBWithResponseAsync(
+            String databaseName, SASEntityType artifactType, String artifactName) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.getArtifactFromDB(
+                                this.getEndpoint(),
+                                databaseName,
+                                artifactType,
+                                artifactName,
+                                apiVersion,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Get an artifact from database.
+     *
+     * <p>Get an artifact from database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an artifact from database along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MDEntity>> getArtifactFromDBWithResponseAsync(
+            String databaseName, SASEntityType artifactType, String artifactName, Context context) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return service.getArtifactFromDB(
+                this.getEndpoint(), databaseName, artifactType, artifactName, apiVersion, accept, context);
+    }
+
+    /**
+     * Get an artifact from database.
+     *
+     * <p>Get an artifact from database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an artifact from database on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MDEntity> getArtifactFromDBAsync(String databaseName, SASEntityType artifactType, String artifactName) {
+        return getArtifactFromDBWithResponseAsync(databaseName, artifactType, artifactName)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get an artifact from database.
+     *
+     * <p>Get an artifact from database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an artifact from database on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MDEntity> getArtifactFromDBAsync(
+            String databaseName, SASEntityType artifactType, String artifactName, Context context) {
+        return getArtifactFromDBWithResponseAsync(databaseName, artifactType, artifactName, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get an artifact from database.
+     *
+     * <p>Get an artifact from database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an artifact from database along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MDEntity> getArtifactFromDBWithResponse(
+            String databaseName, SASEntityType artifactType, String artifactName, Context context) {
+        return getArtifactFromDBWithResponseAsync(databaseName, artifactType, artifactName, context).block();
+    }
+
+    /**
+     * Get an artifact from database.
+     *
+     * <p>Get an artifact from database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an artifact from database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MDEntity getArtifactFromDB(String databaseName, SASEntityType artifactType, String artifactName) {
+        return getArtifactFromDBWithResponse(databaseName, artifactType, artifactName, Context.NONE).getValue();
+    }
+
+    /**
+     * Put an artifact in a Database.
+     *
+     * <p>Put an artifact in a Database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param createArtifactsPayload Payload containing artifact entity to be created/modified.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response for create/publish operation on DDL payload along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SyMsapiddlResponse>> putArtifactInDBWithResponseAsync(
+            String databaseName,
+            SASEntityType artifactType,
+            String artifactName,
+            MDEntity createArtifactsPayload,
+            String continuationToken,
+            Long maxPageSize) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.putArtifactInDB(
+                                this.getEndpoint(),
+                                databaseName,
+                                artifactType,
+                                artifactName,
+                                apiVersion,
+                                continuationToken,
+                                maxPageSize,
+                                createArtifactsPayload,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Put an artifact in a Database.
+     *
+     * <p>Put an artifact in a Database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param createArtifactsPayload Payload containing artifact entity to be created/modified.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response for create/publish operation on DDL payload along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SyMsapiddlResponse>> putArtifactInDBWithResponseAsync(
+            String databaseName,
+            SASEntityType artifactType,
+            String artifactName,
+            MDEntity createArtifactsPayload,
+            String continuationToken,
+            Long maxPageSize,
+            Context context) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return service.putArtifactInDB(
+                this.getEndpoint(),
+                databaseName,
+                artifactType,
+                artifactName,
+                apiVersion,
+                continuationToken,
+                maxPageSize,
+                createArtifactsPayload,
+                accept,
+                context);
+    }
+
+    /**
+     * Put an artifact in a Database.
+     *
+     * <p>Put an artifact in a Database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param createArtifactsPayload Payload containing artifact entity to be created/modified.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response for create/publish operation on DDL payload on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SyMsapiddlResponse> putArtifactInDBAsync(
+            String databaseName,
+            SASEntityType artifactType,
+            String artifactName,
+            MDEntity createArtifactsPayload,
+            String continuationToken,
+            Long maxPageSize) {
+        return putArtifactInDBWithResponseAsync(
+                        databaseName,
+                        artifactType,
+                        artifactName,
+                        createArtifactsPayload,
+                        continuationToken,
+                        maxPageSize)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Put an artifact in a Database.
+     *
+     * <p>Put an artifact in a Database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param createArtifactsPayload Payload containing artifact entity to be created/modified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response for create/publish operation on DDL payload on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SyMsapiddlResponse> putArtifactInDBAsync(
+            String databaseName, SASEntityType artifactType, String artifactName, MDEntity createArtifactsPayload) {
+        final String continuationToken = null;
+        final Long maxPageSize = null;
+        return putArtifactInDBWithResponseAsync(
+                        databaseName,
+                        artifactType,
+                        artifactName,
+                        createArtifactsPayload,
+                        continuationToken,
+                        maxPageSize)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Put an artifact in a Database.
+     *
+     * <p>Put an artifact in a Database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param createArtifactsPayload Payload containing artifact entity to be created/modified.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response for create/publish operation on DDL payload on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SyMsapiddlResponse> putArtifactInDBAsync(
+            String databaseName,
+            SASEntityType artifactType,
+            String artifactName,
+            MDEntity createArtifactsPayload,
+            String continuationToken,
+            Long maxPageSize,
+            Context context) {
+        return putArtifactInDBWithResponseAsync(
+                        databaseName,
+                        artifactType,
+                        artifactName,
+                        createArtifactsPayload,
+                        continuationToken,
+                        maxPageSize,
+                        context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Put an artifact in a Database.
+     *
+     * <p>Put an artifact in a Database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param createArtifactsPayload Payload containing artifact entity to be created/modified.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response for create/publish operation on DDL payload along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SyMsapiddlResponse> putArtifactInDBWithResponse(
+            String databaseName,
+            SASEntityType artifactType,
+            String artifactName,
+            MDEntity createArtifactsPayload,
+            String continuationToken,
+            Long maxPageSize,
+            Context context) {
+        return putArtifactInDBWithResponseAsync(
+                        databaseName,
+                        artifactType,
+                        artifactName,
+                        createArtifactsPayload,
+                        continuationToken,
+                        maxPageSize,
+                        context)
+                .block();
+    }
+
+    /**
+     * Put an artifact in a Database.
+     *
+     * <p>Put an artifact in a Database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param createArtifactsPayload Payload containing artifact entity to be created/modified.
+     * @param continuationToken Continuation token to get next page.
+     * @param maxPageSize Max page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response for create/publish operation on DDL payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyMsapiddlResponse putArtifactInDB(
+            String databaseName,
+            SASEntityType artifactType,
+            String artifactName,
+            MDEntity createArtifactsPayload,
+            String continuationToken,
+            Long maxPageSize) {
+        return putArtifactInDBWithResponse(
+                        databaseName,
+                        artifactType,
+                        artifactName,
+                        createArtifactsPayload,
+                        continuationToken,
+                        maxPageSize,
+                        Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * Put an artifact in a Database.
+     *
+     * <p>Put an artifact in a Database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param createArtifactsPayload Payload containing artifact entity to be created/modified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response for create/publish operation on DDL payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyMsapiddlResponse putArtifactInDB(
+            String databaseName, SASEntityType artifactType, String artifactName, MDEntity createArtifactsPayload) {
+        final String continuationToken = null;
+        final Long maxPageSize = null;
+        return putArtifactInDBWithResponse(
+                        databaseName,
+                        artifactType,
+                        artifactName,
+                        createArtifactsPayload,
+                        continuationToken,
+                        maxPageSize,
+                        Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * Delete an artifact in a Database.
+     *
+     * <p>Delete an artifact in a Database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteArtifactForDBWithResponseAsync(
+            String databaseName, SASEntityType artifactType, String artifactName) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.deleteArtifactForDB(
+                                this.getEndpoint(),
+                                databaseName,
+                                artifactType,
+                                artifactName,
+                                apiVersion,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Delete an artifact in a Database.
+     *
+     * <p>Delete an artifact in a Database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteArtifactForDBWithResponseAsync(
+            String databaseName, SASEntityType artifactType, String artifactName, Context context) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return service.deleteArtifactForDB(
+                this.getEndpoint(), databaseName, artifactType, artifactName, apiVersion, accept, context);
+    }
+
+    /**
+     * Delete an artifact in a Database.
+     *
+     * <p>Delete an artifact in a Database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteArtifactForDBAsync(String databaseName, SASEntityType artifactType, String artifactName) {
+        return deleteArtifactForDBWithResponseAsync(databaseName, artifactType, artifactName)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete an artifact in a Database.
+     *
+     * <p>Delete an artifact in a Database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteArtifactForDBAsync(
+            String databaseName, SASEntityType artifactType, String artifactName, Context context) {
+        return deleteArtifactForDBWithResponseAsync(databaseName, artifactType, artifactName, context)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete an artifact in a Database.
+     *
+     * <p>Delete an artifact in a Database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteArtifactForDBWithResponse(
+            String databaseName, SASEntityType artifactType, String artifactName, Context context) {
+        return deleteArtifactForDBWithResponseAsync(databaseName, artifactType, artifactName, context).block();
+    }
+
+    /**
+     * Delete an artifact in a Database.
+     *
+     * <p>Delete an artifact in a Database.
+     *
+     * @param databaseName Database name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteArtifactForDB(String databaseName, SASEntityType artifactType, String artifactName) {
+        deleteArtifactForDBWithResponse(databaseName, artifactType, artifactName, Context.NONE);
+    }
+
+    /**
+     * Get an artifact from schema.
+     *
+     * <p>Get an artifact from schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an artifact from schema along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MDEntity>> getArtifactFromSchemaWithResponseAsync(
+            String databaseName, String schemaName, SASEntityType artifactType, String artifactName) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.getArtifactFromSchema(
+                                this.getEndpoint(),
+                                databaseName,
+                                schemaName,
+                                artifactType,
+                                artifactName,
+                                apiVersion,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Get an artifact from schema.
+     *
+     * <p>Get an artifact from schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an artifact from schema along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MDEntity>> getArtifactFromSchemaWithResponseAsync(
+            String databaseName, String schemaName, SASEntityType artifactType, String artifactName, Context context) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return service.getArtifactFromSchema(
+                this.getEndpoint(), databaseName, schemaName, artifactType, artifactName, apiVersion, accept, context);
+    }
+
+    /**
+     * Get an artifact from schema.
+     *
+     * <p>Get an artifact from schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an artifact from schema on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MDEntity> getArtifactFromSchemaAsync(
+            String databaseName, String schemaName, SASEntityType artifactType, String artifactName) {
+        return getArtifactFromSchemaWithResponseAsync(databaseName, schemaName, artifactType, artifactName)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get an artifact from schema.
+     *
+     * <p>Get an artifact from schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an artifact from schema on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MDEntity> getArtifactFromSchemaAsync(
+            String databaseName, String schemaName, SASEntityType artifactType, String artifactName, Context context) {
+        return getArtifactFromSchemaWithResponseAsync(databaseName, schemaName, artifactType, artifactName, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get an artifact from schema.
+     *
+     * <p>Get an artifact from schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an artifact from schema along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MDEntity> getArtifactFromSchemaWithResponse(
+            String databaseName, String schemaName, SASEntityType artifactType, String artifactName, Context context) {
+        return getArtifactFromSchemaWithResponseAsync(databaseName, schemaName, artifactType, artifactName, context)
+                .block();
+    }
+
+    /**
+     * Get an artifact from schema.
+     *
+     * <p>Get an artifact from schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an artifact from schema.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MDEntity getArtifactFromSchema(
+            String databaseName, String schemaName, SASEntityType artifactType, String artifactName) {
+        return getArtifactFromSchemaWithResponse(databaseName, schemaName, artifactType, artifactName, Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * Create or Update an artifact in a schema.
+     *
+     * <p>Create or Update an artifact in a schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param createArtifactsPayload Payload containing artifact object to be create/updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response for create/publish operation on DDL payload along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SyMsapiddlResponse>> putArtifactInSchemaWithResponseAsync(
+            String databaseName,
+            String schemaName,
+            SASEntityType artifactType,
+            String artifactName,
+            MDEntity createArtifactsPayload) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.putArtifactInSchema(
+                                this.getEndpoint(),
+                                databaseName,
+                                schemaName,
+                                artifactType,
+                                artifactName,
+                                apiVersion,
+                                createArtifactsPayload,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Create or Update an artifact in a schema.
+     *
+     * <p>Create or Update an artifact in a schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param createArtifactsPayload Payload containing artifact object to be create/updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response for create/publish operation on DDL payload along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SyMsapiddlResponse>> putArtifactInSchemaWithResponseAsync(
+            String databaseName,
+            String schemaName,
+            SASEntityType artifactType,
+            String artifactName,
+            MDEntity createArtifactsPayload,
+            Context context) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return service.putArtifactInSchema(
+                this.getEndpoint(),
+                databaseName,
+                schemaName,
+                artifactType,
+                artifactName,
+                apiVersion,
+                createArtifactsPayload,
+                accept,
+                context);
+    }
+
+    /**
+     * Create or Update an artifact in a schema.
+     *
+     * <p>Create or Update an artifact in a schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param createArtifactsPayload Payload containing artifact object to be create/updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response for create/publish operation on DDL payload on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SyMsapiddlResponse> putArtifactInSchemaAsync(
+            String databaseName,
+            String schemaName,
+            SASEntityType artifactType,
+            String artifactName,
+            MDEntity createArtifactsPayload) {
+        return putArtifactInSchemaWithResponseAsync(
+                        databaseName, schemaName, artifactType, artifactName, createArtifactsPayload)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create or Update an artifact in a schema.
+     *
+     * <p>Create or Update an artifact in a schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param createArtifactsPayload Payload containing artifact object to be create/updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response for create/publish operation on DDL payload on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SyMsapiddlResponse> putArtifactInSchemaAsync(
+            String databaseName,
+            String schemaName,
+            SASEntityType artifactType,
+            String artifactName,
+            MDEntity createArtifactsPayload,
+            Context context) {
+        return putArtifactInSchemaWithResponseAsync(
+                        databaseName, schemaName, artifactType, artifactName, createArtifactsPayload, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create or Update an artifact in a schema.
+     *
+     * <p>Create or Update an artifact in a schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param createArtifactsPayload Payload containing artifact object to be create/updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response for create/publish operation on DDL payload along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SyMsapiddlResponse> putArtifactInSchemaWithResponse(
+            String databaseName,
+            String schemaName,
+            SASEntityType artifactType,
+            String artifactName,
+            MDEntity createArtifactsPayload,
+            Context context) {
+        return putArtifactInSchemaWithResponseAsync(
+                        databaseName, schemaName, artifactType, artifactName, createArtifactsPayload, context)
+                .block();
+    }
+
+    /**
+     * Create or Update an artifact in a schema.
+     *
+     * <p>Create or Update an artifact in a schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param createArtifactsPayload Payload containing artifact object to be create/updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response for create/publish operation on DDL payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyMsapiddlResponse putArtifactInSchema(
+            String databaseName,
+            String schemaName,
+            SASEntityType artifactType,
+            String artifactName,
+            MDEntity createArtifactsPayload) {
+        return putArtifactInSchemaWithResponse(
+                        databaseName, schemaName, artifactType, artifactName, createArtifactsPayload, Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * Delete an artifact from Schema.
+     *
+     * <p>Delete an artifact from Schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteArtifactFromSchemaWithResponseAsync(
+            String databaseName, String schemaName, SASEntityType artifactType, String artifactName) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.deleteArtifactFromSchema(
+                                this.getEndpoint(),
+                                databaseName,
+                                schemaName,
+                                artifactType,
+                                artifactName,
+                                apiVersion,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Delete an artifact from Schema.
+     *
+     * <p>Delete an artifact from Schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteArtifactFromSchemaWithResponseAsync(
+            String databaseName, String schemaName, SASEntityType artifactType, String artifactName, Context context) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return service.deleteArtifactFromSchema(
+                this.getEndpoint(), databaseName, schemaName, artifactType, artifactName, apiVersion, accept, context);
+    }
+
+    /**
+     * Delete an artifact from Schema.
+     *
+     * <p>Delete an artifact from Schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteArtifactFromSchemaAsync(
+            String databaseName, String schemaName, SASEntityType artifactType, String artifactName) {
+        return deleteArtifactFromSchemaWithResponseAsync(databaseName, schemaName, artifactType, artifactName)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete an artifact from Schema.
+     *
+     * <p>Delete an artifact from Schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteArtifactFromSchemaAsync(
+            String databaseName, String schemaName, SASEntityType artifactType, String artifactName, Context context) {
+        return deleteArtifactFromSchemaWithResponseAsync(databaseName, schemaName, artifactType, artifactName, context)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete an artifact from Schema.
+     *
+     * <p>Delete an artifact from Schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteArtifactFromSchemaWithResponse(
+            String databaseName, String schemaName, SASEntityType artifactType, String artifactName, Context context) {
+        return deleteArtifactFromSchemaWithResponseAsync(databaseName, schemaName, artifactType, artifactName, context)
+                .block();
+    }
+
+    /**
+     * Delete an artifact from Schema.
+     *
+     * <p>Delete an artifact from Schema.
+     *
+     * @param databaseName Database name.
+     * @param schemaName Schema name.
+     * @param artifactType Artifact type.
+     * @param artifactName Artifact name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteArtifactFromSchema(
+            String databaseName, String schemaName, SASEntityType artifactType, String artifactName) {
+        deleteArtifactFromSchemaWithResponse(databaseName, schemaName, artifactType, artifactName, Context.NONE);
+    }
+
+    /**
+     * Get the status of validation by operation Id.
+     *
+     * <p>Get the status of validation by operation Id.
+     *
+     * @param operationId Operation Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of validation by operation Id along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<QueryArtifactsResponse>> getSyMSOperationStatusWithResponseAsync(String operationId) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.getSyMSOperationStatus(this.getEndpoint(), operationId, apiVersion, accept, context));
+    }
+
+    /**
+     * Get the status of validation by operation Id.
+     *
+     * <p>Get the status of validation by operation Id.
+     *
+     * @param operationId Operation Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of validation by operation Id along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<QueryArtifactsResponse>> getSyMSOperationStatusWithResponseAsync(
+            String operationId, Context context) {
+        final String apiVersion = "2021-04-01";
+        final String accept = "application/json";
+        return service.getSyMSOperationStatus(this.getEndpoint(), operationId, apiVersion, accept, context);
+    }
+
+    /**
+     * Get the status of validation by operation Id.
+     *
+     * <p>Get the status of validation by operation Id.
+     *
+     * @param operationId Operation Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of validation by operation Id on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> getSyMSOperationStatusAsync(String operationId) {
+        return getSyMSOperationStatusWithResponseAsync(operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the status of validation by operation Id.
+     *
+     * <p>Get the status of validation by operation Id.
+     *
+     * @param operationId Operation Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of validation by operation Id on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueryArtifactsResponse> getSyMSOperationStatusAsync(String operationId, Context context) {
+        return getSyMSOperationStatusWithResponseAsync(operationId, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the status of validation by operation Id.
+     *
+     * <p>Get the status of validation by operation Id.
+     *
+     * @param operationId Operation Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of validation by operation Id along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<QueryArtifactsResponse> getSyMSOperationStatusWithResponse(String operationId, Context context) {
+        return getSyMSOperationStatusWithResponseAsync(operationId, context).block();
+    }
+
+    /**
+     * Get the status of validation by operation Id.
+     *
+     * <p>Get the status of validation by operation Id.
+     *
+     * @param operationId Operation Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of validation by operation Id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueryArtifactsResponse getSyMSOperationStatus(String operationId) {
+        return getSyMSOperationStatusWithResponse(operationId, Context.NONE).getValue();
     }
 }

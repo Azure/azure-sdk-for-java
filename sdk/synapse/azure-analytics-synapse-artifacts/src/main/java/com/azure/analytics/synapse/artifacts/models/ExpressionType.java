@@ -14,6 +14,14 @@ public final class ExpressionType extends ExpandableStringEnum<ExpressionType> {
     public static final ExpressionType EXPRESSION = fromString("Expression");
 
     /**
+     * Creates a new instance of ExpressionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpressionType() {}
+
+    /**
      * Creates or finds a ExpressionType from its string representation.
      *
      * @param name a name to look for.
