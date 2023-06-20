@@ -364,7 +364,6 @@ public class CosmosItemTest extends TestSuiteBase {
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void readManyWithMultiplePartitionsAndSome404s() throws JsonProcessingException {
 
-        CosmosClient readManyClient = null;
         CosmosDatabase readManyDatabase = null;
         CosmosContainer readManyContainer = null;
 
@@ -372,13 +371,7 @@ public class CosmosItemTest extends TestSuiteBase {
 
         try {
 
-            readManyClient = new CosmosClientBuilder()
-                .endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
-                .consistencyLevel(ConsistencyLevel.SESSION)
-                .buildClient();
-
-            readManyDatabase = readManyClient
+            readManyDatabase = client
                 .getDatabase(container.asyncContainer.getDatabase().getId());
 
             String readManyContainerId = "container-with-multiple-partitions";
@@ -419,7 +412,7 @@ public class CosmosItemTest extends TestSuiteBase {
                 SqlQuerySpec sqlQuerySpec = new SqlQuerySpec();
                 sqlQuerySpec.setQueryText("SELECT * FROM c OFFSET 0 LIMIT 1");
 
-                List<ImmutablePair<String, String>> pkToIdPairs = new ArrayList<>();
+                List<ImmutablePair<String, String>> idToPkPairs = new ArrayList<>();
 
                 for (int k = 0; k < feedRangeCount; k++) {
                     CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
@@ -434,15 +427,16 @@ public class CosmosItemTest extends TestSuiteBase {
                             InternalObjectNode queriedItem = response.getResults().get(0);
 
                             if (faultyIds.contains(finalK)) {
-                                pkToIdPairs.add(new ImmutablePair<>(queriedItem.getId(), UUID.randomUUID().toString()));
+                                idToPkPairs.add(new ImmutablePair<>(queriedItem.getId(), UUID.randomUUID().toString()));
                             } else {
-                                pkToIdPairs.add(new ImmutablePair<>(queriedItem.getId(), queriedItem.getString("mypk")));
+                                idToPkPairs.add(new ImmutablePair<>(queriedItem.getId(), queriedItem.getString("mypk")));
                             }
                         });
                 }
 
-                if (pkToIdPairs.size() == feedRangeCount) {
-                    List<CosmosItemIdentity> cosmosItemIdentities = pkToIdPairs
+                if (idToPkPairs.size() == feedRangeCount) {
+
+                    List<CosmosItemIdentity> cosmosItemIdentities = idToPkPairs
                         .stream()
                         .map(pkToIdPair -> new CosmosItemIdentity(new PartitionKey(pkToIdPair.getRight()), pkToIdPair.getLeft()))
                         .collect(Collectors.toList());
@@ -460,7 +454,6 @@ public class CosmosItemTest extends TestSuiteBase {
 
         } finally {
             readManyContainer.delete();
-            safeCloseSyncClient(readManyClient);
         }
     }
 
