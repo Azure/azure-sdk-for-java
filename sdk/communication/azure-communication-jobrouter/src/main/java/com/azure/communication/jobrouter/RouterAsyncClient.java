@@ -601,6 +601,29 @@ public final class RouterAsyncClient {
     }
 
     /**
+     * Retrieves list of jobs based on filter parameters.
+     *
+     * @param listJobsOptions options for listJobs.
+     * @param context Context for listJobs.
+     * @return a paged collection of jobs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    PagedFlux<RouterJobItem> listJobs(ListJobsOptions listJobsOptions, Context context) {
+        try {
+            return jobRouter.listJobsAsync(listJobsOptions.getJobStateSelector(),
+                listJobsOptions.getQueueId(),
+                listJobsOptions.getChannelId(),
+                listJobsOptions.getClassificationPolicyId(),
+                listJobsOptions.getMaxPageSize(),
+                context);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    /**
      * Gets a job's position details.
      *
      * @param jobId Id of the job.
@@ -1051,6 +1074,19 @@ public final class RouterAsyncClient {
                 listWorkersOptions.getQueueId(),
                 listWorkersOptions.getHasCapacity(),
                 listWorkersOptions.getMaxPageSize());
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    PagedFlux<RouterWorkerItem> listWorkers(ListWorkersOptions listWorkersOptions, Context context) {
+        try {
+            return jobRouter.listWorkersAsync(listWorkersOptions.getWorkerStateSelector(),
+                listWorkersOptions.getChannelId(),
+                listWorkersOptions.getQueueId(),
+                listWorkersOptions.getHasCapacity(),
+                listWorkersOptions.getMaxPageSize(),
+                context);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }

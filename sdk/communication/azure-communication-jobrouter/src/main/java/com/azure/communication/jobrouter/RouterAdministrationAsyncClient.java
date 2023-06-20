@@ -311,6 +311,24 @@ public final class RouterAdministrationAsyncClient {
     }
 
     /**
+     * Retrieves existing classification policies.
+     *
+     * @param listClassificationPoliciesOptions options for listClassificationPolicies.
+     * @param context Context for listClassificationPolicies.
+     * @return a paged collection of classification policies.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    PagedFlux<ClassificationPolicyItem> listClassificationPolicies(ListClassificationPoliciesOptions listClassificationPoliciesOptions, Context context) {
+        try {
+            return jobRouterAdmin.listClassificationPoliciesAsync(listClassificationPoliciesOptions.getMaxPageSize(), context);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    /**
      * Creates a distribution policy.
      *
      * @param createDistributionPolicyOptions Container for inputs to create a distribution policy.
@@ -527,6 +545,24 @@ public final class RouterAdministrationAsyncClient {
     public PagedFlux<DistributionPolicyItem> listDistributionPolicies(ListDistributionPoliciesOptions listDistributionPoliciesOptions) {
         try {
             return jobRouterAdmin.listDistributionPoliciesAsync(listDistributionPoliciesOptions.getMaxPageSize());
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Retrieves existing distribution policies.
+     *
+     * @param listDistributionPoliciesOptions list options.
+     * @param context Context for listDistributionPolicies.
+     * @return a paged collection of distribution policies.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    PagedFlux<DistributionPolicyItem> listDistributionPolicies(ListDistributionPoliciesOptions listDistributionPoliciesOptions, Context context) {
+        try {
+            return jobRouterAdmin.listDistributionPoliciesAsync(listDistributionPoliciesOptions.getMaxPageSize(), context);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -771,6 +807,24 @@ public final class RouterAdministrationAsyncClient {
     }
 
     /**
+     * Retrieves existing exception policies.
+     *
+     * @param listExceptionPoliciesOptions options for listExceptionPolicies.
+     * @param context Context for listExceptionPolicies.
+     * @return a paged collection of exception policies.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    PagedFlux<ExceptionPolicyItem> listExceptionPolicies(ListExceptionPoliciesOptions listExceptionPoliciesOptions, Context context) {
+        try {
+            return jobRouterAdmin.listExceptionPoliciesAsync(listExceptionPoliciesOptions.getMaxPageSize(), context);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    /**
      * Create a queue.
      *
      * @param createQueueOptions Container for inputs to create a queue.
@@ -1003,6 +1057,24 @@ public final class RouterAdministrationAsyncClient {
     public PagedFlux<JobQueueItem> listQueues(ListQueuesOptions listQueuesOptions) {
         try {
             return jobRouterAdmin.listQueuesAsync(listQueuesOptions.getMaxPageSize());
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Retrieves existing queues.
+     *
+     * @param listQueuesOptions options for listQueues.
+     * @param context context for listQueues.
+     * @return a paged collection of queues.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    PagedFlux<JobQueueItem> listQueues(ListQueuesOptions listQueuesOptions, Context context) {
+        try {
+            return jobRouterAdmin.listQueuesAsync(listQueuesOptions.getMaxPageSize(), context);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }

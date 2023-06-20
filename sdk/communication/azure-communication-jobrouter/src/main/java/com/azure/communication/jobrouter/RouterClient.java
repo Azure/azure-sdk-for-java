@@ -359,6 +359,20 @@ public final class RouterClient {
     }
 
     /**
+     * Retrieves list of jobs based on filter parameters.
+     *
+     * @param listJobsOptions options for listJobs.
+     * @return a paged collection of jobs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RouterJobItem> listJobs(ListJobsOptions listJobsOptions, Context context) {
+        return new PagedIterable<>(this.client.listJobs(listJobsOptions, context));
+    }
+
+    /**
      * Gets a job's position details.
      *
      * @param jobId Id of the job.
@@ -618,5 +632,20 @@ public final class RouterClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RouterWorkerItem> listWorkers(ListWorkersOptions listWorkersOptions) {
         return new PagedIterable<>(this.client.listWorkers(listWorkersOptions));
+    }
+
+    /**
+     * Retrieves existing workers.
+     *
+     * @param listWorkersOptions options for listWorkers.
+     * @param context Context for listWorkers.
+     * @return a paged collection of workers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RouterWorkerItem> listWorkers(ListWorkersOptions listWorkersOptions, Context context) {
+        return new PagedIterable<>(this.client.listWorkers(listWorkersOptions, context));
     }
 }

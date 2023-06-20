@@ -197,6 +197,20 @@ public final class RouterAdministrationClient {
     /**
      * Retrieves existing classification policies.
      *
+     * @param listClassificationPoliciesOptions options for listClassificationPolicies.
+     * @param context Context for listClassificationPolicies.
+     * @return a paged collection of classification policies.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public PagedIterable<ClassificationPolicyItem> listClassificationPolicies(ListClassificationPoliciesOptions listClassificationPoliciesOptions, Context context) {
+        return new PagedIterable<>(this.client.listClassificationPolicies(listClassificationPoliciesOptions, context));
+    }
+
+    /**
+     * Retrieves existing classification policies.
+     *
      * @return a paged collection of classification policies.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -335,6 +349,21 @@ public final class RouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DistributionPolicyItem> listDistributionPolicies(ListDistributionPoliciesOptions listDistributionPoliciesOptions) {
         return new PagedIterable<>(this.client.listDistributionPolicies(listDistributionPoliciesOptions));
+    }
+
+    /**
+     * Retrieves existing distribution policies.
+     *
+     * @param listDistributionPoliciesOptions list options.
+     * @param context Context for listDistributionPolicies.
+     * @return a paged collection of distribution policies.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DistributionPolicyItem> listDistributionPolicies(ListDistributionPoliciesOptions listDistributionPoliciesOptions, Context context) {
+        return new PagedIterable<>(this.client.listDistributionPolicies(listDistributionPoliciesOptions, context));
     }
 
     /**
@@ -493,6 +522,21 @@ public final class RouterAdministrationClient {
     }
 
     /**
+     * Retrieves existing exception policies.
+     *
+     * @param listExceptionPoliciesOptions options for listExceptionPolicies.
+     * @param context Context for listExceptionPolicies.
+     * @return a paged collection of exception policies.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ExceptionPolicyItem> listExceptionPolicies(ListExceptionPoliciesOptions listExceptionPoliciesOptions, Context context) {
+        return new PagedIterable<>(this.client.listExceptionPolicies(listExceptionPoliciesOptions, context));
+    }
+
+    /**
      * Create a queue.
      *
      * @param createQueueOptions Container for inputs to create a queue.
@@ -633,5 +677,20 @@ public final class RouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobQueueItem> listQueues(ListQueuesOptions listQueuesOptions) {
         return new PagedIterable<>(this.client.listQueues(listQueuesOptions));
+    }
+
+    /**
+     * Retrieves existing queues.
+     *
+     * @param listQueuesOptions options for listQueues.
+     * @param context Context for listQueues.
+     * @return a paged collection of queues.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<JobQueueItem> listQueues(ListQueuesOptions listQueuesOptions, Context context) {
+        return new PagedIterable<>(this.client.listQueues(listQueuesOptions, context));
     }
 }
