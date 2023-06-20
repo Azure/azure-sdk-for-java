@@ -314,9 +314,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [git_setup]: https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup
 [git_token]: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
 [powershell]: https://learn.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-latest
-[recording-migration]: ./RecordingMigrationGuide.md
+[recording-migration]: https://github.com/Azure/azure-sdk-for-java/blob/64de460d8080127a1e0c58fbfc7ab9e95f70a2c7/sdk/core/azure-core-test/RecordingMigrationGuide.md
 [test-proxy-readme]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md
-[test-proxy-migration-guide]: ./TestProxyMigrationGuide.md
+[test-proxy-migration-guide]: https://github.com/Azure/azure-sdk-for-java/blob/64de460d8080127a1e0c58fbfc7ab9e95f70a2c7/sdk/core/azure-core-test/TestProxyMigrationGuide.md
 [InterceptorManager.java]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/InterceptorManager.java
 [TestProxyPlaybackClient.java]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/http/TestProxyPlaybackClient.java
 [TestProxyRecordPolicy.java]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/policy/TestProxyRecordPolicy.java
@@ -327,5 +327,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [tables-test-resources-resources]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/test-resources.json#L42
 [tables-test-resources-outputs]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/test-resources.json#L115
 [test-resources]: https://github.com/Azure/azure-sdk-for-java/tree/main/eng/common/TestResources#readme
+[test_proxy_sanitizer]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/models/TestProxySanitizer.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-test%2FREADME.png)

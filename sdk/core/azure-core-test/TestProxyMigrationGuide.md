@@ -23,8 +23,11 @@ GitHub repository, and documentation of how to set up and use the proxy can be f
 Each SDK needs to re-record its test recordings using the test-proxy integration to ensure a consolidated recording format with serialized/sanitized requests and their matching responses.
 #### Steps:
 1) Run & update test recordings using the [test-proxy integration][test_proxy_integration].
-2) Add [custom sanitizers][custom_sanitizer_example] if needed to address service-specific redactions.
-[Default redaction][default_sanitizers] are already set up here in Test Proxy for primary sanitization.
+   1.1) To use the proxy, test classes should extend from `[TestProxyTestBase]`[test_proxy_base]
+        ```java public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {}```
+2) Run the tests in record mode and get the updated recordings.
+3) Add [custom sanitizers][custom_sanitizer_example] if needed to address service-specific redactions.
+[Default redaction][default_sanitizers] is already set up in Test Proxy for primary sanitization.
 
 ## Run tests
 Test-Proxy maintains a _separate clone_ for each assets.json. The recording files will be located under your repo root under the `.assets` folder.
@@ -62,7 +65,7 @@ For more details on proxy startup, please refer to the [proxy documentation][det
 ### Start the proxy server
 
 The test proxy has to be available in order for tests to work; this is done automatically when the test is extended from
-`TestProxyTestBase`.
+`[TestProxyTestBase]`[test_proxy_base].
 
 The `com.azure.core.test.TestProxyTestBase#setupTestProxy()` method is responsible for starting test proxy and
 downloading if not present already.
@@ -86,15 +89,18 @@ The `testProxyManager.startProxy()` method will fetch the test proxy and start t
 When running tests in Playback mode, the `test-proxy` automatically checks out the appropriate tag in each local assets repo and performs testing.
 
 #### Running tests in `Record` mode
-After running tests in record mode, the newly updated recordings will be available within the associated `.assets` repository.
-You can then, view the changes before [pushing the updated recordings][asset_sync_push] to the assets repo.
-You can either use `CLI` command to push the recordings.
-CLI
+1) After running tests in record mode, the newly updated recordings no longer be in the azure-sdk-for-java repo. 
+   These updates will be reflected in a git-excluded `.assets folder` at the root of the repo.
+2) You can `cd` into the folder containing your package's recordings and use `git status` to view the recording updates.
+   Verify the updates, and use the following command to push these recordings to the `azure-sdk-assets` repo:
 
-`test-proxy push <path-to-assets-json>`
+    ```ps
+        C:/repo/sdk-for-java/>test-proxy push -a <path-to-assets-json-file>
+    ```
+3) The above command will push the updated recordings to the `azure-sdk-assets` repo.
+How to set up and use the proxy can be found [here](https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#installation).
 
 ### Adding sanitizers
-
 Since the test proxy doesn't use [`RecordNetworkCallPolicy`][RecordNetworkCallPolicy], tests don't use the `RecordingRedactor` to sanitize values in recordings.
 Instead, sanitizers (as well as matchers) can be registered on the proxy as detailed in
 [this][sanitizers] section of the proxy documentation. Custom sanitizers can be registered using [`TestProxySanitizer`][test_proxy_sanitizer] respective SDK test classes.
@@ -211,7 +217,7 @@ the appropriate requests at the start and end of each test case.
 
 [general_docs]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md
 
-[recording_migration]: https://github.com/samvaity/azure-sdk-for-java/blob/b32132d0b01140c7c10858f41202a14c046c82f6/eng/common/testproxy/RecordingMigrationGuide.md
+[recording_migration]: https://github.com/Azure/azure-sdk-for-java/blob/64de460d8080127a1e0c58fbfc7ab9e95f70a2c7/sdk/core/azure-core-test/RecordingMigrationGuide.md
 [RecordNetworkCallPolicy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/policy/RecordNetworkCallPolicy.java
 
 [sanitizers]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#session-and-test-level-transforms-sanitiziers-and-matchers
@@ -224,4 +230,4 @@ the appropriate requests at the start and end of each test case.
 [test_proxy_playback_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/http/TestProxyPlaybackClient.java
 [test_proxy_installation]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#installation
 [test_proxy_integration]: https://github.com/Azure/azure-sdk-for-java/pull/33902
-[test_proxy_matcher]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/models/TestProxyMatcher.java
+[test_proxy_matcher]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/models/TestProxyRequestMatcher.java
