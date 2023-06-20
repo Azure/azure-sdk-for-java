@@ -140,6 +140,6 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         }
 
         return !(regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED
-            && retryCountForRegion == this.maxRetryAttemptsInCurrentRegion.get());
+            && (retryCountForRegion == this.maxRetryAttemptsInCurrentRegion.get() - 1));
     }
 }

@@ -3,7 +3,11 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.*;
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosSessionRetryOptions;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;

@@ -81,39 +81,46 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
     @DataProvider(name = "nonWriteOperationContextProvider")
     public Object[][] nonWriteOperationContextProvider() {
         return new Object[][]{
-            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
-            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
-            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
-            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
-            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, null},
-            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, null}
+            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 2},
+            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 1},
+            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 2},
+            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 2},
+            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, null, 1},
+            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, null, 1}
         };
     }
 
     @DataProvider(name = "writeOperationContextProvider")
     public Object[][] writeOperationContextProvider() {
         return new Object[][]{
-            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
-            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
-            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
-            {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
-            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED},
-            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
-            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
-            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
-            {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
-            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
-            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, null},
-            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, null},
-            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, null},
-            {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, null},
-            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, null},
+            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 2},
+            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 1},
+            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 2},
+            {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 3},
+            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 1},
+            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 3},
+            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 1},
+            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 2},
+            {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 1},
+            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 1},
+            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, null, 2},
+            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, null, 1},
+            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, null, 1},
+            {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, null, 2},
+            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, null, 1},
 
         };
     }
 
     @Test(groups = {"multi-region"}, dataProvider = "nonWriteOperationContextProvider", timeOut = TIMEOUT)
-    public void nonWriteOperation_WithReadSessionUnavailable_test(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType, CosmosRegionSwitchHint regionSwitchHint) {
+    public void nonWriteOperation_WithReadSessionUnavailable_test(
+        OperationType operationType,
+        FaultInjectionOperationType faultInjectionOperationType,
+        CosmosRegionSwitchHint regionSwitchHint,
+        int sessionTokenMismatchRetryAttempts) {
+
+        System.setProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED", String.valueOf(sessionTokenMismatchRetryAttempts));
+
         List<String> preferredLocations = this.writeRegionMap.keySet().stream().collect(Collectors.toList());
         Duration sessionTokenMismatchDefaultWaitTime = Duration.ofMillis(Configs.getSessionTokenMismatchDefaultWaitTimeInMs());
 
@@ -172,7 +179,15 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
                 ),
                 sessionTokenMismatchDefaultWaitTime,
                 regionSwitchHint);
+
+            // For a non-write operation, the request can go to multiple replicas (upto 4 replicas)
+            // Check if the SessionTokenMismatchRetryPolicy retries on the bad / lagging region
+            // for sessionTokenMismatchRetryAttempts by tracking the badSessionTokenRule hit count
+            if (regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED) {
+                assertThat(badSessionTokenRule.getHitCount()).isBetween((long) sessionTokenMismatchRetryAttempts, sessionTokenMismatchRetryAttempts * 4L);
+            }
         } finally {
+            System.clearProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED");
             safeCloseAsync(clientWithPreferredRegions);
         }
     }
@@ -181,7 +196,10 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
     public void writeOperation_withReadSessionUnavailable_test(
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType,
-        CosmosRegionSwitchHint regionSwitchHint) {
+        CosmosRegionSwitchHint regionSwitchHint,
+        int sessionTokenMismatchRetryAttempts) {
+
+        System.setProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED", String.valueOf(sessionTokenMismatchRetryAttempts));
 
         List<String> preferredRegions = this.writeRegionMap.keySet().stream().collect(Collectors.toList());
 
@@ -235,7 +253,15 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
                 ),
                 sessionTokenMismatchDefaultWaitTime,
                 regionSwitchHint);
+
+            // For a write operation, the request can just go to the primary replica
+            // Check if the SessionTokenMismatchRetryPolicy retries on the bad / lagging region
+            // for sessionTokenMismatchRetryAttempts by tracking the badSessionTokenRule hit count
+            if (regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED) {
+                assertThat(badSessionTokenRule.getHitCount()).isEqualTo(sessionTokenMismatchRetryAttempts);
+            }
         } finally {
+            System.clearProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED");
             safeCloseAsync(clientWithPreferredRegions);
         }
     }
