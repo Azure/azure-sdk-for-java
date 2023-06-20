@@ -1,9 +1,8 @@
-package com.azure.compute.batch.generated;
+package com.azure.compute.batch;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.azure.compute.batch.ComputeNodesClient;
 import com.azure.compute.batch.models.AllocationState;
 import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolResizeParameters;
