@@ -223,7 +223,8 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-int -->
  *
- * @see EventHubClientBuilder#buildAsyncProducerClient()
+ * @see com.azure.messaging.eventhubs
+ * @see EventHubClientBuilder
  * @see EventHubProducerClient To synchronously publish events to an Event Hub, see EventHubProducerClient.
  */
 @ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)

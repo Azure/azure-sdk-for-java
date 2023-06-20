@@ -68,10 +68,15 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * <p>The following code sample demonstrates the creation of the asynchronous client
  * {@link EventHubBufferedProducerAsyncClient}.  The {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host
- * name. It is listed under the "Essentials" panel after navigating to the Event Hubs Namespace via Azure Portal. The
- * credential used is {@code DefaultAzureCredential} because it combines commonly used credentials in deployment and
- * development and chooses the credential to used based on its running environment.  The producer is set to publish
- * events every 60 seconds with a buffer size of 1500 events for each partition.</p>
+ * name. It is listed under the "Essentials" panel after navigating to the Event Hubs Namespace via Azure Portal.
+ * The producer is set to publish events every 60 seconds with a buffer size of 1500 events for each partition.  The
+ * examples shown in this document use a credential object named DefaultAzureCredential for
+ * authentication, which is appropriate for most scenarios, including local development and production
+ * environments. Additionally, we recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments. You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation</a>.</p>
  *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.construct -->
  * <pre>
@@ -148,6 +153,9 @@ import static com.azure.core.util.FluxUtil.monoError;
  * client.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubbufferedproducerclient.enqueueEvents-iterable -->
+ *
+ * @see com.azure.messaging.eventhubs
+ * @see EventHubBufferedProducerClientBuilder
  */
 @ServiceClient(builder = EventHubBufferedProducerClientBuilder.class, isAsync = true)
 public final class EventHubBufferedProducerAsyncClient implements Closeable {

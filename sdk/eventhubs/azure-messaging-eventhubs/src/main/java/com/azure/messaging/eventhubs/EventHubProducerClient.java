@@ -181,7 +181,8 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-int -->
  *
- * @see EventHubClientBuilder#buildProducerClient()
+ * @see com.azure.messaging.eventhubs
+ * @see EventHubClientBuilder
  * @see EventHubProducerAsyncClient To asynchronously generate events to an Event Hub, see EventHubProducerAsyncClient.
  */
 @ServiceClient(builder = EventHubClientBuilder.class)

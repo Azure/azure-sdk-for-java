@@ -114,6 +114,9 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  * &#125;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration -->
+ *
+ * @see com.azure.messaging.eventhubs
+ * @see EventHubClientBuilder
  */
 @ServiceClient(builder = EventHubClientBuilder.class)
 public class EventHubConsumerClient implements Closeable {

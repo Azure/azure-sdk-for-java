@@ -221,6 +221,9 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.SIGNA
  *     &#125;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean -->
+ *
+ * @see com.azure.messaging.eventhubs
+ * @see EventHubClientBuilder
  */
 @ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)
 public class EventHubConsumerAsyncClient implements Closeable {
