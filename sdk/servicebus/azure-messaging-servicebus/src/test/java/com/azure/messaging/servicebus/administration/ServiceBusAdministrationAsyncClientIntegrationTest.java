@@ -3,7 +3,9 @@
 
 package com.azure.messaging.servicebus.administration;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -38,6 +40,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -57,6 +60,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 
 /**
  * Tests {@link ServiceBusAdministrationAsyncClient}.
@@ -92,7 +97,15 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     void azureIdentityCredentials(HttpClient httpClient) {
 
         final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
-        final TokenCredential tokenCredential = getTokenCredential();
+        final TokenCredential tokenCredential;
+        if (interceptorManager.isPlaybackMode()) {
+            tokenCredential = mock(TokenCredential.class);
+            Mockito.when(tokenCredential.getToken(any(TokenRequestContext.class))).thenReturn(Mono.fromCallable(() -> {
+                return new AccessToken("foo-bar", OffsetDateTime.now().plus(Duration.ofMinutes(5)));
+            }));
+        } else {
+            tokenCredential = new DefaultAzureCredentialBuilder().build();
+        }
 
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder();
 
@@ -1013,17 +1026,5 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         }
 
         return builder.buildAsyncClient();
-    }
-
-    private TokenCredential getTokenCredential() {
-        final DefaultAzureCredentialBuilder builder = new DefaultAzureCredentialBuilder();
-
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
-        } else if (interceptorManager.isRecordMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        return builder.build();
     }
 }

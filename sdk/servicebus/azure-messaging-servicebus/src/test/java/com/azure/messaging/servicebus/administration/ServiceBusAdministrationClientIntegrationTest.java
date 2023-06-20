@@ -4,7 +4,6 @@
 package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -13,7 +12,6 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
@@ -701,17 +699,5 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
         return builder.buildClient();
-    }
-
-    private TokenCredential getTokenCredential() {
-        final DefaultAzureCredentialBuilder builder = new DefaultAzureCredentialBuilder();
-
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
-        } else if (interceptorManager.isRecordMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        return builder.build();
     }
 }
