@@ -7,6 +7,8 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixes the `readMany` API to not drop existing documents from the response in point-read scenarios when 
+there are non-existent document IDs also passed through the API - See [PR 35513](https://github.com/Azure/azure-sdk-for-java/pull/35513)
 
 #### Other Changes
 
