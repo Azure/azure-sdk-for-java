@@ -1,42 +1,52 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/topic-12/subscriptions/subscription/rules/rule11122e5b?api-version=2021-05",
-    "Headers" : {
-      "content-type" : "application/atom+xml",
-      "user-agent" : "azsdk-java-azure-messaging-servicebus/7.15.0-beta.1 (11.0.5; Windows 10; 10.0)"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/topic-12/subscriptions/subscription/rules/rule03545aba?api-version=2021-05",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml, application/atom\u002Bxml",
+        "Authorization": "Sanitized",
+        "Content-Length": "394",
+        "Content-Type": "application/atom\u002Bxml",
+        "User-Agent": "azsdk-java-azure-messaging-servicebus/7.15.0-beta.2 (11.0.5; Windows 10; 10.0)"
+      },
+      "RequestBody": "\u003C?xml version=\u00271.0\u0027 encoding=\u0027UTF-8\u0027?\u003E\u003Centry xmlns=\u0022http://www.w3.org/2005/Atom\u0022\u003E\u003Ccontent type=\u0022application/xml\u0022\u003E\u003CRuleDescription xmlns=\u0022http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\u0022\u003E\u003CFilter xmlns:ns0=\u0022http://www.w3.org/2001/XMLSchema-instance\u0022 ns0:type=\u0022TrueFilter\u0022\u003E\u003CSqlExpression\u003E1=1\u003C/SqlExpression\u003E\u003C/Filter\u003E\u003CName\u003Erule03545aba\u003C/Name\u003E\u003C/RuleDescription\u003E\u003C/content\u003E\u003C/entry\u003E",
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Type": "application/atom\u002Bxml; type=entry; charset=utf-8",
+        "Date": "Tue, 20 Jun 2023 12:24:43 GMT",
+        "ETag": "638228605662830000",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000",
+        "Transfer-Encoding": "chunked"
+      },
+      "ResponseBody": "\u003Centry xmlns=\u0022http://www.w3.org/2005/Atom\u0022\u003E\u003Cid\u003Ehttps://sb-java-conniey-sba.servicebus.windows.net/topic-12/subscriptions/subscription/rules/rule03545aba?api-version=2021-05\u003C/id\u003E\u003Ctitle type=\u0022text\u0022\u003Erule03545aba\u003C/title\u003E\u003Cpublished\u003E2023-06-20T12:24:43Z\u003C/published\u003E\u003Cupdated\u003E2023-06-20T12:24:43Z\u003C/updated\u003E\u003Clink rel=\u0022self\u0022 href=\u0022https://sb-java-conniey-sba.servicebus.windows.net/topic-12/subscriptions/subscription/rules/rule03545aba?api-version=2021-05\u0022/\u003E\u003Ccontent type=\u0022application/xml\u0022\u003E\u003CRuleDescription xmlns=\u0022http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\u0022 xmlns:i=\u0022http://www.w3.org/2001/XMLSchema-instance\u0022\u003E\u003CFilter i:type=\u0022TrueFilter\u0022\u003E\u003CSqlExpression\u003E1=1\u003C/SqlExpression\u003E\u003CCompatibilityLevel\u003E20\u003C/CompatibilityLevel\u003E\u003C/Filter\u003E\u003CAction i:type=\u0022EmptyRuleAction\u0022/\u003E\u003CCreatedAt\u003E2023-06-20T12:24:43.4111163Z\u003C/CreatedAt\u003E\u003CName\u003Erule03545aba\u003C/Name\u003E\u003C/RuleDescription\u003E\u003C/content\u003E\u003C/entry\u003E"
     },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "Strict-Transport-Security" : "max-age=31536000",
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "ETag" : "638225377653030000",
-      "retry-after" : "0",
-      "StatusCode" : "201",
-      "Body" : "<entry xmlns=\"http://www.w3.org/2005/Atom\"><id>https://sb-java-conniey-sbd.servicebus.windows.net/topic-12/subscriptions/subscription/rules/rule11122e5b?api-version=2021-05</id><title type=\"text\">rule11122e5b</title><published>2023-06-16T23:43:04Z</published><updated>2023-06-16T23:43:04Z</updated><link rel=\"self\" href=\"https://sb-java-conniey-sbd.servicebus.windows.net/topic-12/subscriptions/subscription/rules/rule11122e5b?api-version=2021-05\"/><content type=\"application/xml\"><RuleDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><Filter i:type=\"TrueFilter\"><SqlExpression>1=1</SqlExpression><CompatibilityLevel>20</CompatibilityLevel></Filter><Action i:type=\"EmptyRuleAction\"/><CreatedAt>2023-06-16T23:43:04.1471316Z</CreatedAt><Name>rule11122e5b</Name></RuleDescription></content></entry>",
-      "Date" : "Fri, 16 Jun 2023 23:43:03 GMT",
-      "Content-Type" : "application/atom+xml;type=entry;charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/topic-12/subscriptions/subscription/rules/rule11122e5b?api-version=2021-05",
-    "Headers" : {
-      "content-type" : "application/atom+xml",
-      "user-agent" : "azsdk-java-azure-messaging-servicebus/7.15.0-beta.1 (11.0.5; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "Strict-Transport-Security" : "max-age=31536000",
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "ETag" : "638225377653030000",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "<entry xmlns=\"http://www.w3.org/2005/Atom\"><id>https://sb-java-conniey-sbd.servicebus.windows.net/topic-12/subscriptions/subscription/rules/rule11122e5b?api-version=2021-05</id><title type=\"text\">rule11122e5b</title><published>2023-06-16T23:43:04Z</published><updated>2023-06-16T23:43:04Z</updated><link rel=\"self\" href=\"https://sb-java-conniey-sbd.servicebus.windows.net/topic-12/subscriptions/subscription/rules/rule11122e5b?api-version=2021-05\"/><content type=\"application/xml\"><RuleDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><Filter i:type=\"SqlFilter\"><SqlExpression>sys.To = 'telemetry-event'</SqlExpression><CompatibilityLevel>20</CompatibilityLevel></Filter><Action i:type=\"SqlRuleAction\"><SqlExpression>SET MessageId = 'matching-id'</SqlExpression><CompatibilityLevel>20</CompatibilityLevel></Action><CreatedAt>2023-06-16T23:43:04.3436402Z</CreatedAt><Name>rule11122e5b</Name></RuleDescription></content></entry>",
-      "Date" : "Fri, 16 Jun 2023 23:43:04 GMT",
-      "Content-Type" : "application/atom+xml;type=entry;charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "rule11122e5b" ]
+    {
+      "RequestUri": "https://REDACTED/topic-12/subscriptions/subscription/rules/rule03545aba?api-version=2021-05",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml, application/atom\u002Bxml",
+        "Authorization": "Sanitized",
+        "Content-Length": "572",
+        "Content-Type": "application/atom\u002Bxml",
+        "If-Match": "*",
+        "User-Agent": "azsdk-java-azure-messaging-servicebus/7.15.0-beta.2 (11.0.5; Windows 10; 10.0)"
+      },
+      "RequestBody": "\u003C?xml version=\u00271.0\u0027 encoding=\u0027UTF-8\u0027?\u003E\u003Centry xmlns=\u0022http://www.w3.org/2005/Atom\u0022\u003E\u003Ccontent type=\u0022application/xml\u0022\u003E\u003CRuleDescription xmlns=\u0022http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\u0022\u003E\u003CFilter xmlns:ns0=\u0022http://www.w3.org/2001/XMLSchema-instance\u0022 ns0:type=\u0022SqlFilter\u0022\u003E\u003CSqlExpression\u003Esys.To = \u0027telemetry-event\u0027\u003C/SqlExpression\u003E\u003C/Filter\u003E\u003CAction xmlns:ns0=\u0022http://www.w3.org/2001/XMLSchema-instance\u0022 ns0:type=\u0022SqlRuleAction\u0022\u003E\u003CSqlExpression\u003ESET MessageId = \u0027matching-id\u0027\u003C/SqlExpression\u003E\u003C/Action\u003E\u003CName\u003Erule03545aba\u003C/Name\u003E\u003C/RuleDescription\u003E\u003C/content\u003E\u003C/entry\u003E",
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/atom\u002Bxml; type=entry; charset=utf-8",
+        "Date": "Tue, 20 Jun 2023 12:24:43 GMT",
+        "ETag": "638228605662830000",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000",
+        "Transfer-Encoding": "chunked"
+      },
+      "ResponseBody": "\u003Centry xmlns=\u0022http://www.w3.org/2005/Atom\u0022\u003E\u003Cid\u003Ehttps://sb-java-conniey-sba.servicebus.windows.net/topic-12/subscriptions/subscription/rules/rule03545aba?api-version=2021-05\u003C/id\u003E\u003Ctitle type=\u0022text\u0022\u003Erule03545aba\u003C/title\u003E\u003Cpublished\u003E2023-06-20T12:24:43Z\u003C/published\u003E\u003Cupdated\u003E2023-06-20T12:24:43Z\u003C/updated\u003E\u003Clink rel=\u0022self\u0022 href=\u0022https://sb-java-conniey-sba.servicebus.windows.net/topic-12/subscriptions/subscription/rules/rule03545aba?api-version=2021-05\u0022/\u003E\u003Ccontent type=\u0022application/xml\u0022\u003E\u003CRuleDescription xmlns=\u0022http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\u0022 xmlns:i=\u0022http://www.w3.org/2001/XMLSchema-instance\u0022\u003E\u003CFilter i:type=\u0022SqlFilter\u0022\u003E\u003CSqlExpression\u003Esys.To = \u0027telemetry-event\u0027\u003C/SqlExpression\u003E\u003CCompatibilityLevel\u003E20\u003C/CompatibilityLevel\u003E\u003C/Filter\u003E\u003CAction i:type=\u0022SqlRuleAction\u0022\u003E\u003CSqlExpression\u003ESET MessageId = \u0027matching-id\u0027\u003C/SqlExpression\u003E\u003CCompatibilityLevel\u003E20\u003C/CompatibilityLevel\u003E\u003C/Action\u003E\u003CCreatedAt\u003E2023-06-20T12:24:43.4423724Z\u003C/CreatedAt\u003E\u003CName\u003Erule03545aba\u003C/Name\u003E\u003C/RuleDescription\u003E\u003C/content\u003E\u003C/entry\u003E"
+    }
+  ],
+  "Variables": {
+    "0": "rule03545aba"
+  }
 }

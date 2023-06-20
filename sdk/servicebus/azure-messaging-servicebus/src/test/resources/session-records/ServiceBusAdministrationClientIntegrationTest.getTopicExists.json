@@ -1,22 +1,26 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.servicebus.windows.net/topic-2?enrich=true&api-version=2021-05",
-    "Headers" : {
-      "user-agent" : "azsdk-java-azure-messaging-servicebus/7.15.0-beta.1 (11.0.5; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "Strict-Transport-Security" : "max-age=31536000",
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "ETag" : "638225377664030000",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "<entry xmlns=\"http://www.w3.org/2005/Atom\"><id>https://sb-java-conniey-sbd.servicebus.windows.net/topic-2?enrich=true&amp;api-version=2021-05</id><title type=\"text\">topic-2</title><published>2023-06-16T18:42:46Z</published><updated>2023-06-16T18:42:46Z</updated><author><name>sb-java-conniey-sbd</name></author><link rel=\"self\" href=\"https://sb-java-conniey-sbd.servicebus.windows.net/topic-2?enrich=true&amp;api-version=2021-05\"/><content type=\"application/xml\"><TopicDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive><MaxSizeInMegabytes>1024</MaxSizeInMegabytes><RequiresDuplicateDetection>false</RequiresDuplicateDetection><DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow><EnableBatchedOperations>true</EnableBatchedOperations><SizeInBytes>0</SizeInBytes><FilteringMessagesBeforePublishing>false</FilteringMessagesBeforePublishing><IsAnonymousAccessible>false</IsAnonymousAccessible><AuthorizationRules></AuthorizationRules><Status>Active</Status><CreatedAt>2023-06-16T18:42:46.377Z</CreatedAt><UpdatedAt>2023-06-16T18:42:46.403Z</UpdatedAt><AccessedAt>2023-06-16T18:42:52.8554128Z</AccessedAt><SupportOrdering>true</SupportOrdering><CountDetails xmlns:d2p1=\"http://schemas.microsoft.com/netservices/2011/06/servicebus\"><d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount><d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount><d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount><d2p1:TransferMessageCount>0</d2p1:TransferMessageCount><d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount></CountDetails><SubscriptionCount>2</SubscriptionCount><AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle><EnablePartitioning>false</EnablePartitioning><EntityAvailabilityStatus>Available</EntityAvailabilityStatus><EnableSubscriptionPartitioning>false</EnableSubscriptionPartitioning><EnableExpress>false</EnableExpress><MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes></TopicDescription></content></entry>",
-      "Date" : "Fri, 16 Jun 2023 21:31:35 GMT",
-      "Content-Type" : "application/atom+xml;type=entry;charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/topic-2?enrich=true\u0026api-version=2021-05",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/xml, application/atom\u002Bxml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-java-azure-messaging-servicebus/7.15.0-beta.2 (11.0.5; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/atom\u002Bxml; type=entry; charset=utf-8",
+        "Date": "Tue, 20 Jun 2023 12:24:41 GMT",
+        "ETag": "638228605726670000",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000",
+        "Transfer-Encoding": "chunked"
+      },
+      "ResponseBody": "\u003Centry xmlns=\u0022http://www.w3.org/2005/Atom\u0022\u003E\u003Cid\u003Ehttps://sb-java-conniey-sba.servicebus.windows.net/topic-2?enrich=true\u0026amp;api-version=2021-05\u003C/id\u003E\u003Ctitle type=\u0022text\u0022\u003Etopic-2\u003C/title\u003E\u003Cpublished\u003E2023-06-20T12:22:52Z\u003C/published\u003E\u003Cupdated\u003E2023-06-20T12:22:52Z\u003C/updated\u003E\u003Cauthor\u003E\u003Cname\u003Esb-java-conniey-sba\u003C/name\u003E\u003C/author\u003E\u003Clink rel=\u0022self\u0022 href=\u0022https://sb-java-conniey-sba.servicebus.windows.net/topic-2?enrich=true\u0026amp;api-version=2021-05\u0022/\u003E\u003Ccontent type=\u0022application/xml\u0022\u003E\u003CTopicDescription xmlns=\u0022http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\u0022 xmlns:i=\u0022http://www.w3.org/2001/XMLSchema-instance\u0022\u003E\u003CDefaultMessageTimeToLive\u003EP10675199DT2H48M5.4775807S\u003C/DefaultMessageTimeToLive\u003E\u003CMaxSizeInMegabytes\u003E1024\u003C/MaxSizeInMegabytes\u003E\u003CRequiresDuplicateDetection\u003Efalse\u003C/RequiresDuplicateDetection\u003E\u003CDuplicateDetectionHistoryTimeWindow\u003EPT10M\u003C/DuplicateDetectionHistoryTimeWindow\u003E\u003CEnableBatchedOperations\u003Etrue\u003C/EnableBatchedOperations\u003E\u003CSizeInBytes\u003E0\u003C/SizeInBytes\u003E\u003CFilteringMessagesBeforePublishing\u003Efalse\u003C/FilteringMessagesBeforePublishing\u003E\u003CIsAnonymousAccessible\u003Efalse\u003C/IsAnonymousAccessible\u003E\u003CAuthorizationRules\u003E\u003C/AuthorizationRules\u003E\u003CStatus\u003EActive\u003C/Status\u003E\u003CCreatedAt\u003E2023-06-20T12:22:52.6073197Z\u003C/CreatedAt\u003E\u003CUpdatedAt\u003E2023-06-20T12:22:52.6073197Z\u003C/UpdatedAt\u003E\u003CAccessedAt\u003E2023-06-20T12:24:41.3742105Z\u003C/AccessedAt\u003E\u003CSupportOrdering\u003Etrue\u003C/SupportOrdering\u003E\u003CCountDetails xmlns:d2p1=\u0022http://schemas.microsoft.com/netservices/2011/06/servicebus\u0022\u003E\u003Cd2p1:ActiveMessageCount\u003E0\u003C/d2p1:ActiveMessageCount\u003E\u003Cd2p1:DeadLetterMessageCount\u003E0\u003C/d2p1:DeadLetterMessageCount\u003E\u003Cd2p1:ScheduledMessageCount\u003E0\u003C/d2p1:ScheduledMessageCount\u003E\u003Cd2p1:TransferMessageCount\u003E0\u003C/d2p1:TransferMessageCount\u003E\u003Cd2p1:TransferDeadLetterMessageCount\u003E0\u003C/d2p1:TransferDeadLetterMessageCount\u003E\u003C/CountDetails\u003E\u003CSubscriptionCount\u003E3\u003C/SubscriptionCount\u003E\u003CAutoDeleteOnIdle\u003EP10675199DT2H48M5.4775807S\u003C/AutoDeleteOnIdle\u003E\u003CEnablePartitioning\u003Efalse\u003C/EnablePartitioning\u003E\u003CEntityAvailabilityStatus\u003EAvailable\u003C/EntityAvailabilityStatus\u003E\u003CEnableSubscriptionPartitioning\u003Efalse\u003C/EnableSubscriptionPartitioning\u003E\u003CEnableExpress\u003Efalse\u003C/EnableExpress\u003E\u003CMaxMessageSizeInKilobytes\u003E256\u003C/MaxMessageSizeInKilobytes\u003E\u003C/TopicDescription\u003E\u003C/content\u003E\u003C/entry\u003E"
+    }
+  ],
+  "Variables": {}
 }

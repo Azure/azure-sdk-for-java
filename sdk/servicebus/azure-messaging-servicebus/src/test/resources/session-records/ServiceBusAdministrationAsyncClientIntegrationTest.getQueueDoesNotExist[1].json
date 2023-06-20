@@ -1,21 +1,27 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.servicebus.windows.net/exist95453?enrich=true&api-version=2021-05",
-    "Headers" : {
-      "user-agent" : "azsdk-java-azure-messaging-servicebus/7.15.0-beta.1 (11.0.5; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "Strict-Transport-Security" : "max-age=31536000",
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "<feed xmlns=\"http://www.w3.org/2005/Atom\"><title type=\"text\">Publicly Listed Services</title><subtitle type=\"text\">This is the list of publicly-listed services currently available.</subtitle><id>uuid:1a998b64-5dda-43b6-9869-05e375379634;id=165818</id><updated>2023-06-16T21:31:38Z</updated><generator>Service Bus 1.1</generator></feed>",
-      "Date" : "Fri, 16 Jun 2023 21:31:38 GMT",
-      "Content-Type" : "application/atom+xml;type=feed;charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "exist95453" ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/exist20296?enrich=true\u0026api-version=2021-05",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/xml, application/atom\u002Bxml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-java-azure-messaging-servicebus/7.15.0-beta.2 (11.0.5; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/atom\u002Bxml; type=feed; charset=utf-8",
+        "Date": "Tue, 20 Jun 2023 12:24:43 GMT",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000",
+        "Transfer-Encoding": "chunked"
+      },
+      "ResponseBody": "\u003Cfeed xmlns=\u0022http://www.w3.org/2005/Atom\u0022\u003E\u003Ctitle type=\u0022text\u0022\u003EPublicly Listed Services\u003C/title\u003E\u003Csubtitle type=\u0022text\u0022\u003EThis is the list of publicly-listed services currently available.\u003C/subtitle\u003E\u003Cid\u003Euuid:0951f07e-e397-4aea-bfd8-3f3501518c60;id=151308\u003C/id\u003E\u003Cupdated\u003E2023-06-20T12:24:44Z\u003C/updated\u003E\u003Cgenerator\u003EService Bus 1.1\u003C/generator\u003E\u003C/feed\u003E"
+    }
+  ],
+  "Variables": {
+    "0": "exist20296"
+  }
 }

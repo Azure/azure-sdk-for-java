@@ -1,23 +1,27 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/topic-2/subscriptions/subscription?api-version=2021-05",
-    "Headers" : {
-      "content-type" : "application/atom+xml",
-      "user-agent" : "azsdk-java-azure-messaging-servicebus/7.15.0-beta.1 (11.0.5; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "Strict-Transport-Security" : "max-age=31536000",
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "ETag" : "638225377664030000",
-      "retry-after" : "0",
-      "StatusCode" : "409",
-      "Body" : "<Error><Code>409</Code><Detail>Entity 'sb-java-conniey-sbd:Topic:topic-2|subscription' already exists. TrackingId:a57c7b88-3c37-484f-a63b-e1fc0dbbd078_G42_B0, SystemTracker:sb-java-conniey-sbd:Topic:topic-2|subscription, Timestamp:2023-06-16T23:43:04</Detail></Error>",
-      "Date" : "Fri, 16 Jun 2023 23:43:04 GMT",
-      "Content-Type" : "application/xml; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/topic-2/subscriptions/subscription?api-version=2021-05",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml, application/atom\u002Bxml",
+        "Authorization": "Sanitized",
+        "Content-Length": "747",
+        "Content-Type": "application/atom\u002Bxml",
+        "User-Agent": "azsdk-java-azure-messaging-servicebus/7.15.0-beta.2 (11.0.5; Windows 10; 10.0)"
+      },
+      "RequestBody": "\u003C?xml version=\u00271.0\u0027 encoding=\u0027UTF-8\u0027?\u003E\u003Centry xmlns=\u0022http://www.w3.org/2005/Atom\u0022\u003E\u003Ccontent type=\u0022application/xml\u0022\u003E\u003CSubscriptionDescription xmlns=\u0022http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\u0022\u003E\u003CLockDuration\u003EPT1M\u003C/LockDuration\u003E\u003CRequiresSession\u003Efalse\u003C/RequiresSession\u003E\u003CDefaultMessageTimeToLive\u003EP10675199DT2H48M5.477S\u003C/DefaultMessageTimeToLive\u003E\u003CDeadLetteringOnMessageExpiration\u003Efalse\u003C/DeadLetteringOnMessageExpiration\u003E\u003CDeadLetteringOnFilterEvaluationExceptions\u003Etrue\u003C/DeadLetteringOnFilterEvaluationExceptions\u003E\u003CMaxDeliveryCount\u003E10\u003C/MaxDeliveryCount\u003E\u003CEnableBatchedOperations\u003Etrue\u003C/EnableBatchedOperations\u003E\u003CStatus\u003EActive\u003C/Status\u003E\u003CAutoDeleteOnIdle\u003EP10675199DT2H48M5.477S\u003C/AutoDeleteOnIdle\u003E\u003C/SubscriptionDescription\u003E\u003C/content\u003E\u003C/entry\u003E",
+      "StatusCode": 409,
+      "ResponseHeaders": {
+        "Content-Type": "application/xml; charset=utf-8",
+        "Date": "Tue, 20 Jun 2023 12:24:42 GMT",
+        "ETag": "638228605726670000",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000",
+        "Transfer-Encoding": "chunked"
+      },
+      "ResponseBody": "\u003CError\u003E\u003CCode\u003E409\u003C/Code\u003E\u003CDetail\u003EThe messaging entity \u0027sb-java-conniey-sba:Topic:topic-2|subscription\u0027 already exists. To know more visit https://aka.ms/sbResourceMgrExceptions.  TrackingId:eb40e124-a704-400b-889c-17073db6faed_B27, SystemTracker:NoSystemTracker, Timestamp:2023-06-20T12:24:42\u003C/Detail\u003E\u003C/Error\u003E"
+    }
+  ],
+  "Variables": {}
 }

@@ -1,22 +1,26 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.servicebus.windows.net/topic-1/subscriptions/subscription-session-not-exist?enrich=true&api-version=2021-05",
-    "Headers" : {
-      "user-agent" : "azsdk-java-azure-messaging-servicebus/7.15.0-beta.1 (11.0.5; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "Strict-Transport-Security" : "max-age=31536000",
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "ETag" : "638225377651770000",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Body" : "<Error><Code>404</Code><Detail>Entity 'sb-java-conniey-sbd:Topic:topic-1|subscription-session-not-exist' was not found. To know more visit https://aka.ms/sbResourceMgrExceptions.  TrackingId:e3085d54-c838-4520-89f4-a5ca9471cf67_B10, SystemTracker:NoSystemTracker, Timestamp:2023-06-16T21:31:39</Detail></Error>",
-      "Date" : "Fri, 16 Jun 2023 21:31:40 GMT",
-      "Content-Type" : "application/xml; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/topic-1/subscriptions/subscription-session-not-exist?enrich=true\u0026api-version=2021-05",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/xml, application/atom\u002Bxml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-java-azure-messaging-servicebus/7.15.0-beta.2 (11.0.5; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Content-Type": "application/xml; charset=utf-8",
+        "Date": "Tue, 20 Jun 2023 12:24:45 GMT",
+        "ETag": "638228605726700000",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000",
+        "Transfer-Encoding": "chunked"
+      },
+      "ResponseBody": "\u003CError\u003E\u003CCode\u003E404\u003C/Code\u003E\u003CDetail\u003EEntity \u0027sb-java-conniey-sba:Topic:topic-1|subscription-session-not-exist\u0027 was not found. To know more visit https://aka.ms/sbResourceMgrExceptions.  TrackingId:be35d156-77f0-4e9a-b5b9-d0f0fd822e73_B17, SystemTracker:NoSystemTracker, Timestamp:2023-06-20T12:24:44\u003C/Detail\u003E\u003C/Error\u003E"
+    }
+  ],
+  "Variables": {}
 }

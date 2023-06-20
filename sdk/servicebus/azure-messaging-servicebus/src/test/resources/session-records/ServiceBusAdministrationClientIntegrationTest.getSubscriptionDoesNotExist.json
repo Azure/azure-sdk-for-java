@@ -1,22 +1,28 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.servicebus.windows.net/topic-2/subscriptions/1dc2154862?enrich=true&api-version=2021-05",
-    "Headers" : {
-      "user-agent" : "azsdk-java-azure-messaging-servicebus/7.15.0-beta.1 (11.0.5; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "Strict-Transport-Security" : "max-age=31536000",
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "ETag" : "638225377664030000",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Body" : "<Error><Code>404</Code><Detail>Entity 'sb-java-conniey-sbd:Topic:topic-2|1dc2154862' was not found. To know more visit https://aka.ms/sbResourceMgrExceptions.  TrackingId:49557d3a-4048-42ca-a9c7-bad2aa1fcc08_B0, SystemTracker:NoSystemTracker, Timestamp:2023-06-16T21:31:36</Detail></Error>",
-      "Date" : "Fri, 16 Jun 2023 21:31:37 GMT",
-      "Content-Type" : "application/xml; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "1dc2154862" ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/topic-2/subscriptions/354ccf8f19?enrich=true\u0026api-version=2021-05",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/xml, application/atom\u002Bxml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-java-azure-messaging-servicebus/7.15.0-beta.2 (11.0.5; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Content-Type": "application/xml; charset=utf-8",
+        "Date": "Tue, 20 Jun 2023 12:24:43 GMT",
+        "ETag": "638228605726670000",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000",
+        "Transfer-Encoding": "chunked"
+      },
+      "ResponseBody": "\u003CError\u003E\u003CCode\u003E404\u003C/Code\u003E\u003CDetail\u003EEntity \u0027sb-java-conniey-sba:Topic:topic-2|354ccf8f19\u0027 was not found. To know more visit https://aka.ms/sbResourceMgrExceptions.  TrackingId:ee624213-6803-456a-a9b7-fe4fb073b372_B27, SystemTracker:NoSystemTracker, Timestamp:2023-06-20T12:24:42\u003C/Detail\u003E\u003C/Error\u003E"
+    }
+  ],
+  "Variables": {
+    "0": "354ccf8f19"
+  }
 }

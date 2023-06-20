@@ -1,20 +1,24 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$namespaceinfo?api-version=2021-05",
-    "Headers" : {
-      "user-agent" : "azsdk-java-azure-messaging-servicebus/7.15.0-beta.1 (11.0.5; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "<entry xmlns=\"http://www.w3.org/2005/Atom\"><id>https://sb-java-conniey-sbd.servicebus.windows.net/$namespaceinfo?api-version=2021-05</id><title type=\"text\">sb-java-conniey-sbd</title><updated>2023-06-16T21:31:37Z</updated><author><name>sb-java-conniey-sbd</name></author><link rel=\"self\" href=\"https://sb-java-conniey-sbd.servicebus.windows.net/$namespaceinfo?api-version=2021-05\"></link><content type=\"application/xml\"><NamespaceInfo xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><CreatedTime>2023-06-16T18:41:52.64Z</CreatedTime><MessagingSKU>Standard</MessagingSKU><ModifiedTime>2023-06-16T18:41:52.64Z</ModifiedTime><Name>sb-java-conniey-sbd</Name><NamespaceType>Messaging</NamespaceType></NamespaceInfo></content></entry>",
-      "Date" : "Fri, 16 Jun 2023 21:31:37 GMT",
-      "Content-Type" : "application/atom+xml;type=entry;charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/$namespaceinfo?api-version=2021-05",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/xml, application/atom\u002Bxml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-java-azure-messaging-servicebus/7.15.0-beta.2 (11.0.5; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/atom\u002Bxml; type=entry; charset=utf-8",
+        "Date": "Tue, 20 Jun 2023 12:24:43 GMT",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Transfer-Encoding": "chunked"
+      },
+      "ResponseBody": "\u003Centry xmlns=\u0022http://www.w3.org/2005/Atom\u0022\u003E\u003Cid\u003Ehttps://sb-java-conniey-sba.servicebus.windows.net/$namespaceinfo?api-version=2021-05\u003C/id\u003E\u003Ctitle type=\u0022text\u0022\u003Esb-java-conniey-sba\u003C/title\u003E\u003Cupdated\u003E2023-06-20T12:24:43Z\u003C/updated\u003E\u003Cauthor\u003E\u003Cname\u003Esb-java-conniey-sba\u003C/name\u003E\u003C/author\u003E\u003Clink rel=\u0022self\u0022 href=\u0022https://sb-java-conniey-sba.servicebus.windows.net/$namespaceinfo?api-version=2021-05\u0022\u003E\u003C/link\u003E\u003Ccontent type=\u0022application/xml\u0022\u003E\u003CNamespaceInfo xmlns=\u0022http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\u0022 xmlns:i=\u0022http://www.w3.org/2001/XMLSchema-instance\u0022\u003E\u003CCreatedTime\u003E2023-06-20T12:21:56.81Z\u003C/CreatedTime\u003E\u003CMessagingSKU\u003EStandard\u003C/MessagingSKU\u003E\u003CModifiedTime\u003E2023-06-20T12:21:56.81Z\u003C/ModifiedTime\u003E\u003CName\u003Esb-java-conniey-sba\u003C/Name\u003E\u003CNamespaceType\u003EMessaging\u003C/NamespaceType\u003E\u003C/NamespaceInfo\u003E\u003C/content\u003E\u003C/entry\u003E"
+    }
+  ],
+  "Variables": {}
 }
