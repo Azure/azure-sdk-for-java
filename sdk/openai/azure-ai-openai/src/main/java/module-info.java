@@ -4,13 +4,16 @@
 
 module com.azure.ai.openai {
     requires transitive com.azure.core;
+    // TODO: got to be able to uncomment this
 //    requires transitive com.azure.core.experimental;
 
+    // TODO figure out why we are getting wrong package duplicates
     exports com.azure.ai.openai;
     exports com.azure.ai.openai.models;
 //    exports com.azure.openai;
 //    exports com.azure.openai.models;
 
+    // TODO same as previous
     opens com.azure.ai.openai.models to
             com.azure.core,
             com.fasterxml.jackson.databind;
