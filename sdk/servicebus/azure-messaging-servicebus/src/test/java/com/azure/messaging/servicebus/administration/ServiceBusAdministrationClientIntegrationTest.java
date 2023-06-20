@@ -210,7 +210,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
 
         final String ruleName = testResourceNamer.randomName("rule", 5);
         final String topicName = getEntityName(getTopicBaseName(), 2);
-        final String subscriptionName = getEntityName(getSubscriptionBaseName(), 2);
+        final String subscriptionName = getSubscriptionBaseName();
         final SqlRuleAction action = new SqlRuleAction("SET Label = 'test'");
         final CreateRuleOptions options = new CreateRuleOptions()
             .setAction(action)
@@ -501,7 +501,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     void getSubscriptionExists() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 2);
-        final String subscriptionName = getEntityName(getSubscriptionBaseName(), 2);
+        final String subscriptionName = getSubscriptionBaseName();
 
         assertTrue(client.getSubscriptionExists(topicName, subscriptionName));
     }
@@ -510,7 +510,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     void getSubscriptionRuntimeProperties() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 2);
-        final String subscriptionName = getEntityName(getSubscriptionBaseName(), 2);
+        final String subscriptionName = getSubscriptionBaseName();
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         final SubscriptionRuntimeProperties properties = client.getSubscriptionRuntimeProperties(topicName, subscriptionName);
@@ -594,7 +594,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final ServiceBusAdministrationClient client = getClient();
         final String ruleName = getEntityName(getRuleBaseName(), 9);
         final String topicName = getEntityName(getTopicBaseName(), 2);
-        final String subscriptionName = getEntityName(getSubscriptionBaseName(), 2);
+        final String subscriptionName = getSubscriptionBaseName();
         client.createRule(topicName, subscriptionName, ruleName);
 
         client.deleteRule(topicName, subscriptionName, ruleName);
