@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.jobrouter.models.options;
 
 import com.azure.core.annotation.Fluent;
@@ -11,7 +14,7 @@ public class ListExceptionPoliciesOptions {
     /**
      * Maximum number of items per page.
      */
-    private Integer maxPageSize;
+    private final Integer maxPageSize;
 
     /**
      * Constructor for ListExceptionPoliciesOptions.

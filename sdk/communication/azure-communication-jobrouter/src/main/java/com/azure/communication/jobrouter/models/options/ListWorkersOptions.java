@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.jobrouter.models.options;
 
 import com.azure.communication.jobrouter.models.WorkerStateSelector;
@@ -11,27 +14,27 @@ public class ListWorkersOptions {
     /**
      * workerStateSelector.
      */
-    private WorkerStateSelector workerStateSelector;
+    private final WorkerStateSelector workerStateSelector;
 
     /**
      * channelId.
      */
-    private String channelId;
+    private final String channelId;
 
     /**
      * queueId.
      */
-    private String queueId;
+    private final String queueId;
 
     /**
      * hasCapacity.
      */
-    private Boolean hasCapacity;
+    private final Boolean hasCapacity;
 
     /**
      * maxPageSize.
      */
-    private Integer maxPageSize;
+    private final Integer maxPageSize;
 
     /**
      * Constructor for ListWorkersOptions.

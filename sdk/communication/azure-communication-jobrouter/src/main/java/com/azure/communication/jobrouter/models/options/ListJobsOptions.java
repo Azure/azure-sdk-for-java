@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.jobrouter.models.options;
 
 import com.azure.communication.jobrouter.models.JobStateSelector;
@@ -13,17 +16,17 @@ public class ListJobsOptions {
     /**
      * JobStateSelector.
      */
-    private JobStateSelector jobStateSelector;
+    private final JobStateSelector jobStateSelector;
 
     /**
      * QueueId.
      */
-    private String queueId;
+    private final String queueId;
 
     /**
      * ChannelId.
      */
-    private String channelId;
+    private final String channelId;
 
     /**
      * ClassificationPolicyId.
@@ -33,7 +36,7 @@ public class ListJobsOptions {
     /**
      * MaxPageSize.
      */
-    private Integer maxPageSize;
+    private final Integer maxPageSize;
 
     /**
      * Constructor for ListJobsOptions.
