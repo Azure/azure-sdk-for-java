@@ -13,8 +13,10 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.TimeoutPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.policy.TestProxyRecordPolicy;
 import com.azure.core.test.utils.ResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -67,7 +69,7 @@ import java.util.stream.Collectors;
 /**
  * Test base for resource manager SDK.
  */
-public abstract class ResourceManagerTestBase extends TestBase {
+public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase {
     private static final String ZERO_UUID = "00000000-0000-0000-0000-000000000000";
     private static final String ZERO_SUBSCRIPTION = ZERO_UUID;
     private static final String ZERO_TENANT = ZERO_UUID;
@@ -93,7 +95,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
         }
     };
 
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceManagerTestBase.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceManagerTestProxyTestBase.class);
     private AzureProfile testProfile;
     private AuthFile testAuthFile;
     private boolean isSkipInPlayback;
@@ -287,6 +289,8 @@ public abstract class ResourceManagerTestBase extends TestBase {
             policies.add(new TimeoutPolicy(Duration.ofMinutes(1)));
             if (!interceptorManager.isLiveMode() && !testContextManager.doNotRecordTest()) {
                 policies.add(new TextReplacementPolicy(interceptorManager.getRecordedData(), textReplacementRules));
+                policies.add(this.interceptorManager.getRecordPolicy());
+
             }
             if (httpLogDetailLevel == HttpLogDetailLevel.BODY_AND_HEADERS) {
                 policies.add(new HttpDebugLoggingPolicy());
