@@ -55,6 +55,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.testng.AssertJUnit.fail;
 
 public class SessionRetryOptionsTests extends TestSuiteBase {
 
@@ -84,9 +85,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
             {OperationType.Read, FaultInjectionOperationType.READ_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 2},
             {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 1},
             {OperationType.Read, FaultInjectionOperationType.READ_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 2},
-            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 2},
-            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, null, 1},
-            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, null, 1}
+            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 2}
         };
     }
 
@@ -102,12 +101,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
             {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 1},
             {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 2},
             {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 1},
-            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 1},
-            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, null, 2},
-            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, null, 1},
-            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, null, 1},
-            {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, null, 2},
-            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, null, 1},
+            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 1}
 
         };
     }
