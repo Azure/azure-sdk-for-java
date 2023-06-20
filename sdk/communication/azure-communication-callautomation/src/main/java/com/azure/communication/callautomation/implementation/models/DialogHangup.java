@@ -55,10 +55,10 @@ public final class DialogHangup {
     private String dialogId;
 
     /*
-     * Hangup data from the Conversation Conductor
+     * Ivr Context
      */
-    @JsonProperty(value = "hangup", access = JsonProperty.Access.WRITE_ONLY)
-    private Hangup hangup;
+    @JsonProperty(value = "ivrContext", access = JsonProperty.Access.WRITE_ONLY)
+    private Object ivrContext;
 
     /**
      * Get the callConnectionId property: Call connection ID.
@@ -160,11 +160,11 @@ public final class DialogHangup {
     }
 
     /**
-     * Get the hangup property: Hangup data from the Conversation Conductor.
+     * Get the ivrContext property: Ivr Context.
      *
-     * @return the hangup value.
+     * @return the ivrContext value.
      */
-    public Hangup getHangup() {
-        return this.hangup;
+    public Object getIvrContext() {
+        return this.ivrContext;
     }
 }

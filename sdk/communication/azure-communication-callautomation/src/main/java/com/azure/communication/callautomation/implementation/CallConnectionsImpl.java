@@ -831,7 +831,7 @@ public final class CallConnectionsImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
+                                        res.getValue().getValues(),
                                         res.getValue().getNextLink(),
                                         null));
     }
@@ -858,7 +858,7 @@ public final class CallConnectionsImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
+                                        res.getValue().getValues(),
                                         res.getValue().getNextLink(),
                                         null));
     }
@@ -1960,7 +1960,7 @@ public final class CallConnectionsImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
+                                        res.getValue().getValues(),
                                         res.getValue().getNextLink(),
                                         null));
     }
@@ -1986,7 +1986,7 @@ public final class CallConnectionsImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
+                                        res.getValue().getValues(),
                                         res.getValue().getNextLink(),
                                         null));
     }

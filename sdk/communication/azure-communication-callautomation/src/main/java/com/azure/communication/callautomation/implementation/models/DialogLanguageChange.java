@@ -7,9 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DialogTransfer model. */
+/** The DialogLanguageChange model. */
 @Fluent
-public final class DialogTransfer {
+public final class DialogLanguageChange {
     /*
      * Call connection ID.
      */
@@ -55,19 +55,13 @@ public final class DialogTransfer {
     private String dialogId;
 
     /*
-     * Transfer type
+     * Selected Language
      */
-    @JsonProperty(value = "transferType", access = JsonProperty.Access.WRITE_ONLY)
-    private String transferType;
+    @JsonProperty(value = "selectedLanguage", access = JsonProperty.Access.WRITE_ONLY)
+    private String selectedLanguage;
 
     /*
-     * Transfer destination
-     */
-    @JsonProperty(value = "transferDestination", access = JsonProperty.Access.WRITE_ONLY)
-    private String transferDestination;
-
-    /*
-     * IVR context
+     * Ivr Context
      */
     @JsonProperty(value = "ivrContext", access = JsonProperty.Access.WRITE_ONLY)
     private Object ivrContext;
@@ -94,9 +88,9 @@ public final class DialogTransfer {
      * Set the serverCallId property: Server call ID.
      *
      * @param serverCallId the serverCallId value to set.
-     * @return the DialogTransfer object itself.
+     * @return the DialogLanguageChange object itself.
      */
-    public DialogTransfer setServerCallId(String serverCallId) {
+    public DialogLanguageChange setServerCallId(String serverCallId) {
         this.serverCallId = serverCallId;
         return this;
     }
@@ -116,9 +110,9 @@ public final class DialogTransfer {
      * ID.
      *
      * @param correlationId the correlationId value to set.
-     * @return the DialogTransfer object itself.
+     * @return the DialogLanguageChange object itself.
      */
-    public DialogTransfer setCorrelationId(String correlationId) {
+    public DialogLanguageChange setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
     }
@@ -155,9 +149,9 @@ public final class DialogTransfer {
      * Set the dialogInputType property: Determines the type of the dialog.
      *
      * @param dialogInputType the dialogInputType value to set.
-     * @return the DialogTransfer object itself.
+     * @return the DialogLanguageChange object itself.
      */
-    public DialogTransfer setDialogInputType(DialogInputType dialogInputType) {
+    public DialogLanguageChange setDialogInputType(DialogInputType dialogInputType) {
         this.dialogInputType = dialogInputType;
         return this;
     }
@@ -172,25 +166,16 @@ public final class DialogTransfer {
     }
 
     /**
-     * Get the transferType property: Transfer type.
+     * Get the selectedLanguage property: Selected Language.
      *
-     * @return the transferType value.
+     * @return the selectedLanguage value.
      */
-    public String getTransferType() {
-        return this.transferType;
+    public String getSelectedLanguage() {
+        return this.selectedLanguage;
     }
 
     /**
-     * Get the transferDestination property: Transfer destination.
-     *
-     * @return the transferDestination value.
-     */
-    public String getTransferDestination() {
-        return this.transferDestination;
-    }
-
-    /**
-     * Get the ivrContext property: IVR context.
+     * Get the ivrContext property: Ivr Context.
      *
      * @return the ivrContext value.
      */

@@ -8,6 +8,7 @@ import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
+import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
@@ -29,6 +30,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -125,12 +127,10 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             AddParticipantSucceeded addParticipantSucceeded = waitForEvent(AddParticipantSucceeded.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(addParticipantSucceeded);
 
-            // TODO: To be readded when this fix is deployed to NextPMA
-            // https://skype.visualstudio.com/SCC/_git/sync_calling_concore-platform/pullrequest/817713
             // check participant number in the call
-//            List<CallParticipant> listParticipantsResult = createCallResult.getCallConnectionAsync().listParticipants().log().collectList().block();
-//            assertNotNull(listParticipantsResult);
-//            assertEquals(3, listParticipantsResult.size());
+            List<CallParticipant> listParticipantsResult = createCallResult.getCallConnectionAsync().listParticipants().log().collectList().block();
+            assertNotNull(listParticipantsResult);
+            assertEquals(3, listParticipantsResult.size());
 
             // remove a participant from the call
             RemoveParticipantResult removeParticipantResult = createCallResult.getCallConnectionAsync().removeParticipant(receiver).block();

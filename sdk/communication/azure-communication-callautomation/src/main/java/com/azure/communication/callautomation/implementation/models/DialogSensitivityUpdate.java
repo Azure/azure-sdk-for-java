@@ -7,9 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DialogTransfer model. */
+/** The DialogSensitivityUpdate model. */
 @Fluent
-public final class DialogTransfer {
+public final class DialogSensitivityUpdate {
     /*
      * Call connection ID.
      */
@@ -55,22 +55,10 @@ public final class DialogTransfer {
     private String dialogId;
 
     /*
-     * Transfer type
+     * SensitiveFlag data from the Conversation Conductor
      */
-    @JsonProperty(value = "transferType", access = JsonProperty.Access.WRITE_ONLY)
-    private String transferType;
-
-    /*
-     * Transfer destination
-     */
-    @JsonProperty(value = "transferDestination", access = JsonProperty.Access.WRITE_ONLY)
-    private String transferDestination;
-
-    /*
-     * IVR context
-     */
-    @JsonProperty(value = "ivrContext", access = JsonProperty.Access.WRITE_ONLY)
-    private Object ivrContext;
+    @JsonProperty(value = "sensitiveFlag", access = JsonProperty.Access.WRITE_ONLY)
+    private SensitiveFlag sensitiveFlag;
 
     /**
      * Get the callConnectionId property: Call connection ID.
@@ -94,9 +82,9 @@ public final class DialogTransfer {
      * Set the serverCallId property: Server call ID.
      *
      * @param serverCallId the serverCallId value to set.
-     * @return the DialogTransfer object itself.
+     * @return the DialogSensitivityUpdate object itself.
      */
-    public DialogTransfer setServerCallId(String serverCallId) {
+    public DialogSensitivityUpdate setServerCallId(String serverCallId) {
         this.serverCallId = serverCallId;
         return this;
     }
@@ -116,9 +104,9 @@ public final class DialogTransfer {
      * ID.
      *
      * @param correlationId the correlationId value to set.
-     * @return the DialogTransfer object itself.
+     * @return the DialogSensitivityUpdate object itself.
      */
-    public DialogTransfer setCorrelationId(String correlationId) {
+    public DialogSensitivityUpdate setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
     }
@@ -155,9 +143,9 @@ public final class DialogTransfer {
      * Set the dialogInputType property: Determines the type of the dialog.
      *
      * @param dialogInputType the dialogInputType value to set.
-     * @return the DialogTransfer object itself.
+     * @return the DialogSensitivityUpdate object itself.
      */
-    public DialogTransfer setDialogInputType(DialogInputType dialogInputType) {
+    public DialogSensitivityUpdate setDialogInputType(DialogInputType dialogInputType) {
         this.dialogInputType = dialogInputType;
         return this;
     }
@@ -172,29 +160,11 @@ public final class DialogTransfer {
     }
 
     /**
-     * Get the transferType property: Transfer type.
+     * Get the sensitiveFlag property: SensitiveFlag data from the Conversation Conductor.
      *
-     * @return the transferType value.
+     * @return the sensitiveFlag value.
      */
-    public String getTransferType() {
-        return this.transferType;
-    }
-
-    /**
-     * Get the transferDestination property: Transfer destination.
-     *
-     * @return the transferDestination value.
-     */
-    public String getTransferDestination() {
-        return this.transferDestination;
-    }
-
-    /**
-     * Get the ivrContext property: IVR context.
-     *
-     * @return the ivrContext value.
-     */
-    public Object getIvrContext() {
-        return this.ivrContext;
+    public SensitiveFlag getSensitiveFlag() {
+        return this.sensitiveFlag;
     }
 }

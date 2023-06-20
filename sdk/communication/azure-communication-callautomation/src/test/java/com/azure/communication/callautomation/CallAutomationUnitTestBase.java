@@ -80,7 +80,7 @@ public class CallAutomationUnitTestBase {
 
     public static String generateListParticipantsResponse() {
         GetParticipantsResponseInternal getParticipantsResponseInternal = new GetParticipantsResponseInternal()
-            .setValue(new ArrayList<>(Arrays.asList(
+            .setValues(new ArrayList<>(Arrays.asList(
                 ModelGenerator.generateAcsCallParticipantInternal(CALL_CALLER_ID, false),
                 ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, true))))
             .setNextLink("");
