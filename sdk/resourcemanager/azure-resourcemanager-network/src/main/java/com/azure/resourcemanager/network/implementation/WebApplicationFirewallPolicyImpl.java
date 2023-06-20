@@ -40,8 +40,6 @@ public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
     WebApplicationFirewallPolicy.UpdateStages.WithRequestBodyOrUpdate {
     private static final String BOT_DETECTION_RULE_SET_TYPE = "Microsoft_BotManagerRuleSet";
     private static final String BOT_DETECTION_RULE_SET_VERSION_DEFAULT = "0.1";
-    private static final String MANAGED_RULE_SET_TYPE_DEFAULT = "OWASP";
-    private static final String MANAGED_RULE_SET_VERSION_DEFAULT = "3.2";
 
     protected WebApplicationFirewallPolicyImpl(String name, WebApplicationFirewallPolicyInner innerObject, NetworkManager manager) {
         super(name, innerObject, manager);
@@ -90,15 +88,15 @@ public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
         if (CoreUtils.isNullOrEmpty(this.innerModel().applicationGateways())) {
             return Collections.emptyList();
         }
-        return this.innerModel().applicationGateways()
+        return Collections.unmodifiableList(this.innerModel().applicationGateways()
             .stream()
             .map(ApplicationGatewayInner::id)
-            .collect(Collectors.toList());
+            .collect(Collectors.toList()));
     }
 
     @Override
     public List<ApplicationGateway> getAssociatedApplicationGateways() {
-        return getAssociatedApplicationGatewaysAsync().collectList().block();
+        return Collections.unmodifiableList(getAssociatedApplicationGatewaysAsync().collectList().block());
     }
 
     @Override
