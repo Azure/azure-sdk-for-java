@@ -1,0 +1,22 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.servicebus.windows.net/test09064?api-version=2021-05",
+    "Headers" : {
+      "content-type" : "application/atom+xml",
+      "user-agent" : "azsdk-java-azure-messaging-servicebus/7.15.0-beta.1 (11.0.5; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Body" : "<entry xmlns=\"http://www.w3.org/2005/Atom\"><id>https://sb-java-conniey-sbd.servicebus.windows.net/test09064?api-version=2021-05</id><title type=\"text\">test09064</title><published>2023-06-16T21:31:39Z</published><updated>2023-06-16T21:31:39Z</updated><author><name>sb-java-conniey-sbd</name></author><link rel=\"self\" href=\"https://sb-java-conniey-sbd.servicebus.windows.net/test09064?api-version=2021-05\"/><content type=\"application/xml\"><QueueDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><LockDuration>PT45S</LockDuration><MaxSizeInMegabytes>1024</MaxSizeInMegabytes><RequiresDuplicateDetection>true</RequiresDuplicateDetection><RequiresSession>true</RequiresSession><DefaultMessageTimeToLive>P10675199DT2H48M5.477S</DefaultMessageTimeToLive><DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration><DuplicateDetectionHistoryTimeWindow>PT2M</DuplicateDetectionHistoryTimeWindow><MaxDeliveryCount>7</MaxDeliveryCount><EnableBatchedOperations>true</EnableBatchedOperations><SizeInBytes>0</SizeInBytes><MessageCount>0</MessageCount><IsAnonymousAccessible>false</IsAnonymousAccessible><AuthorizationRules></AuthorizationRules><Status>Active</Status><CreatedAt>2023-06-16T21:31:39.023Z</CreatedAt><UpdatedAt>2023-06-16T21:31:39.057Z</UpdatedAt><UserMetadata>some-metadata-for-testing</UserMetadata><SupportOrdering>true</SupportOrdering><AutoDeleteOnIdle>P10675199DT2H48M5.477S</AutoDeleteOnIdle><EnablePartitioning>false</EnablePartitioning><EntityAvailabilityStatus>Available</EntityAvailabilityStatus><EnableExpress>false</EnableExpress><MaxMessageSizeInKilobytes>256</MaxMessageSizeInKilobytes></QueueDescription></content></entry>",
+      "Date" : "Fri, 16 Jun 2023 21:31:39 GMT",
+      "Content-Type" : "application/atom+xml;type=entry;charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "test09064" ]
+}

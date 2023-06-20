@@ -12,7 +12,7 @@ pwd = os.getcwd()
 os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
 from utils import set_or_increase_version
-from generate_data import sdk_automation as sdk_automation_data, sdk_automation_cadl
+from generate_data import sdk_automation as sdk_automation_data, sdk_automation_typespec
 from generate_utils import (
     compare_with_maven_package,
     compile_package,
@@ -94,8 +94,8 @@ def sdk_automation(input_file: str, output_file: str):
     with open(input_file, 'r') as fin:
         config = json.load(fin)
 
-    # cadl
-    packages = sdk_automation_cadl(config)
+    # typespec
+    packages = sdk_automation_typespec(config)
     # autorest
     if not packages:
         packages = sdk_automation_autorest(config)
