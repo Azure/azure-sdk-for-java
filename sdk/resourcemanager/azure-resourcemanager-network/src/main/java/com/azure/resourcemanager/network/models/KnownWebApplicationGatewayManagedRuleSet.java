@@ -4,9 +4,9 @@
 package com.azure.resourcemanager.network.models;
 
 /**
- * Known managed rule set.
+ * Known Web Application Gateway managed rule set.
  */
-public enum KnownManagedRuleSet {
+public enum KnownWebApplicationGatewayManagedRuleSet {
     /**
      * Managed Rule Set based off OWASP CRS 3.2 version.
      *
@@ -46,7 +46,7 @@ public enum KnownManagedRuleSet {
     private final String type;
     private final String version;
 
-    KnownManagedRuleSet(String type, String version) {
+    KnownWebApplicationGatewayManagedRuleSet(String type, String version) {
         this.type = type;
         this.version = version;
     }

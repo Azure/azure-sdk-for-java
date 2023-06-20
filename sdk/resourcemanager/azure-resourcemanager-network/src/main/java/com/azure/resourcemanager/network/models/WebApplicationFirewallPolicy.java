@@ -90,37 +90,21 @@ public interface WebApplicationFirewallPolicy
 
         /** The stage of a Web Application Firewall Policy definition allowing to specify the managed rules. */
         interface WithManagedRules {
-            /**
-             * Specifies a known managed rule set to be added to the Web Application Firewall.
-             *
-             * @param managedRuleSet known managed rule set
-             * @return the next stage of the definition
-             */
-            WithManagedRulesOrCreate withManagedRuleSet(KnownManagedRuleSet managedRuleSet);
 
             /**
-             * Specifies a known managed rule set to be added to the Web Application Firewall, with a rule group override
-             * configuration.
+             * Specifies a known managed rule set to be added to the Web Application Firewall, with optional rule group
+             * override configurations.
              *
              * @param managedRuleSet known managed rule set
              * @param managedRuleGroupOverrides rule group override configuration
              * @return the next stage of the definition
              */
-            WithManagedRulesOrCreate withManagedRuleSet(KnownManagedRuleSet managedRuleSet,
+            WithManagedRulesOrCreate withManagedRuleSet(KnownWebApplicationGatewayManagedRuleSet managedRuleSet,
                                                         ManagedRuleGroupOverride... managedRuleGroupOverrides);
 
             /**
-             * Specifies a managed rule set to be added to the Web Application Firewall.
-             *
-             * @param type managed rule set type
-             * @param version managed rule set version
-             * @return the next stage of the definition
-             */
-            WithManagedRulesOrCreate withManagedRuleSet(String type, String version);
-
-            /**
-             * Specifies a managed rule set to be added to the Web Application Firewall, with a rule group override
-             * configuration.
+             * Specifies a managed rule set to be added to the Web Application Firewall, with optional rule group override
+             * configurations.
              *
              * @param type managed rule set type
              * @param version managed rule set version
@@ -302,36 +286,19 @@ public interface WebApplicationFirewallPolicy
          */
         interface WithManagedRuleSet {
             /**
-             * Specifies a known managed rule set to be added to the Web Application Firewall.
-             *
-             * @param managedRuleSet known managed rule set
-             * @return the next stage of the update
-             */
-            Update withManagedRuleSet(KnownManagedRuleSet managedRuleSet);
-
-            /**
-             * Specifies a known managed rule set to be added to the Web Application Firewall, with a rule group override
-             * configuration.
+             * Specifies a known managed rule set to be added to the Web Application Firewall, with optional rule group
+             * override configurations.
              *
              * @param managedRuleSet known managed rule set
              * @param managedRuleGroupOverrides rule group override configuration
              * @return the next stage of the update
              */
-            Update withManagedRuleSet(KnownManagedRuleSet managedRuleSet,
+            Update withManagedRuleSet(KnownWebApplicationGatewayManagedRuleSet managedRuleSet,
                                       ManagedRuleGroupOverride... managedRuleGroupOverrides);
 
             /**
-             * Specifies a managed rule set to be added to the Web Application Firewall.
-             *
-             * @param type managed rule set type
-             * @param version managed rule set version
-             * @return the next stage of the update
-             */
-            Update withManagedRuleSet(String type, String version);
-
-            /**
-             * Specifies a managed rule set to be added to the Web Application Firewall, with a rule group override
-             * configuration.
+             * Specifies a managed rule set to be added to the Web Application Firewall, with optional rule group override
+             * configurations.
              *
              * @param type managed rule set type
              * @param version managed rule set version
@@ -355,7 +322,7 @@ public interface WebApplicationFirewallPolicy
              * @param managedRuleSet managed rule set to be removed
              * @return the next stage of the update
              */
-            Update withoutManagedRuleSet(KnownManagedRuleSet managedRuleSet);
+            Update withoutManagedRuleSet(KnownWebApplicationGatewayManagedRuleSet managedRuleSet);
 
             /**
              * Removes the specified managed rule set from the Web Application Firewall.

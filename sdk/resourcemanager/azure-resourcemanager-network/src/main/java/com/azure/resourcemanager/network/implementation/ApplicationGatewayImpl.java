@@ -43,7 +43,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayTier;
 import com.azure.resourcemanager.network.models.ApplicationGatewayUrlPathMap;
 import com.azure.resourcemanager.network.models.ApplicationGatewayWebApplicationFirewallConfiguration;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
-import com.azure.resourcemanager.network.models.KnownManagedRuleSet;
+import com.azure.resourcemanager.network.models.KnownWebApplicationGatewayManagedRuleSet;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
@@ -679,7 +679,7 @@ class ApplicationGatewayImpl
             .define(this.manager().resourceManager().internalContext().randomResourceName("wafpolicy", 14))
             .withRegion(region())
             .withExistingResourceGroup(this.resourceGroupName())
-            .withManagedRuleSet(KnownManagedRuleSet.OWASP_3_2)
+            .withManagedRuleSet(KnownWebApplicationGatewayManagedRuleSet.OWASP_3_2)
             .withMode(mode);
         return withNewWebApplicationFirewallPolicy(wafPolicyCreatable);
     }
