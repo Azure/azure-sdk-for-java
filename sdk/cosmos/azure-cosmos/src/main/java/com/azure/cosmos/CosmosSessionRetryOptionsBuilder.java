@@ -3,6 +3,8 @@
 
 package com.azure.cosmos;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 /**
  * A {@link CosmosSessionRetryOptionsBuilder} instance will be used to build
  * a {@link CosmosSessionRetryOptions} instance.
@@ -18,13 +20,14 @@ public final class CosmosSessionRetryOptionsBuilder {
      * <p>
      * NOTES:
      * <ul>
-     *     <li>{@code null} values are ignored</li>
+     *     <li>{@code null} values are not allowed</li>
      * </ul>
      *
      * @param regionSwitchHint The region switch hint
      * @return This instance of {@link CosmosSessionRetryOptionsBuilder}
      * */
     public CosmosSessionRetryOptionsBuilder regionSwitchHint(CosmosRegionSwitchHint regionSwitchHint) {
+        checkNotNull(regionSwitchHint, "regionSwitch hint cannot be null");
         this.regionSwitchHint = regionSwitchHint;
         return this;
     }
