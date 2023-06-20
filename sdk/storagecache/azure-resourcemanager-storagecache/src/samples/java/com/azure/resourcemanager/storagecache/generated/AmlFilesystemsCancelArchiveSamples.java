@@ -7,7 +7,7 @@ package com.azure.resourcemanager.storagecache.generated;
 /** Samples for AmlFilesystems CancelArchive. */
 public final class AmlFilesystemsCancelArchiveSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/amlFilesystems_CancelArchive.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/amlFilesystems_CancelArchive.json
      */
     /**
      * Sample code: amlFilesystems_cancelArchive.
