@@ -136,7 +136,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
                 .consistencyLevel(BridgeInternal.getContextClient(this.cosmosAsyncClient).getConsistencyLevel())
                 .preferredRegions(preferredLocations)
                 .sessionRetryOptions(new CosmosSessionRetryOptionsBuilder()
-                    .setRegionSwitchHint(regionSwitchHint)
+                    .regionSwitchHint(regionSwitchHint)
                     .build()
                 )
                 .directMode()
@@ -216,7 +216,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
                 .preferredRegions(preferredRegions)
-                .sessionRetryOptions(new CosmosSessionRetryOptionsBuilder().setRegionSwitchHint(regionSwitchHint).build())
+                .sessionRetryOptions(new CosmosSessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build())
                 .buildAsyncClient();
 
             CosmosAsyncContainer asyncContainerFromClientWithPreferredRegions = clientWithPreferredRegions

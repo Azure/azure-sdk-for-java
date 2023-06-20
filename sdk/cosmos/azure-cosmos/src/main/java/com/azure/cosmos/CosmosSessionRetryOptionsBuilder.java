@@ -24,7 +24,7 @@ public final class CosmosSessionRetryOptionsBuilder {
      * @param regionSwitchHint The region switch hint
      * @return This instance of {@link CosmosSessionRetryOptionsBuilder}
      * */
-    public CosmosSessionRetryOptionsBuilder setRegionSwitchHint(CosmosRegionSwitchHint regionSwitchHint) {
+    public CosmosSessionRetryOptionsBuilder regionSwitchHint(CosmosRegionSwitchHint regionSwitchHint) {
         this.regionSwitchHint = regionSwitchHint;
         return this;
     }
