@@ -91,7 +91,7 @@ public final class QueueAsyncClient {
     private final QueueMessageEncoding messageEncoding;
     private final Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler;
     private final Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler;
-    private QueueClient queueClient;
+    private final QueueClient queueClient;
 
     /**
      * Creates a QueueAsyncClient that sends requests to the storage queue service at {@link #getQueueUrl() endpoint}.
@@ -99,11 +99,19 @@ public final class QueueAsyncClient {
      *
      * @param client Client that interacts with the service interfaces
      * @param queueName Name of the queue
+     * @param accountName Name of the account.
+     * @param serviceVersion the {@link QueueServiceVersion}.
+     * @param messageEncoding the {@link QueueMessageEncoding}.
+     * @param processMessageDecodingErrorAsyncHandler the asynchronous handler that performs the tasks needed when a
+     * message is received or peaked from the queue but cannot be decoded.
+     * @param processMessageDecodingErrorHandler the synchronous handler that performs the tasks needed when a
+     * message is received or peaked from the queue but cannot be decoded.
+     * @param queueClient the {@link QueueClient} associated with this client.
      */
     QueueAsyncClient(AzureQueueStorageImpl client, String queueName, String accountName,
         QueueServiceVersion serviceVersion, QueueMessageEncoding messageEncoding,
         Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler,
-        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
+        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler, QueueClient queueClient) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.queueName = queueName;
         this.client = client;
@@ -112,6 +120,7 @@ public final class QueueAsyncClient {
         this.messageEncoding = messageEncoding;
         this.processMessageDecodingErrorAsyncHandler = processMessageDecodingErrorAsyncHandler;
         this.processMessageDecodingErrorHandler = processMessageDecodingErrorHandler;
+        this.queueClient = queueClient;
     }
 
     /**
@@ -1125,11 +1134,6 @@ public final class QueueAsyncClient {
             .flatMapSequential(queueMessageItemInternal -> Mono.fromCallable(() ->
                         ModelHelper.transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding))
                 .onErrorResume(IllegalArgumentException.class, e -> {
-                    if (queueClient == null) {
-                        queueClient = new QueueClient(client, queueName, getAccountName(), serviceVersion,
-                            messageEncoding, processMessageDecodingErrorAsyncHandler,
-                            processMessageDecodingErrorHandler);
-                    }
                     if (processMessageDecodingErrorAsyncHandler != null) {
                         return Mono.fromCallable(() ->
                                 ModelHelper.transformQueueMessageItemInternal(queueMessageItemInternal,
@@ -1257,11 +1261,6 @@ public final class QueueAsyncClient {
                 Mono.fromCallable(() ->
                         ModelHelper.transformPeekedMessageItemInternal(peekedMessageItemInternal, messageEncoding))
                     .onErrorResume(IllegalArgumentException.class, e -> {
-                        if (queueClient == null) {
-                            queueClient = new QueueClient(client, queueName, getAccountName(), serviceVersion,
-                                messageEncoding, processMessageDecodingErrorAsyncHandler,
-                                processMessageDecodingErrorHandler);
-                        }
                         if (processMessageDecodingErrorAsyncHandler != null) {
                             return Mono.fromCallable(() ->
                                     ModelHelper.transformPeekedMessageItemInternal(peekedMessageItemInternal,
