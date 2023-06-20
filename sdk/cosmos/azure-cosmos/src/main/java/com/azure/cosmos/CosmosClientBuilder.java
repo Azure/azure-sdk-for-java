@@ -817,7 +817,7 @@ public class CosmosClientBuilder implements
      *     <li>
      *         For a read request going to a local read region, it is possible to optimize
      *         availability by having the request be retried on a different write region since
-     *         some write region will have more updated.
+     *         the other write region might have more upto date data.
      *     </li>
      *     <li>
      *         For a read request going to a local write region, it could help to
