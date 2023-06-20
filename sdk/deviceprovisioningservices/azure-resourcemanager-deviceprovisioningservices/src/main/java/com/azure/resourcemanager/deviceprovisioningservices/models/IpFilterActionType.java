@@ -7,7 +7,7 @@ package com.azure.resourcemanager.deviceprovisioningservices.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for IpFilterActionType. */
+/** The desired action for requests captured by this rule. */
 public enum IpFilterActionType {
     /** Enum value Accept. */
     ACCEPT("Accept"),
@@ -30,6 +30,9 @@ public enum IpFilterActionType {
      */
     @JsonCreator
     public static IpFilterActionType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         IpFilterActionType[] items = IpFilterActionType.values();
         for (IpFilterActionType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum IpFilterActionType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

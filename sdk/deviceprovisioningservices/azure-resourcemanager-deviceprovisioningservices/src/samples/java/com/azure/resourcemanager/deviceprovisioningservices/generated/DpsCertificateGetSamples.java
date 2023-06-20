@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DpsCertificate Get. */
 public final class DpsCertificateGetSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGetCertificate.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSGetCertificate.json
      */
     /**
      * Sample code: DPSGetCertificate.
@@ -19,6 +17,7 @@ public final class DpsCertificateGetSamples {
     public static void dPSGetCertificate(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
         manager
             .dpsCertificates()
-            .getWithResponse("cert", "myResourceGroup", "myFirstProvisioningService", null, Context.NONE);
+            .getWithResponse(
+                "cert", "myResourceGroup", "myFirstProvisioningService", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -41,6 +41,10 @@ public final class IotHubDefinitionDescription {
     @JsonProperty(value = "location", required = true)
     private String location;
 
+    /** Creates an instance of IotHubDefinitionDescription class. */
+    public IotHubDefinitionDescription() {
+    }
+
     /**
      * Get the applyAllocationPolicy property: flag for applying allocationPolicy or not for a given iot hub.
      *

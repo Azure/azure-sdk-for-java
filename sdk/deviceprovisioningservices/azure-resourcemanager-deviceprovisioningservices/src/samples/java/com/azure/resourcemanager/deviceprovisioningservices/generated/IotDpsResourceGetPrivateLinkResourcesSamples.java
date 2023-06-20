@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IotDpsResource GetPrivateLinkResources. */
 public final class IotDpsResourceGetPrivateLinkResourcesSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGetPrivateLinkResources.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSGetPrivateLinkResources.json
      */
     /**
      * Sample code: PrivateLinkResources_List.
@@ -21,6 +19,6 @@ public final class IotDpsResourceGetPrivateLinkResourcesSamples {
         manager
             .iotDpsResources()
             .getPrivateLinkResourcesWithResponse(
-                "myResourceGroup", "myFirstProvisioningService", "iotDps", Context.NONE);
+                "myResourceGroup", "myFirstProvisioningService", "iotDps", com.azure.core.util.Context.NONE);
     }
 }

@@ -12,20 +12,9 @@ import java.util.List;
 /** Resource collection API of IotDpsResources. */
 public interface IotDpsResources {
     /**
-     * Get the metadata of the provisioning service without SAS keys.
+     * Get the non-security related metadata of the provisioning service.
      *
-     * @param resourceGroupName Resource group name.
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
-     *     is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metadata of the provisioning service without SAS keys.
-     */
-    ProvisioningServiceDescription getByResourceGroup(String resourceGroupName, String provisioningServiceName);
-
-    /**
-     * Get the metadata of the provisioning service without SAS keys.
+     * <p>Get the metadata of the provisioning service without SAS keys.
      *
      * @param resourceGroupName Resource group name.
      * @param provisioningServiceName Name of the provisioning service to retrieve.
@@ -40,7 +29,24 @@ public interface IotDpsResources {
         String resourceGroupName, String provisioningServiceName, Context context);
 
     /**
-     * Deletes the Provisioning Service.
+     * Get the non-security related metadata of the provisioning service.
+     *
+     * <p>Get the metadata of the provisioning service without SAS keys.
+     *
+     * @param resourceGroupName Resource group name.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the metadata of the provisioning service without SAS keys.
+     */
+    ProvisioningServiceDescription getByResourceGroup(String resourceGroupName, String provisioningServiceName);
+
+    /**
+     * Delete the Provisioning Service
+     *
+     * <p>Deletes the Provisioning Service.
      *
      * @param resourceGroupName Resource group identifier.
      * @param provisioningServiceName Name of provisioning service to delete.
@@ -52,7 +58,9 @@ public interface IotDpsResources {
     void deleteByResourceGroup(String resourceGroupName, String provisioningServiceName);
 
     /**
-     * Deletes the Provisioning Service.
+     * Delete the Provisioning Service
+     *
+     * <p>Deletes the Provisioning Service.
      *
      * @param resourceGroupName Resource group identifier.
      * @param provisioningServiceName Name of provisioning service to delete.
@@ -65,7 +73,9 @@ public interface IotDpsResources {
     void delete(String resourceGroupName, String provisioningServiceName, Context context);
 
     /**
-     * List all the provisioning services for a given subscription id.
+     * Get all the provisioning services in a subscription.
+     *
+     * <p>List all the provisioning services for a given subscription id.
      *
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
@@ -75,7 +85,9 @@ public interface IotDpsResources {
     PagedIterable<ProvisioningServiceDescription> list();
 
     /**
-     * List all the provisioning services for a given subscription id.
+     * Get all the provisioning services in a subscription.
+     *
+     * <p>List all the provisioning services for a given subscription id.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -121,23 +133,6 @@ public interface IotDpsResources {
      * @param provisioningServiceName Name of provisioning service that the operation is running on.
      * @param asyncinfo Async header used to poll on the status of the operation, obtained while creating the long
      *     running operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
-     *     is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a long running operation, such as create, update or delete a provisioning service.
-     */
-    AsyncOperationResult getOperationResult(
-        String operationId, String resourceGroupName, String provisioningServiceName, String asyncinfo);
-
-    /**
-     * Gets the status of a long running operation, such as create, update or delete a provisioning service.
-     *
-     * @param operationId Operation id corresponding to long running operation. Use this to poll for the status.
-     * @param resourceGroupName Resource group identifier.
-     * @param provisioningServiceName Name of provisioning service that the operation is running on.
-     * @param asyncinfo Async header used to poll on the status of the operation, obtained while creating the long
-     *     running operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
@@ -154,7 +149,26 @@ public interface IotDpsResources {
         Context context);
 
     /**
-     * Gets the list of valid SKUs and tiers for a provisioning service.
+     * Gets the status of a long running operation, such as create, update or delete a provisioning service.
+     *
+     * @param operationId Operation id corresponding to long running operation. Use this to poll for the status.
+     * @param resourceGroupName Resource group identifier.
+     * @param provisioningServiceName Name of provisioning service that the operation is running on.
+     * @param asyncinfo Async header used to poll on the status of the operation, obtained while creating the long
+     *     running operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of a long running operation, such as create, update or delete a provisioning service.
+     */
+    AsyncOperationResult getOperationResult(
+        String operationId, String resourceGroupName, String provisioningServiceName, String asyncinfo);
+
+    /**
+     * Get the list of valid SKUs for a provisioning service.
+     *
+     * <p>Gets the list of valid SKUs and tiers for a provisioning service.
      *
      * @param provisioningServiceName Name of provisioning service.
      * @param resourceGroupName Name of resource group.
@@ -168,7 +182,9 @@ public interface IotDpsResources {
     PagedIterable<IotDpsSkuDefinition> listValidSkus(String provisioningServiceName, String resourceGroupName);
 
     /**
-     * Gets the list of valid SKUs and tiers for a provisioning service.
+     * Get the list of valid SKUs for a provisioning service.
+     *
+     * <p>Gets the list of valid SKUs and tiers for a provisioning service.
      *
      * @param provisioningServiceName Name of provisioning service.
      * @param resourceGroupName Name of resource group.
@@ -184,22 +200,10 @@ public interface IotDpsResources {
         String provisioningServiceName, String resourceGroupName, Context context);
 
     /**
-     * Check if a provisioning service name is available. This will validate if the name is syntactically valid and if
-     * the name is usable.
+     * Check if a provisioning service name is available.
      *
-     * @param arguments Set the name parameter in the OperationInputs structure to the name of the provisioning service
-     *     to check.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
-     *     is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of name availability.
-     */
-    NameAvailabilityInfo checkProvisioningServiceNameAvailability(OperationInputs arguments);
-
-    /**
-     * Check if a provisioning service name is available. This will validate if the name is syntactically valid and if
-     * the name is usable.
+     * <p>Check if a provisioning service name is available. This will validate if the name is syntactically valid and
+     * if the name is usable.
      *
      * @param arguments Set the name parameter in the OperationInputs structure to the name of the provisioning service
      *     to check.
@@ -214,7 +218,25 @@ public interface IotDpsResources {
         OperationInputs arguments, Context context);
 
     /**
-     * List the primary and secondary keys for a provisioning service.
+     * Check if a provisioning service name is available.
+     *
+     * <p>Check if a provisioning service name is available. This will validate if the name is syntactically valid and
+     * if the name is usable.
+     *
+     * @param arguments Set the name parameter in the OperationInputs structure to the name of the provisioning service
+     *     to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of name availability.
+     */
+    NameAvailabilityInfo checkProvisioningServiceNameAvailability(OperationInputs arguments);
+
+    /**
+     * Get the security metadata for a provisioning service.
+     *
+     * <p>List the primary and secondary keys for a provisioning service.
      *
      * @param provisioningServiceName The provisioning service name to get the shared access keys for.
      * @param resourceGroupName resource group name.
@@ -228,7 +250,9 @@ public interface IotDpsResources {
         String provisioningServiceName, String resourceGroupName);
 
     /**
-     * List the primary and secondary keys for a provisioning service.
+     * Get the security metadata for a provisioning service.
+     *
+     * <p>List the primary and secondary keys for a provisioning service.
      *
      * @param provisioningServiceName The provisioning service name to get the shared access keys for.
      * @param resourceGroupName resource group name.
@@ -243,22 +267,9 @@ public interface IotDpsResources {
         String provisioningServiceName, String resourceGroupName, Context context);
 
     /**
-     * List primary and secondary keys for a specific key name.
+     * Get a shared access policy by name from a provisioning service.
      *
-     * @param provisioningServiceName Name of the provisioning service.
-     * @param keyName Logical key name to get key-values for.
-     * @param resourceGroupName The name of the resource group that contains the provisioning service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
-     *     is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of the shared access key.
-     */
-    SharedAccessSignatureAuthorizationRule listKeysForKeyName(
-        String provisioningServiceName, String keyName, String resourceGroupName);
-
-    /**
-     * List primary and secondary keys for a specific key name.
+     * <p>List primary and secondary keys for a specific key name.
      *
      * @param provisioningServiceName Name of the provisioning service.
      * @param keyName Logical key name to get key-values for.
@@ -274,20 +285,26 @@ public interface IotDpsResources {
         String provisioningServiceName, String keyName, String resourceGroupName, Context context);
 
     /**
-     * List private link resources for the given provisioning service.
+     * Get a shared access policy by name from a provisioning service.
      *
+     * <p>List primary and secondary keys for a specific key name.
+     *
+     * @param provisioningServiceName Name of the provisioning service.
+     * @param keyName Logical key name to get key-values for.
      * @param resourceGroupName The name of the resource group that contains the provisioning service.
-     * @param resourceName The name of the provisioning service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available private link resources for a provisioning service.
+     * @return description of the shared access key.
      */
-    PrivateLinkResources listPrivateLinkResources(String resourceGroupName, String resourceName);
+    SharedAccessSignatureAuthorizationRule listKeysForKeyName(
+        String provisioningServiceName, String keyName, String resourceGroupName);
 
     /**
-     * List private link resources for the given provisioning service.
+     * List private link resources
+     *
+     * <p>List private link resources for the given provisioning service.
      *
      * @param resourceGroupName The name of the resource group that contains the provisioning service.
      * @param resourceName The name of the provisioning service.
@@ -302,21 +319,24 @@ public interface IotDpsResources {
         String resourceGroupName, String resourceName, Context context);
 
     /**
-     * Get the specified private link resource for the given provisioning service.
+     * List private link resources
+     *
+     * <p>List private link resources for the given provisioning service.
      *
      * @param resourceGroupName The name of the resource group that contains the provisioning service.
      * @param resourceName The name of the provisioning service.
-     * @param groupId The name of the private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link resource for the given provisioning service.
+     * @return the available private link resources for a provisioning service.
      */
-    GroupIdInformation getPrivateLinkResources(String resourceGroupName, String resourceName, String groupId);
+    PrivateLinkResources listPrivateLinkResources(String resourceGroupName, String resourceName);
 
     /**
-     * Get the specified private link resource for the given provisioning service.
+     * Get the specified private link resource
+     *
+     * <p>Get the specified private link resource for the given provisioning service.
      *
      * @param resourceGroupName The name of the resource group that contains the provisioning service.
      * @param resourceName The name of the provisioning service.
@@ -332,20 +352,25 @@ public interface IotDpsResources {
         String resourceGroupName, String resourceName, String groupId, Context context);
 
     /**
-     * List private endpoint connection properties.
+     * Get the specified private link resource
+     *
+     * <p>Get the specified private link resource for the given provisioning service.
      *
      * @param resourceGroupName The name of the resource group that contains the provisioning service.
      * @param resourceName The name of the provisioning service.
+     * @param groupId The name of the private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of private endpoint connections for a provisioning service.
+     * @return the specified private link resource for the given provisioning service.
      */
-    List<PrivateEndpointConnection> listPrivateEndpointConnections(String resourceGroupName, String resourceName);
+    GroupIdInformation getPrivateLinkResources(String resourceGroupName, String resourceName, String groupId);
 
     /**
-     * List private endpoint connection properties.
+     * List private endpoint connections
+     *
+     * <p>List private endpoint connection properties.
      *
      * @param resourceGroupName The name of the resource group that contains the provisioning service.
      * @param resourceName The name of the provisioning service.
@@ -360,22 +385,24 @@ public interface IotDpsResources {
         String resourceGroupName, String resourceName, Context context);
 
     /**
-     * Get private endpoint connection properties.
+     * List private endpoint connections
+     *
+     * <p>List private endpoint connection properties.
      *
      * @param resourceGroupName The name of the resource group that contains the provisioning service.
      * @param resourceName The name of the provisioning service.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection properties.
+     * @return the list of private endpoint connections for a provisioning service.
      */
-    PrivateEndpointConnection getPrivateEndpointConnection(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName);
+    List<PrivateEndpointConnection> listPrivateEndpointConnections(String resourceGroupName, String resourceName);
 
     /**
-     * Get private endpoint connection properties.
+     * Get private endpoint connection
+     *
+     * <p>Get private endpoint connection properties.
      *
      * @param resourceGroupName The name of the resource group that contains the provisioning service.
      * @param resourceName The name of the provisioning service.
@@ -391,7 +418,26 @@ public interface IotDpsResources {
         String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context);
 
     /**
-     * Delete private endpoint connection with the specified name.
+     * Get private endpoint connection
+     *
+     * <p>Get private endpoint connection properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the provisioning service.
+     * @param resourceName The name of the provisioning service.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private endpoint connection properties.
+     */
+    PrivateEndpointConnection getPrivateEndpointConnection(
+        String resourceGroupName, String resourceName, String privateEndpointConnectionName);
+
+    /**
+     * Delete private endpoint connection
+     *
+     * <p>Delete private endpoint connection with the specified name.
      *
      * @param resourceGroupName The name of the resource group that contains the provisioning service.
      * @param resourceName The name of the provisioning service.
@@ -406,7 +452,9 @@ public interface IotDpsResources {
         String resourceGroupName, String resourceName, String privateEndpointConnectionName);
 
     /**
-     * Delete private endpoint connection with the specified name.
+     * Delete private endpoint connection
+     *
+     * <p>Delete private endpoint connection with the specified name.
      *
      * @param resourceGroupName The name of the resource group that contains the provisioning service.
      * @param resourceName The name of the provisioning service.
@@ -422,7 +470,9 @@ public interface IotDpsResources {
         String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context);
 
     /**
-     * Get the metadata of the provisioning service without SAS keys.
+     * Get the non-security related metadata of the provisioning service.
+     *
+     * <p>Get the metadata of the provisioning service without SAS keys.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -434,7 +484,9 @@ public interface IotDpsResources {
     ProvisioningServiceDescription getById(String id);
 
     /**
-     * Get the metadata of the provisioning service without SAS keys.
+     * Get the non-security related metadata of the provisioning service.
+     *
+     * <p>Get the metadata of the provisioning service without SAS keys.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -447,7 +499,9 @@ public interface IotDpsResources {
     Response<ProvisioningServiceDescription> getByIdWithResponse(String id, Context context);
 
     /**
-     * Get private endpoint connection properties.
+     * Get private endpoint connection
+     *
+     * <p>Get private endpoint connection properties.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -459,7 +513,9 @@ public interface IotDpsResources {
     PrivateEndpointConnection getPrivateEndpointConnectionById(String id);
 
     /**
-     * Get private endpoint connection properties.
+     * Get private endpoint connection
+     *
+     * <p>Get private endpoint connection properties.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -472,7 +528,9 @@ public interface IotDpsResources {
     Response<PrivateEndpointConnection> getPrivateEndpointConnectionByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes the Provisioning Service.
+     * Delete the Provisioning Service
+     *
+     * <p>Deletes the Provisioning Service.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -483,7 +541,9 @@ public interface IotDpsResources {
     void deleteById(String id);
 
     /**
-     * Deletes the Provisioning Service.
+     * Delete the Provisioning Service
+     *
+     * <p>Deletes the Provisioning Service.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -495,7 +555,9 @@ public interface IotDpsResources {
     void deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Delete private endpoint connection with the specified name.
+     * Delete private endpoint connection
+     *
+     * <p>Delete private endpoint connection with the specified name.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -507,7 +569,9 @@ public interface IotDpsResources {
     PrivateEndpointConnection deletePrivateEndpointConnectionById(String id);
 
     /**
-     * Delete private endpoint connection with the specified name.
+     * Delete private endpoint connection
+     *
+     * <p>Delete private endpoint connection with the specified name.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

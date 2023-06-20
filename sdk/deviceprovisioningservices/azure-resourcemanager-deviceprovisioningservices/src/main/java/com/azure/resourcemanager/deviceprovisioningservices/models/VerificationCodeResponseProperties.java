@@ -42,8 +42,7 @@ public final class VerificationCodeResponseProperties {
     private Boolean isVerified;
 
     /*
-     * base-64 representation of X509 certificate .cer file or just .pem file
-     * content.
+     * base-64 representation of X509 certificate .cer file or just .pem file content.
      */
     @JsonProperty(value = "certificate")
     private byte[] certificate;
@@ -59,6 +58,10 @@ public final class VerificationCodeResponseProperties {
      */
     @JsonProperty(value = "updated")
     private String updated;
+
+    /** Creates an instance of VerificationCodeResponseProperties class. */
+    public VerificationCodeResponseProperties() {
+    }
 
     /**
      * Get the verificationCode property: Verification code.

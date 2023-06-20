@@ -24,6 +24,10 @@ public final class ProvisioningServiceDescriptionListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ProvisioningServiceDescriptionListResult class. */
+    public ProvisioningServiceDescriptionListResult() {
+    }
+
     /**
      * Get the value property: List of provisioning service descriptions.
      *

@@ -17,6 +17,10 @@ public final class PrivateLinkResourcesInner {
     @JsonProperty(value = "value")
     private List<GroupIdInformationInner> value;
 
+    /** Creates an instance of PrivateLinkResourcesInner class. */
+    public PrivateLinkResourcesInner() {
+    }
+
     /**
      * Get the value property: The list of available private link resources for a provisioning service.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AllocationPolicy. */
+/** Allocation policy to be used by this provisioning service. */
 public final class AllocationPolicy extends ExpandableStringEnum<AllocationPolicy> {
     /** Static value Hashed for AllocationPolicy. */
     public static final AllocationPolicy HASHED = fromString("Hashed");
@@ -18,6 +18,15 @@ public final class AllocationPolicy extends ExpandableStringEnum<AllocationPolic
 
     /** Static value Static for AllocationPolicy. */
     public static final AllocationPolicy STATIC = fromString("Static");
+
+    /**
+     * Creates a new instance of AllocationPolicy value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AllocationPolicy() {
+    }
 
     /**
      * Creates or finds a AllocationPolicy from its string representation.

@@ -28,6 +28,10 @@ public final class IotDpsSkuInfo {
     @JsonProperty(value = "capacity")
     private Long capacity;
 
+    /** Creates an instance of IotDpsSkuInfo class. */
+    public IotDpsSkuInfo() {
+    }
+
     /**
      * Get the name property: Sku name.
      *

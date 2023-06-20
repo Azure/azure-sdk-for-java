@@ -24,6 +24,10 @@ public final class VerificationCodeResponseInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private VerificationCodeResponseProperties properties;
 
+    /** Creates an instance of VerificationCodeResponseInner class. */
+    public VerificationCodeResponseInner() {
+    }
+
     /**
      * Get the etag property: Request etag.
      *

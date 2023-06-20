@@ -36,6 +36,10 @@ public final class SharedAccessSignatureAuthorizationRuleInner {
     @JsonProperty(value = "rights", required = true)
     private AccessRightsDescription rights;
 
+    /** Creates an instance of SharedAccessSignatureAuthorizationRuleInner class. */
+    public SharedAccessSignatureAuthorizationRuleInner() {
+    }
+
     /**
      * Get the keyName property: Name of the key.
      *

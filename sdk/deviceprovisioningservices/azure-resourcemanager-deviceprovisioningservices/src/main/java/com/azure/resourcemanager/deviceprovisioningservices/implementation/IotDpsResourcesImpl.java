@@ -46,16 +46,6 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         this.serviceManager = serviceManager;
     }
 
-    public ProvisioningServiceDescription getByResourceGroup(String resourceGroupName, String provisioningServiceName) {
-        ProvisioningServiceDescriptionInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, provisioningServiceName);
-        if (inner != null) {
-            return new ProvisioningServiceDescriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ProvisioningServiceDescription> getByResourceGroupWithResponse(
         String resourceGroupName, String provisioningServiceName, Context context) {
         Response<ProvisioningServiceDescriptionInner> inner =
@@ -66,6 +56,16 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ProvisioningServiceDescriptionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ProvisioningServiceDescription getByResourceGroup(String resourceGroupName, String provisioningServiceName) {
+        ProvisioningServiceDescriptionInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, provisioningServiceName);
+        if (inner != null) {
+            return new ProvisioningServiceDescriptionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -102,17 +102,6 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         return Utils.mapPage(inner, inner1 -> new ProvisioningServiceDescriptionImpl(inner1, this.manager()));
     }
 
-    public AsyncOperationResult getOperationResult(
-        String operationId, String resourceGroupName, String provisioningServiceName, String asyncinfo) {
-        AsyncOperationResultInner inner =
-            this.serviceClient().getOperationResult(operationId, resourceGroupName, provisioningServiceName, asyncinfo);
-        if (inner != null) {
-            return new AsyncOperationResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AsyncOperationResult> getOperationResultWithResponse(
         String operationId,
         String resourceGroupName,
@@ -135,6 +124,17 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
     }
 
+    public AsyncOperationResult getOperationResult(
+        String operationId, String resourceGroupName, String provisioningServiceName, String asyncinfo) {
+        AsyncOperationResultInner inner =
+            this.serviceClient().getOperationResult(operationId, resourceGroupName, provisioningServiceName, asyncinfo);
+        if (inner != null) {
+            return new AsyncOperationResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<IotDpsSkuDefinition> listValidSkus(String provisioningServiceName, String resourceGroupName) {
         PagedIterable<IotDpsSkuDefinitionInner> inner =
             this.serviceClient().listValidSkus(provisioningServiceName, resourceGroupName);
@@ -148,15 +148,6 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         return Utils.mapPage(inner, inner1 -> new IotDpsSkuDefinitionImpl(inner1, this.manager()));
     }
 
-    public NameAvailabilityInfo checkProvisioningServiceNameAvailability(OperationInputs arguments) {
-        NameAvailabilityInfoInner inner = this.serviceClient().checkProvisioningServiceNameAvailability(arguments);
-        if (inner != null) {
-            return new NameAvailabilityInfoImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<NameAvailabilityInfo> checkProvisioningServiceNameAvailabilityWithResponse(
         OperationInputs arguments, Context context) {
         Response<NameAvailabilityInfoInner> inner =
@@ -167,6 +158,15 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new NameAvailabilityInfoImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public NameAvailabilityInfo checkProvisioningServiceNameAvailability(OperationInputs arguments) {
+        NameAvailabilityInfoInner inner = this.serviceClient().checkProvisioningServiceNameAvailability(arguments);
+        if (inner != null) {
+            return new NameAvailabilityInfoImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -186,17 +186,6 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         return Utils.mapPage(inner, inner1 -> new SharedAccessSignatureAuthorizationRuleImpl(inner1, this.manager()));
     }
 
-    public SharedAccessSignatureAuthorizationRule listKeysForKeyName(
-        String provisioningServiceName, String keyName, String resourceGroupName) {
-        SharedAccessSignatureAuthorizationRuleInner inner =
-            this.serviceClient().listKeysForKeyName(provisioningServiceName, keyName, resourceGroupName);
-        if (inner != null) {
-            return new SharedAccessSignatureAuthorizationRuleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SharedAccessSignatureAuthorizationRule> listKeysForKeyNameWithResponse(
         String provisioningServiceName, String keyName, String resourceGroupName, Context context) {
         Response<SharedAccessSignatureAuthorizationRuleInner> inner =
@@ -214,11 +203,12 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
     }
 
-    public PrivateLinkResources listPrivateLinkResources(String resourceGroupName, String resourceName) {
-        PrivateLinkResourcesInner inner =
-            this.serviceClient().listPrivateLinkResources(resourceGroupName, resourceName);
+    public SharedAccessSignatureAuthorizationRule listKeysForKeyName(
+        String provisioningServiceName, String keyName, String resourceGroupName) {
+        SharedAccessSignatureAuthorizationRuleInner inner =
+            this.serviceClient().listKeysForKeyName(provisioningServiceName, keyName, resourceGroupName);
         if (inner != null) {
-            return new PrivateLinkResourcesImpl(inner, this.manager());
+            return new SharedAccessSignatureAuthorizationRuleImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -239,11 +229,11 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
     }
 
-    public GroupIdInformation getPrivateLinkResources(String resourceGroupName, String resourceName, String groupId) {
-        GroupIdInformationInner inner =
-            this.serviceClient().getPrivateLinkResources(resourceGroupName, resourceName, groupId);
+    public PrivateLinkResources listPrivateLinkResources(String resourceGroupName, String resourceName) {
+        PrivateLinkResourcesInner inner =
+            this.serviceClient().listPrivateLinkResources(resourceGroupName, resourceName);
         if (inner != null) {
-            return new GroupIdInformationImpl(inner, this.manager());
+            return new PrivateLinkResourcesImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -264,19 +254,13 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
     }
 
-    public List<PrivateEndpointConnection> listPrivateEndpointConnections(
-        String resourceGroupName, String resourceName) {
-        List<PrivateEndpointConnectionInner> inner =
-            this.serviceClient().listPrivateEndpointConnections(resourceGroupName, resourceName);
+    public GroupIdInformation getPrivateLinkResources(String resourceGroupName, String resourceName, String groupId) {
+        GroupIdInformationInner inner =
+            this.serviceClient().getPrivateLinkResources(resourceGroupName, resourceName, groupId);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return new GroupIdInformationImpl(inner, this.manager());
         } else {
-            return Collections.emptyList();
+            return null;
         }
     }
 
@@ -299,16 +283,19 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
     }
 
-    public PrivateEndpointConnection getPrivateEndpointConnection(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
-        PrivateEndpointConnectionInner inner =
-            this
-                .serviceClient()
-                .getPrivateEndpointConnection(resourceGroupName, resourceName, privateEndpointConnectionName);
+    public List<PrivateEndpointConnection> listPrivateEndpointConnections(
+        String resourceGroupName, String resourceName) {
+        List<PrivateEndpointConnectionInner> inner =
+            this.serviceClient().listPrivateEndpointConnections(resourceGroupName, resourceName);
         if (inner != null) {
-            return new PrivateEndpointConnectionImpl(inner, this.manager());
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
         } else {
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -325,6 +312,19 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PrivateEndpointConnection getPrivateEndpointConnection(
+        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
+        PrivateEndpointConnectionInner inner =
+            this
+                .serviceClient()
+                .getPrivateEndpointConnection(resourceGroupName, resourceName, privateEndpointConnectionName);
+        if (inner != null) {
+            return new PrivateEndpointConnectionImpl(inner, this.manager());
         } else {
             return null;
         }
