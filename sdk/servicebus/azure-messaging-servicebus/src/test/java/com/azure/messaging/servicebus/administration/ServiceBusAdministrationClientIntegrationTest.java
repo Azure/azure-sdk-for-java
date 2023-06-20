@@ -11,7 +11,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
@@ -67,7 +67,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * Tests {@link ServiceBusAdministrationClient}.
  */
 @Tag("integration")
-public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
+public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(20);
 
     /**
@@ -210,7 +210,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
 
         final String ruleName = testResourceNamer.randomName("rule", 5);
         final String topicName = getEntityName(getTopicBaseName(), 2);
-        final String subscriptionName = getEntityName(getSubscriptionBaseName(), 2);
+        final String subscriptionName = getSubscriptionBaseName();
         final SqlRuleAction action = new SqlRuleAction("SET Label = 'test'");
         final CreateRuleOptions options = new CreateRuleOptions()
             .setAction(action)
@@ -501,7 +501,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     void getSubscriptionExists() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 2);
-        final String subscriptionName = getEntityName(getSubscriptionBaseName(), 2);
+        final String subscriptionName = getSubscriptionBaseName();
 
         assertTrue(client.getSubscriptionExists(topicName, subscriptionName));
     }
@@ -510,7 +510,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     void getSubscriptionRuntimeProperties() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 2);
-        final String subscriptionName = getEntityName(getSubscriptionBaseName(), 2);
+        final String subscriptionName = getSubscriptionBaseName();
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         final SubscriptionRuntimeProperties properties = client.getSubscriptionRuntimeProperties(topicName, subscriptionName);
@@ -594,7 +594,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationClient client = getClient();
         final String ruleName = getEntityName(getRuleBaseName(), 9);
         final String topicName = getEntityName(getTopicBaseName(), 2);
-        final String subscriptionName = getEntityName(getSubscriptionBaseName(), 2);
+        final String subscriptionName = getSubscriptionBaseName();
         client.createRule(topicName, subscriptionName, ruleName);
 
         client.deleteRule(topicName, subscriptionName, ruleName);
@@ -698,6 +698,12 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         } else if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
+
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(ServiceBusAdministrationAsyncClientIntegrationTest.TEST_PROXY_SANITIZERS);
+            interceptorManager.addMatchers(ServiceBusAdministrationAsyncClientIntegrationTest.TEST_PROXY_REQUEST_MATCHERS);
+        }
+
         return builder.buildClient();
     }
 }

@@ -13,7 +13,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusServiceVersion;
@@ -49,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Integration tests for {@link ServiceBusManagementClientImpl}.
  */
-class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
+class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAdministrationClientImplIntegrationTests.class);
     private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
     private final Duration timeout = Duration.ofSeconds(30);
