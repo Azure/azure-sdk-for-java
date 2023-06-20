@@ -95,12 +95,12 @@ class AzureOpenAIAutoConfigurationTests extends AbstractAzureServiceConfiguratio
     @Test
     void configurationPropertiesShouldBind() {
         String azureKeyCredential = "azure-key-credential";
-        String NonAzureOpenAIKeyCredential = "non-azure-key-credential";
+        String nonAzureOpenAIKeyCredential = "non-azure-key-credential";
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.openai.endpoint=" + TEST_ENDPOINT_HTTPS,
                 "spring.cloud.azure.openai.key=" + azureKeyCredential,
-                "spring.cloud.azure.openai.non-azure-openai-key-credential=" + NonAzureOpenAIKeyCredential,
+                "spring.cloud.azure.openai.non-azure-openai-key-credential=" + nonAzureOpenAIKeyCredential,
                 "spring.cloud.azure.openai.service-version=v2022_12_01",
                 "spring.cloud.azure.credential.client-id=openai-client-id"
             )
@@ -110,7 +110,7 @@ class AzureOpenAIAutoConfigurationTests extends AbstractAzureServiceConfiguratio
                 AzureOpenAIProperties properties = context.getBean(AzureOpenAIProperties.class);
                 assertEquals(TEST_ENDPOINT_HTTPS, properties.getEndpoint());
                 assertEquals(azureKeyCredential, properties.getKey());
-                assertEquals(NonAzureOpenAIKeyCredential, properties.getNonAzureOpenAIKeyCredential());
+                assertEquals(nonAzureOpenAIKeyCredential, properties.getNonAzureOpenAIKeyCredential());
                 assertEquals(OpenAIServiceVersion.V2022_12_01, properties.getServiceVersion());
                 assertEquals("openai-client-id", properties.getCredential().getClientId());
             });

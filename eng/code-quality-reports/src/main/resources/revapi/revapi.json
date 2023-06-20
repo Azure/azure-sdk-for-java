@@ -274,7 +274,7 @@
         {
           "regex": true,
           "code" : "java.class.externalClassExposedInAPI",
-          "new" : "class com.azure.ai.openai.(OpenAIAsyncClient|OpenAIClient|OpenAIClientBuilder|OpenAIServiceVersion|models.*)",
+          "new" : "(class|enum) com.azure.ai.openai.(OpenAIAsyncClient|OpenAIClient|OpenAIClientBuilder|OpenAIServiceVersion|models.*)",
           "justification" : "external class in API"
         }
       ]
