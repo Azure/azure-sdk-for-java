@@ -362,6 +362,7 @@ public final class RouterClient {
      * Retrieves list of jobs based on filter parameters.
      *
      * @param listJobsOptions options for listJobs.
+     * @param context Context for listJobs.
      * @return a paged collection of jobs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
