@@ -31,7 +31,7 @@ public class ListJobsOptions {
     /**
      * ClassificationPolicyId.
      */
-    private String classificationPolicyId;
+    private final String classificationPolicyId;
 
     /**
      * MaxPageSize.
