@@ -2674,9 +2674,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosQueryRequestOptions queryRequestOptions,
         Class<T> klass) {
 
-        Collection<List<CosmosItemIdentity>> listOfItemIdentityList = singleItemPartitionRequestMap.values();
-
-        return Flux.fromIterable(listOfItemIdentityList)
+        return Flux.fromIterable(singleItemPartitionRequestMap.values())
             .flatMap(cosmosItemIdentityList -> {
                 if (cosmosItemIdentityList.size() == 1) {
                     CosmosItemIdentity firstIdentity = cosmosItemIdentityList.get(0);
