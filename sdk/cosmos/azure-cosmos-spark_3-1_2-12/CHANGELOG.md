@@ -3,6 +3,7 @@
 ### 4.20.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added `feed_detail` diagnostics mode. - See [PR 35501](https://github.com/Azure/azure-sdk-for-java/pull/35501)
 
 #### Breaking Changes
 

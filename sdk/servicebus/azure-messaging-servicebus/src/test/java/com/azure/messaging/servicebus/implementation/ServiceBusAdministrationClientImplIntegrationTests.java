@@ -11,7 +11,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
@@ -74,9 +73,7 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
         // Arrange
         final ServiceBusManagementClientImpl managementClient = createClient(httpClient);
         final EntitiesImpl entityClient = managementClient.getEntities();
-        final String queueName = interceptorManager.isPlaybackMode()
-            ? "queue-0"
-            : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 0);
+        final String queueName = TestUtils.getEntityName(TestUtils.getQueueBaseName(), 0);
 
         // Act & Assert
         StepVerifier.create(entityClient.getWithResponseAsync(queueName, true, Context.NONE))
@@ -176,9 +173,7 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
         final ServiceBusManagementClientImpl managementClient = createClient(httpClient);
         final EntitiesImpl entityClient = managementClient.getEntities();
 
-        final String queueName = interceptorManager.isPlaybackMode()
-            ? "queue-5"
-            : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
+        final String queueName = TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
         final Response<Object> response = entityClient.getWithResponseAsync(queueName, true, Context.NONE)
             .block(Duration.ofSeconds(30));
         assertNotNull(response);
@@ -251,10 +246,11 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
         final HttpClient httpClientToUse;
         if (interceptorManager.isPlaybackMode()) {
             httpClientToUse = interceptorManager.getPlaybackClient();
+        } else if (interceptorManager.isLiveMode()) {
+            httpClientToUse = httpClient;
         } else {
             httpClientToUse = httpClient;
             policies.add(interceptorManager.getRecordPolicy());
-            policies.add(new RetryPolicy());
         }
 
         final HttpPipeline pipeline = new HttpPipelineBuilder()

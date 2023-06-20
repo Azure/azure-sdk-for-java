@@ -7,6 +7,7 @@ package com.azure.resourcemanager.storagecache.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.storagecache.models.AmlFilesystemClientInfo;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemEncryptionSettings;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemHealth;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemIdentity;
@@ -219,31 +220,12 @@ public final class AmlFilesystemInner extends Resource {
     }
 
     /**
-     * Get the mgsAddress property: The IPv4 address used by clients to mount the AML file system's Lustre Management
-     * Service (MGS).
+     * Get the clientInfo property: Client information for the AML file system.
      *
-     * @return the mgsAddress value.
+     * @return the clientInfo value.
      */
-    public String mgsAddress() {
-        return this.innerProperties() == null ? null : this.innerProperties().mgsAddress();
-    }
-
-    /**
-     * Get the mountCommand property: Recommended command to mount the AML file system.
-     *
-     * @return the mountCommand value.
-     */
-    public String mountCommand() {
-        return this.innerProperties() == null ? null : this.innerProperties().mountCommand();
-    }
-
-    /**
-     * Get the lustreVersion property: The version of Lustre running in the AML file system.
-     *
-     * @return the lustreVersion value.
-     */
-    public String lustreVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().lustreVersion();
+    public AmlFilesystemClientInfo clientInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().clientInfo();
     }
 
     /**
