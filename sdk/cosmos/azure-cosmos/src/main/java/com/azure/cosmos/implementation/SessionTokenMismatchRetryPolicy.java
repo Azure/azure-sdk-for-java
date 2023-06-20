@@ -124,7 +124,7 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         return backoff;
     }
 
-    private boolean shouldRetryLocally(CosmosSessionRetryOptions sessionRetryOptions, int retryCountForRegion) {
+    private boolean shouldRetryLocally(CosmosSessionRetryOptions sessionRetryOptions, int sessionTokenMismatchRetryAttempts) {
 
         if (sessionRetryOptions == null) {
             return true;
@@ -140,6 +140,6 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         }
 
         return !(regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED
-            && (retryCountForRegion == this.maxRetryAttemptsInCurrentRegion.get() - 1));
+            && (sessionTokenMismatchRetryAttempts == this.maxRetryAttemptsInCurrentRegion.get() - 1));
     }
 }
