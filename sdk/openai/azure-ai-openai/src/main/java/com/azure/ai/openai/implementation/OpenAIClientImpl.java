@@ -5,8 +5,10 @@
 package com.azure.ai.openai.implementation;
 
 import com.azure.ai.openai.OpenAIServiceVersion;
+import com.azure.ai.openai.models.ImageOperationStatus;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -21,6 +23,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.experimental.models.PollResult;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
@@ -32,8 +35,15 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.DefaultPollingStrategy;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingStrategyOptions;
+import com.azure.core.util.polling.SyncDefaultPollingStrategy;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.TypeReference;
+import java.time.Duration;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the OpenAIClient type. */
@@ -272,6 +282,86 @@ public final class OpenAIClientImpl {
                 @PathParam("deploymentId") String deploymentId,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData chatCompletionsOptions,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/operations/images/{operationId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getImageOperationStatus(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("operationId") String operationId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/operations/images/{operationId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getImageOperationStatusSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("operationId") String operationId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/images/generations:submit")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> startGenerateImage(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData imageGenerationOptions,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/images/generations:submit")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> startGenerateImageSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData imageGenerationOptions,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -756,5 +846,474 @@ public final class OpenAIClientImpl {
                 chatCompletionsOptions,
                 requestOptions,
                 Context.NONE);
+    }
+
+    /**
+     * Returns the status of the images operation.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     created: long (Required)
+     *     expires: Long (Optional)
+     *     result (Optional): {
+     *         created: long (Required)
+     *         data (Required): [
+     *              (Required){
+     *                 url: String (Optional)
+     *                 error (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Required)
+     *                     target: String (Optional)
+     *                     details (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     innererror (Optional): {
+     *                         code: String (Optional)
+     *                         innererror (Optional): (recursive schema, see innererror above)
+     *                     }
+     *                 }
+     *             }
+     *         ]
+     *     }
+     *     status: String(notRunning/running/succeeded/canceled/failed/deleted) (Required)
+     *     error (Optional): (recursive schema, see error above)
+     * }
+     * }</pre>
+     *
+     * @param operationId .
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of the operation if the operation succeeded along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getImageOperationStatusWithResponseAsync(
+            String operationId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.getImageOperationStatus(
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                operationId,
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Returns the status of the images operation.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     created: long (Required)
+     *     expires: Long (Optional)
+     *     result (Optional): {
+     *         created: long (Required)
+     *         data (Required): [
+     *              (Required){
+     *                 url: String (Optional)
+     *                 error (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Required)
+     *                     target: String (Optional)
+     *                     details (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     innererror (Optional): {
+     *                         code: String (Optional)
+     *                         innererror (Optional): (recursive schema, see innererror above)
+     *                     }
+     *                 }
+     *             }
+     *         ]
+     *     }
+     *     status: String(notRunning/running/succeeded/canceled/failed/deleted) (Required)
+     *     error (Optional): (recursive schema, see error above)
+     * }
+     * }</pre>
+     *
+     * @param operationId .
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of the operation if the operation succeeded along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getImageOperationStatusWithResponse(String operationId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getImageOperationStatusSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                operationId,
+                accept,
+                requestOptions,
+                Context.NONE);
+    }
+
+    /**
+     * Starts the generation of a batch of images from a text caption.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     prompt: String (Required)
+     *     n: Integer (Optional)
+     *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     user: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     status: String (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param imageGenerationOptions Represents the request data used to generate images.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return status details for long running operations along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<BinaryData>> startGenerateImageWithResponseAsync(
+            BinaryData imageGenerationOptions, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.startGenerateImage(
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                accept,
+                                imageGenerationOptions,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Starts the generation of a batch of images from a text caption.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     prompt: String (Required)
+     *     n: Integer (Optional)
+     *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     user: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     status: String (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param imageGenerationOptions Represents the request data used to generate images.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return status details for long running operations along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> startGenerateImageWithResponse(
+            BinaryData imageGenerationOptions, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.startGenerateImageSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                accept,
+                imageGenerationOptions,
+                requestOptions,
+                Context.NONE);
+    }
+
+    /**
+     * Starts the generation of a batch of images from a text caption.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     prompt: String (Required)
+     *     n: Integer (Optional)
+     *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     user: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     status: String (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param imageGenerationOptions Represents the request data used to generate images.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of status details for long running operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginStartGenerateImageAsync(
+            BinaryData imageGenerationOptions, RequestOptions requestOptions) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.startGenerateImageWithResponseAsync(imageGenerationOptions, requestOptions),
+                new DefaultPollingStrategy<>(
+                        new PollingStrategyOptions(this.getHttpPipeline())
+                                .setEndpoint("{endpoint}/openai".replace("{endpoint}", this.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Starts the generation of a batch of images from a text caption.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     prompt: String (Required)
+     *     n: Integer (Optional)
+     *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     user: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     status: String (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param imageGenerationOptions Represents the request data used to generate images.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of status details for long running operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginStartGenerateImage(
+            BinaryData imageGenerationOptions, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.startGenerateImageWithResponse(imageGenerationOptions, requestOptions),
+                new SyncDefaultPollingStrategy<>(
+                        new PollingStrategyOptions(this.getHttpPipeline())
+                                .setEndpoint("{endpoint}/openai".replace("{endpoint}", this.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Starts the generation of a batch of images from a text caption.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     prompt: String (Required)
+     *     n: Integer (Optional)
+     *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     user: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     status: String (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param imageGenerationOptions Represents the request data used to generate images.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of status details for long running operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult, ImageOperationStatus> beginStartGenerateImageWithModelAsync(
+            BinaryData imageGenerationOptions, RequestOptions requestOptions) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.startGenerateImageWithResponseAsync(imageGenerationOptions, requestOptions),
+                new DefaultPollingStrategy<>(
+                        new PollingStrategyOptions(this.getHttpPipeline())
+                                .setEndpoint("{endpoint}/openai".replace("{endpoint}", this.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
+                TypeReference.createInstance(PollResult.class),
+                TypeReference.createInstance(ImageOperationStatus.class));
+    }
+
+    /**
+     * Starts the generation of a batch of images from a text caption.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     prompt: String (Required)
+     *     n: Integer (Optional)
+     *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     user: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     status: String (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param imageGenerationOptions Represents the request data used to generate images.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of status details for long running operations.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult, ImageOperationStatus> beginStartGenerateImageWithModel(
+            BinaryData imageGenerationOptions, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.startGenerateImageWithResponse(imageGenerationOptions, requestOptions),
+                new SyncDefaultPollingStrategy<>(
+                        new PollingStrategyOptions(this.getHttpPipeline())
+                                .setEndpoint("{endpoint}/openai".replace("{endpoint}", this.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
+                TypeReference.createInstance(PollResult.class),
+                TypeReference.createInstance(ImageOperationStatus.class));
     }
 }
