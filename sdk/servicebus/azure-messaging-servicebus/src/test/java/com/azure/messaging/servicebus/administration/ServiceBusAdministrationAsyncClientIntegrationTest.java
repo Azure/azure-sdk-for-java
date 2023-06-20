@@ -15,6 +15,10 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
@@ -47,6 +51,7 @@ import reactor.test.StepVerifier;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -69,6 +74,27 @@ import static org.mockito.Mockito.mock;
 @Tag("integration")
 class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(20);
+
+    /**
+     * Sanitizer to remove header values for ServiceBusDlqSupplementaryAuthorization and
+     * ServiceBusSupplementaryAuthorization.
+     */
+    static final TestProxySanitizer AUTHORIZATION_HEADER;
+
+    static final List<TestProxySanitizer> TEST_PROXY_SANITIZERS;
+
+    static final List<TestProxyRequestMatcher> TEST_PROXY_REQUEST_MATCHERS;
+
+
+    static {
+        AUTHORIZATION_HEADER = new TestProxySanitizer("SupplementaryAuthorization", "SharedAccessSignature sr=https%3A%2F%2Ffoo.servicebus.windows.net&sig=dummyValue%3D&se=1687267490&skn=dummyKey", TestProxySanitizerType.HEADER);
+        TEST_PROXY_SANITIZERS = Collections.singletonList(AUTHORIZATION_HEADER);
+
+        final List<String> skippedHeaders = Arrays.asList("ServiceBusDlqSupplementaryAuthorization", "ServiceBusSupplementaryAuthorization");
+        final CustomMatcher customMatcher = new CustomMatcher().setExcludedHeaders(skippedHeaders);
+
+        TEST_PROXY_REQUEST_MATCHERS = Collections.singletonList(customMatcher);
+    }
 
     @BeforeAll
     static void beforeAll() {
@@ -1024,6 +1050,9 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             builder.httpClient(httpClient)
                 .addPolicy(interceptorManager.getRecordPolicy());
         }
+
+        interceptorManager.addSanitizers(TEST_PROXY_SANITIZERS);
+        interceptorManager.addMatchers(TEST_PROXY_REQUEST_MATCHERS);
 
         return builder.buildAsyncClient();
     }
