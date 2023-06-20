@@ -28,9 +28,12 @@ ADD ./sdk/core ./sdk/core
 ADD ./sdk/storage ./sdk/storage
 ADD ./eng ./eng
 
-RUN mvn clean install -f eng/code-quality-reports/pom.xml && \
-  cd ./sdk/tools && mvn clean install -D skipTests && \
-  cd ../core && mvn clean install -D skipTests
+# RUN --mount=type=cache,target=/root/.cache/go-build \
+
+RUN --mount=type=cache,target=/root/.m2 \
+  mvn clean install -DskipTests -f eng/code-quality-reports/pom.xml && \
+  mvn clean install -DskipTests -f ./sdk/tools && \
+  mvn clean install -DskipTests -f ./sdk/core
 
 #  cd ../storage && mvn clean install -D skipTests
 # CMD ["java", "-jar", "./target/Icm387357955-1.0-SNAPSHOT-jar-with-dependencies.jar"]
