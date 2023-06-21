@@ -3,8 +3,6 @@
 
 package com.azure.cosmos;
 
-import java.util.Objects;
-
 /**
  * {@link CosmosRegionSwitchHint} encapsulates hints which guide SDK-internal
  * retry policies on how early to switch retries to a different region.
