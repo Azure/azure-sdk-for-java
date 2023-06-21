@@ -10,7 +10,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -30,7 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class SchemaRegistryAsyncClientCustomTests extends TestBase {
+public class SchemaRegistryAsyncClientCustomTests extends TestProxyTestBase {
     static final String SCHEMA_CONTENT = "Person: int, string, decimal";
 
     private SchemaRegistryClientBuilder builder;

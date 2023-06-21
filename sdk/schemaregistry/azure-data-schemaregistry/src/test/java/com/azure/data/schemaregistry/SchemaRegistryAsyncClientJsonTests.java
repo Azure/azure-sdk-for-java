@@ -10,7 +10,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 /**
  * Tests for {@link SchemaFormat#JSON} using {@link SchemaRegistryAsyncClient}.
  */
-public class SchemaRegistryAsyncClientJsonTests extends TestBase {
+public class SchemaRegistryAsyncClientJsonTests extends TestProxyTestBase {
     static final String SCHEMA_CONTENT = "{ \"$id\": \"https://example.com/person.schema.json\", \"$schema\": \"https://json-schema.org/draft/2020-12/schema\", \"title\": \"Person\", \"type\": \"object\", \"properties\": { \"firstName\": { \"type\": \"string\", \"description\": \"The person's first name.\" }, \"lastName\": { \"type\": \"string\", \"description\": \"The person's last name.\" }, \"age\": { \"description\": \"Age in years which must be equal to or greater than zero.\", \"type\": \"integer\", \"minimum\": 0 } } }";
 
     private SchemaRegistryClientBuilder builder;

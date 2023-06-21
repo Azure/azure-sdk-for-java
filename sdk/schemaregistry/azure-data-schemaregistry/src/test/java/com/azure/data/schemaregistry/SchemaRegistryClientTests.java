@@ -10,7 +10,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import com.azure.data.schemaregistry.models.SchemaFormat;
@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
 /**
  * Tests {@link SchemaRegistryClient}.
  */
-public class SchemaRegistryClientTests extends TestBase {
+public class SchemaRegistryClientTests extends TestProxyTestBase {
 
     private String schemaGroup;
     private SchemaRegistryClientBuilder builder;

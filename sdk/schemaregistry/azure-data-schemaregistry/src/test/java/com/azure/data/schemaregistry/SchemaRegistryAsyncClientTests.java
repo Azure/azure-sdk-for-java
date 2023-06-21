@@ -12,7 +12,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
@@ -40,7 +40,7 @@ import static org.mockito.Mockito.when;
 /**
  * Tests for {@link SchemaFormat#AVRO} using {@link SchemaRegistryAsyncClient}.
  */
-public class SchemaRegistryAsyncClientTests extends TestBase {
+public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
     static final String SCHEMA_CONTENT = "{\"type\" : \"record\",\"namespace\" : \"TestSchema\",\"name\" : \"Employee\",\"fields\" : [{ \"name\" : \"Name\" , \"type\" : \"string\" },{ \"name\" : \"Age\", \"type\" : \"int\" }]}";
 
     private String schemaGroup;
