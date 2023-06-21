@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.cloud.autoconfigure.implementation.eventgrid;
 
 import com.azure.core.models.CloudEvent;
@@ -41,14 +44,14 @@ public class AzureEventGridAutoConfiguration extends AzureServiceConfigurationBa
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "spring.cloud.azure.eventgrid.event-schema", havingValue = "EVENT_GRID_EVENT")
+    @ConditionalOnProperty(value = "spring.cloud.azure.eventgrid.event-schema", havingValue = "EVENT_GRID_EVENT", matchIfMissing = true)
     EventGridPublisherClient<EventGridEvent> eventGridEventPublisherClient(EventGridPublisherClientBuilder builder) {
         return builder.buildEventGridEventPublisherClient();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "spring.cloud.azure.eventgrid.event-schema", havingValue = "EVENT_GRID_EVENT")
+    @ConditionalOnProperty(value = "spring.cloud.azure.eventgrid.event-schema", havingValue = "EVENT_GRID_EVENT", matchIfMissing = true)
     EventGridPublisherAsyncClient<EventGridEvent> eventGridEventPublisherAsyncClient(EventGridPublisherClientBuilder builder) {
         return builder.buildEventGridEventPublisherAsyncClient();
     }
@@ -79,6 +82,12 @@ public class AzureEventGridAutoConfiguration extends AzureServiceConfigurationBa
     @ConditionalOnProperty(value = "spring.cloud.azure.eventgrid.event-schema", havingValue = "CUSTOM_EVENT")
     EventGridPublisherAsyncClient<BinaryData> eventGridCustomEventPublisherAsyncClient(EventGridPublisherClientBuilder builder) {
         return builder.buildCustomEventPublisherAsyncClient();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    EventGridPublisherClientBuilder eventGridPublisherClientBuilder(EventGridPublisherClientBuilderFactory factory) {
+        return factory.build();
     }
 
     @Bean
