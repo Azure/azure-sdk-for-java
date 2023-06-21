@@ -217,7 +217,7 @@ public class SchemaRegistryClientTests extends TestProxyTestBase {
             client.registerSchemaWithResponse(schemaGroup, schemaName, SCHEMA_CONTENT, unknownSchemaFormat, Context.NONE);
 
         } catch (HttpResponseException e) {
-            assertEquals(403, e.getResponse().getStatusCode());
+            assertEquals(415, e.getResponse().getStatusCode());
         }
     }
 

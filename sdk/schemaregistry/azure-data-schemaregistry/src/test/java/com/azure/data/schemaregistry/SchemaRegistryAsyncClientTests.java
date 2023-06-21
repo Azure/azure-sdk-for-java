@@ -159,7 +159,7 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
                 assertTrue(error instanceof HttpResponseException);
 
                 final HttpResponseException responseException = ((HttpResponseException) error);
-                assertEquals(403, responseException.getResponse().getStatusCode());
+                assertEquals(415, responseException.getResponse().getStatusCode());
             })
             .verify();
     }
