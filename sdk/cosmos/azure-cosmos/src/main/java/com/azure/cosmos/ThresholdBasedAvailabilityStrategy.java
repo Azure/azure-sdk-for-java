@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrategy {
     private static final Duration DEFAULT_THRESHOLD = Duration.ofMillis(500);
     private static final Duration DEFAULT_THRESHOLD_STEP = Duration.ofMillis(100);
-    private Duration threshold;
-    private Duration thresholdStep;
+    private final Duration threshold;
+    private final Duration thresholdStep;
 
     /**
      * Instantiates a new Threshold based retry availability strategy.
@@ -27,12 +27,20 @@ public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrate
     /**
      * Instantiates a new Threshold based retry availability strategy.
      *
-     * @param threshold            the threshold
-     * @param thresholdStep        the threshold step
+     * @param threshold     the threshold at which the request has to be tried on next region
+     * @param thresholdStep the threshold step at which the request has to be tried on subsequent regions
      */
     public ThresholdBasedAvailabilityStrategy(Duration threshold, Duration thresholdStep) {
+        validateDuration(threshold);
+        validateDuration(thresholdStep);
         this.threshold = threshold;
         this.thresholdStep = thresholdStep;
+    }
+
+    private static void validateDuration(Duration threshold) {
+        if (threshold == null || threshold.isNegative()) {
+            throw new IllegalArgumentException("threshold should be a non negative Duration");
+        }
     }
 
     /**
@@ -52,24 +60,6 @@ public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrate
      */
     public Duration getThresholdStep() {
         return this.thresholdStep;
-    }
-
-    /**
-     * Sets threshold.
-     *
-     * @param threshold the threshold
-     */
-    public void setThreshold(Duration threshold) {
-        this.threshold = threshold;
-    }
-
-    /**
-     * Sets threshold step.
-     *
-     * @param thresholdStep the threshold step
-     */
-    public void setThresholdStep(Duration thresholdStep) {
-        this.thresholdStep = thresholdStep;
     }
 
 }

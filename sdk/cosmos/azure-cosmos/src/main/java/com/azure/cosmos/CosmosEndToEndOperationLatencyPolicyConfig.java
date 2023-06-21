@@ -14,7 +14,6 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
     private final Duration endToEndOperationTimeout;
 
     private final AvailabilityStrategy availabilityStrategy;
-    private final Duration endToEndFeedOperationTimeout;
 
     /**
      * Constructor
@@ -28,12 +27,11 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
     CosmosEndToEndOperationLatencyPolicyConfig(
         boolean isEnabled,
         Duration endToEndOperationTimeout,
-        Duration endToEndFeedOperationTimeout, AvailabilityStrategy availabilityStrategy) {
+        AvailabilityStrategy availabilityStrategy) {
 
         this.isEnabled = isEnabled;
         this.endToEndOperationTimeout = endToEndOperationTimeout;
         this.availabilityStrategy = availabilityStrategy;
-        this.endToEndFeedOperationTimeout = endToEndFeedOperationTimeout;
     }
 
     /**
@@ -61,15 +59,6 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
      */
     public AvailabilityStrategy getAvailabilityStrategy() {
         return availabilityStrategy;
-    }
-
-    /**
-     * Gets end to end feed operation timeout.
-     *
-     * @return the end to end feed operation timeout
-     */
-    public Duration getEndToEndFeedOperationTimeout() {
-        return this.endToEndFeedOperationTimeout;
     }
 
 }

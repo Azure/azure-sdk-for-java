@@ -984,7 +984,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         CosmosQueryRequestOptions requestOptions) {
         return feedResponseFlux
-            .timeout(endToEndPolicyConfig.getEndToEndFeedOperationTimeout())
+            .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
             .onErrorMap(throwable -> {
                 if (throwable instanceof TimeoutException) {
                     CosmosException exception = new OperationCancelledException();
