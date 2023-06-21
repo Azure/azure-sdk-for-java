@@ -262,6 +262,11 @@
           "justification" : "Fix enum constants reordered."
         },
         {
+          "code" : "java.field.addedStaticField",
+          "new" : "field com.mysql.cj.conf.PropertyKey.ociConfigProfile",
+          "justification" : "This is an external dependency and we do not control what gets added."
+        },
+        {
           "code" : "java.method.removed",
           "old" : "method int com.mysql.cj.protocol.ServerSession::getOldStatusFlags()",
           "justification" : "Fix method removed."
