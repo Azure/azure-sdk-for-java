@@ -2220,6 +2220,18 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
 
+  <!-- Incorrect flagging, already checked by if-else -->
+  <Match>
+    <Class name="com.azure.spring.cloud.autoconfigure.implementation.redis.AzureRedisAutoConfiguration"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Incorrect flagging, already checked by if-else -->
+  <Match>
+    <Class name="com.azure.spring.cloud.autoconfigure.implementation.redis.AzureRedisAutoConfiguration"/>
+    <Bug pattern="NP_NULL_PARAM_DEREF"/>
+  </Match>
+
   <!-- The transient fields are not used if deserialization happens. -->
   <Match>
     <Class name="com.azure.identity.implementation.MsalAuthenticationAccount"/>
