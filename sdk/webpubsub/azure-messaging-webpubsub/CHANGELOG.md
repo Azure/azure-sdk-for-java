@@ -1,15 +1,5 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.2.4 (2023-05-23)
 
 ### Other Changes
@@ -18,6 +8,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
 - Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
 
 ## 1.2.3 (2023-04-21)
 
@@ -29,6 +20,7 @@
 - Upgraded `nimbus-jose-jwt` from `9.22` to version `9.31`.
 - Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
 
+
 ## 1.2.2 (2023-03-16)
 
 ### Other Changes
@@ -38,6 +30,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
 - Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
 
+
 ## 1.2.1 (2023-02-16)
 
 ### Other Changes
@@ -46,6 +39,7 @@
 
 - Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
 - Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+
 
 ## 1.2.0 (2023-01-11)
 
