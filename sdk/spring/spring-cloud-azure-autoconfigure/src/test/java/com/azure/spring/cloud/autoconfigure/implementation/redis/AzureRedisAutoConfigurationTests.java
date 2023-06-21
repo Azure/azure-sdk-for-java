@@ -112,8 +112,17 @@ class AzureRedisAutoConfigurationTests {
                     assertThat(redisProperties.getPort()).isEqualTo(PORT);
                     Method isSsl = ReflectionUtils.findMethod(RedisProperties.class, "isSsl");
                     if (isSsl == null) {
-                        assertThat(ReflectionUtils.findMethod(RedisProperties.Ssl.class, "isEnabled")
-                                                  .invoke(redisProperties.getSsl()).equals(IS_SSL));
+                        Object ssl = ReflectionUtils.findMethod(RedisProperties.class, "getSsl").invoke(redisProperties);
+                        Class<?>[] innerClasses = RedisProperties.class.getDeclaredClasses();
+                        Class<?> targetInnerClass = null;
+                        for (Class<?> innerClass : innerClasses) {
+                            if (innerClass.getSimpleName().equals("Ssl")) {
+                                targetInnerClass = innerClass;
+                                break;
+                            }
+                        }
+                        assertThat(ReflectionUtils.findMethod(targetInnerClass, "isEnabled")
+                                                  .invoke(ssl).equals(IS_SSL));
                     } else {
                         assertThat(isSsl.invoke(redisProperties).equals(IS_SSL));
                     }
