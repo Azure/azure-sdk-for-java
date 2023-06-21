@@ -110,6 +110,7 @@ public class RntbdTransportClient extends TransportClient {
     private final CosmosClientTelemetryConfig metricConfig;
     private final RntbdServerErrorInjector serverErrorInjector;
     private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
+    private final AddressSelector addressSelector;
 
     // endregion
 
@@ -149,6 +150,7 @@ public class RntbdTransportClient extends TransportClient {
         this.tag = RntbdTransportClient.tag(this.id);
         this.globalEndpointManager = null;
         this.metricConfig = null;
+        this.addressSelector = null;
         this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(endpointProvider);
         this.serverErrorInjector = new RntbdServerErrorInjector();
     }
@@ -176,6 +178,7 @@ public class RntbdTransportClient extends TransportClient {
         this.tag = RntbdTransportClient.tag(this.id);
         this.channelAcquisitionContextEnabled = options.channelAcquisitionContextEnabled;
         this.globalEndpointManager = globalEndpointManager;
+        this.addressSelector = new AddressSelector(addressResolver, Protocol.TCP);
         if (clientTelemetry != null &&
             clientTelemetry.getClientTelemetryConfig() != null) {
 
@@ -292,7 +295,7 @@ public class RntbdTransportClient extends TransportClient {
                 this.proactiveOpenConnectionsProcessor,
                 minRequiredChannelsForEndpoint);
 
-        final RntbdRequestRecord record = endpoint.request(requestArgs);
+        final RntbdRequestRecord record = endpoint.request(requestArgs, this.addressSelector);
 
         final Context reactorContext = Context.of(KEY_ON_ERROR_DROPPED, onErrorDropHookWithReduceLogLevel);
 

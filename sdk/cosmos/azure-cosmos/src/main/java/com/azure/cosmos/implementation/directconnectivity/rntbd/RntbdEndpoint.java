@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -98,7 +99,7 @@ public interface RntbdEndpoint extends AutoCloseable {
     @Override
     void close();
 
-    RntbdRequestRecord request(RntbdRequestArgs requestArgs);
+    RntbdRequestRecord request(RntbdRequestArgs requestArgs, AddressSelector addressSelector);
 
     OpenConnectionRntbdRequestRecord openConnection(RntbdRequestArgs requestArgs);
 
@@ -117,7 +118,11 @@ public interface RntbdEndpoint extends AutoCloseable {
 
         int evictions();
 
-        RntbdEndpoint createIfAbsent(URI serviceEndpoint, Uri addressUri, ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor, int minRequiredChannelsForEndpoint);
+        RntbdEndpoint createIfAbsent(
+            URI serviceEndpoint,
+            Uri addressUri,
+            ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
+            int minRequiredChannelsForEndpoint);
 
         RntbdEndpoint get(URI physicalAddress);
 

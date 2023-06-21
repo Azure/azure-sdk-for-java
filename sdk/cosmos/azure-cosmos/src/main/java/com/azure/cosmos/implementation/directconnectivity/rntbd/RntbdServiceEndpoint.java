@@ -7,12 +7,13 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.TransportException;
@@ -28,6 +29,7 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.AdaptiveRecvByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ConnectTimeoutException;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.EpollChannelOption;
 import io.netty.handler.logging.LogLevel;
@@ -364,7 +366,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         }
     }
 
-    public RntbdRequestRecord request(final RntbdRequestArgs args) {
+    public RntbdRequestRecord request(final RntbdRequestArgs args, final AddressSelector addressSelector) {
 
         this.throwIfClosed();
 
@@ -393,7 +395,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         this.lastRequestNanoTime.set(args.nanoTimeCreated());
 
-        final RntbdRequestRecord record = this.write(args);
+        final RntbdRequestRecord record = this.write(args, addressSelector);
         record.serviceEndpointStatistics(stat);
 
         record.whenComplete((response, error) -> {
@@ -540,7 +542,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         }
     }
 
-    private RntbdRequestRecord write(final RntbdRequestArgs requestArgs) {
+    private RntbdRequestRecord write(final RntbdRequestArgs requestArgs, final AddressSelector addressSelector) {
 
         final RntbdRequestRecord requestRecord = new AsyncRntbdRequestRecord(requestArgs, this.requestTimer);
         requestRecord.stage(RntbdRequestRecord.Stage.CHANNEL_ACQUISITION_STARTED);
@@ -549,16 +551,16 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         logger.debug("\n  [{}]\n  {}\n  WRITE WHEN CONNECTED {}", this, requestArgs, connectedChannel);
 
         if (connectedChannel.isDone()) {
-            return writeWhenConnected(requestRecord, connectedChannel);
+            return writeWhenConnected(requestRecord, connectedChannel, addressSelector);
         } else {
-            connectedChannel.addListener(ignored -> writeWhenConnected(requestRecord, connectedChannel));
+            connectedChannel.addListener(ignored -> writeWhenConnected(requestRecord, connectedChannel, addressSelector));
         }
 
         return requestRecord;
     }
 
     private RntbdRequestRecord writeWhenConnected(
-        final RntbdRequestRecord requestRecord, final Future<? super Channel> connected) {
+        final RntbdRequestRecord requestRecord, final Future<? super Channel> connected, final AddressSelector addressSelector) {
 
         if (connected.isSuccess()) {
             final Channel channel = (Channel) connected.getNow();
@@ -601,7 +603,15 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410
             );
 
-            BridgeInternal.setRequestHeaders(goneException, requestArgs.serviceRequest().getHeaders());
+            RxDocumentServiceRequest serviceRequest = requestArgs.serviceRequest();
+
+            BridgeInternal.setRequestHeaders(goneException, serviceRequest.getHeaders());
+
+            if (cause instanceof ConnectTimeoutException &&
+                serviceRequest.requestContext.isRequestCancelledOnEndToEndTimeout()) {
+                connectionStateListener.attemptBackgroundAddressRefresh(serviceRequest, addressSelector);
+            }
+
             requestRecord.completeExceptionally(goneException);
         }
 

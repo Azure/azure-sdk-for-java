@@ -7,13 +7,12 @@ import com.azure.cosmos.CosmosException;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.util.List;
 
-public class MetadataRequestConnectionErrorHandler {
+public class MetadataResponseHandler {
 
     private final GlobalEndpointManager globalEndpointManager;
 
-    public MetadataRequestConnectionErrorHandler(GlobalEndpointManager globalEndpointManager) {
+    public MetadataResponseHandler(GlobalEndpointManager globalEndpointManager) {
         this.globalEndpointManager = globalEndpointManager;
     }
 

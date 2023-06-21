@@ -4,10 +4,15 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import io.netty.channel.ConnectTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
@@ -29,12 +34,16 @@ public class RntbdConnectionStateListener {
     private final Set<Uri> addressUris;
     private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
     private final AtomicBoolean endpointValidationInProgress = new AtomicBoolean(false);
+    private final AtomicBoolean forceBackgroundAddressRefreshInProgress = new AtomicBoolean(false);
+
 
     // endregion
 
     // region Constructors
 
-    public RntbdConnectionStateListener(final RntbdEndpoint endpoint, final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
+    public RntbdConnectionStateListener(
+        final RntbdEndpoint endpoint,
+        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
         this.endpoint = checkNotNull(endpoint, "expected non-null endpoint");
         this.metrics = new RntbdConnectionStateListenerMetrics();
         this.addressUris = ConcurrentHashMap.newKeySet();
@@ -151,6 +160,19 @@ public class RntbdConnectionStateListener {
         }
 
         return 0;
+    }
+
+    public void attemptBackgroundAddressRefresh(RxDocumentServiceRequest request, AddressSelector addressSelector) {
+        if (forceBackgroundAddressRefreshInProgress.compareAndSet(false, true)) {
+            // kickstart background address refresh
+            addressSelector
+                .resolveAddressesAsync(request, true)
+                .subscribeOn(Schedulers.boundedElastic())
+                .doFinally(signalType -> {
+                    forceBackgroundAddressRefreshInProgress.set(false);
+                })
+                .subscribe();
+        }
     }
     // endregion
 }
