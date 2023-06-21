@@ -7,7 +7,6 @@ package com.azure.messaging.servicebus.administration.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
-import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
 import java.util.ArrayList;
@@ -63,65 +62,10 @@ public final class CorrelationFilterImpl extends RuleFilterImpl {
      */
     private String contentType;
 
-    static final class PropertiesWrapper implements XmlSerializable<PropertiesWrapper> {
-        private final List<KeyValueImpl> items;
-
-        private PropertiesWrapper(List<KeyValueImpl> items) {
-            this.items = items;
-        }
-
-        @Override
-        public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-            return toXml(xmlWriter, null);
-        }
-
-        @Override
-        public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-            rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Properties" : rootElementName;
-            xmlWriter.writeStartElement(
-                    "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", rootElementName);
-            if (items != null) {
-                for (KeyValueImpl element : items) {
-                    xmlWriter.writeXml(element, "KeyValueOfstringanyType");
-                }
-            }
-            return xmlWriter.writeEndElement();
-        }
-
-        public static PropertiesWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
-            return fromXml(xmlReader, null);
-        }
-
-        public static PropertiesWrapper fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-            rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Properties" : rootElementName;
-            return xmlReader.readObject(
-                    "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
-                    rootElementName,
-                    reader -> {
-                        List<KeyValueImpl> items = null;
-
-                        while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                            String elementName = reader.getElementName().getLocalPart();
-
-                            if ("KeyValueOfstringanyType".equals(elementName)) {
-                                if (items == null) {
-                                    items = new ArrayList<>();
-                                }
-
-                                items.add(KeyValueImpl.fromXml(reader));
-                            } else {
-                                reader.nextElement();
-                            }
-                        }
-                        return new PropertiesWrapper(items);
-                    });
-        }
-    }
-
     /*
      * The properties property.
      */
-    private PropertiesWrapper properties;
+    private List<KeyValueImpl> properties = new ArrayList<>();
 
     /** Creates an instance of CorrelationFilter class. */
     public CorrelationFilterImpl() {}
@@ -293,9 +237,9 @@ public final class CorrelationFilterImpl extends RuleFilterImpl {
      */
     public List<KeyValueImpl> getProperties() {
         if (this.properties == null) {
-            this.properties = new PropertiesWrapper(new ArrayList<KeyValueImpl>());
+            this.properties = new ArrayList<>();
         }
-        return this.properties.items;
+        return this.properties;
     }
 
     /**
@@ -305,7 +249,7 @@ public final class CorrelationFilterImpl extends RuleFilterImpl {
      * @return the CorrelationFilter object itself.
      */
     public CorrelationFilterImpl setProperties(List<KeyValueImpl> properties) {
-        this.properties = new PropertiesWrapper(properties);
+        this.properties = properties;
         return this;
     }
 
@@ -341,7 +285,14 @@ public final class CorrelationFilterImpl extends RuleFilterImpl {
                 this.replyToSessionId);
         xmlWriter.writeStringElement(
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ContentType", this.contentType);
-        xmlWriter.writeXml(this.properties);
+        if (this.properties != null) {
+            xmlWriter.writeStartElement(
+                    "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Properties");
+            for (KeyValueImpl element : this.properties) {
+                xmlWriter.writeXml(element, "KeyValueOfstringanyType");
+            }
+            xmlWriter.writeEndElement();
+        }
         return xmlWriter.writeEndElement();
     }
 
@@ -375,75 +326,71 @@ public final class CorrelationFilterImpl extends RuleFilterImpl {
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 finalRootElementName,
                 reader -> {
-                    String type = reader.getStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type");
-                    if (!"CorrelationFilter".equals(type)) {
+                    CorrelationFilterImpl deserializedCorrelationFilter = new CorrelationFilterImpl();
+                    String discriminatorValue =
+                            reader.getStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type");
+                    if (!"CorrelationFilter".equals(discriminatorValue)) {
                         throw new IllegalStateException(
                                 "'type' was expected to be non-null and equal to 'CorrelationFilter'. The found 'type' was '"
-                                        + type
+                                        + discriminatorValue
                                         + "'.");
                     }
-                    String correlationId = null;
-                    String messageId = null;
-                    String to = null;
-                    String replyTo = null;
-                    String label = null;
-                    String sessionId = null;
-                    String replyToSessionId = null;
-                    String contentType = null;
-                    PropertiesWrapper properties = null;
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("CorrelationId".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            correlationId = reader.getStringElement();
+                            deserializedCorrelationFilter.correlationId = reader.getStringElement();
                         } else if ("MessageId".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            messageId = reader.getStringElement();
+                            deserializedCorrelationFilter.messageId = reader.getStringElement();
                         } else if ("To".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            to = reader.getStringElement();
+                            deserializedCorrelationFilter.to = reader.getStringElement();
                         } else if ("ReplyTo".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            replyTo = reader.getStringElement();
+                            deserializedCorrelationFilter.replyTo = reader.getStringElement();
                         } else if ("Label".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            label = reader.getStringElement();
+                            deserializedCorrelationFilter.label = reader.getStringElement();
                         } else if ("SessionId".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            sessionId = reader.getStringElement();
+                            deserializedCorrelationFilter.sessionId = reader.getStringElement();
                         } else if ("ReplyToSessionId".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            replyToSessionId = reader.getStringElement();
+                            deserializedCorrelationFilter.replyToSessionId = reader.getStringElement();
                         } else if ("ContentType".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            contentType = reader.getStringElement();
+                            deserializedCorrelationFilter.contentType = reader.getStringElement();
                         } else if ("Properties".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            properties = PropertiesWrapper.fromXml(reader);
+                            if (deserializedCorrelationFilter.properties == null) {
+                                deserializedCorrelationFilter.properties = new ArrayList<>();
+                            }
+                            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                                elementName = reader.getElementName();
+                                if ("KeyValueOfstringanyType".equals(elementName.getLocalPart())
+                                        && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                                .equals(elementName.getNamespaceURI())) {
+                                    deserializedCorrelationFilter.properties.add(
+                                            KeyValueImpl.fromXml(reader, "KeyValueOfstringanyType"));
+                                } else {
+                                    reader.skipElement();
+                                }
+                            }
                         } else {
                             reader.skipElement();
                         }
                     }
-                    CorrelationFilterImpl deserializedCorrelationFilter = new CorrelationFilterImpl();
-                    deserializedCorrelationFilter.correlationId = correlationId;
-                    deserializedCorrelationFilter.messageId = messageId;
-                    deserializedCorrelationFilter.to = to;
-                    deserializedCorrelationFilter.replyTo = replyTo;
-                    deserializedCorrelationFilter.label = label;
-                    deserializedCorrelationFilter.sessionId = sessionId;
-                    deserializedCorrelationFilter.replyToSessionId = replyToSessionId;
-                    deserializedCorrelationFilter.contentType = contentType;
-                    deserializedCorrelationFilter.properties = properties;
 
                     return deserializedCorrelationFilter;
                 });

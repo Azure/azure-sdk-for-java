@@ -207,44 +207,39 @@ public final class MessageCountDetailsImpl implements XmlSerializable<MessageCou
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 finalRootElementName,
                 reader -> {
-                    Integer activeMessageCount = null;
-                    Integer deadLetterMessageCount = null;
-                    Integer scheduledMessageCount = null;
-                    Integer transferDeadLetterMessageCount = null;
-                    Integer transferMessageCount = null;
+                    MessageCountDetailsImpl deserializedMessageCountDetails = new MessageCountDetailsImpl();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("ActiveMessageCount".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2011/06/servicebus"
                                         .equals(elementName.getNamespaceURI())) {
-                            activeMessageCount = reader.getNullableElement(Integer::parseInt);
+                            deserializedMessageCountDetails.activeMessageCount =
+                                    reader.getNullableElement(Integer::parseInt);
                         } else if ("DeadLetterMessageCount".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2011/06/servicebus"
                                         .equals(elementName.getNamespaceURI())) {
-                            deadLetterMessageCount = reader.getNullableElement(Integer::parseInt);
+                            deserializedMessageCountDetails.deadLetterMessageCount =
+                                    reader.getNullableElement(Integer::parseInt);
                         } else if ("ScheduledMessageCount".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2011/06/servicebus"
                                         .equals(elementName.getNamespaceURI())) {
-                            scheduledMessageCount = reader.getNullableElement(Integer::parseInt);
+                            deserializedMessageCountDetails.scheduledMessageCount =
+                                    reader.getNullableElement(Integer::parseInt);
                         } else if ("TransferDeadLetterMessageCount".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2011/06/servicebus"
                                         .equals(elementName.getNamespaceURI())) {
-                            transferDeadLetterMessageCount = reader.getNullableElement(Integer::parseInt);
+                            deserializedMessageCountDetails.transferDeadLetterMessageCount =
+                                    reader.getNullableElement(Integer::parseInt);
                         } else if ("TransferMessageCount".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2011/06/servicebus"
                                         .equals(elementName.getNamespaceURI())) {
-                            transferMessageCount = reader.getNullableElement(Integer::parseInt);
+                            deserializedMessageCountDetails.transferMessageCount =
+                                    reader.getNullableElement(Integer::parseInt);
                         } else {
                             reader.skipElement();
                         }
                     }
-                    MessageCountDetailsImpl deserializedMessageCountDetails = new MessageCountDetailsImpl();
-                    deserializedMessageCountDetails.activeMessageCount = activeMessageCount;
-                    deserializedMessageCountDetails.deadLetterMessageCount = deadLetterMessageCount;
-                    deserializedMessageCountDetails.scheduledMessageCount = scheduledMessageCount;
-                    deserializedMessageCountDetails.transferDeadLetterMessageCount = transferDeadLetterMessageCount;
-                    deserializedMessageCountDetails.transferMessageCount = transferMessageCount;
 
                     return deserializedMessageCountDetails;
                 });

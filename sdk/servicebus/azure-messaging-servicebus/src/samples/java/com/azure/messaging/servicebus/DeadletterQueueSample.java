@@ -3,14 +3,17 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
@@ -338,12 +341,10 @@ public class DeadletterQueueSample {
     }
 
     private static final class Person {
-        private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
         private final String lastName;
         private final String firstName;
 
-        Person(@JsonProperty String lastName, @JsonProperty String firstName) {
+        Person(String lastName, String firstName) {
             this.lastName = lastName;
             this.firstName = firstName;
         }
@@ -364,11 +365,17 @@ public class DeadletterQueueSample {
          * @throws RuntimeException if the person could not be serialized.
          */
         String toJson() {
-            try {
-                return OBJECT_MAPPER.writeValueAsString(this);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException("Could not serialize object.", e);
+            StringWriter stringWriter = new StringWriter();
+            try (JsonWriter jsonWriter = JsonProviders.createWriter(stringWriter)) {
+                jsonWriter.writeStartObject()
+                    .writeStringField("lastName", lastName)
+                    .writeStringField("firstName", firstName)
+                    .writeEndObject();
+            } catch (IOException ex) {
+                throw new RuntimeException("Could not serialize object.", ex);
             }
+
+            return stringWriter.toString();
         }
 
         /**
@@ -379,10 +386,28 @@ public class DeadletterQueueSample {
          * @throws RuntimeException if the JSON string could not be deserialized.
          */
         private static Person fromJson(String json) {
-            try {
-                return OBJECT_MAPPER.readValue(json, Person.class);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException("Could not deserialize object.", e);
+            try (JsonReader jsonReader = JsonProviders.createReader(json)) {
+                return jsonReader.readObject(reader -> {
+                    String lastName = null;
+                    String firstName = null;
+
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("lastName".equals(fieldName)) {
+                            lastName = reader.getString();
+                        } else if ("firstName".equals(fieldName)) {
+                            firstName = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return new Person(lastName, firstName);
+                });
+            } catch (IOException ex) {
+                throw new RuntimeException("Could not deserialize object.", ex);
             }
         }
     }

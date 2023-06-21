@@ -67,19 +67,20 @@ public final class EmptyRuleActionImpl extends RuleActionImpl {
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 finalRootElementName,
                 reader -> {
-                    String type = reader.getStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type");
-                    if (!"EmptyRuleAction".equals(type)) {
+                    EmptyRuleActionImpl deserializedEmptyRuleAction = new EmptyRuleActionImpl();
+                    String discriminatorValue =
+                            reader.getStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type");
+                    if (!"EmptyRuleAction".equals(discriminatorValue)) {
                         throw new IllegalStateException(
                                 "'type' was expected to be non-null and equal to 'EmptyRuleAction'. The found 'type' was '"
-                                        + type
+                                        + discriminatorValue
                                         + "'.");
                     }
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         reader.skipElement();
                     }
-                    EmptyRuleActionImpl deserializedEmptyRuleActionImpl = new EmptyRuleActionImpl();
 
-                    return deserializedEmptyRuleActionImpl;
+                    return deserializedEmptyRuleAction;
                 });
     }
 }

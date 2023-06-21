@@ -86,19 +86,17 @@ public final class CreateTopicBodyImpl implements XmlSerializable<CreateTopicBod
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    CreateTopicBodyContentImpl content = null;
+                    CreateTopicBodyImpl deserializedCreateTopicBody = new CreateTopicBodyImpl();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("content".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            content = CreateTopicBodyContentImpl.fromXml(reader, "content");
+                            deserializedCreateTopicBody.content = CreateTopicBodyContentImpl.fromXml(reader, "content");
                         } else {
                             reader.skipElement();
                         }
                     }
-                    CreateTopicBodyImpl deserializedCreateTopicBody = new CreateTopicBodyImpl();
-                    deserializedCreateTopicBody.content = content;
 
                     return deserializedCreateTopicBody;
                 });

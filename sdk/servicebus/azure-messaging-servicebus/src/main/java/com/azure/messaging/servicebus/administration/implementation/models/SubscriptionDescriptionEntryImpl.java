@@ -221,45 +221,36 @@ public final class SubscriptionDescriptionEntryImpl implements XmlSerializable<S
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    String id = null;
-                    TitleImpl title = null;
-                    OffsetDateTime published = null;
-                    OffsetDateTime updated = null;
-                    ResponseLinkImpl link = null;
-                    SubscriptionDescriptionEntryContentImpl content = null;
+                    SubscriptionDescriptionEntryImpl deserializedSubscriptionDescriptionEntry =
+                            new SubscriptionDescriptionEntryImpl();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("id".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            id = reader.getStringElement();
+                            deserializedSubscriptionDescriptionEntry.id = reader.getStringElement();
                         } else if ("title".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            title = TitleImpl.fromXml(reader, "title");
+                            deserializedSubscriptionDescriptionEntry.title = TitleImpl.fromXml(reader, "title");
                         } else if ("published".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            published = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
+                            deserializedSubscriptionDescriptionEntry.published =
+                                    reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("updated".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            updated = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
+                            deserializedSubscriptionDescriptionEntry.updated =
+                                    reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("link".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            link = ResponseLinkImpl.fromXml(reader, "link");
+                            deserializedSubscriptionDescriptionEntry.link = ResponseLinkImpl.fromXml(reader, "link");
                         } else if ("content".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            content = SubscriptionDescriptionEntryContentImpl.fromXml(reader, "content");
+                            deserializedSubscriptionDescriptionEntry.content =
+                                    SubscriptionDescriptionEntryContentImpl.fromXml(reader, "content");
                         } else {
                             reader.skipElement();
                         }
                     }
-                    SubscriptionDescriptionEntryImpl deserializedSubscriptionDescriptionEntry =
-                            new SubscriptionDescriptionEntryImpl();
-                    deserializedSubscriptionDescriptionEntry.id = id;
-                    deserializedSubscriptionDescriptionEntry.title = title;
-                    deserializedSubscriptionDescriptionEntry.published = published;
-                    deserializedSubscriptionDescriptionEntry.updated = updated;
-                    deserializedSubscriptionDescriptionEntry.link = link;
-                    deserializedSubscriptionDescriptionEntry.content = content;
 
                     return deserializedSubscriptionDescriptionEntry;
                 });

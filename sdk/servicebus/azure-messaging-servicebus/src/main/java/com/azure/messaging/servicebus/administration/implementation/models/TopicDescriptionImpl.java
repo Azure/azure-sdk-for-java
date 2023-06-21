@@ -66,66 +66,10 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
      */
     private Boolean isAnonymousAccessible;
 
-    static final class AuthorizationRulesWrapper implements XmlSerializable<AuthorizationRulesWrapper> {
-        private final List<AuthorizationRuleImpl> items;
-
-        private AuthorizationRulesWrapper(List<AuthorizationRuleImpl> items) {
-            this.items = items;
-        }
-
-        @Override
-        public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-            return toXml(xmlWriter, null);
-        }
-
-        @Override
-        public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-            rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "AuthorizationRules" : rootElementName;
-            xmlWriter.writeStartElement(
-                    "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", rootElementName);
-            if (items != null) {
-                for (AuthorizationRuleImpl element : items) {
-                    xmlWriter.writeXml(element, "AuthorizationRule");
-                }
-            }
-            return xmlWriter.writeEndElement();
-        }
-
-        public static AuthorizationRulesWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
-            return fromXml(xmlReader, null);
-        }
-
-        public static AuthorizationRulesWrapper fromXml(XmlReader xmlReader, String rootElementName)
-                throws XMLStreamException {
-            rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "AuthorizationRules" : rootElementName;
-            return xmlReader.readObject(
-                    "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
-                    rootElementName,
-                    reader -> {
-                        List<AuthorizationRuleImpl> items = null;
-
-                        while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                            String elementName = reader.getElementName().getLocalPart();
-
-                            if ("AuthorizationRule".equals(elementName)) {
-                                if (items == null) {
-                                    items = new ArrayList<>();
-                                }
-
-                                items.add(AuthorizationRuleImpl.fromXml(reader));
-                            } else {
-                                reader.nextElement();
-                            }
-                        }
-                        return new AuthorizationRulesWrapper(items);
-                    });
-        }
-    }
-
     /*
      * Authorization rules for resource.
      */
-    private AuthorizationRulesWrapper authorizationRules;
+    private List<AuthorizationRuleImpl> authorizationRules = new ArrayList<>();
 
     /*
      * Status of a Service Bus resource
@@ -381,9 +325,9 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
      */
     public List<AuthorizationRuleImpl> getAuthorizationRules() {
         if (this.authorizationRules == null) {
-            this.authorizationRules = new AuthorizationRulesWrapper(new ArrayList<AuthorizationRuleImpl>());
+            this.authorizationRules = new ArrayList<>();
         }
-        return this.authorizationRules.items;
+        return this.authorizationRules;
     }
 
     /**
@@ -393,7 +337,7 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
      * @return the TopicDescription object itself.
      */
     public TopicDescriptionImpl setAuthorizationRules(List<AuthorizationRuleImpl> authorizationRules) {
-        this.authorizationRules = new AuthorizationRulesWrapper(authorizationRules);
+        this.authorizationRules = authorizationRules;
         return this;
     }
 
@@ -733,7 +677,14 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 "IsAnonymousAccessible",
                 this.isAnonymousAccessible);
-        xmlWriter.writeXml(this.authorizationRules);
+        if (this.authorizationRules != null) {
+            xmlWriter.writeStartElement(
+                    "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
+            for (AuthorizationRuleImpl element : this.authorizationRules) {
+                xmlWriter.writeXml(element, "AuthorizationRule");
+            }
+            xmlWriter.writeEndElement();
+        }
         xmlWriter.writeStringElement(
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 "Status",
@@ -818,154 +769,137 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 finalRootElementName,
                 reader -> {
-                    Duration defaultMessageTimeToLive = null;
-                    Long maxSizeInMegabytes = null;
-                    Boolean requiresDuplicateDetection = null;
-                    Duration duplicateDetectionHistoryTimeWindow = null;
-                    Boolean enableBatchedOperations = null;
-                    Long sizeInBytes = null;
-                    Boolean filteringMessagesBeforePublishing = null;
-                    Boolean isAnonymousAccessible = null;
-                    AuthorizationRulesWrapper authorizationRules = null;
-                    EntityStatus status = null;
-                    OffsetDateTime createdAt = null;
-                    OffsetDateTime updatedAt = null;
-                    OffsetDateTime accessedAt = null;
-                    Boolean supportOrdering = null;
-                    MessageCountDetailsImpl messageCountDetails = null;
-                    Integer subscriptionCount = null;
-                    Duration autoDeleteOnIdle = null;
-                    Boolean enablePartitioning = null;
-                    EntityAvailabilityStatusImpl entityAvailabilityStatus = null;
-                    Boolean enableSubscriptionPartitioning = null;
-                    Boolean enableExpress = null;
-                    String userMetadata = null;
-                    Long maxMessageSizeInKilobytes = null;
+                    TopicDescriptionImpl deserializedTopicDescription = new TopicDescriptionImpl();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("DefaultMessageTimeToLive".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            defaultMessageTimeToLive = reader.getNullableElement(Duration::parse);
+                            deserializedTopicDescription.defaultMessageTimeToLive =
+                                    reader.getNullableElement(Duration::parse);
                         } else if ("MaxSizeInMegabytes".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            maxSizeInMegabytes = reader.getNullableElement(Long::parseLong);
+                            deserializedTopicDescription.maxSizeInMegabytes =
+                                    reader.getNullableElement(Long::parseLong);
                         } else if ("RequiresDuplicateDetection".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            requiresDuplicateDetection = reader.getNullableElement(Boolean::parseBoolean);
+                            deserializedTopicDescription.requiresDuplicateDetection =
+                                    reader.getNullableElement(Boolean::parseBoolean);
                         } else if ("DuplicateDetectionHistoryTimeWindow".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            duplicateDetectionHistoryTimeWindow = reader.getNullableElement(Duration::parse);
+                            deserializedTopicDescription.duplicateDetectionHistoryTimeWindow =
+                                    reader.getNullableElement(Duration::parse);
                         } else if ("EnableBatchedOperations".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            enableBatchedOperations = reader.getNullableElement(Boolean::parseBoolean);
+                            deserializedTopicDescription.enableBatchedOperations =
+                                    reader.getNullableElement(Boolean::parseBoolean);
                         } else if ("SizeInBytes".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            sizeInBytes = reader.getNullableElement(Long::parseLong);
+                            deserializedTopicDescription.sizeInBytes = reader.getNullableElement(Long::parseLong);
                         } else if ("FilteringMessagesBeforePublishing".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            filteringMessagesBeforePublishing = reader.getNullableElement(Boolean::parseBoolean);
+                            deserializedTopicDescription.filteringMessagesBeforePublishing =
+                                    reader.getNullableElement(Boolean::parseBoolean);
                         } else if ("IsAnonymousAccessible".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            isAnonymousAccessible = reader.getNullableElement(Boolean::parseBoolean);
+                            deserializedTopicDescription.isAnonymousAccessible =
+                                    reader.getNullableElement(Boolean::parseBoolean);
                         } else if ("AuthorizationRules".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            authorizationRules = AuthorizationRulesWrapper.fromXml(reader);
+                            if (deserializedTopicDescription.authorizationRules == null) {
+                                deserializedTopicDescription.authorizationRules = new ArrayList<>();
+                            }
+                            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                                elementName = reader.getElementName();
+                                if ("AuthorizationRule".equals(elementName.getLocalPart())
+                                        && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                                .equals(elementName.getNamespaceURI())) {
+                                    deserializedTopicDescription.authorizationRules.add(
+                                            AuthorizationRuleImpl.fromXml(reader, "AuthorizationRule"));
+                                } else {
+                                    reader.skipElement();
+                                }
+                            }
                         } else if ("Status".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            status = reader.getNullableElement(EntityStatus::fromString);
+                            deserializedTopicDescription.status = reader.getNullableElement(EntityStatus::fromString);
                         } else if ("CreatedAt".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            createdAt = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
+                            deserializedTopicDescription.createdAt =
+                                    reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("UpdatedAt".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            updatedAt = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
+                            deserializedTopicDescription.updatedAt =
+                                    reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("AccessedAt".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            accessedAt = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
+                            deserializedTopicDescription.accessedAt =
+                                    reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("SupportOrdering".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            supportOrdering = reader.getNullableElement(Boolean::parseBoolean);
+                            deserializedTopicDescription.supportOrdering =
+                                    reader.getNullableElement(Boolean::parseBoolean);
                         } else if ("CountDetails".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            messageCountDetails = MessageCountDetailsImpl.fromXml(reader, "CountDetails");
+                            deserializedTopicDescription.messageCountDetails =
+                                    MessageCountDetailsImpl.fromXml(reader, "CountDetails");
                         } else if ("SubscriptionCount".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            subscriptionCount = reader.getNullableElement(Integer::parseInt);
+                            deserializedTopicDescription.subscriptionCount =
+                                    reader.getNullableElement(Integer::parseInt);
                         } else if ("AutoDeleteOnIdle".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            autoDeleteOnIdle = reader.getNullableElement(Duration::parse);
+                            deserializedTopicDescription.autoDeleteOnIdle = reader.getNullableElement(Duration::parse);
                         } else if ("EnablePartitioning".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            enablePartitioning = reader.getNullableElement(Boolean::parseBoolean);
+                            deserializedTopicDescription.enablePartitioning =
+                                    reader.getNullableElement(Boolean::parseBoolean);
                         } else if ("EntityAvailabilityStatus".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            entityAvailabilityStatus =
+                            deserializedTopicDescription.entityAvailabilityStatus =
                                     reader.getNullableElement(EntityAvailabilityStatusImpl::fromString);
                         } else if ("EnableSubscriptionPartitioning".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            enableSubscriptionPartitioning = reader.getNullableElement(Boolean::parseBoolean);
+                            deserializedTopicDescription.enableSubscriptionPartitioning =
+                                    reader.getNullableElement(Boolean::parseBoolean);
                         } else if ("EnableExpress".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            enableExpress = reader.getNullableElement(Boolean::parseBoolean);
+                            deserializedTopicDescription.enableExpress =
+                                    reader.getNullableElement(Boolean::parseBoolean);
                         } else if ("UserMetadata".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            userMetadata = reader.getStringElement();
+                            deserializedTopicDescription.userMetadata = reader.getStringElement();
                         } else if ("MaxMessageSizeInKilobytes".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            maxMessageSizeInKilobytes = reader.getNullableElement(Long::parseLong);
+                            deserializedTopicDescription.maxMessageSizeInKilobytes =
+                                    reader.getNullableElement(Long::parseLong);
                         } else {
                             reader.skipElement();
                         }
                     }
-                    TopicDescriptionImpl deserializedTopicDescription = new TopicDescriptionImpl();
-                    deserializedTopicDescription.defaultMessageTimeToLive = defaultMessageTimeToLive;
-                    deserializedTopicDescription.maxSizeInMegabytes = maxSizeInMegabytes;
-                    deserializedTopicDescription.requiresDuplicateDetection = requiresDuplicateDetection;
-                    deserializedTopicDescription.duplicateDetectionHistoryTimeWindow =
-                            duplicateDetectionHistoryTimeWindow;
-                    deserializedTopicDescription.enableBatchedOperations = enableBatchedOperations;
-                    deserializedTopicDescription.sizeInBytes = sizeInBytes;
-                    deserializedTopicDescription.filteringMessagesBeforePublishing = filteringMessagesBeforePublishing;
-                    deserializedTopicDescription.isAnonymousAccessible = isAnonymousAccessible;
-                    deserializedTopicDescription.authorizationRules = authorizationRules;
-                    deserializedTopicDescription.status = status;
-                    deserializedTopicDescription.createdAt = createdAt;
-                    deserializedTopicDescription.updatedAt = updatedAt;
-                    deserializedTopicDescription.accessedAt = accessedAt;
-                    deserializedTopicDescription.supportOrdering = supportOrdering;
-                    deserializedTopicDescription.messageCountDetails = messageCountDetails;
-                    deserializedTopicDescription.subscriptionCount = subscriptionCount;
-                    deserializedTopicDescription.autoDeleteOnIdle = autoDeleteOnIdle;
-                    deserializedTopicDescription.enablePartitioning = enablePartitioning;
-                    deserializedTopicDescription.entityAvailabilityStatus = entityAvailabilityStatus;
-                    deserializedTopicDescription.enableSubscriptionPartitioning = enableSubscriptionPartitioning;
-                    deserializedTopicDescription.enableExpress = enableExpress;
-                    deserializedTopicDescription.userMetadata = userMetadata;
-                    deserializedTopicDescription.maxMessageSizeInKilobytes = maxMessageSizeInKilobytes;
 
                     return deserializedTopicDescription;
                 });

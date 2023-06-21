@@ -119,24 +119,21 @@ public final class SubscriptionDescriptionEntryContentImpl
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    String type = reader.getStringAttribute(null, "type");
-                    SubscriptionDescriptionImpl subscriptionDescription = null;
+                    SubscriptionDescriptionEntryContentImpl deserializedSubscriptionDescriptionEntryContent =
+                            new SubscriptionDescriptionEntryContentImpl();
+                    deserializedSubscriptionDescriptionEntryContent.type = reader.getStringAttribute(null, "type");
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("SubscriptionDescription".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            subscriptionDescription =
+                            deserializedSubscriptionDescriptionEntryContent.subscriptionDescription =
                                     SubscriptionDescriptionImpl.fromXml(reader, "SubscriptionDescription");
                         } else {
                             reader.skipElement();
                         }
                     }
-                    SubscriptionDescriptionEntryContentImpl deserializedSubscriptionDescriptionEntryContent =
-                            new SubscriptionDescriptionEntryContentImpl();
-                    deserializedSubscriptionDescriptionEntryContent.type = type;
-                    deserializedSubscriptionDescriptionEntryContent.subscriptionDescription = subscriptionDescription;
 
                     return deserializedSubscriptionDescriptionEntryContent;
                 });

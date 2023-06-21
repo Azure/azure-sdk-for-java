@@ -24,6 +24,13 @@ public final class DeadLetterOptions extends SettlementOptions {
     private Map<String, Object> propertiesToModify;
 
     /**
+     * Creates an instance of {@link DeadLetterOptions}.
+     */
+    public DeadLetterOptions() {
+        super();
+    }
+
+    /**
      * Sets the reason while putting message in dead letter sub-queue.
      *
      * @param deadLetterReason while putting message in dead letter sub-queue.

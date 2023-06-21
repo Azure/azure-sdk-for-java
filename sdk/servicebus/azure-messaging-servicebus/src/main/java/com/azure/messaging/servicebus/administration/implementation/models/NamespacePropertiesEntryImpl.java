@@ -222,45 +222,35 @@ public final class NamespacePropertiesEntryImpl implements XmlSerializable<Names
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    String id = null;
-                    TitleImpl title = null;
-                    OffsetDateTime updated = null;
-                    ResponseAuthorImpl author = null;
-                    ResponseLinkImpl link = null;
-                    NamespacePropertiesEntryContentImpl content = null;
+                    NamespacePropertiesEntryImpl deserializedNamespacePropertiesEntry =
+                            new NamespacePropertiesEntryImpl();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("id".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            id = reader.getStringElement();
+                            deserializedNamespacePropertiesEntry.id = reader.getStringElement();
                         } else if ("title".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            title = TitleImpl.fromXml(reader, "title");
+                            deserializedNamespacePropertiesEntry.title = TitleImpl.fromXml(reader, "title");
                         } else if ("updated".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            updated = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
+                            deserializedNamespacePropertiesEntry.updated =
+                                    reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("author".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            author = ResponseAuthorImpl.fromXml(reader, "author");
+                            deserializedNamespacePropertiesEntry.author = ResponseAuthorImpl.fromXml(reader, "author");
                         } else if ("link".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            link = ResponseLinkImpl.fromXml(reader, "link");
+                            deserializedNamespacePropertiesEntry.link = ResponseLinkImpl.fromXml(reader, "link");
                         } else if ("content".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            content = NamespacePropertiesEntryContentImpl.fromXml(reader, "content");
+                            deserializedNamespacePropertiesEntry.content =
+                                    NamespacePropertiesEntryContentImpl.fromXml(reader, "content");
                         } else {
                             reader.skipElement();
                         }
                     }
-                    NamespacePropertiesEntryImpl deserializedNamespacePropertiesEntry =
-                            new NamespacePropertiesEntryImpl();
-                    deserializedNamespacePropertiesEntry.title = title;
-                    deserializedNamespacePropertiesEntry.id = id;
-                    deserializedNamespacePropertiesEntry.updated = updated;
-                    deserializedNamespacePropertiesEntry.author = author;
-                    deserializedNamespacePropertiesEntry.link = link;
-                    deserializedNamespacePropertiesEntry.content = content;
 
                     return deserializedNamespacePropertiesEntry;
                 });

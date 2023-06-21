@@ -7,7 +7,6 @@ package com.azure.messaging.servicebus.administration.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
-import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
 import java.util.ArrayList;
@@ -33,65 +32,10 @@ public final class SqlRuleActionImpl extends RuleActionImpl {
      */
     private String compatibilityLevel;
 
-    static final class ParametersWrapper implements XmlSerializable<ParametersWrapper> {
-        private final List<KeyValueImpl> items;
-
-        private ParametersWrapper(List<KeyValueImpl> items) {
-            this.items = items;
-        }
-
-        @Override
-        public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-            return toXml(xmlWriter, null);
-        }
-
-        @Override
-        public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-            rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Parameters" : rootElementName;
-            xmlWriter.writeStartElement(
-                    "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", rootElementName);
-            if (items != null) {
-                for (KeyValueImpl element : items) {
-                    xmlWriter.writeXml(element, "KeyValueOfstringanyType");
-                }
-            }
-            return xmlWriter.writeEndElement();
-        }
-
-        public static ParametersWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
-            return fromXml(xmlReader, null);
-        }
-
-        public static ParametersWrapper fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-            rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Parameters" : rootElementName;
-            return xmlReader.readObject(
-                    "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
-                    rootElementName,
-                    reader -> {
-                        List<KeyValueImpl> items = null;
-
-                        while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                            String elementName = reader.getElementName().getLocalPart();
-
-                            if ("KeyValueOfstringanyType".equals(elementName)) {
-                                if (items == null) {
-                                    items = new ArrayList<>();
-                                }
-
-                                items.add(KeyValueImpl.fromXml(reader));
-                            } else {
-                                reader.nextElement();
-                            }
-                        }
-                        return new ParametersWrapper(items);
-                    });
-        }
-    }
-
     /*
      * The parameters property.
      */
-    private ParametersWrapper parameters;
+    private List<KeyValueImpl> parameters = new ArrayList<>();
 
     /*
      * The requiresPreprocessing property.
@@ -148,9 +92,9 @@ public final class SqlRuleActionImpl extends RuleActionImpl {
      */
     public List<KeyValueImpl> getParameters() {
         if (this.parameters == null) {
-            this.parameters = new ParametersWrapper(new ArrayList<KeyValueImpl>());
+            this.parameters = new ArrayList<>();
         }
-        return this.parameters.items;
+        return this.parameters;
     }
 
     /**
@@ -160,7 +104,7 @@ public final class SqlRuleActionImpl extends RuleActionImpl {
      * @return the SqlRuleAction object itself.
      */
     public SqlRuleActionImpl setParameters(List<KeyValueImpl> parameters) {
-        this.parameters = new ParametersWrapper(parameters);
+        this.parameters = parameters;
         return this;
     }
 
@@ -204,7 +148,14 @@ public final class SqlRuleActionImpl extends RuleActionImpl {
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 "CompatibilityLevel",
                 this.compatibilityLevel);
-        xmlWriter.writeXml(this.parameters);
+        if (this.parameters != null) {
+            xmlWriter.writeStartElement(
+                    "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Parameters");
+            for (KeyValueImpl element : this.parameters) {
+                xmlWriter.writeXml(element, "KeyValueOfstringanyType");
+            }
+            xmlWriter.writeEndElement();
+        }
         xmlWriter.writeBooleanElement(
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 "RequiresPreprocessing",
@@ -242,45 +193,52 @@ public final class SqlRuleActionImpl extends RuleActionImpl {
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 finalRootElementName,
                 reader -> {
-                    String type = reader.getStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type");
-                    if (!"SqlRuleAction".equals(type)) {
+                    SqlRuleActionImpl deserializedSqlRuleAction = new SqlRuleActionImpl();
+                    String discriminatorValue =
+                            reader.getStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type");
+                    if (!"SqlRuleAction".equals(discriminatorValue)) {
                         throw new IllegalStateException(
                                 "'type' was expected to be non-null and equal to 'SqlRuleAction'. The found 'type' was '"
-                                        + type
+                                        + discriminatorValue
                                         + "'.");
                     }
-                    String sqlExpression = null;
-                    String compatibilityLevel = null;
-                    ParametersWrapper parameters = null;
-                    Boolean requiresPreprocessing = null;
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("SqlExpression".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            sqlExpression = reader.getStringElement();
+                            deserializedSqlRuleAction.sqlExpression = reader.getStringElement();
                         } else if ("CompatibilityLevel".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            compatibilityLevel = reader.getStringElement();
+                            deserializedSqlRuleAction.compatibilityLevel = reader.getStringElement();
                         } else if ("Parameters".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            parameters = ParametersWrapper.fromXml(reader);
+                            if (deserializedSqlRuleAction.parameters == null) {
+                                deserializedSqlRuleAction.parameters = new ArrayList<>();
+                            }
+                            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                                elementName = reader.getElementName();
+                                if ("KeyValueOfstringanyType".equals(elementName.getLocalPart())
+                                        && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                                .equals(elementName.getNamespaceURI())) {
+                                    deserializedSqlRuleAction.parameters.add(
+                                            KeyValueImpl.fromXml(reader, "KeyValueOfstringanyType"));
+                                } else {
+                                    reader.skipElement();
+                                }
+                            }
                         } else if ("RequiresPreprocessing".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            requiresPreprocessing = reader.getNullableElement(Boolean::parseBoolean);
+                            deserializedSqlRuleAction.requiresPreprocessing =
+                                    reader.getNullableElement(Boolean::parseBoolean);
                         } else {
                             reader.skipElement();
                         }
                     }
-                    SqlRuleActionImpl deserializedSqlRuleAction = new SqlRuleActionImpl();
-                    deserializedSqlRuleAction.sqlExpression = sqlExpression;
-                    deserializedSqlRuleAction.compatibilityLevel = compatibilityLevel;
-                    deserializedSqlRuleAction.parameters = parameters;
-                    deserializedSqlRuleAction.requiresPreprocessing = requiresPreprocessing;
 
                     return deserializedSqlRuleAction;
                 });

@@ -273,51 +273,39 @@ public final class QueueDescriptionEntryImpl implements XmlSerializable<QueueDes
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    String base = reader.getStringAttribute(null, "base");
-                    String id = null;
-                    TitleImpl title = null;
-                    OffsetDateTime published = null;
-                    OffsetDateTime updated = null;
-                    ResponseAuthorImpl author = null;
-                    ResponseLinkImpl link = null;
-                    QueueDescriptionEntryContentImpl content = null;
+                    QueueDescriptionEntryImpl deserializedQueueDescriptionEntry = new QueueDescriptionEntryImpl();
+                    deserializedQueueDescriptionEntry.base = reader.getStringAttribute(null, "base");
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("id".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            id = reader.getStringElement();
+                            deserializedQueueDescriptionEntry.id = reader.getStringElement();
                         } else if ("title".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            title = TitleImpl.fromXml(reader, "title");
+                            deserializedQueueDescriptionEntry.title = TitleImpl.fromXml(reader, "title");
                         } else if ("published".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            published = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
+                            deserializedQueueDescriptionEntry.published =
+                                    reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("updated".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            updated = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
+                            deserializedQueueDescriptionEntry.updated =
+                                    reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("author".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            author = ResponseAuthorImpl.fromXml(reader, "author");
+                            deserializedQueueDescriptionEntry.author = ResponseAuthorImpl.fromXml(reader, "author");
                         } else if ("link".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            link = ResponseLinkImpl.fromXml(reader, "link");
+                            deserializedQueueDescriptionEntry.link = ResponseLinkImpl.fromXml(reader, "link");
                         } else if ("content".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            content = QueueDescriptionEntryContentImpl.fromXml(reader, "content");
+                            deserializedQueueDescriptionEntry.content =
+                                    QueueDescriptionEntryContentImpl.fromXml(reader, "content");
                         } else {
                             reader.skipElement();
                         }
                     }
-                    QueueDescriptionEntryImpl deserializedQueueDescriptionEntry = new QueueDescriptionEntryImpl();
-                    deserializedQueueDescriptionEntry.base = base;
-                    deserializedQueueDescriptionEntry.id = id;
-                    deserializedQueueDescriptionEntry.title = title;
-                    deserializedQueueDescriptionEntry.published = published;
-                    deserializedQueueDescriptionEntry.updated = updated;
-                    deserializedQueueDescriptionEntry.author = author;
-                    deserializedQueueDescriptionEntry.link = link;
-                    deserializedQueueDescriptionEntry.content = content;
 
                     return deserializedQueueDescriptionEntry;
                 });

@@ -22,6 +22,13 @@ public final class AbandonOptions extends SettlementOptions {
     private Map<String, Object> propertiesToModify;
 
     /**
+     * Creates an instance of {@link AbandonOptions}.
+     */
+    public AbandonOptions() {
+        super();
+    }
+
+    /**
      * Gets the message properties to modify while abandoning the message.
      *
      * @return The message properties to modify while abandoning the message.

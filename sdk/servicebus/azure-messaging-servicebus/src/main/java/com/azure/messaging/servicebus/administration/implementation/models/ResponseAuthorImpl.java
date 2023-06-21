@@ -86,19 +86,17 @@ public final class ResponseAuthorImpl implements XmlSerializable<ResponseAuthorI
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    String name = null;
+                    ResponseAuthorImpl deserializedResponseAuthor = new ResponseAuthorImpl();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("name".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            name = reader.getStringElement();
+                            deserializedResponseAuthor.name = reader.getStringElement();
                         } else {
                             reader.skipElement();
                         }
                     }
-                    ResponseAuthorImpl deserializedResponseAuthor = new ResponseAuthorImpl();
-                    deserializedResponseAuthor.name = name;
 
                     return deserializedResponseAuthor;
                 });

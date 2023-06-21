@@ -171,38 +171,31 @@ public final class RuleDescriptionImpl implements XmlSerializable<RuleDescriptio
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 finalRootElementName,
                 reader -> {
-                    RuleFilterImpl filter = null;
-                    RuleActionImpl action = null;
-                    OffsetDateTime createdAt = null;
-                    String name = null;
+                    RuleDescriptionImpl deserializedRuleDescription = new RuleDescriptionImpl();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("Filter".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            filter = RuleFilterImpl.fromXml(reader, "Filter");
+                            deserializedRuleDescription.filter = RuleFilterImpl.fromXml(reader, "Filter");
                         } else if ("Action".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            action = RuleActionImpl.fromXml(reader, "Action");
+                            deserializedRuleDescription.action = RuleActionImpl.fromXml(reader, "Action");
                         } else if ("CreatedAt".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            createdAt = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
+                            deserializedRuleDescription.createdAt =
+                                    reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("Name".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            name = reader.getStringElement();
+                            deserializedRuleDescription.name = reader.getStringElement();
                         } else {
                             reader.skipElement();
                         }
                     }
-                    RuleDescriptionImpl deserializedRuleDescription = new RuleDescriptionImpl();
-                    deserializedRuleDescription.filter = filter;
-                    deserializedRuleDescription.action = action;
-                    deserializedRuleDescription.createdAt = createdAt;
-                    deserializedRuleDescription.name = name;
 
                     return deserializedRuleDescription;
                 });

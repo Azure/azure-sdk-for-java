@@ -13,7 +13,6 @@ import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import javax.xml.namespace.QName;
@@ -205,44 +204,36 @@ public final class SubscriptionDescriptionFeedImpl implements XmlSerializable<Su
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    String id = null;
-                    TitleImpl title = null;
-                    OffsetDateTime updated = null;
-                    List<ResponseLinkImpl> link = null;
-                    List<SubscriptionDescriptionEntryImpl> entry = null;
+                    SubscriptionDescriptionFeedImpl deserializedSubscriptionDescriptionFeed =
+                            new SubscriptionDescriptionFeedImpl();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("id".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            id = reader.getStringElement();
+                            deserializedSubscriptionDescriptionFeed.id = reader.getStringElement();
                         } else if ("title".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            title = TitleImpl.fromXml(reader, "title");
+                            deserializedSubscriptionDescriptionFeed.title = TitleImpl.fromXml(reader, "title");
                         } else if ("updated".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            updated = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
+                            deserializedSubscriptionDescriptionFeed.updated =
+                                    reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("link".equals(elementName.getLocalPart())) {
-                            if (link == null) {
-                                link = new LinkedList<>();
+                            if (deserializedSubscriptionDescriptionFeed.link == null) {
+                                deserializedSubscriptionDescriptionFeed.link = new ArrayList<>();
                             }
-                            link.add(ResponseLinkImpl.fromXml(reader, "link"));
+                            deserializedSubscriptionDescriptionFeed.link.add(ResponseLinkImpl.fromXml(reader, "link"));
                         } else if ("entry".equals(elementName.getLocalPart())) {
-                            if (entry == null) {
-                                entry = new LinkedList<>();
+                            if (deserializedSubscriptionDescriptionFeed.entry == null) {
+                                deserializedSubscriptionDescriptionFeed.entry = new ArrayList<>();
                             }
-                            entry.add(SubscriptionDescriptionEntryImpl.fromXml(reader, "entry"));
+                            deserializedSubscriptionDescriptionFeed.entry.add(
+                                    SubscriptionDescriptionEntryImpl.fromXml(reader, "entry"));
                         } else {
                             reader.skipElement();
                         }
                     }
-                    SubscriptionDescriptionFeedImpl deserializedSubscriptionDescriptionFeed =
-                            new SubscriptionDescriptionFeedImpl();
-                    deserializedSubscriptionDescriptionFeed.id = id;
-                    deserializedSubscriptionDescriptionFeed.title = title;
-                    deserializedSubscriptionDescriptionFeed.updated = updated;
-                    deserializedSubscriptionDescriptionFeed.link = link;
-                    deserializedSubscriptionDescriptionFeed.entry = entry;
 
                     return deserializedSubscriptionDescriptionFeed;
                 });

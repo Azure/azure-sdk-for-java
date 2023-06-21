@@ -273,51 +273,39 @@ public final class TopicDescriptionEntryImpl implements XmlSerializable<TopicDes
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    String base = reader.getStringAttribute(null, "base");
-                    String id = null;
-                    TitleImpl title = null;
-                    OffsetDateTime published = null;
-                    OffsetDateTime updated = null;
-                    ResponseAuthorImpl author = null;
-                    ResponseLinkImpl link = null;
-                    TopicDescriptionEntryContentImpl content = null;
+                    TopicDescriptionEntryImpl deserializedTopicDescriptionEntry = new TopicDescriptionEntryImpl();
+                    deserializedTopicDescriptionEntry.base = reader.getStringAttribute(null, "base");
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("id".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            id = reader.getStringElement();
+                            deserializedTopicDescriptionEntry.id = reader.getStringElement();
                         } else if ("title".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            title = TitleImpl.fromXml(reader, "title");
+                            deserializedTopicDescriptionEntry.title = TitleImpl.fromXml(reader, "title");
                         } else if ("published".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            published = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
+                            deserializedTopicDescriptionEntry.published =
+                                    reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("updated".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            updated = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
+                            deserializedTopicDescriptionEntry.updated =
+                                    reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("author".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            author = ResponseAuthorImpl.fromXml(reader, "author");
+                            deserializedTopicDescriptionEntry.author = ResponseAuthorImpl.fromXml(reader, "author");
                         } else if ("link".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            link = ResponseLinkImpl.fromXml(reader, "link");
+                            deserializedTopicDescriptionEntry.link = ResponseLinkImpl.fromXml(reader, "link");
                         } else if ("content".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            content = TopicDescriptionEntryContentImpl.fromXml(reader, "content");
+                            deserializedTopicDescriptionEntry.content =
+                                    TopicDescriptionEntryContentImpl.fromXml(reader, "content");
                         } else {
                             reader.skipElement();
                         }
                     }
-                    TopicDescriptionEntryImpl deserializedTopicDescriptionEntry = new TopicDescriptionEntryImpl();
-                    deserializedTopicDescriptionEntry.base = base;
-                    deserializedTopicDescriptionEntry.id = id;
-                    deserializedTopicDescriptionEntry.title = title;
-                    deserializedTopicDescriptionEntry.published = published;
-                    deserializedTopicDescriptionEntry.updated = updated;
-                    deserializedTopicDescriptionEntry.author = author;
-                    deserializedTopicDescriptionEntry.link = link;
-                    deserializedTopicDescriptionEntry.content = content;
 
                     return deserializedTopicDescriptionEntry;
                 });

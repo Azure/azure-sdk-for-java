@@ -118,23 +118,21 @@ public final class NamespacePropertiesEntryContentImpl implements XmlSerializabl
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    String type = reader.getStringAttribute(null, "type");
-                    NamespaceProperties namespaceProperties = null;
+                    NamespacePropertiesEntryContentImpl deserializedNamespacePropertiesEntryContent =
+                            new NamespacePropertiesEntryContentImpl();
+                    deserializedNamespacePropertiesEntryContent.type = reader.getStringAttribute(null, "type");
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("NamespaceInfo".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            namespaceProperties = NamespaceProperties.fromXml(reader, "NamespaceInfo");
+                            deserializedNamespacePropertiesEntryContent.namespaceProperties =
+                                    NamespaceProperties.fromXml(reader, "NamespaceInfo");
                         } else {
                             reader.skipElement();
                         }
                     }
-                    NamespacePropertiesEntryContentImpl deserializedNamespacePropertiesEntryContent =
-                            new NamespacePropertiesEntryContentImpl();
-                    deserializedNamespacePropertiesEntryContent.type = type;
-                    deserializedNamespacePropertiesEntryContent.namespaceProperties = namespaceProperties;
 
                     return deserializedNamespacePropertiesEntryContent;
                 });

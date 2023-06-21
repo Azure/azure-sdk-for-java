@@ -115,24 +115,21 @@ public final class CreateSubscriptionBodyContentImpl implements XmlSerializable<
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    String type = reader.getStringAttribute(null, "type");
-                    SubscriptionDescriptionImpl subscriptionDescription = null;
+                    CreateSubscriptionBodyContentImpl deserializedCreateSubscriptionBodyContent =
+                            new CreateSubscriptionBodyContentImpl();
+                    deserializedCreateSubscriptionBodyContent.type = reader.getStringAttribute(null, "type");
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("SubscriptionDescription".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            subscriptionDescription =
+                            deserializedCreateSubscriptionBodyContent.subscriptionDescription =
                                     SubscriptionDescriptionImpl.fromXml(reader, "SubscriptionDescription");
                         } else {
                             reader.skipElement();
                         }
                     }
-                    CreateSubscriptionBodyContentImpl deserializedCreateSubscriptionBodyContent =
-                            new CreateSubscriptionBodyContentImpl();
-                    deserializedCreateSubscriptionBodyContent.type = type;
-                    deserializedCreateSubscriptionBodyContent.subscriptionDescription = subscriptionDescription;
 
                     return deserializedCreateSubscriptionBodyContent;
                 });

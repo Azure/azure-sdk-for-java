@@ -116,23 +116,21 @@ public final class RuleDescriptionEntryContentImpl implements XmlSerializable<Ru
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    String type = reader.getStringAttribute(null, "type");
-                    RuleDescriptionImpl ruleDescription = null;
+                    RuleDescriptionEntryContentImpl deserializedRuleDescriptionEntryContent =
+                            new RuleDescriptionEntryContentImpl();
+                    deserializedRuleDescriptionEntryContent.type = reader.getStringAttribute(null, "type");
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("RuleDescription".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            ruleDescription = RuleDescriptionImpl.fromXml(reader, "RuleDescription");
+                            deserializedRuleDescriptionEntryContent.ruleDescription =
+                                    RuleDescriptionImpl.fromXml(reader, "RuleDescription");
                         } else {
                             reader.skipElement();
                         }
                     }
-                    RuleDescriptionEntryContentImpl deserializedRuleDescriptionEntryContent =
-                            new RuleDescriptionEntryContentImpl();
-                    deserializedRuleDescriptionEntryContent.type = type;
-                    deserializedRuleDescriptionEntryContent.ruleDescription = ruleDescription;
 
                     return deserializedRuleDescriptionEntryContent;
                 });

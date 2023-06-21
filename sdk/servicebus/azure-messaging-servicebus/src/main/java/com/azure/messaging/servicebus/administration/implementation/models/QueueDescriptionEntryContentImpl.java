@@ -116,23 +116,21 @@ public final class QueueDescriptionEntryContentImpl implements XmlSerializable<Q
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    String type = reader.getStringAttribute(null, "type");
-                    QueueDescriptionImpl queueDescription = null;
+                    QueueDescriptionEntryContentImpl deserializedQueueDescriptionEntryContent =
+                            new QueueDescriptionEntryContentImpl();
+                    deserializedQueueDescriptionEntryContent.type = reader.getStringAttribute(null, "type");
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("QueueDescription".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            queueDescription = QueueDescriptionImpl.fromXml(reader, "QueueDescription");
+                            deserializedQueueDescriptionEntryContent.queueDescription =
+                                    QueueDescriptionImpl.fromXml(reader, "QueueDescription");
                         } else {
                             reader.skipElement();
                         }
                     }
-                    QueueDescriptionEntryContentImpl deserializedQueueDescriptionEntryContent =
-                            new QueueDescriptionEntryContentImpl();
-                    deserializedQueueDescriptionEntryContent.type = type;
-                    deserializedQueueDescriptionEntryContent.queueDescription = queueDescription;
 
                     return deserializedQueueDescriptionEntryContent;
                 });

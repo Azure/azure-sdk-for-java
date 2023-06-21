@@ -17,11 +17,18 @@ import com.azure.messaging.servicebus.ServiceBusTransactionContext;
  * @see ServiceBusReceiverClient#complete(ServiceBusReceivedMessage, CompleteOptions)
  */
 public final class CompleteOptions extends SettlementOptions {
+
+    /**
+     * Creates an instance of {@link CompleteOptions}.
+     */
+    public CompleteOptions() {
+        super();
+    }
+
     /**
      * Sets the {@link ServiceBusTransactionContext} to the options.
      *
      * @param transactionContext The {@link ServiceBusTransactionContext} that will be used to complete a message.
-     *
      * @return The updated {@link CompleteOptions} object.
      * @see ServiceBusSenderClient#createTransaction()
      * @see ServiceBusSenderAsyncClient#createTransaction()

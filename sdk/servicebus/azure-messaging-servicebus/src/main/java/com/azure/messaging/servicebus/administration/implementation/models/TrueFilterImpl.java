@@ -9,6 +9,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -72,7 +73,14 @@ public final class TrueFilterImpl extends SqlFilterImpl {
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 "CompatibilityLevel",
                 getCompatibilityLevel());
-        xmlWriter.writeXml(getParametersInternal());
+        if (getParameters() != null) {
+            xmlWriter.writeStartElement(
+                    "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Parameters");
+            for (KeyValueImpl element : getParameters()) {
+                xmlWriter.writeXml(element, "KeyValueOfstringanyType");
+            }
+            xmlWriter.writeEndElement();
+        }
         xmlWriter.writeBooleanElement(
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 "RequiresPreprocessing",
@@ -110,45 +118,53 @@ public final class TrueFilterImpl extends SqlFilterImpl {
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 finalRootElementName,
                 reader -> {
-                    String type = reader.getStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type");
-                    if (!"TrueFilter".equals(type)) {
+                    TrueFilterImpl deserializedTrueFilter = new TrueFilterImpl();
+                    String discriminatorValue =
+                            reader.getStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type");
+                    if (!"TrueFilter".equals(discriminatorValue)) {
                         throw new IllegalStateException(
                                 "'type' was expected to be non-null and equal to 'TrueFilter'. The found 'type' was '"
-                                        + type
+                                        + discriminatorValue
                                         + "'.");
                     }
-                    String sqlExpression = null;
-                    String compatibilityLevel = null;
-                    ParametersWrapper parameters = null;
-                    Boolean requiresPreprocessing = null;
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("SqlExpression".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            sqlExpression = reader.getStringElement();
+                            deserializedTrueFilter.setSqlExpression(reader.getStringElement());
                         } else if ("CompatibilityLevel".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            compatibilityLevel = reader.getStringElement();
+                            deserializedTrueFilter.setCompatibilityLevel(reader.getStringElement());
                         } else if ("Parameters".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            parameters = ParametersWrapper.fromXml(reader);
+                            if (deserializedTrueFilter.getParameters() == null) {
+                                deserializedTrueFilter.setParameters(new ArrayList<>());
+                            }
+                            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                                elementName = reader.getElementName();
+                                if ("KeyValueOfstringanyType".equals(elementName.getLocalPart())
+                                        && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                                .equals(elementName.getNamespaceURI())) {
+                                    deserializedTrueFilter
+                                            .getParameters()
+                                            .add(KeyValueImpl.fromXml(reader, "KeyValueOfstringanyType"));
+                                } else {
+                                    reader.skipElement();
+                                }
+                            }
                         } else if ("RequiresPreprocessing".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            requiresPreprocessing = reader.getNullableElement(Boolean::parseBoolean);
+                            deserializedTrueFilter.setRequiresPreprocessing(
+                                    reader.getNullableElement(Boolean::parseBoolean));
                         } else {
                             reader.skipElement();
                         }
                     }
-                    TrueFilterImpl deserializedTrueFilter = new TrueFilterImpl();
-                    deserializedTrueFilter.setSqlExpression(sqlExpression);
-                    deserializedTrueFilter.setCompatibilityLevel(compatibilityLevel);
-                    deserializedTrueFilter.setParametersInternal(parameters);
-                    deserializedTrueFilter.setRequiresPreprocessing(requiresPreprocessing);
 
                     return deserializedTrueFilter;
                 });

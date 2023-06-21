@@ -110,11 +110,9 @@ public final class TitleImpl implements XmlSerializable<TitleImpl> {
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    String type = reader.getStringAttribute("http://www.w3.org/2005/Atom", "type");
-                    String content = reader.getStringElement();
                     TitleImpl deserializedTitle = new TitleImpl();
-                    deserializedTitle.type = type;
-                    deserializedTitle.content = content;
+                    deserializedTitle.type = reader.getStringAttribute("http://www.w3.org/2005/Atom", "type");
+                    deserializedTitle.content = reader.getStringElement();
 
                     return deserializedTitle;
                 });

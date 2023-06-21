@@ -13,7 +13,6 @@ import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import javax.xml.namespace.QName;
@@ -205,43 +204,35 @@ public final class QueueDescriptionFeedImpl implements XmlSerializable<QueueDesc
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    String id = null;
-                    TitleImpl title = null;
-                    OffsetDateTime updated = null;
-                    List<ResponseLinkImpl> link = null;
-                    List<QueueDescriptionEntryImpl> entry = null;
+                    QueueDescriptionFeedImpl deserializedQueueDescriptionFeed = new QueueDescriptionFeedImpl();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("id".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            id = reader.getStringElement();
+                            deserializedQueueDescriptionFeed.id = reader.getStringElement();
                         } else if ("title".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            title = TitleImpl.fromXml(reader, "title");
+                            deserializedQueueDescriptionFeed.title = TitleImpl.fromXml(reader, "title");
                         } else if ("updated".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            updated = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
+                            deserializedQueueDescriptionFeed.updated =
+                                    reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("link".equals(elementName.getLocalPart())) {
-                            if (link == null) {
-                                link = new LinkedList<>();
+                            if (deserializedQueueDescriptionFeed.link == null) {
+                                deserializedQueueDescriptionFeed.link = new ArrayList<>();
                             }
-                            link.add(ResponseLinkImpl.fromXml(reader, "link"));
+                            deserializedQueueDescriptionFeed.link.add(ResponseLinkImpl.fromXml(reader, "link"));
                         } else if ("entry".equals(elementName.getLocalPart())) {
-                            if (entry == null) {
-                                entry = new LinkedList<>();
+                            if (deserializedQueueDescriptionFeed.entry == null) {
+                                deserializedQueueDescriptionFeed.entry = new ArrayList<>();
                             }
-                            entry.add(QueueDescriptionEntryImpl.fromXml(reader, "entry"));
+                            deserializedQueueDescriptionFeed.entry.add(
+                                    QueueDescriptionEntryImpl.fromXml(reader, "entry"));
                         } else {
                             reader.skipElement();
                         }
                     }
-                    QueueDescriptionFeedImpl deserializedQueueDescriptionFeed = new QueueDescriptionFeedImpl();
-                    deserializedQueueDescriptionFeed.id = id;
-                    deserializedQueueDescriptionFeed.title = title;
-                    deserializedQueueDescriptionFeed.updated = updated;
-                    deserializedQueueDescriptionFeed.link = link;
-                    deserializedQueueDescriptionFeed.entry = entry;
 
                     return deserializedQueueDescriptionFeed;
                 });

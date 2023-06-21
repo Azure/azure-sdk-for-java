@@ -13,7 +13,6 @@ import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import javax.xml.namespace.QName;
@@ -205,43 +204,35 @@ public final class TopicDescriptionFeedImpl implements XmlSerializable<TopicDesc
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    String id = null;
-                    TitleImpl title = null;
-                    OffsetDateTime updated = null;
-                    List<ResponseLinkImpl> link = null;
-                    List<TopicDescriptionEntryImpl> entry = null;
+                    TopicDescriptionFeedImpl deserializedTopicDescriptionFeed = new TopicDescriptionFeedImpl();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("id".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            id = reader.getStringElement();
+                            deserializedTopicDescriptionFeed.id = reader.getStringElement();
                         } else if ("title".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            title = TitleImpl.fromXml(reader, "title");
+                            deserializedTopicDescriptionFeed.title = TitleImpl.fromXml(reader, "title");
                         } else if ("updated".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            updated = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
+                            deserializedTopicDescriptionFeed.updated =
+                                    reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("link".equals(elementName.getLocalPart())) {
-                            if (link == null) {
-                                link = new LinkedList<>();
+                            if (deserializedTopicDescriptionFeed.link == null) {
+                                deserializedTopicDescriptionFeed.link = new ArrayList<>();
                             }
-                            link.add(ResponseLinkImpl.fromXml(reader, "link"));
+                            deserializedTopicDescriptionFeed.link.add(ResponseLinkImpl.fromXml(reader, "link"));
                         } else if ("entry".equals(elementName.getLocalPart())) {
-                            if (entry == null) {
-                                entry = new LinkedList<>();
+                            if (deserializedTopicDescriptionFeed.entry == null) {
+                                deserializedTopicDescriptionFeed.entry = new ArrayList<>();
                             }
-                            entry.add(TopicDescriptionEntryImpl.fromXml(reader, "entry"));
+                            deserializedTopicDescriptionFeed.entry.add(
+                                    TopicDescriptionEntryImpl.fromXml(reader, "entry"));
                         } else {
                             reader.skipElement();
                         }
                     }
-                    TopicDescriptionFeedImpl deserializedTopicDescriptionFeed = new TopicDescriptionFeedImpl();
-                    deserializedTopicDescriptionFeed.id = id;
-                    deserializedTopicDescriptionFeed.title = title;
-                    deserializedTopicDescriptionFeed.updated = updated;
-                    deserializedTopicDescriptionFeed.link = link;
-                    deserializedTopicDescriptionFeed.entry = entry;
 
                     return deserializedTopicDescriptionFeed;
                 });

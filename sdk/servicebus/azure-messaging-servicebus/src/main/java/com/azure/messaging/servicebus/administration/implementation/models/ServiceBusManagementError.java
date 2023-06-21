@@ -111,22 +111,18 @@ public final class ServiceBusManagementError implements XmlSerializable<ServiceB
         return xmlReader.readObject(
                 finalRootElementName,
                 reader -> {
-                    Integer code = null;
-                    String detail = null;
+                    ServiceBusManagementError deserializedServiceBusManagementError = new ServiceBusManagementError();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("Code".equals(elementName.getLocalPart())) {
-                            code = reader.getNullableElement(Integer::parseInt);
+                            deserializedServiceBusManagementError.code = reader.getNullableElement(Integer::parseInt);
                         } else if ("Detail".equals(elementName.getLocalPart())) {
-                            detail = reader.getStringElement();
+                            deserializedServiceBusManagementError.detail = reader.getStringElement();
                         } else {
                             reader.skipElement();
                         }
                     }
-                    ServiceBusManagementError deserializedServiceBusManagementError = new ServiceBusManagementError();
-                    deserializedServiceBusManagementError.code = code;
-                    deserializedServiceBusManagementError.detail = detail;
 
                     return deserializedServiceBusManagementError;
                 });

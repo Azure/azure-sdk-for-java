@@ -643,132 +643,107 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 finalRootElementName,
                 reader -> {
-                    Duration lockDuration = null;
-                    Boolean requiresSession = null;
-                    Duration defaultMessageTimeToLive = null;
-                    Boolean deadLetteringOnMessageExpiration = null;
-                    Boolean deadLetteringOnFilterEvaluationExceptions = null;
-                    RuleDescriptionImpl defaultRuleDescription = null;
-                    Integer messageCount = null;
-                    Integer maxDeliveryCount = null;
-                    Boolean enableBatchedOperations = null;
-                    EntityStatus status = null;
-                    String forwardTo = null;
-                    OffsetDateTime createdAt = null;
-                    OffsetDateTime updatedAt = null;
-                    OffsetDateTime accessedAt = null;
-                    MessageCountDetailsImpl messageCountDetails = null;
-                    String userMetadata = null;
-                    String forwardDeadLetteredMessagesTo = null;
-                    Duration autoDeleteOnIdle = null;
-                    EntityAvailabilityStatusImpl entityAvailabilityStatus = null;
+                    SubscriptionDescriptionImpl deserializedSubscriptionDescription = new SubscriptionDescriptionImpl();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("LockDuration".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            lockDuration = reader.getNullableElement(Duration::parse);
+                            deserializedSubscriptionDescription.lockDuration =
+                                    reader.getNullableElement(Duration::parse);
                         } else if ("RequiresSession".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            requiresSession = reader.getNullableElement(Boolean::parseBoolean);
+                            deserializedSubscriptionDescription.requiresSession =
+                                    reader.getNullableElement(Boolean::parseBoolean);
                         } else if ("DefaultMessageTimeToLive".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            defaultMessageTimeToLive = reader.getNullableElement(Duration::parse);
+                            deserializedSubscriptionDescription.defaultMessageTimeToLive =
+                                    reader.getNullableElement(Duration::parse);
                         } else if ("DeadLetteringOnMessageExpiration".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            deadLetteringOnMessageExpiration = reader.getNullableElement(Boolean::parseBoolean);
+                            deserializedSubscriptionDescription.deadLetteringOnMessageExpiration =
+                                    reader.getNullableElement(Boolean::parseBoolean);
                         } else if ("DeadLetteringOnFilterEvaluationExceptions".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            deadLetteringOnFilterEvaluationExceptions =
+                            deserializedSubscriptionDescription.deadLetteringOnFilterEvaluationExceptions =
                                     reader.getNullableElement(Boolean::parseBoolean);
                         } else if ("RuleDescription".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            defaultRuleDescription = RuleDescriptionImpl.fromXml(reader, "RuleDescription");
+                            deserializedSubscriptionDescription.defaultRuleDescription =
+                                    RuleDescriptionImpl.fromXml(reader, "RuleDescription");
                         } else if ("MessageCount".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            messageCount = reader.getNullableElement(Integer::parseInt);
+                            deserializedSubscriptionDescription.messageCount =
+                                    reader.getNullableElement(Integer::parseInt);
                         } else if ("MaxDeliveryCount".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            maxDeliveryCount = reader.getNullableElement(Integer::parseInt);
+                            deserializedSubscriptionDescription.maxDeliveryCount =
+                                    reader.getNullableElement(Integer::parseInt);
                         } else if ("EnableBatchedOperations".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            enableBatchedOperations = reader.getNullableElement(Boolean::parseBoolean);
+                            deserializedSubscriptionDescription.enableBatchedOperations =
+                                    reader.getNullableElement(Boolean::parseBoolean);
                         } else if ("Status".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            status = reader.getNullableElement(EntityStatus::fromString);
+                            deserializedSubscriptionDescription.status =
+                                    reader.getNullableElement(EntityStatus::fromString);
                         } else if ("ForwardTo".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            forwardTo = reader.getStringElement();
+                            deserializedSubscriptionDescription.forwardTo = reader.getStringElement();
                         } else if ("CreatedAt".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            createdAt = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
+                            deserializedSubscriptionDescription.createdAt =
+                                    reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("UpdatedAt".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            updatedAt = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
+                            deserializedSubscriptionDescription.updatedAt =
+                                    reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("AccessedAt".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            accessedAt = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
+                            deserializedSubscriptionDescription.accessedAt =
+                                    reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("CountDetails".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            messageCountDetails = MessageCountDetailsImpl.fromXml(reader, "CountDetails");
+                            deserializedSubscriptionDescription.messageCountDetails =
+                                    MessageCountDetailsImpl.fromXml(reader, "CountDetails");
                         } else if ("UserMetadata".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            userMetadata = reader.getStringElement();
+                            deserializedSubscriptionDescription.userMetadata = reader.getStringElement();
                         } else if ("ForwardDeadLetteredMessagesTo".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            forwardDeadLetteredMessagesTo = reader.getStringElement();
+                            deserializedSubscriptionDescription.forwardDeadLetteredMessagesTo =
+                                    reader.getStringElement();
                         } else if ("AutoDeleteOnIdle".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            autoDeleteOnIdle = reader.getNullableElement(Duration::parse);
+                            deserializedSubscriptionDescription.autoDeleteOnIdle =
+                                    reader.getNullableElement(Duration::parse);
                         } else if ("EntityAvailabilityStatus".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            entityAvailabilityStatus =
+                            deserializedSubscriptionDescription.entityAvailabilityStatus =
                                     reader.getNullableElement(EntityAvailabilityStatusImpl::fromString);
                         } else {
                             reader.skipElement();
                         }
                     }
-                    SubscriptionDescriptionImpl deserializedSubscriptionDescription = new SubscriptionDescriptionImpl();
-                    deserializedSubscriptionDescription.lockDuration = lockDuration;
-                    deserializedSubscriptionDescription.requiresSession = requiresSession;
-                    deserializedSubscriptionDescription.defaultMessageTimeToLive = defaultMessageTimeToLive;
-                    deserializedSubscriptionDescription.deadLetteringOnMessageExpiration =
-                            deadLetteringOnMessageExpiration;
-                    deserializedSubscriptionDescription.deadLetteringOnFilterEvaluationExceptions =
-                            deadLetteringOnFilterEvaluationExceptions;
-                    deserializedSubscriptionDescription.defaultRuleDescription = defaultRuleDescription;
-                    deserializedSubscriptionDescription.messageCount = messageCount;
-                    deserializedSubscriptionDescription.maxDeliveryCount = maxDeliveryCount;
-                    deserializedSubscriptionDescription.enableBatchedOperations = enableBatchedOperations;
-                    deserializedSubscriptionDescription.status = status;
-                    deserializedSubscriptionDescription.forwardTo = forwardTo;
-                    deserializedSubscriptionDescription.createdAt = createdAt;
-                    deserializedSubscriptionDescription.updatedAt = updatedAt;
-                    deserializedSubscriptionDescription.accessedAt = accessedAt;
-                    deserializedSubscriptionDescription.messageCountDetails = messageCountDetails;
-                    deserializedSubscriptionDescription.userMetadata = userMetadata;
-                    deserializedSubscriptionDescription.forwardDeadLetteredMessagesTo = forwardDeadLetteredMessagesTo;
-                    deserializedSubscriptionDescription.autoDeleteOnIdle = autoDeleteOnIdle;
-                    deserializedSubscriptionDescription.entityAvailabilityStatus = entityAvailabilityStatus;
 
                     return deserializedSubscriptionDescription;
                 });

@@ -114,22 +114,20 @@ public final class CreateQueueBodyContentImpl implements XmlSerializable<CreateQ
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    String type = reader.getStringAttribute(null, "type");
-                    QueueDescriptionImpl queueDescription = null;
+                    CreateQueueBodyContentImpl deserializedCreateQueueBodyContent = new CreateQueueBodyContentImpl();
+                    deserializedCreateQueueBodyContent.type = reader.getStringAttribute(null, "type");
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("QueueDescription".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            queueDescription = QueueDescriptionImpl.fromXml(reader, "QueueDescription");
+                            deserializedCreateQueueBodyContent.queueDescription =
+                                    QueueDescriptionImpl.fromXml(reader, "QueueDescription");
                         } else {
                             reader.skipElement();
                         }
                     }
-                    CreateQueueBodyContentImpl deserializedCreateQueueBodyContent = new CreateQueueBodyContentImpl();
-                    deserializedCreateQueueBodyContent.type = type;
-                    deserializedCreateQueueBodyContent.queueDescription = queueDescription;
 
                     return deserializedCreateQueueBodyContent;
                 });

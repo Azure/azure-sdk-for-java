@@ -86,19 +86,17 @@ public final class CreateRuleBodyImpl implements XmlSerializable<CreateRuleBodyI
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    CreateRuleBodyContentImpl content = null;
+                    CreateRuleBodyImpl deserializedCreateRuleBody = new CreateRuleBodyImpl();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("content".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            content = CreateRuleBodyContentImpl.fromXml(reader, "content");
+                            deserializedCreateRuleBody.content = CreateRuleBodyContentImpl.fromXml(reader, "content");
                         } else {
                             reader.skipElement();
                         }
                     }
-                    CreateRuleBodyImpl deserializedCreateRuleBody = new CreateRuleBodyImpl();
-                    deserializedCreateRuleBody.content = content;
 
                     return deserializedCreateRuleBody;
                 });

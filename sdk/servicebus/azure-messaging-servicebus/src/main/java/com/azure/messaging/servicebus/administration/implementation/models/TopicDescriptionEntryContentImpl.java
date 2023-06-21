@@ -116,23 +116,21 @@ public final class TopicDescriptionEntryContentImpl implements XmlSerializable<T
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    String type = reader.getStringAttribute(null, "type");
-                    TopicDescriptionImpl topicDescription = null;
+                    TopicDescriptionEntryContentImpl deserializedTopicDescriptionEntryContent =
+                            new TopicDescriptionEntryContentImpl();
+                    deserializedTopicDescriptionEntryContent.type = reader.getStringAttribute(null, "type");
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("TopicDescription".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            topicDescription = TopicDescriptionImpl.fromXml(reader, "TopicDescription");
+                            deserializedTopicDescriptionEntryContent.topicDescription =
+                                    TopicDescriptionImpl.fromXml(reader, "TopicDescription");
                         } else {
                             reader.skipElement();
                         }
                     }
-                    TopicDescriptionEntryContentImpl deserializedTopicDescriptionEntryContent =
-                            new TopicDescriptionEntryContentImpl();
-                    deserializedTopicDescriptionEntryContent.type = type;
-                    deserializedTopicDescriptionEntryContent.topicDescription = topicDescription;
 
                     return deserializedTopicDescriptionEntryContent;
                 });

@@ -221,44 +221,35 @@ public final class RuleDescriptionEntryImpl implements XmlSerializable<RuleDescr
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    String id = null;
-                    TitleImpl title = null;
-                    OffsetDateTime published = null;
-                    OffsetDateTime updated = null;
-                    ResponseLinkImpl link = null;
-                    RuleDescriptionEntryContentImpl content = null;
+                    RuleDescriptionEntryImpl deserializedRuleDescriptionEntry = new RuleDescriptionEntryImpl();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("id".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            id = reader.getStringElement();
+                            deserializedRuleDescriptionEntry.id = reader.getStringElement();
                         } else if ("title".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            title = TitleImpl.fromXml(reader, "title");
+                            deserializedRuleDescriptionEntry.title = TitleImpl.fromXml(reader, "title");
                         } else if ("published".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            published = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
+                            deserializedRuleDescriptionEntry.published =
+                                    reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("updated".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            updated = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
+                            deserializedRuleDescriptionEntry.updated =
+                                    reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("link".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            link = ResponseLinkImpl.fromXml(reader, "link");
+                            deserializedRuleDescriptionEntry.link = ResponseLinkImpl.fromXml(reader, "link");
                         } else if ("content".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            content = RuleDescriptionEntryContentImpl.fromXml(reader, "content");
+                            deserializedRuleDescriptionEntry.content =
+                                    RuleDescriptionEntryContentImpl.fromXml(reader, "content");
                         } else {
                             reader.skipElement();
                         }
                     }
-                    RuleDescriptionEntryImpl deserializedRuleDescriptionEntry = new RuleDescriptionEntryImpl();
-                    deserializedRuleDescriptionEntry.id = id;
-                    deserializedRuleDescriptionEntry.title = title;
-                    deserializedRuleDescriptionEntry.published = published;
-                    deserializedRuleDescriptionEntry.updated = updated;
-                    deserializedRuleDescriptionEntry.link = link;
-                    deserializedRuleDescriptionEntry.content = content;
 
                     return deserializedRuleDescriptionEntry;
                 });

@@ -111,14 +111,12 @@ public final class ResponseLinkImpl implements XmlSerializable<ResponseLinkImpl>
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    String href = reader.getStringAttribute(null, "href");
-                    String rel = reader.getStringAttribute(null, "rel");
+                    ResponseLinkImpl deserializedResponseLink = new ResponseLinkImpl();
+                    deserializedResponseLink.href = reader.getStringAttribute(null, "href");
+                    deserializedResponseLink.rel = reader.getStringAttribute(null, "rel");
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         reader.skipElement();
                     }
-                    ResponseLinkImpl deserializedResponseLink = new ResponseLinkImpl();
-                    deserializedResponseLink.href = href;
-                    deserializedResponseLink.rel = rel;
 
                     return deserializedResponseLink;
                 });

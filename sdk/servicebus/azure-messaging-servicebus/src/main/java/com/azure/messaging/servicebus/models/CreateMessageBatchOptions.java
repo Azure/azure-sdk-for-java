@@ -21,6 +21,12 @@ public final class CreateMessageBatchOptions {
     private int maximumSizeInBytes;
 
     /**
+     * Creates an instance of {@link CreateMessageBatchOptions}.
+     */
+    public CreateMessageBatchOptions() {
+    }
+
+    /**
      * Sets the maximum size for the batch of messages.
      *
      * @param maximumSizeInBytes The maximum size to allow for the batch of messages.

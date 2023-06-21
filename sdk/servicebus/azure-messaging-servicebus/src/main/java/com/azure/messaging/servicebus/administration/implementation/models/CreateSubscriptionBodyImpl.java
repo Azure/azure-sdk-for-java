@@ -87,19 +87,18 @@ public final class CreateSubscriptionBodyImpl implements XmlSerializable<CreateS
                 "http://www.w3.org/2005/Atom",
                 finalRootElementName,
                 reader -> {
-                    CreateSubscriptionBodyContentImpl content = null;
+                    CreateSubscriptionBodyImpl deserializedCreateSubscriptionBody = new CreateSubscriptionBodyImpl();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("content".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            content = CreateSubscriptionBodyContentImpl.fromXml(reader, "content");
+                            deserializedCreateSubscriptionBody.content =
+                                    CreateSubscriptionBodyContentImpl.fromXml(reader, "content");
                         } else {
                             reader.skipElement();
                         }
                     }
-                    CreateSubscriptionBodyImpl deserializedCreateSubscriptionBody = new CreateSubscriptionBodyImpl();
-                    deserializedCreateSubscriptionBody.content = content;
 
                     return deserializedCreateSubscriptionBody;
                 });

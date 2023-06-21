@@ -10,38 +10,79 @@ import com.azure.core.util.ExpandableStringEnum;
  */
 public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBusErrorSource> {
 
-    /** Error while abandoning the message.*/
+    /**
+     * Error while abandoning the message.
+     */
     public static final ServiceBusErrorSource ABANDON = fromString("ABANDON", ServiceBusErrorSource.class);
 
-    /** Error while completing the message.*/
+    /**
+     * Error while completing the message.
+     */
     public static final ServiceBusErrorSource COMPLETE = fromString("COMPLETE", ServiceBusErrorSource.class);
 
-    /** Error while receiving the message(s).*/
+    /**
+     * Error while receiving the message(s).
+     */
     public static final ServiceBusErrorSource RECEIVE = fromString("RECEIVE", ServiceBusErrorSource.class);
 
-    /** Error while renewing lock.*/
+    /**
+     * Error while renewing lock.
+     */
     public static final ServiceBusErrorSource RENEW_LOCK = fromString("RENEW_LOCK", ServiceBusErrorSource.class);
 
-    /** Error when we could not determine the source.*/
+    /**
+     * Error when we could not determine the source.
+     */
     public static final ServiceBusErrorSource UNKNOWN = fromString("UNKNOWN", ServiceBusErrorSource.class);
 
-    /** Error while user's code is running for a message.*/
+    /**
+     * Error while user's code is running for a message.
+     */
     public static final ServiceBusErrorSource USER_CALLBACK = fromString("USER_CALLBACK",
         ServiceBusErrorSource.class);
 
-    /** Error while session is accepted.*/
+    /**
+     * Error while session is accepted.
+     */
     public static final ServiceBusErrorSource ACCEPT_SESSION = fromString("ACCEPT_SESSION",
         ServiceBusErrorSource.class);
 
-    /** Error while session is closed.*/
+    /**
+     * Error while session is closed.
+     */
     public static final ServiceBusErrorSource CLOSE_SESSION = fromString("CLOSE_SESSION",
         ServiceBusErrorSource.class);
 
-    /** Error while sending a message.*/
+    /**
+     * Error while sending a message.
+     */
     public static final ServiceBusErrorSource SEND = fromString("SEND",
-            ServiceBusErrorSource.class);
+        ServiceBusErrorSource.class);
 
-    /** Error while trying to do an operation on the management link. */
+    /**
+     * Error while trying to do an operation on the management link.
+     */
     public static final ServiceBusErrorSource MANAGEMENT = fromString("MANAGEMENT",
-            ServiceBusErrorSource.class);
+        ServiceBusErrorSource.class);
+
+    /**
+     * Creates an instance of {@link ServiceBusErrorSource}.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link ServiceBusErrorSource} which doesn't have a
+     * value for {@link #toString()}.
+     *
+     * @deprecated Use {@link #fromString(String)} instead.
+     */
+    @Deprecated
+    public ServiceBusErrorSource() {
+    }
+
+    /**
+     * Creates an instance of {@link ServiceBusErrorSource}.
+     *
+     * @param value The value to use.
+     */
+    public static ServiceBusErrorSource fromString(String value) {
+        return fromString(value, ServiceBusErrorSource.class);
+    }
 }

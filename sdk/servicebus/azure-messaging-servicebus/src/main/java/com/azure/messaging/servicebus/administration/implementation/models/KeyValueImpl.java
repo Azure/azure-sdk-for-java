@@ -115,26 +115,22 @@ public final class KeyValueImpl implements XmlSerializable<KeyValueImpl> {
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 finalRootElementName,
                 reader -> {
-                    String key = null;
-                    String value = null;
+                    KeyValueImpl deserializedKeyValue = new KeyValueImpl();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("Key".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            key = reader.getStringElement();
+                            deserializedKeyValue.key = reader.getStringElement();
                         } else if ("Value".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            value = reader.getStringElement();
+                            deserializedKeyValue.value = reader.getStringElement();
                         } else {
                             reader.skipElement();
                         }
                     }
-                    KeyValueImpl deserializedKeyValue = new KeyValueImpl();
-                    deserializedKeyValue.key = key;
-                    deserializedKeyValue.value = value;
 
                     return deserializedKeyValue;
                 });

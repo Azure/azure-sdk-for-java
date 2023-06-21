@@ -261,56 +261,47 @@ public final class NamespaceProperties implements XmlSerializable<NamespacePrope
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 finalRootElementName,
                 reader -> {
-                    String alias = null;
-                    OffsetDateTime createdTime = null;
-                    MessagingSku messagingSku = null;
-                    Integer messagingUnits = null;
-                    OffsetDateTime modifiedTime = null;
-                    String name = null;
-                    NamespaceType namespaceType = null;
+                    NamespaceProperties deserializedNamespaceProperties = new NamespaceProperties();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("Alias".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            alias = reader.getStringElement();
+                            deserializedNamespaceProperties.alias = reader.getStringElement();
                         } else if ("CreatedTime".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            createdTime = reader.getNullableElement(OffsetDateTime::parse);
+                            deserializedNamespaceProperties.createdTime =
+                                    reader.getNullableElement(OffsetDateTime::parse);
                         } else if ("MessagingSKU".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            messagingSku = reader.getNullableElement(MessagingSku::fromString);
+                            deserializedNamespaceProperties.messagingSku =
+                                    reader.getNullableElement(MessagingSku::fromString);
                         } else if ("MessagingUnits".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            messagingUnits = reader.getNullableElement(Integer::parseInt);
+                            deserializedNamespaceProperties.messagingUnits =
+                                    reader.getNullableElement(Integer::parseInt);
                         } else if ("ModifiedTime".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            modifiedTime = reader.getNullableElement(OffsetDateTime::parse);
+                            deserializedNamespaceProperties.modifiedTime =
+                                    reader.getNullableElement(OffsetDateTime::parse);
                         } else if ("Name".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            name = reader.getStringElement();
+                            deserializedNamespaceProperties.name = reader.getStringElement();
                         } else if ("NamespaceType".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            namespaceType = reader.getNullableElement(NamespaceType::fromString);
+                            deserializedNamespaceProperties.namespaceType =
+                                    reader.getNullableElement(NamespaceType::fromString);
                         } else {
                             reader.skipElement();
                         }
                     }
-                    NamespaceProperties deserializedNamespaceProperties = new NamespaceProperties();
-                    deserializedNamespaceProperties.alias = alias;
-                    deserializedNamespaceProperties.createdTime = createdTime;
-                    deserializedNamespaceProperties.messagingSku = messagingSku;
-                    deserializedNamespaceProperties.messagingUnits = messagingUnits;
-                    deserializedNamespaceProperties.modifiedTime = modifiedTime;
-                    deserializedNamespaceProperties.name = name;
-                    deserializedNamespaceProperties.namespaceType = namespaceType;
 
                     return deserializedNamespaceProperties;
                 });
