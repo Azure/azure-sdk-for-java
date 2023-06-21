@@ -2,5 +2,8 @@
 // Licensed under the MIT License.
 
 open module com.azure.core.version.tests {
+    requires com.azure.core;
+    requires com.azure.core.serializer.json.jackson;
+
     exports com.azure.core.version.tests;
 }
