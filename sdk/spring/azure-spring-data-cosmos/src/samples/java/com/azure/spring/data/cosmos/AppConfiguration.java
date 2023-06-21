@@ -83,7 +83,7 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
                     .diagnosticsThresholds(
                         new CosmosDiagnosticsThresholds()
                             .setNonPointOperationLatencyThreshold(Duration.ofSeconds(nonPointOperationLatencyThreshold))
-                            .setNonPointOperationLatencyThreshold(Duration.ofSeconds(pointOperationLatencyThreshold))
+                            .setPointOperationLatencyThreshold(Duration.ofSeconds(pointOperationLatencyThreshold))
                             .setPayloadSizeThreshold(payloadSizeInBytesThreshold)
                             .setRequestChargeThreshold(requestChargeThreshold)
                     )

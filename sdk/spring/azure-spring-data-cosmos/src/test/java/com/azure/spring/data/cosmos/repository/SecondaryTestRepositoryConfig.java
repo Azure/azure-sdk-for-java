@@ -71,7 +71,7 @@ public class SecondaryTestRepositoryConfig {
                     .diagnosticsThresholds(
                         new CosmosDiagnosticsThresholds()
                             .setNonPointOperationLatencyThreshold(Duration.ofSeconds(nonPointOperationLatencyThreshold))
-                            .setNonPointOperationLatencyThreshold(Duration.ofSeconds(pointOperationLatencyThreshold))
+                            .setPointOperationLatencyThreshold(Duration.ofSeconds(pointOperationLatencyThreshold))
                             .setPayloadSizeThreshold(payloadSizeInBytesThreshold)
                             .setRequestChargeThreshold(requestChargeThreshold)
                     )

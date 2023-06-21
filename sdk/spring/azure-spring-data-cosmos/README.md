@@ -185,7 +185,7 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
                     .diagnosticsThresholds(
                         new CosmosDiagnosticsThresholds()
                             .setNonPointOperationLatencyThreshold(Duration.ofSeconds(nonPointOperationLatencyThreshold))
-                            .setNonPointOperationLatencyThreshold(Duration.ofSeconds(pointOperationLatencyThreshold))
+                            .setPointOperationLatencyThreshold(Duration.ofSeconds(pointOperationLatencyThreshold))
                             .setPayloadSizeThreshold(payloadSizeInBytesThreshold)
                             .setRequestChargeThreshold(requestChargeThreshold)
                     )
@@ -239,7 +239,7 @@ public CosmosClientBuilder getCosmosClientBuilder() {
                     .diagnosticsThresholds(
                         new CosmosDiagnosticsThresholds()
                             .setNonPointOperationLatencyThreshold(Duration.ofSeconds(nonPointOperationLatencyThreshold))
-                            .setNonPointOperationLatencyThreshold(Duration.ofSeconds(pointOperationLatencyThreshold))
+                            .setPointOperationLatencyThreshold(Duration.ofSeconds(pointOperationLatencyThreshold))
                             .setPayloadSizeThreshold(payloadSizeInBytesThreshold)
                             .setRequestChargeThreshold(requestChargeThreshold)
                     )
@@ -693,7 +693,7 @@ public class PrimaryDatasourceConfiguration extends AbstractCosmosConfiguration{
                     .diagnosticsThresholds(
                         new CosmosDiagnosticsThresholds()
                             .setNonPointOperationLatencyThreshold(Duration.ofSeconds(primaryProperties.nonPointOperationLatencyThreshold))
-                            .setNonPointOperationLatencyThreshold(Duration.ofSeconds(primaryProperties.pointOperationLatencyThreshold))
+                            .setPointOperationLatencyThreshold(Duration.ofSeconds(primaryProperties.pointOperationLatencyThreshold))
                             .setPayloadSizeThreshold(primaryProperties.payloadSizeInBytesThreshold)
                             .setRequestChargeThreshold(primaryProperties.requestChargeThreshold)
                     )
@@ -738,7 +738,7 @@ public class SecondaryDatasourceConfiguration {
                     .diagnosticsThresholds(
                         new CosmosDiagnosticsThresholds()
                             .setNonPointOperationLatencyThreshold(Duration.ofSeconds(secondaryProperties.nonPointOperationLatencyThreshold))
-                            .setNonPointOperationLatencyThreshold(Duration.ofSeconds(secondaryProperties.pointOperationLatencyThreshold))
+                            .setPointOperationLatencyThreshold(Duration.ofSeconds(secondaryProperties.pointOperationLatencyThreshold))
                             .setPayloadSizeThreshold(secondaryProperties.payloadSizeInBytesThreshold)
                             .setRequestChargeThreshold(secondaryProperties.requestChargeThreshold)
                     )
@@ -786,7 +786,7 @@ public CosmosAsyncClient getCosmosAsyncClient(@Qualifier("secondary") CosmosProp
             .diagnosticsThresholds(
                 new CosmosDiagnosticsThresholds()
                 .setNonPointOperationLatencyThreshold(Duration.ofSeconds(secondaryProperties.nonPointOperationLatencyThreshold))
-                .setNonPointOperationLatencyThreshold(Duration.ofSeconds(secondaryProperties.pointOperationLatencyThreshold))
+                .setPointOperationLatencyThreshold(Duration.ofSeconds(secondaryProperties.pointOperationLatencyThreshold))
                 .setPayloadSizeThreshold(secondaryProperties.payloadSizeInBytesThreshold)
                 .setRequestChargeThreshold(secondaryProperties.requestChargeThreshold)
             )
@@ -913,7 +913,7 @@ public class DatasourceConfiguration {
                     .diagnosticsThresholds(
                         new CosmosDiagnosticsThresholds()
                             .setNonPointOperationLatencyThreshold(Duration.ofSeconds(cosmosProperties.nonPointOperationLatencyThreshold))
-                            .setNonPointOperationLatencyThreshold(Duration.ofSeconds(cosmosProperties.pointOperationLatencyThreshold))
+                            .setPointOperationLatencyThreshold(Duration.ofSeconds(cosmosProperties.pointOperationLatencyThreshold))
                             .setPayloadSizeThreshold(cosmosProperties.payloadSizeInBytesThreshold)
                             .setRequestChargeThreshold(cosmosProperties.requestChargeThreshold)
                     )
