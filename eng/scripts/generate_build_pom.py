@@ -83,7 +83,7 @@ def create_build_pom(project_list: str, set_skip_linting_projects: str, match_an
     add_source_projects(source_projects, dependency_modules, projects)
 
     modules = sorted(list(set([p.module_path for p in source_projects])))
-    with open(file=client_from_source_pom_path, mode='w') as fromSourcePom:
+    with open(file=client_build_pom_path, mode='w') as fromSourcePom:
         fromSourcePom.write(pom_file_start.format('azure-sdk-build'))
         fromSourcePom.write(start_modules)
 

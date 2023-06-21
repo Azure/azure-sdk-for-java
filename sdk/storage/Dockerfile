@@ -22,12 +22,13 @@ ENV PATH="${PATH}:/opt/apache-maven-3.9.2/bin"
 # Install and build test
 RUN mkdir /stress
 WORKDIR /stress
-ADD ./eng ./eng
-ADD ./sdk ./sdk
+ADD . .
 
 RUN --mount=type=cache,target=/root/.m2
-RUN python eng/scripts/generate_build_pom.py --pl com.azure:azure-storage-blob
+RUN apt-get install -y python3
+RUN python3 eng/scripts/generate_build_pom.py --pl com.azure:azure-storage-blob
 
+RUN mvn clean install -f eng/code-quality-reports/
 RUN mvn clean install -f ClientBuildPom.xml -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -Djacoco.skip=true -T 2C
 
 # RUN --mount=type=cache,target=/root/.cache/go-build \
