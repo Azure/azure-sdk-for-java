@@ -68,7 +68,7 @@ public class ResourceMoverManagerTests extends TestBase {
 
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void test() {
+    public void testCreateMoveCollection() {
         MoveCollection moveCollection = null;
         try {
             String collectionName = "collection" + randomPadding();
