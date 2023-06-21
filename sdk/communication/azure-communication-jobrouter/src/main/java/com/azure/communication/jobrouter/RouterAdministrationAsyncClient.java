@@ -535,6 +535,23 @@ public final class RouterAdministrationAsyncClient {
     /**
      * Retrieves existing distribution policies.
      *
+     * @return a paged collection of distribution policies.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DistributionPolicyItem> listDistributionPolicies() {
+        try {
+            return jobRouterAdmin.listDistributionPoliciesAsync(null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Retrieves existing distribution policies.
+     *
      * @param listDistributionPoliciesOptions list options.
      * @return a paged collection of distribution policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
