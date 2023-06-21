@@ -1,0 +1,47 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels:build?api-version=2022-08-31",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "141",
+        "Content-Type": "application/json",
+        "Date": "Thu, 20 Apr 2023 20:13:26 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "e20cf3df-58c6-463d-8a80-cfcbaf65cc8f"
+      },
+      "RequestBody": {
+        "modelId": "e0a085af-dd70-4c9d-9cba-044cfa17e345",
+        "buildMode": "template",
+        "azureBlobSource": {
+          "containerUrl": "REDACTED",
+          "prefix": "subfolders"
+        }
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "apim-request-id": "6006da9c-9198-4b98-a5d1-946c6e40a442",
+        "Content-Type": "application/json",
+        "Date": "Thu, 20 Apr 2023 20:13:26 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "1049",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "InvalidRequest",
+          "message": "Invalid request.",
+          "innererror": {
+            "code": "TrainingContentMissing",
+            "message": "Training data is missing: Could not find any training data at the given path."
+          }
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

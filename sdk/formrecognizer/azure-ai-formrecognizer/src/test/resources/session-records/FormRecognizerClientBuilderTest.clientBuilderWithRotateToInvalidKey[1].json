@@ -1,0 +1,34 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/layout/analyze",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "23",
+        "Content-Type": "application/json",
+        "Date": "Thu, 20 Apr 2023 20:11:28 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "11471b13-9e5b-4bf6-8b97-692a9e65368c"
+      },
+      "RequestBody": {
+        "source": "Form_1.jpg"
+      },
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "apim-request-id": "0fe7c157-da26-4a1d-8cb4-d32b6b8c971d",
+        "Content-Length": "224",
+        "Content-Type": "application/json",
+        "Date": "Thu, 20 Apr 2023 20:11:29 GMT"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "401",
+          "message": "Access denied due to invalid subscription key or wrong API endpoint. Make sure to provide a valid key for an active subscription and use a correct regional API endpoint for your resource."
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

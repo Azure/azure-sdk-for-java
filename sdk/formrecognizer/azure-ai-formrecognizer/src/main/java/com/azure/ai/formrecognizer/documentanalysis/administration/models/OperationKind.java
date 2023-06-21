@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
-/** Known values for type of operation. */
+/** Defines values for OperationKind. */
 @Immutable
 public final class OperationKind extends ExpandableStringEnum<OperationKind> {
     /** Static value documentModelBuild for OperationKind. */

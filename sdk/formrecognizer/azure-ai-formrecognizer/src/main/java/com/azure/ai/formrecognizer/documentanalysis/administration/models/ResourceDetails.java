@@ -7,7 +7,7 @@ import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Resource
 import com.azure.core.annotation.Immutable;
 
 /**
- * The ResourceDetails model representing general information regarding the current resource.
+ * The ResourceDetails model.
  */
 @Immutable
 public final class ResourceDetails {
@@ -21,8 +21,6 @@ public final class ResourceDetails {
      * Max number of models that can be built for this account.
      */
     private int customDocumentModelLimit;
-
-    private QuotaDetails customNeuralDocumentModelBuilds;
 
     /**
      * Get the current count of built document analysis models
@@ -50,20 +48,6 @@ public final class ResourceDetails {
         this.customDocumentModelLimit = customDocumentModelLimit;
     }
 
-    /**
-     * Get the customNeuralDocumentModelBuilds property: Quota used, limit, and next reset date/time.
-     *
-     * @return the customNeuralDocumentModelBuilds value.
-     */
-    public QuotaDetails getCustomNeuralDocumentModelBuilds() {
-        return customNeuralDocumentModelBuilds;
-    }
-
-    private void setCustomNeuralDocumentModelBuilds(
-        QuotaDetails customNeuralDocumentModelBuilds) {
-        this.customNeuralDocumentModelBuilds = customNeuralDocumentModelBuilds;
-    }
-
     static {
         ResourceDetailsHelper.setAccessor(new ResourceDetailsHelper.ResourceDetailsAccessor() {
             @Override
@@ -76,12 +60,6 @@ public final class ResourceDetails {
             public void setDocumentModelLimit(
                 ResourceDetails resourceDetails, int documentModelLimit) {
                 resourceDetails.setCustomDocumentModelLimit(documentModelLimit);
-            }
-
-            @Override
-            public void setCustomNeuralDocumentModelBuilds(
-                ResourceDetails resourceDetails, QuotaDetails quotaDetails) {
-                resourceDetails.setCustomNeuralDocumentModelBuilds(quotaDetails);
             }
         });
     }

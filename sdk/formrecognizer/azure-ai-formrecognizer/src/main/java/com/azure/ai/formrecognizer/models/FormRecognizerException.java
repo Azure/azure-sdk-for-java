@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * General exception for FormRecognizer client-side related failures.
  *
- * {@link FormRecognizerErrorInformation}
+ * @see FormRecognizerErrorInformation
  */
 public class FormRecognizerException extends AzureException {
     /**
