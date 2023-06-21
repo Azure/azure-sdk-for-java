@@ -116,7 +116,7 @@ com.azure:azure-health-insights-clinicalmatching;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-cancerprofiling;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-identity;1.9.1;1.10.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-iot-deviceupdate;1.0.7;1.1.0-beta.1
+com.azure:azure-iot-deviceupdate;1.0.7;1.0.8
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-traffic;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-weather;1.0.0-beta.1;1.0.0-beta.2
