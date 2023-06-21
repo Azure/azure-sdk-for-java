@@ -47,9 +47,9 @@ stages:
                   groupId: run # fake group id
 
           - task: PythonScript@0
-            displayName: 'Generate FromSource POM and directories for sparse checkout'
+            displayName: 'Generate build POM and directories for sparse checkout'
             inputs:
-              scriptPath: 'eng/scripts/generate_from_source_pom.py'
+              scriptPath: 'eng/scripts/generate_build_pom.py'
               arguments: '--match-any-version --set-skip-linting-projects SkipLintingProjects --project-list com.azure:azure-core'
               workingDirectory: '$(System.DefaultWorkingDirectory)'
 
@@ -67,7 +67,7 @@ stages:
           - task: Maven@3
             displayName: 'Run All Libraries Latest JDK'
             inputs:
-              mavenPomFile: ClientFromSourcePom.xml
+              mavenPomFile: ClientBuildPom.xml
               options: '$(DefaultOptions) -T 1C -Dgpg.skip'
               mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
               javaHomeOption: 'JDKVersion'

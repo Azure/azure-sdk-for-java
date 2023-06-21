@@ -3,14 +3,14 @@
 
 # Python version 3.4 or higher is required to run this script.
 
-# Use case: Creates an aggregate POM which contains all modules that will be required in a "From Source" run for the passed
+# Use case: Creates an aggregate POM which contains all modules that will be required in a build for the passed
 # project list.
 #
 # Flags
-#   --project-list/--pl: List of project included in the From Source run.
+#   --project-list/--pl: List of project included in the build.
 #
 # Output:
-# 1. ClientFromSourcePom.xml which is the aggregate pom required by the From Source run
+# 1. ClientBuildPom.xml which is the aggregate POM containing all projects required build
 # Set following environment variables in JSON format:
 # 2. SparseCheckoutDirectories - This the list of sparse checkout paths that will be used by sparse-checkout.yml
 # 3. ServiceDirectories - A list of ServiceDirectories.
@@ -48,12 +48,12 @@ root_path = os.path.normpath(os.path.abspath(__file__) + '/../../../')
 client_versions_path = os.path.normpath(root_path + '/eng/versioning/version_client.txt')
 
 # File path where the aggregate POM will be written.
-client_from_source_pom_path = os.path.join(root_path, 'ClientFromSourcePom.xml')
+client_build_pom_path = os.path.join(root_path, 'ClientBuildPom.xml')
 
 sdk_string = "/sdk/"
 
 # Function that creates the aggregate POM.
-def create_from_source_pom(project_list: str, set_skip_linting_projects: str, match_any_version: bool):
+def create_build_pom(project_list: str, set_skip_linting_projects: str, match_any_version: bool):
     project_list_identifiers = project_list.split(',')
 
     # Get the artifact identifiers from client_versions.txt to act as our source of truth.
@@ -84,7 +84,7 @@ def create_from_source_pom(project_list: str, set_skip_linting_projects: str, ma
 
     modules = sorted(list(set([p.module_path for p in source_projects])))
     with open(file=client_from_source_pom_path, mode='w') as fromSourcePom:
-        fromSourcePom.write(pom_file_start.format('azure-sdk-from-source'))
+        fromSourcePom.write(pom_file_start.format('azure-sdk-build'))
         fromSourcePom.write(start_modules)
 
         for module in modules:
@@ -302,7 +302,7 @@ def project_uses_client_parent(project: Project, projects: Dict[str, Project]) -
     return False
 
 def main():
-    parser = argparse.ArgumentParser(description='Generated an aggregate POM for a From Source run.')
+    parser = argparse.ArgumentParser(description='Generated an aggregate POM for a build.')
     parser.add_argument('--project-list', '--pl', type=str)
     parser.add_argument('--set-skip-linting-projects', type=str)
     parser.add_argument('--match-any-version', action='store_true')
@@ -310,15 +310,15 @@ def main():
     if args.project_list == None:
         raise ValueError('Missing project list.')
     start_time = time.time()
-    create_from_source_pom(args.project_list, args.set_skip_linting_projects, args.match_any_version)
+    create_build_pom(args.project_list, args.set_skip_linting_projects, args.match_any_version)
     elapsed_time = time.time() - start_time
 
-    print('Effective From Source POM File')
-    with open(file=client_from_source_pom_path, mode='r') as fromSourcePom:
-        print(fromSourcePom.read())
+    print('Effective Build POM File')
+    with open(file=client_build_pom_path, mode='r') as buildPom:
+        print(buildPom.read())
 
     print('elapsed_time={}'.format(elapsed_time))
-    print('Total time for replacement: {} seconds'.format(str(timedelta(seconds=elapsed_time))))
+    print('Total time: {} seconds'.format(str(timedelta(seconds=elapsed_time))))
 
 if __name__ == '__main__':
     main()

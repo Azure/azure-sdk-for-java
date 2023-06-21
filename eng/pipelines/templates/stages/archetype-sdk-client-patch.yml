@@ -87,9 +87,9 @@ stages:
             arguments: '--update-type library --build-type client --sr'
 
         - task: PythonScript@0
-          displayName: 'Generate FromSource POM and directories for sparse checkout'
+          displayName: 'Generate build POM and directories for sparse checkout'
           inputs:
-            scriptPath: 'eng/scripts/generate_from_source_pom.py'
+            scriptPath: 'eng/scripts/generate_build_pom.py'
             arguments: '--project-list $(ProjectList)'
             workingDirectory: '$(System.DefaultWorkingDirectory)'
 
@@ -115,7 +115,7 @@ stages:
 
         # Why is this necessary? Normal build and release jobs don't install reporting tools prior
         # to building however they're still able to find the the build tools through the root aggregate
-        # pom file. The ClientFromSourcePom only contains what is necessary for the list of libraries
+        # pom file. The ClientBuildPom only contains what is necessary for the list of libraries
         # and needs to have them installed explicitly otherwise the checkstyle plugin will fail to find
         # com.azure:sdk-build-tools which is a dependency. It does this in spite of the fact that we're
         # not running actually running checkstyle, it loads it to skip it...well done.
@@ -126,7 +126,7 @@ stages:
         - task: Maven@3
           displayName: 'Build From Source and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
           inputs:
-            mavenPomFile: ClientFromSourcePom.xml
+            mavenPomFile: ClientBuildPom.xml
             goals: 'deploy'
             options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
@@ -227,9 +227,9 @@ stages:
             arguments: '--update-type library --build-type client --sr'
 
         - task: PythonScript@0
-          displayName: 'Generate FromSource POM and directories for sparse checkout'
+          displayName: 'Generate build POM and directories for sparse checkout'
           inputs:
-            scriptPath: 'eng/scripts/generate_from_source_pom.py'
+            scriptPath: 'eng/scripts/generate_build_pom.py'
             arguments: '--project-list $(ProjectList)'
             workingDirectory: '$(System.DefaultWorkingDirectory)'
 

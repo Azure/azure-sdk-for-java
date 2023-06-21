@@ -113,7 +113,7 @@ steps:
   - task: Maven@3
     displayName: 'Build for From Source run'
     inputs:
-      mavenPomFile: ClientFromSourcePom.xml
+      mavenPomFile: ClientBuildPom.xml
       goals: 'install'
       # Build and install every track 2, client, library. The purpose is to have all the libraries installed on the
       # machine, so we can simply run tests with the -amd switch and we can remove the SNAFU of dependencies that
@@ -131,7 +131,7 @@ steps:
   - task: Maven@3
     displayName: 'Run tests for From Source run'
     inputs:
-      mavenPomFile: ClientFromSourcePom.xml
+      mavenPomFile: ClientBuildPom.xml
       # For the "From Source" runs we don't want the -am switch as we don't care about running tests for our
       # dependencies, but we do want the -amd switch because we want to run tests on things that depend on us.
       ${{ if eq(parameters.IsLiveTest, 'true') }}:
