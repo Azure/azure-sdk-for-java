@@ -3,6 +3,7 @@
 ### 3.36.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added Diagnostic Threshold configuration support to `CosmosProperties`. In order to use Diagnostics they must be enabled on the supplied `CosmosClientBuilder`. - See [PR 35546](https://github.com/Azure/azure-sdk-for-java/pull/35546)
 
 #### Breaking Changes
 
