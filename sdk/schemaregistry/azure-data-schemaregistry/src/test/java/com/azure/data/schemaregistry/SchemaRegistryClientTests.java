@@ -9,7 +9,6 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
@@ -75,9 +74,8 @@ public class SchemaRegistryClientTests extends TestProxyTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
-        } else {
-            builder.addPolicy(new RetryPolicy())
-                .addPolicy(interceptorManager.getRecordPolicy());
+        } else if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
     }
 
