@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
-/** Defines values for OperationStatus. */
+/** Known values for operation status. */
 @Immutable
 public final class OperationStatus extends ExpandableStringEnum<OperationStatus> {
     /** Static value notStarted for OperationStatus. */

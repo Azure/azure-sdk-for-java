@@ -135,6 +135,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-communication-phonenumbers</artifactId>
+      <version>1.1.2</version><!-- {x-version-update;com.azure:azure-communication-phonenumbers;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.jacoco</groupId>
       <artifactId>org.jacoco.agent</artifactId>
       <classifier>runtime</classifier>
