@@ -4,6 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
+import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectorDirection;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -27,9 +28,6 @@ public final class SmartDetectionConditionPatch {
      */
     @JsonProperty(value = "suppressCondition")
     private SuppressConditionPatch suppressCondition;
-
-    /** Creates an instance of SmartDetectionConditionPatch class. */
-    public SmartDetectionConditionPatch() {}
 
     /**
      * Get the sensitivity property: sensitivity, value range : (0, 100].

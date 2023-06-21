@@ -22,9 +22,6 @@ public final class SuppressConditionPatch {
     @JsonProperty(value = "minRatio")
     private Double minRatio;
 
-    /** Creates an instance of SuppressConditionPatch class. */
-    public SuppressConditionPatch() {}
-
     /**
      * Get the minNumber property: min point number, value range : [1, +∞).
      *

@@ -41,9 +41,6 @@ public final class AnomalyDetectionConfigurationPatch {
     @JsonProperty(value = "seriesOverrideConfigurations")
     private List<SeriesConfiguration> seriesOverrideConfigurations;
 
-    /** Creates an instance of AnomalyDetectionConfigurationPatch class. */
-    public AnomalyDetectionConfigurationPatch() {}
-
     /**
      * Get the name property: anomaly detection configuration name.
      *

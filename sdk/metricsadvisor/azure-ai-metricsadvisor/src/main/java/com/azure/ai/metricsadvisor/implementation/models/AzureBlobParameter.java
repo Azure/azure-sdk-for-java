@@ -28,9 +28,6 @@ public final class AzureBlobParameter {
     @JsonProperty(value = "blobTemplate", required = true)
     private String blobTemplate;
 
-    /** Creates an instance of AzureBlobParameter class. */
-    public AzureBlobParameter() {}
-
     /**
      * Get the connectionString property: The connection string of this Azure Blob.
      *

@@ -8,8 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.time.OffsetDateTime;
-import java.util.List;
 
 /** The AzureBlobDataFeed model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataSourceType")
@@ -21,9 +19,6 @@ public final class AzureBlobDataFeed extends DataFeedDetail {
      */
     @JsonProperty(value = "dataSourceParameter", required = true)
     private AzureBlobParameter dataSourceParameter;
-
-    /** Creates an instance of AzureBlobDataFeed class. */
-    public AzureBlobDataFeed() {}
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
@@ -42,174 +37,6 @@ public final class AzureBlobDataFeed extends DataFeedDetail {
      */
     public AzureBlobDataFeed setDataSourceParameter(AzureBlobParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setDataFeedName(String dataFeedName) {
-        super.setDataFeedName(dataFeedName);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setDataFeedDescription(String dataFeedDescription) {
-        super.setDataFeedDescription(dataFeedDescription);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setGranularityName(Granularity granularityName) {
-        super.setGranularityName(granularityName);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setGranularityAmount(Integer granularityAmount) {
-        super.setGranularityAmount(granularityAmount);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setMetrics(List<DataFeedMetric> metrics) {
-        super.setMetrics(metrics);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setDimension(List<DataFeedDimension> dimension) {
-        super.setDimension(dimension);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setTimestampColumn(String timestampColumn) {
-        super.setTimestampColumn(timestampColumn);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setDataStartFrom(OffsetDateTime dataStartFrom) {
-        super.setDataStartFrom(dataStartFrom);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setStartOffsetInSeconds(Long startOffsetInSeconds) {
-        super.setStartOffsetInSeconds(startOffsetInSeconds);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setMaxConcurrency(Integer maxConcurrency) {
-        super.setMaxConcurrency(maxConcurrency);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
-        super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
-        super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setNeedRollup(NeedRollupEnum needRollup) {
-        super.setNeedRollup(needRollup);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setRollUpMethod(RollUpMethod rollUpMethod) {
-        super.setRollUpMethod(rollUpMethod);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setRollUpColumns(List<String> rollUpColumns) {
-        super.setRollUpColumns(rollUpColumns);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setAllUpIdentification(String allUpIdentification) {
-        super.setAllUpIdentification(allUpIdentification);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setFillMissingPointType(FillMissingPointType fillMissingPointType) {
-        super.setFillMissingPointType(fillMissingPointType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setFillMissingPointValue(Double fillMissingPointValue) {
-        super.setFillMissingPointValue(fillMissingPointValue);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setViewMode(ViewMode viewMode) {
-        super.setViewMode(viewMode);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setAdmins(List<String> admins) {
-        super.setAdmins(admins);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setViewers(List<String> viewers) {
-        super.setViewers(viewers);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setActionLinkTemplate(String actionLinkTemplate) {
-        super.setActionLinkTemplate(actionLinkTemplate);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setAuthenticationType(AuthenticationTypeEnum authenticationType) {
-        super.setAuthenticationType(authenticationType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureBlobDataFeed setCredentialId(String credentialId) {
-        super.setCredentialId(credentialId);
         return this;
     }
 }
