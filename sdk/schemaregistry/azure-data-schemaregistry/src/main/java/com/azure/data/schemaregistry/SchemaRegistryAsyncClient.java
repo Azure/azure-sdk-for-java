@@ -17,152 +17,62 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImpl;
 import com.azure.data.schemaregistry.implementation.SchemaRegistryHelper;
 import com.azure.data.schemaregistry.implementation.models.ErrorException;
-import com.azure.data.schemaregistry.implementation.models.SchemaFormatImpl;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * {@link SchemaRegistryAsyncClient} is an HTTP-based client that interacts with Azure Schema Registry service to store
- * and retrieve schemas on demand.  Azure Schema Registry supports multiple schema formats such as Avro, JSON, and
- * custom formats.
+ * HTTP-based client that interacts with Azure Schema Registry service to store and retrieve schemas on demand.
  *
- * <p><strong>Sample: Construct a {@link SchemaRegistryAsyncClient}</strong></p>
+ * <p><strong>Register a schema</strong></p>
+ * Registering a schema returns a unique schema id that can be used to quickly associate payloads with that schema.
+ * Reactive operations must be subscribed to; this kicks off the operation.
  *
- * <p>The following code sample demonstrates the creation of the asynchronous client
- * {@link com.azure.data.schemaregistry.SchemaRegistryAsyncClient}.  The {@code fullyQualifiedNamespace} is the Event
- * Hubs Namespace's host name.  It is listed under the "Essentials" panel after navigating to the Event Hubs Namespace
- * via Azure Portal.  The credential used is {@code DefaultAzureCredential} for authentication, which is appropriate
- * for most scenarios, including local development and production environments. Additionally, we recommend using
- * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
- * for authentication in production environments.
- * You can find more information on different ways of authenticating and their corresponding credential types in the
- * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
- * </p>
- *
- * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.construct -->
- * <pre>
- * DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
- * SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder&#40;&#41;
- *     .fullyQualifiedNamespace&#40;&quot;https:&#47;&#47;&lt;your-schema-registry-endpoint&gt;.servicebus.windows.net&quot;&#41;
- *     .credential&#40;azureCredential&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.construct -->
- *
- * <p><strong>Sample: Register a schema</strong></p>
- *
- * <p>Registering a schema returns a unique schema id that can be used to quickly associate payloads with that schema.
- * The credential used is {@code DefaultAzureCredential} because it combines commonly used credentials in deployment
- * and development and chooses the credential to used based on its running environment.  Reactive operations must be
- * subscribed to; this kicks off the operation.  {@link #registerSchema(String, String, String, SchemaFormat)} is a
- * non-blocking call, the program will move onto the next line of code after setting up the async operation.</p>
- *
- * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.registerschema-avro -->
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.registerschema -->
  * <pre>
  * String schema = &quot;&#123;&#92;&quot;type&#92;&quot;:&#92;&quot;enum&#92;&quot;,&#92;&quot;name&#92;&quot;:&#92;&quot;TEST&#92;&quot;,&#92;&quot;symbols&#92;&quot;:[&#92;&quot;UNIT&#92;&quot;,&#92;&quot;INTEGRATION&#92;&quot;]&#125;&quot;;
  * client.registerSchema&#40;&quot;&#123;schema-group&#125;&quot;, &quot;&#123;schema-name&#125;&quot;, schema, SchemaFormat.AVRO&#41;
  *     .subscribe&#40;properties -&gt; &#123;
  *         System.out.printf&#40;&quot;Schema id: %s, schema format: %s%n&quot;, properties.getId&#40;&#41;,
  *             properties.getFormat&#40;&#41;&#41;;
- *     &#125;, error -&gt; &#123;
- *         System.err.println&#40;&quot;Error occurred registering schema: &quot; + error&#41;;
- *     &#125;, &#40;&#41; -&gt; &#123;
- *         System.out.println&#40;&quot;Register schema completed.&quot;&#41;;
  *     &#125;&#41;;
  * </pre>
- * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.registerschema-avro -->
+ * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.registerschema -->
  *
- * <p><strong>Sample: Get a schema using a schema id</strong></p>
- *
- * <p>The following code sample demonstrates how to fetch a schema using its schema id.  The schema id can be found in
- * {@link com.azure.data.schemaregistry.models.SchemaProperties#getId()} when a schema is registered or using
- * {@link com.azure.data.schemaregistry.SchemaRegistryAsyncClient#getSchemaProperties(java.lang.String, java.lang.String, java.lang.String, com.azure.data.schemaregistry.models.SchemaFormat)}.
- * Reactive operations must be subscribed to; this kicks off the operation.  {@link #getSchema(String)} is a
- * non-blocking call, the program will move onto the next line of code after setting up the async operation.</p>
- *
- * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.getschema -->
+ * <p><strong>Get a schema</strong></p>
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.getSchema -->
  * <pre>
- * client.getSchema&#40;&quot;&#123;schema-id&#125;&quot;&#41;
- *     .subscribe&#40;schema -&gt; &#123;
- *         System.out.printf&#40;&quot;Schema id: %s, schema format: %s%n&quot;, schema.getProperties&#40;&#41;.getId&#40;&#41;,
- *             schema.getProperties&#40;&#41;.getFormat&#40;&#41;&#41;;
- *         System.out.println&#40;&quot;Schema contents: &quot; + schema.getDefinition&#40;&#41;&#41;;
- *     &#125;, error -&gt; &#123;
- *         System.err.println&#40;&quot;Error occurred getting schema: &quot; + error&#41;;
- *     &#125;, &#40;&#41; -&gt; &#123;
- *         System.out.println&#40;&quot;Get schema completed.&quot;&#41;;
- *     &#125;&#41;;
+ * client.getSchema&#40;&quot;&#123;schema-id&#125;&quot;&#41;.subscribe&#40;schema -&gt; &#123;
+ *     System.out.printf&#40;&quot;Schema id: %s, schema format: %s%n&quot;, schema.getProperties&#40;&#41;.getId&#40;&#41;,
+ *         schema.getProperties&#40;&#41;.getFormat&#40;&#41;&#41;;
+ *     System.out.println&#40;&quot;Schema contents: &quot; + schema.getDefinition&#40;&#41;&#41;;
+ * &#125;&#41;;
  * </pre>
- * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.getschema -->
+ * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.getSchema -->
  *
- * <p><strong>Sample: Get a schema's properties</strong></p>
- *
- * <p>The following code sample demonstrates how to get a schema's properties given its schema contents.  Fetching
- * schema properties is useful in cases where developers want to get the unique schema id.
- * {@link #getSchemaProperties(String, String, String, SchemaFormat)} is a non-blocking call, the program will move
- * onto the next line of code after setting up the async operation.</p>
- *
- * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.getschemaproperties -->
+ * <p><strong>Get a schema's properties</strong></p>
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.getSchemaProperties -->
  * <pre>
  * String schema = &quot;&#123;&#92;&quot;type&#92;&quot;:&#92;&quot;enum&#92;&quot;,&#92;&quot;name&#92;&quot;:&#92;&quot;TEST&#92;&quot;,&#92;&quot;symbols&#92;&quot;:[&#92;&quot;UNIT&#92;&quot;,&#92;&quot;INTEGRATION&#92;&quot;]&#125;&quot;;
- * client.getSchemaProperties&#40;&quot;&#123;schema-group&#125;&quot;, &quot;&#123;schema-name&#125;&quot;, schema, SchemaFormat.AVRO&#41;
- *     .subscribe&#40;properties -&gt; &#123;
- *         System.out.println&#40;&quot;Schema id: &quot; + properties.getId&#40;&#41;&#41;;
- *         System.out.println&#40;&quot;Format: &quot; + properties.getFormat&#40;&#41;&#41;;
- *         System.out.println&#40;&quot;Version: &quot; + properties.getVersion&#40;&#41;&#41;;
- *     &#125;, error -&gt; &#123;
- *         System.err.println&#40;&quot;Error occurred getting schema: &quot; + error&#41;;
- *     &#125;, &#40;&#41; -&gt; &#123;
- *         System.out.println&#40;&quot;Get schema completed.&quot;&#41;;
+ * client.getSchemaProperties&#40;&quot;&#123;schema-group&#125;&quot;, &quot;&#123;schema-name&#125;&quot;, schema,
+ *     SchemaFormat.AVRO&#41;.subscribe&#40;properties -&gt; &#123;
+ *         System.out.println&#40;&quot;The schema id: &quot; + properties.getId&#40;&#41;&#41;;
  *     &#125;&#41;;
  * </pre>
- * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.getschemaproperties -->
+ * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.getSchemaProperties -->
  *
- * <p><strong>Sample: Get a schema with its HTTP response</strong></p>
- *
- * <p>The following code sample demonstrates how to get a schema using its group name, schema name, and version number.
- * In addition, it gets the underlying HTTP response that backs this service call.  This is useful in cases where
- * customers want more insight into the HTTP request/response.
- * {@link #getSchemaWithResponse(String, String, int, Context)} is a non-blocking call, the program will move onto the
- * next line of code after setting up the async operation.</p>
- *
- * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.getschemawithresponse -->
- * <pre>
- * client.getSchemaWithResponse&#40;&quot;&#123;group-name&#125;&quot;,
- *         &quot;&#123;schema-name&#125;&quot;, 1, Context.NONE&#41;
- *     .subscribe&#40;response -&gt; &#123;
- *         System.out.println&#40;&quot;Headers in HTTP response: &quot;&#41;;
- *
- *         for &#40;HttpHeader header : response.getHeaders&#40;&#41;&#41; &#123;
- *             System.out.printf&#40;&quot;%s: %s%n&quot;, header.getName&#40;&#41;, header.getValue&#40;&#41;&#41;;
- *         &#125;
- *
- *         SchemaRegistrySchema schema = response.getValue&#40;&#41;;
- *
- *         System.out.printf&#40;&quot;Schema id: %s, schema format: %s%n&quot;, schema.getProperties&#40;&#41;.getId&#40;&#41;,
- *             schema.getProperties&#40;&#41;.getFormat&#40;&#41;&#41;;
- *         System.out.println&#40;&quot;Schema contents: &quot; + schema.getDefinition&#40;&#41;&#41;;
- *     &#125;, error -&gt; &#123;
- *         System.err.println&#40;&quot;Error occurred getting schema: &quot; + error&#41;;
- *     &#125;, &#40;&#41; -&gt; &#123;
- *         System.out.println&#40;&quot;Get schema with response completed.&quot;&#41;;
- *     &#125;&#41;;
- * </pre>
- * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.getschemawithresponse -->
- *
- * @see SchemaRegistryClientBuilder
- * @see SchemaRegistryClient
+ * @see SchemaRegistryClientBuilder Builder object instantiation and additional samples.
  */
 @ServiceClient(builder = SchemaRegistryClientBuilder.class, isAsync = true)
 public final class SchemaRegistryAsyncClient {
@@ -241,6 +151,7 @@ public final class SchemaRegistryAsyncClient {
 
     Mono<Response<SchemaProperties>> registerSchemaWithResponse(String groupName, String name, String schemaDefinition,
         SchemaFormat format, Context context) {
+
         if (Objects.isNull(groupName)) {
             return monoError(logger, new NullPointerException("'groupName' should not be null."));
         } else if (Objects.isNull(name)) {
@@ -255,12 +166,12 @@ public final class SchemaRegistryAsyncClient {
             groupName, name, format, schemaDefinition);
 
         final BinaryData binaryData = BinaryData.fromString(schemaDefinition);
-        final SchemaFormatImpl contentType = SchemaRegistryHelper.getContentType(format);
 
-        return restService.getSchemas().registerWithResponseAsync(groupName, name, contentType.toString(), binaryData,
-                binaryData.getLength(), context)
+        return restService.getSchemas().registerWithResponseAsync(groupName, name, binaryData, binaryData.getLength(),
+                context)
             .map(response -> {
-                final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders(), format);
+                final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(response);
+
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), registered);
@@ -350,12 +261,21 @@ public final class SchemaRegistryAsyncClient {
 
         return this.restService.getSchemas().getByIdWithResponseAsync(schemaId, context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
-            .flatMap(response -> {
-                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders());
-                return convertToString(response.getValue())
-                    .map(schema -> new SimpleResponse<>(
+            .handle((response, sink) -> {
+                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response);
+                final String schema;
+
+                try {
+                    schema = convertToString(response.getValue());
+                } catch (UncheckedIOException e) {
+                    sink.error(e);
+                    return;
+                }
+
+                sink.next(new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema)));
+                sink.complete();
             });
     }
 
@@ -369,19 +289,30 @@ public final class SchemaRegistryAsyncClient {
         return this.restService.getSchemas().getSchemaVersionWithResponseAsync(groupName, schemaName, schemaVersion,
                 context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
-            .flatMap(response -> {
-                final Flux<ByteBuffer> schemaFlux = response.getValue();
-                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders());
+            .handle((response, sink) -> {
+                final InputStream schemaInputStream = response.getValue();
+                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response);
+                final String schema;
 
-                if (schemaFlux == null) {
-                    return Mono.error(new IllegalArgumentException(String.format(
+                if (schemaInputStream == null) {
+                    sink.error(new IllegalArgumentException(String.format(
                         "Schema definition should not be null. Group Name: %s. Schema Name: %s. Version: %d",
                         groupName, schemaName, schemaVersion)));
+
+                    return;
                 }
-                return convertToString(schemaFlux)
-                    .map(schema -> new SimpleResponse<>(
-                        response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema)));
+
+                try {
+                    schema = convertToString(schemaInputStream);
+                } catch (UncheckedIOException e) {
+                    sink.error(e);
+                    return;
+                }
+
+                sink.next(new SimpleResponse<>(
+                    response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema)));
+                sink.complete();
             });
     }
 
@@ -466,15 +397,12 @@ public final class SchemaRegistryAsyncClient {
         }
 
         final BinaryData binaryData = BinaryData.fromString(schemaDefinition);
-        final SchemaFormatImpl contentType = SchemaRegistryHelper.getContentType(format);
 
         return restService.getSchemas()
-            .queryIdByContentWithResponseAsync(groupName, name, com.azure.data.schemaregistry.implementation.models.SchemaFormat.fromString(contentType.toString()),
-                binaryData, binaryData.getLength(),
-                context)
+            .queryIdByContentWithResponseAsync(groupName, name, binaryData, binaryData.getLength(), context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .map(response -> {
-                final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders(), format);
+                final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(response);
 
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
@@ -489,7 +417,7 @@ public final class SchemaRegistryAsyncClient {
      *
      * @return The remapped error.
      */
-    static HttpResponseException remapError(ErrorException error) {
+    private static Throwable remapError(ErrorException error) {
         if (error.getResponse().getStatusCode() == 404) {
             final String message;
             if (error.getValue() != null && error.getValue().getError() != null) {
@@ -497,6 +425,7 @@ public final class SchemaRegistryAsyncClient {
             } else {
                 message = error.getMessage();
             }
+
             return new ResourceNotFoundException(message, error.getResponse(), error);
         }
 
@@ -504,19 +433,29 @@ public final class SchemaRegistryAsyncClient {
     }
 
     /**
-     * Converts a Flux of Byte Buffer into its string representation.
+     * Converts an input stream into its string representation.
      *
-     * @param byteBufferFlux the Byte Buffer Flux input.
+     * @param inputStream Input stream.
      *
      * @return A string representation.
      *
+     * @throws UncheckedIOException if an {@link IOException} is thrown when creating the readers.
      */
-    static Mono<String> convertToString(Flux<ByteBuffer> byteBufferFlux) {
+    private static String convertToString(InputStream inputStream) {
         final StringBuilder builder = new StringBuilder();
-        return byteBufferFlux
-            .map(byteBuffer -> {
-                builder.append(new String(byteBuffer.array(), StandardCharsets.UTF_8));
-                return Mono.empty();
-            }).then(Mono.defer(() -> Mono.just(builder.toString())));
+        try (BufferedReader reader = new BufferedReader(
+            new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+
+            String str;
+
+            while ((str = reader.readLine()) != null) {
+                builder.append(str);
+            }
+
+        } catch (IOException exception) {
+            throw new UncheckedIOException("Error occurred while deserializing schemaContent.", exception);
+        }
+
+        return builder.toString();
     }
 }

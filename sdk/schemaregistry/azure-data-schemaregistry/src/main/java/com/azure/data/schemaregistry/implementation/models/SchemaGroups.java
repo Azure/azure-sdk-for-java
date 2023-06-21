@@ -8,61 +8,32 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Object received from the registry containing the list of schema groups and link to next batch page. */
+/** Array received from the registry containing the list of schema groups. */
 @Fluent
 public final class SchemaGroups {
     /*
      * Array of schema groups.
      */
     @JsonProperty(value = "schemaGroups")
-    private List<String> groups;
-
-    /*
-     * URl to next batch of schema groups
-     */
-    @JsonProperty(value = "nextLink")
-    private String nextLink;
-
-    /** Creates an instance of SchemaGroups class. */
-    public SchemaGroups() {}
+    private List<String> schemaGroups;
 
     /**
-     * Get the groups property: Array of schema groups.
+     * Get the schemaGroups property: Array of schema groups.
      *
-     * @return the groups value.
+     * @return the schemaGroups value.
      */
-    public List<String> getGroups() {
-        return this.groups;
+    public List<String> getSchemaGroups() {
+        return this.schemaGroups;
     }
 
     /**
-     * Set the groups property: Array of schema groups.
+     * Set the schemaGroups property: Array of schema groups.
      *
-     * @param groups the groups value to set.
+     * @param schemaGroups the schemaGroups value to set.
      * @return the SchemaGroups object itself.
      */
-    public SchemaGroups setGroups(List<String> groups) {
-        this.groups = groups;
-        return this;
-    }
-
-    /**
-     * Get the nextLink property: URl to next batch of schema groups.
-     *
-     * @return the nextLink value.
-     */
-    public String getNextLink() {
-        return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: URl to next batch of schema groups.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the SchemaGroups object itself.
-     */
-    public SchemaGroups setNextLink(String nextLink) {
-        this.nextLink = nextLink;
+    public SchemaGroups setSchemaGroups(List<String> schemaGroups) {
+        this.schemaGroups = schemaGroups;
         return this;
     }
 }
