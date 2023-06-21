@@ -179,7 +179,7 @@ org.springframework.cloud:spring-cloud-stream;3.2.8
 org.objenesis:objenesis;3.1
 cglib:cglib-nodep;3.2.7
 com.github.docker-java:docker-java;3.2.1
-com.github.tomakehurst:wiremock-standalone;2.24.1
+com.github.tomakehurst:wiremock-jre8-standalone;2.35.0
 com.jcraft:jsch;0.1.55
 com.microsoft.azure:adal4j;1.6.5
 com.microsoft.azure:azure;1.24.1
