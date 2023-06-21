@@ -30,7 +30,7 @@ public final class AppResourceProperties {
      */
     @JsonProperty(value = "addonConfigs")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, Object> addonConfigs;
+    private Map<String, Map<String, Object>> addonConfigs;
 
     /*
      * Provisioning state of the App
@@ -126,7 +126,7 @@ public final class AppResourceProperties {
      *
      * @return the addonConfigs value.
      */
-    public Map<String, Object> addonConfigs() {
+    public Map<String, Map<String, Object>> addonConfigs() {
         return this.addonConfigs;
     }
 
@@ -136,7 +136,7 @@ public final class AppResourceProperties {
      * @param addonConfigs the addonConfigs value to set.
      * @return the AppResourceProperties object itself.
      */
-    public AppResourceProperties withAddonConfigs(Map<String, Object> addonConfigs) {
+    public AppResourceProperties withAddonConfigs(Map<String, Map<String, Object>> addonConfigs) {
         this.addonConfigs = addonConfigs;
         return this;
     }

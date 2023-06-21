@@ -62,12 +62,12 @@ public final class DeploymentsCreateOrUpdateSamples {
                                     .withAddonConfigs(
                                         mapOf(
                                             "ApplicationConfigurationService",
-                                            SerializerFactory
-                                                .createDefaultManagementSerializerAdapter()
-                                                .deserialize(
-                                                    "{\"patterns\":[\"mypattern\"]}",
-                                                    Object.class,
-                                                    SerializerEncoding.JSON)))
+                                            mapOf(
+                                                "patterns",
+                                                SerializerFactory
+                                                    .createDefaultManagementSerializerAdapter()
+                                                    .deserialize(
+                                                        "[\"mypattern\"]", Object.class, SerializerEncoding.JSON))))
                                     .withLivenessProbe(
                                         new Probe()
                                             .withProbeAction(

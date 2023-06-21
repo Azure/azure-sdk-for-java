@@ -4,9 +4,7 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.Context;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.appplatform.fluent.models.AppResourceInner;
 import com.azure.resourcemanager.appplatform.models.AppResourceProperties;
 import com.azure.resourcemanager.appplatform.models.AppVNetAddons;
@@ -18,7 +16,6 @@ import com.azure.resourcemanager.appplatform.models.ManagedIdentityType;
 import com.azure.resourcemanager.appplatform.models.PersistentDisk;
 import com.azure.resourcemanager.appplatform.models.TemporaryDisk;
 import com.azure.resourcemanager.appplatform.models.UserAssignedManagedIdentity;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +30,7 @@ public final class AppsCreateOrUpdateSamples {
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void appsCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) throws IOException {
+    public static void appsCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .springServices()
             .manager()
@@ -50,19 +47,13 @@ public final class AppsCreateOrUpdateSamples {
                             .withAddonConfigs(
                                 mapOf(
                                     "ApplicationConfigurationService",
-                                    SerializerFactory
-                                        .createDefaultManagementSerializerAdapter()
-                                        .deserialize(
-                                            "{\"resourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/configurationServices/myacs\"}",
-                                            Object.class,
-                                            SerializerEncoding.JSON),
+                                    mapOf(
+                                        "resourceId",
+                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/configurationServices/myacs"),
                                     "ServiceRegistry",
-                                    SerializerFactory
-                                        .createDefaultManagementSerializerAdapter()
-                                        .deserialize(
-                                            "{\"resourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/serviceRegistries/myServiceRegistry\"}",
-                                            Object.class,
-                                            SerializerEncoding.JSON)))
+                                    mapOf(
+                                        "resourceId",
+                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/serviceRegistries/myServiceRegistry")))
                             .withHttpsOnly(false)
                             .withTemporaryDisk(new TemporaryDisk().withSizeInGB(2).withMountPath("/mytemporarydisk"))
                             .withPersistentDisk(new PersistentDisk().withSizeInGB(2).withMountPath("/mypersistentdisk"))
@@ -112,8 +103,7 @@ public final class AppsCreateOrUpdateSamples {
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void appsCreateOrUpdateVNetInjection(com.azure.resourcemanager.AzureResourceManager azure)
-        throws IOException {
+    public static void appsCreateOrUpdateVNetInjection(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .springServices()
             .manager()
@@ -130,19 +120,13 @@ public final class AppsCreateOrUpdateSamples {
                             .withAddonConfigs(
                                 mapOf(
                                     "ApplicationConfigurationService",
-                                    SerializerFactory
-                                        .createDefaultManagementSerializerAdapter()
-                                        .deserialize(
-                                            "{\"resourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/configurationServices/myacs\"}",
-                                            Object.class,
-                                            SerializerEncoding.JSON),
+                                    mapOf(
+                                        "resourceId",
+                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/configurationServices/myacs"),
                                     "ServiceRegistry",
-                                    SerializerFactory
-                                        .createDefaultManagementSerializerAdapter()
-                                        .deserialize(
-                                            "{\"resourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/serviceRegistries/myServiceRegistry\"}",
-                                            Object.class,
-                                            SerializerEncoding.JSON)))
+                                    mapOf(
+                                        "resourceId",
+                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/serviceRegistries/myServiceRegistry")))
                             .withHttpsOnly(false)
                             .withTemporaryDisk(new TemporaryDisk().withSizeInGB(2).withMountPath("/mytemporarydisk"))
                             .withPersistentDisk(new PersistentDisk().withSizeInGB(2).withMountPath("/mypersistentdisk"))

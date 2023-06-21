@@ -32,7 +32,7 @@ public final class DeploymentSettings {
      */
     @JsonProperty(value = "addonConfigs")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, Object> addonConfigs;
+    private Map<String, Map<String, Object>> addonConfigs;
 
     /*
      * Periodic probe of App Instance liveness. App Instance will be restarted
@@ -132,7 +132,7 @@ public final class DeploymentSettings {
      *
      * @return the addonConfigs value.
      */
-    public Map<String, Object> addonConfigs() {
+    public Map<String, Map<String, Object>> addonConfigs() {
         return this.addonConfigs;
     }
 
@@ -142,7 +142,7 @@ public final class DeploymentSettings {
      * @param addonConfigs the addonConfigs value to set.
      * @return the DeploymentSettings object itself.
      */
-    public DeploymentSettings withAddonConfigs(Map<String, Object> addonConfigs) {
+    public DeploymentSettings withAddonConfigs(Map<String, Map<String, Object>> addonConfigs) {
         this.addonConfigs = addonConfigs;
         return this;
     }
