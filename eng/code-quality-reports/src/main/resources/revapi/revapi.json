@@ -283,8 +283,9 @@
         },
         {
           "code": "java.method.added",
-          "new" : "method boolean com.azure.storage.blob.models.StorageAccountInfo::isHierarchicalNamespaceEnabled()",
-          "justification": "We do not need to do a minor version bump for libraries that use Storage for this change",
+          "new": "method boolean com.azure.storage.blob.models.StorageAccountInfo::isHierarchicalNamespaceEnabled()",
+          "justification": "We do not need to do a minor version bump for libraries that use Storage for this change"
+        }
       ]
     }
   }
