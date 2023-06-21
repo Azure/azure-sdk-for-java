@@ -7,7 +7,6 @@ package com.azure.spring.data.cosmos;
  * LINE NUMBERS OF EXISTING CODE SAMPLES.
  */
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "azure.cosmos")
