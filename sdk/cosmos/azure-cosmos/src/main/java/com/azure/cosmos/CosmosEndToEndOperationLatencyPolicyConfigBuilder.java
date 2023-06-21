@@ -31,7 +31,7 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
      * @return the {@link CosmosEndToEndOperationLatencyPolicyConfig}
      */
     public CosmosEndToEndOperationLatencyPolicyConfig build() {
-        if (endToEndOperationTimeout == null & isEnabled) {
+        if (endToEndOperationTimeout == null && isEnabled) {
             throw new IllegalArgumentException("endToEndOperationTimeout must be set if the policy is enabled");
         }
         if (endToEndOperationTimeout != null && endToEndOperationTimeout.isNegative()) {
