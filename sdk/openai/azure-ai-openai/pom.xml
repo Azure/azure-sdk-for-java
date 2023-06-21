@@ -70,7 +70,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.40</version>
+      <version>1.0.0-beta.40</version> <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
     </dependency>
 
     <!-- provided scope -->
