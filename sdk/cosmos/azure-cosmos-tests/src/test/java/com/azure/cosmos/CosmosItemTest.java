@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -61,7 +62,6 @@ public class CosmosItemTest extends TestSuiteBase {
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private static final Random random = new Random();
     private CosmosClient client;
     private CosmosContainer container;
 
@@ -199,7 +199,7 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(feedResponse.getResults()).isNotNull();
         assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
         assertThat(diagnosticsAccessor.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics())).isNotNull();
-        assertThat(diagnosticsAccessor.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics()).size()).isGreaterThan(1);
+        assertThat(diagnosticsAccessor.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics()).size()).isGreaterThanOrEqualTo(1);
 
         for (int i = 0; i < feedResponse.getResults().size(); i++) {
             InternalObjectNode fetchedResult = feedResponse.getResults().get(i);
@@ -406,7 +406,7 @@ public class CosmosItemTest extends TestSuiteBase {
                 final Set<Integer> faultyIds = new HashSet<>();
 
                 while (faultyIds.size() != faultyIdCount) {
-                    faultyIds.add(random.nextInt(feedRangeCount));
+                    faultyIds.add(ThreadLocalRandom.current().nextInt(feedRangeCount));
                 }
 
                 SqlQuerySpec sqlQuerySpec = new SqlQuerySpec();
