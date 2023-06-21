@@ -114,8 +114,6 @@ class CryptographyClientImpl {
     }
 
     private Mono<Response<KeyVaultKey>> getKeyAsync(String name, String version, Context context) {
-        context = context == null ? Context.NONE : context;
-
         return service.getKeyAsync(vaultUrl, name, version, serviceVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> LOGGER.verbose("Retrieving key - {}", name))
             .doOnSuccess(response -> LOGGER.verbose("Retrieved key - {}", response.getValue().getName()))
@@ -130,8 +128,6 @@ class CryptographyClientImpl {
     }
 
     Mono<Response<JsonWebKey>> getSecretKeyAsync(Context context) {
-        context = context == null ? Context.NONE : context;
-
         return service.getSecretAsync(vaultUrl, keyName, version, serviceVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                 context)
             .doOnRequest(ignored -> LOGGER.verbose("Retrieving key - {}", keyName))
@@ -172,7 +168,6 @@ class CryptographyClientImpl {
             .setTags(secret.getProperties().getTags())
             .setContentType(secret.getProperties().getContentType())
             .setSecretAttributes(new SecretRequestAttributes(secret.getProperties()));
-        context = context == null ? Context.NONE : context;
 
         return service.setSecretAsync(vaultUrl, secret.getName(), serviceVersion, ACCEPT_LANGUAGE, parameters,
                 CONTENT_TYPE_HEADER_VALUE, context)
@@ -238,7 +233,6 @@ class CryptographyClientImpl {
 
     private Mono<EncryptResult> encryptAsync(KeyOperationParameters keyOperationParameters, Context context) {
         EncryptionAlgorithm algorithm = keyOperationParameters.getAlgorithm();
-        context = context == null ? Context.NONE : context;
 
         return service.encryptAsync(vaultUrl, keyName, version, serviceVersion, ACCEPT_LANGUAGE, keyOperationParameters,
                 CONTENT_TYPE_HEADER_VALUE, context)
@@ -316,7 +310,6 @@ class CryptographyClientImpl {
 
     private Mono<DecryptResult> decryptAsync(KeyOperationParameters keyOperationParameters, Context context) {
         EncryptionAlgorithm algorithm = keyOperationParameters.getAlgorithm();
-        context = context == null ? Context.NONE : context;
 
         return service.decryptAsync(vaultUrl, keyName, version, serviceVersion, ACCEPT_LANGUAGE, keyOperationParameters,
                 CONTENT_TYPE_HEADER_VALUE, context)
@@ -370,7 +363,6 @@ class CryptographyClientImpl {
         KeySignRequest parameters = new KeySignRequest()
             .setAlgorithm(algorithm)
             .setValue(digest);
-        context = context == null ? Context.NONE : context;
 
         return service.signAsync(vaultUrl, keyName, version, serviceVersion, ACCEPT_LANGUAGE, parameters,
                 CONTENT_TYPE_HEADER_VALUE, context)
@@ -407,7 +399,6 @@ class CryptographyClientImpl {
             .setAlgorithm(algorithm)
             .setDigest(digest)
             .setSignature(signature);
-        context = context == null ? Context.NONE : context;
 
         return service.verifyAsync(vaultUrl, keyName, version, serviceVersion, ACCEPT_LANGUAGE, parameters,
                 CONTENT_TYPE_HEADER_VALUE, context)
@@ -443,7 +434,6 @@ class CryptographyClientImpl {
         KeyWrapUnwrapRequest parameters = new KeyWrapUnwrapRequest()
             .setAlgorithm(algorithm)
             .setValue(key);
-        context = context == null ? Context.NONE : context;
 
         return service.wrapKeyAsync(vaultUrl, keyName, version, serviceVersion, ACCEPT_LANGUAGE, parameters,
                 CONTENT_TYPE_HEADER_VALUE, context)
@@ -478,7 +468,6 @@ class CryptographyClientImpl {
         KeyWrapUnwrapRequest parameters = new KeyWrapUnwrapRequest()
             .setAlgorithm(algorithm)
             .setValue(encryptedKey);
-        context = context == null ? Context.NONE : context;
 
         return service.unwrapKeyAsync(vaultUrl, keyName, version, serviceVersion, ACCEPT_LANGUAGE, parameters,
                 CONTENT_TYPE_HEADER_VALUE, context)

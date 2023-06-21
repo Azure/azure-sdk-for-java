@@ -601,10 +601,10 @@ public class SecretClientImpl {
      * Async polling operation to poll on the delete secret operation status.
      */
     private Function<PollingContext<DeletedSecret>, Mono<PollResponse<DeletedSecret>>> createPollOperationAsync(String keyName) {
-        return pollingContext ->
-            withContext(context -> service.getDeletedSecretPollerAsync(vaultUrl, keyName,
-                secretServiceVersion.getVersion(), ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                context))
+        return (pollingContext) ->
+            withContext(context ->
+                service.getDeletedSecretPollerAsync(vaultUrl, keyName, secretServiceVersion.getVersion(),
+                    ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context))
                 .flatMap(deletedSecretResponse -> {
                     if (deletedSecretResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                         return Mono.defer(() ->
@@ -628,9 +628,9 @@ public class SecretClientImpl {
      */
     private Function<PollingContext<DeletedSecret>, PollResponse<DeletedSecret>> createPollOperation(String keyName,
                                                                                                      Context context) {
-        return pollingContext -> {
+        return (pollingContext) -> {
             try {
-                Context contextToUse = context;
+                Context contextToUse = context == null ? Context.NONE : context;
                 contextToUse = enableSyncRestProxy(contextToUse);
                 Response<DeletedSecret> deletedSecretResponse = service.getDeletedSecretPoller(vaultUrl, keyName,
                     secretServiceVersion.getVersion(), ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, contextToUse);
@@ -661,7 +661,9 @@ public class SecretClientImpl {
     }
 
     private Response<DeletedSecret> deleteSecretWithResponse(String name, Context context) {
+        context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
+
         return service.deleteSecret(vaultUrl, name, secretServiceVersion.getVersion(), ACCEPT_LANGUAGE,
             CONTENT_TYPE_HEADER_VALUE, context);
     }
@@ -728,7 +730,7 @@ public class SecretClientImpl {
      * Async polling operation to poll on the recover deleted secret operation status.
      */
     private Function<PollingContext<KeyVaultSecret>, Mono<PollResponse<KeyVaultSecret>>> createRecoverPollOperationAsync(String secretName) {
-        return pollingContext ->
+        return (pollingContext) ->
             withContext(context ->
                 service.getSecretPollerAsync(vaultUrl, secretName, "", secretServiceVersion.getVersion(),
                     ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context))
@@ -753,9 +755,9 @@ public class SecretClientImpl {
      * Sync polling operation to poll on the delete secret operation status.
      */
     private Function<PollingContext<KeyVaultSecret>, PollResponse<KeyVaultSecret>> createRecoverPollOperation(String secretName, Context context) {
-        return pollingContext -> {
+        return (pollingContext) -> {
             try {
-                Context contextToUse = context;
+                Context contextToUse = context == null ? Context.NONE : context;
                 contextToUse = enableSyncRestProxy(contextToUse);
                 Response<KeyVaultSecret> secretResponse =
                     service.getSecretPoller(vaultUrl, secretName, "", secretServiceVersion.getVersion(),
@@ -786,6 +788,7 @@ public class SecretClientImpl {
     }
 
     private Response<KeyVaultSecret> recoverDeletedSecretWithResponse(String name, Context context) {
+        context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
 
         return service.recoverDeletedSecret(vaultUrl, name, secretServiceVersion.getVersion(), ACCEPT_LANGUAGE,
@@ -865,7 +868,7 @@ public class SecretClientImpl {
     }
 
     /**
-     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
+     * Gets attributes of all the keys given by the {@code continuationToken} that was retrieved from a call to
      * {@link SecretClientImpl#listPropertiesOfSecretsAsync()}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
@@ -917,7 +920,7 @@ public class SecretClientImpl {
     }
 
     /**
-     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
+     * Gets attributes of all the keys given by the {@code continuationToken} that was retrieved from a call to
      * {@link SecretClientImpl#listPropertiesOfSecrets(Context)}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
@@ -965,7 +968,7 @@ public class SecretClientImpl {
     }
 
     /**
-     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
+     * Gets attributes of all the secrets given by the {@code continuationToken} that was retrieved from a call to
      * {@link SecretClientImpl#listDeletedSecretsAsync()}.
      *
      * @param continuationToken The {@link Page#getContinuationToken()} from a previous, successful call to one of the
@@ -1017,7 +1020,7 @@ public class SecretClientImpl {
     }
 
     /**
-     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
+     * Gets attributes of all the secrets given by the {@code continuationToken} that was retrieved from a call to
      * {@link SecretClientImpl#listDeletedSecrets()}.
      *
      * @param continuationToken The {@link Page#getContinuationToken()} from a previous, successful call to one of the
@@ -1063,7 +1066,7 @@ public class SecretClientImpl {
     }
 
     /**
-     * Gets attributes of versions of a key given by the {@code nextPageLink} that was retrieved from a call to
+     * Gets attributes of versions of a key given by the {@code continuationToken} that was retrieved from a call to
      * {@link SecretClientImpl#listPropertiesOfSecretVersionsAsync(String)}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
@@ -1118,7 +1121,7 @@ public class SecretClientImpl {
     }
 
     /**
-     * Gets attributes of versions of a key given by the {@code nextPageLink} that was retrieved from a call to
+     * Gets attributes of versions of a key given by the {@code continuationToken} that was retrieved from a call to
      * {@link SecretClientImpl#listPropertiesOfSecretVersions(String)}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one

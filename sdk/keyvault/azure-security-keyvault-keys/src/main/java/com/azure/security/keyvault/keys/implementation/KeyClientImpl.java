@@ -918,7 +918,7 @@ public class KeyClientImpl {
      * Async polling operation to poll on create delete key operation status.
      */
     private Function<PollingContext<DeletedKey>, Mono<PollResponse<DeletedKey>>> createPollOperationAsync(String keyName) {
-        return pollingContext ->
+        return (pollingContext) ->
             withContext(context -> service.getDeletedKeyPollerAsync(vaultUrl, keyName, keyServiceVersion.getVersion(),
                 ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context))
                 .flatMap(deletedKeyResponse -> {
@@ -943,7 +943,7 @@ public class KeyClientImpl {
      */
     private Function<PollingContext<DeletedKey>, PollResponse<DeletedKey>> createPollOperation(String keyName,
                                                                                                Context context) {
-        return pollingContext -> {
+        return (pollingContext) -> {
             try {
                 Context contextToUse = context;
                 contextToUse = enableSyncRestProxy(contextToUse);
@@ -1044,7 +1044,7 @@ public class KeyClientImpl {
      * Async polling operation to poll on create delete key operation status.
      */
     private Function<PollingContext<KeyVaultKey>, Mono<PollResponse<KeyVaultKey>>> createRecoverPollOperationAsync(String keyName) {
-        return pollingContext ->
+        return (pollingContext) ->
             withContext(context ->
                 service.getKeyPollerAsync(vaultUrl, keyName, "", keyServiceVersion.getVersion(),
                     ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context))
@@ -1067,7 +1067,7 @@ public class KeyClientImpl {
      * Sync polling operation to poll on the delete key operation status.
      */
     private Function<PollingContext<KeyVaultKey>, PollResponse<KeyVaultKey>> createRecoverPollOperation(String keyName, Context context) {
-        return pollingContext -> {
+        return (pollingContext) -> {
             try {
                 Context contextToUse = context;
                 contextToUse = enableSyncRestProxy(contextToUse);
@@ -1177,7 +1177,7 @@ public class KeyClientImpl {
     }
 
     /**
-     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
+     * Gets attributes of all the keys given by the {@code continuationToken} that was retrieved from a call to
      * {@link KeyClientImpl#listPropertiesOfKeysAsync()}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
@@ -1228,7 +1228,7 @@ public class KeyClientImpl {
     }
 
     /**
-     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
+     * Gets attributes of all the keys given by the {@code continuationToken} that was retrieved from a call to
      * {@link KeyClientImpl#listPropertiesOfKeys(Context)}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
@@ -1274,7 +1274,7 @@ public class KeyClientImpl {
     }
 
     /**
-     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
+     * Gets attributes of all the keys given by the {@code continuationToken} that was retrieved from a call to
      * {@link KeyClientImpl#listDeletedKeysAsync()}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to
@@ -1322,7 +1322,7 @@ public class KeyClientImpl {
     }
 
     /**
-     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
+     * Gets attributes of all the keys given by the {@code continuationToken} that was retrieved from a call to
      * {@link KeyClientImpl#listDeletedKeys()}.
      *
      * @param continuationToken The {@link Page#getContinuationToken()} from a previous, successful call to one of the
@@ -1367,7 +1367,7 @@ public class KeyClientImpl {
     }
 
     /**
-     * Gets attributes of versions of a key given by the {@code nextPageLink} that was retrieved from a call to
+     * Gets attributes of versions of a key given by the {@code continuationToken} that was retrieved from a call to
      * {@link KeyClientImpl#listPropertiesOfKeyVersionsAsync(String)}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
@@ -1418,7 +1418,7 @@ public class KeyClientImpl {
     }
 
     /**
-     * Gets attributes of versions of a key given by the {@code nextPageLink} that was retrieved from a call to
+     * Gets attributes of versions of a key given by the {@code continuationToken} that was retrieved from a call to
      * {@link KeyClientImpl#listPropertiesOfKeyVersions(String)}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
