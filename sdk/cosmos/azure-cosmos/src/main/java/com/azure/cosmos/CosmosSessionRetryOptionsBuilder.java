@@ -27,7 +27,6 @@ public final class CosmosSessionRetryOptionsBuilder {
      * @return This instance of {@link CosmosSessionRetryOptionsBuilder}
      * */
     public CosmosSessionRetryOptionsBuilder regionSwitchHint(CosmosRegionSwitchHint regionSwitchHint) {
-        checkNotNull(regionSwitchHint, "regionSwitch hint cannot be null");
         this.regionSwitchHint = regionSwitchHint;
         return this;
     }
@@ -38,6 +37,7 @@ public final class CosmosSessionRetryOptionsBuilder {
      * @return An instance of {@link CosmosSessionRetryOptions}
      * */
     public CosmosSessionRetryOptions build() {
+        checkNotNull(regionSwitchHint, "regionSwitch hint cannot be null");
         return new CosmosSessionRetryOptions(regionSwitchHint);
     }
 }
