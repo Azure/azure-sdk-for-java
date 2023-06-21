@@ -6,15 +6,16 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /** The PlayOptions model. */
 @Fluent
 public final class PlayOptions {
     /*
-     * A {@link PlaySource} representing the source to play.
+     * A List of {@link PlaySource} representing the sources to play.
      */
-    private final PlaySource playSource;
+    private final List<PlaySource> playSources;
 
     /*
      * The targets to play to
@@ -33,21 +34,32 @@ public final class PlayOptions {
 
     /**
      * Constructor
-     * @param playSource A {@link PlaySource} representing the source to play.
+     * @param playSources A List of {@link PlaySource} representing the sources to play.
      * @param playTo The targets to play to.
      */
-    public PlayOptions(PlaySource playSource, List<CommunicationIdentifier> playTo) {
-        this.playSource = playSource;
+    public PlayOptions(List<PlaySource> playSources, List<CommunicationIdentifier> playTo) {
+        this.playSources = playSources;
         this.playTo = playTo;
     }
 
     /**
-     * Get the play source.
-     *
-     * @return the playSource value.
+     * Constructor
+     * @param playSource A {@link PlaySource} representing the source to play.
+     * @param playTo The targets to play to.
      */
-    public PlaySource getPlaySource() {
-        return this.playSource;
+    public PlayOptions(PlaySource playSource, List<CommunicationIdentifier> playTo) {
+        this.playSources = new ArrayList<>();
+        this.playSources.add(playSource);
+        this.playTo = playTo;
+    }
+
+    /**
+     * Get the play sources.
+     *
+     * @return the playSources value.
+     */
+    public List<PlaySource> getPlaySources() {
+        return this.playSources;
     }
 
     /**

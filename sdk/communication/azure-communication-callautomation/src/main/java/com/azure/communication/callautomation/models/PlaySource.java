@@ -13,25 +13,25 @@ public abstract class PlaySource {
      * Defines the identifier to be used for caching related media
      */
     @JsonProperty(value = "playSourceId")
-    private String playSourceId;
+    private String playSourceCacheId;
 
     /**
-     * Get the playSourceId property: Defines the identifier to be used for caching related media.
+     * Get the playSourceCacheId property: Defines the identifier to be used for caching related media.
      *
-     * @return the playSourceId value.
+     * @return the playSourceCacheId value.
      */
-    public String getPlaySourceId() {
-        return this.playSourceId;
+    public String getPlaySourceCacheId() {
+        return this.playSourceCacheId;
     }
 
     /**
-     * Set the playSourceId property: Defines the identifier to be used for caching related media.
+     * Set the playSourceCacheId property: Defines the identifier to be used for caching related media.
      *
-     * @param playSourceId the playSourceId value to set.
+     * @param playSourceCacheId the playSourceCacheId value to set.
      * @return the PlaySourceInternal object itself.
      */
-    public PlaySource setPlaySourceId(String playSourceId) {
-        this.playSourceId = playSourceId;
+    public PlaySource setPlaySourceCacheId(String playSourceCacheId) {
+        this.playSourceCacheId = playSourceCacheId;
         return this;
     }
 }

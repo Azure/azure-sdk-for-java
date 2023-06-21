@@ -17,12 +17,6 @@ public final class TransferToParticipantRequestInternal {
     private CommunicationIdentifierModel targetParticipant;
 
     /*
-     * Used by customer to send custom context to targets
-     */
-    @JsonProperty(value = "customContext")
-    private CustomContext customContext;
-
-    /*
      * Used by customers when calling mid-call actions to correlate the request
      * to the response event.
      */
@@ -46,26 +40,6 @@ public final class TransferToParticipantRequestInternal {
      */
     public TransferToParticipantRequestInternal setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
-        return this;
-    }
-
-    /**
-     * Get the customContext property: Used by customer to send custom context to targets.
-     *
-     * @return the customContext value.
-     */
-    public CustomContext getCustomContext() {
-        return this.customContext;
-    }
-
-    /**
-     * Set the customContext property: Used by customer to send custom context to targets.
-     *
-     * @param customContext the customContext value to set.
-     * @return the TransferToParticipantRequestInternal object itself.
-     */
-    public TransferToParticipantRequestInternal setCustomContext(CustomContext customContext) {
-        this.customContext = customContext;
         return this;
     }
 
