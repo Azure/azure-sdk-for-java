@@ -43,7 +43,7 @@ public class AzureRedisAutoConfiguration {
     @Bean
     RedisProperties redisProperties(AzureRedisProperties azureRedisProperties,
                                     AzureResourceManager azureResourceManager) throws InvocationTargetException,
-        IllegalAccessException, ClassNotFoundException {
+        IllegalAccessException {
         String cacheName = azureRedisProperties.getName();
 
         String resourceGroup = azureRedisProperties.getResource().getResourceGroup();
@@ -69,8 +69,17 @@ public class AzureRedisAutoConfiguration {
         redisProperties.setPassword(redisCache.keys().primaryKey());
         Method setSsl = ReflectionUtils.findMethod(RedisProperties.class, "setSsl", boolean.class);
         if (setSsl == null) {
-            ReflectionUtils.findMethod(RedisProperties.Ssl.class, "setEnabled", boolean.class)
-                           .invoke(redisProperties.getSsl(), useSsl);
+            Object ssl = ReflectionUtils.findMethod(RedisProperties.class, "getSsl").invoke(redisProperties);
+            Class<?>[] innerClasses = RedisProperties.class.getDeclaredClasses();
+            Class<?> targetInnerClass = null;
+            for (Class<?> innerClass : innerClasses) {
+                if (innerClass.getSimpleName().equals("Ssl")) {
+                    targetInnerClass = innerClass;
+                    break;
+                }
+            }
+            ReflectionUtils.findMethod(targetInnerClass, "setEnabled", boolean.class)
+                           .invoke(ssl, useSsl);
         } else {
             setSsl.invoke(redisProperties, useSsl);
         }
