@@ -80,7 +80,7 @@ public class HttpClientTestsWireMockServer {
             }
         };
 
-        return new LocalTestServer(httpServlet);
+        return new LocalTestServer(httpServlet, 50);
     }
 
     private static byte[] addBom(byte[] arr1) {
