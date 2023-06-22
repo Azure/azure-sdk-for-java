@@ -1,0 +1,39 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.monitor.applicationinsights.spring;
+
+import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.instrumentation.runtimemetrics.BufferPools;
+import io.opentelemetry.instrumentation.runtimemetrics.Classes;
+import io.opentelemetry.instrumentation.runtimemetrics.Cpu;
+import io.opentelemetry.instrumentation.runtimemetrics.GarbageCollector;
+import io.opentelemetry.instrumentation.runtimemetrics.MemoryPools;
+import io.opentelemetry.instrumentation.runtimemetrics.Threads;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.core.Ordered;
+
+/** **/
+public class JvmMetricsPostProcessor implements BeanPostProcessor, Ordered {
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        if (AzureTelemetry.isEnabled() && bean instanceof OpenTelemetry) {
+            OpenTelemetry openTelemetry = (OpenTelemetry) bean;
+            BufferPools.registerObservers(openTelemetry);
+            Classes.registerObservers(openTelemetry);
+            Cpu.registerObservers(openTelemetry);
+            MemoryPools.registerObservers(openTelemetry);
+            Threads.registerObservers(openTelemetry);
+            GarbageCollector.registerObservers(openTelemetry);
+        }
+        return bean;
+    }
+
+    @Override
+    public int getOrder() {
+        return Ordered.LOWEST_PRECEDENCE - 1;
+    }
+
+}

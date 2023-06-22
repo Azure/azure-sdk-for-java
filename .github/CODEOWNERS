@@ -159,6 +159,9 @@
 # PRLabel:  %Monitor - Exporter
 /sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti
 
+# PRLabel:  %Monitor - Spring native
+/sdk/monitor/azure-monitor-spring-native/            @jeanbisutti @trask @ramthi @heyams
+
 # PRLabel:  %Monitor
 /sdk/monitor/azure-monitor-query*/                   @srnagar @lmolkova @ki1729
 
