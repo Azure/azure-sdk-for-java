@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 1.1.5 (2023-06-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `mysql-connector-j` from `8.0.32` to version `8.0.33`.
+- Upgraded `azure-identity` from `1.9.0` to version `1.9.1`.
+
 ## 1.1.4 (2023-05-23)
 
 ### Other Changes

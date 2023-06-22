@@ -15,6 +15,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
@@ -2671,8 +2672,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Map<PartitionKeyRange, List<CosmosItemIdentity>> singleItemPartitionRequestMap,
         String resourceLink,
         CosmosQueryRequestOptions queryRequestOptions,
-        Class<T> klass
-    ) {
+        Class<T> klass) {
+
         return Flux.fromIterable(singleItemPartitionRequestMap.values())
             .flatMap(cosmosItemIdentityList -> {
                 if (cosmosItemIdentityList.size() == 1) {
@@ -2682,52 +2683,56 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         .getCosmosQueryRequestOptionsAccessor()
                         .toRequestOptions(queryRequestOptions);
                     requestOptions.setPartitionKey(firstIdentity.getPartitionKey());
-                    return this.readDocument((resourceLink + firstIdentity.getId()), requestOptions);
+                    return this.readDocument((resourceLink + firstIdentity.getId()), requestOptions)
+                        .flatMap(resourceResponse -> Mono.just(
+                            new ImmutablePair<ResourceResponse<Document>, CosmosException>(resourceResponse, null)
+                        ))
+                        .onErrorResume(throwable -> {
+                            Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
+
+                            if (unwrappedThrowable instanceof CosmosException) {
+
+                                CosmosException cosmosException = (CosmosException) unwrappedThrowable;
+
+                                int statusCode = cosmosException.getStatusCode();
+                                int subStatusCode = cosmosException.getSubStatusCode();
+
+                                if (statusCode == HttpConstants.StatusCodes.NOTFOUND && subStatusCode == HttpConstants.SubStatusCodes.UNKNOWN) {
+                                    return Mono.just(new ImmutablePair<ResourceResponse<Document>, CosmosException>(null, cosmosException));
+                                }
+                            }
+
+                            return Mono.error(unwrappedThrowable);
+                        });
                 }
                 return Mono.empty();
             })
-            .flatMap(resourceResponse -> {
-                CosmosItemResponse<T> cosmosItemResponse =
-                    ModelBridgeInternal.createCosmosAsyncItemResponse(resourceResponse, klass, getItemDeserializer());
-                FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(
-                    Arrays.asList(InternalObjectNode.fromObject(cosmosItemResponse.getItem())),
-                    cosmosItemResponse.getResponseHeaders());
+            .flatMap(resourceResponseToExceptionPair -> {
 
-                diagnosticsAccessor.addClientSideDiagnosticsToFeed(
-                    feedResponse.getCosmosDiagnostics(),
-                    Collections.singleton(
-                        BridgeInternal.getClientSideRequestStatics(cosmosItemResponse.getDiagnostics())));
+                ResourceResponse<Document> resourceResponse = resourceResponseToExceptionPair.getLeft();
+                CosmosException cosmosException = resourceResponseToExceptionPair.getRight();
+                FeedResponse<Document> feedResponse;
 
-                return Mono.just(feedResponse);
-            })
-            .onErrorResume(throwable -> {
+                if (cosmosException != null) {
+                    feedResponse = ModelBridgeInternal.createFeedResponse(new ArrayList<>(), cosmosException.getResponseHeaders());
+                    diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                        feedResponse.getCosmosDiagnostics(),
+                        Collections.singleton(
+                            BridgeInternal.getClientSideRequestStatics(cosmosException.getDiagnostics())));
+                } else {
+                    CosmosItemResponse<T> cosmosItemResponse =
+                        ModelBridgeInternal.createCosmosAsyncItemResponse(resourceResponse, klass, getItemDeserializer());
+                    feedResponse = ModelBridgeInternal.createFeedResponse(
+                        Arrays.asList(InternalObjectNode.fromObject(cosmosItemResponse.getItem())),
+                        cosmosItemResponse.getResponseHeaders());
 
-                Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
-
-                if (unwrappedThrowable instanceof CosmosException) {
-
-                    CosmosException cosmosException = (CosmosException) unwrappedThrowable;
-
-                    int statusCode = cosmosException.getStatusCode();
-                    int subStatusCode = cosmosException.getSubStatusCode();
-
-                    CosmosDiagnostics diagnostics = cosmosException.getDiagnostics();
-
-                    if (statusCode == HttpConstants.StatusCodes.NOTFOUND && subStatusCode == HttpConstants.SubStatusCodes.UNKNOWN) {
-                        FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(new ArrayList<>(), cosmosException.getResponseHeaders());
-
-                        diagnosticsAccessor.addClientSideDiagnosticsToFeed(
-                                feedResponse.getCosmosDiagnostics(),
-                                Collections.singleton(
-                                        BridgeInternal.getClientSideRequestStatics(diagnostics)
-                                )
-                        );
-
-                        return Mono.just(feedResponse);
-                    }
+                    diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                        feedResponse.getCosmosDiagnostics(),
+                        Collections.singleton(
+                            BridgeInternal.getClientSideRequestStatics(cosmosItemResponse.getDiagnostics())));
                 }
 
-                return Mono.error(unwrappedThrowable);
+                return Mono.just(feedResponse);
             });
     }
 
