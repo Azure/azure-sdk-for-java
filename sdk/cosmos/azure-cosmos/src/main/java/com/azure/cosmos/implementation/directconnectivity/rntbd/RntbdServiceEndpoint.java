@@ -608,7 +608,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             BridgeInternal.setRequestHeaders(goneException, serviceRequest.getHeaders());
 
             if (cause instanceof ConnectTimeoutException &&
-                serviceRequest.requestContext.getRequestCancellationStatusOnTimeout()) {
+                serviceRequest.requestContext.getRequestCancellationStatusOnTimeout().get()) {
                 connectionStateListener.attemptBackgroundAddressRefresh(serviceRequest, addressSelector);
             }
 

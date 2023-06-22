@@ -997,7 +997,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     ImplementationBridgeHelpers
                         .CosmosQueryRequestOptionsHelper
                         .getCosmosQueryRequestOptionsAccessor()
-                        .setIsQueryCancelledOnTimeout(requestOptions, true);
+                        .setQueryCancellationStatusOnTimeout(requestOptions, true);
 
                     List<CosmosDiagnostics> cancelledRequestDiagnostics =
                         ImplementationBridgeHelpers
@@ -1990,7 +1990,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
         if (unwrappedException instanceof TimeoutException) {
             if (request.requestContext != null) {
-                request.requestContext.setRequestCancellationStatusOnTimeout(true);
+                request.requestContext.setRequestCancellationStatusOnTimeout(new AtomicBoolean(true));
             }
             CosmosException exception = new OperationCancelledException();
             exception.setStackTrace(throwable.getStackTrace());

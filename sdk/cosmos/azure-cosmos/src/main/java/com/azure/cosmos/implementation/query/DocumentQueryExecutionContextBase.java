@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -316,7 +317,7 @@ implements IDocumentQueryExecutionContext<T> {
                     .getEndToEndOperationLatencyPolicyConfig(cosmosQueryRequestOptions);
             if (endToEndOperationLatencyConfig != null) {
                 executeQueryRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
-                Boolean queryCancellationStatus = ImplementationBridgeHelpers
+                AtomicBoolean queryCancellationStatus = ImplementationBridgeHelpers
                     .CosmosQueryRequestOptionsHelper
                     .getCosmosQueryRequestOptionsAccessor()
                     .getQueryCancellationStatusOnTimeout(cosmosQueryRequestOptions);
