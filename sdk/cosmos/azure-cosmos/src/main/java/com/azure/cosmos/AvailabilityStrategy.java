@@ -6,7 +6,7 @@ package com.azure.cosmos;
 /**
  * The type Availability strategy.
  */
-public class AvailabilityStrategy {
+public abstract class AvailabilityStrategy {
     AvailabilityStrategy() {
     }
 
