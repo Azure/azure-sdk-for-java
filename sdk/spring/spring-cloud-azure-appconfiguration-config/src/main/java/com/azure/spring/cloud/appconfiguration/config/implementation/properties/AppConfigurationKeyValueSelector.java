@@ -23,7 +23,7 @@ public final class AppConfigurationKeyValueSelector {
     /**
      * Label for requesting all configurations with (No Label)
      */
-    private static final String[] EMPTY_LABEL_ARRAY = {EMPTY_LABEL};
+    private static final String[] EMPTY_LABEL_ARRAY = { EMPTY_LABEL };
 
     private static final String APPLICATION_SETTING_DEFAULT_KEY_FILTER = "/application/";
 
@@ -38,6 +38,8 @@ public final class AppConfigurationKeyValueSelector {
     private String labelFilter;
 
     private String snapshotName = "";
+
+    private String prefix = "";
 
     /**
      * @return the keyFilter
@@ -57,8 +59,7 @@ public final class AppConfigurationKeyValueSelector {
 
     /**
      * @param profiles List of current Spring profiles to default to using is null label is set.
-     * @return List of reversed label values, which are split by the separator, the latter label has
-     *         higher priority
+     * @return List of reversed label values, which are split by the separator, the latter label has higher priority
      */
     public String[] getLabelFilter(List<String> profiles) {
         if (labelFilter == null && profiles.size() > 0) {
@@ -104,6 +105,20 @@ public final class AppConfigurationKeyValueSelector {
      */
     public void setSnapshotName(String snapshotName) {
         this.snapshotName = snapshotName;
+    }
+
+    /**
+     * @return the prefix
+     */
+    public String getPrefix() {
+        return StringUtils.hasText(prefix) ? prefix : APPLICATION_SETTING_DEFAULT_KEY_FILTER;
+    }
+
+    /**
+     * @param prefix the prefix to set
+     */
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
 
     /**
