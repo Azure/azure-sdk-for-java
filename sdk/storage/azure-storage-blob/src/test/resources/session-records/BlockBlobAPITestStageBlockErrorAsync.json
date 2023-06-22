@@ -1,0 +1,98 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/b011ed5b0b011ed5b5a689353b9cbe9e3f9da4eb5be7?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2023-01-03",
+      "x-ms-client-request-id" : "ea86e742-e4d8-4af5-b261-170aba627171",
+      "user-agent" : "azsdk-java-azure-storage-blob/12.23.0-beta.1 (17.0.1; Mac OS X; 11.7.7)"
+    },
+    "Response" : {
+      "x-ms-version" : "2023-01-03",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8DB734BBF6A625B",
+      "Last-Modified" : "Thu, 22 Jun 2023 18:08:57 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f29a99aa-101e-008c-6834-a5cce4000000",
+      "Date" : "Thu, 22 Jun 2023 18:08:56 GMT",
+      "x-ms-client-request-id" : "ea86e742-e4d8-4af5-b261-170aba627171"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/b011ed5b0b011ed5b5a689353b9cbe9e3f9da4eb5be7/b011ed5b1b011ed5b5a67710804cc31fff5e0494381a",
+    "Headers" : {
+      "x-ms-version" : "2023-01-03",
+      "content-type" : "application/octet-stream",
+      "x-ms-client-request-id" : "e53e7f22-c4b2-4d1c-887b-9189914840c2",
+      "user-agent" : "azsdk-java-azure-storage-blob/12.23.0-beta.1 (17.0.1; Mac OS X; 11.7.7)"
+    },
+    "Response" : {
+      "x-ms-version" : "2023-01-03",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Thu, 22 Jun 2023 18:08:57 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 22 Jun 2023 18:08:57 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "ETag" : "0x8DB734BBF8DB6A5",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "3dd4e5b0-a01e-0112-5934-a5f3f6000000",
+      "x-ms-client-request-id" : "e53e7f22-c4b2-4d1c-887b-9189914840c2"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/b011ed5b0b011ed5b5a689353b9cbe9e3f9da4eb5be7/b011ed5b2b011ed5b5a67139993636f660e5d4475805",
+    "Headers" : {
+      "x-ms-version" : "2023-01-03",
+      "content-type" : "application/octet-stream",
+      "x-ms-client-request-id" : "62e54174-7537-4eff-bf44-8a81adea7672",
+      "user-agent" : "azsdk-java-azure-storage-blob/12.23.0-beta.1 (17.0.1; Mac OS X; 11.7.7)"
+    },
+    "Response" : {
+      "x-ms-version" : "2023-01-03",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Thu, 22 Jun 2023 18:08:57 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 22 Jun 2023 18:08:56 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "ETag" : "0x8DB734BBFA66B24",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "7acfbe38-001e-011f-5c34-a51cfa000000",
+      "x-ms-client-request-id" : "62e54174-7537-4eff-bf44-8a81adea7672"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/b011ed5b0b011ed5b5a689353b9cbe9e3f9da4eb5be7/b011ed5b3b011ed5b5a616177a3897d51ee164420a98?comp=block&blockid=id",
+    "Headers" : {
+      "x-ms-version" : "2023-01-03",
+      "content-type" : "application/octet-stream",
+      "x-ms-client-request-id" : "eacc5365-f75c-4b14-b564-756bcd30dc39",
+      "user-agent" : "azsdk-java-azure-storage-blob/12.23.0-beta.1 (17.0.1; Mac OS X; 11.7.7)"
+    },
+    "Response" : {
+      "x-ms-version" : "2023-01-03",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidQueryParameterValue",
+      "retry-after" : "0",
+      "Content-Length" : "409",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "7acfbea4-001e-011f-3e34-a51cfa000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidQueryParameterValue</Code><Message>Value for one of the query parameters specified in the request URI is invalid.\nRequestId:7acfbea4-001e-011f-3e34-a51cfa000000\nTime:2023-06-22T18:08:58.1069668Z</Message><QueryParameterName>blockid</QueryParameterName><QueryParameterValue>id</QueryParameterValue><Reason>Not a valid base64 string.</Reason></Error>",
+      "Date" : "Thu, 22 Jun 2023 18:08:57 GMT",
+      "x-ms-client-request-id" : "eacc5365-f75c-4b14-b564-756bcd30dc39",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "b011ed5b0b011ed5b5a689353b9cbe9e3f9da4eb5be7", "b011ed5b1b011ed5b5a67710804cc31fff5e0494381a", "b011ed5b2b011ed5b5a67139993636f660e5d4475805", "b011ed5b3b011ed5b5a616177a3897d51ee164420a98" ]
+}
