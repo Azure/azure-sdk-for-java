@@ -108,4 +108,19 @@ extends:
       groupId: com.azure
       safeName: azuresecurityattestation
       ServiceDirectory: attestation
-
+    - name: azure-communication-callautomation
+      groupId: com.azure
+      safeName: azurecommunicationcallautomation
+      ServiceDirectory: communication
+    - name: azure-identity-extensions
+      groupId: com.azure
+      safeName: azureidentityextensions
+      ServiceDirectory: identity
+    - name: azure-developer-loadtesting
+      groupId: com.azure
+      safeName: azuredeveloperloadtesting
+      ServiceDirectory: loadtesting
+    - name: azure-messaging-eventhubs-checkpointstore-blob
+      groupId: com.azure
+      safeName: azuremessagingeventhubscheckpointstoreblob
+      ServiceDirectory: eventhubs
