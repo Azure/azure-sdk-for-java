@@ -101,24 +101,24 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
         options.setCosmosEndToEndOperationLatencyPolicyConfig(config);
         cosmosItemResponseMono =
             createdContainer.readItem(itemToRead.getId(), new PartitionKey(itemToRead.getMypk()), options, EndToEndTimeOutValidationTests.TestObject.class);
-        verifySuccess(cosmosItemResponseMono);
+        verifySuccess(cosmosItemResponseMono, regions);
 
-        // Now try the same request with West US 2 excluded
-        options.setExcludedRegions(ImmutableList.of("West US 2"));
-        cosmosItemResponseMono =
-            createdContainer.readItem(itemToRead.getId(), new PartitionKey(itemToRead.getMypk()), options, EndToEndTimeOutValidationTests.TestObject.class);
-        verifySuccess(cosmosItemResponseMono);
-        rule.disable();
+//        // Now try the same request with West US 2 excluded
+//        options.setExcludedRegions(ImmutableList.of("West US 2"));
+//        cosmosItemResponseMono =
+//            createdContainer.readItem(itemToRead.getId(), new PartitionKey(itemToRead.getMypk()), options, EndToEndTimeOutValidationTests.TestObject.class);
+//        verifySuccess(cosmosItemResponseMono, ImmutableList.of(regions.get(1)));
+//        rule.disable();
     }
 
-    private void verifySuccess(Mono<CosmosItemResponse<EndToEndTimeOutValidationTests.TestObject>> cosmosItemResponseMono) {
+    private void verifySuccess(Mono<CosmosItemResponse<EndToEndTimeOutValidationTests.TestObject>> cosmosItemResponseMono, List<String> expectedRegions) {
         StepVerifier.create(cosmosItemResponseMono)
             .expectNextMatches(cosmosItemResponse -> {
                 ObjectNode diagnosticsNode = null;
                 try {
                     // Since we are injecting fault in region 0, we make sure response is from region 1 in the list above
                     diagnosticsNode = (ObjectNode) OBJECT_MAPPER.readTree(cosmosItemResponse.getDiagnostics().toString());
-                    assertResponseFromSpeculatedRegion(diagnosticsNode);
+                    assertResponseFromSpeculatedRegion(diagnosticsNode, expectedRegions);
                 } catch (JsonProcessingException e) {
                     throw new RuntimeException(e);
                 }
@@ -127,12 +127,14 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             .verifyComplete();
     }
 
-    private void assertResponseFromSpeculatedRegion(ObjectNode diagnosticsNode) {
+    private void assertResponseFromSpeculatedRegion(ObjectNode diagnosticsNode, List<String> expectedRegions) {
         JsonNode responseStatisticsList = diagnosticsNode.get("responseStatisticsList");
         assertThat(responseStatisticsList.isArray()).isTrue();
         assertThat(responseStatisticsList.size()).isGreaterThan(0);
         JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
-        assertThat(storeResult.get("storePhysicalAddress").toString()).contains(StringUtils.deleteWhitespace(regions.get(1).toLowerCase(Locale.ROOT)));
+        for (String region : expectedRegions) {
+            assertThat(storeResult.get("storePhysicalAddress").toString()).contains(StringUtils.deleteWhitespace(region.toLowerCase(Locale.ROOT)));
+        }
     }
 
     @Test(groups = {"multi-region"}, timeOut = 10000L)

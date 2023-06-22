@@ -1661,6 +1661,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options,
             content);
 
+        if (options != null) {
+            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+        }
+
         if (requestRetryPolicy != null) {
             requestRetryPolicy.onBeforeSendRequest(request);
         }
@@ -1668,6 +1672,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
         if (serializationDiagnosticsContext != null) {
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+        }
+
+        if (options != null) {
+            request.requestContext.setExcludeRegions(options.getExcludeRegions());
         }
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
@@ -3198,6 +3206,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     ResourceType.StoredProcedure, path,
                     procedureParams != null && !procedureParams.isEmpty() ? RxDocumentClientImpl.serializeProcedureParams(procedureParams) : "",
                     requestHeaders, options);
+
+            if (options != null) {
+                request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            }
 
             if (retryPolicy != null) {
                 retryPolicy.onBeforeSendRequest(request);

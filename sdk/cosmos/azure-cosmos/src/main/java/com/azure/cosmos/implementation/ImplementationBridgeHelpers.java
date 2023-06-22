@@ -316,6 +316,8 @@ public class ImplementationBridgeHelpers {
             CosmosChangeFeedRequestOptions setItemFactoryMethod(CosmosChangeFeedRequestOptions queryRequestOptions, Function<JsonNode, ?> factoryMethod);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosChangeFeedRequestOptions options);
             void applyMaxItemCount(CosmosChangeFeedRequestOptions requestOptions, CosmosPagedFluxOptions fluxOptions);
+            List<String> getExcludeRegions(CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions);
+
         }
     }
 
@@ -434,6 +436,7 @@ public class ImplementationBridgeHelpers {
             Map<String, String> getHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
 
             Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
+            List<String> getExcludeRegions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
         }
     }
 
@@ -954,6 +957,7 @@ public class ImplementationBridgeHelpers {
                                                           ConsistencyLevel consistencyLevel);
             CosmosBatchRequestOptions setHeader(CosmosBatchRequestOptions cosmosItemRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosBatchRequestOptions cosmosItemRequestOptions);
+            List<String> getExcludeRegions(CosmosBatchRequestOptions cosmosBatchRequestOptions);
         }
     }
 

@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -30,6 +31,7 @@ public final class CosmosBulkExecutionOptions {
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private Map<String, String> customOptions;
     private String throughputControlGroupName;
+    private List<String> excludeRegions;
 
     /**
      * Constructor
@@ -268,6 +270,18 @@ public final class CosmosBulkExecutionOptions {
         return this;
     }
 
+    /**
+     * List of regions to be excluded for the request/retries. Example "East US" or "East US, West US"
+     * These regions will be excluded from the preferred regions list
+     *
+     * @param excludeRegions list of regions
+     * @return the {@link CosmosBulkExecutionOptions}
+     */
+    public CosmosBulkExecutionOptions setExcludedRegions(List<String> excludeRegions) {
+        this.excludeRegions = excludeRegions;
+        return this;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -359,6 +373,11 @@ public final class CosmosBulkExecutionOptions {
                 @Override
                 public Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
                     return cosmosBulkExecutionOptions.customOptions;
+                }
+
+                @Override
+                public List<String> getExcludeRegions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
+                    return cosmosBulkExecutionOptions.excludeRegions;
                 }
 
             });

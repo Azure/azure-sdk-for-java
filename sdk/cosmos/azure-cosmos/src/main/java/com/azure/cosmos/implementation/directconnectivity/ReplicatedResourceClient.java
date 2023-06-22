@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.AvailabilityStrategy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
@@ -14,6 +15,7 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ISessionContainer;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Quadruple;
 import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
@@ -153,6 +155,7 @@ public class ReplicatedResourceClient {
         CosmosEndToEndOperationLatencyPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
         AvailabilityStrategy strategy = config.getAvailabilityStrategy();
         List<Mono<StoreResponse>> monoList = new ArrayList<>();
+        List<RxDocumentServiceRequest> requestList = new ArrayList<>();
 
         if (strategy instanceof ThresholdBasedAvailabilityStrategy) {
             List<URI> effectiveEndpoints = getApplicableEndPoints(request);
@@ -162,6 +165,7 @@ public class ReplicatedResourceClient {
                         if (locationURI != null) {
                             RxDocumentServiceRequest newRequest = request.clone();
                             newRequest.requestContext.routeToLocation(locationURI);
+                            requestList.add(newRequest);
                             if (monoList.isEmpty()) {
                                 monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout));
                             } else {
@@ -200,8 +204,7 @@ public class ReplicatedResourceClient {
             return false;
         }
 
-        if (!request.isReadOnlyRequest()
-            || (request.getOperationType().isWriteOperation() && !request.getNonIdempotentWriteRetriesEnabled())) {
+        if (request.getOperationType().isWriteOperation() && !request.getNonIdempotentWriteRetriesEnabled()) {
             return false;
         }
 
