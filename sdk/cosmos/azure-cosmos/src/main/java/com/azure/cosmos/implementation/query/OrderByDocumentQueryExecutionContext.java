@@ -47,6 +47,7 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
@@ -84,9 +85,10 @@ public class OrderByDocumentQueryExecutionContext
             String rewrittenQuery,
             OrderbyRowComparer<Document> consumeComparer,
             UUID correlatedActivityId,
-            boolean hasSelectValue) {
+            boolean hasSelectValue,
+            final AtomicBoolean queryCancellationStatusOnTimeout) {
         super(diagnosticsClientContext, client, resourceTypeEnum, Document.class, query, cosmosQueryRequestOptions,
-            resourceLink, rewrittenQuery, correlatedActivityId, hasSelectValue);
+            resourceLink, rewrittenQuery, correlatedActivityId, hasSelectValue, queryCancellationStatusOnTimeout);
         this.consumeComparer = consumeComparer;
         this.tracker = new RequestChargeTracker();
         this.queryMetricMap = new ConcurrentHashMap<>();
@@ -111,7 +113,8 @@ public class OrderByDocumentQueryExecutionContext
                 initParams.getQueryInfo().getRewrittenQuery(),
                 new OrderbyRowComparer<>(queryInfo.getOrderBy()),
                 initParams.getCorrelatedActivityId(),
-                queryInfo.hasSelectValue());
+                queryInfo.hasSelectValue(),
+                initParams.getQueryCancellationStatusOnTimeout());
 
         context.setTop(initParams.getTop());
 

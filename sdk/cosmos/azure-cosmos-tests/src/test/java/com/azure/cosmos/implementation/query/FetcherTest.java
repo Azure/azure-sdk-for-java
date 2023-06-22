@@ -105,8 +105,7 @@ public class FetcherTest {
                         ImplementationBridgeHelpers
                             .CosmosQueryRequestOptionsHelper
                             .getCosmosQueryRequestOptionsAccessor()
-                            .getCancelledRequestDiagnosticsTracker(options),
-                    null);
+                            .getCancelledRequestDiagnosticsTracker(options));
 
         validateFetcher(fetcher, options, top, feedResponseList);
     }
@@ -171,8 +170,7 @@ public class FetcherTest {
                             .CosmosChangeFeedRequestOptionsHelper
                             .getCosmosChangeFeedRequestOptionsAccessor()
                             .getOperationContext(options),
-                        null,
-                    null);
+                        null);
 
         validateFetcher(fetcher, options, feedResponseList);
     }

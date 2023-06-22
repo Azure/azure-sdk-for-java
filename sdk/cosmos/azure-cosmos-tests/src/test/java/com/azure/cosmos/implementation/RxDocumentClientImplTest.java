@@ -181,6 +181,7 @@ public class RxDocumentClientImplTest {
                 Mockito.any(),
                 Mockito.any(),
                 Mockito.any(),
+                Mockito.any(),
                 Mockito.any()
             ))
             .thenReturn(Flux.just(dummyExecutionContextForQuery(queryResults, headersForQueries)));

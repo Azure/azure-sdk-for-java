@@ -57,11 +57,12 @@ implements IDocumentQueryExecutionContext<T> {
     protected boolean shouldExecuteQueryRequest;
     private Supplier<String> operationContextTextProvider;
     private final OperationContextAndListenerTuple operationContext;
+    private final AtomicBoolean queryCancellationStatusOnTimeout;
 
     protected DocumentQueryExecutionContextBase(DiagnosticsClientContext diagnosticsClientContext,
                                                 IDocumentQueryClient client, ResourceType resourceTypeEnum,
                                                 Class<T> resourceType, SqlQuerySpec query, CosmosQueryRequestOptions cosmosQueryRequestOptions, String resourceLink,
-                                                UUID correlatedActivityId) {
+                                                UUID correlatedActivityId, AtomicBoolean queryCancellationStatusOnTimeout) {
 
         // TODO: validate args are not null: client and feedOption should not be null
         this.client = client;
@@ -77,6 +78,7 @@ implements IDocumentQueryExecutionContext<T> {
             .CosmosQueryRequestOptionsHelper
             .getCosmosQueryRequestOptionsAccessor()
             .getOperationContext(cosmosQueryRequestOptions);
+        this.queryCancellationStatusOnTimeout = queryCancellationStatusOnTimeout;
         this.operationContextTextProvider = () -> {
             String operationContextText = operationContext != null && operationContext.getOperationContext() != null ?
                 operationContext.getOperationContext().toString() : "n/a";
@@ -129,6 +131,7 @@ implements IDocumentQueryExecutionContext<T> {
         if (endToEndOperationLatencyConfig != null) {
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
         }
+        request.requestContext.setRequestCancellationStatusOnTimeout(this.queryCancellationStatusOnTimeout);
         return request;
     }
 
@@ -318,6 +321,8 @@ implements IDocumentQueryExecutionContext<T> {
             if (endToEndOperationLatencyConfig != null) {
                 executeQueryRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
             }
+
+            executeQueryRequest.requestContext.setRequestCancellationStatusOnTimeout(this.queryCancellationStatusOnTimeout);
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.QUERY_JSON);
             executeQueryRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(querySpec));
             break;
