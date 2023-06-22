@@ -835,7 +835,7 @@ public final class RntbdTransportClientTest {
         RntbdRequestRecord rntbdRequestRecord = new AsyncRntbdRequestRecord(requestArgs, requestTimer);
 
         RntbdEndpoint rntbdEndpoint = Mockito.mock(RntbdServiceEndpoint.class);
-        Mockito.when(rntbdEndpoint.request(any())).thenReturn(rntbdRequestRecord);
+        Mockito.when(rntbdEndpoint.request(any(), any())).thenReturn(rntbdRequestRecord);
 
         RntbdEndpoint.Provider endpointProvider = Mockito.mock(RntbdEndpoint.Provider.class);
 
@@ -1147,7 +1147,7 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
-        public RntbdRequestRecord request(final RntbdRequestArgs requestArgs) {
+        public RntbdRequestRecord request(final RntbdRequestArgs requestArgs, final AddressSelector addressSelector) {
             final RntbdRequestRecord requestRecord = new AsyncRntbdRequestRecord(requestArgs, this.requestTimer);
             this.fakeChannel.writeOutbound(requestRecord);
             return requestRecord;

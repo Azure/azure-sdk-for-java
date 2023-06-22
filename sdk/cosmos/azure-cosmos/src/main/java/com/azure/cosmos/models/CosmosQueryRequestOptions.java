@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
 /**
@@ -59,6 +60,7 @@ public class CosmosQueryRequestOptions {
     private String queryName;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
+    private AtomicBoolean isQueryTimedOut = new AtomicBoolean(false);
 
     /**
      * Instantiates a new query request options.
@@ -103,6 +105,7 @@ public class CosmosQueryRequestOptions {
         this.thresholds = options.thresholds;
         this.cosmosEndToEndOperationLatencyPolicyConfig = options.cosmosEndToEndOperationLatencyPolicyConfig;
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
+        this.isQueryTimedOut = options.isQueryTimedOut;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -688,6 +691,14 @@ public class CosmosQueryRequestOptions {
 
     void setCancelledRequestDiagnosticsTracker(List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
         this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
+    }
+
+    boolean isQueryTimedOut() {
+        return isQueryTimedOut.get();
+    }
+
+    void setIsQueryTimedOut(boolean isQueryTimedOut) {
+        this.isQueryTimedOut.set(isQueryTimedOut);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

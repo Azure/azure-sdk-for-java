@@ -88,6 +88,7 @@ import java.lang.management.ManagementFactory;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -967,6 +968,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 .CosmosQueryRequestOptionsHelper
                 .getCosmosQueryRequestOptionsAccessor()
                 .toRequestOptions(options);
+
             CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
                 getEndToEndOperationLatencyPolicyConfig(requestOptions);
 
@@ -985,8 +987,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Flux<FeedResponse<T>> feedResponseFlux,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         CosmosQueryRequestOptions requestOptions) {
+
+        Flux<FeedResponse<T>> fallback = Flux.just(null);
+
         return feedResponseFlux
-            .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
+            .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout(), fallback)
+            .flatMap(feedResponse -> {
+                if (feedResponse == null) {
+                    // queryCancellationTracker.set(true);
+                    return fallback.timeout(Duration.ZERO);
+                }
+                return Flux.just(feedResponse);
+            })
             .onErrorMap(throwable -> {
                 if (throwable instanceof TimeoutException) {
                     CosmosException exception = new OperationCancelledException();
@@ -2879,6 +2891,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             final CosmosQueryRequestOptions effectiveOptions =
                 ModelBridgeInternal.createQueryRequestOptions(options);
 
+            final AtomicBoolean queryCancellationStatus = new AtomicBoolean(false);
+
             // Trying to put this logic as low as the query pipeline
             // Since for parallelQuery, each partition will have its own request, so at this point, there will be no request associate with this retry policy.
             // For default document context, it already wired up InvalidPartitionExceptionRetry, but there is no harm to wire it again here
@@ -2920,7 +2934,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             classOfT, //Document.class
                             ResourceType.Document,
                             queryClient,
-                            activityId);
+                            activityId,
+                            queryCancellationStatus);
                     });
                 },
                 invalidPartitionExceptionRetryPolicy);
