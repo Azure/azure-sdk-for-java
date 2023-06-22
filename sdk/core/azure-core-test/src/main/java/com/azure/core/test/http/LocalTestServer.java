@@ -14,9 +14,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
-import javax.net.ssl.SSLContext;
 import javax.servlet.http.HttpServlet;
-import java.security.GeneralSecurityException;
 
 /**
  * Local server that will reply to requests based on the configured {@link HttpServlet}.
@@ -41,14 +39,14 @@ public class LocalTestServer {
 
         server.addConnector(this.httpConnector);
 
-        // SSL fails with error:10000410:SSL routines:OPENSSL_internal:SSLV3_ALERT_HANDSHAKE_FAILURE
         SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
+        String mockKeyStore = LocalTestServer.class.getResource("/keystore.jks").toString();
+        sslContextFactory.setKeyStorePath(mockKeyStore);
+        sslContextFactory.setKeyStorePassword("password");
+        sslContextFactory.setKeyManagerPassword("password");
+        sslContextFactory.setKeyStorePath(mockKeyStore);
+        sslContextFactory.setTrustStorePassword("password");
         sslContextFactory.setTrustAll(true);
-        try {
-            sslContextFactory.setSslContext(SSLContext.getDefault());
-        } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
-        }
         SslConnectionFactory sslConnectionFactory = new SslConnectionFactory(sslContextFactory,
             httpConnectionFactory.getProtocol());
 
