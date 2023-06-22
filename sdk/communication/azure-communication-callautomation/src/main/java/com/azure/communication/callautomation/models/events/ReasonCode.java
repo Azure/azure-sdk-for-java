@@ -23,6 +23,10 @@ public final class ReasonCode extends ExpandableStringEnum<ReasonCode> {
 
         /** Recognize option DMTF matched. */
         public static final ReasonCode DMTF_OPTION_MATCHED = fromReasonCode(8533);
+        /** Recognize option Speech matched. */
+        public static final ReasonCode SPEECH_OPTION_MATCHED = fromReasonCode(8545);
+        /** Recognize option Speech not matched. */
+        public static final ReasonCode SPEECH_OPTION_NOT_MATCHED = fromReasonCode(8547);
 
     }
 

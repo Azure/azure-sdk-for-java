@@ -8,6 +8,8 @@ import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallParticipant;
+import com.azure.communication.callautomation.models.MuteParticipantsOptions;
+import com.azure.communication.callautomation.models.MuteParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
@@ -214,6 +216,28 @@ public final class CallConnection {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RemoveParticipantResult> removeParticipantWithResponse(RemoveParticipantOptions removeParticipantOptions, Context context) {
         return callConnectionAsync.removeParticipantWithResponseInternal(removeParticipantOptions, context).block();
+    }
+
+    /**
+     * Mutes participants in the call.
+     *
+     * @param targetParticipant - Participant to be muted. Only ACS Users are currently supported.
+     * @return A MuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MuteParticipantsResult muteParticipants(CommunicationIdentifier targetParticipant) {
+        return callConnectionAsync.muteParticipantsAsync(targetParticipant).block();
+    }
+
+    /**
+     * Mute participants in the call.
+     * @param muteParticipantsOptions - Options for the request.
+     * @param context A {@link Context} representing the request context.
+     * @return a Response containing the MuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MuteParticipantsResult> muteParticipantsWithResponse(MuteParticipantsOptions muteParticipantsOptions, Context context) {
+        return callConnectionAsync.muteParticipantWithResponseInternal(muteParticipantsOptions, context).block();
     }
 
     //region Content management Actions

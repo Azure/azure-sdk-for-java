@@ -10,9 +10,9 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum CallAutomationServiceVersion implements ServiceVersion {
     /**
-     * Service version {@code 2023-03-06}.
+     * Service version {@code 2023-06-15}.
      */
-    V2023_03_06("2023-03-06");
+    V2023_06_15("2023-06-15");
 
     private final String version;
 
@@ -34,6 +34,6 @@ public enum CallAutomationServiceVersion implements ServiceVersion {
      * @return The latest {@link CallAutomationServiceVersion} object.
      */
     public static CallAutomationServiceVersion getLatest() {
-        return V2023_03_06;
+        return V2023_06_15;
     }
 }

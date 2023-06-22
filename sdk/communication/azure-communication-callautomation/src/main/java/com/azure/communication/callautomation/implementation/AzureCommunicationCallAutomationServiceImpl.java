@@ -33,6 +33,7 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -43,14 +44,14 @@ public final class AzureCommunicationCallAutomationServiceImpl {
     private final AzureCommunicationCallAutomationServiceService service;
 
     /** The endpoint of the Azure Communication resource. */
-    private final String endpoint;
+    private final URL endpoint;
 
     /**
      * Gets The endpoint of the Azure Communication resource.
      *
      * @return the endpoint value.
      */
-    public String getEndpoint() {
+    public URL getEndpoint() {
         return this.endpoint;
     }
 
@@ -132,7 +133,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @param endpoint The endpoint of the Azure Communication resource.
      * @param apiVersion Api Version.
      */
-    AzureCommunicationCallAutomationServiceImpl(String endpoint, String apiVersion) {
+    AzureCommunicationCallAutomationServiceImpl(URL endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -149,7 +150,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @param endpoint The endpoint of the Azure Communication resource.
      * @param apiVersion Api Version.
      */
-    AzureCommunicationCallAutomationServiceImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+    AzureCommunicationCallAutomationServiceImpl(HttpPipeline httpPipeline, URL endpoint, String apiVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
@@ -162,7 +163,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @param apiVersion Api Version.
      */
     AzureCommunicationCallAutomationServiceImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, URL endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
@@ -188,7 +189,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<CallConnectionPropertiesInternal>> createCall(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
                 @HeaderParam("Repeatability-First-Sent") DateTimeRfc1123 repeatabilityFirstSent,
@@ -200,7 +201,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<CallConnectionPropertiesInternal>> answerCall(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
                 @HeaderParam("Repeatability-First-Sent") DateTimeRfc1123 repeatabilityFirstSent,
@@ -212,7 +213,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> redirectCall(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
                 @HeaderParam("Repeatability-First-Sent") DateTimeRfc1123 repeatabilityFirstSent,
@@ -224,7 +225,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> rejectCall(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
                 @HeaderParam("Repeatability-First-Sent") DateTimeRfc1123 repeatabilityFirstSent,

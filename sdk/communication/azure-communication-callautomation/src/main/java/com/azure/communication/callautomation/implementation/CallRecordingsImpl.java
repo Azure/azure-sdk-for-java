@@ -26,6 +26,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
+import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -60,7 +61,7 @@ public final class CallRecordingsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<RecordingStateResponseInternal>> startRecording(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
                 @HeaderParam("Repeatability-First-Sent") DateTimeRfc1123 repeatabilityFirstSent,
@@ -72,7 +73,7 @@ public final class CallRecordingsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<RecordingStateResponseInternal>> getRecordingProperties(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @PathParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -82,7 +83,7 @@ public final class CallRecordingsImpl {
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> stopRecording(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @PathParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -92,7 +93,7 @@ public final class CallRecordingsImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> pauseRecording(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @PathParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -102,7 +103,7 @@ public final class CallRecordingsImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> resumeRecording(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @PathParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
