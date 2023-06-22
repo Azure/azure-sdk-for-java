@@ -1,5 +1,15 @@
 # Release History
 
+## 12.4.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 12.3.12 (2023-06-20)
 
 ### Other Changes
