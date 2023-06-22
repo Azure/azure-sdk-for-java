@@ -230,6 +230,11 @@ public final class Constants {
         public static final String CHANGE_FEED_START_FROM_TYPE = "Type";
         public static final String CHANGE_FEED_START_FROM_POINT_IN_TIME_MS = "PointInTimeMs";
         public static final String CHANGE_FEED_START_FROM_ETAG = "Etag";
+
+        // Computed Properties
+        public static final String COMPUTED_PROPERTIES = "computedProperties";
+        public static final String COMPUTED_PROPERTIES_NAME = "name";
+        public static final String COMPUTED_PROPERTIES_QUERY = "query";
     }
 
     public static final class UrlEncodingInfo {

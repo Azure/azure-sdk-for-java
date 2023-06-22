@@ -1,15 +1,39 @@
 # Release History
 
-## 12.19.0-beta.1 (Unreleased)
+## 12.19.0-beta.2 (Unreleased)
 
 ### Features Added
-- Added support for 2023-01-03 service version.
-- Added `ShareFileHandleAccessRights` property on `HandleItem` that specifies access rights for a file handle.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.18.2 (2023-06-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+- Upgraded `azure-storage-common` from `12.21.1` to version `12.21.2`.
+
+## 12.19.0-beta.1 (2023-05-30)
+
+### Features Added
+- Added support for 2023-01-03 service version.
+- Added `ShareFileHandleAccessRights` property on `HandleItem` that specifies access rights for a file handle.
+## 12.18.1 (2023-05-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+- Upgraded `azure-storage-common` from `12.21.0` to version `12.21.1`.
 
 ## 12.18.0 (2023-04-13)
 

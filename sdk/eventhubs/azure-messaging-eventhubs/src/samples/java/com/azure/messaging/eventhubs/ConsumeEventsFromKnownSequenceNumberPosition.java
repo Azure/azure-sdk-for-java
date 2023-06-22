@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 
@@ -27,17 +29,23 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
     public static void main(String[] args) {
         final AtomicBoolean isRunning = new AtomicBoolean(true);
 
-        // The connection string value can be obtained by:
-        // 1. Going to your Event Hubs namespace in Azure Portal.
-        // 2. Creating an Event Hub instance.
-        // 3. Creating a "Shared access policy" for your Event Hub instance.
-        // 4. Copying the connection string from the policy's properties.
-        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
+        // The credential used is DefaultAzureCredential because it combines commonly used credentials
+        // in deployment and development and chooses the credential to used based on its running environment.
+        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
+        final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
+        // Create a builder that both consumer and producer will be instantiated from.
+        //
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         final EventHubClientBuilder builder = new EventHubClientBuilder()
-            .connectionString(connectionString);
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                tokenCredential);
 
         // The consumer group is required for consuming events.
+        //
+        // The "$Default" consumer group is created by default. This value can be found by going to the Event Hub
+        // instance you are connecting to, and selecting the "Consumer groups" page.
         final EventHubConsumerAsyncClient consumer = builder
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .buildAsyncConsumerClient();

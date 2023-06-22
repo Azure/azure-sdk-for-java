@@ -5,12 +5,12 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.AbstractSummaryOperationDetail;
-import com.azure.ai.textanalytics.models.AbstractSummaryOptions;
-import com.azure.ai.textanalytics.models.AbstractSummaryResult;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryOptions;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
 import com.azure.ai.textanalytics.models.AbstractiveSummary;
-import com.azure.ai.textanalytics.models.SummaryContext;
-import com.azure.ai.textanalytics.util.AbstractSummaryResultCollection;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryContext;
+import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.ArrayList;
@@ -56,9 +56,9 @@ public class AbstractiveSummarizationAsync {
 
         client.beginAbstractSummary(documents,
             "en",
-            new AbstractSummaryOptions().setSentenceCount(4))
+            new AbstractiveSummaryOptions().setSentenceCount(4))
             .flatMap(result -> {
-                AbstractSummaryOperationDetail operationDetail = result.getValue();
+                AbstractiveSummaryOperationDetail operationDetail = result.getValue();
                 System.out.printf("Operation created time: %s, expiration time: %s.%n",
                     operationDetail.getCreatedAt(), operationDetail.getExpiresAt());
                 return result.getFinalResult();
@@ -79,19 +79,19 @@ public class AbstractiveSummarizationAsync {
         }
     }
 
-    private static void processResult(AbstractSummaryResultCollection actionsResult) {
-        for (AbstractSummaryResult documentResult : actionsResult) {
+    private static void processResult(AbstractiveSummaryResultCollection actionsResult) {
+        for (AbstractiveSummaryResult documentResult : actionsResult) {
             if (!documentResult.isError()) {
-                System.out.println("\tAbstract summary sentences:");
+                System.out.println("\tAbstractive summary sentences:");
                 for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
                     System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
-                    for (SummaryContext summaryContext : summarySentence.getContexts()) {
+                    for (AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts()) {
                         System.out.printf("\t\t offset: %d, length: %d%n",
-                            summaryContext.getOffset(), summaryContext.getLength());
+                            abstractiveSummaryContext.getOffset(), abstractiveSummaryContext.getLength());
                     }
                 }
             } else {
-                System.out.printf("\tCannot get abstract summary. Error: %s%n",
+                System.out.printf("\tCannot get abstractive summary. Error: %s%n",
                     documentResult.getError().getMessage());
             }
         }

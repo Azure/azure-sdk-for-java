@@ -22,8 +22,8 @@ public final class TextAnalyticsActions {
     private Iterable<RecognizeCustomEntitiesAction> recognizeCustomEntitiesActions;
     private Iterable<SingleLabelClassifyAction> singleLabelClassifyActions;
     private Iterable<MultiLabelClassifyAction> multiLabelClassifyActions;
-    private Iterable<AbstractSummaryAction> abstractSummaryActions;
-    private Iterable<ExtractSummaryAction> extractSummaryActions;
+    private Iterable<AbstractiveSummaryAction> abstractiveSummaryActions;
+    private Iterable<ExtractiveSummaryAction> extractiveSummaryActions;
 
     /**
      * Gets the custom name for the actions.
@@ -133,7 +133,7 @@ public final class TextAnalyticsActions {
     public TextAnalyticsActions setAnalyzeHealthcareEntitiesActions(
         AnalyzeHealthcareEntitiesAction... analyzeHealthcareEntitiesActions) {
         this.analyzeHealthcareEntitiesActions = analyzeHealthcareEntitiesActions == null ? null
-                                               : Arrays.asList(analyzeHealthcareEntitiesActions);
+            : Arrays.asList(analyzeHealthcareEntitiesActions);
         return this;
     }
 
@@ -205,7 +205,7 @@ public final class TextAnalyticsActions {
     public TextAnalyticsActions setRecognizeCustomEntitiesActions(
         RecognizeCustomEntitiesAction... recognizeCustomEntitiesActions) {
         this.recognizeCustomEntitiesActions = recognizeCustomEntitiesActions == null ? null
-                                                  : Arrays.asList(recognizeCustomEntitiesActions);
+            : Arrays.asList(recognizeCustomEntitiesActions);
         return this;
     }
 
@@ -233,8 +233,8 @@ public final class TextAnalyticsActions {
      * @return The {@link TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setSingleLabelClassifyActions(SingleLabelClassifyAction... singleLabelClassifyActions) {
-        this.singleLabelClassifyActions = singleLabelClassifyActions == null
-                                                 ? null : Arrays.asList(singleLabelClassifyActions);
+        this.singleLabelClassifyActions = singleLabelClassifyActions == null ? null
+            : Arrays.asList(singleLabelClassifyActions);
         return this;
     }
 
@@ -262,50 +262,52 @@ public final class TextAnalyticsActions {
      * @return The {@link TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setMultiLabelClassifyActions(MultiLabelClassifyAction... multiLabelClassifyActions) {
-        this.multiLabelClassifyActions = multiLabelClassifyActions == null
-                                                ? null : Arrays.asList(multiLabelClassifyActions);
+        this.multiLabelClassifyActions = multiLabelClassifyActions == null ? null
+            : Arrays.asList(multiLabelClassifyActions);
         return this;
     }
 
     /**
-     * Gets the list of {@link AbstractSummaryAction} to be executed.
+     * Gets the list of {@link AbstractiveSummaryAction} to be executed.
      *
-     * @return the list of {@link AbstractSummaryAction} to be executed.
+     * @return the list of {@link AbstractiveSummaryAction} to be executed.
      */
-    public Iterable<AbstractSummaryAction> getAbstractSummaryActions() {
-        return abstractSummaryActions;
+    public Iterable<AbstractiveSummaryAction> getAbstractiveSummaryActions() {
+        return abstractiveSummaryActions;
     }
 
     /**
-     * Sets the list of {@link AbstractSummaryAction} to be executed.
+     * Sets the list of {@link AbstractiveSummaryAction} to be executed.
      *
-     * @param abstractSummaryActions The list of {@link AbstractSummaryAction} to be executed.
+     * @param abstractiveSummaryActions The list of {@link AbstractiveSummaryAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
      */
-    public TextAnalyticsActions setAbstractSummaryActions(AbstractSummaryAction... abstractSummaryActions) {
-        this.abstractSummaryActions = abstractSummaryActions == null ? null : Arrays.asList(abstractSummaryActions);
+    public TextAnalyticsActions setAbstractiveSummaryActions(AbstractiveSummaryAction... abstractiveSummaryActions) {
+        this.abstractiveSummaryActions = abstractiveSummaryActions == null ? null
+            : Arrays.asList(abstractiveSummaryActions);
         return this;
     }
 
     /**
-     * Gets the list of {@link ExtractSummaryAction} to be executed.
+     * Gets the list of {@link ExtractiveSummaryAction} to be executed.
      *
-     * @return the list of {@link ExtractSummaryAction} to be executed.
+     * @return the list of {@link ExtractiveSummaryAction} to be executed.
      */
-    public Iterable<ExtractSummaryAction> getExtractSummaryActions() {
-        return extractSummaryActions;
+    public Iterable<ExtractiveSummaryAction> getExtractiveSummaryActions() {
+        return extractiveSummaryActions;
     }
 
     /**
-     * Sets the list of {@link ExtractSummaryAction} to be executed.
+     * Sets the list of {@link ExtractiveSummaryAction} to be executed.
      *
-     * @param extractSummaryActions The list of {@link ExtractSummaryAction} to be executed.
+     * @param extractiveSummaryActions The list of {@link ExtractiveSummaryAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
      */
-    public TextAnalyticsActions setExtractSummaryActions(ExtractSummaryAction... extractSummaryActions) {
-        this.extractSummaryActions = extractSummaryActions == null ? null : Arrays.asList(extractSummaryActions);
+    public TextAnalyticsActions setExtractiveSummaryActions(ExtractiveSummaryAction... extractiveSummaryActions) {
+        this.extractiveSummaryActions = extractiveSummaryActions == null ? null
+            : Arrays.asList(extractiveSummaryActions);
         return this;
     }
 }

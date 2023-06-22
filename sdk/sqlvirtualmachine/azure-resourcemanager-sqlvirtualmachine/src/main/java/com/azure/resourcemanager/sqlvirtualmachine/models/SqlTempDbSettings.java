@@ -65,6 +65,10 @@ public final class SqlTempDbSettings {
     @JsonProperty(value = "defaultFilePath")
     private String defaultFilePath;
 
+    /** Creates an instance of SqlTempDbSettings class. */
+    public SqlTempDbSettings() {
+    }
+
     /**
      * Get the dataFileSize property: SQL Server tempdb data file size.
      *

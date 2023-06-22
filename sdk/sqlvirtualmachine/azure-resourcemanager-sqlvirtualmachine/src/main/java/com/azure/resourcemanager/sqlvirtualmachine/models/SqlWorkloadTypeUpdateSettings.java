@@ -16,6 +16,10 @@ public final class SqlWorkloadTypeUpdateSettings {
     @JsonProperty(value = "sqlWorkloadType")
     private SqlWorkloadType sqlWorkloadType;
 
+    /** Creates an instance of SqlWorkloadTypeUpdateSettings class. */
+    public SqlWorkloadTypeUpdateSettings() {
+    }
+
     /**
      * Get the sqlWorkloadType property: SQL Server workload type.
      *

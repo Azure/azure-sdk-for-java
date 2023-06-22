@@ -151,7 +151,6 @@ public final class ReceivedSharesClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -177,8 +176,8 @@ public final class ReceivedSharesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getAllAttachedReceivedShares(String referenceName, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.getAllAttachedReceivedShares(referenceName, requestOptions));
+    public PagedIterable<BinaryData> listAttachedReceivedShares(String referenceName, RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listAttachedReceivedShares(referenceName, requestOptions));
     }
 
     /**
@@ -191,7 +190,6 @@ public final class ReceivedSharesClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -216,8 +214,8 @@ public final class ReceivedSharesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getAllDetachedReceivedShares(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.getAllDetachedReceivedShares(requestOptions));
+    public PagedIterable<BinaryData> listDetachedReceivedShares(RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listDetachedReceivedShares(requestOptions));
     }
 
     /**

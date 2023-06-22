@@ -29,6 +29,14 @@ public final class AnalyzeTextTaskKind extends ExpandableStringEnum<AnalyzeTextT
     public static final AnalyzeTextTaskKind ENTITY_LINKING = fromString("EntityLinking");
 
     /**
+     * Creates a new instance of AnalyzeTextTaskKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AnalyzeTextTaskKind() {}
+
+    /**
      * Creates or finds a AnalyzeTextTaskKind from its string representation.
      *
      * @param name a name to look for.

@@ -16,38 +16,38 @@ public final class NfsAccessRuleTests {
         NfsAccessRule model =
             BinaryData
                 .fromString(
-                    "{\"scope\":\"default\",\"filter\":\"dybyxczfclhaa\",\"access\":\"rw\",\"suid\":false,\"submountAccess\":false,\"rootSquash\":false,\"anonymousUID\":\"rqlfktsthsucocmn\",\"anonymousGID\":\"azt\"}")
+                    "{\"scope\":\"network\",\"filter\":\"bpybsrfbjf\",\"access\":\"no\",\"suid\":false,\"submountAccess\":true,\"rootSquash\":true,\"anonymousUID\":\"pvjzbe\",\"anonymousGID\":\"l\"}")
                 .toObject(NfsAccessRule.class);
-        Assertions.assertEquals(NfsAccessRuleScope.DEFAULT, model.scope());
-        Assertions.assertEquals("dybyxczfclhaa", model.filter());
-        Assertions.assertEquals(NfsAccessRuleAccess.RW, model.access());
+        Assertions.assertEquals(NfsAccessRuleScope.NETWORK, model.scope());
+        Assertions.assertEquals("bpybsrfbjf", model.filter());
+        Assertions.assertEquals(NfsAccessRuleAccess.NO, model.access());
         Assertions.assertEquals(false, model.suid());
-        Assertions.assertEquals(false, model.submountAccess());
-        Assertions.assertEquals(false, model.rootSquash());
-        Assertions.assertEquals("rqlfktsthsucocmn", model.anonymousUid());
-        Assertions.assertEquals("azt", model.anonymousGid());
+        Assertions.assertEquals(true, model.submountAccess());
+        Assertions.assertEquals(true, model.rootSquash());
+        Assertions.assertEquals("pvjzbe", model.anonymousUid());
+        Assertions.assertEquals("l", model.anonymousGid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NfsAccessRule model =
             new NfsAccessRule()
-                .withScope(NfsAccessRuleScope.DEFAULT)
-                .withFilter("dybyxczfclhaa")
-                .withAccess(NfsAccessRuleAccess.RW)
+                .withScope(NfsAccessRuleScope.NETWORK)
+                .withFilter("bpybsrfbjf")
+                .withAccess(NfsAccessRuleAccess.NO)
                 .withSuid(false)
-                .withSubmountAccess(false)
-                .withRootSquash(false)
-                .withAnonymousUid("rqlfktsthsucocmn")
-                .withAnonymousGid("azt");
+                .withSubmountAccess(true)
+                .withRootSquash(true)
+                .withAnonymousUid("pvjzbe")
+                .withAnonymousGid("l");
         model = BinaryData.fromObject(model).toObject(NfsAccessRule.class);
-        Assertions.assertEquals(NfsAccessRuleScope.DEFAULT, model.scope());
-        Assertions.assertEquals("dybyxczfclhaa", model.filter());
-        Assertions.assertEquals(NfsAccessRuleAccess.RW, model.access());
+        Assertions.assertEquals(NfsAccessRuleScope.NETWORK, model.scope());
+        Assertions.assertEquals("bpybsrfbjf", model.filter());
+        Assertions.assertEquals(NfsAccessRuleAccess.NO, model.access());
         Assertions.assertEquals(false, model.suid());
-        Assertions.assertEquals(false, model.submountAccess());
-        Assertions.assertEquals(false, model.rootSquash());
-        Assertions.assertEquals("rqlfktsthsucocmn", model.anonymousUid());
-        Assertions.assertEquals("azt", model.anonymousGid());
+        Assertions.assertEquals(true, model.submountAccess());
+        Assertions.assertEquals(true, model.rootSquash());
+        Assertions.assertEquals("pvjzbe", model.anonymousUid());
+        Assertions.assertEquals("l", model.anonymousGid());
     }
 }

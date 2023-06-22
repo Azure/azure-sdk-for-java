@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resourcehealth.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Operation available in the resourcehealth resource provider. */
+/** Operation available in the Microsoft.ResourceHealth resource provider. */
 @Fluent
 public final class Operation {
     /*

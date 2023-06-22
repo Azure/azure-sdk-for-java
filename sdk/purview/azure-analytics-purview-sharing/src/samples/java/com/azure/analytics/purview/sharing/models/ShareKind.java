@@ -4,26 +4,32 @@
 
 package com.azure.analytics.purview.sharing.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines the supported types for share. */
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+/**
+ * Defines the supported types for share.
+ */
 public final class ShareKind extends ExpandableStringEnum<ShareKind> {
-    /** Static value InPlace for ShareKind. */
-    public static final ShareKind IN_PLACE = fromString("InPlace");
+    /**
+     * The type of share is in-place sharing.
+     */
+    public static final ShareKind IN_PLACE_SHARE_KIND = fromString("InPlace");
 
     /**
      * Creates a new instance of ShareKind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public ShareKind() {}
+    public ShareKind() {
+    }
 
     /**
      * Creates or finds a ShareKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ShareKind.
      */
@@ -34,7 +40,7 @@ public final class ShareKind extends ExpandableStringEnum<ShareKind> {
 
     /**
      * Gets known ShareKind values.
-     *
+     * 
      * @return known ShareKind values.
      */
     public static Collection<ShareKind> values() {

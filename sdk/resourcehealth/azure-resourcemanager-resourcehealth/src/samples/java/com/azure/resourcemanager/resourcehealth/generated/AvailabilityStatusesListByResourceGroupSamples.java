@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.resourcehealth.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AvailabilityStatuses ListByResourceGroup. */
 public final class AvailabilityStatusesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2020-05-01/examples/AvailabilityStatuses_ListByResourceGroup.json
+     * x-ms-original-file: specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/AvailabilityStatuses_ListByResourceGroup.json
      */
     /**
      * Sample code: ListByResourceGroup.
@@ -19,6 +17,6 @@ public final class AvailabilityStatusesListByResourceGroupSamples {
     public static void listByResourceGroup(com.azure.resourcemanager.resourcehealth.ResourceHealthManager manager) {
         manager
             .availabilityStatuses()
-            .listByResourceGroup("resourceGroupName", null, "recommendedactions", Context.NONE);
+            .listByResourceGroup("resourceGroupName", null, "recommendedactions", com.azure.core.util.Context.NONE);
     }
 }

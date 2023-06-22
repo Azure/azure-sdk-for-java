@@ -361,4 +361,43 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(fromSnapshotDisk.source().type(), CreationSourceType.COPIED_FROM_SNAPSHOT);
         Assertions.assertTrue(fromSnapshotDisk.source().sourceId().equalsIgnoreCase(snapshotNewRegion.id()));
     }
+
+    @Test
+    public void canCreateWithLogicalSectorSize() {
+        String diskName = generateRandomResourceName("disk", 15);
+
+        // logical sector size is null for standard SKU
+        Disk defaultDisk =
+            computeManager
+                .disks()
+                .define("default_disk")
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withData()
+                .withSizeInGB(1)
+                .withSku(DiskSkuTypes.STANDARD_LRS)
+                .create();
+
+        defaultDisk.refresh();
+
+        Assertions.assertNull(defaultDisk.logicalSectorSizeInBytes());
+
+        // can specify logical sector size on PREMIUM_V2_LRS
+        Disk disk =
+            computeManager
+                .disks()
+                .define(diskName)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .withData()
+                .withSizeInGB(10)
+                .withSku(DiskSkuTypes.PREMIUM_V2_LRS)
+                .withLogicalSectorSizeInBytes(512)
+                .create();
+
+        disk.refresh();
+
+        Assertions.assertEquals(DiskSkuTypes.PREMIUM_V2_LRS, disk.sku());
+        Assertions.assertEquals(512, disk.logicalSectorSizeInBytes());
+    }
 }

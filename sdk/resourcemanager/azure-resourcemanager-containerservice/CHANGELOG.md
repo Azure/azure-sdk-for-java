@@ -1,14 +1,22 @@
 # Release History
 
-## 2.27.0-beta.1 (Unreleased)
+## 2.28.0-beta.1 (Unreleased)
 
-### Features Added
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-05-01`.
+
+## 2.27.0 (2023-05-25)
 
 ### Breaking Changes
 
-### Bugs Fixed
+- The property `dockerBridgeCidr` in class `KubernetesCluster` has no effect since 2019.
 
-### Other Changes
+#### Dependency Updates
+
+- Updated `api-version` to `2023-04-01`.
 
 ## 2.26.0 (2023-04-21)
 

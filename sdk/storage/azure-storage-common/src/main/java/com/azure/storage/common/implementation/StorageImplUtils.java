@@ -5,7 +5,6 @@ package com.azure.storage.common.implementation;
 
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
@@ -31,9 +30,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
@@ -93,9 +92,6 @@ public class StorageImplUtils {
         DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm'Z'")
             .withLocale(Locale.ROOT);
 
-
-    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
-    private static final Context STATIC_ENABLE_REST_PROXY_CONTEXT = new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     public static final ExecutorService THREAD_POOL = getThreadPoolWithShutdownHook();
     private static final long THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS = 30;
 
@@ -451,21 +447,14 @@ public class StorageImplUtils {
         }
     }
 
-    public static Context enableSyncRestProxy(Context context) {
-        if (context == null || context == Context.NONE) {
-            return STATIC_ENABLE_REST_PROXY_CONTEXT;
-        } else {
-            return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
-        }
-    }
-
-    public static  <T> Response<T> executeOperation(Supplier<Response<T>> operation, Duration timeout) {
+    public static <T> T submitThreadPool(Supplier<T> operation, ClientLogger logger, Duration timeout) {
         try {
             return timeout != null
-                ? THREAD_POOL.submit(() -> operation.get()).get(timeout.toMillis(), TimeUnit.MILLISECONDS)
-                : operation.get();
-        } catch (ExecutionException | TimeoutException | InterruptedException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+        }  catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e));
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 

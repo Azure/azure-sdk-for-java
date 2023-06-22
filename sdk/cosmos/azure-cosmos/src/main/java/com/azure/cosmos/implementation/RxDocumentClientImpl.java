@@ -15,6 +15,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
@@ -969,7 +970,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 getEndToEndOperationLatencyPolicyConfig(requestOptions);
 
             if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
-                return getFeedResponseFluxWithTimeout(feedResponseFlux, endToEndPolicyConfig);
+                return getFeedResponseFluxWithTimeout(feedResponseFlux, endToEndPolicyConfig, options);
             }
 
             return feedResponseFlux;
@@ -979,13 +980,54 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }, Queues.SMALL_BUFFER_SIZE, 1);
     }
 
-    private static <T> Flux<FeedResponse<T>> getFeedResponseFluxWithTimeout(Flux<FeedResponse<T>> feedResponseFlux, CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig) {
+    private static <T> Flux<FeedResponse<T>> getFeedResponseFluxWithTimeout(
+        Flux<FeedResponse<T>> feedResponseFlux,
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+        CosmosQueryRequestOptions requestOptions) {
         return feedResponseFlux
             .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
             .onErrorMap(throwable -> {
                 if (throwable instanceof TimeoutException) {
                     CosmosException exception = new OperationCancelledException();
                     exception.setStackTrace(throwable.getStackTrace());
+
+                    List<CosmosDiagnostics> cancelledRequestDiagnostics =
+                        ImplementationBridgeHelpers
+                            .CosmosQueryRequestOptionsHelper
+                            .getCosmosQueryRequestOptionsAccessor()
+                            .getCancelledRequestDiagnosticsTracker(requestOptions);
+
+                    // if there is any cancelled requests, collect cosmos diagnostics
+                    if (cancelledRequestDiagnostics != null && !cancelledRequestDiagnostics.isEmpty()) {
+                        // combine all the cosmos diagnostics
+                        CosmosDiagnostics aggregratedCosmosDiagnostics =
+                            cancelledRequestDiagnostics
+                                .stream()
+                                .reduce((first, toBeMerged) -> {
+                                    ClientSideRequestStatistics clientSideRequestStatistics =
+                                        ImplementationBridgeHelpers
+                                            .CosmosDiagnosticsHelper
+                                            .getCosmosDiagnosticsAccessor()
+                                            .getClientSideRequestStatisticsRaw(first);
+
+                                    ClientSideRequestStatistics toBeMergedClientSideRequestStatistics =
+                                        ImplementationBridgeHelpers
+                                            .CosmosDiagnosticsHelper
+                                            .getCosmosDiagnosticsAccessor()
+                                            .getClientSideRequestStatisticsRaw(first);
+
+                                    if (clientSideRequestStatistics == null) {
+                                        return toBeMerged;
+                                    } else {
+                                        clientSideRequestStatistics.mergeClientSideRequestStatistics(toBeMergedClientSideRequestStatistics);
+                                        return first;
+                                    }
+                                })
+                                .get();
+
+                        BridgeInternal.setCosmosDiagnostics(exception, aggregratedCosmosDiagnostics);
+                    }
+
                     return exception;
                 }
                 return throwable;
@@ -2630,8 +2672,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Map<PartitionKeyRange, List<CosmosItemIdentity>> singleItemPartitionRequestMap,
         String resourceLink,
         CosmosQueryRequestOptions queryRequestOptions,
-        Class<T> klass
-    ) {
+        Class<T> klass) {
+
         return Flux.fromIterable(singleItemPartitionRequestMap.values())
             .flatMap(cosmosItemIdentityList -> {
                 if (cosmosItemIdentityList.size() == 1) {
@@ -2641,52 +2683,56 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         .getCosmosQueryRequestOptionsAccessor()
                         .toRequestOptions(queryRequestOptions);
                     requestOptions.setPartitionKey(firstIdentity.getPartitionKey());
-                    return this.readDocument((resourceLink + firstIdentity.getId()), requestOptions);
+                    return this.readDocument((resourceLink + firstIdentity.getId()), requestOptions)
+                        .flatMap(resourceResponse -> Mono.just(
+                            new ImmutablePair<ResourceResponse<Document>, CosmosException>(resourceResponse, null)
+                        ))
+                        .onErrorResume(throwable -> {
+                            Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
+
+                            if (unwrappedThrowable instanceof CosmosException) {
+
+                                CosmosException cosmosException = (CosmosException) unwrappedThrowable;
+
+                                int statusCode = cosmosException.getStatusCode();
+                                int subStatusCode = cosmosException.getSubStatusCode();
+
+                                if (statusCode == HttpConstants.StatusCodes.NOTFOUND && subStatusCode == HttpConstants.SubStatusCodes.UNKNOWN) {
+                                    return Mono.just(new ImmutablePair<ResourceResponse<Document>, CosmosException>(null, cosmosException));
+                                }
+                            }
+
+                            return Mono.error(unwrappedThrowable);
+                        });
                 }
                 return Mono.empty();
             })
-            .flatMap(resourceResponse -> {
-                CosmosItemResponse<T> cosmosItemResponse =
-                    ModelBridgeInternal.createCosmosAsyncItemResponse(resourceResponse, klass, getItemDeserializer());
-                FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(
-                    Arrays.asList(InternalObjectNode.fromObject(cosmosItemResponse.getItem())),
-                    cosmosItemResponse.getResponseHeaders());
+            .flatMap(resourceResponseToExceptionPair -> {
 
-                diagnosticsAccessor.addClientSideDiagnosticsToFeed(
-                    feedResponse.getCosmosDiagnostics(),
-                    Collections.singleton(
-                        BridgeInternal.getClientSideRequestStatics(cosmosItemResponse.getDiagnostics())));
+                ResourceResponse<Document> resourceResponse = resourceResponseToExceptionPair.getLeft();
+                CosmosException cosmosException = resourceResponseToExceptionPair.getRight();
+                FeedResponse<Document> feedResponse;
 
-                return Mono.just(feedResponse);
-            })
-            .onErrorResume(throwable -> {
+                if (cosmosException != null) {
+                    feedResponse = ModelBridgeInternal.createFeedResponse(new ArrayList<>(), cosmosException.getResponseHeaders());
+                    diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                        feedResponse.getCosmosDiagnostics(),
+                        Collections.singleton(
+                            BridgeInternal.getClientSideRequestStatics(cosmosException.getDiagnostics())));
+                } else {
+                    CosmosItemResponse<T> cosmosItemResponse =
+                        ModelBridgeInternal.createCosmosAsyncItemResponse(resourceResponse, klass, getItemDeserializer());
+                    feedResponse = ModelBridgeInternal.createFeedResponse(
+                        Arrays.asList(InternalObjectNode.fromObject(cosmosItemResponse.getItem())),
+                        cosmosItemResponse.getResponseHeaders());
 
-                Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
-
-                if (unwrappedThrowable instanceof CosmosException) {
-
-                    CosmosException cosmosException = (CosmosException) unwrappedThrowable;
-
-                    int statusCode = cosmosException.getStatusCode();
-                    int subStatusCode = cosmosException.getSubStatusCode();
-
-                    CosmosDiagnostics diagnostics = cosmosException.getDiagnostics();
-
-                    if (statusCode == HttpConstants.StatusCodes.NOTFOUND && subStatusCode == HttpConstants.SubStatusCodes.UNKNOWN) {
-                        FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(new ArrayList<>(), cosmosException.getResponseHeaders());
-
-                        diagnosticsAccessor.addClientSideDiagnosticsToFeed(
-                                feedResponse.getCosmosDiagnostics(),
-                                Collections.singleton(
-                                        BridgeInternal.getClientSideRequestStatics(diagnostics)
-                                )
-                        );
-
-                        return Mono.just(feedResponse);
-                    }
+                    diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                        feedResponse.getCosmosDiagnostics(),
+                        Collections.singleton(
+                            BridgeInternal.getClientSideRequestStatics(cosmosItemResponse.getDiagnostics())));
                 }
 
-                return Mono.error(unwrappedThrowable);
+                return Mono.just(feedResponse);
             });
     }
 
@@ -4197,8 +4243,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     klass)),
                 retryPolicy);
 
-        return Paginator.getPaginatedQueryResultAsObservable(
-            options, createRequestFunc, executeFunc, maxPageSize);
+        return Paginator
+            .getPaginatedQueryResultAsObservable(
+                options,
+                createRequestFunc,
+                executeFunc,
+                maxPageSize);
     }
 
     @Override

@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.SendOptions;
@@ -32,20 +34,21 @@ public class ConsumeEvents {
     public static void main(String[] args) throws InterruptedException {
         CountDownLatch countDownLatch = new CountDownLatch(NUMBER_OF_EVENTS);
 
-        // The connection string value can be obtained by:
-        // 1. Going to your Event Hubs namespace in Azure Portal.
-        // 2. Creating an Event Hub instance.
-        // 3. Creating a "Shared access policy" for your Event Hub instance.
-        // 4. Copying the connection string from the policy's properties.
-        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
-            + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
-        // Instantiate a client that will be used to call the service.
+        // The credential used is DefaultAzureCredential because it combines commonly used credentials
+        // in deployment and development and chooses the credential to used based on its running environment.
+        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
         // Create a consumer.
+        //
         // The "$Default" consumer group is created by default. This value can be found by going to the Event Hub
-        // instance you are connecting to, and selecting the "Consumer groups" page. EventPosition.latest() tells the
-        // service we only want events that are sent to the partition after we begin listening.
+        // instance you are connecting to, and selecting the "Consumer groups" page.
+        //
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
-            .connectionString(connectionString)
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                tokenCredential)
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .buildAsyncConsumerClient();
 
@@ -61,7 +64,8 @@ public class ConsumeEvents {
         }
 
         // We start receiving any events that come from `firstPartition`, print out the contents, and decrement the
-        // countDownLatch.
+        // countDownLatch.  EventPosition.latest() tells the service we only want events that are sent to the partition
+        // AFTER we begin listening.
         Disposable subscription = consumer.receiveFromPartition(firstPartition, EventPosition.latest())
             .subscribe(partitionEvent -> {
                 EventData event = partitionEvent.getData();
@@ -85,8 +89,11 @@ public class ConsumeEvents {
                     System.out.println("Finished reading events.");
                 });
 
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
-            .connectionString(connectionString)
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                tokenCredential)
             .buildAsyncProducerClient();
 
         // Because the consumer is only listening to new events, we need to send some events to `firstPartition`.
