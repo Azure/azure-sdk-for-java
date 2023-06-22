@@ -316,6 +316,11 @@ implements IDocumentQueryExecutionContext<T> {
                     .getEndToEndOperationLatencyPolicyConfig(cosmosQueryRequestOptions);
             if (endToEndOperationLatencyConfig != null) {
                 executeQueryRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
+                Boolean queryCancellationStatus = ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryCancellationStatusOnTimeout(cosmosQueryRequestOptions);
+                executeQueryRequest.requestContext.setRequestCancellationStatusOnTimeout(queryCancellationStatus);
             }
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.QUERY_JSON);
             executeQueryRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(querySpec));

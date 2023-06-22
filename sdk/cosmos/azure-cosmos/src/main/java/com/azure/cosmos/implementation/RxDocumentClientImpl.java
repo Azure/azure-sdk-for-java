@@ -88,7 +88,6 @@ import java.lang.management.ManagementFactory;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -988,21 +987,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         CosmosQueryRequestOptions requestOptions) {
 
-        Flux<FeedResponse<T>> fallback = Flux.just(null);
-
         return feedResponseFlux
-            .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout(), fallback)
-            .flatMap(feedResponse -> {
-                if (feedResponse == null) {
-                    // queryCancellationTracker.set(true);
-                    return fallback.timeout(Duration.ZERO);
-                }
-                return Flux.just(feedResponse);
-            })
+            .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
             .onErrorMap(throwable -> {
                 if (throwable instanceof TimeoutException) {
                     CosmosException exception = new OperationCancelledException();
                     exception.setStackTrace(throwable.getStackTrace());
+
+                    ImplementationBridgeHelpers
+                        .CosmosQueryRequestOptionsHelper
+                        .getCosmosQueryRequestOptionsAccessor()
+                        .setIsQueryCancelledOnTimeout(requestOptions, true);
 
                     List<CosmosDiagnostics> cancelledRequestDiagnostics =
                         ImplementationBridgeHelpers
@@ -1995,7 +1990,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
         if (unwrappedException instanceof TimeoutException) {
             if (request.requestContext != null) {
-                request.requestContext.cancelRequestOnEndToEndTimeout();
+                request.requestContext.setRequestCancellationStatusOnTimeout(true);
             }
             CosmosException exception = new OperationCancelledException();
             exception.setStackTrace(throwable.getStackTrace());
@@ -2934,8 +2929,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             classOfT, //Document.class
                             ResourceType.Document,
                             queryClient,
-                            activityId,
-                            queryCancellationStatus);
+                            activityId);
                     });
                 },
                 invalidPartitionExceptionRetryPolicy);

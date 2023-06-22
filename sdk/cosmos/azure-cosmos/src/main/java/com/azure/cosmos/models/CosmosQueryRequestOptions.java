@@ -60,7 +60,7 @@ public class CosmosQueryRequestOptions {
     private String queryName;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
-    private AtomicBoolean isQueryTimedOut = new AtomicBoolean(false);
+    private AtomicBoolean isQueryCancelledOnTimeout = new AtomicBoolean(false);
 
     /**
      * Instantiates a new query request options.
@@ -105,7 +105,7 @@ public class CosmosQueryRequestOptions {
         this.thresholds = options.thresholds;
         this.cosmosEndToEndOperationLatencyPolicyConfig = options.cosmosEndToEndOperationLatencyPolicyConfig;
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
-        this.isQueryTimedOut = options.isQueryTimedOut;
+        this.isQueryCancelledOnTimeout = options.isQueryCancelledOnTimeout;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -693,12 +693,12 @@ public class CosmosQueryRequestOptions {
         this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
     }
 
-    boolean isQueryTimedOut() {
-        return isQueryTimedOut.get();
+    boolean isQueryCancelledOnTimeout() {
+        return isQueryCancelledOnTimeout.get();
     }
 
-    void setIsQueryTimedOut(boolean isQueryTimedOut) {
-        this.isQueryTimedOut.set(isQueryTimedOut);
+    void setIsQueryCancelledOmTimeout(boolean isQueryTimedOut) {
+        this.isQueryCancelledOnTimeout.set(isQueryTimedOut);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -859,6 +859,16 @@ public class CosmosQueryRequestOptions {
                     List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
 
                     options.setCancelledRequestDiagnosticsTracker(cancelledRequestDiagnosticsTracker);
+                }
+
+                @Override
+                public void setIsQueryCancelledOnTimeout(CosmosQueryRequestOptions options, boolean isQueryCancelledOnTimeout) {
+                    options.setIsQueryCancelledOmTimeout(isQueryCancelledOnTimeout);
+                }
+
+                @Override
+                public boolean getQueryCancellationStatusOnTimeout(CosmosQueryRequestOptions options) {
+                    return options.isQueryCancelledOnTimeout();
                 }
             });
     }
