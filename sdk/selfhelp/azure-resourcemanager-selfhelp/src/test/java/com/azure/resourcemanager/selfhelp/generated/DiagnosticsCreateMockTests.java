@@ -9,14 +9,16 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.selfhelp.SelfHelpManager;
-import com.azure.resourcemanager.selfhelp.models.SolutionMetadataResource;
+import com.azure.resourcemanager.selfhelp.models.DiagnosticResource;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -24,15 +26,15 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class DiscoverySolutionsListMockTests {
+public final class DiagnosticsCreateMockTests {
     @Test
-    public void testList() throws Exception {
+    public void testCreate() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"solutionId\":\"jbdlwtgrhpdjpju\",\"solutionType\":\"sxazjpq\",\"description\":\"gual\",\"requiredParameterSets\":[[\"hejjz\",\"v\",\"udgwdslfho\"],[\"mcy\"],[\"wlbjnpgacftade\",\"xnltyfsoppu\"]]},\"id\":\"esnzwde\",\"name\":\"bavo\",\"type\":\"xzdmohctb\"}]}";
+            "{\"properties\":{\"globalParameters\":{\"gqywgndrv\":\"nyktzlcuiy\",\"ocpecfvmmco\":\"nhzgpphrcgyn\",\"c\":\"fsxlzevgbmqjqa\",\"ccfwnfnbacfion\":\"pmivkwlzu\"},\"insights\":[],\"acceptedAt\":\"etqgtzxdpnq\",\"provisioningState\":\"Succeeded\",\"diagnostics\":[]},\"id\":\"jfeallnwsub\",\"name\":\"snjampmng\",\"type\":\"zscxaqwo\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,14 +62,35 @@ public final class DiscoverySolutionsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SolutionMetadataResource> response =
+        DiagnosticResource response =
             manager
-                .discoverySolutions()
-                .list("chcbonqvpkvlrxnj", "ase", "pheoflokeyy", com.azure.core.util.Context.NONE);
+                .diagnostics()
+                .define("xqbzvddntwnd")
+                .withExistingScope("zxibqeoj")
+                .withGlobalParameters(
+                    mapOf(
+                        "cyddglmjthjqk",
+                        "twnpzaoqvuhrhcf",
+                        "ciwqvhk",
+                        "pyeicxm",
+                        "ghmewuam",
+                        "ixuigdtopbobj",
+                        "gvdfgiotkftutq",
+                        "uhrzayvvt"))
+                .withInsights(Arrays.asList())
+                .create();
 
-        Assertions.assertEquals("jbdlwtgrhpdjpju", response.iterator().next().solutionId());
-        Assertions.assertEquals("sxazjpq", response.iterator().next().solutionType());
-        Assertions.assertEquals("gual", response.iterator().next().description());
-        Assertions.assertEquals("hejjz", response.iterator().next().requiredParameterSets().get(0).get(0));
+        Assertions.assertEquals("nyktzlcuiy", response.globalParameters().get("gqywgndrv"));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
