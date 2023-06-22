@@ -271,10 +271,6 @@ public class ImplementationBridgeHelpers {
             void setCancelledRequestDiagnosticsTracker(
                 CosmosQueryRequestOptions options,
                 List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker);
-
-            void setQueryCancellationStatusOnTimeout(CosmosQueryRequestOptions options, boolean isQueryCancelledOnTimeout);
-
-            AtomicBoolean getQueryCancellationStatusOnTimeout(CosmosQueryRequestOptions options);
         }
     }
 

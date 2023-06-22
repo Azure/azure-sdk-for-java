@@ -906,8 +906,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         UUID correlationActivityId = correlationActivityIdOfRequestOptions != null ?
             correlationActivityIdOfRequestOptions : randomUuid();
 
+        final AtomicBoolean queryCancellationStatusOnTimeout = new AtomicBoolean(false);
+
         IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this,
-            getOperationContextAndListenerTuple(options));
+            getOperationContextAndListenerTuple(options), queryCancellationStatusOnTimeout);
 
         // Trying to put this logic as low as the query pipeline
         // Since for parallelQuery, each partition will have its own request, so at this point, there will be no request associate with this retry policy.
@@ -920,7 +922,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         return ObservableHelper.fluxInlineIfPossibleAsObs(
             () -> createQueryInternal(
-                resourceLink, sqlQuery, options, klass, resourceTypeEnum, queryClient, correlationActivityId),
+                resourceLink, sqlQuery, options, klass, resourceTypeEnum, queryClient, correlationActivityId, queryCancellationStatusOnTimeout),
             invalidPartitionExceptionRetryPolicy);
     }
 
@@ -931,7 +933,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Class<T> klass,
             ResourceType resourceTypeEnum,
             IDocumentQueryClient queryClient,
-            UUID activityId) {
+            UUID activityId,
+            final AtomicBoolean queryCancellationStatusOnTimeout) {
 
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
             DocumentQueryExecutionContextFactory
@@ -972,7 +975,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 getEndToEndOperationLatencyPolicyConfig(requestOptions);
 
             if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
-                return getFeedResponseFluxWithTimeout(feedResponseFlux, endToEndPolicyConfig, options);
+                return getFeedResponseFluxWithTimeout(feedResponseFlux, endToEndPolicyConfig, options, queryCancellationStatusOnTimeout);
             }
 
             return feedResponseFlux;
@@ -985,7 +988,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private static <T> Flux<FeedResponse<T>> getFeedResponseFluxWithTimeout(
         Flux<FeedResponse<T>> feedResponseFlux,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
-        CosmosQueryRequestOptions requestOptions) {
+        CosmosQueryRequestOptions requestOptions,
+        final AtomicBoolean queryCancellationStatusOnTimeout) {
 
         return feedResponseFlux
             .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
@@ -994,10 +998,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     CosmosException exception = new OperationCancelledException();
                     exception.setStackTrace(throwable.getStackTrace());
 
-                    ImplementationBridgeHelpers
-                        .CosmosQueryRequestOptionsHelper
-                        .getCosmosQueryRequestOptionsAccessor()
-                        .setQueryCancellationStatusOnTimeout(requestOptions, true);
+                    queryCancellationStatusOnTimeout.set(true);
 
                     List<CosmosDiagnostics> cancelledRequestDiagnostics =
                         ImplementationBridgeHelpers
@@ -2665,7 +2666,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         UUID activityId = randomUuid();
-        IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this, getOperationContextAndListenerTuple(options));
+
+        final AtomicBoolean queryCancellationStatusOnTimeout = new AtomicBoolean(false);
+
+        IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this, getOperationContextAndListenerTuple(options), queryCancellationStatusOnTimeout);
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
             DocumentQueryExecutionContextFactory.createReadManyQueryAsync(this, queryClient, collection.getResourceId(),
                                                                           sqlQuery,
@@ -2750,7 +2754,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return queryDocuments(collectionLink, new SqlQuerySpec(query), options, classOfT);
     }
 
-    private IDocumentQueryClient documentQueryClientImpl(RxDocumentClientImpl rxDocumentClientImpl, OperationContextAndListenerTuple operationContextAndListenerTuple) {
+    private IDocumentQueryClient documentQueryClientImpl(RxDocumentClientImpl rxDocumentClientImpl, OperationContextAndListenerTuple operationContextAndListenerTuple, final AtomicBoolean queryCancellationStatusOnTimeout) {
 
         return new IDocumentQueryClient () {
 
@@ -2782,6 +2786,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             @Override
             public Mono<RxDocumentServiceResponse> executeQueryAsync(RxDocumentServiceRequest request) {
+
+                if (request.requestContext != null) {
+                    request.requestContext.setRequestCancellationStatusOnTimeout(queryCancellationStatusOnTimeout);
+                }
+
                 if (operationContextAndListenerTuple == null) {
                     return RxDocumentClientImpl.this.query(request).single();
                 } else {
@@ -2881,12 +2890,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);
             UUID activityId = randomUuid();
-            IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this, getOperationContextAndListenerTuple(options));
+
+            final AtomicBoolean queryCancellationStatusOnTimeout = new AtomicBoolean(false);
+
+            IDocumentQueryClient queryClient = documentQueryClientImpl(
+                RxDocumentClientImpl.this,
+                getOperationContextAndListenerTuple(options),
+                queryCancellationStatusOnTimeout);
 
             final CosmosQueryRequestOptions effectiveOptions =
                 ModelBridgeInternal.createQueryRequestOptions(options);
-
-            final AtomicBoolean queryCancellationStatus = new AtomicBoolean(false);
 
             // Trying to put this logic as low as the query pipeline
             // Since for parallelQuery, each partition will have its own request, so at this point, there will be no request associate with this retry policy.
@@ -2929,7 +2942,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             classOfT, //Document.class
                             ResourceType.Document,
                             queryClient,
-                            activityId);
+                            activityId,
+                            queryCancellationStatusOnTimeout);
                     });
                 },
                 invalidPartitionExceptionRetryPolicy);

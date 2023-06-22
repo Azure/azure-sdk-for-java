@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
 /**
@@ -60,7 +59,6 @@ public class CosmosQueryRequestOptions {
     private String queryName;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
-    private AtomicBoolean queryCancellationStatusOnTimeout = new AtomicBoolean(false);
 
     /**
      * Instantiates a new query request options.
@@ -105,7 +103,6 @@ public class CosmosQueryRequestOptions {
         this.thresholds = options.thresholds;
         this.cosmosEndToEndOperationLatencyPolicyConfig = options.cosmosEndToEndOperationLatencyPolicyConfig;
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
-        this.queryCancellationStatusOnTimeout = options.queryCancellationStatusOnTimeout;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -693,14 +690,6 @@ public class CosmosQueryRequestOptions {
         this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
     }
 
-    AtomicBoolean getQueryCancellationStatusOnTimeout() {
-        return queryCancellationStatusOnTimeout;
-    }
-
-    void setQueryCancellationStatusOnTimeout(boolean queryCancellationStatusOnTimeout) {
-        this.queryCancellationStatusOnTimeout.set(queryCancellationStatusOnTimeout);
-    }
-
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -859,16 +848,6 @@ public class CosmosQueryRequestOptions {
                     List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
 
                     options.setCancelledRequestDiagnosticsTracker(cancelledRequestDiagnosticsTracker);
-                }
-
-                @Override
-                public void setQueryCancellationStatusOnTimeout(CosmosQueryRequestOptions options, boolean queryCancellationStatusOnTimeout) {
-                    options.setQueryCancellationStatusOnTimeout(queryCancellationStatusOnTimeout);
-                }
-
-                @Override
-                public AtomicBoolean getQueryCancellationStatusOnTimeout(CosmosQueryRequestOptions options) {
-                    return options.getQueryCancellationStatusOnTimeout();
                 }
             });
     }
