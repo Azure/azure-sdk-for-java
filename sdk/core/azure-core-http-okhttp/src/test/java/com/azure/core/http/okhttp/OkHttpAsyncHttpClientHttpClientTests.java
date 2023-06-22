@@ -9,8 +9,8 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.test.HttpClientTestsWireMockServer;
 import com.azure.core.test.http.HttpClientTests;
+import com.azure.core.test.http.LocalTestServer;
 import com.azure.core.util.BinaryData;
-import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ import java.time.Duration;
 import static com.azure.core.http.okhttp.TestUtils.createQuietDispatcher;
 
 public class OkHttpAsyncHttpClientHttpClientTests extends HttpClientTests {
-    private static WireMockServer server;
+    private static LocalTestServer server;
 
     @BeforeAll
     public static void getWireMockServer() {
@@ -35,13 +35,19 @@ public class OkHttpAsyncHttpClientHttpClientTests extends HttpClientTests {
     @AfterAll
     public static void shutdownWireMockServer() {
         if (server != null) {
-            server.shutdown();
+            server.stop();
         }
     }
 
     @Override
+    @Deprecated
     protected int getWireMockPort() {
-        return server.port();
+        return server.getHttpPort();
+    }
+
+    @Override
+    protected String getServerUri(boolean secure) {
+        return secure ? server.getHttpsUri() : server.getHttpUri();
     }
 
     @Override

@@ -6,12 +6,12 @@ package com.azure.core.http.vertx;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.HttpClientTestsWireMockServer;
 import com.azure.core.test.http.HttpClientTests;
-import com.github.tomakehurst.wiremock.WireMockServer;
+import com.azure.core.test.http.LocalTestServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
 public class VertxAsyncHttpClientAsyncHttpClientTests extends HttpClientTests {
-    private static WireMockServer server;
+    private static LocalTestServer server;
 
     @BeforeAll
     public static void beforeAll() {
@@ -20,15 +20,21 @@ public class VertxAsyncHttpClientAsyncHttpClientTests extends HttpClientTests {
     }
 
     @AfterAll
-    public static void afterAll() throws Exception {
+    public static void afterAll() {
         if (server != null) {
-            server.shutdown();
+            server.stop();
         }
     }
 
     @Override
+    @Deprecated
     protected int getWireMockPort() {
-        return server.port();
+        return server.getHttpPort();
+    }
+
+    @Override
+    protected String getServerUri(boolean secure) {
+        return secure ? server.getHttpsUri() : server.getHttpUri();
     }
 
     @Override

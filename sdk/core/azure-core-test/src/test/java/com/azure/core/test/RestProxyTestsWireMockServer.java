@@ -52,6 +52,7 @@ public final class RestProxyTestsWireMockServer {
         WireMockServer server = new WireMockServer(WireMockConfiguration.options()
             .extensions(new RestProxyResponseTransformer())
             .dynamicPort()
+            .dynamicHttpsPort()
             .disableRequestJournal()
             .gzipDisabled(true));
 

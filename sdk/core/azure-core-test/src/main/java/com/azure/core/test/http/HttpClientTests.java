@@ -62,7 +62,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 public abstract class HttpClientTests {
     private static final ClientLogger LOGGER = new ClientLogger(HttpClientTests.class);
 
-    private static final String REQUEST_HOST = "localhost";
     private static final String PLAIN_RESPONSE = "plainBytesNoHeader";
     private static final String HEADER_RESPONSE = "plainBytesWithHeader";
     private static final String INVALID_HEADER_RESPONSE = "plainBytesInvalidHeader";
@@ -88,8 +87,18 @@ public abstract class HttpClientTests {
      * Get the dynamic port the WireMock server is using to properly route the request.
      *
      * @return The HTTP port WireMock is using.
+     * @deprecated Use {@link #getServerUri(boolean)} instead.
      */
+    @Deprecated
     protected abstract int getWireMockPort();
+
+    /**
+     * Gets the dynamic URI the server is using to properly route the request.
+     *
+     * @param secure Flag indicating if the URI should be for a secure connection or not.
+     * @return The URI the server is using.
+     */
+    protected abstract String getServerUri(boolean secure);
 
     /**
      * Get a flag indicating if communication should be secured or not (https or http).
@@ -575,8 +584,7 @@ public abstract class HttpClientTests {
      */
     protected URL getRequestUrl(String requestPath) {
         try {
-            String prefix = isSecure() ? "https://" : "http://";
-            return UrlBuilder.parse(prefix + REQUEST_HOST + ":" + getWireMockPort() + "/" + requestPath).toUrl();
+            return UrlBuilder.parse(getServerUri(isSecure()) + "/" + requestPath).toUrl();
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }

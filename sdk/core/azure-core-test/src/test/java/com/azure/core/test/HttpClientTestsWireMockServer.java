@@ -4,23 +4,17 @@
 package com.azure.core.test;
 
 import com.azure.core.test.http.HttpClientTests;
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.common.FileSource;
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import com.github.tomakehurst.wiremock.extension.Parameters;
-import com.github.tomakehurst.wiremock.extension.ResponseDefinitionTransformer;
-import com.github.tomakehurst.wiremock.http.Request;
-import com.github.tomakehurst.wiremock.http.ResponseDefinition;
+import com.azure.core.test.http.LocalTestServer;
+import org.apache.commons.compress.utils.IOUtils;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.put;
 
 /**
  * WireMock server used when running {@link HttpClientTests}.
@@ -46,55 +40,47 @@ public class HttpClientTestsWireMockServer {
 
     private static final byte[] RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
 
-    public static WireMockServer getHttpClientTestsServer() {
-        WireMockServer server = new WireMockServer(WireMockConfiguration.options()
-            .extensions(new HttpClientResponseTransformer())
-            .dynamicPort()
-            .dynamicHttpsPort()
-            .disableRequestJournal()
-            .containerThreads(50) // bumping from default 10 to sustain test runner parallelization load.
-            .gzipDisabled(true));
+    public static LocalTestServer getHttpClientTestsServer() {
+        HttpServlet httpServlet = new HttpServlet() {
+            @Override
+            protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                boolean getRequest = "GET".equalsIgnoreCase(req.getMethod());
+                boolean putRequest = "PUT".equalsIgnoreCase(req.getMethod());
+                String path = req.getServletPath();
 
-        // Basic bytes response.
-        server.stubFor(get(PLAIN_RESPONSE).willReturn(aResponse().withBody(RETURN_BYTES)));
+                if (getRequest && PLAIN_RESPONSE.equals(path)) {
+                    handleRequest(resp, "application/octet-stream", RETURN_BYTES);
+                } else if (getRequest && HEADER_RESPONSE.equals(path)) {
+                    handleRequest(resp, "charset=UTF-16BE", RETURN_BYTES);
+                } else if (getRequest && INVALID_HEADER_RESPONSE.equals(path)) {
+                    handleRequest(resp, "charset=invalid", RETURN_BYTES);
+                } else if (getRequest && UTF_8_BOM_RESPONSE.equals(path)) {
+                    handleRequest(resp, "application/octet-stream", addBom(UTF_8_BOM));
+                } else if (getRequest && UTF_16BE_BOM_RESPONSE.equals(path)) {
+                    handleRequest(resp, "application/octet-stream", addBom(UTF_16BE_BOM));
+                } else if (getRequest && UTF_16LE_BOM_RESPONSE.equals(path)) {
+                    handleRequest(resp, "application/octet-stream", addBom(UTF_16LE_BOM));
+                } else if (getRequest && UTF_32BE_BOM_RESPONSE.equals(path)) {
+                    handleRequest(resp, "application/octet-stream", addBom(UTF_32BE_BOM));
+                } else if (getRequest && UTF_32LE_BOM_RESPONSE.equals(path)) {
+                    handleRequest(resp, "application/octet-stream", addBom(UTF_32LE_BOM));
+                } else if (getRequest && BOM_WITH_SAME_HEADER.equals(path)) {
+                    handleRequest(resp, "charset=UTF-8", addBom(UTF_8_BOM));
+                } else if (getRequest && BOM_WITH_DIFFERENT_HEADER.equals(path)) {
+                    handleRequest(resp, "charset=UTF-16", addBom(UTF_8_BOM));
+                } else if (putRequest && ECHO_RESPONSE.equals(path)) {
+                    resp.setStatus(200);
+                    resp.setContentType("application/octet-stream");
+                    AccessibleByteArrayOutputStream outputStream = readRequestFully(req.getInputStream());
+                    resp.setContentLength(outputStream.getCount());
+                    resp.getOutputStream().write(outputStream.getBuffer(), 0, outputStream.getCount());
+                } else {
+                    throw new ServletException("Unexpected method: " + req.getMethod());
+                }
+            }
+        };
 
-        // Basic bytes with 'Content-Encoding' header.
-        server.stubFor(get(HEADER_RESPONSE).willReturn(aResponse().withBody(RETURN_BYTES)
-            .withHeader("Content-Type", "charset=UTF-16BE")));
-
-        // Basic bytes with invalid 'Content-Encoding' header.
-        server.stubFor(get(INVALID_HEADER_RESPONSE).willReturn(aResponse().withBody(RETURN_BYTES)
-            .withHeader("Content-Type", "charset=invalid")));
-
-        // Bytes with leading UTF-8 BOM.
-        server.stubFor(get(UTF_8_BOM_RESPONSE).willReturn(aResponse().withBody(addBom(UTF_8_BOM))));
-
-        // Bytes with leading UTF-16 BE BOM.
-        server.stubFor(get(UTF_16BE_BOM_RESPONSE).willReturn(aResponse().withBody(addBom(UTF_16BE_BOM))));
-
-        // Bytes with leading UTF-16 LE BOM.
-        server.stubFor(get(UTF_16LE_BOM_RESPONSE).willReturn(aResponse().withBody(addBom(UTF_16LE_BOM))));
-
-        // Bytes with leading UTF-32 BE BOM.
-        server.stubFor(get(UTF_32BE_BOM_RESPONSE).willReturn(aResponse().withBody(addBom(UTF_32BE_BOM))));
-
-        // Bytes with leading UTF-32 LE BOM.
-        server.stubFor(get(UTF_32LE_BOM_RESPONSE).willReturn(aResponse().withBody(addBom(UTF_32LE_BOM))));
-
-        // Bytes with leading UTF-8 BOM and matching 'Content-Encoding' header.
-        server.stubFor(get(BOM_WITH_SAME_HEADER).willReturn(aResponse()
-            .withBody(addBom(UTF_8_BOM)).withHeader("Content-Type", "charset=UTF-8")));
-
-        // Bytes with leading UTF-8 BOM and differing 'Content-Encoding' header.
-        server.stubFor(get(BOM_WITH_DIFFERENT_HEADER).willReturn(aResponse()
-            .withBody(addBom(UTF_8_BOM)).withHeader("Content-Type", "charset=UTF-16")));
-
-        // Echoes request body
-        server.stubFor(put(ECHO_RESPONSE)
-            .willReturn(aResponse()
-                .withTransformers(HttpClientResponseTransformer.NAME)));
-
-        return server;
+        return new LocalTestServer(httpServlet);
     }
 
     private static byte[] addBom(byte[] arr1) {
@@ -106,31 +92,30 @@ public class HttpClientTestsWireMockServer {
         return mergedArray;
     }
 
-    private static final class HttpClientResponseTransformer extends ResponseDefinitionTransformer {
+    private static void handleRequest(HttpServletResponse response, String contentType, byte[] responseBody)
+        throws IOException {
+        response.setStatus(200);
+        response.setContentType(contentType);
+        response.getOutputStream().write(responseBody);
+    }
 
-        public static final String NAME = "http-client-transformer";
+    private static AccessibleByteArrayOutputStream readRequestFully(InputStream inputStream) {
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+        try {
+            IOUtils.copy(inputStream, outputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return outputStream;
+    }
 
-        @Override
-        public ResponseDefinition transform(
-            Request request, ResponseDefinition responseDefinition, FileSource fileSource, Parameters parameters) {
-            try {
-                URL requestUrl = new URI(request.getAbsoluteUrl()).toURL();
-                String path = requestUrl.getPath();
-                if (ECHO_RESPONSE.equals(path)) {
-                    return aResponse()
-                        .withBody(request.getBody())
-                        .build();
-                } else {
-                    return responseDefinition;
-                }
-            } catch (URISyntaxException | MalformedURLException e) {
-                throw new RuntimeException(e);
-            }
+    private static final class AccessibleByteArrayOutputStream extends ByteArrayOutputStream {
+        public byte[] getBuffer() {
+            return buf;
         }
 
-        @Override
-        public String getName() {
-            return NAME;
+        public int getCount() {
+            return count;
         }
     }
 }

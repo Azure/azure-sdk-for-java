@@ -59,9 +59,13 @@
 
   <!-- Internal implementation details, not at risk.-->
   <Match>
-    <Class name="~com\.azure\.identity\.implementation\.intellij\.IntelliJKdbxMetadata"/>
-    <Bug pattern="EI_EXPOSE_REP,
-      EI_EXPOSE_REP2"/>
+    <Or>
+      <!-- Internal implementation details, not at risk.-->
+      <Class name="~com\.azure\.identity\.implementation\.intellij\.IntelliJKdbxMetadata"/>
+      <!-- Testing model. -->
+      <Class name="com.azure.core.test.http.HttpClientTests$BinaryDataTestData"/>
+    </Or>
+    <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
   </Match>
 
   <Match>

@@ -6,7 +6,7 @@ package com.azure.core.http.netty;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.HttpClientTestsWireMockServer;
 import com.azure.core.test.http.HttpClientTests;
-import com.github.tomakehurst.wiremock.WireMockServer;
+import com.azure.core.test.http.LocalTestServer;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
@@ -20,7 +20,7 @@ import javax.net.ssl.SSLException;
  * Some request logic branches out if it's https like file uploads.
  */
 public class NettyAsyncHttpClientHttpClientWithHttpsTests extends HttpClientTests {
-    private static WireMockServer server;
+    private static LocalTestServer server;
 
     private static final HttpClient HTTP_CLIENT_INSTANCE;
 
@@ -49,13 +49,19 @@ public class NettyAsyncHttpClientHttpClientWithHttpsTests extends HttpClientTest
     @AfterAll
     public static void shutdownWireMockServer() {
         if (server != null) {
-            server.shutdown();
+            server.stop();
         }
     }
 
     @Override
+    @Deprecated
     protected int getWireMockPort() {
-        return server.httpsPort();
+        return server.getHttpsPort();
+    }
+
+    @Override
+    protected String getServerUri(boolean secure) {
+        return secure ? server.getHttpsUri() : server.getHttpUri();
     }
 
     @Override
