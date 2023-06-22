@@ -84,8 +84,7 @@ import java.util.function.Supplier;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 import static com.azure.storage.common.implementation.StorageImplUtils.THREAD_POOL;
-import static com.azure.storage.common.implementation.StorageImplUtils.enableSyncRestProxy;
-import static com.azure.storage.common.implementation.StorageImplUtils.executeOperation;
+import static com.azure.storage.common.implementation.StorageImplUtils.submitThreadPool;
 
 
 /**
@@ -640,7 +639,7 @@ public final class BlockBlobClient extends BlobClientBase {
         StorageImplUtils.assertNotNull("options", options);
 
         Supplier<Response<BlockBlobItem>> operation = () ->
-            uploadWithResponseSync(options, enableSyncRestProxy(context));
+            uploadWithResponseSync(options, context);
 
         try {
             return timeout != null
@@ -791,7 +790,7 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<BlockBlobItem> uploadFromUrlWithResponse(BlobUploadFromUrlOptions options, Duration timeout,
                                                              Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        return StorageImplUtils.executeOperation(() -> uploadFromUrlWithResponseSync(options, enableSyncRestProxy(context)),
+        return StorageImplUtils.submitThreadPool(() -> uploadFromUrlWithResponseSync(options, context), LOGGER,
             timeout);
     }
 
@@ -923,8 +922,8 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void>  stageBlockWithResponse(String base64BlockId, InputStream data, long length, byte[] contentMd5,
         String leaseId, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("data", data);
-        return executeOperation(() -> stageBlockWithResponseSync(base64BlockId,
-            BinaryData.fromStream(data, length).toReplayableBinaryData(), contentMd5, leaseId, enableSyncRestProxy(context)), timeout);
+        return submitThreadPool(() -> stageBlockWithResponseSync(base64BlockId,
+            BinaryData.fromStream(data, length).toReplayableBinaryData(), contentMd5, leaseId, context), LOGGER, timeout);
     }
 
     Response<Void> stageBlockWithResponseSync(String base64BlockId, BinaryData data,
@@ -971,9 +970,9 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void> stageBlockWithResponse(BlockBlobStageBlockOptions options, Duration timeout, Context context) {
         Objects.requireNonNull(options, "options must not be null");
 
-        return executeOperation(() -> stageBlockWithResponseSync(
+        return submitThreadPool(() -> stageBlockWithResponseSync(
             options.getBase64BlockId(), options.getData(), options.getContentMd5(), options.getLeaseId(),
-                enableSyncRestProxy(context)), timeout);
+                context), LOGGER, timeout);
     }
 
     /**
@@ -1080,8 +1079,7 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stageBlockFromUrlWithResponse(BlockBlobStageBlockFromUrlOptions options, Duration timeout,
         Context context) {
-        return executeOperation(() -> stageBlockFromUrlWithResponseSync(options, enableSyncRestProxy(context)),
-            timeout);
+        return submitThreadPool(() -> stageBlockFromUrlWithResponseSync(options, context), LOGGER, timeout);
     }
 
     Response<Void> stageBlockFromUrlWithResponseSync(BlockBlobStageBlockFromUrlOptions options, Context context) {
@@ -1197,8 +1195,7 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockList> listBlocksWithResponse(BlockBlobListBlocksOptions options, Duration timeout,
         Context context) {
-        return executeOperation(() -> listBlocksWithResponseSync(options, enableSyncRestProxy(context)),
-            timeout);
+        return submitThreadPool(() -> listBlocksWithResponseSync(options, context), LOGGER, timeout);
     }
 
     Response<BlockList> listBlocksWithResponseSync(BlockBlobListBlocksOptions options, Context context) {
@@ -1362,8 +1359,7 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> commitBlockListWithResponse(BlockBlobCommitBlockListOptions options,
         Duration timeout, Context context) {
-        return executeOperation(() -> commitBlockListWithResponseSync(options, enableSyncRestProxy(context)),
-            timeout);
+        return submitThreadPool(() -> commitBlockListWithResponseSync(options, context), LOGGER, timeout);
     }
 
     Response<BlockBlobItem> commitBlockListWithResponseSync(BlockBlobCommitBlockListOptions options,
