@@ -35,11 +35,9 @@ import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSettin
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
-import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 import com.azure.data.appconfiguration.models.SnapshotStatus;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Objects;
 
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
@@ -1234,40 +1232,6 @@ public final class ConfigurationClient {
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
             }
         );
-    }
-
-    /**
-     * Create a {@link ConfigurationSettingSnapshot} by providing a snapshot name and a list of
-     * {@link SnapshotSettingFilter}.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.beginCreateSnapshot -->
-     * <pre>
-     * List&lt;SnapshotSettingFilter&gt; filters = new ArrayList&lt;&gt;&#40;&#41;;
-     * &#47;&#47; Key Name also supports RegExp but only support prefix end with &quot;*&quot;, such as &quot;k*&quot; and is case-sensitive.
-     * filters.add&#40;new SnapshotSettingFilter&#40;&quot;&#123;keyName&#125;&quot;&#41;&#41;;
-     * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
-     *
-     * SyncPoller&lt;CreateSnapshotOperationDetail, ConfigurationSettingSnapshot&gt; poller =
-     *     client.beginCreateSnapshot&#40;snapshotName, filters&#41;;
-     * poller.setPollInterval&#40;Duration.ofSeconds&#40;10&#41;&#41;;
-     * poller.waitForCompletion&#40;&#41;;
-     * ConfigurationSettingSnapshot snapshot = poller.getFinalResult&#40;&#41;;
-     *
-     * System.out.printf&#40;&quot;Snapshot name=%s is created at %s%n&quot;, snapshot.getName&#40;&#41;, snapshot.getCreatedAt&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.data.appconfiguration.configurationclient.beginCreateSnapshot -->
-     *
-     * @param name The name of the {@link ConfigurationSettingSnapshot} to create.
-     * @param filters A list of filters used to filter the {@link ConfigurationSetting} included in the snapshot.
-     * @return A {@link SyncPoller} that polls the creating snapshot operation until it has completed or
-     * has failed. The completed operation returns a {@link ConfigurationSettingSnapshot}.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> beginCreateSnapshot(
-        String name, List<SnapshotSettingFilter> filters) {
-        return beginCreateSnapshot(name, new ConfigurationSettingSnapshot(filters), Context.NONE);
     }
 
     /**

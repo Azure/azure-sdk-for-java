@@ -1037,29 +1037,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void createSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
-        client = getConfigurationClient(httpClient, serviceVersion);
-        // Prepare a setting before creating a snapshot
-        addConfigurationSettingRunner((expected) -> assertConfigurationEquals(expected,
-            client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue()));
-
-        createSnapshotRunner((name, filters) -> {
-            SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
-                client.beginCreateSnapshot(name, filters);
-            poller.setPollInterval(Duration.ofSeconds(10));
-            poller.waitForCompletion();
-            ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
-
-            assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
-                DEFAULT_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
-
-            // Archived the snapshot, it will be deleted automatically when retention period expires.
-            assertEquals(SnapshotStatus.ARCHIVED, client.archiveSnapshot(name).getStatus());
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void getSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot
@@ -1103,7 +1080,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         createSnapshotRunner((name, filters) -> {
             SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
-                client.beginCreateSnapshot(name, filters);
+                client.beginCreateSnapshot(name, new ConfigurationSettingSnapshot(filters), Context.NONE);
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
             ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
