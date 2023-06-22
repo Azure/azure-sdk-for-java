@@ -37,9 +37,6 @@ public final class DocumentModelDetails {
      */
     private Map<String, String> tags;
 
-    private OffsetDateTime expiresOn;
-
-
     /**
      * Get the Unique model identifier.
      *
@@ -106,19 +103,6 @@ public final class DocumentModelDetails {
         this.tags = tags;
     }
 
-    /**
-     * Get the Date and time (UTC) when the analyze operation was submitted.
-     *
-     * @return the expiresOn value.
-     */
-    public OffsetDateTime getExpiresOn() {
-        return expiresOn;
-    }
-
-    private void setExpiresOn(OffsetDateTime expiresOn) {
-        this.expiresOn = expiresOn;
-    }
-
     static {
         DocumentModelDetailsHelper.setAccessor(new DocumentModelDetailsHelper.DocumentModelDetailsAccessor() {
             @Override
@@ -144,11 +128,6 @@ public final class DocumentModelDetails {
             @Override
             public void setTags(DocumentModelDetails documentModelDetails, Map<String, String> tags) {
                 documentModelDetails.setTags(tags);
-            }
-
-            @Override
-            public void setExpiresOn(DocumentModelDetails documentModelDetails, OffsetDateTime expiresOn) {
-                documentModelDetails.setExpiresOn(expiresOn);
             }
         });
     }

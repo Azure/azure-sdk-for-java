@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** granularity of the time series. */
+/** Defines values for Granularity. */
 public final class Granularity extends ExpandableStringEnum<Granularity> {
     /** Static value Yearly for Granularity. */
     public static final Granularity YEARLY = fromString("Yearly");
@@ -32,14 +32,6 @@ public final class Granularity extends ExpandableStringEnum<Granularity> {
     public static final Granularity CUSTOM = fromString("Custom");
 
     /**
-     * Creates a new instance of Granularity value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public Granularity() {}
-
-    /**
      * Creates or finds a Granularity from its string representation.
      *
      * @param name a name to look for.
@@ -50,11 +42,7 @@ public final class Granularity extends ExpandableStringEnum<Granularity> {
         return fromString(name, Granularity.class);
     }
 
-    /**
-     * Gets known Granularity values.
-     *
-     * @return known Granularity values.
-     */
+    /** @return known Granularity values. */
     public static Collection<Granularity> values() {
         return values(Granularity.class);
     }

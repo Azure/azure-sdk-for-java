@@ -14,17 +14,13 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 /**
- * Package-private serializer for Schema Registry.
- * Overrides {@link #serialize(Object, SerializerEncoding)} behaviour because the default serializer tries to serialise
- * an already serialised JSON object.
+ * Serializer for Schema Registry.
  */
 class SchemaRegistryJsonSerializer implements SerializerAdapter {
     private final SerializerAdapter adapter = JacksonAdapter.createDefaultSerializerAdapter();
 
     /**
-     * Serializes an object. If {@code encoding} is JSON and the {@code object} is a string, it passed through as-is.
-     * Otherwise, the object is serialized through the default serializer.  The reason is that Schema Registry schemas
-     * are JSON strings, we don't want to double serialize them, resulting in an incorrect schema.
+     * {@inheritDoc}
      */
     @Override
     public String serialize(Object object, SerializerEncoding encoding) throws IOException {
@@ -60,6 +56,7 @@ class SchemaRegistryJsonSerializer implements SerializerAdapter {
      */
     @Override
     public <T> T deserialize(String value, Type type, SerializerEncoding encoding) throws IOException {
+        //TODO (conniey): Test this.
         return adapter.deserialize(value, type, encoding);
     }
 

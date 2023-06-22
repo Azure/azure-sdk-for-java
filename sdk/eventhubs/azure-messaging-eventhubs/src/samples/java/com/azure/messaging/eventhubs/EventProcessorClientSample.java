@@ -3,8 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.credential.TokenCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import org.slf4j.Logger;
@@ -17,6 +15,9 @@ import java.util.function.Consumer;
  * Sample code to demonstrate how a customer might use {@link EventProcessorClient}.
  */
 public class EventProcessorClientSample {
+
+    private static final String EH_CONNECTION_STRING = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
+
     /**
      * Main method to demonstrate starting and stopping a {@link EventProcessorClient}.
      *
@@ -47,19 +48,9 @@ public class EventProcessorClientSample {
                 errorContext.getThrowable().getMessage());
         };
 
-        // The credential used is DefaultAzureCredential because it combines commonly used credentials
-        // in deployment and development and chooses the credential to used based on its running environment.
-        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
-        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-
-        // Create a processor client.
-        //
-        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
-        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventProcessorClientBuilder eventProcessorClientBuilder = new EventProcessorClientBuilder()
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
-                tokenCredential)
+            .connectionString(EH_CONNECTION_STRING)
             .processEvent(processEvent)
             .processError(processError)
             .checkpointStore(new SampleCheckpointStore());

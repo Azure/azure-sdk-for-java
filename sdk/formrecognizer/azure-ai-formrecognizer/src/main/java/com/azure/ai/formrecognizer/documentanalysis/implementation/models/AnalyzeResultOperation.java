@@ -5,7 +5,6 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -42,22 +41,8 @@ public final class AnalyzeResultOperation {
     @JsonProperty(value = "analyzeResult")
     private AnalyzeResult analyzeResult;
 
-    /**
-     * Creates an instance of AnalyzeResultOperation class.
-     *
-     * @param status the status value to set.
-     * @param createdDateTime the createdDateTime value to set.
-     * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
-     */
-    @JsonCreator
-    public AnalyzeResultOperation(
-            @JsonProperty(value = "status", required = true) AnalyzeResultOperationStatus status,
-            @JsonProperty(value = "createdDateTime", required = true) OffsetDateTime createdDateTime,
-            @JsonProperty(value = "lastUpdatedDateTime", required = true) OffsetDateTime lastUpdatedDateTime) {
-        this.status = status;
-        this.createdDateTime = createdDateTime;
-        this.lastUpdatedDateTime = lastUpdatedDateTime;
-    }
+    /** Creates an instance of AnalyzeResultOperation class. */
+    public AnalyzeResultOperation() {}
 
     /**
      * Get the status property: Operation status.
@@ -66,6 +51,17 @@ public final class AnalyzeResultOperation {
      */
     public AnalyzeResultOperationStatus getStatus() {
         return this.status;
+    }
+
+    /**
+     * Set the status property: Operation status.
+     *
+     * @param status the status value to set.
+     * @return the AnalyzeResultOperation object itself.
+     */
+    public AnalyzeResultOperation setStatus(AnalyzeResultOperationStatus status) {
+        this.status = status;
+        return this;
     }
 
     /**
@@ -78,12 +74,34 @@ public final class AnalyzeResultOperation {
     }
 
     /**
+     * Set the createdDateTime property: Date and time (UTC) when the analyze operation was submitted.
+     *
+     * @param createdDateTime the createdDateTime value to set.
+     * @return the AnalyzeResultOperation object itself.
+     */
+    public AnalyzeResultOperation setCreatedDateTime(OffsetDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
+        return this;
+    }
+
+    /**
      * Get the lastUpdatedDateTime property: Date and time (UTC) when the status was last updated.
      *
      * @return the lastUpdatedDateTime value.
      */
     public OffsetDateTime getLastUpdatedDateTime() {
         return this.lastUpdatedDateTime;
+    }
+
+    /**
+     * Set the lastUpdatedDateTime property: Date and time (UTC) when the status was last updated.
+     *
+     * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
+     * @return the AnalyzeResultOperation object itself.
+     */
+    public AnalyzeResultOperation setLastUpdatedDateTime(OffsetDateTime lastUpdatedDateTime) {
+        this.lastUpdatedDateTime = lastUpdatedDateTime;
+        return this;
     }
 
     /**

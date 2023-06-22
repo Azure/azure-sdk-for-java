@@ -262,6 +262,11 @@
           "justification" : "Fix enum constants reordered."
         },
         {
+          "code" : "java.field.addedStaticField",
+          "new" : "field com.mysql.cj.conf.PropertyKey.ociConfigProfile",
+          "justification" : "This is an external dependency and we do not control what gets added."
+        },
+        {
           "code" : "java.method.removed",
           "old" : "method int com.mysql.cj.protocol.ServerSession::getOldStatusFlags()",
           "justification" : "Fix method removed."
@@ -270,6 +275,21 @@
           "code" : "java.method.removed",
           "old" : "method void com.mysql.cj.protocol.ServerSession::setOldStatusFlags(int)",
           "justification" : "Fix method removed."
+        },
+        {
+          "code": "java.field.addedStaticField",
+          "new" : "field com.azure.storage.blob.BlobServiceVersion.V2023_01_03",
+          "justification": "We do not need to do a minor version bump for libraries that use Storage for this change"
+        },
+        {
+          "code": "java.method.added",
+          "new" : "method int com.azure.storage.blob.specialized.AppendBlobAsyncClient::getMaxAppendBlockBytes()",
+          "justification": "We do not need to do a minor version bump for libraries that use Storage for this change"
+        },
+        {
+          "code": "java.method.added",
+          "new": "method int com.azure.storage.blob.specialized.AppendBlobAsyncClient::getMaxBlocks()",
+          "justification": "We do not need to do a minor version bump for libraries that use Storage for this change"
         }
       ]
     }

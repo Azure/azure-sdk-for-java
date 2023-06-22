@@ -48,9 +48,6 @@ public final class AnomalyAlertingConfigurationPatch {
     @JsonProperty(value = "metricAlertingConfigurations")
     private List<MetricAlertingConfiguration> metricAlertingConfigurations;
 
-    /** Creates an instance of AnomalyAlertingConfigurationPatch class. */
-    public AnomalyAlertingConfigurationPatch() {}
-
     /**
      * Get the name property: Anomaly alerting configuration name.
      *

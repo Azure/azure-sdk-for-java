@@ -17,9 +17,6 @@ public final class ChangePointFeedbackValue {
     @JsonProperty(value = "changePointValue", required = true)
     private ChangePointValue changePointValue;
 
-    /** Creates an instance of ChangePointFeedbackValue class. */
-    public ChangePointFeedbackValue() {}
-
     /**
      * Get the changePointValue property: The changePointValue property.
      *

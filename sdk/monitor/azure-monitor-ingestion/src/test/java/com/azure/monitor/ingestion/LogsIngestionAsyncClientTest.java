@@ -5,12 +5,10 @@ package com.azure.monitor.ingestion;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
-import com.azure.monitor.ingestion.models.LogsUploadException;
 import com.azure.monitor.ingestion.models.LogsUploadOptions;
+import com.azure.monitor.ingestion.models.LogsUploadException;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import reactor.test.StepVerifier;
 
 import java.util.List;
@@ -28,11 +26,9 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
     @Test
     public void testUploadLogs() {
         List<Object> logs = getObjects(10);
-        DataValidationPolicy dataValidationPolicy = new DataValidationPolicy(logs);
-
-        LogsIngestionAsyncClient client = clientBuilder.addPolicy(dataValidationPolicy).buildAsyncClient();
+        LogsIngestionAsyncClient client = clientBuilder.buildAsyncClient();
         StepVerifier.create(client.upload(dataCollectionRuleId, streamName, logs))
-            .verifyComplete();
+                .verifyComplete();
     }
 
     @Test
@@ -40,57 +36,34 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
         List<Object> logs = getObjects(10000);
 
         AtomicInteger count = new AtomicInteger();
-        LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
-
         LogsIngestionAsyncClient client = clientBuilder
-            .addPolicy(logsCountPolicy)
-            .addPolicy(new BatchCountPolicy(count))
-            .buildAsyncClient();
+                .addPolicy(new BatchCountPolicy(count))
+                .buildAsyncClient();
 
         StepVerifier.create(client.upload(dataCollectionRuleId, streamName, logs))
-            .verifyComplete();
+                .verifyComplete();
 
         assertEquals(2, count.get());
-        assertEquals(logs.size(), logsCountPolicy.getTotalLogsCount());
-    }
-
-    @Test
-    public void testUploadLogsInBatchesConcurrently() {
-        List<Object> logs = getObjects(10000);
-
-        AtomicInteger count = new AtomicInteger();
-        LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
-        LogsIngestionAsyncClient client = clientBuilder
-            .addPolicy(new BatchCountPolicy(count))
-            .addPolicy(logsCountPolicy)
-            .buildAsyncClient();
-        StepVerifier.create(client.upload(dataCollectionRuleId, streamName, logs, new LogsUploadOptions().setMaxConcurrency(3)))
-            .verifyComplete();
-        assertEquals(2, count.get());
-        assertEquals(logs.size(), logsCountPolicy.getTotalLogsCount());
     }
 
     @Test
     public void testUploadLogsPartialFailure() {
         List<Object> logs = getObjects(100000);
         AtomicInteger count = new AtomicInteger();
-        LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
 
         LogsIngestionAsyncClient client = clientBuilder
-            .addPolicy(logsCountPolicy)
-            .addPolicy(new PartialFailurePolicy(count))
-            .buildAsyncClient();
+                .addPolicy(new PartialFailurePolicy(count))
+                .buildAsyncClient();
 
         StepVerifier.create(client.upload(dataCollectionRuleId, streamName, logs))
-            .verifyErrorSatisfies(error -> {
-                assertTrue(error instanceof LogsUploadException);
-                if (error instanceof LogsUploadException) {
-                    LogsUploadException ex = (LogsUploadException) error;
-                    assertEquals(49460, ex.getFailedLogsCount());
-                    assertEquals(5, ex.getLogsUploadErrors().size());
-                }
-            });
-        assertEquals(logs.size(), logsCountPolicy.getTotalLogsCount());
+                .verifyErrorSatisfies(error -> {
+                    assertTrue(error instanceof LogsUploadException);
+                    if (error instanceof LogsUploadException) {
+                        LogsUploadException ex = (LogsUploadException) error;
+                        assertEquals(49460, ex.getFailedLogsCount());
+                        assertEquals(5, ex.getLogsUploadErrors().size());
+                    }
+                });
     }
 
     @Test
@@ -99,19 +72,16 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
         AtomicInteger count = new AtomicInteger();
         AtomicLong failedLogsCount = new AtomicLong();
         LogsUploadOptions logsUploadOptions = new LogsUploadOptions()
-            .setLogsUploadErrorConsumer(error -> failedLogsCount.addAndGet(error.getFailedLogs().size()));
-        LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
+                .setLogsUploadErrorConsumer(error -> failedLogsCount.addAndGet(error.getFailedLogs().size()));
 
         LogsIngestionAsyncClient client = clientBuilder
-            .addPolicy(logsCountPolicy)
-            .addPolicy(new PartialFailurePolicy(count))
-            .buildAsyncClient();
+                .addPolicy(new PartialFailurePolicy(count))
+                .buildAsyncClient();
 
         StepVerifier.create(client.upload(dataCollectionRuleId, streamName, logs, logsUploadOptions))
-            .verifyComplete();
+                .verifyComplete();
         assertEquals(49460, failedLogsCount.get());
         assertEquals(11, count.get());
-        assertEquals(logs.size(), logsCountPolicy.getTotalLogsCount());
     }
 
     @Test
@@ -119,22 +89,18 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
         List<Object> logs = getObjects(100000);
         AtomicInteger count = new AtomicInteger();
         LogsUploadOptions logsUploadOptions = new LogsUploadOptions()
-            .setLogsUploadErrorConsumer(error -> {
-                // throw on first error
-                throw error.getResponseException();
-            });
-        LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
+                .setLogsUploadErrorConsumer(error -> {
+                    // throw on first error
+                    throw error.getResponseException();
+                });
 
         LogsIngestionAsyncClient client = clientBuilder
-            .addPolicy(logsCountPolicy)
-            .addPolicy(new PartialFailurePolicy(count))
-            .buildAsyncClient();
+                .addPolicy(new PartialFailurePolicy(count))
+                .buildAsyncClient();
 
         StepVerifier.create(client.upload(dataCollectionRuleId, streamName, logs, logsUploadOptions))
-            .verifyErrorSatisfies(ex -> assertTrue(ex instanceof HttpResponseException));
+                .verifyErrorSatisfies(ex -> assertTrue(ex instanceof HttpResponseException));
         assertEquals(2, count.get());
-        // this should stop on first error, so, only one request should be sent that contains a subset of logs
-        assertTrue(logs.size() > logsCountPolicy.getTotalLogsCount());
     }
 
     @Test
@@ -142,21 +108,19 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
         List<Object> logs = getObjects(10);
         LogsIngestionAsyncClient client = clientBuilder.buildAsyncClient();
         StepVerifier.create(client.uploadWithResponse(dataCollectionRuleId, streamName,
-                BinaryData.fromObject(logs), new RequestOptions()))
-            .assertNext(response -> assertEquals(204, response.getStatusCode()))
-            .verifyComplete();
+                        BinaryData.fromObject(logs), new RequestOptions().setHeader("Content-Encoding", "gzip")))
+                .assertNext(response -> assertEquals(204, response.getStatusCode()))
+                .verifyComplete();
     }
 
     @Test
-    @RecordWithoutRequestBody
-    @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE", disabledReason = "Test proxy network connection is timing out for this test in playback mode.")
     public void testUploadLargeLogsProtocolMethod() {
-        List<Object> logs = getObjects(375000);
+        List<Object> logs = getObjects(1000000);
         LogsIngestionAsyncClient client = clientBuilder.buildAsyncClient();
         StepVerifier.create(client.uploadWithResponse(dataCollectionRuleId, streamName,
-                BinaryData.fromObject(logs), new RequestOptions()))
-            .verifyErrorMatches(responseException -> (responseException instanceof HttpResponseException)
-                && ((HttpResponseException) responseException).getResponse().getStatusCode() == 413);
+                        BinaryData.fromObject(logs), new RequestOptions()))
+                .verifyErrorMatches(responseException -> (responseException instanceof HttpResponseException)
+                        && ((HttpResponseException) responseException).getResponse().getStatusCode() == 413);
     }
 
 }

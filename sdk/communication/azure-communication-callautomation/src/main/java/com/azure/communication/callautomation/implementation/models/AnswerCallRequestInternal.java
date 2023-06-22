@@ -29,22 +29,10 @@ public final class AnswerCallRequestInternal {
     private String operationContext;
 
     /*
-     * Media Streaming Configuration.
-     */
-    @JsonProperty(value = "mediaStreamingConfiguration")
-    private MediaStreamingConfigurationInternal mediaStreamingConfiguration;
-
-    /*
-     * The endpoint URL of the Azure Cognitive Services resource attached
-     */
-    @JsonProperty(value = "azureCognitiveServicesEndpointUrl")
-    private String azureCognitiveServicesEndpointUrl;
-
-    /*
      * The identifier of the call automation entity which answers the call
      */
-    @JsonProperty(value = "answeredByIdentifier")
-    private CommunicationUserIdentifierModel answeredByIdentifier;
+    @JsonProperty(value = "answeredBy")
+    private CommunicationUserIdentifierModel answeredBy;
 
     /**
      * Get the incomingCallContext property: The context associated with the call.
@@ -107,65 +95,22 @@ public final class AnswerCallRequestInternal {
     }
 
     /**
-     * Get the mediaStreamingConfiguration property: Media Streaming Configuration.
+     * Get the answeredBy property: The identifier of the call automation entity which answers the call.
      *
-     * @return the mediaStreamingConfiguration value.
+     * @return the answeredBy value.
      */
-    public MediaStreamingConfigurationInternal getMediaStreamingConfiguration() {
-        return this.mediaStreamingConfiguration;
+    public CommunicationUserIdentifierModel getAnsweredBy() {
+        return this.answeredBy;
     }
 
     /**
-     * Set the mediaStreamingConfiguration property: Media Streaming Configuration.
+     * Set the answeredBy property: The identifier of the call automation entity which answers the call.
      *
-     * @param mediaStreamingConfiguration the mediaStreamingConfiguration value to set.
+     * @param answeredBy the answeredBy value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public AnswerCallRequestInternal setMediaStreamingConfiguration(
-            MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
-        this.mediaStreamingConfiguration = mediaStreamingConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
-     *
-     * @return the azureCognitiveServicesEndpointUrl value.
-     */
-    public String getAzureCognitiveServicesEndpointUrl() {
-        return this.azureCognitiveServicesEndpointUrl;
-    }
-
-    /**
-     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
-     *
-     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public AnswerCallRequestInternal setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
-        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
-        return this;
-    }
-
-    /**
-     * Get the answeredByIdentifier property: The identifier of the call automation entity which answers the call.
-     *
-     * @return the answeredByIdentifier value.
-     */
-    public CommunicationUserIdentifierModel getAnsweredByIdentifier() {
-        return this.answeredByIdentifier;
-    }
-
-    /**
-     * Set the answeredByIdentifier property: The identifier of the call automation entity which answers the call.
-     *
-     * @param answeredByIdentifier the answeredByIdentifier value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public AnswerCallRequestInternal setAnsweredByIdentifier(CommunicationUserIdentifierModel answeredByIdentifier) {
-        this.answeredByIdentifier = answeredByIdentifier;
+    public AnswerCallRequestInternal setAnsweredBy(CommunicationUserIdentifierModel answeredBy) {
+        this.answeredBy = answeredBy;
         return this;
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -42,19 +41,8 @@ public final class Error {
     @JsonProperty(value = "innererror")
     private InnerError innererror;
 
-    /**
-     * Creates an instance of Error class.
-     *
-     * @param code the code value to set.
-     * @param message the message value to set.
-     */
-    @JsonCreator
-    public Error(
-            @JsonProperty(value = "code", required = true) String code,
-            @JsonProperty(value = "message", required = true) String message) {
-        this.code = code;
-        this.message = message;
-    }
+    /** Creates an instance of Error class. */
+    public Error() {}
 
     /**
      * Get the code property: Error code.
@@ -66,12 +54,34 @@ public final class Error {
     }
 
     /**
+     * Set the code property: Error code.
+     *
+     * @param code the code value to set.
+     * @return the Error object itself.
+     */
+    public Error setCode(String code) {
+        this.code = code;
+        return this;
+    }
+
+    /**
      * Get the message property: Error message.
      *
      * @return the message value.
      */
     public String getMessage() {
         return this.message;
+    }
+
+    /**
+     * Set the message property: Error message.
+     *
+     * @param message the message value to set.
+     * @return the Error object itself.
+     */
+    public Error setMessage(String message) {
+        this.message = message;
+        return this;
     }
 
     /**

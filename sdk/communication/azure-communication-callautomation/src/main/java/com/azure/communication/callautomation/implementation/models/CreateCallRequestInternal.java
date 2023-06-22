@@ -34,8 +34,8 @@ public final class CreateCallRequestInternal {
     /*
      * The identifier of the source of the call
      */
-    @JsonProperty(value = "sourceIdentity")
-    private CommunicationUserIdentifierModel sourceIdentity;
+    @JsonProperty(value = "source")
+    private CommunicationUserIdentifierModel source;
 
     /*
      * A customer set value used to track the answering of a call.
@@ -48,24 +48,6 @@ public final class CreateCallRequestInternal {
      */
     @JsonProperty(value = "callbackUri", required = true)
     private String callbackUri;
-
-    /*
-     * Media Streaming Configuration.
-     */
-    @JsonProperty(value = "mediaStreamingConfiguration")
-    private MediaStreamingConfigurationInternal mediaStreamingConfiguration;
-
-    /*
-     * The identifier of the Cognitive Service resource assigned to this call.
-     */
-    @JsonProperty(value = "azureCognitiveServicesEndpointUrl")
-    private String azureCognitiveServicesEndpointUrl;
-
-    /*
-     * Used by customer to send custom context to targets
-     */
-    @JsonProperty(value = "customContext")
-    private CustomContext customContext;
 
     /**
      * Get the targets property: The targets of the call.
@@ -130,22 +112,22 @@ public final class CreateCallRequestInternal {
     }
 
     /**
-     * Get the sourceIdentity property: The identifier of the source of the call.
+     * Get the source property: The identifier of the source of the call.
      *
-     * @return the sourceIdentity value.
+     * @return the source value.
      */
-    public CommunicationUserIdentifierModel getSourceIdentity() {
-        return this.sourceIdentity;
+    public CommunicationUserIdentifierModel getSource() {
+        return this.source;
     }
 
     /**
-     * Set the sourceIdentity property: The identifier of the source of the call.
+     * Set the source property: The identifier of the source of the call.
      *
-     * @param sourceIdentity the sourceIdentity value to set.
+     * @param source the source value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setSourceIdentity(CommunicationUserIdentifierModel sourceIdentity) {
-        this.sourceIdentity = sourceIdentity;
+    public CreateCallRequestInternal setSource(CommunicationUserIdentifierModel source) {
+        this.source = source;
         return this;
     }
 
@@ -186,69 +168,6 @@ public final class CreateCallRequestInternal {
      */
     public CreateCallRequestInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
-        return this;
-    }
-
-    /**
-     * Get the mediaStreamingConfiguration property: Media Streaming Configuration.
-     *
-     * @return the mediaStreamingConfiguration value.
-     */
-    public MediaStreamingConfigurationInternal getMediaStreamingConfiguration() {
-        return this.mediaStreamingConfiguration;
-    }
-
-    /**
-     * Set the mediaStreamingConfiguration property: Media Streaming Configuration.
-     *
-     * @param mediaStreamingConfiguration the mediaStreamingConfiguration value to set.
-     * @return the CreateCallRequestInternal object itself.
-     */
-    public CreateCallRequestInternal setMediaStreamingConfiguration(
-            MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
-        this.mediaStreamingConfiguration = mediaStreamingConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the azureCognitiveServicesEndpointUrl property: The identifier of the Cognitive Service resource assigned to
-     * this call.
-     *
-     * @return the azureCognitiveServicesEndpointUrl value.
-     */
-    public String getAzureCognitiveServicesEndpointUrl() {
-        return this.azureCognitiveServicesEndpointUrl;
-    }
-
-    /**
-     * Set the azureCognitiveServicesEndpointUrl property: The identifier of the Cognitive Service resource assigned to
-     * this call.
-     *
-     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
-     * @return the CreateCallRequestInternal object itself.
-     */
-    public CreateCallRequestInternal setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
-        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
-        return this;
-    }
-
-    /**
-     * Get the customContext property: Used by customer to send custom context to targets.
-     *
-     * @return the customContext value.
-     */
-    public CustomContext getCustomContext() {
-        return this.customContext;
-    }
-
-    /**
-     * Set the customContext property: Used by customer to send custom context to targets.
-     *
-     * @param customContext the customContext value to set.
-     * @return the CreateCallRequestInternal object itself.
-     */
-    public CreateCallRequestInternal setCustomContext(CustomContext customContext) {
-        this.customContext = customContext;
         return this;
     }
 }

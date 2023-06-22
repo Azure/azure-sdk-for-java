@@ -16,9 +16,6 @@ public final class CommentFeedbackValue {
     @JsonProperty(value = "commentValue", required = true)
     private String commentValue;
 
-    /** Creates an instance of CommentFeedbackValue class. */
-    public CommentFeedbackValue() {}
-
     /**
      * Get the commentValue property: the comment string.
      *

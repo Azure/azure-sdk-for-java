@@ -1,0 +1,233 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-a64851bc17714f0483d1e96b5d84953b/streams/Custom-MyTableRawData?api-version=2023-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "dec84252-a8f1-4979-b8dc-b755362d03b7",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "eb559a6e-507c-4794-9d0e-405e4ff38138",
+      "Date" : "Tue, 07 Feb 2023 07:40:36 GMT",
+      "x-ms-client-request-id" : "dec84252-a8f1-4979-b8dc-b755362d03b7"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-id/streams/Custom-MyTableRawData?api-version=2023-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "8c99e75f-a493-40ee-845a-bccfd7c5c10b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-error-code" : "NotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "e2b2d823-c6df-4adf-972b-c8e6d3220b20",
+      "Body" : "{\"error\":{\"code\":\"NotFound\",\"message\":\"Data collection rule with immutable Id 'dcr-id' not found.\"}}",
+      "Date" : "Tue, 07 Feb 2023 07:40:36 GMT",
+      "x-ms-client-request-id" : "8c99e75f-a493-40ee-845a-bccfd7c5c10b",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-a64851bc17714f0483d1e96b5d84953b/streams/Custom-MyTableRawData?api-version=2023-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "698816ee-aa91-48f5-99cf-38d1b5c07510",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "39cc88c9-666d-435e-b7f4-7bf8e90054f9",
+      "Date" : "Tue, 07 Feb 2023 07:40:36 GMT",
+      "x-ms-client-request-id" : "698816ee-aa91-48f5-99cf-38d1b5c07510"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-id/streams/Custom-MyTableRawData?api-version=2023-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "da4f685c-6762-4fe7-a8bf-3735fbd02492",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-error-code" : "NotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "a781dafa-a380-46ad-8222-aeffd9929761",
+      "Body" : "{\"error\":{\"code\":\"NotFound\",\"message\":\"Data collection rule with immutable Id 'dcr-id' not found.\"}}",
+      "Date" : "Tue, 07 Feb 2023 07:40:37 GMT",
+      "x-ms-client-request-id" : "da4f685c-6762-4fe7-a8bf-3735fbd02492",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-a64851bc17714f0483d1e96b5d84953b/streams/Custom-MyTableRawData?api-version=2023-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "f05364ef-29ce-4cfc-86c0-90e21c026097",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "5e7f17cf-a3c1-4fff-b789-b92d7068f801",
+      "Date" : "Tue, 07 Feb 2023 07:40:37 GMT",
+      "x-ms-client-request-id" : "f05364ef-29ce-4cfc-86c0-90e21c026097"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-id/streams/Custom-MyTableRawData?api-version=2023-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "3d87feac-536a-4e2a-b982-d07f22e55c53",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-error-code" : "NotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "6e412883-d05f-40a4-ac13-fb46b99423ff",
+      "Body" : "{\"error\":{\"code\":\"NotFound\",\"message\":\"Data collection rule with immutable Id 'dcr-id' not found.\"}}",
+      "Date" : "Tue, 07 Feb 2023 07:40:37 GMT",
+      "x-ms-client-request-id" : "3d87feac-536a-4e2a-b982-d07f22e55c53",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-a64851bc17714f0483d1e96b5d84953b/streams/Custom-MyTableRawData?api-version=2023-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "82f8c2ba-477d-4db8-94f9-f9e4fe01bff1",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "6a13d7b0-cf96-40ea-be2a-e1790ae0a59e",
+      "Date" : "Tue, 07 Feb 2023 07:40:36 GMT",
+      "x-ms-client-request-id" : "82f8c2ba-477d-4db8-94f9-f9e4fe01bff1"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-id/streams/Custom-MyTableRawData?api-version=2023-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "2ec4c9ab-bb5a-4208-9dc9-a633e9be9046",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-error-code" : "NotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "b19f2d75-5b43-49ee-bb83-14b1183f3155",
+      "Body" : "{\"error\":{\"code\":\"NotFound\",\"message\":\"Data collection rule with immutable Id 'dcr-id' not found.\"}}",
+      "Date" : "Tue, 07 Feb 2023 07:40:37 GMT",
+      "x-ms-client-request-id" : "2ec4c9ab-bb5a-4208-9dc9-a633e9be9046",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-a64851bc17714f0483d1e96b5d84953b/streams/Custom-MyTableRawData?api-version=2023-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "d61462a1-d51d-49a3-bea8-c822b92a4852",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "47d3294f-b41e-4944-9d82-cdb0c1e54192",
+      "Date" : "Tue, 07 Feb 2023 07:40:37 GMT",
+      "x-ms-client-request-id" : "d61462a1-d51d-49a3-bea8-c822b92a4852"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-id/streams/Custom-MyTableRawData?api-version=2023-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "829470d7-ef04-4401-9104-aff338e65135",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-error-code" : "NotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "0deb8a47-6014-4beb-8eaa-8eb2ee30ff42",
+      "Body" : "{\"error\":{\"code\":\"NotFound\",\"message\":\"Data collection rule with immutable Id 'dcr-id' not found.\"}}",
+      "Date" : "Tue, 07 Feb 2023 07:40:37 GMT",
+      "x-ms-client-request-id" : "829470d7-ef04-4401-9104-aff338e65135",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-a64851bc17714f0483d1e96b5d84953b/streams/Custom-MyTableRawData?api-version=2023-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "5b4840b5-9529-4bc2-9bbb-3f4fc0c0d5dc",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "e5054313-4813-4405-9de7-d7fa66214311",
+      "Date" : "Tue, 07 Feb 2023 07:40:37 GMT",
+      "x-ms-client-request-id" : "5b4840b5-9529-4bc2-9bbb-3f4fc0c0d5dc"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

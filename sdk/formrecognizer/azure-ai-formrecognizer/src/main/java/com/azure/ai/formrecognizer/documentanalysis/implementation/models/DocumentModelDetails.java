@@ -5,7 +5,6 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -32,12 +31,6 @@ public final class DocumentModelDetails {
     private OffsetDateTime createdDateTime;
 
     /*
-     * Date and time (UTC) when the document model will expire.
-     */
-    @JsonProperty(value = "expirationDateTime")
-    private OffsetDateTime expirationDateTime;
-
-    /*
      * API version used to create this document model.
      */
     @JsonProperty(value = "apiVersion")
@@ -55,19 +48,8 @@ public final class DocumentModelDetails {
     @JsonProperty(value = "docTypes")
     private Map<String, DocumentTypeDetails> docTypes;
 
-    /**
-     * Creates an instance of DocumentModelDetails class.
-     *
-     * @param modelId the modelId value to set.
-     * @param createdDateTime the createdDateTime value to set.
-     */
-    @JsonCreator
-    public DocumentModelDetails(
-            @JsonProperty(value = "modelId", required = true) String modelId,
-            @JsonProperty(value = "createdDateTime", required = true) OffsetDateTime createdDateTime) {
-        this.modelId = modelId;
-        this.createdDateTime = createdDateTime;
-    }
+    /** Creates an instance of DocumentModelDetails class. */
+    public DocumentModelDetails() {}
 
     /**
      * Get the modelId property: Unique document model name.
@@ -76,6 +58,17 @@ public final class DocumentModelDetails {
      */
     public String getModelId() {
         return this.modelId;
+    }
+
+    /**
+     * Set the modelId property: Unique document model name.
+     *
+     * @param modelId the modelId value to set.
+     * @return the DocumentModelDetails object itself.
+     */
+    public DocumentModelDetails setModelId(String modelId) {
+        this.modelId = modelId;
+        return this;
     }
 
     /**
@@ -108,22 +101,13 @@ public final class DocumentModelDetails {
     }
 
     /**
-     * Get the expirationDateTime property: Date and time (UTC) when the document model will expire.
+     * Set the createdDateTime property: Date and time (UTC) when the document model was created.
      *
-     * @return the expirationDateTime value.
-     */
-    public OffsetDateTime getExpirationDateTime() {
-        return this.expirationDateTime;
-    }
-
-    /**
-     * Set the expirationDateTime property: Date and time (UTC) when the document model will expire.
-     *
-     * @param expirationDateTime the expirationDateTime value to set.
+     * @param createdDateTime the createdDateTime value to set.
      * @return the DocumentModelDetails object itself.
      */
-    public DocumentModelDetails setExpirationDateTime(OffsetDateTime expirationDateTime) {
-        this.expirationDateTime = expirationDateTime;
+    public DocumentModelDetails setCreatedDateTime(OffsetDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
         return this;
     }
 

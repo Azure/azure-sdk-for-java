@@ -6,7 +6,6 @@ package com.azure.ai.formrecognizer.documentanalysis.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.documentanalysis.TestUtils;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
@@ -41,7 +40,6 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.getTestProx
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class DocumentModelAdministrationClientTestBase extends TestProxyTestBase {
-    private static final String BLANK_PDF_PATH = TestUtils.LOCAL_FILE_PATH + TestUtils.BLANK_PDF;
     Duration durationTestMode;
 
     /**
@@ -65,6 +63,7 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
             .serviceVersion(serviceVersion)
             .audience(audience);
 
+
         if (useKeyCredential) {
             if (interceptorManager.isPlaybackMode()) {
                 builder.credential(new AzureKeyCredential(INVALID_KEY));
@@ -72,8 +71,6 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
-            } else if (interceptorManager.isLiveMode()) {
-                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
             }
         } else {
             if (interceptorManager.isPlaybackMode()) {
@@ -82,13 +79,9 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(getCredentialByAuthority(endpoint));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
-            } else if (interceptorManager.isLiveMode()) {
-                builder.credential(getCredentialByAuthority(endpoint));
             }
         }
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(getTestProxySanitizers());
-        }
+        interceptorManager.addSanitizers(getTestProxySanitizers());
         return builder;
     }
     private void setMatchers() {
@@ -130,17 +123,11 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
         actualCustomModel.getDocumentTypes().forEach((s, docTypeInfo) -> assertNotNull(docTypeInfo.getFieldSchema()));
     }
 
-    void validateClassifierModelData(DocumentClassifierDetails documentClassifierDetails) {
-        assertNotNull(documentClassifierDetails.getCreatedOn());
-        assertNotNull(documentClassifierDetails.getClassifierId());
-        assertNotNull(documentClassifierDetails.getApiVersion());
-    }
-
     void blankPdfDataRunner(BiConsumer<InputStream, Long> testRunner) {
-        final long fileLength = new File(BLANK_PDF_PATH).length();
+        final long fileLength = new File(TestUtils.LOCAL_FILE_PATH + TestUtils.BLANK_PDF).length();
 
         try {
-            testRunner.accept(new FileInputStream(BLANK_PDF_PATH), fileLength);
+            testRunner.accept(new FileInputStream(TestUtils.LOCAL_FILE_PATH + TestUtils.BLANK_PDF), fileLength);
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Local file not found.", e);
         }
@@ -157,14 +144,6 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
 
     void multipageTrainingRunner(Consumer<String> testRunner) {
         TestUtils.getMultipageTrainingContainerHelper(testRunner, interceptorManager.isPlaybackMode());
-    }
-
-    void beginClassifierRunner(Consumer<String> testRunner) {
-        TestUtils.getClassifierTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
-    }
-
-    void selectionMarkTrainingRunner(Consumer<String> testRunner) {
-        TestUtils.getSelectionMarkTrainingContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
 
     private String getEndpoint() {

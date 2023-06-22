@@ -1,0 +1,397 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/prebuilt/idDocument/analyze?includeTextDetails=false",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "21",
+        "Content-Type": "application/json",
+        "Date": "Thu, 20 Apr 2023 20:19:17 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "231b82d6-9f99-40fe-9e9e-59c8a9f65521"
+      },
+      "RequestBody": {
+        "source": "REDACTED"
+      },
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "apim-request-id": "200faefe-f9f9-4d06-978d-646c513bb989",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:19:33 GMT",
+        "Operation-Location": "https://REDACTED/formrecognizer/v2.1/prebuilt/idDocument/analyzeResults/200faefe-f9f9-4d06-978d-646c513bb989",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "106",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/prebuilt/idDocument/analyzeResults/200faefe-f9f9-4d06-978d-646c513bb989",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:19:38 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "0565dfa5-90ca-4b54-83e9-ac1952fbb22e"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "cd022940-1cee-458c-ba51-273496dad789",
+        "Content-Length": "1606",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:19:38 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "37",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "status": "succeeded",
+        "createdDateTime": "2023-04-20T20:19:33Z",
+        "lastUpdatedDateTime": "2023-04-20T20:19:35Z",
+        "analyzeResult": {
+          "version": "2.1.0",
+          "readResults": [
+            {
+              "page": 1,
+              "angle": -0.2823,
+              "width": 450,
+              "height": 294,
+              "unit": "pixel"
+            }
+          ],
+          "documentResults": [
+            {
+              "docType": "prebuilt:idDocument:driverLicense",
+              "docTypeConfidence": 0.995,
+              "pageRange": [
+                1,
+                1
+              ],
+              "fields": {
+                "Address": {
+                  "type": "string",
+                  "valueString": "123 STREET ADDRESS YOUR CITY WA 99999-1234",
+                  "text": "123 STREET ADDRESS YOUR CITY WA 99999-1234",
+                  "boundingBox": [
+                    158,
+                    151,
+                    326,
+                    151,
+                    326,
+                    177,
+                    158,
+                    177
+                  ],
+                  "page": 1,
+                  "confidence": 0.965
+                },
+                "CountryRegion": {
+                  "type": "countryRegion",
+                  "valueCountryRegion": "USA",
+                  "confidence": 0.99
+                },
+                "DateOfBirth": {
+                  "type": "date",
+                  "valueDate": "1958-01-06",
+                  "text": "01/06/1958",
+                  "boundingBox": [
+                    187,
+                    133,
+                    272,
+                    132,
+                    272,
+                    148,
+                    187,
+                    149
+                  ],
+                  "page": 1,
+                  "confidence": 0.99
+                },
+                "DateOfExpiration": {
+                  "type": "date",
+                  "valueDate": "2020-08-12",
+                  "text": "08/12/2020",
+                  "boundingBox": [
+                    332,
+                    230,
+                    414,
+                    228,
+                    414,
+                    244,
+                    332,
+                    245
+                  ],
+                  "page": 1,
+                  "confidence": 0.99
+                },
+                "DocumentNumber": {
+                  "type": "string",
+                  "valueString": "WDLABCD456DG",
+                  "text": "LIC#WDLABCD456DG",
+                  "boundingBox": [
+                    162,
+                    70,
+                    307,
+                    68,
+                    307,
+                    84,
+                    163,
+                    85
+                  ],
+                  "page": 1,
+                  "confidence": 0.987
+                },
+                "FirstName": {
+                  "type": "string",
+                  "valueString": "LIAM R.",
+                  "text": "LIAM R.",
+                  "boundingBox": [
+                    158,
+                    102,
+                    216,
+                    102,
+                    216,
+                    116,
+                    158,
+                    116
+                  ],
+                  "page": 1,
+                  "confidence": 0.985
+                },
+                "LastName": {
+                  "type": "string",
+                  "valueString": "TALBOT",
+                  "text": "TALBOT",
+                  "boundingBox": [
+                    160,
+                    86,
+                    213,
+                    85,
+                    213,
+                    99,
+                    160,
+                    100
+                  ],
+                  "page": 1,
+                  "confidence": 0.987
+                },
+                "Region": {
+                  "type": "string",
+                  "valueString": "Washington",
+                  "confidence": 0.99
+                },
+                "Sex": {
+                  "type": "string",
+                  "valueString": "M",
+                  "text": "M",
+                  "boundingBox": [
+                    226,
+                    190,
+                    232,
+                    190,
+                    233,
+                    201,
+                    226,
+                    201
+                  ],
+                  "page": 1,
+                  "confidence": 0.99
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/prebuilt/idDocument/analyzeResults/200faefe-f9f9-4d06-978d-646c513bb989",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:19:39 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "70820ec7-352e-4dca-a2cf-50bf59b72cf7"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "c4ed7b92-486a-4881-8ac3-84d706529bfb",
+        "Content-Length": "1606",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:19:38 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "36",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "status": "succeeded",
+        "createdDateTime": "2023-04-20T20:19:33Z",
+        "lastUpdatedDateTime": "2023-04-20T20:19:35Z",
+        "analyzeResult": {
+          "version": "2.1.0",
+          "readResults": [
+            {
+              "page": 1,
+              "angle": -0.2823,
+              "width": 450,
+              "height": 294,
+              "unit": "pixel"
+            }
+          ],
+          "documentResults": [
+            {
+              "docType": "prebuilt:idDocument:driverLicense",
+              "docTypeConfidence": 0.995,
+              "pageRange": [
+                1,
+                1
+              ],
+              "fields": {
+                "Address": {
+                  "type": "string",
+                  "valueString": "123 STREET ADDRESS YOUR CITY WA 99999-1234",
+                  "text": "123 STREET ADDRESS YOUR CITY WA 99999-1234",
+                  "boundingBox": [
+                    158,
+                    151,
+                    326,
+                    151,
+                    326,
+                    177,
+                    158,
+                    177
+                  ],
+                  "page": 1,
+                  "confidence": 0.965
+                },
+                "CountryRegion": {
+                  "type": "countryRegion",
+                  "valueCountryRegion": "USA",
+                  "confidence": 0.99
+                },
+                "DateOfBirth": {
+                  "type": "date",
+                  "valueDate": "1958-01-06",
+                  "text": "01/06/1958",
+                  "boundingBox": [
+                    187,
+                    133,
+                    272,
+                    132,
+                    272,
+                    148,
+                    187,
+                    149
+                  ],
+                  "page": 1,
+                  "confidence": 0.99
+                },
+                "DateOfExpiration": {
+                  "type": "date",
+                  "valueDate": "2020-08-12",
+                  "text": "08/12/2020",
+                  "boundingBox": [
+                    332,
+                    230,
+                    414,
+                    228,
+                    414,
+                    244,
+                    332,
+                    245
+                  ],
+                  "page": 1,
+                  "confidence": 0.99
+                },
+                "DocumentNumber": {
+                  "type": "string",
+                  "valueString": "WDLABCD456DG",
+                  "text": "LIC#WDLABCD456DG",
+                  "boundingBox": [
+                    162,
+                    70,
+                    307,
+                    68,
+                    307,
+                    84,
+                    163,
+                    85
+                  ],
+                  "page": 1,
+                  "confidence": 0.987
+                },
+                "FirstName": {
+                  "type": "string",
+                  "valueString": "LIAM R.",
+                  "text": "LIAM R.",
+                  "boundingBox": [
+                    158,
+                    102,
+                    216,
+                    102,
+                    216,
+                    116,
+                    158,
+                    116
+                  ],
+                  "page": 1,
+                  "confidence": 0.985
+                },
+                "LastName": {
+                  "type": "string",
+                  "valueString": "TALBOT",
+                  "text": "TALBOT",
+                  "boundingBox": [
+                    160,
+                    86,
+                    213,
+                    85,
+                    213,
+                    99,
+                    160,
+                    100
+                  ],
+                  "page": 1,
+                  "confidence": 0.987
+                },
+                "Region": {
+                  "type": "string",
+                  "valueString": "Washington",
+                  "confidence": 0.99
+                },
+                "Sex": {
+                  "type": "string",
+                  "valueString": "M",
+                  "text": "M",
+                  "boundingBox": [
+                    226,
+                    190,
+                    232,
+                    190,
+                    233,
+                    201,
+                    226,
+                    201
+                  ],
+                  "page": 1,
+                  "confidence": 0.99
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

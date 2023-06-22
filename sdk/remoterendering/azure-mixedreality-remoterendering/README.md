@@ -55,12 +55,12 @@ and then include the direct dependency in the dependencies section without the v
 
 Add the following Maven dependency:
 
-[//]: # ({x-version-update-start;com.azure:azure-mixedreality-remoterendering;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-mixedreality-remoterendering;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-mixedreality-remoterendering</artifactId>
-    <version>1.1.18</version>
+    <version>1.1.19</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -136,9 +136,7 @@ Use the `DeviceCodeCredential` object to perform device code authentication.
 
 ```java readme-sample-createClientWithDeviceCode
 DeviceCodeCredential credential = new DeviceCodeCredentialBuilder()
-    .challengeConsumer((DeviceCodeInfo deviceCodeInfo) -> {
-        logger.info(deviceCodeInfo.getMessage());
-    })
+    .challengeConsumer((DeviceCodeInfo deviceCodeInfo) -> { logger.info(deviceCodeInfo.getMessage()); })
     .clientId(environment.getClientId())
     .tenantId(environment.getTenantId())
     .authorityHost("https://login.microsoftonline.com/" + environment.getTenantId())

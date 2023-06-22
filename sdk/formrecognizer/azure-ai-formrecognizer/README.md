@@ -7,7 +7,6 @@ It includes the following main features:
 * Prebuilt - Analyze data from certain types of common documents (such as receipts, invoices, business cards, identity documents or US W2 tax forms) using prebuilt models.
 * Custom - Build custom models to extract text, field values, selection marks, and table data from documents. Custom models are built with your own data, so they're tailored to your documents.
 * Read - Read information about textual elements, such as page words and lines in addition to text language information.
-* Classifiers - Build custom classifiers to categorize documents into predefined classes.
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
 
@@ -58,7 +57,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>4.1.0-beta.2</version>
+    <version>4.0.8</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -71,7 +70,6 @@ This table shows the relationship between SDK versions and supported API version
 |3.0.x | 2.0
 |3.1.X - 3.1.12| 2.0, 2.1 (default)
 |4.0.0-beta.1 - Latest GA release| 2022-08-31 (default)
-|4.1.0-beta.1 - Latest beta release| V2023_02_28_preview
 
 > Note: Starting with version 4.0.X, a new set of clients were introduced to leverage the newest features
 > of the Form Recognizer service. Please see the [Migration Guide][migration_guide] for detailed instructions on how to update application
@@ -146,11 +144,10 @@ DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilde
 ```
 
 ```java readme-sample-createDocumentModelAdministrationClient
-DocumentModelAdministrationClient client =
-    new DocumentModelAdministrationClientBuilder()
-        .credential(new AzureKeyCredential("{key}"))
-        .endpoint("{endpoint}")
-        .buildClient();
+DocumentModelAdministrationClient documentModelAdminClient = new DocumentModelAdministrationClientBuilder()
+    .credential(new AzureKeyCredential("{key}"))
+    .endpoint("{endpoint}")
+    .buildClient();
 ```
 
 #### Create a Document Analysis client with Azure Active Directory credential
@@ -165,7 +162,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.9.0</version>
+    <version>1.8.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -181,9 +178,10 @@ Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds
 running environment. For more information about using Azure Active Directory authorization with Form Recognizer, see [the associated documentation][aad_authorization].
 
 ```java readme-sample-createDocumentAnalysisClientWithAAD
+TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
     .endpoint("{endpoint}")
-    .credential(new DefaultAzureCredentialBuilder().build())
+    .credential(credential)
     .buildClient();
 ```
 
@@ -231,7 +229,6 @@ The following section provides several code snippets covering some of the most c
 * [Build a Document Model](#build-a-document-model "Build a Document Model")
 * [Analyze Documents using a Custom Model](#analyze-documents-using-a-custom-model "Analyze Documents using a Custom Model")
 * [Manage Your Models](#manage-your-models "Manage Your Models")
-* [Classify a document](#classify-a-document "Classify a Document")
 
 ### Extract Layout
 Extract text, table structures, and selection marks like radio buttons and check boxes, along with their bounding box coordinates from documents without the need to build a model.
@@ -239,7 +236,7 @@ Extract text, table structures, and selection marks like radio buttons and check
 // analyze document layout using file input stream
 File layoutDocument = new File("local/file_path/filename.png");
 Path filePath = layoutDocument.toPath();
-BinaryData layoutDocumentData = BinaryData.fromFile(filePath, (int) layoutDocument.length());
+BinaryData layoutDocumentData = BinaryData.fromFile(filePath);
 
 SyncPoller<OperationResult, AnalyzeResult> analyzeLayoutResultPoller =
     documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", layoutDocumentData);
@@ -281,7 +278,7 @@ for (int i = 0; i < tables.size(); i++) {
 }
 ```
 
-### Use a General Document Model
+### Use a General Document Model 
 Analyze key-value pairs, tables, styles, and selection marks from documents using the general document model provided by
 the Form Recognizer service.
 Select the General Document Model by passing modelId="prebuilt-document" into the beginAnalyzeDocumentFromUrl method as follows:
@@ -561,23 +558,6 @@ customDocumentModels.forEach(documentModelSummary -> {
 // Delete Model
 documentModelAdminClient.deleteDocumentModel(modelId.get());
 ```
-
-### Classify a document
-
-The Form Recognizer service supports custom document classifiers that can classify documents into a set of predefined categories based on a training data set.
-Documents can be classified with a custom classifier using the `beginClassifyDocument` or `beginClassifyDocumentFromUrl` 
-method of `DocumentAnalysisClient`.
-The following sample shows how to classify a document using a custom classifier:
-```java readme-sample-classifyDocument
-String documentUrl = "{file_source_url}";
-String classifierId = "{custom_trained_classifier_id}";
-
-documentAnalysisClient.beginClassifyDocumentFromUrl(classifierId, documentUrl, Context.NONE)
-    .getFinalResult()
-    .getDocuments()
-    .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocType()));
-```
-
 For more detailed examples, refer to [samples][sample_examples].
 
 ## Troubleshooting
@@ -622,7 +602,6 @@ These code samples show common scenario operations with the Azure Form Recognize
 * Copy a model between Form Recognizer resources: [CopyModel][copy_model]
 * Create a composed model from a collection of custom-built models: [ComposeModel][compose_model]
 * Get/List document model operations associated with the Form Recognizer resource: [GetOperation][get_operation]
-* Build a document classifier : [BuildDocumentClassifier][build_document_classifier]
 
 ### Async APIs
 All the examples shown so far have been using synchronous APIs, but we provide full support for async APIs as well.
@@ -646,11 +625,10 @@ DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisCl
 * Copy a document model between Form Recognizer resources: [CopyModelAsync][copy_model_async]
 * Create a composed document model from a collection of custom-built models: [ComposeModelAsync][compose_model_async]
 * Get/List document model operations associated with the Form Recognizer resource: [GetOperationAsync][get_operation_async]
-* Build a document classifier : [BuildDocumentClassifierAsync][build_document_classifier_async]
 
 ### Additional documentation
 See the [Sample README][sample_readme] for several code snippets illustrating common patterns used in the Form Recognizer Java SDK.
-For more extensive documentation on Azure Cognitive Services Form Recognizer, see the [Form Recognizer documentation][form_recognizer_doc].
+For more extensive documentation on Azure Cognitive Services Form Recognizer, see the [Form Recognizer documentation][api_reference_doc].
 
 ## Contributing
 
@@ -664,8 +642,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [aad_authorization]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
 [azure_key_credential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/credential/AzureKeyCredential.java
 [key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
-[api_reference_doc]: https://azure.github.io/azure-sdk-for-java
-[form_recognizer_doc]: https://aka.ms/azsdk-java-formrecognizer-ref-doc
+[api_reference_doc]: https://azure.github.io/azure-sdk-for-java/cognitiveservices.html
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
 [azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
 [azure_cli_endpoint]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
@@ -702,8 +679,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [manage_custom_models_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/ManageCustomModelsAsync.java
 [build_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/BuildDocumentModel.java
 [build_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/BuildDocumentModelAsync.java
-[build_document_classifier]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/BuildDocumentClassifier.java
-[build_document_classifier_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/BuildDocumentClassifierAsync.java
 [compose_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/ComposeDocumentModel.java
 [compose_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/ComposeDocumentModelAsync.java
 [copy_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CopyDocumentModel.java

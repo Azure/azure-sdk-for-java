@@ -5,7 +5,6 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -24,15 +23,8 @@ public final class GetOperationsResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /**
-     * Creates an instance of GetOperationsResponse class.
-     *
-     * @param value the value value to set.
-     */
-    @JsonCreator
-    public GetOperationsResponse(@JsonProperty(value = "value", required = true) List<OperationSummary> value) {
-        this.value = value;
-    }
+    /** Creates an instance of GetOperationsResponse class. */
+    public GetOperationsResponse() {}
 
     /**
      * Get the value property: List of operations.
@@ -41,6 +33,17 @@ public final class GetOperationsResponse {
      */
     public List<OperationSummary> getValue() {
         return this.value;
+    }
+
+    /**
+     * Set the value property: List of operations.
+     *
+     * @param value the value value to set.
+     * @return the GetOperationsResponse object itself.
+     */
+    public GetOperationsResponse setValue(List<OperationSummary> value) {
+        this.value = value;
+        return this;
     }
 
     /**

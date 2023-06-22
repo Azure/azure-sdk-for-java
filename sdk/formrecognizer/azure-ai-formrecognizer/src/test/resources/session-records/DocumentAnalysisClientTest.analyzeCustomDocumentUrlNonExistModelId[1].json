@@ -1,0 +1,43 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/00000000-0000-0000-0000-000000000000:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2022-08-31",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "24",
+        "Content-Type": "application/json",
+        "Date": "Thu, 20 Apr 2023 20:16:08 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "722b2b2f-8eac-4aa3-afec-bd693edac54f"
+      },
+      "RequestBody": {
+        "urlSource": "REDACTED"
+      },
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "apim-request-id": "0e844dd7-cf9c-4eb8-97b9-0c7d9adb0ff9",
+        "Content-Length": "146",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:16:09 GMT",
+        "ms-azure-ai-errorcode": "NotFound",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "228",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "NotFound",
+          "message": "Resource not found.",
+          "innererror": {
+            "code": "ModelNotFound",
+            "message": "The requested model was not found."
+          }
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}
