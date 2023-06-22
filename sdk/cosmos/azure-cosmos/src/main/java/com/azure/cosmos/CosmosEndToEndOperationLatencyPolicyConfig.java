@@ -21,7 +21,6 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
      * @param isEnabled                    toggle if the policy should be enabled or disabled
      * @param endToEndOperationTimeout     the timeout for request cancellation in {@link Duration}. Setting very low timeouts
      *                                     can cause the request to never succeed.
-     * @param endToEndFeedOperationTimeout
      * @param availabilityStrategy         the availability strategy to be used for the policy
      */
     CosmosEndToEndOperationLatencyPolicyConfig(
