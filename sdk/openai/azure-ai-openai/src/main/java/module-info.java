@@ -4,6 +4,7 @@
 
 module com.azure.ai.openai {
     requires transitive com.azure.core;
+    requires transitive com.azure.core.experimental;
 
     exports com.azure.ai.openai;
     exports com.azure.ai.openai.models;
