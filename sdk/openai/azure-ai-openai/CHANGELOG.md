@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Support for the OpenAI moderations API
+
 ### Breaking Changes
 
 ### Bugs Fixed

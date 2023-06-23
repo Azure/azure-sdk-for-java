@@ -16,6 +16,8 @@ import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageOperationResponse;
 import com.azure.ai.openai.models.ImageOperationStatus;
+import com.azure.ai.openai.models.Moderation;
+import com.azure.ai.openai.models.ModerationOptions;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -265,6 +267,79 @@ public final class OpenAIAsyncClient {
     }
 
     /**
+     * Gets moderations for the provided input. The moderations endpoint is a tool you can use to check
+     * whether content complies with OpenAI's usage policies. Developers can thus identify content
+     * that our usage policies prohibits and take action, for instance by filtering it.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     input (Required): [
+     *         String (Required)
+     *     ]
+     *     model: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id (Required): String,
+     *     model (Required): String,
+     *     results: [
+     *       {
+     *         categories (Required): {
+     *           <category_type>: Boolean
+     *           ...
+     *         },
+     *         category_scores: {
+     *           <category_type>: Double
+     *           ...
+     *         },
+     *         flagged (Required): Boolean
+     *       }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * Each category_type above is one of:
+     *
+     * hate: Content that expresses, incites, or promotes hate based on race, gender, ethnicity, religion,
+     * nationality, sexual orientation, disability status, or caste. Hateful content aimed at non-protected
+     * groups (e.g., chess players) is not covered by this category.
+     * hate/threatening: Hateful content that also includes violence or serious harm towards the targeted group.
+     * self-harm: Content that promotes, encourages, or depicts acts of self-harm, such as suicide, cutting,
+     * and eating disorders.
+     * sexual: Content meant to arouse sexual excitement, such as the description of sexual activity, or that
+     * promotes sexual services (excluding sex education and wellness).
+     * sexual/minors: Sexual content that includes an individual who is under 18 years old.
+     * violence: Content that promotes or glorifies violence or celebrates the suffering or humiliation of others.
+     * violence/graphic: Violent content that depicts death, violence, or serious physical injury in extreme
+     * graphic detail.
+     *
+     * @param deploymentId deployment id of the deployed model.
+     * @param moderationsOptions the configuration information for a moderation request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the moderation check to see if the input violates OpenAI's usage policies
+     * along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getModerationsWithResponse(
+            String deploymentId, BinaryData moderationsOptions, RequestOptions requestOptions) {
+        return openAIServiceClient.getModerationsWithResponseAsync(
+                    deploymentId, moderationsOptions, requestOptions);
+    }
+
+
+    /**
      * Return the embeddings for a given prompt.
      *
      * @param deploymentId deployment id of the deployed model.
@@ -422,6 +497,32 @@ public final class OpenAIAsyncClient {
         OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream =
                 new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
         return chatCompletionsStream.getEvents();
+    }
+
+    /**
+     * Gets moderations for the provided input. The moderations endpoint is a tool you can use to check
+     * whether content complies with OpenAI's usage policies. Developers can thus identify content
+     * that our usage policies prohibits and take action, for instance by filtering it.
+     *
+     * @param deploymentId deployment id of the deployed model.
+     * @param moderationOptions the configuration information for a moderation request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the moderation check to see if the input violates OpenAI's usage policies.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Moderation> getModerations(
+            String deploymentId, ModerationOptions moderationOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        return getModerationsWithResponse(
+                        deploymentId, BinaryData.fromObject(moderationOptions), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(Moderation.class));
     }
 
     @Generated private final OpenAIClientImpl serviceClient;
