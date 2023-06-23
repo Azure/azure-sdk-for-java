@@ -3,12 +3,18 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpResponse
+import com.azure.core.http.ProxyOptions
 import com.azure.core.http.RequestConditions
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
+import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.http.policy.UserAgentPolicy
 import com.azure.core.util.BinaryData
+import com.azure.core.util.Context
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.HttpClientOptions
 import com.azure.core.util.ProgressListener
@@ -73,6 +79,7 @@ import java.nio.file.OpenOption
 import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
 import java.time.Duration
+import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
@@ -3505,6 +3512,18 @@ class BlobAPITest extends APISpec {
 
         then:
         thrown(IllegalArgumentException)
+    }
+
+    def "Parse sas token with start and end time date only"() {
+        when:
+        // sas token's st and se are usually in the following format: st=2021-06-21T00:00:00Z&se=2021-06-22T00:00:00Z
+        // using a hardcoded url to test the start time and end time parsing without time added
+        def testUrl = "https://<accountName>/<containerName>?sp=racwdl&st=2023-06-21&se=2023-06-22&spr=https&sv=2022-11-02&sr=c&sig=<signatureToken>"
+        def parts = BlobUrlParts.parse(testUrl)
+
+        then:
+        parts.getCommonSasQueryParameters().getStartTime().toLocalDate() == LocalDate.of(2023, 6, 21)
+        parts.getCommonSasQueryParameters().getExpiryTime().toLocalDate() == LocalDate.of(2023, 6, 22)
     }
 
     @IgnoreIf({ getEnvironment().serviceVersion != null })
