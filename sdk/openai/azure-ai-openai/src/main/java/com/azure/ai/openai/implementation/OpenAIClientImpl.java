@@ -5,6 +5,7 @@
 package com.azure.ai.openai.implementation;
 
 import com.azure.ai.openai.OpenAIServiceVersion;
+import com.azure.ai.openai.models.ImageOperationResponse;
 import com.azure.ai.openai.models.ImageOperationStatus;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
@@ -548,7 +549,7 @@ public final class OpenAIClientImpl {
      *                     int (Required)
      *                 ]
      *             }
-     *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
+     *             finish_reason: String(stop/length/content_filter) (Required)
      *         }
      *     ]
      *     usage (Required): {
@@ -645,7 +646,7 @@ public final class OpenAIClientImpl {
      *                     int (Required)
      *                 ]
      *             }
-     *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
+     *             finish_reason: String(stop/length/content_filter) (Required)
      *         }
      *     ]
      *     usage (Required): {
@@ -726,7 +727,7 @@ public final class OpenAIClientImpl {
      *                 content: String (Optional)
      *             }
      *             index: int (Required)
-     *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
+     *             finish_reason: String(stop/length/content_filter) (Required)
      *             delta (Optional): (recursive schema, see delta above)
      *         }
      *     ]
@@ -811,7 +812,7 @@ public final class OpenAIClientImpl {
      *                 content: String (Optional)
      *             }
      *             index: int (Required)
-     *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
+     *             finish_reason: String(stop/length/content_filter) (Required)
      *             delta (Optional): (recursive schema, see delta above)
      *         }
      *     ]
@@ -889,8 +890,8 @@ public final class OpenAIClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of the operation if the operation succeeded along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return a polling status update or final response payload for an image operation along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getImageOperationStatusWithResponseAsync(
@@ -948,7 +949,7 @@ public final class OpenAIClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of the operation if the operation succeeded along with {@link Response}.
+     * @return a polling status update or final response payload for an image operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getImageOperationStatusWithResponse(String operationId, RequestOptions requestOptions) {
@@ -1241,7 +1242,7 @@ public final class OpenAIClientImpl {
      * @return the {@link PollerFlux} for polling of status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult, ImageOperationStatus> beginStartGenerateImageWithModelAsync(
+    public PollerFlux<PollResult, ImageOperationResponse> beginStartGenerateImageWithModelAsync(
             BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
@@ -1254,7 +1255,7 @@ public final class OpenAIClientImpl {
                                                 ? requestOptions.getContext()
                                                 : Context.NONE)),
                 TypeReference.createInstance(PollResult.class),
-                TypeReference.createInstance(ImageOperationStatus.class));
+                TypeReference.createInstance(ImageOperationResponse.class));
     }
 
     /**
@@ -1301,7 +1302,7 @@ public final class OpenAIClientImpl {
      * @return the {@link SyncPoller} for polling of status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult, ImageOperationStatus> beginStartGenerateImageWithModel(
+    public SyncPoller<PollResult, ImageOperationResponse> beginStartGenerateImageWithModel(
             BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         return SyncPoller.createPoller(
                 Duration.ofSeconds(1),
@@ -1314,6 +1315,6 @@ public final class OpenAIClientImpl {
                                                 ? requestOptions.getContext()
                                                 : Context.NONE)),
                 TypeReference.createInstance(PollResult.class),
-                TypeReference.createInstance(ImageOperationStatus.class));
+                TypeReference.createInstance(ImageOperationResponse.class));
     }
 }

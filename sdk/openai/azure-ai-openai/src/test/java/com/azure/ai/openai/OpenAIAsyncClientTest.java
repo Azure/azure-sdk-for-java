@@ -9,10 +9,12 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
+import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -216,5 +219,19 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                 })
                 .verifyComplete();
         });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGenerateImage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        ImageGenerationOptions options = new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh");
+        StepVerifier.create(client.generateImage(options))
+            .assertNext(imageOperationResponse -> {
+                assertNotNull(imageOperationResponse.getResult());
+                assertNotNull(imageOperationResponse.getResult().getData());
+                assertFalse(imageOperationResponse.getResult().getData().isEmpty());
+            })
+            .verifyComplete();
     }
 }
