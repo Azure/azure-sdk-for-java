@@ -47,6 +47,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -537,9 +538,9 @@ public class NettyAsyncHttpClientBuilderTests {
             .port(server.getHttpPort())
             .build();
 
-        StepVerifier.create(nettyClient.nettyClient.get().uri(DEFAULT_PATH).response())
-            .assertNext(response -> assertEquals(200, response.status().code()))
-            .verifyComplete();
+        SocketAddress remoteAddress = nettyClient.nettyClient.configuration().remoteAddress().get();
+        InetSocketAddress socketAddress = assertInstanceOf(InetSocketAddress.class, remoteAddress);
+        assertEquals(server.getHttpPort(), socketAddress.getPort());
     }
 
     /**
