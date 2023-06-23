@@ -1,5 +1,6 @@
 package com.azure.sdk.build.tool;
 
+import com.azure.sdk.build.tool.models.BuildErrorCode;
 import com.azure.sdk.build.tool.mojo.AzureSdkMojo;
 import com.azure.sdk.build.tool.util.AnnotatedMethodCallerResult;
 import com.azure.sdk.build.tool.util.logging.Logger;
@@ -60,7 +61,7 @@ public class AnnotationProcessingTool implements Runnable {
                 StringBuilder message = new StringBuilder();
                 message.append(getString("betaApiUsed")).append(System.lineSeparator());
                 betaMethodCallers.forEach(method -> message.append("   - ").append(method.toString()).append(System.lineSeparator()));
-                failOrWarn(() -> AzureSdkMojo.MOJO.isValidateNoBetaApiUsed(), message.toString());
+                failOrWarn(() -> AzureSdkMojo.MOJO.isValidateNoBetaApiUsed(), BuildErrorCode.BETA_API_USED, message.toString());
             }
         }
     }

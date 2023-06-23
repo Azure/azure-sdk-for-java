@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed a bug in `DiagnosticSetting` initialization where category groups overwrite log settings.
+
 ### Other Changes
 
 ## 2.27.0 (2023-05-25)

@@ -26,13 +26,13 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Collections;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -97,6 +97,11 @@ public class TestUtils {
     }
 
     /**
+     * Namespace used to record tests.
+     */
+    public static final String TEST_NAMESPACE = "sb-java-conniey-sba";
+
+    /**
      * Gets the namespace connection string.
      *
      * @return The namespace connection string.
@@ -152,7 +157,7 @@ public class TestUtils {
      * @return The fully qualified domain name for the service bus resource.
      */
     public static String getFullyQualifiedDomainName() {
-        return getPropertyValue("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME");
+        return getPropertyValue("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME", "REDACTED.servicebus.windows.net");
     }
 
     public static String getEndpoint() {
@@ -165,7 +170,7 @@ public class TestUtils {
      * @return The Service Bus queue name.
      */
     public static String getQueueBaseName() {
-        return getPropertyValue("AZURE_SERVICEBUS_QUEUE_NAME");
+        return getPropertyValue("AZURE_SERVICEBUS_QUEUE_NAME", "queue");
     }
 
     /**
@@ -174,7 +179,7 @@ public class TestUtils {
      * @return The Service Bus rule name.
      */
     public static String getRuleBaseName() {
-        return getPropertyValue("AZURE_SERVICEBUS_RULE_NAME");
+        return getPropertyValue("AZURE_SERVICEBUS_RULE_NAME", "rule");
     }
 
     /**
@@ -183,7 +188,7 @@ public class TestUtils {
      * @return The Service Bus queue name.
      */
     public static String getSessionQueueBaseName() {
-        return getPropertyValue("AZURE_SERVICEBUS_SESSION_QUEUE_NAME");
+        return getPropertyValue("AZURE_SERVICEBUS_SESSION_QUEUE_NAME", "queue-session");
     }
 
     /**
@@ -192,7 +197,7 @@ public class TestUtils {
      * @return The Service Bus subscription name.
      */
     public static String getSubscriptionBaseName() {
-        return getPropertyValue("AZURE_SERVICEBUS_SUBSCRIPTION_NAME");
+        return getPropertyValue("AZURE_SERVICEBUS_SUBSCRIPTION_NAME", "subscription");
     }
 
     /**
@@ -201,7 +206,7 @@ public class TestUtils {
      * @return The Service Bus subscription name.
      */
     public static String getTopicBaseName() {
-        return getPropertyValue("AZURE_SERVICEBUS_TOPIC_NAME");
+        return getPropertyValue("AZURE_SERVICEBUS_TOPIC_NAME", "topic");
     }
 
     /**
@@ -210,7 +215,7 @@ public class TestUtils {
      * @return The Service Bus subscription name.
      */
     public static String getSessionSubscriptionBaseName() {
-        return getPropertyValue("AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME");
+        return getPropertyValue("AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME", "subscription-session");
     }
 
     /**
@@ -223,33 +228,6 @@ public class TestUtils {
      */
     public static String getEntityName(String baseName, int index) {
         return String.join("-", baseName, String.valueOf(index));
-    }
-
-    /**
-     * The azure application client id
-     *
-     * @return The application client id.
-     */
-    public static String getAzureClientId() {
-        return getPropertyValue("AZURE_CLIENT_ID");
-    }
-
-    /**
-     * The azure application client secret
-     *
-     * @return The application client secret.
-     */
-    public static String getAzureClientSecret() {
-        return getPropertyValue("AZURE_CLIENT_SECRET");
-    }
-
-    /**
-     * The azure application tenant id
-     *
-     * @return The application tenant id.
-     */
-    public static String getAzureTenantId() {
-        return getPropertyValue("AZURE_TENANT_ID");
     }
 
     public static Configuration getGlobalConfiguration() {
@@ -386,7 +364,6 @@ public class TestUtils {
             assertAuthorizationRules(expectedItem, actualItem);
         }
     }
-
 
     public static String getPropertyValue(String propertyName) {
         return GLOBAL_CONFIGURATION.get(propertyName, System.getenv(propertyName));

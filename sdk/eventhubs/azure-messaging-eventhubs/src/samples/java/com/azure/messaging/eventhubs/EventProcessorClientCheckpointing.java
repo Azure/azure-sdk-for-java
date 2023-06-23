@@ -157,6 +157,12 @@ public class EventProcessorClientCheckpointing {
 
             final EventData event = eventContext.getEventData();
 
+            // It is possible to have no event if maxWaitTime was specified.  This means that no event was received
+            // during that interval.
+            if (event == null) {
+                return;
+            }
+
             logger.info("Processing event: Partition id = {}; sequence number = {}; body = {}",
                 partitionId, event.getSequenceNumber(), event.getBodyAsString());
 
