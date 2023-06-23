@@ -177,7 +177,45 @@
         {
           "ignore": true,
           "code": "java.method.visibilityReduced",
-          "new": "method void com.azure.ai.formrecognizer.documentanalysis.models.AddressValue::<init>()|method void com.azure.ai.formrecognizer.documentanalysis.models.CurrencyValue::<init>(double)",
+          "old": "method void com.azure.ai.formrecognizer.documentanalysis.models.AddressValue::<init>()",
+          "new": "method void com.azure.ai.formrecognizer.documentanalysis.models.AddressValue::<init>()",
+          "oldVisibility": "public",
+          "newVisibility": "private",
+          "justification": "Default constructor made private to prevent direct instantiation."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old": "method void com.azure.ai.formrecognizer.documentanalysis.models.CurrencyValue::<init>()",
+          "new": "method void com.azure.ai.formrecognizer.documentanalysis.models.CurrencyValue::<init>(double)",
+          "oldVisibility": "public",
+          "newVisibility": "private",
+          "justification": "Default constructor made private to prevent direct instantiation."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old": "method void com.azure.ai.formrecognizer.documentanalysis.models.DocumentLanguage::<init>()",
+          "new": "method void com.azure.ai.formrecognizer.documentanalysis.models.DocumentLanguage::<init>(java.lang.String, java.util.List<com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan>, float)",
+          "oldVisibility": "public",
+          "newVisibility": "private",
+          "justification": "Default constructor made private to prevent direct instantiation."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old": "method void com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan::<init>()",
+          "new": "method void com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan::<init>(int, int)",
+          "oldVisibility": "public",
+          "newVisibility": "private",
+          "justification": "Default constructor made private to prevent direct instantiation."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old": "method void com.azure.ai.formrecognizer.documentanalysis.models.DocumentStyle::<init>()",
+          "new": "method void com.azure.ai.formrecognizer.documentanalysis.models.DocumentStyle::<init>(java.util.List<com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan>, float)",
+          "oldVisibility": "public",
           "newVisibility": "private",
           "justification": "Default constructor made private to prevent direct instantiation."
         },
