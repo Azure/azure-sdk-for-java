@@ -26,9 +26,11 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -45,24 +47,26 @@ public class ExcludeRegionTests extends TestSuiteBase {
     private CosmosAsyncContainer cosmosAsyncContainer;
     private List<String> preferredRegionList;
 
+    @Factory(dataProvider = "clientBuildersWithSessionConsistency")
+    public ExcludeRegionTests(CosmosClientBuilder clientBuilder) {
+        super(clientBuilder);
+    }
+
     @BeforeClass(groups = {"multi-master"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
+        System.setProperty("COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS", "1000");
+        System.setProperty("COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS", "500");
+
         CosmosAsyncClient dummyClient = null;
         try {
-            dummyClient = new CosmosClientBuilder()
-                .endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
-                .contentResponseOnWriteEnabled(true)
-                .directMode()
-                .buildAsyncClient();
+            dummyClient = this.getClientBuilder().buildAsyncClient();
 
             this.preferredRegionList = this.getPreferredRegionList(dummyClient);
             this.clientWithPreferredRegions =
-                new CosmosClientBuilder()
-                    .endpoint(TestConfigurations.HOST)
-                    .key(TestConfigurations.MASTER_KEY)
+                this.getClientBuilder()
                     .contentResponseOnWriteEnabled(true)
                     .preferredRegions(this.preferredRegionList)
+                    .multipleWriteRegionsEnabled(true)
                     .buildAsyncClient();
 
             this.cosmosAsyncContainer = getSharedSinglePartitionCosmosContainer(this.clientWithPreferredRegions);
@@ -74,6 +78,8 @@ public class ExcludeRegionTests extends TestSuiteBase {
     @AfterClass(groups = {"multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.clientWithPreferredRegions);
+        System.clearProperty("COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS");
+        System.clearProperty("COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS");
     }
 
     @DataProvider(name = "operationTypeArgProvider")
@@ -125,11 +131,14 @@ public class ExcludeRegionTests extends TestSuiteBase {
     public void excludeRegionTest_readSessionNotAvailable(
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType) {
+
+        if (this.clientWithPreferredRegions.getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Fault injection can only be applied for direct model.");
+        }
+
         TestItem createdItem = TestItem.createNewItem();
         this.cosmosAsyncContainer.createItem(createdItem).block();
 
-        // TODO: reduce the max wait time
-        // Configure 404/1002 fault injection rule, validate the request should succeed in other region
         FaultInjectionRule serverErrorRule = new FaultInjectionRuleBuilder("excludeRegionTest-" + operationType)
             .condition(
                 new FaultInjectionConditionBuilder()
@@ -142,28 +151,32 @@ public class ExcludeRegionTests extends TestSuiteBase {
                     .build()
             ).build();
 
-        CosmosFaultInjectionHelper.configureFaultInjectionRules(this.cosmosAsyncContainer, Arrays.asList(serverErrorRule)).block();
         try {
-            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, null);
-            assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(2);
-            assertThat(cosmosDiagnostics.getContactedRegionNames().containsAll(this.preferredRegionList.subList(0, 2)));
-        } catch (CosmosException e) {
-            fail("Request should succeeded in other regions");
-        }
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(this.cosmosAsyncContainer, Arrays.asList(serverErrorRule)).block();
+            try {
+                CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, null);
+                assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(2);
+                assertThat(cosmosDiagnostics.getContactedRegionNames().containsAll(this.preferredRegionList.subList(0, 2)));
+            } catch (CosmosException e) {
+                fail("Request should succeeded in other regions");
+            }
 
-        // now exclude all the other regions except the first preferred region
-        try {
-            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(
-                cosmosAsyncContainer,
-                operationType,
-                createdItem,
-                this.preferredRegionList.subList(1, this.preferredRegionList.size()));
+            // now exclude all the other regions except the first preferred region
+            try {
+                this.performDocumentOperation(
+                    cosmosAsyncContainer,
+                    operationType,
+                    createdItem,
+                    this.preferredRegionList.subList(1, this.preferredRegionList.size()));
 
-            fail("Request should have failed");
-        } catch (CosmosException exception) {
-            CosmosDiagnostics cosmosDiagnostics = exception.getDiagnostics();
-            assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
-            assertThat(cosmosDiagnostics.getContactedRegionNames().containsAll(this.preferredRegionList.subList(0, 1)));
+                fail("Request should have failed");
+            } catch (CosmosException exception) {
+                CosmosDiagnostics cosmosDiagnostics = exception.getDiagnostics();
+                assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
+                assertThat(cosmosDiagnostics.getContactedRegionNames().containsAll(this.preferredRegionList.subList(0, 1)));
+            }
+        } finally {
+            serverErrorRule.disable();
         }
     }
 
@@ -181,7 +194,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
 
         while (locationIterator.hasNext()) {
             DatabaseAccountLocation accountLocation = locationIterator.next();
-            preferredRegionList.add(accountLocation.getName());
+            preferredRegionList.add(accountLocation.getName().toLowerCase());
         }
 
         return preferredRegionList;
@@ -216,7 +229,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
 
                 return cosmosAsyncContainer.readItem(
                     createdItem.getId(),
-                    new PartitionKey(createdItem.getId()),
+                    new PartitionKey(createdItem.getMypk()),
                     cosmosItemRequestOptions,
                     TestItem.class).block().getDiagnostics();
             }
@@ -225,7 +238,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
                 return cosmosAsyncContainer.replaceItem(
                     createdItem,
                     createdItem.getId(),
-                    new PartitionKey(createdItem.getId()),
+                    new PartitionKey(createdItem.getMypk()),
                     cosmosItemRequestOptions).block().getDiagnostics();
             }
 
@@ -247,12 +260,12 @@ public class ExcludeRegionTests extends TestSuiteBase {
                 CosmosPatchOperations patchOperations =
                     CosmosPatchOperations
                         .create()
-                        .add("newPath", "newPath");
+                        .add("/newPath", "newPath");
 
                 CosmosPatchItemRequestOptions patchItemRequestOptions = new CosmosPatchItemRequestOptions();
                 patchItemRequestOptions.setExcludedRegions(excludeRegions);
                 return cosmosAsyncContainer
-                    .patchItem(createdItem.getId(), new PartitionKey(createdItem.getId()), patchOperations, patchItemRequestOptions, TestItem.class)
+                    .patchItem(createdItem.getId(), new PartitionKey(createdItem.getMypk()), patchOperations, patchItemRequestOptions, TestItem.class)
                     .block().getDiagnostics();
             }
         }
