@@ -240,9 +240,9 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
         ImageGenerationOptions options = new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh");
         StepVerifier.create(client.generateImage(options))
             .assertNext(imageOperationResponse -> {
-//                assertNotNull(imageOperationResponse.getResult());
-//                assertNotNull(imageOperationResponse.getResult().getData());
-//                assertFalse(imageOperationResponse.getResult().getData().isEmpty());
+                assertNotNull(imageOperationResponse.getResult());
+                assertNotNull(imageOperationResponse.getResult().getData());
+                assertFalse(imageOperationResponse.getResult().getData().isEmpty());
             })
             .verifyComplete();
     }
