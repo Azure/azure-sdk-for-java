@@ -7,6 +7,7 @@ package com.azure.messaging.eventgrid;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
@@ -14,6 +15,7 @@ import com.azure.core.models.CloudEvent;
 import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -46,6 +48,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class EventGridPublisherClientTests extends TestBase {
 
     private EventGridPublisherClientBuilder builder;
+    private EventGridPublisherClientBuilder syncBuilder;
+
 
     // Event Grid endpoint for a topic accepting EventGrid schema events
     private static final String EVENTGRID_ENDPOINT = "AZURE_EVENTGRID_EVENT_ENDPOINT";
@@ -82,10 +86,14 @@ public class EventGridPublisherClientTests extends TestBase {
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
 
         builder = new EventGridPublisherClientBuilder();
+        syncBuilder = new EventGridPublisherClientBuilder();
 
         if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
+            builder.httpClient(buildAssertingClient(interceptorManager.getPlaybackClient(), false));
+            syncBuilder.httpClient(buildAssertingClient(interceptorManager.getPlaybackClient(), true));
         } else {
+            builder.httpClient(buildAssertingClient(HttpClient.createDefault(), false));
+            syncBuilder.httpClient(buildAssertingClient(HttpClient.createDefault(), true));
             builder.addPolicy(interceptorManager.getRecordPolicy())
                 .retryPolicy(new RetryPolicy());
         }
@@ -422,7 +430,7 @@ public class EventGridPublisherClientTests extends TestBase {
 
     @Test
     public void publishEventGridEventsSync() {
-        EventGridPublisherClient<EventGridEvent> egClient = builder
+        EventGridPublisherClient<EventGridEvent> egClient = syncBuilder
             .credential(getKey(EVENTGRID_KEY))
             .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
             .buildEventGridEventPublisherClient();
@@ -447,7 +455,7 @@ public class EventGridPublisherClientTests extends TestBase {
 
     @Test
     public void publishEventGridEventSync() {
-        EventGridPublisherClient<EventGridEvent> egClient = builder
+        EventGridPublisherClient<EventGridEvent> egClient = syncBuilder
             .credential(getKey(EVENTGRID_KEY))
             .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
             .buildEventGridEventPublisherClient();
@@ -475,7 +483,7 @@ public class EventGridPublisherClientTests extends TestBase {
             OffsetDateTime.now().plusMinutes(20)
         );
 
-        EventGridPublisherClient<EventGridEvent> egClient = builder
+        EventGridPublisherClient<EventGridEvent> egClient = syncBuilder
             .credential(new AzureSasCredential(sasToken))
             .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
             .buildEventGridEventPublisherClient();
@@ -498,7 +506,7 @@ public class EventGridPublisherClientTests extends TestBase {
     @Test
     public void publishWithTokenCredentialSync() {
         DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
-        EventGridPublisherClient<CloudEvent> egClient = builder
+        EventGridPublisherClient<CloudEvent> egClient = syncBuilder
             .credential(defaultCredential)
             .endpoint(getEndpoint(CLOUD_ENDPOINT))
             .buildCloudEventPublisherClient();
@@ -520,7 +528,7 @@ public class EventGridPublisherClientTests extends TestBase {
 
     @Test
     public void publishCloudEventsSync() {
-        EventGridPublisherClient<CloudEvent> egClient = builder
+        EventGridPublisherClient<CloudEvent> egClient = syncBuilder
             .credential(getKey(CLOUD_KEY))
             .endpoint(getEndpoint(CLOUD_ENDPOINT))
             .buildCloudEventPublisherClient();
@@ -546,7 +554,7 @@ public class EventGridPublisherClientTests extends TestBase {
 
     @Test
     public void publishCloudEventSync() {
-        EventGridPublisherClient<CloudEvent> egClient = builder
+        EventGridPublisherClient<CloudEvent> egClient = syncBuilder
             .credential(getKey(CLOUD_KEY))
             .endpoint(getEndpoint(CLOUD_ENDPOINT))
             .buildCloudEventPublisherClient();
@@ -567,7 +575,7 @@ public class EventGridPublisherClientTests extends TestBase {
 
     @Test
     public void publishCloudEventsToPartnerTopicSync() {
-        EventGridPublisherClient<CloudEvent> egClient = builder
+        EventGridPublisherClient<CloudEvent> egClient = syncBuilder
             .endpoint(getEndpoint(EVENTGRID_PARTNER_NAMESPACE_TOPIC_ENDPOINT))
             .credential(getKey(EVENTGRID_PARTNER_NAMESPACE_TOPIC_KEY))
             .addPolicy((httpPipelineCallContext, httpPipelineNextPolicy) -> {
@@ -595,7 +603,7 @@ public class EventGridPublisherClientTests extends TestBase {
 
     @Test
     public void publishEventGridEventToPartnerTopicSync() {
-        EventGridPublisherClient<EventGridEvent> egClient = builder
+        EventGridPublisherClient<EventGridEvent> egClient = syncBuilder
             .endpoint(getEndpoint(EVENTGRID_PARTNER_NAMESPACE_TOPIC_ENDPOINT))
             .credential(getKey(EVENTGRID_PARTNER_NAMESPACE_TOPIC_KEY))
             .buildEventGridEventPublisherClient();
@@ -632,7 +640,7 @@ public class EventGridPublisherClientTests extends TestBase {
                 }
             }));
 
-        EventGridPublisherClient<CloudEvent> egClient = builder
+        EventGridPublisherClient<CloudEvent> egClient = syncBuilder
             .credential(getKey(CLOUD_KEY))
             .endpoint(getEndpoint(CLOUD_ENDPOINT))
             .buildCloudEventPublisherClient();
@@ -651,7 +659,7 @@ public class EventGridPublisherClientTests extends TestBase {
 
     @Test
     public void publishCustomEventsSync() {
-        EventGridPublisherClient<BinaryData> egClient = builder
+        EventGridPublisherClient<BinaryData> egClient = syncBuilder
             .credential(getKey(CUSTOM_KEY))
             .endpoint(getEndpoint(CUSTOM_ENDPOINT))
             .buildCustomEventPublisherClient();
@@ -675,7 +683,7 @@ public class EventGridPublisherClientTests extends TestBase {
 
     @Test
     public void publishCustomEventsWithSerializerSync() {
-        EventGridPublisherClient<BinaryData> egClient = builder
+        EventGridPublisherClient<BinaryData> egClient = syncBuilder
             .credential(getKey(CUSTOM_KEY))
             .endpoint(getEndpoint(CUSTOM_ENDPOINT))
             .buildCustomEventPublisherClient();
@@ -698,7 +706,7 @@ public class EventGridPublisherClientTests extends TestBase {
 
     @Test
     public void publishCustomEventSync() {
-        EventGridPublisherClient<BinaryData> egClient = builder
+        EventGridPublisherClient<BinaryData> egClient = syncBuilder
             .credential(getKey(CUSTOM_KEY))
             .endpoint(getEndpoint(CUSTOM_ENDPOINT))
             .buildCustomEventPublisherClient();
@@ -739,5 +747,17 @@ public class EventGridPublisherClientTests extends TestBase {
         String channelName = System.getenv(liveEnvName);
         assertNotNull(channelName, "System environment variable " + liveEnvName + " is null");
         return channelName;
+    }
+
+
+    private HttpClient buildAssertingClient(HttpClient httpClient, boolean sync) {
+        AssertingHttpClientBuilder builder = new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((ignored1, ignored2) -> false);
+        if (sync) {
+            builder.assertSync();
+        } else {
+            builder.assertAsync();
+        }
+        return builder.build();
     }
 }
