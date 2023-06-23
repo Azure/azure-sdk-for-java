@@ -121,13 +121,16 @@ implements IDocumentQueryExecutionContext<T> {
         }
 
         request.applyFeedRangeFilter(FeedRangeInternal.convert(feedRange));
+
         CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig =
             ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
                 getCosmosQueryRequestOptionsAccessor()
                 .getEndToEndOperationLatencyPolicyConfig(cosmosQueryRequestOptions);
+
         if (endToEndOperationLatencyConfig != null) {
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
         }
+
         return request;
     }
 
