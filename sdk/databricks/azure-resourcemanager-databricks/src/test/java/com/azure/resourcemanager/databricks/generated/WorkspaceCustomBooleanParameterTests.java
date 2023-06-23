@@ -13,7 +13,7 @@ public final class WorkspaceCustomBooleanParameterTests {
     public void testDeserialize() throws Exception {
         WorkspaceCustomBooleanParameter model =
             BinaryData
-                .fromString("{\"type\":\"String\",\"value\":true}")
+                .fromString("{\"type\":\"Object\",\"value\":true}")
                 .toObject(WorkspaceCustomBooleanParameter.class);
         Assertions.assertEquals(true, model.value());
     }

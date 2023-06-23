@@ -10,7 +10,7 @@ import com.azure.resourcemanager.databricks.models.ErrorInfo;
 public final class ErrorInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ErrorInfo model = BinaryData.fromString("{\"innererror\":\"ndv\"}").toObject(ErrorInfo.class);
+        ErrorInfo model = BinaryData.fromString("{\"innererror\":\"vfqawrlyxwjkcpr\"}").toObject(ErrorInfo.class);
     }
 
     @org.junit.jupiter.api.Test

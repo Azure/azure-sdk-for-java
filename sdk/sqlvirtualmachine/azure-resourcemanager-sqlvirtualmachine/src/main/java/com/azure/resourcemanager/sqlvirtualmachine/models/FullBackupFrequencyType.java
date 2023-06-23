@@ -17,6 +17,15 @@ public final class FullBackupFrequencyType extends ExpandableStringEnum<FullBack
     public static final FullBackupFrequencyType WEEKLY = fromString("Weekly");
 
     /**
+     * Creates a new instance of FullBackupFrequencyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FullBackupFrequencyType() {
+    }
+
+    /**
      * Creates or finds a FullBackupFrequencyType from its string representation.
      *
      * @param name a name to look for.

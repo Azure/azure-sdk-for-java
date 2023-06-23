@@ -17,10 +17,10 @@ import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
-import com.azure.cosmos.CosmosDiagnosticsSystemUsageSnapshot;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosSessionRetryOptions;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.ThroughputControlGroupConfig;
@@ -31,6 +31,7 @@ import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnectionMetadata;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
@@ -54,6 +55,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -217,6 +219,9 @@ public class ImplementationBridgeHelpers {
             DirectConnectionConfig setHealthCheckTimeoutDetectionEnabled(
                 DirectConnectionConfig directConnectionConfig, boolean timeoutDetectionEnabled);
             boolean isHealthCheckTimeoutDetectionEnabled(DirectConnectionConfig directConnectionConfig);
+            DirectConnectionConfig setMinConnectionPoolSizePerEndpoint(DirectConnectionConfig directConnectionConfig, int minConnectionPoolSizePerEndpoint);
+
+            int getMinConnectionPoolSizePerEndpoint(DirectConnectionConfig directConnectionConfig);
         }
     }
 
@@ -420,6 +425,10 @@ public class ImplementationBridgeHelpers {
             int getMaxMicroBatchSize(CosmosBulkExecutionOptions options);
 
             CosmosBulkExecutionOptions setMaxMicroBatchSize(CosmosBulkExecutionOptions options, int maxMicroBatchSize);
+
+            int getMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options);
+
+            CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options, int maxMicroBatchPayloadSizeInBytes);
 
             int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options);
 
@@ -1516,7 +1525,47 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosContainerProactiveInitConfigAccessor {
-            Map<String, Integer> getContainerLinkToMinConnectionsMap(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig);
+            Map<CosmosContainerIdentity, ContainerDirectConnectionMetadata> getContainerPropertiesMap(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig);
+        }
+    }
+
+    public static final class CosmosSessionRetryOptionsHelper {
+        private static final AtomicReference<Boolean> cosmosSessionRetryOptionsClassLoaded = new AtomicReference<>(false);
+        private static final AtomicReference<CosmosSessionRetryOptionsAccessor> accessor = new AtomicReference<>();
+
+        private CosmosSessionRetryOptionsHelper() {}
+
+        public static CosmosSessionRetryOptionsAccessor getCosmosSessionRetryOptionsAccessor() {
+
+            if (!cosmosSessionRetryOptionsClassLoaded.get()) {
+                logger.debug("Initializing cosmosSessionRetryOptionsAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosSessionRetryOptionsAccessor snapshot = accessor.get();
+
+            if (snapshot == null) {
+                logger.error("cosmosSessionRetryOptionsAccessor is not initialized yet!");
+                System.exit(9727); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public static void setCosmosSessionRetryOptionsAccessor(final CosmosSessionRetryOptionsAccessor newAccessor) {
+
+            assert (newAccessor != null);
+
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosSessionRetryOptionsAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosSessionRetryOptionsAccessor...");
+                cosmosSessionRetryOptionsClassLoaded.set(true);
+            }
+        }
+
+        public interface CosmosSessionRetryOptionsAccessor {
+            CosmosRegionSwitchHint getRegionSwitchHint(CosmosSessionRetryOptions sessionRetryOptions);
         }
     }
 }

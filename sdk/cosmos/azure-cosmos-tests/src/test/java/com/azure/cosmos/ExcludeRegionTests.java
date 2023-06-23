@@ -108,6 +108,11 @@ public class ExcludeRegionTests extends TestSuiteBase {
 
     @Test(groups = {"multi-master"}, dataProvider = "operationTypeArgProvider", timeOut = TIMEOUT)
     public void excludeRegionTest_SkipFirstPreferredRegion(OperationType operationType) {
+
+        if (this.preferredRegionList.size() <= 1) {
+            throw new SkipException("excludeRegionTest_SkipFirstPreferredRegion can only be tested for multi-master with multi-regions");
+        }
+
         TestItem createdItem = TestItem.createNewItem();
         this.cosmosAsyncContainer.createItem(createdItem).block();
 
@@ -134,6 +139,10 @@ public class ExcludeRegionTests extends TestSuiteBase {
 
         if (this.clientWithPreferredRegions.getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Fault injection can only be applied for direct model.");
+        }
+
+        if (this.preferredRegionList.size() <= 1) {
+            throw new SkipException("excludeRegionTest_SkipFirstPreferredRegion can only be tested for multi-master with multi-regions");
         }
 
         TestItem createdItem = TestItem.createNewItem();

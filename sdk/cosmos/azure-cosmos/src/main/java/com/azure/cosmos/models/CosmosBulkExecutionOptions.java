@@ -23,6 +23,8 @@ public final class CosmosBulkExecutionOptions {
     private int maxMicroBatchConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;
     private double maxMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_RETRY_RATE;
     private double minMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MIN_MICRO_BATCH_RETRY_RATE;
+
+    private int maxMicroBatchPayloadSizeInBytes = BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
     private Duration maxMicroBatchInterval = Duration.ofMillis(
         BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_INTERVAL_IN_MILLISECONDS);
     private final Object legacyBatchScopedContext;
@@ -101,6 +103,28 @@ public final class CosmosBulkExecutionOptions {
      */
     CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
         this.maxMicroBatchSize = maxMicroBatchSize;
+        return this;
+    }
+
+    /**
+     * The maximum batching request payload size in bytes for bulk operations.
+     *
+     * @return maximum micro batch payload size in bytes
+     */
+    int getMaxMicroBatchPayloadSizeInBytes() {
+        return maxMicroBatchPayloadSizeInBytes;
+    }
+
+    /**
+     * The maximum batching payload size in bytes for bulk operations. Once queued docs exceed this values the micro
+     * batch will be flushed to the wire.
+     *
+     * @param maxMicroBatchPayloadSizeInBytes maximum payload size of a micro batch in bytes.
+     *
+     * @return the bulk processing options.
+     */
+    CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(int maxMicroBatchPayloadSizeInBytes) {
+        this.maxMicroBatchPayloadSizeInBytes = maxMicroBatchPayloadSizeInBytes;
         return this;
     }
 
@@ -327,6 +351,19 @@ public final class CosmosBulkExecutionOptions {
                     int maxMicroBatchSize) {
 
                     return options.setMaxMicroBatchSize(maxMicroBatchSize);
+                }
+
+                @Override
+                public int getMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options) {
+                    return options.getMaxMicroBatchPayloadSizeInBytes();
+                }
+
+                @Override
+                public CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(
+                    CosmosBulkExecutionOptions options,
+                    int maxMicroBatchPayloadSizeInBytes) {
+
+                    return options.setMaxMicroBatchPayloadSizeInBytes(maxMicroBatchPayloadSizeInBytes);
                 }
 
                 @Override

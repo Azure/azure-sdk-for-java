@@ -14,23 +14,24 @@ public final class PrivateLinkServiceConnectionStateTests {
     public void testDeserialize() throws Exception {
         PrivateLinkServiceConnectionState model =
             BinaryData
-                .fromString("{\"status\":\"Pending\",\"description\":\"hutje\",\"actionRequired\":\"mrldhu\"}")
+                .fromString(
+                    "{\"status\":\"Rejected\",\"description\":\"bhtqqrolfpfpsa\",\"actionsRequired\":\"bquxigjy\"}")
                 .toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.PENDING, model.status());
-        Assertions.assertEquals("hutje", model.description());
-        Assertions.assertEquals("mrldhu", model.actionRequired());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED, model.status());
+        Assertions.assertEquals("bhtqqrolfpfpsa", model.description());
+        Assertions.assertEquals("bquxigjy", model.actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkServiceConnectionState model =
             new PrivateLinkServiceConnectionState()
-                .withStatus(PrivateLinkServiceConnectionStatus.PENDING)
-                .withDescription("hutje")
-                .withActionRequired("mrldhu");
+                .withStatus(PrivateLinkServiceConnectionStatus.REJECTED)
+                .withDescription("bhtqqrolfpfpsa")
+                .withActionsRequired("bquxigjy");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.PENDING, model.status());
-        Assertions.assertEquals("hutje", model.description());
-        Assertions.assertEquals("mrldhu", model.actionRequired());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED, model.status());
+        Assertions.assertEquals("bhtqqrolfpfpsa", model.description());
+        Assertions.assertEquals("bquxigjy", model.actionsRequired());
     }
 }

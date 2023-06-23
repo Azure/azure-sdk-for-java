@@ -171,6 +171,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
         if (peeringName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -180,7 +181,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             peeringName,
                             accept,
@@ -225,6 +226,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
         if (peeringName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -232,7 +234,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 peeringName,
                 accept,
@@ -327,6 +329,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
         if (peeringName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -336,7 +339,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             peeringName,
                             accept,
@@ -381,6 +384,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
         if (peeringName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -388,7 +392,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 peeringName,
                 accept,
@@ -592,6 +596,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
         } else {
             virtualNetworkPeeringParameters.validate();
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -601,7 +606,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             peeringName,
                             virtualNetworkPeeringParameters,
@@ -661,6 +666,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
         } else {
             virtualNetworkPeeringParameters.validate();
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -668,7 +674,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 peeringName,
                 virtualNetworkPeeringParameters,
@@ -919,6 +925,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -928,7 +935,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -978,6 +985,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -985,7 +993,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context)

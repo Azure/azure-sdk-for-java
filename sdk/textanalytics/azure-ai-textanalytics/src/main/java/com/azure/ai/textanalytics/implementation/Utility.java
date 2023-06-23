@@ -50,7 +50,6 @@ import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
 import com.azure.ai.textanalytics.implementation.models.PiiCategory;
 import com.azure.ai.textanalytics.implementation.models.PiiResult;
 import com.azure.ai.textanalytics.implementation.models.PiiTaskResult;
-import com.azure.ai.textanalytics.implementation.models.RelationType;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.SentenceAssessment;
 import com.azure.ai.textanalytics.implementation.models.SentenceSentimentValue;
@@ -885,7 +884,7 @@ public final class Utility {
                         healthcareRelation -> {
                             final HealthcareEntityRelation entityRelation = new HealthcareEntityRelation();
                             // Healthcare relation type
-                            final RelationType relationType = healthcareRelation.getRelationType();
+                            final HealthcareEntityRelationType relationType = healthcareRelation.getRelationType();
                             if (relationType != null) {
                                 HealthcareEntityRelationPropertiesHelper.setRelationType(entityRelation,
                                     HealthcareEntityRelationType.fromString(relationType.toString()));

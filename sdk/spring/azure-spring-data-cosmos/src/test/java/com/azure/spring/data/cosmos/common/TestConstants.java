@@ -25,6 +25,7 @@ public final class TestConstants {
     public static final List<Address> ADDRESSES = Arrays.asList(ADDRESS_1, ADDRESS_2);
 
     public static final int DEFAULT_TIME_TO_LIVE = -1;
+    public static final String DEFAULT_MINIMUM_RU = "400";
     public static final boolean DEFAULT_INDEXING_POLICY_AUTOMATIC = true;
     public static final IndexingMode DEFAULT_INDEXING_POLICY_MODE = IndexingMode.CONSISTENT;
 

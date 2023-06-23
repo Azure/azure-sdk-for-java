@@ -121,6 +121,7 @@ implements IDocumentQueryExecutionContext<T> {
         }
 
         request.applyFeedRangeFilter(FeedRangeInternal.convert(feedRange));
+
         CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig =
             ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
                 getCosmosQueryRequestOptionsAccessor()
@@ -131,6 +132,7 @@ implements IDocumentQueryExecutionContext<T> {
         }
         request.requestContext.setExcludeRegions( ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
             getCosmosQueryRequestOptionsAccessor().getExcludeRegions(cosmosQueryRequestOptions));
+
         return request;
     }
 

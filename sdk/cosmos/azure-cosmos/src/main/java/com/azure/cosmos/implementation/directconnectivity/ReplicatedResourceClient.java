@@ -7,6 +7,7 @@ import com.azure.cosmos.AvailabilityStrategy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosSessionRetryOptions;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
@@ -53,6 +54,7 @@ public class ReplicatedResourceClient {
     private final boolean enableReadRequestsFallback;
     private final GatewayServiceConfigurationReader serviceConfigReader;
     private final Configs configs;
+    private final CosmosSessionRetryOptions sessionRetryOptions;
 
     public ReplicatedResourceClient(
             DiagnosticsClientContext diagnosticsClientContext,
@@ -63,7 +65,8 @@ public class ReplicatedResourceClient {
             GatewayServiceConfigurationReader serviceConfigReader,
             IAuthorizationTokenProvider authorizationTokenProvider,
             boolean enableReadRequestsFallback,
-            boolean useMultipleWriteLocations) {
+            boolean useMultipleWriteLocations,
+            CosmosSessionRetryOptions sessionRetryOptions) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.configs = configs;
         this.protocol = configs.getProtocol();
@@ -74,6 +77,7 @@ public class ReplicatedResourceClient {
 
         this.transportClient = transportClient;
         this.serviceConfigReader = serviceConfigReader;
+        this.sessionRetryOptions = sessionRetryOptions;
 
         this.consistencyReader = new ConsistencyReader(diagnosticsClientContext,
             configs,
@@ -81,14 +85,16 @@ public class ReplicatedResourceClient {
             sessionContainer,
             transportClient,
             serviceConfigReader,
-            authorizationTokenProvider);
+            authorizationTokenProvider,
+            sessionRetryOptions);
         this.consistencyWriter = new ConsistencyWriter(diagnosticsClientContext,
             this.addressSelector,
             sessionContainer,
             transportClient,
             authorizationTokenProvider,
             serviceConfigReader,
-            useMultipleWriteLocations);
+            useMultipleWriteLocations,
+            sessionRetryOptions);
         this.enableReadRequestsFallback = enableReadRequestsFallback;
 
     }
