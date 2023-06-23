@@ -19,13 +19,13 @@ public class OkHttpAsyncHttpClientRestProxyWithHttpProxyTests extends RestProxyT
     private static LocalTestServer server;
 
     @BeforeAll
-    public static void getWireMockServer() {
+    public static void startTestServer() {
         server = RestProxyTestsServer.getRestProxyTestsServer();
         server.start();
     }
 
     @AfterAll
-    public static void shutdownWireMockServer() {
+    public static void stopTestServer() {
         if (server != null) {
             server.stop();
         }

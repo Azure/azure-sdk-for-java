@@ -6,10 +6,6 @@ package com.azure.core.http.jdk.httpclient;
 import com.azure.core.test.http.LocalTestServer;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Base64;
 import java.util.Objects;
 
@@ -37,35 +33,32 @@ final class SimpleBasicAuthHttpProxyServer {
     }
 
     public ProxyEndpoint start() {
-        this.proxyServer = new LocalTestServer(new HttpServlet() {
-            @Override
-            protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                String requestUrl = req.getRequestURL().toString();
-                if (!Objects.equals(requestUrl, serviceEndpoint)) {
-                    throw new ServletException("Unexpected request to proxy server");
-                }
-
-                String proxyAuthorization = req.getHeader("Proxy-Authorization");
-                if (proxyAuthorization == null) {
-                    resp.setStatus(407);
-                    resp.setHeader("Proxy-Authenticate", "Basic");
-                    return;
-                }
-
-                if (!proxyAuthorization.startsWith("Basic")) {
-                    resp.setStatus(401);
-                    return;
-                }
-
-                String encodedCred = proxyAuthorization.substring("Basic".length());
-                encodedCred = encodedCred.trim();
-                final Base64.Decoder decoder = Base64.getDecoder();
-                final byte[] decodedCred = decoder.decode(encodedCred);
-                if (!new String(decodedCred).equals(userName + ":" + password)) {
-                    resp.setStatus(401);
-                }
+        this.proxyServer = new LocalTestServer((req, resp, requestBody) -> {
+            String requestUrl = req.getRequestURL().toString();
+            if (!Objects.equals(requestUrl, serviceEndpoint)) {
+                throw new ServletException("Unexpected request to proxy server");
             }
-        }, 10);
+
+            String proxyAuthorization = req.getHeader("Proxy-Authorization");
+            if (proxyAuthorization == null) {
+                resp.setStatus(407);
+                resp.setHeader("Proxy-Authenticate", "Basic");
+                return;
+            }
+
+            if (!proxyAuthorization.startsWith("Basic")) {
+                resp.setStatus(401);
+                return;
+            }
+
+            String encodedCred = proxyAuthorization.substring("Basic".length());
+            encodedCred = encodedCred.trim();
+            final Base64.Decoder decoder = Base64.getDecoder();
+            final byte[] decodedCred = decoder.decode(encodedCred);
+            if (!new String(decodedCred).equals(userName + ":" + password)) {
+                resp.setStatus(401);
+            }
+        });
 
         this.proxyServer.start();
 

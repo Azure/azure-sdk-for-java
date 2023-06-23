@@ -14,8 +14,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.UrlBuilder;
-import org.apache.commons.compress.utils.IOUtils;
-import org.eclipse.jetty.server.Response;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -30,9 +28,6 @@ import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
@@ -70,38 +65,34 @@ public class JdkHttpClientTests {
 
     @BeforeAll
     public static void beforeClass() {
-        server = new LocalTestServer(new HttpServlet() {
-            @Override
-            protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                String path = req.getServletPath();
-                boolean get = "GET".equalsIgnoreCase(req.getMethod());
-                boolean post = "POST".equalsIgnoreCase(req.getMethod());
+        server = new LocalTestServer((req, resp, requestBody) -> {
+            String path = req.getServletPath();
+            boolean get = "GET".equalsIgnoreCase(req.getMethod());
+            boolean post = "POST".equalsIgnoreCase(req.getMethod());
 
-                if (get && "/short".equals(path)) {
-                    resp.setContentLength(SHORT_BODY.length);
-                    resp.getOutputStream().write(SHORT_BODY);
-                } else if (get && "/long".equals(path)) {
-                    resp.setContentLength(LONG_BODY.length);
-                    resp.getOutputStream().write(LONG_BODY);
-                } else if (get && "/error".equals(path)) {
-                    resp.setStatus(500);
-                    resp.setContentLength(5);
-                    resp.getOutputStream().write("error".getBytes(StandardCharsets.UTF_8));
-                } else if (post && "/shortPost".equals(path)) {
-                    resp.setContentLength(SHORT_BODY.length);
-                    resp.getOutputStream().write(SHORT_BODY);
-                } else if (get && "/connectionClose".equals(path)) {
-                    ((Response) resp).getHttpChannel().getConnection().close();
-                } else if (post && "/shortPostWithBodyValidation".equals(path)) {
-                    byte[] requestBody = fullyReadRequest(req.getInputStream());
-                    if (!Arrays.equals(LONG_BODY, 1, 43, requestBody, 0, 42)) {
-                        resp.sendError(400, "Request body does not match expected value");
-                    }
-                } else {
-                    throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
+            if (get && "/short".equals(path)) {
+                resp.setContentLength(SHORT_BODY.length);
+                resp.getOutputStream().write(SHORT_BODY);
+            } else if (get && "/long".equals(path)) {
+                resp.setContentLength(LONG_BODY.length);
+                resp.getOutputStream().write(LONG_BODY);
+            } else if (get && "/error".equals(path)) {
+                resp.setStatus(500);
+                resp.setContentLength(5);
+                resp.getOutputStream().write("error".getBytes(StandardCharsets.UTF_8));
+            } else if (post && "/shortPost".equals(path)) {
+                resp.setContentLength(SHORT_BODY.length);
+                resp.getOutputStream().write(SHORT_BODY);
+            } else if (get && "/connectionClose".equals(path)) {
+                resp.getHttpChannel().getConnection().close();
+            } else if (post && "/shortPostWithBodyValidation".equals(path)) {
+                if (!Arrays.equals(LONG_BODY, 1, 43, requestBody, 0, 42)) {
+                    resp.sendError(400, "Request body does not match expected value");
                 }
+            } else {
+                throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
             }
-        }, 10);
+        });
 
         server.start();
     }
@@ -494,11 +485,5 @@ public class JdkHttpClientTests {
         outputStream.write(body);
         outputStream.close();
         return tempFile;
-    }
-
-    private static byte[] fullyReadRequest(InputStream requestBody) throws IOException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        IOUtils.copy(requestBody, outputStream);
-        return outputStream.toByteArray();
     }
 }

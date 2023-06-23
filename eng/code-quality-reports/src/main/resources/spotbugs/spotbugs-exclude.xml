@@ -2291,6 +2291,7 @@
     <Or>
       <Class name="com.azure.core.serializer.json.jackson.JacksonJsonSerializer"/>
       <Class name="com.azure.core.serializer.json.gson.GsonJsonSerializer"/>
+      <Class name="com.azure.core.test.http.LocalTestServer"/>
     </Or>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>

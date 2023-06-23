@@ -27,13 +27,13 @@ public class OkHttpAsyncHttpClientHttpClientTests extends HttpClientTests {
     private static LocalTestServer server;
 
     @BeforeAll
-    public static void getWireMockServer() {
+    public static void startTestServer() {
         server = HttpClientTestsServer.getHttpClientTestsServer();
         server.start();
     }
 
     @AfterAll
-    public static void shutdownWireMockServer() {
+    public static void stopTestServer() {
         if (server != null) {
             server.stop();
         }

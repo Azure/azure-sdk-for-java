@@ -25,9 +25,6 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
@@ -73,19 +70,16 @@ public class HttpResponseDrainsBufferTests {
         originalLevel = ResourceLeakDetector.getLevel();
         ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.PARANOID);
 
-        server = new LocalTestServer(new HttpServlet() {
-            @Override
-            protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                if ("GET".equals(req.getMethod()) && LONG_BODY_PATH.equals(req.getServletPath())) {
-                    resp.setStatus(200);
-                    resp.setContentLength(LONG_BODY.length);
-                    resp.setContentType("application/octet-stream");
-                    resp.getOutputStream().write(LONG_BODY);
-                } else {
-                    throw new ServletException("Unexpected request: " + req.getMethod() + " " + req.getServletPath());
-                }
+        server = new LocalTestServer((req, resp, requestBody) -> {
+            if ("GET".equals(req.getMethod()) && LONG_BODY_PATH.equals(req.getServletPath())) {
+                resp.setStatus(200);
+                resp.setContentLength(LONG_BODY.length);
+                resp.setContentType("application/octet-stream");
+                resp.getOutputStream().write(LONG_BODY);
+            } else {
+                throw new ServletException("Unexpected request: " + req.getMethod() + " " + req.getServletPath());
             }
-        }, 10);
+        });
 
         server.start();
         url = server.getHttpUri() + LONG_BODY_PATH;
@@ -228,7 +222,8 @@ public class HttpResponseDrainsBufferTests {
 
             sink.next(callCount);
             return callCount + 1;
-        }).concatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, url)).flatMap(responseConsumer))
+        })
+            .concatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, url)).flatMap(responseConsumer))
             .parallel(10)
             .runOn(Schedulers.boundedElastic())
             .then();

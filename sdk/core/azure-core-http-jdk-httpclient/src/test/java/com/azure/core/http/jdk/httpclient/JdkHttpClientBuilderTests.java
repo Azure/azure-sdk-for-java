@@ -23,10 +23,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,20 +58,16 @@ public class JdkHttpClientBuilderTests {
 
     @BeforeAll
     public static void startTestServer() {
-        HttpServlet httpServlet = new HttpServlet() {
-            @Override
-            protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                String path = req.getServletPath();
-                if ("GET".equalsIgnoreCase(req.getMethod()) && SERVICE_ENDPOINT.equals(path)) {
-                    resp.setStatus(200);
-                    resp.flushBuffer();
-                } else {
-                    throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
-                }
+        server = new LocalTestServer((req, resp, requestBody) -> {
+            String path = req.getServletPath();
+            if ("GET".equalsIgnoreCase(req.getMethod()) && SERVICE_ENDPOINT.equals(path)) {
+                resp.setStatus(200);
+                resp.flushBuffer();
+            } else {
+                throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
             }
-        };
+        });
 
-        server = new LocalTestServer(httpServlet, 10);
         server.start();
     }
 

@@ -34,9 +34,6 @@ import reactor.netty.resources.ConnectionProvider;
 import reactor.test.StepVerifier;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -84,27 +81,24 @@ public class NettyAsyncHttpClientBuilderTests {
 
     @BeforeAll
     public static void startTestServer() {
-        server = new LocalTestServer(new HttpServlet() {
-            @Override
-            protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                String path = req.getServletPath();
-                boolean get = "GET".equalsIgnoreCase(req.getMethod());
+        server = new LocalTestServer((req, resp, requestBody) -> {
+            String path = req.getServletPath();
+            boolean get = "GET".equalsIgnoreCase(req.getMethod());
 
-                if (get && DEFAULT_PATH.equals(path)) {
-                    resp.setStatus(200);
-                } else if (get && PREBUILT_CLIENT_PATH.equals(path)) {
-                    boolean containsCookie = Arrays.stream(req.getCookies())
-                        .filter(cookie -> COOKIE_NAME.equals(cookie.getName()))
-                        .anyMatch(cookie -> COOKIE_VALUE.equals(cookie.getValue()));
-                    // Mocked endpoint to test building a client with a set port.
-                    if (!containsCookie) {
-                        throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
-                    }
-                } else {
+            if (get && DEFAULT_PATH.equals(path)) {
+                resp.setStatus(200);
+            } else if (get && PREBUILT_CLIENT_PATH.equals(path)) {
+                boolean hasCookie = req.getCookies() != null && Arrays.stream(req.getCookies())
+                    .anyMatch(cookie -> "test".equals(cookie.getName()) && "success".equals(cookie.getValue()));
+
+                // Mocked endpoint to test building a client with a set port.
+                if (!hasCookie) {
                     throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
                 }
+            } else {
+                throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
             }
-        }, 10);
+        });
 
         server.start();
 
@@ -135,8 +129,8 @@ public class NettyAsyncHttpClientBuilderTests {
     }
 
     /**
-     * Tests that passing a {@code null} Netty {@link HttpClient} into the builder will throw a {@link
-     * NullPointerException}.
+     * Tests that passing a {@code null} Netty {@link HttpClient} into the builder will throw a
+     * {@link NullPointerException}.
      */
     @Test
     public void startingWithNullClientThrows() {
@@ -278,7 +272,7 @@ public class NettyAsyncHttpClientBuilderTests {
     @ParameterizedTest
     @MethodSource("buildWithExplicitConfigurationProxySupplier")
     public void buildWithExplicitConfigurationProxy(boolean shouldHaveProxy, boolean usesAzureHttpProxyHandler,
-                                            Configuration configuration, String requestUrl) {
+        Configuration configuration, String requestUrl) {
         HttpClient validatorClient = nettyHttpClientWithProxyValidation(shouldHaveProxy, ProxyOptions.Type.HTTP,
             usesAzureHttpProxyHandler);
 
@@ -303,8 +297,8 @@ public class NettyAsyncHttpClientBuilderTests {
         arguments.add(Arguments.of(true, false, new ConfigurationBuilder(EMPTY_SOURCE, baseJavaProxyConfigurationSupplier.get(), EMPTY_SOURCE).build(), defaultUrl));
 
         Configuration simpleEnvProxy = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
-                .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
-                .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"))
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
+            .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"))
             .build();
         arguments.add(Arguments.of(true, false, simpleEnvProxy, defaultUrl));
 
@@ -317,8 +311,8 @@ public class NettyAsyncHttpClientBuilderTests {
         arguments.add(Arguments.of(true, true, new ConfigurationBuilder(EMPTY_SOURCE, javaProxyWithAuthentication, EMPTY_SOURCE).build(), defaultUrl));
 
         Configuration envProxyWithAuthentication = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
-                .put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
-                .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"))
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
+            .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"))
             .build();
         arguments.add(Arguments.of(true, true, envProxyWithAuthentication, defaultUrl));
 
@@ -379,7 +373,7 @@ public class NettyAsyncHttpClientBuilderTests {
             }
 
             for (String requestUrl : requestUrlsWithProxying) {
-                arguments.add(Arguments.of(true, true,  new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE).build(), requestUrl));
+                arguments.add(Arguments.of(true, true, new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE).build(), requestUrl));
             }
         }
 
@@ -398,7 +392,7 @@ public class NettyAsyncHttpClientBuilderTests {
          */
         arguments.add(Arguments.of(true, false, baseHttpProxy.get().build(), defaultUrl));
 
-                /*
+        /*
          * HTTP proxy with authentication configured.
          */
         Configuration httpProxyWithAuthentication = baseHttpProxy.get()

@@ -26,7 +26,6 @@ import com.azure.core.util.ProgressReporter;
 import io.netty.handler.proxy.ProxyConnectException;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.resolver.NoopAddressResolverGroup;
-import org.apache.commons.compress.utils.IOUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -44,13 +43,9 @@ import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -108,59 +103,56 @@ public class NettyAsyncHttpClientTests {
 
     @BeforeAll
     public static void startTestServer() {
-        server = new LocalTestServer(new HttpServlet() {
-            @Override
-            protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                String path = req.getServletPath();
-                boolean get = "GET".equalsIgnoreCase(req.getMethod());
-                boolean post = "POST".equalsIgnoreCase(req.getMethod());
+        server = new LocalTestServer((req, resp, requestBody) -> {
+            String path = req.getServletPath();
+            boolean get = "GET".equalsIgnoreCase(req.getMethod());
+            boolean post = "POST".equalsIgnoreCase(req.getMethod());
 
-                if (get && SHORT_BODY_PATH.equals(path)) {
-                    resp.setContentType("application/octet-stream");
-                    resp.setContentLength(SHORT_BODY.length);
-                    resp.getOutputStream().write(SHORT_BODY);
-                } else if (get && LONG_BODY_PATH.equals(path)) {
-                    resp.setContentType("application/octet-stream");
-                    resp.setContentLength(LONG_BODY.length);
-                    resp.getOutputStream().write(LONG_BODY);
-                } else if (get && ERROR_BODY_PATH.equals(path)) {
-                    resp.setStatus(500);
-                    resp.setContentLength(5);
-                    resp.getOutputStream().write("error".getBytes(StandardCharsets.UTF_8));
-                } else if (post && SHORT_POST_BODY_PATH.equals(path)) {
-                    fullyReadRequest(req.getInputStream());
-                    resp.setContentType("application/octet-stream");
-                    resp.setContentLength(SHORT_BODY.length);
-                    resp.getOutputStream().write(SHORT_BODY);
-                } else if (post && SHORT_POST_BODY_WITH_VALIDATION_PATH.equals(path)) {
-                    byte[] requestBody = fullyReadRequest(req.getInputStream());
-                    if (!Objects.equals(ByteBuffer.wrap(LONG_BODY, 1, 42), ByteBuffer.wrap(requestBody))) {
-                        resp.sendError(400, "Request body does not match expected value");
-                    }
-                } else if (post && HTTP_HEADERS_PATH.equals(path)) {
-                    String headerNameString = TEST_HEADER.getCaseInsensitiveName();
-                    String responseTestHeaderValue = req.getHeader(headerNameString);
-                    if (responseTestHeaderValue == null) {
-                        responseTestHeaderValue = NULL_REPLACEMENT;
-                    }
-
-                    resp.setHeader(headerNameString, responseTestHeaderValue);
-                } else if (get && NO_DOUBLE_UA_PATH.equals(path)) {
-                    if (!EXPECTED_HEADER.equals(req.getHeader("User-Agent"))) {
-                        resp.setStatus(400);
-                    }
-                } else if (get && IO_EXCEPTION_PATH.equals(path)) {
-                    ((org.eclipse.jetty.server.Response) resp).getHttpChannel().getConnection().close();
-                } else if (get && RETURN_HEADERS_AS_IS_PATH.equals(path)) {
-                    List<String> headerNames = Collections.list(req.getHeaderNames());
-                    headerNames.forEach(headerName -> {
-                        List<String> headerValues = Collections.list(req.getHeaders(headerName));
-                        headerValues.forEach(headerValue -> resp.addHeader(headerName, headerValue));
-                    });
-                } else if (get && PROXY_TO_ADDRESS.equals(path)) {
-                    resp.setStatus(418);
-                    resp.getOutputStream().write("I'm a teapot".getBytes(StandardCharsets.UTF_8));
+            if (get && SHORT_BODY_PATH.equals(path)) {
+                resp.setContentType("application/octet-stream");
+                resp.setContentLength(SHORT_BODY.length);
+                resp.getOutputStream().write(SHORT_BODY);
+            } else if (get && LONG_BODY_PATH.equals(path)) {
+                resp.setContentType("application/octet-stream");
+                resp.setContentLength(LONG_BODY.length);
+                resp.getOutputStream().write(LONG_BODY);
+            } else if (get && ERROR_BODY_PATH.equals(path)) {
+                resp.setStatus(500);
+                resp.setContentLength(5);
+                resp.getOutputStream().write("error".getBytes(StandardCharsets.UTF_8));
+            } else if (post && SHORT_POST_BODY_PATH.equals(path)) {
+                resp.setContentType("application/octet-stream");
+                resp.setContentLength(SHORT_BODY.length);
+                resp.getOutputStream().write(SHORT_BODY);
+            } else if (post && SHORT_POST_BODY_WITH_VALIDATION_PATH.equals(path)) {
+                if (!Objects.equals(ByteBuffer.wrap(LONG_BODY, 1, 42), ByteBuffer.wrap(requestBody))) {
+                    resp.sendError(400, "Request body does not match expected value");
                 }
+            } else if (post && HTTP_HEADERS_PATH.equals(path)) {
+                String headerNameString = TEST_HEADER.getCaseInsensitiveName();
+                String responseTestHeaderValue = req.getHeader(headerNameString);
+                if (responseTestHeaderValue == null) {
+                    responseTestHeaderValue = NULL_REPLACEMENT;
+                }
+
+                resp.setHeader(headerNameString, responseTestHeaderValue);
+            } else if (get && NO_DOUBLE_UA_PATH.equals(path)) {
+                if (!EXPECTED_HEADER.equals(req.getHeader("User-Agent"))) {
+                    resp.setStatus(400);
+                }
+            } else if (get && IO_EXCEPTION_PATH.equals(path)) {
+                resp.getHttpChannel().getConnection().close();
+            } else if (get && RETURN_HEADERS_AS_IS_PATH.equals(path)) {
+                List<String> headerNames = Collections.list(req.getHeaderNames());
+                headerNames.forEach(headerName -> {
+                    List<String> headerValues = Collections.list(req.getHeaders(headerName));
+                    headerValues.forEach(headerValue -> resp.addHeader(headerName, headerValue));
+                });
+            } else if (get && PROXY_TO_ADDRESS.equals(path)) {
+                resp.setStatus(418);
+                resp.getOutputStream().write("I'm a teapot".getBytes(StandardCharsets.UTF_8));
+            } else {
+                throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
             }
         }, 20);
 
@@ -745,11 +737,5 @@ public class NettyAsyncHttpClientTests {
         outputStream.write(body);
         outputStream.close();
         return tempFile;
-    }
-
-    private static byte[] fullyReadRequest(InputStream requestBody) throws IOException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        IOUtils.copy(requestBody, outputStream);
-        return outputStream.toByteArray();
     }
 }

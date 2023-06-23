@@ -3,8 +3,11 @@
 
 package com.azure.core.test.http;
 
+import org.apache.commons.compress.utils.IOUtils;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Response;
 import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -14,7 +17,13 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Local server that will reply to requests based on the configured {@link HttpServlet}.
@@ -25,13 +34,25 @@ public class LocalTestServer {
     private final ServerConnector httpsConnector;
 
     /**
-     * Creates a new instance of {@link LocalTestServer} that will reply to requests based on the passed HTTP servlet.
+     * Creates a new instance of {@link LocalTestServer} that will reply to requests based on the passed
+     * RequestHandler.
      *
-     * @param httpServlet The HTTP servlet that will reply to requests.
+     * @param requestHandler The request handler that will be used to process requests.
+     * @throws RuntimeException If the server cannot configure SSL.
+     */
+    public LocalTestServer(RequestHandler requestHandler) {
+        this(requestHandler, 10);
+    }
+
+    /**
+     * Creates a new instance of {@link LocalTestServer} that will reply to requests based on the passed
+     * RequestHandler.
+     *
+     * @param requestHandler The request handler that will be used to process requests.
      * @param maxThreads The maximum number of threads that the server will use to process requests.
      * @throws RuntimeException If the server cannot configure SSL.
      */
-    public LocalTestServer(HttpServlet httpServlet, int maxThreads) {
+    public LocalTestServer(RequestHandler requestHandler, int maxThreads) {
         this.server = new Server(new QueuedThreadPool(maxThreads));
 
         HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory();
@@ -64,7 +85,14 @@ public class LocalTestServer {
         servletContextHandler.setContextPath("/");
         server.setHandler(servletContextHandler);
 
-        ServletHolder servletHolder = new ServletHolder(httpServlet);
+        ServletHolder servletHolder = new ServletHolder(new HttpServlet() {
+            @Override
+            protected void service(HttpServletRequest req, HttpServletResponse resp)
+                throws ServletException, IOException {
+                byte[] requestBody = fullyReadRequest(req.getInputStream());
+                requestHandler.handle((Request) req, (Response) resp, requestBody);
+            }
+        });
         servletContextHandler.addServlet(servletHolder, "/");
     }
 
@@ -92,7 +120,9 @@ public class LocalTestServer {
      */
     public void stop() {
         try {
-            server.stop();
+            if (server.isRunning()) {
+                server.stop();
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -133,5 +163,27 @@ public class LocalTestServer {
     public String getHttpsUri() {
         server.getURI();
         return "https://localhost:" + getHttpsPort();
+    }
+
+    /**
+     * Handler that will be used to process requests.
+     */
+    public interface RequestHandler {
+        /**
+         * Handles the request.
+         *
+         * @param req The request.
+         * @param resp The response.
+         * @param requestBody The request body.
+         * @throws IOException If an IO error occurs.
+         * @throws ServletException If a servlet error occurs.
+         */
+        void handle(Request req, Response resp, byte[] requestBody) throws IOException, ServletException;
+    }
+
+    private static byte[] fullyReadRequest(InputStream requestBody) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        IOUtils.copy(requestBody, outputStream);
+        return outputStream.toByteArray();
     }
 }
