@@ -46,6 +46,7 @@ public class RequestOptions {
     private String trackingId;
     private boolean nonIdempotentWriteRetriesEnabled = false;
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig;
+    private List<String> excludeRegions;
 
 
     /**
@@ -451,5 +452,13 @@ public class RequestOptions {
 
     public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig(){
         return this.endToEndOperationLatencyConfig;
+    }
+
+    public List<String> getExcludeRegions() {
+        return this.excludeRegions;
+    }
+
+    public void setExcludeRegions(List<String> excludeRegions) {
+        this.excludeRegions = excludeRegions;
     }
 }

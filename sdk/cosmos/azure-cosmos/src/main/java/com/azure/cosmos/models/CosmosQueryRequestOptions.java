@@ -59,6 +59,7 @@ public class CosmosQueryRequestOptions {
     private String queryName;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
+    private List<String> excludeRegions;
 
     /**
      * Instantiates a new query request options.
@@ -102,6 +103,7 @@ public class CosmosQueryRequestOptions {
         this.feedRange = options.feedRange;
         this.thresholds = options.thresholds;
         this.cosmosEndToEndOperationLatencyPolicyConfig = options.cosmosEndToEndOperationLatencyPolicyConfig;
+        this.excludeRegions = options.excludeRegions;
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
     }
 
@@ -339,6 +341,27 @@ public class CosmosQueryRequestOptions {
     public CosmosQueryRequestOptions setCosmosEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
         this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
         return this;
+    }
+
+    /**
+     * List of regions to be excluded for the request/retries. Example "East US" or "East US, West US"
+     * These regions will be excluded from the preferred regions list
+     *
+     * @param excludeRegions the regions to exclude
+     * @return the {@link CosmosQueryRequestOptions}
+     */
+    public CosmosQueryRequestOptions setExcludedRegions(List<String> excludeRegions) {
+        this.excludeRegions = excludeRegions;
+        return this;
+    }
+
+    /**
+     * Gets the regions to exclude as a hint for retries
+     *
+     * @return the regions to exclude
+     */
+    List<String> getExcludedRegions() {
+        return this.excludeRegions;
     }
 
     /**
@@ -802,6 +825,7 @@ public class CosmosQueryRequestOptions {
                         requestOptions.setDiagnosticsThresholds(queryRequestOptions.thresholds);
                     }
                     requestOptions.setCosmosEndToEndLatencyPolicyConfig(queryRequestOptions.cosmosEndToEndOperationLatencyPolicyConfig);
+                    requestOptions.setExcludeRegions(queryRequestOptions.excludeRegions);
 
                     if (queryRequestOptions.customOptions != null) {
                         for(Map.Entry<String, String> entry : queryRequestOptions.customOptions.entrySet()) {
@@ -848,6 +872,11 @@ public class CosmosQueryRequestOptions {
                     List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
 
                     options.setCancelledRequestDiagnosticsTracker(cancelledRequestDiagnosticsTracker);
+                }
+
+                @Override
+                public List<String> getExcludeRegions(CosmosQueryRequestOptions options) {
+                    return options.getExcludedRegions();
                 }
             });
     }

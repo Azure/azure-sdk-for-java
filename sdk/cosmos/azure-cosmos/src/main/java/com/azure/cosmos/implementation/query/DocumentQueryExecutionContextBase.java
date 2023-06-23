@@ -130,6 +130,8 @@ implements IDocumentQueryExecutionContext<T> {
         if (endToEndOperationLatencyConfig != null) {
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
         }
+        request.requestContext.setExcludeRegions( ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
+            getCosmosQueryRequestOptionsAccessor().getExcludeRegions(cosmosQueryRequestOptions));
 
         return request;
     }
