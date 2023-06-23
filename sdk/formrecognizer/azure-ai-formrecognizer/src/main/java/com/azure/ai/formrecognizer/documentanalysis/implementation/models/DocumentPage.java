@@ -6,7 +6,6 @@ package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPageKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan;
-import com.azure.ai.formrecognizer.documentanalysis.models.LengthUnit;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
