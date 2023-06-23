@@ -3,18 +3,12 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpResponse
-import com.azure.core.http.ProxyOptions
 import com.azure.core.http.RequestConditions
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
-import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.http.policy.UserAgentPolicy
 import com.azure.core.util.BinaryData
-import com.azure.core.util.Context
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.HttpClientOptions
 import com.azure.core.util.ProgressListener
