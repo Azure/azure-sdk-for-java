@@ -85,6 +85,7 @@ org.apache.kafka:kafka-clients;3.3.2
 org.apache.logging.log4j:log4j-api;2.19.0
 org.apache.logging.log4j:log4j-core;2.19.0
 org.apache.logging.log4j:log4j-slf4j-impl;2.19.0
+org.apache.logging.log4j:log4j-slf4j2-impl;2.19.0
 org.apache.maven:maven-core;3.5.4
 org.apache.maven.archetype:archetype-packaging;3.2.0
 org.apache.maven.archetype:maven-archetype-plugin;3.2.0
@@ -174,14 +175,11 @@ org.springframework.cloud:spring-cloud-starter-sleuth;3.1.8
 org.springframework.cloud:spring-cloud-starter-stream-kafka;4.0.2
 org.springframework.cloud:spring-cloud-stream;4.0.2
 
-pl.pragmatists:JUnitParams;1.1.1
-
 ## Test dependency versions
 org.objenesis:objenesis;3.1
 cglib:cglib-nodep;3.2.7
 com.github.docker-java:docker-java;3.2.1
 com.github.tomakehurst:wiremock-standalone;2.24.1
-com.github.tomakehurst:wiremock-jre8;2.33.2
 com.jcraft:jsch;0.1.55
 com.microsoft.azure:adal4j;1.6.5
 com.microsoft.azure:azure;1.24.1
@@ -229,8 +227,8 @@ org.junit.platform:junit-platform-runner;1.9.2
 org.junit.platform:junit-platform-suite-api;1.9.2
 org.junit.platform:junit-platform-testkit;1.9.2
 org.junit.vintage:junit-vintage-engine;5.9.2
-org.openjdk.jmh:jmh-core;1.22
-org.openjdk.jmh:jmh-generator-annprocess;1.22
+org.openjdk.jmh:jmh-core;1.36
+org.openjdk.jmh:jmh-generator-annprocess;1.36
 org.spockframework:spock-core;2.4-M1-groovy-4.0
 org.testng:testng;7.5
 org.awaitility:awaitility;4.2.0
@@ -269,7 +267,7 @@ org.apache.maven.plugins:maven-clean-plugin;3.2.0
 org.apache.maven.plugins:maven-compiler-plugin;3.10.1
 org.apache.maven.plugins:maven-eclipse-plugin;2.8
 org.apache.maven.plugins:maven-enforcer-plugin;3.0.0-M3
-org.apache.maven.plugins:maven-failsafe-plugin;3.0.0-M7
+org.apache.maven.plugins:maven-failsafe-plugin;3.1.0
 org.apache.maven.plugins:maven-help-plugin;2.1.1
 org.apache.maven.plugins:maven-install-plugin;3.0.0-M1
 org.apache.maven.plugins:maven-jar-plugin;3.1.2
@@ -282,7 +280,7 @@ org.apache.maven.plugins:maven-resources-plugin;3.3.0
 org.apache.maven.plugins:maven-shade-plugin;3.3.0
 org.apache.maven.plugins:maven-site-plugin;3.7.1
 org.apache.maven.plugins:maven-source-plugin;3.0.1
-org.apache.maven.plugins:maven-surefire-plugin;3.0.0-M7
+org.apache.maven.plugins:maven-surefire-plugin;3.1.0
 org.codehaus.mojo:build-helper-maven-plugin;3.3.0
 org.codehaus.mojo:cobertura-maven-plugin;2.7
 org.codehaus.mojo:exec-maven-plugin;3.1.0
@@ -322,9 +320,6 @@ org.testcontainers:junit-jupiter;1.17.6
 # sdk\keyvault\microsoft-azure-keyvault-extensions\pom.xml
 # sdk\keyvault\microsoft-azure-keyvault-test\pom.xml
 test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
-
-# sdk\attestation\azure-security-attestation
-attestation_com.nimbusds:nimbus-jose-jwt;9.22
 
 # everything under sdk\cosmos
 cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.13.5
@@ -401,7 +396,10 @@ spring_com.microsoft.azure:azure;1.34.0
 spring_redis.clients:jedis;3.8.0
 
 # Spring Boot 3 dependency versions
+attestation_com.nimbusds:nimbus-jose-jwt;9.22
+com.github.tomakehurst:wiremock-jre8;2.33.2
 jakarta.servlet:jakarta.servlet-api;6.0.0
 jakarta.xml.bind:jakarta.xml.bind-api;4.0.0
 org.springframework.boot:spring-boot-starter-log4j2;3.0.5
 org.springframework.cloud:spring-cloud-stream-test-binder;4.0.2
+pl.pragmatists:JUnitParams;1.1.1

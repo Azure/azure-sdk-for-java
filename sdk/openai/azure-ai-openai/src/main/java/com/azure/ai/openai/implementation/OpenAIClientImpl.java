@@ -637,10 +637,7 @@ public final class OpenAIClientImpl {
      *             }
      *             index: int (Required)
      *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
-     *             delta (Optional): {
-     *                 role: String(system/assistant/user) (Optional)
-     *                 content: String (Optional)
-     *             }
+     *             delta (Optional): (recursive schema, see delta above)
      *         }
      *     ]
      *     usage (Required): {
@@ -725,10 +722,7 @@ public final class OpenAIClientImpl {
      *             }
      *             index: int (Required)
      *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
-     *             delta (Optional): {
-     *                 role: String(system/assistant/user) (Optional)
-     *                 content: String (Optional)
-     *             }
+     *             delta (Optional): (recursive schema, see delta above)
      *         }
      *     ]
      *     usage (Required): {

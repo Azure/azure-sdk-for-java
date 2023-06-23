@@ -74,11 +74,6 @@ steps:
       AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
-  - pwsh: |
-      Get-ChildItem -Recurse -Path $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }} -Filter assets.json | `
-        ForEach-Object { test-proxy restore -a $_.FullName }
-    displayName: Restore Recordings
-
   - task: Maven@3
     displayName: 'Run tests'
     inputs:
@@ -93,16 +88,6 @@ steps:
     env: ${{ parameters.TestEnvVars }}
     # we want to run this when TestFromSource isn't true
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
-
-  - pwsh: |
-      $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy.log
-      foreach($file in $files){
-          Write-Host "##[group]$file"
-          cat $file
-          Write-Host "##[endgroup]"
-      }
-    displayName: Dump Test-Proxy Logs
-    condition: succeededOrFailed()
 
   # Generate the pom file with all the modules required for creating an aggregate code coverage report
   - task: PythonScript@0

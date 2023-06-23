@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlVirtualMachines GetByResourceGroup. */
 public final class SqlVirtualMachinesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/GetSqlVirtualMachine.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/GetSqlVirtualMachine.json
      */
     /**
      * Sample code: Gets a SQL virtual machine.
@@ -18,6 +16,8 @@ public final class SqlVirtualMachinesGetByResourceGroupSamples {
      */
     public static void getsASQLVirtualMachine(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager.sqlVirtualMachines().getByResourceGroupWithResponse("testrg", "testvm", null, Context.NONE);
+        manager
+            .sqlVirtualMachines()
+            .getByResourceGroupWithResponse("testrg", "testvm", null, com.azure.core.util.Context.NONE);
     }
 }

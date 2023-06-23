@@ -156,7 +156,7 @@ public class DigitalTwinsLifecycleAsyncSample {
                 .subscribe();
 
             // Call APIs to retrieve all incoming relationships.
-            client.listIncomingRelationships(twinId, null)
+            client.listIncomingRelationships(twinId)
                 .doOnNext(e -> relationshipList.add(MAPPER.convertValue(e, BasicRelationship.class)))
                 .doOnError(IGNORE_NOT_FOUND_ERROR)
                 .doOnTerminate(listRelationshipSemaphore::countDown)

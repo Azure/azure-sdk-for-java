@@ -233,10 +233,8 @@ public class ThroughputControlTests extends TestSuiteBase {
         this.ensureContainer();
         String controlContainerId = "tcc" + UUID.randomUUID();
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
-        database
-            .createContainerIfNotExists(
-                controlContainer.getId(), "/groupId", ThroughputProperties.createManualThroughput(10100))
-            .block();
+
+        this.createThroughputControlContainerIfNotExists(database, controlContainerId, 10100);
 
         try {
             // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
@@ -286,11 +284,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         CosmosAsyncContainer testContainer = cosmosAsyncClient.getDatabase(database.getId()).getContainer(container.getId());
 
         String controlContainerId = "tcc" + UUID.randomUUID();
-        CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
-        database
-            .createContainerIfNotExists(
-                controlContainer.getId(), "/groupId", ThroughputProperties.createManualThroughput(10100))
-            .block();
+        this.createThroughputControlContainerIfNotExists(database, controlContainerId, 10100);
 
         try {
             // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
@@ -331,10 +325,7 @@ public class ThroughputControlTests extends TestSuiteBase {
 
             assertThat(throughputQueryMonoCalledCount.get()).isGreaterThanOrEqualTo(1);
         } finally {
-            controlContainer
-                .delete()
-                .block();
-
+            safeDeleteCollection(database.getContainer(controlContainerId));
             safeClose(cosmosAsyncClient);
         }
     }
@@ -343,11 +334,7 @@ public class ThroughputControlTests extends TestSuiteBase {
     public void throughputGlobalControlCanUpdateConfig(OperationType operationType) {
         this.ensureContainer();
         String controlContainerId = "tcc" + UUID.randomUUID();
-        CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
-        database
-            .createContainerIfNotExists(
-                controlContainer.getId(), "/groupId", ThroughputProperties.createManualThroughput(10100))
-            .block();
+        this.createThroughputControlContainerIfNotExists(database, controlContainerId, 10100);
 
         try {
             List<Pair<Integer, Boolean>> testCases = new ArrayList<>(
@@ -407,9 +394,7 @@ public class ThroughputControlTests extends TestSuiteBase {
                 }
             }
         } finally {
-            controlContainer
-                .delete()
-                .block();
+            safeDeleteCollection(database.getContainer(controlContainerId));
         }
     }
 
@@ -563,11 +548,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         List<CosmosAsyncClient> cosmosAsyncClients = new ArrayList<>();
         // and do not enable ttl on the container so to test how many items are created.
         String controlContainerId = "tcc" + UUID.randomUUID();
-        CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
-        database
-            .createContainerIfNotExists(
-                controlContainer.getId(), "/groupId", ThroughputProperties.createManualThroughput(10100))
-            .block();
+        this.createThroughputControlContainerIfNotExists(database, controlContainerId, 10100);
 
         try {
             ThroughputControlGroupConfig groupConfig =
@@ -602,11 +583,12 @@ public class ThroughputControlTests extends TestSuiteBase {
                 testContainer.createItem(getDocumentDefinition(), requestOptions).block();
             }
 
-            List<GlobalThroughputControlClientItem> clientItems = this.getClientItems(groupConfig.getGroupName(), controlContainer);
+            List<GlobalThroughputControlClientItem> clientItems =
+                this.getClientItems(groupConfig.getGroupName(), database.getContainer(controlContainerId));
             assertThat(clientItems.size()).isEqualTo(clientCount);
 
         } finally {
-            controlContainer.delete().block();
+            safeDeleteCollection(database.getContainer(controlContainerId));
 
             for (CosmosAsyncClient client : cosmosAsyncClients) {
                 safeClose(client);
@@ -621,11 +603,8 @@ public class ThroughputControlTests extends TestSuiteBase {
         // This test is to validate even though same groups have been enabled multiple times, no new client item will be created
 
         String controlContainerId = "tcc" + UUID.randomUUID();
+        this.createThroughputControlContainerIfNotExists(database, controlContainerId, 10100);
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
-        database
-            .createContainerIfNotExists(
-                controlContainer.getId(), "/groupId", ThroughputProperties.createManualThroughput(10100))
-            .block();
 
         try {
             UUID randomId = UUID.randomUUID();
@@ -687,7 +666,7 @@ public class ThroughputControlTests extends TestSuiteBase {
                 clientItems.stream().filter(clientItem -> clientItem.getId().startsWith(clientIdPrefix)).count())
                 .isEqualTo(1);
         } finally {
-            controlContainer.delete().block();
+            safeDeleteCollection(controlContainer);
         }
     }
 
@@ -839,6 +818,16 @@ public class ThroughputControlTests extends TestSuiteBase {
         return controlContainer.queryItems(querySpec, GlobalThroughputControlClientItem.class)
                                .collectList()
                                .block();
+    }
+
+    private void createThroughputControlContainerIfNotExists(
+        CosmosAsyncDatabase database,
+        String controlContainerId,
+        int throughput) {
+        CosmosContainerProperties containerProperties = new CosmosContainerProperties(controlContainerId, "/groupId");
+        containerProperties.setDefaultTimeToLiveInSeconds(-1);
+
+        database.createContainerIfNotExists(containerProperties, ThroughputProperties.createManualThroughput(throughput)).block();
     }
 
     // TODO: add tests split

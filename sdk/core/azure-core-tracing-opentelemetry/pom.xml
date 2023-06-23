@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opentelemetry</artifactId>
-  <version>1.0.0-beta.36</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
+  <version>1.0.0-beta.37</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
 
   <name>Microsoft Azure OpenTelemetry tracing plugin</name>
   <description>This package contains the OpenTelemetry tracing plugin for Azure client libraries.</description>
@@ -59,7 +59,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.40.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.41.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
@@ -78,13 +78,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.40</version>  <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+      <version>1.0.0-beta.41</version>  <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.18.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.19.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -120,13 +120,13 @@
     <dependency>
       <groupId>org.openjdk.jmh</groupId>
       <artifactId>jmh-core</artifactId>
-      <version>1.22</version> <!-- {x-version-update;org.openjdk.jmh:jmh-core;external_dependency} -->
+      <version>1.36</version> <!-- {x-version-update;org.openjdk.jmh:jmh-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.openjdk.jmh</groupId>
       <artifactId>jmh-generator-annprocess</artifactId>
-      <version>1.22</version> <!-- {x-version-update;org.openjdk.jmh:jmh-generator-annprocess;external_dependency} -->
+      <version>1.36</version> <!-- {x-version-update;org.openjdk.jmh:jmh-generator-annprocess;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

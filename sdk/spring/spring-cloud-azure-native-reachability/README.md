@@ -10,7 +10,7 @@ This library provides the reachability metadata for Spring Cloud Azure libraries
 - A [Java Development Kit (JDK)][jdk_link], version 17.
 - [Azure Subscription][azure_subscription]
 - [Docker](https://docs.docker.com/installation/#installation) for [Buildpacks](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#native-image.developing-your-first-application.buildpacks) usage
-- [GraalVM 22.3 - Java 17](https://www.graalvm.org/downloads/) and [Native Image](https://www.graalvm.org/22.0/reference-manual/native-image/) for [Native Build Tools](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#native-image.developing-your-first-application.native-build-tools) usage
+- [GraalVM 22.3 - Java 17](https://www.graalvm.org/downloads/) and [Native Image](https://www.graalvm.org/reference-manual/native-image/) for [Native Build Tools](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#native-image.developing-your-first-application.native-build-tools) usage
 
 ### Include the package
 

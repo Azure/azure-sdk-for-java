@@ -298,6 +298,7 @@ public final class RoomsClientBuilder implements HttpTrait<RoomsClientBuilder>, 
      * @param clientOptions object to be applied
      * @return RoomsClientBuilder
      */
+    @Override
     public RoomsClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

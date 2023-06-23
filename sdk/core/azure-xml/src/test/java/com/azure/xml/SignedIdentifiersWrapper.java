@@ -3,10 +3,11 @@
 
 package com.azure.xml;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.azure.xml.AzureXmlTestUtils.getRootElementName;
 
 public class SignedIdentifiersWrapper implements XmlSerializable<SignedIdentifiersWrapper> {
     private final List<SignedIdentifier> signedIdentifiers;
@@ -21,7 +22,11 @@ public class SignedIdentifiersWrapper implements XmlSerializable<SignedIdentifie
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("SignedIdentifiers");
+        return toXml(xmlWriter, null);
+    }
+
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        xmlWriter.writeStartElement(getRootElementName(rootElementName, "SignedIdentifiers"));
 
         if (signedIdentifiers != null) {
             for (SignedIdentifier signedIdentifier : signedIdentifiers) {
@@ -33,35 +38,25 @@ public class SignedIdentifiersWrapper implements XmlSerializable<SignedIdentifie
     }
 
     public static SignedIdentifiersWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
-        if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
-            // Since SignedIdentifiersWrapper only cares about XML elements use nextElement()
-            xmlReader.nextElement();
-        }
+        return fromXml(xmlReader, null);
+    }
 
-        if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
-            throw new IllegalStateException("Illegal start of XML deserialization. "
-                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken." + xmlReader.currentToken() + "'.");
-        }
+    public static SignedIdentifiersWrapper fromXml(XmlReader xmlReader, String rootElementName)
+        throws XMLStreamException {
+        return xmlReader.readObject(getRootElementName(rootElementName, "SignedIdentifiers"), reader -> {
+            List<SignedIdentifier> signedIdentifiers = null;
 
-        QName elementQName = xmlReader.getElementName();
-        String elementName = elementQName.toString();
-        if (!"SignedIdentifiers".equals(elementName)) {
-            throw new IllegalStateException("Expected XML element to be 'SignedIdentifiers' but it was: "
-                + "'" + elementName + "'.");
-        }
+            while (xmlReader.nextElement() != XmlToken.END_ELEMENT) {
+                SignedIdentifier signedIdentifier = SignedIdentifier.fromXml(xmlReader);
 
-        List<SignedIdentifier> signedIdentifiers = null;
+                if (signedIdentifiers == null) {
+                    signedIdentifiers = new ArrayList<>();
+                }
 
-        while (xmlReader.nextElement() != XmlToken.END_ELEMENT) {
-            SignedIdentifier signedIdentifier = SignedIdentifier.fromXml(xmlReader);
-
-            if (signedIdentifiers == null) {
-                signedIdentifiers = new ArrayList<>();
+                signedIdentifiers.add(signedIdentifier);
             }
 
-            signedIdentifiers.add(signedIdentifier);
-        }
-
-        return new SignedIdentifiersWrapper(signedIdentifiers);
+            return new SignedIdentifiersWrapper(signedIdentifiers);
+        });
     }
 }

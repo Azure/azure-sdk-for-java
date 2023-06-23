@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databricks.generated;
 /** Samples for OutboundNetworkDependenciesEndpoints List. */
 public final class OutboundNetworkDependenciesEndpointsListSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/preview/2021-04-01-preview/examples/OutboundNetworkDependenciesEndpointsList.json
+     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/OutboundNetworkDependenciesEndpointsList.json
      */
     /**
      * Sample code: List OutboundNetworkDependenciesEndpoints by Workspace.

@@ -226,6 +226,7 @@ public class DefaultAzureCredentialTest {
         try (MockedConstruction<IdentityClient> mocked = mockConstruction(IdentityClient.class, (identityClient, context) -> {
             when(identityClient.authenticateWithAzureDeveloperCli(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
             when(identityClient.authenticateWithAzureCli(request)).thenReturn(Mono.empty());
+            when(identityClient.authenticateWithAzurePowerShell(request)).thenReturn(Mono.empty());
             when(identityClient.authenticateWithManagedIdentityConfidentialClient(request)).thenReturn(Mono.empty());
             when(identityClient.authenticateWithSharedTokenCache(request, null)).thenReturn(Mono.empty());
             when(identityClient.authenticateWithIntelliJ(request)).thenReturn(Mono.empty());

@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.19.0-beta.1 (Unreleased)
+### 4.20.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,15 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.19.0 (2023-06-09)
+
+#### Features Added
+* Added support for priority based throttling - See [PR 35238](https://github.com/Azure/azure-sdk-for-java/pull/35238)
+* Added new configuration parameter `spark.cosmos.write.bulk.targetedPayloadSizeInBytes` to allow increasing the micro batch payload size for better efficiency when documents are often above 110 KB.  - See [PR 35379](https://github.com/Azure/azure-sdk-for-java/pull/35379)
+
+#### Bugs Fixed
+* Addressed `NullPointerException` in `CosmosDataItemSource` constructor when Spark runtime initialization hasn't completed yet. - See [PR 35201](https://github.com/Azure/azure-sdk-for-java/pull/35201)
 
 ### 4.18.2 (2023-05-16)
 

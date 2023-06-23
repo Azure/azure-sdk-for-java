@@ -1376,48 +1376,4 @@ public class PoolOperations implements IInheritedBehaviors {
 
         return this.parentBatchClient.protocolLayer().pools().listUsageMetrics(options);
     }
-
-    /**
-     * Gets lifetime summary statistics for all of the pools in the current account.
-     * Statistics are aggregated across all pools that have ever existed in the
-     * account, from account creation to the last update time of the statistics.
-     *
-     * @return The aggregated pool statistics.
-     * @throws BatchErrorException
-     *             Exception thrown when an error response is received from the
-     *             Batch service.
-     * @throws IOException
-     *             Exception thrown when there is an error in
-     *             serialization/deserialization of data sent to/received from the
-     *             Batch service.
-     */
-    public PoolStatistics getAllPoolsLifetimeStatistics() throws BatchErrorException, IOException {
-        return getAllPoolsLifetimeStatistics(null);
-    }
-
-    /**
-     * Gets lifetime summary statistics for all of the pools in the current account.
-     * Statistics are aggregated across all pools that have ever existed in the
-     * account, from account creation to the last update time of the statistics.
-     *
-     * @param additionalBehaviors
-     *            A collection of {@link BatchClientBehavior} instances that are
-     *            applied to the Batch service request.
-     * @return The aggregated pool statistics.
-     * @throws BatchErrorException
-     *             Exception thrown when an error response is received from the
-     *             Batch service.
-     * @throws IOException
-     *             Exception thrown when there is an error in
-     *             serialization/deserialization of data sent to/received from the
-     *             Batch service.
-     */
-    public PoolStatistics getAllPoolsLifetimeStatistics(Iterable<BatchClientBehavior> additionalBehaviors)
-            throws BatchErrorException, IOException {
-        PoolGetAllLifetimeStatisticsOptions options = new PoolGetAllLifetimeStatisticsOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
-        bhMgr.applyRequestBehaviors(options);
-
-        return this.parentBatchClient.protocolLayer().pools().getAllLifetimeStatistics(options);
-    }
 }

@@ -493,39 +493,29 @@ public abstract class HttpClientTests {
                     BinaryData streamData = BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length);
 
                     List<ByteBuffer> bufferList = new ArrayList<>();
-                    int bufferSize = 113;
+                    int bufferSize = 1023;
                     for (int startIndex = 0; startIndex < bytes.length; startIndex += bufferSize) {
-                        bufferList.add(
-                            ByteBuffer.wrap(
-                                bytes, startIndex, Math.min(bytes.length - startIndex, bufferSize)));
+                        bufferList.add(ByteBuffer.wrap(bytes, startIndex,
+                            Math.min(bytes.length - startIndex, bufferSize)));
                     }
-                    BinaryData fluxBinaryData = BinaryData.fromFlux(
-                        Flux.fromIterable(bufferList)
-                            .map(ByteBuffer::duplicate),
-                        null, false).block();
 
-                    BinaryData fluxBinaryDataWithLength = BinaryData.fromFlux(
-                        Flux.fromIterable(bufferList)
-                            .map(ByteBuffer::duplicate),
-                        size.longValue(), false).block();
+                    BinaryData fluxBinaryData = BinaryData.fromFlux(Flux.fromIterable(bufferList)
+                        .map(ByteBuffer::duplicate), null, false)
+                        .block();
 
-                    BinaryData asyncFluxBinaryData = BinaryData.fromFlux(
-                        Flux.fromIterable(bufferList)
-                            .map(ByteBuffer::duplicate)
-                            .delayElements(Duration.ofNanos(10))
-                            .flatMapSequential(
-                                buffer -> Mono.delay(Duration.ofNanos(10)).map(i -> buffer)
-                            ),
-                        null, false).block();
+                    BinaryData fluxBinaryDataWithLength = BinaryData.fromFlux(Flux.fromIterable(bufferList)
+                        .map(ByteBuffer::duplicate), size.longValue(), false)
+                        .block();
 
-                    BinaryData asyncFluxBinaryDataWithLength = BinaryData.fromFlux(
-                        Flux.fromIterable(bufferList)
-                            .map(ByteBuffer::duplicate)
-                            .delayElements(Duration.ofNanos(10))
-                            .flatMapSequential(
-                                buffer -> Mono.delay(Duration.ofNanos(10)).map(i -> buffer)
-                            ),
-                        size.longValue(), false).block();
+                    BinaryData asyncFluxBinaryData = BinaryData.fromFlux(Flux.fromIterable(bufferList)
+                        .map(ByteBuffer::duplicate)
+                        .delayElements(Duration.ofNanos(10)), null, false)
+                        .block();
+
+                    BinaryData asyncFluxBinaryDataWithLength = BinaryData.fromFlux(Flux.fromIterable(bufferList)
+                        .map(ByteBuffer::duplicate)
+                        .delayElements(Duration.ofNanos(10)), size.longValue(), false)
+                        .block();
 
                     BinaryData objectBinaryData = BinaryData.fromObject(bytes, new ByteArraySerializer());
 
@@ -544,18 +534,18 @@ public abstract class HttpClientTests {
 
 
                     return Stream.of(
-                        Arguments.of(Named.named("byte[]", byteArrayData), Named.named("" + size, bytes)),
+                        Arguments.of(Named.named("byte[]", byteArrayData), Named.named(String.valueOf(size), bytes)),
                         Arguments.of(Named.named("String", stringBinaryData),
-                            Named.named("" + randomStringBytes.length, randomStringBytes)),
+                            Named.named(String.valueOf(randomStringBytes.length), randomStringBytes)),
                         Arguments.of(Named.named("InputStream",
-                            streamData), Named.named("" + size, bytes)),
-                        Arguments.of(Named.named("Flux", fluxBinaryData), Named.named("" + size, bytes)),
-                        Arguments.of(Named.named("Flux with length", fluxBinaryDataWithLength), Named.named("" + size, bytes)),
-                        Arguments.of(Named.named("async Flux", asyncFluxBinaryData), Named.named("" + size, bytes)),
-                        Arguments.of(Named.named("async Flux with length", asyncFluxBinaryDataWithLength), Named.named("" + size, bytes)),
-                        Arguments.of(Named.named("Object", objectBinaryData), Named.named("" + size, bytes)),
-                        Arguments.of(Named.named("File", fileData), Named.named("" + size, bytes)),
-                        Arguments.of(Named.named("File slice", sliceFileData), Named.named("" + size, bytes))
+                            streamData), Named.named(String.valueOf(size), bytes)),
+                        Arguments.of(Named.named("Flux", fluxBinaryData), Named.named(String.valueOf(size), bytes)),
+                        Arguments.of(Named.named("Flux with length", fluxBinaryDataWithLength), Named.named(String.valueOf(size), bytes)),
+                        Arguments.of(Named.named("async Flux", asyncFluxBinaryData), Named.named(String.valueOf(size), bytes)),
+                        Arguments.of(Named.named("async Flux with length", asyncFluxBinaryDataWithLength), Named.named(String.valueOf(size), bytes)),
+                        Arguments.of(Named.named("Object", objectBinaryData), Named.named(String.valueOf(size), bytes)),
+                        Arguments.of(Named.named("File", fileData), Named.named(String.valueOf(size), bytes)),
+                        Arguments.of(Named.named("File slice", sliceFileData), Named.named(String.valueOf(size), bytes))
                     );
                 } catch (IOException e) {
                     throw new RuntimeException(e);

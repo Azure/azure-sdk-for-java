@@ -48,6 +48,7 @@
     <module>sdk/containerregistry</module>
     <module>sdk/core</module>
     <module>sdk/cosmos</module>
+    <module>sdk/cosmosdbforpostgresql</module>
     <module>sdk/costmanagement</module>
     <module>sdk/customerinsights</module>
     <module>sdk/dashboard</module>
