@@ -556,6 +556,18 @@ public final class OpenAIAsyncClient {
         return this.serviceClient.beginStartGenerateImageAsync(imageGenerationOptions, requestOptions);
     }
 
+    // TODO docs
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<BinaryData> generateImage(
+        BinaryData imageGenerationOptions, RequestOptions requestOptions) {
+        return openAIServiceClient != null
+            ? openAIServiceClient.generateImageWithResponseAsync(imageGenerationOptions, requestOptions)
+                .flatMap(FluxUtil::toMono)
+            : serviceClient.beginStartGenerateImageAsync(imageGenerationOptions, requestOptions)
+                .last()
+                .flatMap(it -> it.getFinalResult());
+    }
+
     /**
      * Starts the generation of a batch of images from a text caption.
      *
@@ -566,15 +578,13 @@ public final class OpenAIAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Mono} for polling of status details for long running operations.
+     * @return the {@link Mono} with the image generation result
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageOperationResponse> generateImage(ImageGenerationOptions imageGenerationOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginStartGenerateImageAsync(
-            BinaryData.fromObject(imageGenerationOptions), requestOptions)
-                .last()
-                .flatMap(it -> it.getFinalResult())
+        BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
+        return generateImage(imageGenerationOptionsBinaryData, requestOptions)
                 .map(it -> it.toObject(ImageOperationResponse.class));
     }
 
@@ -594,7 +604,11 @@ public final class OpenAIAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageOperationResponse> getImageOperationStatus(String operationId) {
-        // Generated convenience method for getImageOperationStatusWithResponse
+        // This operation is not available in non-Azure OpenAI
+        if(openAIServiceClient != null) {
+            throw new UnsupportedOperationException("This method is not available in Non Azure OpenAI");
+        }
+
         RequestOptions requestOptions = new RequestOptions();
         return getImageOperationStatusWithResponse(operationId, requestOptions)
                 .flatMap(FluxUtil::toMono)

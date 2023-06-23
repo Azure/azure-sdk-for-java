@@ -8,10 +8,13 @@ import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
+import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
@@ -195,6 +198,44 @@ public final class NonAzureOpenAIClientImpl {
             @HostParam("endpoint") String endpoint,
             @HeaderParam("accept") String accept,
             @BodyParam("application/json") BinaryData chatCompletionsOptions,
+            RequestOptions requestOptions,
+            Context context);
+
+        @Post("/images/generations")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+            value = ClientAuthenticationException.class,
+            code = {401})
+        @UnexpectedResponseExceptionType(
+            value = ResourceNotFoundException.class,
+            code = {404})
+        @UnexpectedResponseExceptionType(
+            value = ResourceModifiedException.class,
+            code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> generateImage(
+            @HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData imageGenerationOptions,
+            RequestOptions requestOptions,
+            Context context);
+
+        @Post("/images/generations")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+            value = ClientAuthenticationException.class,
+            code = {401})
+        @UnexpectedResponseExceptionType(
+            value = ResourceNotFoundException.class,
+            code = {404})
+        @UnexpectedResponseExceptionType(
+            value = ResourceModifiedException.class,
+            code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> generateImageSync(
+            @HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData imageGenerationOptions,
             RequestOptions requestOptions,
             Context context);
     }
@@ -717,5 +758,35 @@ public final class NonAzureOpenAIClientImpl {
             chatCompletionsOptionsUpdated,
             requestOptions,
             Context.NONE);
+    }
+
+    // TODO: docs
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> generateImageWithResponseAsync(
+        BinaryData imageOperationOptions, RequestOptions requestOptions) {
+        final String accept = "application/json";
+
+        return service.generateImage(
+            OPEN_AI_ENDPOINT,
+            accept,
+            imageOperationOptions,
+            requestOptions,
+            Context.NONE
+        );
+    }
+
+    // TODO: docs
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> generateImageWithResponse(
+        BinaryData imageOperationOptions, RequestOptions requestOptions) {
+        final String accept = "application/json";
+
+        return service.generateImageSync(
+            OPEN_AI_ENDPOINT,
+            accept,
+            imageOperationOptions,
+            requestOptions,
+            Context.NONE
+        );
     }
 }
