@@ -40,6 +40,8 @@ public final class ConfigStore {
 
     private AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
 
+    private List<String> trim;
+
     /**
      * @return the endpoint
      */
@@ -171,6 +173,20 @@ public final class ConfigStore {
             return true;
         }
         return endpoints.stream().anyMatch(storeEndpoint -> storeEndpoint.startsWith(endpoint));
+    }
+
+    /**
+     * @return the trim
+     */
+    public List<String> getTrim() {
+        return trim;
+    }
+
+    /**
+     * @param trim the trim to set
+     */
+    public void setTrim(List<String> trim) {
+        this.trim = trim;
     }
 
     /**

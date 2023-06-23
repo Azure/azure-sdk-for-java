@@ -271,13 +271,13 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             AppConfigurationApplicationSettingPropertySource propertySource;
             if (StringUtils.hasText(selectedKeys.getSnapshotName())) {
                 propertySource = new AppConfigurationApplicationSettingPropertySource(store.getEndpoint(), client,
-                    keyVaultClientFactory, selectedKeys.getSnapshotName(), selectedKeys.getPrefix(), appProperties.getMaxRetryTime());
+                    keyVaultClientFactory, selectedKeys.getSnapshotName(), appProperties.getMaxRetryTime());
             } else {
                 propertySource = new AppConfigurationApplicationSettingPropertySource(store.getEndpoint(), client,
                     keyVaultClientFactory, selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles),
                     appProperties.getMaxRetryTime());
             }
-            propertySource.initProperties();
+            propertySource.initProperties(store.getTrim());
             sourceList.add(propertySource);
 
         }

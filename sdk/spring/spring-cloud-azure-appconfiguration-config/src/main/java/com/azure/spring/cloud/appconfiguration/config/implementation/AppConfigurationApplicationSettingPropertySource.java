@@ -43,8 +43,6 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
     protected final String[] labelFilter;
 
     protected final String snapshotName;
-    
-    protected final String prefix;
 
     AppConfigurationApplicationSettingPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient,
         AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String keyFilter, String[] labelFilter,
@@ -57,11 +55,10 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
         this.keyFilter = keyFilter;
         this.labelFilter = labelFilter;
         this.snapshotName = null;
-        this.prefix = "";
     }
 
     AppConfigurationApplicationSettingPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient,
-        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String snapshotName, String prefix, int maxRetryTime) {
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String snapshotName, int maxRetryTime) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
         super(snapshotName + originEndpoint + "/", replicaClient);
@@ -70,7 +67,6 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
         this.keyFilter = null;
         this.labelFilter = null;
         this.snapshotName = snapshotName;
-        this.prefix = prefix;
     }
 
     /**
@@ -82,9 +78,9 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
      * 
      * @throws JsonProcessingException thrown if fails to parse Json content type
      */
-    public void initProperties() throws JsonProcessingException {
+    public void initProperties(List<String> trim) throws JsonProcessingException {
         if (StringUtils.hasText(snapshotName)) {
-            processConfigurationSettings(replicaClient.listSettingSnapshot(snapshotName), prefix);
+            processConfigurationSettings(replicaClient.listSettingSnapshot(snapshotName), null, trim);
         } else {
             List<String> labels = Arrays.asList(labelFilter);
             Collections.reverse(labels);
@@ -94,12 +90,12 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
                     .setLabelFilter(label);
 
                 // * for wildcard match
-                processConfigurationSettings(replicaClient.listSettings(settingSelector), settingSelector.getKeyFilter());
+                processConfigurationSettings(replicaClient.listSettings(settingSelector), settingSelector.getKeyFilter(), trim);
             }
         }
     }
 
-    private void processConfigurationSettings(List<ConfigurationSetting> settings, String trim) throws JsonProcessingException {
+    private void processConfigurationSettings(List<ConfigurationSetting> settings, String keyFilter, List<String> trim) throws JsonProcessingException {
         for (ConfigurationSetting setting : settings) {
             String key = setting.getKey().trim().replaceFirst("^"+trim, "").replace('/', '.');
             if (setting instanceof SecretReferenceConfigurationSetting) {

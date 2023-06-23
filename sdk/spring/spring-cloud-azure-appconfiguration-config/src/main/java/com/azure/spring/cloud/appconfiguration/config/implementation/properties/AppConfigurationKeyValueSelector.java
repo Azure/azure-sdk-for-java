@@ -38,9 +38,6 @@ public final class AppConfigurationKeyValueSelector {
     private String labelFilter;
 
     private String snapshotName = "";
-
-    private String prefix = "";
-
     /**
      * @return the keyFilter
      */
@@ -106,21 +103,7 @@ public final class AppConfigurationKeyValueSelector {
     public void setSnapshotName(String snapshotName) {
         this.snapshotName = snapshotName;
     }
-
-    /**
-     * @return the prefix
-     */
-    public String getPrefix() {
-        return StringUtils.hasText(prefix) ? prefix : APPLICATION_SETTING_DEFAULT_KEY_FILTER;
-    }
-
-    /**
-     * @param prefix the prefix to set
-     */
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
-    }
-
+    
     /**
      * Validates key-filter and label-filter are valid.
      */
