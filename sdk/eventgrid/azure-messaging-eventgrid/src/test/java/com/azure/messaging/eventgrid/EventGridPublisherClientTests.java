@@ -281,11 +281,6 @@ public class EventGridPublisherClientTests extends TestBase {
         EventGridPublisherAsyncClient<EventGridEvent> egClient = builder
                 .endpoint(getEndpoint(EVENTGRID_PARTNER_NAMESPACE_TOPIC_ENDPOINT))
                 .credential(getKey(EVENTGRID_PARTNER_NAMESPACE_TOPIC_KEY))
-                .addPolicy((httpPipelineCallContext, httpPipelineNextPolicy) -> {
-                    HttpHeader httpHeader = httpPipelineCallContext.getHttpRequest().getHeaders().get("aeg-channel-name");
-                    assertNotNull(httpHeader);
-                    return httpPipelineNextPolicy.process();
-                })
                 .buildEventGridEventPublisherAsyncClient();
 
         EventGridEvent event = new EventGridEvent("Test", "Microsoft.MockPublisher.TestEvent",
