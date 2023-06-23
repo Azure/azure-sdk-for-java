@@ -54,7 +54,7 @@
 
 ### Other Changes
 
-#### Dependency Updates
+~~#### Dependency Updates
 
 - Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
 - Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
@@ -83,7 +83,7 @@
     - `Microsoft.ApiManagement.GatewayDeleted`
     - `Microsoft.ApiManagement.GatewayHostnameConfigurationCreated`
     - `Microsoft.ApiManagement.GatewayHostnameConfigurationDeleted`
-    - `Microsoft.ApiManagement.GatewayHostnameConfigurationUpdated`
+    - `Microsoft.ApiManagement.GatewayHostnameConfigurationUpdated`~~
     - `Microsoft.ApiManagement.GatewayUpdated`
     - `Microsoft.DataBox.CopyCompleted`
     - `Microsoft.DataBox.CopyStarted`

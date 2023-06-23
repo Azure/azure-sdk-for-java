@@ -8,11 +8,21 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.CloudEvent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
+import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
+import com.fasterxml.jackson.databind.util.RawValue;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * A service client that publishes events to an EventGrid topic or domain. Use {@link EventGridPublisherClientBuilder}
@@ -124,10 +134,19 @@ import java.time.OffsetDateTime;
  */
 @ServiceClient(builder = EventGridPublisherClientBuilder.class)
 public final class EventGridPublisherClient<T> {
+    private final ClientLogger logger = new ClientLogger(EventGridPublisherClient.class);
 
-    private final EventGridPublisherAsyncClient<T> asyncClient;
-    EventGridPublisherClient(EventGridPublisherAsyncClient<T> client) {
-        this.asyncClient = client;
+    private final EventGridPublisherClientImpl impl;
+    private final String hostname;
+    private final Class<T> eventClass;
+    EventGridPublisherClient(HttpPipeline pipeline, String hostname, EventGridServiceVersion serviceVersion,
+                             Class<T> eventClass) {
+        this.hostname = hostname;
+        this.eventClass = eventClass;
+        this.impl = new EventGridPublisherClientImplBuilder()
+            .pipeline(pipeline)
+            .apiVersion(serviceVersion.getVersion())
+            .buildClient();
     }
 
     /**
@@ -173,22 +192,59 @@ public final class EventGridPublisherClient<T> {
      * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @SuppressWarnings("unchecked")
     public void sendEvents(Iterable<T> events) {
-        asyncClient.sendEvents(events).block();
+        if (this.eventClass == CloudEvent.class) {
+            this.sendCloudEvents((Iterable<CloudEvent>) events);
+        } else if (this.eventClass == EventGridEvent.class) {
+            this.sendEventGridEvents((Iterable<EventGridEvent>) events);
+        } else {
+            this.sendCustomEvents((Iterable<BinaryData>) events);
+        }
+    }
+
+    private void sendCustomEvents(Iterable<BinaryData> events) {
+        if (events == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'events' cannot be null."));
+        }
+        List<Object> objectEvents = StreamSupport.stream(events.spliterator(), false)
+            .map(event -> (Object) new RawValue(event.toString()))
+            .collect(Collectors.toList());
+        this.impl.publishCustomEventEvents(this.hostname, objectEvents);
+    }
+
+    private void sendEventGridEvents(Iterable<EventGridEvent> events) {
+        if (events == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'events' cannot be null."));
+        }
+        List<com.azure.messaging.eventgrid.implementation.models.EventGridEvent> eventGridEvents = StreamSupport.stream(events.spliterator(), false)
+            .map(EventGridEvent::toImpl)
+            .collect(Collectors.toList());
+        this.impl.publishEventGridEvents(this.hostname, eventGridEvents);
+    }
+
+    private void sendCloudEvents(Iterable<CloudEvent> events) {
+        if (events == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'events' cannot be null."));
+        }
+        List<CloudEvent> cloudEvents = StreamSupport.stream(events.spliterator(), false)
+            .collect(Collectors.toList());
+        this.impl.publishCloudEventEvents(this.hostname, cloudEvents, null);
+
     }
 
     /**
      * Publishes the given events to the set topic or domain and gives the response issued by EventGrid.
      * @param events the events to publish.
-     * @param context the context to use along the pipeline.
      *
      * @return the response from the EventGrid service.
      * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendEventsWithResponse(Iterable<T> events, Context context) {
-        return asyncClient.sendEventsWithResponse(events, context).block();
+    public Response<Void> sendEventsWithResponse(Iterable<T> events) {
+        return this.sendEventsWithResponse(events, null);
     }
+
 
     /**
      * Publishes the given events to the set topic or domain and gives the response issued by EventGrid.
@@ -196,15 +252,51 @@ public final class EventGridPublisherClient<T> {
      * @param channelName the channel name to send to Event Grid service. This is only applicable for sending
      *   Cloud Events to a partner topic in partner namespace. For more details, refer to
      *   <a href=https://docs.microsoft.com/azure/event-grid/partner-events-overview>Partner Events Overview.</a>
-     * @param context the context to use along the pipeline.
      *
      * @return the response from the EventGrid service.
      * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendEventsWithResponse(Iterable<T> events, String channelName,
-                                                 Context context) {
-        return asyncClient.sendEventsWithResponse(events, channelName, context).block();
+    @SuppressWarnings("unchecked")
+    public Response<Void> sendEventsWithResponse(Iterable<T> events, String channelName) {
+        if (this.eventClass == CloudEvent.class) {
+            return this.sendCloudEventsWithResponse((Iterable<CloudEvent>) events, channelName);
+        } else if (this.eventClass == EventGridEvent.class) {
+            return this.sendEventGridEventsWithResponse((Iterable<EventGridEvent>) events);
+        } else {
+            return this.sendCustomEventsWithResponse((Iterable<BinaryData>) events);
+        }
+    }
+
+    private Response<Void> sendCustomEventsWithResponse(Iterable<BinaryData> events) {
+        if (events == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'events' cannot be null."));
+        }
+        List<Object> objectEvents = StreamSupport.stream(events.spliterator(), false)
+            .map(event -> (Object) new RawValue(event.toString()))
+            .collect(Collectors.toList());
+        return this.impl.publishCustomEventEventsWithResponse(this.hostname, objectEvents, Context.NONE);
+    }
+
+    private Response<Void> sendEventGridEventsWithResponse(Iterable<EventGridEvent> events) {
+        if (events == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'events' cannot be null."));
+        }
+
+        List<com.azure.messaging.eventgrid.implementation.models.EventGridEvent> eventGridEvents = StreamSupport.stream(events.spliterator(), false)
+            .map(EventGridEvent::toImpl)
+            .collect(Collectors.toList());
+        return this.impl.publishEventGridEventsWithResponse(this.hostname, eventGridEvents, Context.NONE);
+    }
+
+    private Response<Void> sendCloudEventsWithResponse(Iterable<CloudEvent> events, String channelName) {
+        if (events == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'events' cannot be null."));
+        }
+
+        List<CloudEvent> cloudEvents = StreamSupport.stream(events.spliterator(), false)
+            .collect(Collectors.toList());
+        return this.impl.publishCloudEventEventsWithResponse(this.hostname, cloudEvents, channelName, Context.NONE);
     }
 
     /**
@@ -215,7 +307,7 @@ public final class EventGridPublisherClient<T> {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendEvent(T event) {
-
-        asyncClient.sendEvent(event).block();
+        List<T> events = Collections.singletonList(event);
+        this.sendEvents(events);
     }
 }

@@ -7,7 +7,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
 import com.azure.messaging.eventgrid.samples.models.User;
@@ -59,6 +58,6 @@ public class PublishCloudEventsToPartnerTopic {
         events.add(cloudEventBytes.addExtensionAttribute("extension", "value"));
 
         // send to "my-channel-name" channel
-        publisherClient.sendEventsWithResponse(events, "my-channel-name", Context.NONE);
+        publisherClient.sendEventsWithResponse(events, "my-channel-name");
     }
 }

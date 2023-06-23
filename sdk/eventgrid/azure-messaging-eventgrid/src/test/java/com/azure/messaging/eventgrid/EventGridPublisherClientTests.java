@@ -444,7 +444,7 @@ public class EventGridPublisherClientTests extends TestBase {
             "1.0")
             .setEventTime(OffsetDateTime.now()));
 
-        Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);
+        Response<Void> response = egClient.sendEventsWithResponse(events);
 
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 200);
@@ -543,7 +543,7 @@ public class EventGridPublisherClientTests extends TestBase {
             .setSubject("Test")
             .setTime(OffsetDateTime.now()));
 
-        Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);
+        Response<Void> response = egClient.sendEventsWithResponse(events);
 
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 200);
@@ -594,7 +594,7 @@ public class EventGridPublisherClientTests extends TestBase {
             .setTime(OffsetDateTime.now());
 
         Response<Void> response = egClient.sendEventsWithResponse(Arrays.asList(event),
-            getChannelName(EVENTGRID_PARTNER_CHANNEL_NAME), Context.NONE);
+            getChannelName(EVENTGRID_PARTNER_CHANNEL_NAME));
         assertEquals(200, response.getStatusCode());
     }
 
@@ -603,11 +603,6 @@ public class EventGridPublisherClientTests extends TestBase {
         EventGridPublisherClient<EventGridEvent> egClient = builder
             .endpoint(getEndpoint(EVENTGRID_PARTNER_NAMESPACE_TOPIC_ENDPOINT))
             .credential(getKey(EVENTGRID_PARTNER_NAMESPACE_TOPIC_KEY))
-            .addPolicy((httpPipelineCallContext, httpPipelineNextPolicy) -> {
-                HttpHeader httpHeader = httpPipelineCallContext.getHttpRequest().getHeaders().get("aeg-channel-name");
-                assertNotNull(httpHeader);
-                return httpPipelineNextPolicy.process();
-            })
             .buildEventGridEventPublisherClient();
 
         EventGridEvent event = new EventGridEvent("Test", "Microsoft.MockPublisher.TestEvent",
@@ -624,7 +619,7 @@ public class EventGridPublisherClientTests extends TestBase {
 
         HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
             egClient.sendEventsWithResponse(Arrays.asList(event),
-                getChannelName(EVENTGRID_PARTNER_CHANNEL_NAME), Context.NONE);
+                getChannelName(EVENTGRID_PARTNER_CHANNEL_NAME));
         });
         assertEquals(400, exception.getResponse().getStatusCode());
     }
@@ -655,7 +650,7 @@ public class EventGridPublisherClientTests extends TestBase {
             );
         }
 
-        Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);
+        Response<Void> response = egClient.sendEventsWithResponse(events);
         assertEquals(200, response.getStatusCode());
     }
 
@@ -677,7 +672,7 @@ public class EventGridPublisherClientTests extends TestBase {
                 }
             }));
         }
-        Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);
+        Response<Void> response = egClient.sendEventsWithResponse(events);
 
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 200);
@@ -702,7 +697,7 @@ public class EventGridPublisherClientTests extends TestBase {
                 }
             }, new JacksonJsonSerializerBuilder().build()));
         }
-        Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);
+        Response<Void> response = egClient.sendEventsWithResponse(events);
         assertEquals(200, response.getStatusCode());
     }
 

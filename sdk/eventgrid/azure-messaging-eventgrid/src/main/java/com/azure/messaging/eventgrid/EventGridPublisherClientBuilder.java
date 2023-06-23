@@ -132,14 +132,21 @@ public final class EventGridPublisherClientBuilder implements
      */
     private <T> EventGridPublisherAsyncClient<T> buildAsyncClient(Class<T> eventClass) {
         Objects.requireNonNull(endpoint, "'endpoint' is required and can not be null.");
+
+        return new EventGridPublisherAsyncClient<T>((httpPipeline != null ? httpPipeline : getHttpPipeline()),
+            endpoint,
+            getEventGridServiceVersion(),
+            eventClass);
+    }
+
+    private EventGridServiceVersion getEventGridServiceVersion() {
         EventGridServiceVersion buildServiceVersion = serviceVersion == null
             ? EventGridServiceVersion.getLatest()
             : serviceVersion;
+        return buildServiceVersion;
+    }
 
-        if (httpPipeline != null) {
-            return new EventGridPublisherAsyncClient<T>(httpPipeline, endpoint, buildServiceVersion, eventClass);
-        }
-
+    private HttpPipeline getHttpPipeline() {
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
             : configuration;
@@ -216,20 +223,21 @@ public final class EventGridPublisherClientBuilder implements
             .clientOptions(clientOptions)
             .tracer(tracer)
             .build();
-
-
-        return new EventGridPublisherAsyncClient<T>(buildPipeline, endpoint, buildServiceVersion, eventClass);
+        return buildPipeline;
     }
 
     /**
      * Build a publisher client with synchronous publishing methods and the current settings. Endpoint and a credential
      * must be set (either keyCredential or sharedAccessSignatureCredential), all other settings have defaults and/or are optional.
-     * Note that currently the asynchronous client created by the method above is the recommended version for higher
-     * performance, as the synchronous client simply blocks on the same asynchronous calls.
      * @return a publisher client with synchronous publishing methods.
      */
     private <T> EventGridPublisherClient<T> buildClient(Class<T> eventClass) {
-        return new EventGridPublisherClient<T>(buildAsyncClient(eventClass));
+        Objects.requireNonNull(endpoint, "'endpoint' is required and can not be null.");
+
+        return new EventGridPublisherClient<T>((httpPipeline != null ? httpPipeline : getHttpPipeline()),
+            endpoint,
+            getEventGridServiceVersion(),
+            eventClass);
     }
 
     @Override
