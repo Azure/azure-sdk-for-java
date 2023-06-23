@@ -966,10 +966,8 @@ public class CertificateClientImpl {
                     service.getCertificateOperationAsync(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
                         CONTENT_TYPE_HEADER_VALUE, context))
                     .map(this::processCertificateOperationResponse);
-            } catch (HttpResponseException e) {
-                LOGGER.logExceptionAsError(e);
-
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
+            } catch (RuntimeException e) {
+                return monoError(LOGGER, e);
             }
         };
     }
@@ -980,16 +978,13 @@ public class CertificateClientImpl {
             try {
                 Context contextToUse = context == null ? Context.NONE : context;
                 contextToUse = enableSyncRestProxy(contextToUse);
-
                 Response<CertificateOperation> operationResponse =
                     service.getCertificateOperation(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
                         CONTENT_TYPE_HEADER_VALUE, contextToUse);
 
                 return processCertificateOperationResponse(operationResponse);
-            } catch (HttpResponseException e) {
-                LOGGER.logExceptionAsError(e);
-
-                return new PollResponse<>(LongRunningOperationStatus.FAILED, null);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
             }
         };
     }
@@ -1089,7 +1084,7 @@ public class CertificateClientImpl {
 
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName, Context context) {
         return SyncPoller.createPoller(getDefaultPollingInterval(),
-            (pollingContext) -> null,
+            (pollingContext) -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null),
             createPollOperation(certificateName, context),
             cancelOperation(certificateName, context),
             fetchResultOperation(certificateName, context));

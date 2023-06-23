@@ -462,7 +462,8 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
         cancelCertificateOperationRunner((certName) -> {
             SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault());
+                certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault())
+                    .setPollInterval(Duration.ofMillis(250));
 
             LongRunningOperationStatus firstStatus = certPoller.poll().getStatus();
 
@@ -474,7 +475,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             }
 
             certPoller.cancelOperation();
-            certPoller.waitUntil(LongRunningOperationStatus.USER_CANCELLED);
+            certPoller.waitUntil(LongRunningOperationStatus.fromString("cancelled", true));
 
             KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
 

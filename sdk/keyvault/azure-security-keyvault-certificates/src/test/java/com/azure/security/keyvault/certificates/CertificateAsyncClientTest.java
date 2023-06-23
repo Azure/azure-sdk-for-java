@@ -501,7 +501,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
             StepVerifier.create(certPoller
                     .takeUntil(asyncPollResponse ->
-                        asyncPollResponse.getStatus() == LongRunningOperationStatus.USER_CANCELLED)
+                        "cancelled".equalsIgnoreCase(asyncPollResponse.getStatus().toString()))
                     .flatMap(AsyncPollResponse::getFinalResult))
                 .assertNext(certificate ->
                     assertFalse(certificate.getProperties().isEnabled()))
