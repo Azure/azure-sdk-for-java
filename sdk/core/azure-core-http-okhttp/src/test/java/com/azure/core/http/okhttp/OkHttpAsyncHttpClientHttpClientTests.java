@@ -7,7 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.test.HttpClientTestsWireMockServer;
+import com.azure.core.test.HttpClientTestsServer;
 import com.azure.core.test.http.HttpClientTests;
 import com.azure.core.test.http.LocalTestServer;
 import com.azure.core.util.BinaryData;
@@ -28,7 +28,7 @@ public class OkHttpAsyncHttpClientHttpClientTests extends HttpClientTests {
 
     @BeforeAll
     public static void getWireMockServer() {
-        server = HttpClientTestsWireMockServer.getHttpClientTestsServer();
+        server = HttpClientTestsServer.getHttpClientTestsServer();
         server.start();
     }
 
@@ -41,7 +41,7 @@ public class OkHttpAsyncHttpClientHttpClientTests extends HttpClientTests {
 
     @Override
     @Deprecated
-    protected int getWireMockPort() {
+    protected int getPort() {
         return server.getHttpPort();
     }
 

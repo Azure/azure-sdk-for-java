@@ -17,9 +17,9 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 /**
- * WireMock server used when running {@link HttpClientTests}.
+ * Server used when running {@link HttpClientTests}.
  */
-public class HttpClientTestsWireMockServer {
+public class HttpClientTestsServer {
     private static final String PLAIN_RESPONSE = "/plainBytesNoHeader";
     private static final String HEADER_RESPONSE = "/plainBytesWithHeader";
     private static final String INVALID_HEADER_RESPONSE = "/plainBytesInvalidHeader";

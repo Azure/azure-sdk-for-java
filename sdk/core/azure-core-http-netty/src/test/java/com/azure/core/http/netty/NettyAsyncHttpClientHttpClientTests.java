@@ -4,7 +4,7 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.HttpClientTestsWireMockServer;
+import com.azure.core.test.HttpClientTestsServer;
 import com.azure.core.test.http.HttpClientTests;
 import com.azure.core.test.http.LocalTestServer;
 import org.junit.jupiter.api.AfterAll;
@@ -17,13 +17,13 @@ public class NettyAsyncHttpClientHttpClientTests extends HttpClientTests {
     private static LocalTestServer server;
 
     @BeforeAll
-    public static void getWireMockServer() {
-        server = HttpClientTestsWireMockServer.getHttpClientTestsServer();
+    public static void startTestServer() {
+        server = HttpClientTestsServer.getHttpClientTestsServer();
         server.start();
     }
 
     @AfterAll
-    public static void shutdownWireMockServer() {
+    public static void stopTestServer() {
         if (server != null) {
             server.stop();
         }
@@ -31,7 +31,7 @@ public class NettyAsyncHttpClientHttpClientTests extends HttpClientTests {
 
     @Override
     @Deprecated
-    protected int getWireMockPort() {
+    protected int getPort() {
         return server.getHttpPort();
     }
 

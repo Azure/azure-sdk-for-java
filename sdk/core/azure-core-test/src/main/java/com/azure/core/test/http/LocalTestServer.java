@@ -28,10 +28,11 @@ public class LocalTestServer {
      * Creates a new instance of {@link LocalTestServer} that will reply to requests based on the passed HTTP servlet.
      *
      * @param httpServlet The HTTP servlet that will reply to requests.
+     * @param maxThreads The maximum number of threads that the server will use to process requests.
      * @throws RuntimeException If the server cannot configure SSL.
      */
-    public LocalTestServer(HttpServlet httpServlet) {
-        this.server = new Server(new QueuedThreadPool(50));
+    public LocalTestServer(HttpServlet httpServlet, int maxThreads) {
+        this.server = new Server(new QueuedThreadPool(maxThreads));
 
         HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory();
         this.httpConnector = new ServerConnector(server, httpConnectionFactory);

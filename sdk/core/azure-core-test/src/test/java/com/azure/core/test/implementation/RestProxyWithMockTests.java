@@ -53,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class RestProxyWithMockTests extends RestProxyTests {
     @Override
-    protected int getWireMockPort() {
+    protected int getPort() {
         return 80;
     }
 

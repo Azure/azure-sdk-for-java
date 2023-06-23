@@ -101,11 +101,11 @@ public abstract class RestProxyTests {
     protected abstract HttpClient createHttpClient();
 
     /**
-     * Get the dynamic port the WireMock server is using to properly route the request.
+     * Get the dynamic port the server is using to properly route the request.
      *
-     * @return The HTTP port WireMock is using.
+     * @return The HTTP port is using.
      */
-    protected abstract int getWireMockPort();
+    protected abstract int getPort();
 
     @Host("http://localhost")
     @ServiceInterface(name = "Service1")
@@ -1824,7 +1824,7 @@ public abstract class RestProxyTests {
         //
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(new PortPolicy(getWireMockPort(), true),
+            .policies(new PortPolicy(getPort(), true),
                 new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)))
             .build();
         //
@@ -1864,12 +1864,12 @@ public abstract class RestProxyTests {
         //
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(new PortPolicy(getWireMockPort(), true),
+            .policies(new PortPolicy(getPort(), true),
                 new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)))
             .build();
         //
-        Response<HttpBinJSON> response = RestProxy
-            .create(BinaryDataUploadService.class, httpPipeline).put(data, Files.size(filePath));
+        Response<HttpBinJSON> response = RestProxy.create(BinaryDataUploadService.class, httpPipeline)
+            .put(data, Files.size(filePath));
 
         assertEquals("The quick brown fox jumps over the lazy dog", response.getValue().data());
     }
@@ -2150,7 +2150,7 @@ public abstract class RestProxyTests {
 
     protected <T> T createService(Class<T> serviceClass, HttpClient httpClient) {
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
-            .policies(new PortPolicy(getWireMockPort(), true))
+            .policies(new PortPolicy(getPort(), true))
             .httpClient(httpClient)
             .build();
 

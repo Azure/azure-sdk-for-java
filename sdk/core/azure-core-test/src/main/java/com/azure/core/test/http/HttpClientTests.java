@@ -84,13 +84,13 @@ public abstract class HttpClientTests {
     protected abstract HttpClient createHttpClient();
 
     /**
-     * Get the dynamic port the WireMock server is using to properly route the request.
+     * Get the dynamic port the server is using to properly route the request.
      *
-     * @return The HTTP port WireMock is using.
+     * @return The HTTP port is using.
      * @deprecated Use {@link #getServerUri(boolean)} instead.
      */
     @Deprecated
-    protected abstract int getWireMockPort();
+    protected abstract int getPort();
 
     /**
      * Gets the dynamic URI the server is using to properly route the request.

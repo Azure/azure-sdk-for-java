@@ -4,31 +4,31 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.RestProxyTestsWireMockServer;
+import com.azure.core.test.RestProxyTestsServer;
+import com.azure.core.test.http.LocalTestServer;
 import com.azure.core.test.implementation.RestProxyTests;
-import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
 public class NettyAsyncHttpClientRestProxyTests extends RestProxyTests {
-    private static WireMockServer server;
+    private static LocalTestServer server;
 
     @BeforeAll
-    public static void getWireMockServer() {
-        server = RestProxyTestsWireMockServer.getRestProxyTestsServer();
+    public static void startTestServer() {
+        server = RestProxyTestsServer.getRestProxyTestsServer();
         server.start();
     }
 
     @AfterAll
-    public static void shutdownWireMockServer() {
+    public static void stopTestServer() {
         if (server != null) {
-            server.shutdown();
+            server.stop();
         }
     }
 
     @Override
-    protected int getWireMockPort() {
-        return server.port();
+    protected int getPort() {
+        return server.getHttpPort();
     }
 
     @Override

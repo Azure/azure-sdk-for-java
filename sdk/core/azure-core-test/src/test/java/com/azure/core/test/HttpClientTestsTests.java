@@ -15,7 +15,7 @@ public class HttpClientTestsTests extends HttpClientTests {
 
     @BeforeAll
     public static void getServer() {
-        server = HttpClientTestsWireMockServer.getHttpClientTestsServer();
+        server = HttpClientTestsServer.getHttpClientTestsServer();
         server.start();
     }
 
@@ -28,7 +28,7 @@ public class HttpClientTestsTests extends HttpClientTests {
 
     @Override
     @Deprecated
-    protected int getWireMockPort() {
+    protected int getPort() {
         return server.getHttpPort();
     }
 

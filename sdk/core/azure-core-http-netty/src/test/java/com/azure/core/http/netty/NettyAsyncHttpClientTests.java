@@ -17,17 +17,16 @@ import com.azure.core.http.netty.implementation.MockProxyServer;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.test.http.LocalTestServer;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressReporter;
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import com.github.tomakehurst.wiremock.http.Fault;
 import io.netty.handler.proxy.ProxyConnectException;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.resolver.NoopAddressResolverGroup;
+import org.apache.commons.compress.utils.IOUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -44,9 +43,14 @@ import reactor.netty.resources.ConnectionProvider;
 import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -60,6 +64,7 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -67,13 +72,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.binaryEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -87,6 +85,7 @@ public class NettyAsyncHttpClientTests {
     private static final String LONG_BODY_PATH = "/long";
     private static final String ERROR_BODY_PATH = "/error";
     private static final String SHORT_POST_BODY_PATH = "/shortPost";
+    private static final String SHORT_POST_BODY_WITH_VALIDATION_PATH = "/shortPostWithValidation";
     static final String HTTP_HEADERS_PATH = "/httpHeaders";
     private static final String IO_EXCEPTION_PATH = "/ioException";
 
@@ -100,43 +99,79 @@ public class NettyAsyncHttpClientTests {
     private static final byte[] LONG_BODY = createLongBody();
 
     static final HttpHeaderName TEST_HEADER = HttpHeaderName.fromString("testHeader");
+    private static final String NULL_REPLACEMENT = "null";
 
     private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS = StepVerifierOptions.create()
         .initialRequest(0);
 
-    private static WireMockServer server;
+    private static LocalTestServer server;
 
     @BeforeAll
-    public static void beforeClass() {
-        server = new WireMockServer(wireMockConfig()
-            .extensions(new NettyAsyncHttpClientResponseTransformer())
-            .dynamicPort()
-            .disableRequestJournal()
-            .gzipDisabled(true));
+    public static void startTestServer() {
+        server = new LocalTestServer(new HttpServlet() {
+            @Override
+            protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                String path = req.getServletPath();
+                boolean get = "GET".equalsIgnoreCase(req.getMethod());
+                boolean post = "POST".equalsIgnoreCase(req.getMethod());
 
-        server.stubFor(get(SHORT_BODY_PATH).willReturn(aResponse().withBody(SHORT_BODY)));
-        server.stubFor(get(LONG_BODY_PATH).willReturn(aResponse().withBody(LONG_BODY)));
-        server.stubFor(get(ERROR_BODY_PATH).willReturn(aResponse().withBody("error").withStatus(500)));
-        server.stubFor(post(SHORT_POST_BODY_PATH).willReturn(aResponse().withBody(SHORT_BODY)));
-        server.stubFor(post(HTTP_HEADERS_PATH).willReturn(aResponse()
-            .withTransformers(NettyAsyncHttpClientResponseTransformer.NAME)));
-        server.stubFor(get(NO_DOUBLE_UA_PATH).willReturn(aResponse()
-            .withTransformers(NettyAsyncHttpClientResponseTransformer.NAME)));
-        server.stubFor(get(IO_EXCEPTION_PATH).willReturn(aResponse().withStatus(200).but()
-            .withFault(Fault.RANDOM_DATA_THEN_CLOSE)));
-        server.stubFor(get(RETURN_HEADERS_AS_IS_PATH).willReturn(aResponse()
-            .withTransformers(NettyAsyncHttpClientResponseTransformer.NAME)));
+                if (get && SHORT_BODY_PATH.equals(path)) {
+                    resp.setContentType("application/octet-stream");
+                    resp.setContentLength(SHORT_BODY.length);
+                    resp.getOutputStream().write(SHORT_BODY);
+                } else if (get && LONG_BODY_PATH.equals(path)) {
+                    resp.setContentType("application/octet-stream");
+                    resp.setContentLength(LONG_BODY.length);
+                    resp.getOutputStream().write(LONG_BODY);
+                } else if (get && ERROR_BODY_PATH.equals(path)) {
+                    resp.setStatus(500);
+                    resp.setContentLength(5);
+                    resp.getOutputStream().write("error".getBytes(StandardCharsets.UTF_8));
+                } else if (post && SHORT_POST_BODY_PATH.equals(path)) {
+                    fullyReadRequest(req.getInputStream());
+                    resp.setContentType("application/octet-stream");
+                    resp.setContentLength(SHORT_BODY.length);
+                    resp.getOutputStream().write(SHORT_BODY);
+                } else if (post && SHORT_POST_BODY_WITH_VALIDATION_PATH.equals(path)) {
+                    byte[] requestBody = fullyReadRequest(req.getInputStream());
+                    if (!Objects.equals(ByteBuffer.wrap(LONG_BODY, 1, 42), ByteBuffer.wrap(requestBody))) {
+                        resp.sendError(400, "Request body does not match expected value");
+                    }
+                } else if (post && HTTP_HEADERS_PATH.equals(path)) {
+                    String headerNameString = TEST_HEADER.getCaseInsensitiveName();
+                    String responseTestHeaderValue = req.getHeader(headerNameString);
+                    if (responseTestHeaderValue == null) {
+                        responseTestHeaderValue = NULL_REPLACEMENT;
+                    }
 
-        server.stubFor(get(PROXY_TO_ADDRESS).willReturn(aResponse().withStatus(418).withBody("I'm a teapot")));
+                    resp.setHeader(headerNameString, responseTestHeaderValue);
+                } else if (get && NO_DOUBLE_UA_PATH.equals(path)) {
+                    if (!EXPECTED_HEADER.equals(req.getHeader("User-Agent"))) {
+                        resp.setStatus(400);
+                    }
+                } else if (get && IO_EXCEPTION_PATH.equals(path)) {
+                    ((org.eclipse.jetty.server.Response) resp).getHttpChannel().getConnection().close();
+                } else if (get && RETURN_HEADERS_AS_IS_PATH.equals(path)) {
+                    List<String> headerNames = Collections.list(req.getHeaderNames());
+                    headerNames.forEach(headerName -> {
+                        List<String> headerValues = Collections.list(req.getHeaders(headerName));
+                        headerValues.forEach(headerValue -> resp.addHeader(headerName, headerValue));
+                    });
+                } else if (get && PROXY_TO_ADDRESS.equals(path)) {
+                    resp.setStatus(418);
+                    resp.getOutputStream().write("I'm a teapot".getBytes(StandardCharsets.UTF_8));
+                }
+            }
+        }, 20);
 
         server.start();
         // ResourceLeakDetector.setLevel(Level.PARANOID);
     }
 
     @AfterAll
-    public static void afterClass() {
+    public static void stopTestServer() {
         if (server != null) {
-            server.shutdown();
+            server.stop();
         }
     }
 
@@ -381,28 +416,17 @@ public class NettyAsyncHttpClientTests {
 
     @Test
     public void testFileUploadSync() throws IOException {
-        WireMockServer local = new WireMockServer(WireMockConfiguration.options()
-            .dynamicPort()
-            .maxRequestJournalEntries(1)
-            .gzipDisabled(true));
-
-        local.stubFor(post(SHORT_POST_BODY_PATH).willReturn(aResponse().withStatus(200).withBody(SHORT_BODY)));
-        local.start();
-
         Path tempFile = writeToTempFile(LONG_BODY);
         tempFile.toFile().deleteOnExit();
         BinaryData body = BinaryData.fromFile(tempFile, 1L, 42L);
 
         HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url(local, SHORT_POST_BODY_PATH))
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, SHORT_POST_BODY_WITH_VALIDATION_PATH))
             .setBody(body);
 
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             assertEquals(200, response.getStatusCode());
         }
-
-        local.verify(postRequestedFor(urlEqualTo(SHORT_POST_BODY_PATH)).withRequestBody(binaryEqualTo(body.toBytes())));
-        local.shutdown();
     }
 
     @Test
@@ -639,7 +663,7 @@ public class NettyAsyncHttpClientTests {
 
     private static Stream<Arguments> requestHeaderSupplier() {
         return Stream.of(
-            Arguments.of(null, NettyAsyncHttpClientResponseTransformer.NULL_REPLACEMENT),
+            Arguments.of(null, NULL_REPLACEMENT),
             Arguments.of("", ""),
             Arguments.of("aValue", "aValue")
         );
@@ -655,9 +679,9 @@ public class NettyAsyncHttpClientTests {
         return (NettyAsyncHttpResponse) client.send(request).block();
     }
 
-    private static URL url(WireMockServer server, String path) {
+    private static URL url(LocalTestServer server, String path) {
         try {
-            return new URI("http://localhost:" + server.port() + path).toURL();
+            return new URI(server.getHttpUri() + path).toURL();
         } catch (URISyntaxException | MalformedURLException e) {
             throw new RuntimeException(e);
         }
@@ -721,5 +745,11 @@ public class NettyAsyncHttpClientTests {
         outputStream.write(body);
         outputStream.close();
         return tempFile;
+    }
+
+    private static byte[] fullyReadRequest(InputStream requestBody) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        IOUtils.copy(requestBody, outputStream);
+        return outputStream.toByteArray();
     }
 }

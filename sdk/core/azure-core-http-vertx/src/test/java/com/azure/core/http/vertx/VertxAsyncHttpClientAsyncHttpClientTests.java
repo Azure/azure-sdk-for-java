@@ -4,7 +4,7 @@
 package com.azure.core.http.vertx;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.HttpClientTestsWireMockServer;
+import com.azure.core.test.HttpClientTestsServer;
 import com.azure.core.test.http.HttpClientTests;
 import com.azure.core.test.http.LocalTestServer;
 import org.junit.jupiter.api.AfterAll;
@@ -15,7 +15,7 @@ public class VertxAsyncHttpClientAsyncHttpClientTests extends HttpClientTests {
 
     @BeforeAll
     public static void beforeAll() {
-        server = HttpClientTestsWireMockServer.getHttpClientTestsServer();
+        server = HttpClientTestsServer.getHttpClientTestsServer();
         server.start();
     }
 
@@ -28,7 +28,7 @@ public class VertxAsyncHttpClientAsyncHttpClientTests extends HttpClientTests {
 
     @Override
     @Deprecated
-    protected int getWireMockPort() {
+    protected int getPort() {
         return server.getHttpPort();
     }
 

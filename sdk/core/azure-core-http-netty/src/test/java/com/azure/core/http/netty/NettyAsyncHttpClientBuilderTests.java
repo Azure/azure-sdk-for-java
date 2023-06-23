@@ -6,13 +6,11 @@ package com.azure.core.http.netty;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.test.http.LocalTestServer;
 import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.ConfigurationSource;
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.client.WireMock;
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
@@ -35,6 +33,10 @@ import reactor.netty.http.client.HttpResponseDecoderSpec;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.test.StepVerifier;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -73,7 +75,7 @@ public class NettyAsyncHttpClientBuilderTests {
     private static final String JAVA_HTTP_PROXY_PASSWORD = "http.proxyPassword";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
-    private static WireMockServer server;
+    private static LocalTestServer server;
     private static String defaultUrl;
     private static String prebuiltClientUrl;
 
@@ -81,26 +83,39 @@ public class NettyAsyncHttpClientBuilderTests {
         + "cannot connect to remote hosts eagerly. This is exception is expected.");
 
     @BeforeAll
-    public static void setupWireMock() {
-        server = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
+    public static void startTestServer() {
+        server = new LocalTestServer(new HttpServlet() {
+            @Override
+            protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                String path = req.getServletPath();
+                boolean get = "GET".equalsIgnoreCase(req.getMethod());
 
-        // Mocked endpoint to test building a client with a prebuilt Netty HttpClient.
-        server.stubFor(WireMock.get(PREBUILT_CLIENT_PATH).withCookie(COOKIE_NAME, WireMock.matching(COOKIE_VALUE))
-            .willReturn(WireMock.aResponse().withStatus(200)));
-
-        // Mocked endpoint to test building a client with a set port.
-        server.stubFor(WireMock.get(DEFAULT_PATH).willReturn(WireMock.aResponse().withStatus(200)));
+                if (get && DEFAULT_PATH.equals(path)) {
+                    resp.setStatus(200);
+                } else if (get && PREBUILT_CLIENT_PATH.equals(path)) {
+                    boolean containsCookie = Arrays.stream(req.getCookies())
+                        .filter(cookie -> COOKIE_NAME.equals(cookie.getName()))
+                        .anyMatch(cookie -> COOKIE_VALUE.equals(cookie.getValue()));
+                    // Mocked endpoint to test building a client with a set port.
+                    if (!containsCookie) {
+                        throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
+                    }
+                } else {
+                    throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
+                }
+            }
+        }, 10);
 
         server.start();
 
-        defaultUrl = "http://localhost:" + server.port() + DEFAULT_PATH;
-        prebuiltClientUrl = "http://localhost:" + server.port() + PREBUILT_CLIENT_PATH;
+        defaultUrl = server.getHttpUri() + DEFAULT_PATH;
+        prebuiltClientUrl = server.getHttpUri() + PREBUILT_CLIENT_PATH;
     }
 
     @AfterAll
-    public static void shutdownWireMock() {
-        if (server.isRunning()) {
-            server.shutdown();
+    public static void stopTestServer() {
+        if (server != null) {
+            server.stop();
         }
     }
 
@@ -525,7 +540,7 @@ public class NettyAsyncHttpClientBuilderTests {
     @Test
     public void buildPortClient() {
         NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
-            .port(server.port())
+            .port(server.getHttpPort())
             .build();
 
         StepVerifier.create(nettyClient.nettyClient.get().uri(DEFAULT_PATH).response())
