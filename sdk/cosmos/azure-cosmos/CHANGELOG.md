@@ -6,7 +6,7 @@
 * Added the capability to specify region switch hints through `CosmosClientBuilder#setSessionRetryOptions` for optimizing retries for `READ_SESSION_NOT_AVAILABLE` errors. - See [PR 35292](https://github.com/Azure/azure-sdk-for-java/pull/35292)
 * Added API to exclude regions on request options which helps avoid a regions from preferred regions for the request. - See [PR 35166](https://github.com/Azure/azure-sdk-for-java/pull/35166)
 * Added API for providing an availability strategy to improve availability when end-end timeout is specified. - See [PR 35166](https://github.com/Azure/azure-sdk-for-java/pull/35166)
-* Added Threshold based availability strategy - see PR for details. - See [PR 35166](https://github.com/Azure/azure-sdk-for-java/pull/35166)
+* Added Threshold based availability strategy. - See [PR 35166](https://github.com/Azure/azure-sdk-for-java/pull/35166)
 
 #### Bugs Fixed
 * Fixes the `readMany` API to not drop existing documents from the response in point-read scenarios when 
