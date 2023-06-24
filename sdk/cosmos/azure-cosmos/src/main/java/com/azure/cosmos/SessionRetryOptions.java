@@ -5,6 +5,8 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 /**
  * {@link SessionRetryOptions} encapsulates hints which influence
  * internal retry policies which are applied when the effective consistency
@@ -35,6 +37,7 @@ public final class SessionRetryOptions {
      * @return This instance of {@link SessionRetryOptions}
      * */
     public SessionRetryOptions setRegionSwitchHint(CosmosRegionSwitchHint regionSwitchHint) {
+        checkNotNull(regionSwitchHint, "regionSwitchHint cannot be null.");
         this.regionSwitchHint = regionSwitchHint;
         return this;
     }
