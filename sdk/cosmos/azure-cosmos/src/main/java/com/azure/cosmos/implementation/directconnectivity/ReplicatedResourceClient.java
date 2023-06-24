@@ -7,7 +7,7 @@ import com.azure.cosmos.AvailabilityStrategy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
-import com.azure.cosmos.CosmosSessionRetryOptions;
+import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
@@ -54,7 +54,7 @@ public class ReplicatedResourceClient {
     private final boolean enableReadRequestsFallback;
     private final GatewayServiceConfigurationReader serviceConfigReader;
     private final Configs configs;
-    private final CosmosSessionRetryOptions sessionRetryOptions;
+    private final SessionRetryOptions sessionRetryOptions;
 
     public ReplicatedResourceClient(
             DiagnosticsClientContext diagnosticsClientContext,
@@ -66,7 +66,7 @@ public class ReplicatedResourceClient {
             IAuthorizationTokenProvider authorizationTokenProvider,
             boolean enableReadRequestsFallback,
             boolean useMultipleWriteLocations,
-            CosmosSessionRetryOptions sessionRetryOptions) {
+            SessionRetryOptions sessionRetryOptions) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.configs = configs;
         this.protocol = configs.getProtocol();
