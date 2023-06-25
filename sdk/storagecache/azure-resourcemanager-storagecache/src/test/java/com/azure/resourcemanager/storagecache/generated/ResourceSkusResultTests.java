@@ -14,15 +14,15 @@ public final class ResourceSkusResultTests {
         ResourceSkusResult model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"evndh\",\"value\":[{\"resourceType\":\"d\",\"capabilities\":[],\"locations\":[\"bdkvwrwjf\",\"usnhutje\"],\"locationInfo\":[],\"name\":\"ldhugjzzdatqxh\",\"restrictions\":[]},{\"resourceType\":\"eablg\",\"capabilities\":[],\"locations\":[\"cndvkaozwyiftyhx\",\"urokft\",\"xolniwpwcukjfk\",\"iawxklry\"],\"locationInfo\":[],\"name\":\"kbasyypn\",\"restrictions\":[]},{\"resourceType\":\"gcbacphejkot\",\"capabilities\":[],\"locations\":[\"ulzndlikwyqk\",\"fgibmadgakeq\",\"rxybz\"],\"locationInfo\":[],\"name\":\"qytbciq\",\"restrictions\":[]}]}")
+                    "{\"nextLink\":\"i\",\"value\":[{\"resourceType\":\"dcsi\",\"capabilities\":[],\"locations\":[\"amdecte\",\"f\"],\"locationInfo\":[],\"name\":\"jeyp\",\"restrictions\":[]},{\"resourceType\":\"rkgqhcjrefo\",\"capabilities\":[],\"locations\":[\"sle\"],\"locationInfo\":[],\"name\":\"yqjpkcatt\",\"restrictions\":[]},{\"resourceType\":\"cr\",\"capabilities\":[],\"locations\":[\"pjhvmdajvnys\",\"unqecanoae\"],\"locationInfo\":[],\"name\":\"yhltrpmopjmcm\",\"restrictions\":[]}]}")
                 .toObject(ResourceSkusResult.class);
-        Assertions.assertEquals("evndh", model.nextLink());
+        Assertions.assertEquals("i", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceSkusResult model = new ResourceSkusResult().withNextLink("evndh");
+        ResourceSkusResult model = new ResourceSkusResult().withNextLink("i");
         model = BinaryData.fromObject(model).toObject(ResourceSkusResult.class);
-        Assertions.assertEquals("evndh", model.nextLink());
+        Assertions.assertEquals("i", model.nextLink());
     }
 }
