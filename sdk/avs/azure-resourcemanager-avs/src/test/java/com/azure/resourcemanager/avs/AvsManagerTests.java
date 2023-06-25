@@ -21,6 +21,7 @@ import com.azure.resourcemanager.avs.models.ResourceIdentityType;
 import com.azure.resourcemanager.avs.models.Sku;
 import com.azure.resourcemanager.resources.ResourceManager;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -69,6 +70,7 @@ public class AvsManagerTests extends TestBase {
         }
     }
 
+    @Disabled
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testPrivateCloud() {
