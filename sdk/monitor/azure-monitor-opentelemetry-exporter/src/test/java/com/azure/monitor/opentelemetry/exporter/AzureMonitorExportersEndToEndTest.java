@@ -92,7 +92,8 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         countDownLatch.await(10, SECONDS);
         assertThat(customValidationPolicy.url)
             .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
-        assertThat(customValidationPolicy.actualTelemetryItems.size()).isEqualTo(1);
+        List<TelemetryItem> actualTelemetryItems = customValidationPolicy.actualTelemetryItems;
+        assertThat(actualTelemetryItems.size()).isEqualTo(1);
 
         // validate metric
         validateMetric(customValidationPolicy.actualTelemetryItems.get(0));

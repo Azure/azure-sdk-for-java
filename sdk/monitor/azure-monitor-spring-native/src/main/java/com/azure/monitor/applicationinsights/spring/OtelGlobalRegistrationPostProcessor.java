@@ -15,9 +15,19 @@ import org.springframework.core.Ordered;
  */
 public class OtelGlobalRegistrationPostProcessor implements BeanPostProcessor, Ordered {
 
+    private final AzureTelemetryActivation azureTelemetryActivation;
+
+    /**
+     *
+     * @param azureTelemetryActivation ...
+     */
+    public OtelGlobalRegistrationPostProcessor(AzureTelemetryActivation azureTelemetryActivation) {
+        this.azureTelemetryActivation = azureTelemetryActivation;
+    }
+
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        if (AzureTelemetry.isEnabled() && bean instanceof OpenTelemetry) {
+        if (azureTelemetryActivation.isTrue() && bean instanceof OpenTelemetry) {
             OpenTelemetry openTelemetry = (OpenTelemetry) bean;
             GlobalOpenTelemetry.set(openTelemetry);
         }

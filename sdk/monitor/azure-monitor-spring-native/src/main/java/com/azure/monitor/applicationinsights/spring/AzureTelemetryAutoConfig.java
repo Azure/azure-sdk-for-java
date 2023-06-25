@@ -13,7 +13,8 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureBefore(OpenTelemetryAutoConfiguration.class)
-@Import({AzureTelemetryConfig.class, OtelGlobalRegistrationConfig.class, JvmMetricsConfig.class})
+@Import({AzureTelemetryConfig.class, AzureTelemetryActivationConfig.class})
 public class AzureTelemetryAutoConfig {
+
 
 }

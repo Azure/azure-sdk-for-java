@@ -3,6 +3,7 @@
 
 package com.azure.monitor.applicationinsights.spring;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import io.opentelemetry.api.logs.GlobalLoggerProvider;
@@ -11,6 +12,7 @@ import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.logs.export.SimpleLogRecordProcessor;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +22,7 @@ import java.util.Optional;
 /**
  *
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class AzureTelemetryConfig {
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureTelemetryConfig.class);
@@ -31,22 +33,31 @@ public class AzureTelemetryConfig {
 
     /**
      *
-     * @param connectionStringSysProp param
-     * */
-    public AzureTelemetryConfig(@Value("${applicationinsights.connection.string:}") String connectionStringSysProp) {
-        if (AzureTelemetry.isEnabled()) {
-            this.azureMonitorExporterBuilderOpt = createAzureMonitorExporterBuilder(connectionStringSysProp);
+     * @param connectionStringSysProp ..
+     * @param azureTelemetryActivation ..
+     * @param httpPipeline ..
+     */
+    public AzureTelemetryConfig(@Value("${applicationinsights.connection.string:}") String connectionStringSysProp, AzureTelemetryActivation azureTelemetryActivation, ObjectProvider<HttpPipeline> httpPipeline) {
+        if (azureTelemetryActivation.isTrue()) {
+            this.azureMonitorExporterBuilderOpt = createAzureMonitorExporterBuilder(connectionStringSysProp, httpPipeline);
         } else {
             LOGGER.info("Application Insights for Spring native is disabled for a non-native image runtime environment. We recommend using the Application Insights Java agent.");
             azureMonitorExporterBuilderOpt = Optional.empty();
         }
     }
 
-    private Optional<AzureMonitorExporterBuilder> createAzureMonitorExporterBuilder(String connectionStringSysProp) {
+
+    private Optional<AzureMonitorExporterBuilder> createAzureMonitorExporterBuilder(String connectionStringSysProp, ObjectProvider<HttpPipeline> httpPipeline) {
         Optional<String> connectionString = ConnectionStringRetriever.retrieveConnectionString(connectionStringSysProp);
         if (connectionString.isPresent()) {
             try {
                 AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder().connectionString(connectionString.get());
+
+                HttpPipeline providedHttpPipeline = httpPipeline.getIfAvailable();
+                if (providedHttpPipeline != null) {
+                    azureMonitorExporterBuilder = azureMonitorExporterBuilder.httpPipeline(providedHttpPipeline);
+                }
+
                 return Optional.of(azureMonitorExporterBuilder);
             } catch (IllegalArgumentException illegalArgumentException) {
                 String errorMessage = illegalArgumentException.getMessage();
@@ -107,6 +118,16 @@ public class AzureTelemetryConfig {
                             .build();
             GlobalLoggerProvider.set(loggerProvider);
         }
+    }
+
+    /**
+     *
+     * @param azureTelemetryActivation ...
+     * @return ...
+     */
+    @Bean
+    public OtelGlobalRegistrationPostProcessor otelGlobalRegistrationPostProcessor(AzureTelemetryActivation azureTelemetryActivation) {
+        return new OtelGlobalRegistrationPostProcessor(azureTelemetryActivation);
     }
 
 }
