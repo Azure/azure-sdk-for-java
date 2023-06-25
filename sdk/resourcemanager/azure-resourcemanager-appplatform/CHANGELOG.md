@@ -1,12 +1,10 @@
 # Release History
 
-## 2.28.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.28.0 (2023-06-25)
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Removed `withFqdn` from `AppResourceProperties` as it's never functional in the backend.
 
 ### Other Changes
 
