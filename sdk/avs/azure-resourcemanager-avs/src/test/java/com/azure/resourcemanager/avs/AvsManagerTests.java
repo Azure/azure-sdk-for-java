@@ -27,7 +27,7 @@ import java.util.Random;
 
 public class AvsManagerTests extends TestBase {
     private static final Random RANDOM = new Random();
-    private static final Region REGION = Region.US_WEST2;
+    private static final Region REGION = Region.US_WEST3;
     private String resourceGroupName = "rg" + randomPadding();
     private AvsManager avsManager;
     private ResourceManager resourceManager;
