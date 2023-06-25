@@ -70,7 +70,7 @@ public class AvsManagerTests extends TestBase {
         }
     }
 
-    @Disabled
+    @Disabled("No quota in our test subscription for avs instances.")
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testPrivateCloud() {
