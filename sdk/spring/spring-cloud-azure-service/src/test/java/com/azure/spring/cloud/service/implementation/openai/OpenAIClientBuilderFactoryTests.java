@@ -45,7 +45,7 @@ class OpenAIClientBuilderFactoryTests
     void testNonAzureOpenAIKeyCredentialConfigured() {
         AzureOpenAITestProperties properties = new AzureOpenAITestProperties();
 
-        properties.setNonAzureOpenAIKeyCredential("non-azure-openai-key");
+        properties.setNonAzureOpenAIKey("non-azure-openai-key");
 
         final OpenAIClientBuilderFactoryTestsExt factoryExt = new OpenAIClientBuilderFactoryTestsExt(properties);
         final OpenAIClientBuilder builder = factoryExt.build();

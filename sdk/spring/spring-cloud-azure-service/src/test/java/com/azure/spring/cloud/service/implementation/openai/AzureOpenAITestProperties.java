@@ -10,7 +10,7 @@ class AzureOpenAITestProperties extends AzureHttpSdkProperties implements OpenAI
 
     private String endpoint;
     private OpenAIServiceVersion serviceVersion;
-    private String nonAzureOpenAIKeyCredential;
+    private String nonAzureOpenAIKey;
     private String key;
 
     @Override
@@ -42,10 +42,10 @@ class AzureOpenAITestProperties extends AzureHttpSdkProperties implements OpenAI
 
     @Override
     public String getNonAzureOpenAIKey() {
-        return nonAzureOpenAIKeyCredential;
+        return nonAzureOpenAIKey;
     }
 
-    public void setNonAzureOpenAIKeyCredential(String nonAzureOpenAIKeyCredential) {
-        this.nonAzureOpenAIKeyCredential = nonAzureOpenAIKeyCredential;
+    public void setNonAzureOpenAIKey(String nonAzureOpenAIKey) {
+        this.nonAzureOpenAIKey = nonAzureOpenAIKey;
     }
 }
