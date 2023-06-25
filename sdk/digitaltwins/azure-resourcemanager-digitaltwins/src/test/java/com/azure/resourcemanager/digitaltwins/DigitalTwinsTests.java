@@ -15,10 +15,12 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsDescription;
+import com.azure.resourcemanager.digitaltwins.models.PublicNetworkAccess;
 import com.azure.resourcemanager.resources.ResourceManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.Random;
 
 public class DigitalTwinsTests extends TestBase {
@@ -77,6 +79,8 @@ public class DigitalTwinsTests extends TestBase {
                 .define(digitalTwinsName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withPrivateEndpointConnections(Collections.emptyList())
                 .create();
             // embedmeEnd
             digitalTwinsDescription.refresh();
