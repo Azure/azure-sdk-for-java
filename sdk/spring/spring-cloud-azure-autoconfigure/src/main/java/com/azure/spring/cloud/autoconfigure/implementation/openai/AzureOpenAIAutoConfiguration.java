@@ -43,7 +43,7 @@ public class AzureOpenAIAutoConfiguration extends AzureServiceConfigurationBase 
 
     @Bean
     @ConditionalOnMissingBean
-    OpenAIClient openAiClient(OpenAIClientBuilder builder) {
+    OpenAIClient openAIClient(OpenAIClientBuilder builder) {
         return builder.buildClient();
     }
 
