@@ -41,7 +41,7 @@ class AzureOpenAITestProperties extends AzureHttpSdkProperties implements OpenAI
     }
 
     @Override
-    public String getNonAzureOpenAIKeyCredential() {
+    public String getNonAzureOpenAIKey() {
         return nonAzureOpenAIKeyCredential;
     }
 

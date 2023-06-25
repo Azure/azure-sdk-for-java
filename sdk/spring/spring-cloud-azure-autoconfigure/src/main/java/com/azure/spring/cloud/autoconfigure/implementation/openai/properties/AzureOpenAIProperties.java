@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.implementation.openai;
+package com.azure.spring.cloud.autoconfigure.implementation.openai.properties;
 
 import com.azure.ai.openai.OpenAIServiceVersion;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureHttpConfigurationProperties;
@@ -15,7 +15,7 @@ public class AzureOpenAIProperties extends AbstractAzureHttpConfigurationPropert
     public static final String PREFIX = "spring.cloud.azure.openai";
 
     /**
-     * Endpoint of the Azure OpenAI.
+     * Endpoint of the Azure OpenAI. For instance, 'https://{azure-openai-name}.openai.azure.com/'.
      */
     private String endpoint;
 
@@ -25,12 +25,12 @@ public class AzureOpenAIProperties extends AbstractAzureHttpConfigurationPropert
     private OpenAIServiceVersion serviceVersion;
 
     /**
-     * The NonAzureOpenAiKeyCredential used for public OpenAi authentication.
+     * The Non-Azure OpenAi API Key from Open AI authentication API keys(https://platform.openai.com/docs/api-reference/authentication) used for public OpenAi authentication.
      */
-    private String nonAzureOpenAIKeyCredential;
+    private String nonAzureOpenAIKey;
 
     /**
-     * The AzureKeyCredential used for authentication.
+     * Key to authenticate for accessing the Azure OpenAI.
      */
     private String key;
 
@@ -60,11 +60,11 @@ public class AzureOpenAIProperties extends AbstractAzureHttpConfigurationPropert
     }
 
     @Override
-    public String getNonAzureOpenAIKeyCredential() {
-        return nonAzureOpenAIKeyCredential;
+    public String getNonAzureOpenAIKey() {
+        return nonAzureOpenAIKey;
     }
 
-    public void setNonAzureOpenAIKeyCredential(String nonAzureOpenAIKeyCredential) {
-        this.nonAzureOpenAIKeyCredential = nonAzureOpenAIKeyCredential;
+    public void setNonAzureOpenAIKey(String nonAzureOpenAIKey) {
+        this.nonAzureOpenAIKey = nonAzureOpenAIKey;
     }
 }

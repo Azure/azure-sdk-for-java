@@ -19,7 +19,7 @@ public class NonAzureOpenAIKeyCredentialResolver implements AzureCredentialResol
         if (!isResolvable(properties)) {
             return null;
         }
-        String key = ((OpenAIClientProperties) properties).getNonAzureOpenAIKeyCredential();
+        String key = ((OpenAIClientProperties) properties).getNonAzureOpenAIKey();
         if (!StringUtils.hasText(key)) {
             return null;
         }

@@ -29,5 +29,5 @@ public interface OpenAIClientProperties extends AzureProperties, RetryOptionsPro
      * Get the NonAzureOpenAiKeyCredential used for public OpenAi authentication.
      * @return the NonAzureOpenAiKeyCredential used for public OpenAi authentication.
      */
-    String getNonAzureOpenAIKeyCredential();
+    String getNonAzureOpenAIKey();
 }

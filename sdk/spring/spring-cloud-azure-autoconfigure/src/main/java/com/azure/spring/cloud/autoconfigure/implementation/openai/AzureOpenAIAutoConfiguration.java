@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.openai;
+package com.azure.spring.cloud.autoconfigure.implementation.openai;
 
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClient;
@@ -9,8 +9,9 @@ import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.openai.AzureOpenAIProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.openai.properties.AzureOpenAIProperties;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.openai.OpenAIClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -40,25 +41,15 @@ public class AzureOpenAIAutoConfiguration extends AzureServiceConfigurationBase 
         return loadProperties(getAzureGlobalProperties(), new AzureOpenAIProperties());
     }
 
-    /**
-     * Autoconfigure the {@link OpenAIClient} instance.
-     * @param builder the {@link OpenAIClientBuilder} to build the instance.
-     * @return the azure open ai client instance.
-     */
     @Bean
     @ConditionalOnMissingBean
-    public OpenAIClient openAiClient(OpenAIClientBuilder builder) {
+    OpenAIClient openAiClient(OpenAIClientBuilder builder) {
         return builder.buildClient();
     }
 
-    /**
-     * Autoconfigure the {@link OpenAIAsyncClient} instance.
-     * @param builder the {@link OpenAIClientBuilder} to build the instance.
-     * @return the azure open ai async client instance.
-     */
     @Bean
     @ConditionalOnMissingBean
-    public OpenAIAsyncClient openAIAsyncClient(OpenAIClientBuilder builder) {
+    OpenAIAsyncClient openAIAsyncClient(OpenAIClientBuilder builder) {
         return builder.buildAsyncClient();
     }
 
@@ -73,6 +64,7 @@ public class AzureOpenAIAutoConfiguration extends AzureServiceConfigurationBase 
     OpenAIClientBuilderFactory openAIClientBuilderFactory(AzureOpenAIProperties properties,
         ObjectProvider<AzureServiceClientBuilderCustomizer<OpenAIClientBuilder>> customizers) {
         OpenAIClientBuilderFactory factory = new OpenAIClientBuilderFactory(properties);
+        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_OPENAI);
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
     }

@@ -1,15 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.openai;
+package com.azure.spring.cloud.autoconfigure.implementation.openai;
 
 import com.azure.ai.openai.OpenAIServiceVersion;
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AbstractAzureServiceConfigurationTests;
+import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.openai.AzureOpenAIProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.openai.properties.AzureOpenAIProperties;
 import com.azure.spring.cloud.service.implementation.openai.OpenAIClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -19,7 +21,6 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class AzureOpenAIAutoConfigurationTests extends AbstractAzureServiceConfigurationTests<
     OpenAIClientBuilderFactory, AzureOpenAIProperties> {
@@ -30,12 +31,7 @@ class AzureOpenAIAutoConfigurationTests extends AbstractAzureServiceConfiguratio
 
     @Override
     protected ApplicationContextRunner getMinimalContextRunner() {
-        final OpenAIClientBuilder mockOpenAIClientBuilder = mock(OpenAIClientBuilder.class);
-        when(mockOpenAIClientBuilder.buildClient()).thenReturn(mock(OpenAIClient.class));
-        when(mockOpenAIClientBuilder.buildAsyncClient()).thenReturn(mock(OpenAIAsyncClient.class));
-
         return this.contextRunner
-            .withBean(OpenAIClientBuilder.class, () -> mockOpenAIClientBuilder)
             .withPropertyValues("spring.cloud.azure.openai.endpoint="  + TEST_ENDPOINT_HTTPS);
     }
 
@@ -82,6 +78,7 @@ class AzureOpenAIAutoConfigurationTests extends AbstractAzureServiceConfiguratio
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.openai.endpoint="  + TEST_ENDPOINT_HTTPS)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(OpenAIClientBuilder.class, () -> mock(OpenAIClientBuilder.class))
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureOpenAIAutoConfiguration.class);
                 assertThat(context).hasSingleBean(AzureOpenAIProperties.class);
@@ -93,6 +90,34 @@ class AzureOpenAIAutoConfigurationTests extends AbstractAzureServiceConfiguratio
     }
 
     @Test
+    void customizerShouldBeCalled() {
+        OpenAIBuilderCustomizer customizer =  new OpenAIBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues("spring.cloud.azure.openai.endpoint="  + TEST_ENDPOINT_HTTPS)
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean("customizer1", OpenAIBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", OpenAIBuilderCustomizer.class, () -> customizer)
+            .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2)
+            );
+    }
+
+    @Test
+    void otherCustomizerShouldNotBeCalled() {
+        OpenAIBuilderCustomizer customizer =  new OpenAIBuilderCustomizer();
+        OtherBuilderCustomizer otherCustomizer = new OtherBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues("spring.cloud.azure.openai.endpoint="  + TEST_ENDPOINT_HTTPS)
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean("customizer1", OpenAIBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", OpenAIBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherCustomizer)
+            .run(context -> {
+                assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
+                assertThat(otherCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    @Test
     void configurationPropertiesShouldBind() {
         String azureKeyCredential = "azure-key-credential";
         String nonAzureOpenAIKeyCredential = "non-azure-key-credential";
@@ -100,19 +125,28 @@ class AzureOpenAIAutoConfigurationTests extends AbstractAzureServiceConfiguratio
             .withPropertyValues(
                 "spring.cloud.azure.openai.endpoint=" + TEST_ENDPOINT_HTTPS,
                 "spring.cloud.azure.openai.key=" + azureKeyCredential,
-                "spring.cloud.azure.openai.non-azure-openai-key-credential=" + nonAzureOpenAIKeyCredential,
+                "spring.cloud.azure.openai.non-azure-openai-key=" + nonAzureOpenAIKeyCredential,
                 "spring.cloud.azure.openai.service-version=v2022_12_01",
                 "spring.cloud.azure.credential.client-id=openai-client-id"
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(OpenAIClientBuilder.class, () -> mock(OpenAIClientBuilder.class))
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureOpenAIProperties.class);
                 AzureOpenAIProperties properties = context.getBean(AzureOpenAIProperties.class);
                 assertEquals(TEST_ENDPOINT_HTTPS, properties.getEndpoint());
                 assertEquals(azureKeyCredential, properties.getKey());
-                assertEquals(nonAzureOpenAIKeyCredential, properties.getNonAzureOpenAIKeyCredential());
+                assertEquals(nonAzureOpenAIKeyCredential, properties.getNonAzureOpenAIKey());
                 assertEquals(OpenAIServiceVersion.V2022_12_01, properties.getServiceVersion());
                 assertEquals("openai-client-id", properties.getCredential().getClientId());
             });
+    }
+
+    private static class OpenAIBuilderCustomizer extends TestBuilderCustomizer<OpenAIClientBuilder> {
+
+    }
+
+    private static class OtherBuilderCustomizer extends TestBuilderCustomizer<CosmosClientBuilder> {
+
     }
 }
