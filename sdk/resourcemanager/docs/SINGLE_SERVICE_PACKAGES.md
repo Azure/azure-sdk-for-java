@@ -339,7 +339,7 @@ service
 <details>
 <summary> containerservicefleet </summary>
 
-* package-2023-03-preview
+* [package-2023-03-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet#tag-package-2023-03-preview)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-containerservicefleet/1.0.0-beta.1)
 </details>
 
