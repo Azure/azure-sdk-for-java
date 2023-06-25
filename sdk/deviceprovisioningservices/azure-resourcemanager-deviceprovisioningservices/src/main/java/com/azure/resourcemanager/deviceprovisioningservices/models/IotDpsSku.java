@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IotDpsSku. */
+/** Sku name. */
 public final class IotDpsSku extends ExpandableStringEnum<IotDpsSku> {
     /** Static value S1 for IotDpsSku. */
     public static final IotDpsSku S1 = fromString("S1");
+
+    /**
+     * Creates a new instance of IotDpsSku value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IotDpsSku() {
+    }
 
     /**
      * Creates or finds a IotDpsSku from its string representation.

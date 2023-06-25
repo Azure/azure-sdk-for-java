@@ -38,8 +38,7 @@ public final class CertificateProperties {
     private Boolean isVerified;
 
     /*
-     * base-64 representation of X509 certificate .cer file or just .pem file
-     * content.
+     * base-64 representation of X509 certificate .cer file or just .pem file content.
      */
     @JsonProperty(value = "certificate")
     private byte[] certificate;
@@ -55,6 +54,10 @@ public final class CertificateProperties {
      */
     @JsonProperty(value = "updated", access = JsonProperty.Access.WRITE_ONLY)
     private DateTimeRfc1123 updated;
+
+    /** Creates an instance of CertificateProperties class. */
+    public CertificateProperties() {
+    }
 
     /**
      * Get the subject property: The certificate's subject name.

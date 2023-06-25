@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IotDpsResource GetPrivateEndpointConnection. */
 public final class IotDpsResourceGetPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGetPrivateEndpointConnection.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSGetPrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_Get.
@@ -21,6 +19,9 @@ public final class IotDpsResourceGetPrivateEndpointConnectionSamples {
         manager
             .iotDpsResources()
             .getPrivateEndpointConnectionWithResponse(
-                "myResourceGroup", "myFirstProvisioningService", "myPrivateEndpointConnection", Context.NONE);
+                "myResourceGroup",
+                "myFirstProvisioningService",
+                "myPrivateEndpointConnection",
+                com.azure.core.util.Context.NONE);
     }
 }

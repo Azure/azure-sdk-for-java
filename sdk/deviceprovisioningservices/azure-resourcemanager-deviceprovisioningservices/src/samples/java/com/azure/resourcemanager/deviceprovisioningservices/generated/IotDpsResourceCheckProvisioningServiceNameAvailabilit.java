@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceprovisioningservices.models.OperationInputs;
 
 /** Samples for IotDpsResource CheckProvisioningServiceNameAvailability. */
 public final class IotDpsResourceCheckProvisioningServiceNameAvailabilit {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSCheckNameAvailability.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSCheckNameAvailability.json
      */
     /**
      * Sample code: DPSCheckName.
@@ -21,6 +20,6 @@ public final class IotDpsResourceCheckProvisioningServiceNameAvailabilit {
         manager
             .iotDpsResources()
             .checkProvisioningServiceNameAvailabilityWithResponse(
-                new OperationInputs().withName("test213123"), Context.NONE);
+                new OperationInputs().withName("test213123"), com.azure.core.util.Context.NONE);
     }
 }

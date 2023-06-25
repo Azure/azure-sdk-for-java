@@ -24,6 +24,10 @@ public final class IotDpsSkuDefinitionListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of IotDpsSkuDefinitionListResult class. */
+    public IotDpsSkuDefinitionListResult() {
+    }
+
     /**
      * Get the value property: The list of SKUs.
      *

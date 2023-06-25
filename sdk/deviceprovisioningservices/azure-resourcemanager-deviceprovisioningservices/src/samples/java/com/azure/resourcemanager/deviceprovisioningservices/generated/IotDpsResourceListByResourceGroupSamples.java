@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IotDpsResource ListByResourceGroup. */
 public final class IotDpsResourceListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSListByResourceGroup.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/preview/2023-03-01-preview/examples/DPSListByResourceGroup.json
      */
     /**
      * Sample code: DPSListByResourceGroup.
@@ -18,6 +16,6 @@ public final class IotDpsResourceListByResourceGroupSamples {
      */
     public static void dPSListByResourceGroup(
         com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
-        manager.iotDpsResources().listByResourceGroup("myResourceGroup", Context.NONE);
+        manager.iotDpsResources().listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

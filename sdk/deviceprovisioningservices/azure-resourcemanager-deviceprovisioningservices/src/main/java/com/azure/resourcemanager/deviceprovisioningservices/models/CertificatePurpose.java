@@ -17,6 +17,15 @@ public final class CertificatePurpose extends ExpandableStringEnum<CertificatePu
     public static final CertificatePurpose SERVER_AUTHENTICATION = fromString("serverAuthentication");
 
     /**
+     * Creates a new instance of CertificatePurpose value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CertificatePurpose() {
+    }
+
+    /**
      * Creates or finds a CertificatePurpose from its string representation.
      *
      * @param name a name to look for.

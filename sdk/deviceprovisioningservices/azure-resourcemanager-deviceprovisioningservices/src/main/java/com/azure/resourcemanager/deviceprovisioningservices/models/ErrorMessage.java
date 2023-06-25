@@ -28,6 +28,10 @@ public final class ErrorMessage {
     @JsonProperty(value = "details")
     private String details;
 
+    /** Creates an instance of ErrorMessage class. */
+    public ErrorMessage() {
+    }
+
     /**
      * Get the code property: standard error code.
      *

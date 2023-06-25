@@ -17,6 +17,10 @@ public final class IotDpsSkuDefinitionInner {
     @JsonProperty(value = "name")
     private IotDpsSku name;
 
+    /** Creates an instance of IotDpsSkuDefinitionInner class. */
+    public IotDpsSkuDefinitionInner() {
+    }
+
     /**
      * Get the name property: Sku name.
      *

@@ -34,16 +34,6 @@ public final class DpsCertificatesImpl implements DpsCertificates {
         this.serviceManager = serviceManager;
     }
 
-    public CertificateResponse get(String certificateName, String resourceGroupName, String provisioningServiceName) {
-        CertificateResponseInner inner =
-            this.serviceClient().get(certificateName, resourceGroupName, provisioningServiceName);
-        if (inner != null) {
-            return new CertificateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CertificateResponse> getWithResponse(
         String certificateName,
         String resourceGroupName,
@@ -65,9 +55,14 @@ public final class DpsCertificatesImpl implements DpsCertificates {
         }
     }
 
-    public void delete(
-        String resourceGroupName, String ifMatch, String provisioningServiceName, String certificateName) {
-        this.serviceClient().delete(resourceGroupName, ifMatch, provisioningServiceName, certificateName);
+    public CertificateResponse get(String certificateName, String resourceGroupName, String provisioningServiceName) {
+        CertificateResponseInner inner =
+            this.serviceClient().get(certificateName, resourceGroupName, provisioningServiceName);
+        if (inner != null) {
+            return new CertificateResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -102,13 +97,9 @@ public final class DpsCertificatesImpl implements DpsCertificates {
                 context);
     }
 
-    public CertificateListDescription list(String resourceGroupName, String provisioningServiceName) {
-        CertificateListDescriptionInner inner = this.serviceClient().list(resourceGroupName, provisioningServiceName);
-        if (inner != null) {
-            return new CertificateListDescriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(
+        String resourceGroupName, String ifMatch, String provisioningServiceName, String certificateName) {
+        this.serviceClient().delete(resourceGroupName, ifMatch, provisioningServiceName, certificateName);
     }
 
     public Response<CertificateListDescription> listWithResponse(
@@ -126,14 +117,10 @@ public final class DpsCertificatesImpl implements DpsCertificates {
         }
     }
 
-    public VerificationCodeResponse generateVerificationCode(
-        String certificateName, String ifMatch, String resourceGroupName, String provisioningServiceName) {
-        VerificationCodeResponseInner inner =
-            this
-                .serviceClient()
-                .generateVerificationCode(certificateName, ifMatch, resourceGroupName, provisioningServiceName);
+    public CertificateListDescription list(String resourceGroupName, String provisioningServiceName) {
+        CertificateListDescriptionInner inner = this.serviceClient().list(resourceGroupName, provisioningServiceName);
         if (inner != null) {
-            return new VerificationCodeResponseImpl(inner, this.manager());
+            return new CertificateListDescriptionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -181,18 +168,14 @@ public final class DpsCertificatesImpl implements DpsCertificates {
         }
     }
 
-    public CertificateResponse verifyCertificate(
-        String certificateName,
-        String ifMatch,
-        String resourceGroupName,
-        String provisioningServiceName,
-        VerificationCodeRequest request) {
-        CertificateResponseInner inner =
+    public VerificationCodeResponse generateVerificationCode(
+        String certificateName, String ifMatch, String resourceGroupName, String provisioningServiceName) {
+        VerificationCodeResponseInner inner =
             this
                 .serviceClient()
-                .verifyCertificate(certificateName, ifMatch, resourceGroupName, provisioningServiceName, request);
+                .generateVerificationCode(certificateName, ifMatch, resourceGroupName, provisioningServiceName);
         if (inner != null) {
-            return new CertificateResponseImpl(inner, this.manager());
+            return new VerificationCodeResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -237,6 +220,23 @@ public final class DpsCertificatesImpl implements DpsCertificates {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CertificateResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CertificateResponse verifyCertificate(
+        String certificateName,
+        String ifMatch,
+        String resourceGroupName,
+        String provisioningServiceName,
+        VerificationCodeRequest request) {
+        CertificateResponseInner inner =
+            this
+                .serviceClient()
+                .verifyCertificate(certificateName, ifMatch, resourceGroupName, provisioningServiceName, request);
+        if (inner != null) {
+            return new CertificateResponseImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsPropertiesDescription;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsSkuInfo;
+import com.azure.resourcemanager.deviceprovisioningservices.models.ManagedServiceIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -17,9 +18,8 @@ import java.util.Map;
 @Fluent
 public final class ProvisioningServiceDescriptionInner extends Resource {
     /*
-     * The Etag field is *not* required. If it is provided in the response
-     * body, it must also be provided as a header per the normal ETag
-     * convention.
+     * The Etag field is *not* required. If it is provided in the response body, it must also be provided as a header
+     * per the normal ETag convention.
      */
     @JsonProperty(value = "etag")
     private String etag;
@@ -41,6 +41,28 @@ public final class ProvisioningServiceDescriptionInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The managed identities for a provisioning service.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
+
+    /*
+     * The resource group of the resource.
+     */
+    @JsonProperty(value = "resourcegroup", access = JsonProperty.Access.WRITE_ONLY)
+    private String resourcegroup;
+
+    /*
+     * The subscription id of the resource.
+     */
+    @JsonProperty(value = "subscriptionid", access = JsonProperty.Access.WRITE_ONLY)
+    private String subscriptionid;
+
+    /** Creates an instance of ProvisioningServiceDescriptionInner class. */
+    public ProvisioningServiceDescriptionInner() {
+    }
 
     /**
      * Get the etag property: The Etag field is *not* required. If it is provided in the response body, it must also be
@@ -113,6 +135,44 @@ public final class ProvisioningServiceDescriptionInner extends Resource {
         return this.systemData;
     }
 
+    /**
+     * Get the identity property: The managed identities for a provisioning service.
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The managed identities for a provisioning service.
+     *
+     * @param identity the identity value to set.
+     * @return the ProvisioningServiceDescriptionInner object itself.
+     */
+    public ProvisioningServiceDescriptionInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the resourcegroup property: The resource group of the resource.
+     *
+     * @return the resourcegroup value.
+     */
+    public String resourcegroup() {
+        return this.resourcegroup;
+    }
+
+    /**
+     * Get the subscriptionid property: The subscription id of the resource.
+     *
+     * @return the subscriptionid value.
+     */
+    public String subscriptionid() {
+        return this.subscriptionid;
+    }
+
     /** {@inheritDoc} */
     @Override
     public ProvisioningServiceDescriptionInner withLocation(String location) {
@@ -148,6 +208,9 @@ public final class ProvisioningServiceDescriptionInner extends Resource {
                         "Missing required property sku in model ProvisioningServiceDescriptionInner"));
         } else {
             sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 

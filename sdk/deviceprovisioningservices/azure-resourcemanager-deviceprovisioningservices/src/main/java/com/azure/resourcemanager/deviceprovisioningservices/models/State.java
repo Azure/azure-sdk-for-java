@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for State. */
+/** Current state of the provisioning service. */
 public final class State extends ExpandableStringEnum<State> {
     /** Static value Activating for State. */
     public static final State ACTIVATING = fromString("Activating");
@@ -45,6 +45,15 @@ public final class State extends ExpandableStringEnum<State> {
 
     /** Static value FailoverFailed for State. */
     public static final State FAILOVER_FAILED = fromString("FailoverFailed");
+
+    /**
+     * Creates a new instance of State value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public State() {
+    }
 
     /**
      * Creates or finds a State from its string representation.

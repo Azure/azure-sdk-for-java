@@ -28,6 +28,10 @@ public final class OperationDisplay {
     @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
 
+    /** Creates an instance of OperationDisplay class. */
+    public OperationDisplay() {
+    }
+
     /**
      * Get the provider property: Service provider: Microsoft Devices.
      *

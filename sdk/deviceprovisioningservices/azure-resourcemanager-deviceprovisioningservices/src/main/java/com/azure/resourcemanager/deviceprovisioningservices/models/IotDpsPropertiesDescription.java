@@ -84,11 +84,20 @@ public final class IotDpsPropertiesDescription {
 
     /*
      * Optional.
-     * Indicates if the DPS instance has Data Residency enabled, removing the
-     * cross geo-pair disaster recovery.
+     * Indicates if the DPS instance has Data Residency enabled, removing the cross geo-pair disaster recovery.
      */
     @JsonProperty(value = "enableDataResidency")
     private Boolean enableDataResidency;
+
+    /*
+     * Portal endpoint to enable CORS for this provisioning service.
+     */
+    @JsonProperty(value = "portalOperationsHostName")
+    private String portalOperationsHostname;
+
+    /** Creates an instance of IotDpsPropertiesDescription class. */
+    public IotDpsPropertiesDescription() {
+    }
 
     /**
      * Get the state property: Current state of the provisioning service.
@@ -298,6 +307,26 @@ public final class IotDpsPropertiesDescription {
      */
     public IotDpsPropertiesDescription withEnableDataResidency(Boolean enableDataResidency) {
         this.enableDataResidency = enableDataResidency;
+        return this;
+    }
+
+    /**
+     * Get the portalOperationsHostname property: Portal endpoint to enable CORS for this provisioning service.
+     *
+     * @return the portalOperationsHostname value.
+     */
+    public String portalOperationsHostname() {
+        return this.portalOperationsHostname;
+    }
+
+    /**
+     * Set the portalOperationsHostname property: Portal endpoint to enable CORS for this provisioning service.
+     *
+     * @param portalOperationsHostname the portalOperationsHostname value to set.
+     * @return the IotDpsPropertiesDescription object itself.
+     */
+    public IotDpsPropertiesDescription withPortalOperationsHostname(String portalOperationsHostname) {
+        this.portalOperationsHostname = portalOperationsHostname;
         return this;
     }
 
