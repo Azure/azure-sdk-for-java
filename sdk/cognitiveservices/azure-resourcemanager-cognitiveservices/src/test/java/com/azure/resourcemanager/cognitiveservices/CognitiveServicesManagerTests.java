@@ -24,7 +24,6 @@ import com.azure.resourcemanager.resources.ResourceManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
 import java.util.Random;
 
 public class CognitiveServicesManagerTests extends TestBase {
@@ -87,9 +86,7 @@ public class CognitiveServicesManagerTests extends TestBase {
                 .withProperties(new AccountProperties()
                     .withCustomSubDomainName(accountName)
                     .withNetworkAcls(new NetworkRuleSet()
-                        .withDefaultAction(NetworkRuleAction.ALLOW)
-                        .withVirtualNetworkRules(Collections.emptyList())
-                        .withIpRules(Collections.emptyList()))
+                        .withDefaultAction(NetworkRuleAction.ALLOW))
                     .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
                 )
                 .create();
