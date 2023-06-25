@@ -99,6 +99,7 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-openai</artifactId>
       <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-ai-openai;dependency} -->
+      <optional>true</optional>
     </dependency>
 
     <!-- Kafka -->

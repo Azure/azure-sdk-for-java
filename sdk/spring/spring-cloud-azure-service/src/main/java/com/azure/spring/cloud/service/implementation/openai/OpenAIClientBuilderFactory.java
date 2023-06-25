@@ -87,8 +87,8 @@ public class OpenAIClientBuilderFactory extends AbstractAzureHttpClientBuilderFa
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(OpenAIClientBuilder builder) {
         return Arrays.asList(
             new KeyAuthenticationDescriptor(builder::credential),
-            new TokenAuthenticationDescriptor(this.tokenCredentialResolver,  builder::credential),
-            new NonAzureOpenAIKeyAuthenticationDescriptor(builder::credential)
+            new NonAzureOpenAIKeyAuthenticationDescriptor(builder::credential),
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver,  builder::credential)
         );
     }
 

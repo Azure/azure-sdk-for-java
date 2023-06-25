@@ -20,12 +20,12 @@ public class AzureOpenAIProperties extends AbstractAzureHttpConfigurationPropert
     private String endpoint;
 
     /**
-     * The service version of OpenAIClient.
+     * Azure OpenAI service version used when making API requests.
      */
     private OpenAIServiceVersion serviceVersion;
 
     /**
-     * The Non-Azure OpenAi API Key from Open AI authentication API keys(https://platform.openai.com/docs/api-reference/authentication) used for public OpenAi authentication.
+     * The API key to authenticate the non-Azure OpenAI service (https://platform.openai.com/docs/api-reference/authentication).
      */
     private String nonAzureOpenAIKey;
 

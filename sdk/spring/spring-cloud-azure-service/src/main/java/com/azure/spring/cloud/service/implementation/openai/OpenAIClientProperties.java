@@ -20,14 +20,14 @@ public interface OpenAIClientProperties extends AzureProperties, RetryOptionsPro
     String getEndpoint();
 
     /**
-     * Get the azure openai service version.
-     * @return the azure openai service version.
+     * Get the Azure OpenAI service version used when making API requests.
+     * @return the Azure OpenAI service version used when making API requests.
      */
     OpenAIServiceVersion getServiceVersion();
 
     /**
-     * Get the NonAzureOpenAiKeyCredential used for public OpenAi authentication.
-     * @return the NonAzureOpenAiKeyCredential used for public OpenAi authentication.
+     * Get the API key to authenticate the non-Azure OpenAI service (https://platform.openai.com/docs/api-reference/authentication).
+     * @return The API key to authenticate the non-Azure OpenAI service (https://platform.openai.com/docs/api-reference/authentication).
      */
     String getNonAzureOpenAIKey();
 }
