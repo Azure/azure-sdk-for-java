@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.MetadataResponseHandler;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
@@ -56,6 +57,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     private HttpClient httpClient;
     private ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
     private ConnectionPolicy connectionPolicy;
+    private MetadataResponseHandler metadataResponseHandler;
 
     public GlobalAddressResolver(
         DiagnosticsClientContext diagnosticsClientContext,
@@ -223,6 +225,15 @@ public class GlobalAddressResolver implements IAddressResolver {
         // For the new ones added later, the proactiveOpenConnectionsProcessor will pass through constructor
         for (EndpointCache endpointCache : this.addressCacheByEndpoint.values()) {
             endpointCache.addressCache.setOpenConnectionsProcessor(this.proactiveOpenConnectionsProcessor);
+        }
+    }
+
+    @Override
+    public void setMetadataResponseHandler(MetadataResponseHandler metadataResponseHandler) {
+        this.metadataResponseHandler = metadataResponseHandler;
+
+        for (EndpointCache endpointCache : this.addressCacheByEndpoint.values()) {
+            endpointCache.addressCache.setMetadataResponseHandler(this.metadataResponseHandler);
         }
     }
 

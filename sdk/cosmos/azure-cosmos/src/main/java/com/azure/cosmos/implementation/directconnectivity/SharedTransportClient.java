@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.LifeCycleUtils;
+import com.azure.cosmos.implementation.MetadataResponseHandler;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -46,14 +47,15 @@ public class SharedTransportClient extends TransportClient {
             DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig,
             IAddressResolver addressResolver,
             ClientTelemetry clientTelemetry,
-            GlobalEndpointManager globalEndpointManager) {
+            GlobalEndpointManager globalEndpointManager,
+            MetadataResponseHandler metadataResponseHandler) {
 
         synchronized (SharedTransportClient.class) {
             if (sharedTransportClient == null) {
                 assert counter.get() == 0;
                 logger.info("creating a new shared RntbdTransportClient");
                 sharedTransportClient = new SharedTransportClient(protocol, configs, connectionPolicy,
-                        userAgent, addressResolver, clientTelemetry, globalEndpointManager);
+                        userAgent, addressResolver, clientTelemetry, globalEndpointManager, metadataResponseHandler);
             } else {
                 logger.info("Reusing an instance of RntbdTransportClient");
             }
@@ -76,7 +78,8 @@ public class SharedTransportClient extends TransportClient {
             UserAgentContainer userAgent,
             IAddressResolver addressResolver,
             ClientTelemetry clientTelemetry,
-            GlobalEndpointManager globalEndpointManager) {
+            GlobalEndpointManager globalEndpointManager,
+            MetadataResponseHandler metadataResponseHandler) {
         if (protocol == Protocol.TCP) {
             this.rntbdOptions =
                 new RntbdTransportClient.Options.Builder(connectionPolicy).userAgent(userAgent).build();
@@ -86,7 +89,8 @@ public class SharedTransportClient extends TransportClient {
                     configs.getSslContext(),
                     addressResolver,
                     clientTelemetry,
-                    globalEndpointManager);
+                    globalEndpointManager,
+                    metadataResponseHandler);
 
         } else if (protocol == Protocol.HTTPS){
             this.rntbdOptions = null;
@@ -141,5 +145,10 @@ public class SharedTransportClient extends TransportClient {
     @Override
     public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
         this.transportClient.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
+    }
+
+    @Override
+    public MetadataResponseHandler getMetadataResponseHandler() {
+        return null;
     }
 }

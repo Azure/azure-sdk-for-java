@@ -22,6 +22,7 @@ import com.azure.cosmos.implementation.JavaStreamUtils;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataDiagnostics;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataType;
+import com.azure.cosmos.implementation.MetadataResponseHandler;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -105,6 +106,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final ConnectionPolicy connectionPolicy;
     private final boolean replicaAddressValidationEnabled;
     private final Set<Uri.HealthStatus> replicaValidationScopes;
+    private MetadataResponseHandler metadataResponseHandler;
 
     public GatewayAddressCache(
         DiagnosticsClientContext clientContext,
@@ -321,6 +323,11 @@ public class GatewayAddressCache implements IAddressCache {
         this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
     }
 
+    @Override
+    public void setMetadataResponseHandler(MetadataResponseHandler metadataResponseHandler) {
+        this.metadataResponseHandler = metadataResponseHandler;
+    }
+
     public Mono<List<Address>> getServerAddressesViaGatewayAsync(
         RxDocumentServiceRequest request,
         String collectionRid,
@@ -465,6 +472,7 @@ public class GatewayAddressCache implements IAddressCache {
                 BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, dce, this.globalEndpointManager);
             }
 
+            this.metadataResponseHandler.attemptToMarkRegionAsUnavailable(request, dce);
             return Mono.error(dce);
         });
     }

@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosException;
-import reactor.core.publisher.Mono;
+import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 
 import java.net.URI;
 
@@ -16,27 +16,31 @@ public class MetadataResponseHandler {
         this.globalEndpointManager = globalEndpointManager;
     }
 
-    public Mono<Void> markRegionAsUnavailable(RxDocumentServiceRequest request, CosmosException cosmosException) {
+    public void attemptToMarkRegionAsUnavailable(RxDocumentServiceRequest request, CosmosException cosmosException) {
 
         URI locationEndpointToRoute = request.requestContext.locationEndpointToRoute;
 
-        if (Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE)) {
+        if (!request.isAddressRefresh()) {
+            return;
+        }
+
+        if (shouldMarkRegionAsUnavailable(cosmosException)) {
             if (request.isReadOnlyRequest()) {
                 this.globalEndpointManager.markEndpointUnavailableForRead(locationEndpointToRoute);
             } else {
                 this.globalEndpointManager.markEndpointUnavailableForWrite(locationEndpointToRoute);
             }
         }
-
-        if (Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT)) {
-            if (request.isReadOnlyRequest()) {
-                this.globalEndpointManager.markEndpointUnavailableForRead(locationEndpointToRoute);
-            } else {
-                this.globalEndpointManager.markEndpointUnavailableForWrite(locationEndpointToRoute);
-            }
-        }
-
-        return Mono.empty();
     }
 
+    private static boolean shouldMarkRegionAsUnavailable(CosmosException exception) {
+
+        // check for network issues or connectivity issues
+        if (WebExceptionUtility.isNetworkFailure(exception) || WebExceptionUtility.isConnectionException(exception)) {
+            return Exceptions.isSubStatusCode(exception, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE) ||
+                Exceptions.isSubStatusCode(exception, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+        }
+
+        return false;
+    }
 }
