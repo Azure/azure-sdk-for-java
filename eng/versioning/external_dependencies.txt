@@ -85,6 +85,7 @@ org.apache.kafka:kafka-clients;3.4.0
 org.apache.logging.log4j:log4j-api;2.20.0
 org.apache.logging.log4j:log4j-core;2.20.0
 org.apache.logging.log4j:log4j-slf4j-impl;2.20.0
+org.apache.logging.log4j:log4j-slf4j2-impl;2.20.0
 org.apache.maven:maven-core;3.5.4
 org.apache.maven.archetype:archetype-packaging;3.2.0
 org.apache.maven.archetype:maven-archetype-plugin;3.2.0
