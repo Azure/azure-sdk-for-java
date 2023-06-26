@@ -5,8 +5,6 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-
 /**
  * {@link SessionRetryOptions} encapsulates hints which influence
  * internal retry policies which are applied when the effective consistency
@@ -14,32 +12,13 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * */
 public final class SessionRetryOptions {
 
-    private CosmosRegionSwitchHint regionSwitchHint;
+    private final CosmosRegionSwitchHint regionSwitchHint;
 
     /**
      * Instantiates {@link SessionRetryOptions}
      * */
-    public SessionRetryOptions() {
-        this.regionSwitchHint = CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED;
-    }
-
-    /**
-     * Sets the {@link CosmosRegionSwitchHint} which specifies for
-     * a request whether internal retry policies should prioritize a local region or a remote region.
-     *
-     * <p>
-     * NOTES:
-     * <ul>
-     *     <li>{@code null} values are not allowed</li>
-     * </ul>
-     *
-     * @param regionSwitchHint The region switch hint
-     * @return This instance of {@link SessionRetryOptions}
-     * */
-    public SessionRetryOptions setRegionSwitchHint(CosmosRegionSwitchHint regionSwitchHint) {
-        checkNotNull(regionSwitchHint, "regionSwitchHint cannot be null.");
+    SessionRetryOptions(CosmosRegionSwitchHint regionSwitchHint) {
         this.regionSwitchHint = regionSwitchHint;
-        return this;
     }
 
     static void initialize() {

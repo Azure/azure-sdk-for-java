@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.SessionRetryOptions;
+import com.azure.cosmos.SessionRetryOptionsBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -129,7 +130,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
                 .key(TestConfigurations.MASTER_KEY)
                 .consistencyLevel(BridgeInternal.getContextClient(this.cosmosAsyncClient).getConsistencyLevel())
                 .preferredRegions(preferredLocations)
-                .sessionRetryOptions(new SessionRetryOptions().setRegionSwitchHint(regionSwitchHint))
+                .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build())
                 .directMode()
                 .buildAsyncClient();
 
@@ -207,7 +208,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
                 .preferredRegions(preferredRegions)
-                .sessionRetryOptions(new SessionRetryOptions().setRegionSwitchHint(regionSwitchHint))
+                .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build())
                 .buildAsyncClient();
 
             CosmosAsyncContainer asyncContainerFromClientWithPreferredRegions = clientWithPreferredRegions
