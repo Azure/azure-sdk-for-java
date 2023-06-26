@@ -214,6 +214,7 @@ com.azure.spring:spring-cloud-azure-starter-appconfiguration;4.8.0;4.9.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-cosmos;4.8.0;4.9.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-data-cosmos;4.8.0;4.9.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-eventhubs;4.8.0;4.9.0-beta.1
+com.azure.spring:spring-cloud-azure-starter-eventgrid;4.9.0-beta.1;4.9.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-jdbc-mysql;4.8.0;4.9.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-jdbc-postgresql;4.8.0;4.9.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-redis;4.8.0;4.9.0-beta.1
