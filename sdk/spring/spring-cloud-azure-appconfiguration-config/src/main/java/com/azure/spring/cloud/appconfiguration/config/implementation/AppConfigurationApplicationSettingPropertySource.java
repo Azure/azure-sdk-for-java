@@ -2,6 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,9 +22,11 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
@@ -81,7 +87,7 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
      */
     public void initProperties(List<String> trim) throws JsonProcessingException {
         if (StringUtils.hasText(snapshotName)) {
-            processConfigurationSettings(replicaClient.listSettingSnapshot(snapshotName), null, trim);
+            processConfigurationSettings(replicaClient.listSettingSnapshot(snapshotName), null, trim, true);
         } else {
             List<String> labels = Arrays.asList(labelFilter);
             Collections.reverse(labels);
@@ -92,13 +98,14 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
 
                 // * for wildcard match
                 processConfigurationSettings(replicaClient.listSettings(settingSelector),
-                    settingSelector.getKeyFilter(), trim);
+                    settingSelector.getKeyFilter(), trim, false);
             }
         }
     }
 
     private void processConfigurationSettings(List<ConfigurationSetting> settings, String keyFilter,
-        List<String> trimStrings) throws JsonProcessingException {
+        List<String> trimStrings, boolean snapshot) throws JsonProcessingException {
+        TracingInfo tracing = replicaClient.getTracingInfo();
         for (ConfigurationSetting setting : settings) {
             if (trimStrings == null & StringUtils.hasText(keyFilter)) {
                 trimStrings = new ArrayList<>();
@@ -114,6 +121,18 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
                 if (entry != null) {
                     properties.put(key, entry);
                 }
+            } else if (snapshot && setting instanceof FeatureFlagConfigurationSetting
+                && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
+                // Feature Flags are only part of this if they come from a snapshot
+                featureConfigurationSettings.add(setting);
+                FeatureFlagConfigurationSetting featureFlag = (FeatureFlagConfigurationSetting) setting;
+
+                String configName = FEATURE_MANAGEMENT_KEY
+                    + setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length());
+
+                updateTelemetry(featureFlag, tracing);
+
+                properties.put(configName, createFeature(featureFlag));
             } else if (StringUtils.hasText(setting.getContentType())
                 && JsonConfigurationParser.isJsonContentType(setting.getContentType())) {
                 Map<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
@@ -129,9 +148,11 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
 
     private String trimKey(String key, List<String> trimStrings) {
         key = key.trim();
-        for (String trim : trimStrings) {
-            if (key.startsWith(trim)) {
-                return key.replaceFirst("^" + trim, "").replace('/', '.');
+        if (trimStrings != null) {
+            for (String trim : trimStrings) {
+                if (key.startsWith(trim)) {
+                    return key.replaceFirst("^" + trim, "").replace('/', '.');
+                }
             }
         }
         return key.replace("/", ".");

@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_LABEL;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_VALUE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_KEY_1;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_KEY_2;
@@ -16,6 +19,7 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.Test
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_VALUE_2;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_VALUE_3;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItem;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItemFeatureFlag;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -32,7 +36,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -57,9 +64,13 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
 
     private static final ConfigurationSetting ITEM_3 = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
         EMPTY_CONTENT_TYPE);
-    
+
     private static final ConfigurationSetting ITEM_4 = createItem("/bar/", "test_key_4", "test_value_4", "test_label_4",
         EMPTY_CONTENT_TYPE);
+
+    private static final FeatureFlagConfigurationSetting FEATURE_ITEM = createItemFeatureFlag(".appconfig.featureflag/",
+        "Alpha",
+        FEATURE_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
     private static final ConfigurationSetting ITEM_NULL = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
         null);
@@ -95,7 +106,8 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         testItems.add(ITEM_2);
         testItems.add(ITEM_3);
         testItems.add(ITEM_4);
-        
+        testItems.add(FEATURE_ITEM);
+
         TRIM.add(KEY_FILTER);
 
         propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock,
@@ -112,12 +124,19 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         when(configurationListMock.iterator()).thenReturn(testItems.iterator());
         when(clientMock.listSettingSnapshot(Mockito.any())).thenReturn(configurationListMock)
             .thenReturn(configurationListMock);
+        when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
 
         propertySource.initProperties(TRIM);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = testItems.stream()
-            .map(t -> t.getKey().replaceFirst("^"+KEY_FILTER, "").replace("/", ".")).toArray(String[]::new);
+            .map(t -> {
+                if (t.getKey().startsWith(".appconfig.featureflag/")) {
+                    return t.getKey().replace(".appconfig.featureflag/", "feature-management.");
+                }
+                return t.getKey().replaceFirst("^"+KEY_FILTER, "").replace("/", ".");
+            
+            }).toArray(String[]::new);
 
         assertThat(keyNames).containsExactlyInAnyOrder(expectedKeyNames);
 
