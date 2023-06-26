@@ -26,9 +26,6 @@ public final class State extends ExpandableStringEnum<State> {
     /** The operation has completed processing with a failure and cannot be further consumed. */
     @Generated public static final State FAILED = fromString("failed");
 
-    /** The entity has been deleted but may still be referenced by other entities predating the deletion. */
-    @Generated public static final State DELETED = fromString("deleted");
-
     /**
      * Creates a new instance of State value.
      *
