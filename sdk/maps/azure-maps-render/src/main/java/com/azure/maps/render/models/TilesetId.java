@@ -49,12 +49,6 @@ public final class TilesetId extends ExpandableStringEnum<TilesetId> {
     /** Static value microsoft.weather.infrared.main for TilesetID. */
     public static final TilesetId MICROSOFT_WEATHER_INFRARED_MAIN = fromString("microsoft.weather.infrared.main");
 
-    /** Static value microsoft.dem for TilesetID. */
-    public static final TilesetId MICROSOFT_DEM = fromString("microsoft.dem");
-
-    /** Static value microsoft.dem.contours for TilesetID. */
-    public static final TilesetId MICROSOFT_DEM_CONTOURS = fromString("microsoft.dem.contours");
-
     /** Static value microsoft.traffic.absolute for TilesetID. */
     public static final TilesetId MICROSOFT_TRAFFIC_ABSOLUTE = fromString("microsoft.traffic.absolute");
 
