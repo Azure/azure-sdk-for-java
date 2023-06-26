@@ -15,6 +15,7 @@ import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageOperationResponse;
+import com.azure.ai.openai.models.ImageResponse;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -23,17 +24,12 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.core.util.polling.ChainedPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
 import java.nio.ByteBuffer;
-
-import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -556,18 +552,6 @@ public final class OpenAIAsyncClient {
         return this.serviceClient.beginStartGenerateImageAsync(imageGenerationOptions, requestOptions);
     }
 
-    // TODO docs
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BinaryData> generateImage(
-        BinaryData imageGenerationOptions, RequestOptions requestOptions) {
-        return openAIServiceClient != null
-            ? openAIServiceClient.generateImageWithResponseAsync(imageGenerationOptions, requestOptions)
-                .flatMap(FluxUtil::toMono)
-            : serviceClient.beginStartGenerateImageAsync(imageGenerationOptions, requestOptions)
-                .last()
-                .flatMap(it -> it.getFinalResult());
-    }
-
     /**
      * Starts the generation of a batch of images from a text caption.
      *
@@ -581,11 +565,19 @@ public final class OpenAIAsyncClient {
      * @return the {@link Mono} with the image generation result
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ImageOperationResponse> generateImage(ImageGenerationOptions imageGenerationOptions) {
+    public Mono<ImageResponse> generateImage(ImageGenerationOptions imageGenerationOptions) {
         RequestOptions requestOptions = new RequestOptions();
         BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
-        return generateImage(imageGenerationOptionsBinaryData, requestOptions)
-                .map(it -> it.toObject(ImageOperationResponse.class));
+        return openAIServiceClient != null
+                ? openAIServiceClient
+                    .generateImageWithResponseAsync(imageGenerationOptionsBinaryData, requestOptions)
+                    .flatMap(FluxUtil::toMono)
+                    .map(it -> it.toObject(ImageResponse.class))
+                : serviceClient
+                    .beginStartGenerateImageAsync(imageGenerationOptionsBinaryData, requestOptions)
+                    .last()
+                    .flatMap(it -> it.getFinalResult())
+                    .map(it -> it.toObject(ImageOperationResponse.class).getResult());
     }
 
     /**
@@ -601,14 +593,9 @@ public final class OpenAIAsyncClient {
      * @return a polling status update or final response payload for an image operation on successful completion of
      *     {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ImageOperationResponse> getImageOperationStatus(String operationId) {
-        // This operation is not available in non-Azure OpenAI
-        if(openAIServiceClient != null) {
-            throw new UnsupportedOperationException("This method is not available in Non Azure OpenAI");
-        }
-
+    Mono<ImageOperationResponse> getImageOperationStatus(String operationId) {
+        // Generated convenience method for getImageOperationStatusWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getImageOperationStatusWithResponse(operationId, requestOptions)
                 .flatMap(FluxUtil::toMono)

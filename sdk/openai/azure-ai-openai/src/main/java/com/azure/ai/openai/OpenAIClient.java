@@ -27,15 +27,11 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import java.nio.ByteBuffer;
-import java.time.Duration;
-
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the synchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class)
@@ -564,19 +560,22 @@ public final class OpenAIClient {
         RequestOptions requestOptions = new RequestOptions();
         BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
         return openAIServiceClient != null
-            ? openAIServiceClient.generateImageWithResponse(imageGenerationOptionsBinaryData, requestOptions)
-                .getValue()
-                .toObject(ImageResponse.class)
-            : this.serviceClient.beginStartGenerateImage(imageGenerationOptionsBinaryData, requestOptions)
-            // option 1
-            .waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED).getValue()
-            // option 2
-//            .getFinalResult()
-            // option 3
-//            .waitForCompletion()
-//            .getValue()
-            .toObject(ImageOperationResponse.class)
-            .getResult();
+                ? openAIServiceClient
+                        .generateImageWithResponse(imageGenerationOptionsBinaryData, requestOptions)
+                        .getValue()
+                        .toObject(ImageResponse.class)
+                : this.serviceClient
+                        .beginStartGenerateImage(imageGenerationOptionsBinaryData, requestOptions)
+                        . // option 1
+                        waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                        .getValue()
+                        . // option 2
+                        //            .getFinalResult()
+                        // option 3
+                        //            .waitForCompletion()
+                        //            .getValue()
+                        toObject(ImageOperationResponse.class)
+                        .getResult();
     }
 
     /**
@@ -591,9 +590,8 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a polling status update or final response payload for an image operation.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImageOperationResponse getImageOperationStatus(String operationId) {
+    ImageOperationResponse getImageOperationStatus(String operationId) {
         // Generated convenience method for getImageOperationStatusWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getImageOperationStatusWithResponse(operationId, requestOptions)

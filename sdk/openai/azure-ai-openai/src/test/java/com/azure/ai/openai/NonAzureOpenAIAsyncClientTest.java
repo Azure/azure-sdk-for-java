@@ -237,13 +237,9 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGenerateImage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
-        ImageGenerationOptions options = new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh");
-        StepVerifier.create(client.generateImage(options))
-            .assertNext(imageOperationResponse -> {
-                assertNotNull(imageOperationResponse.getResult());
-                assertNotNull(imageOperationResponse.getResult().getData());
-                assertFalse(imageOperationResponse.getResult().getData().isEmpty());
-            })
-            .verifyComplete();
+        getImageGenerationRunner(options ->
+            StepVerifier.create(client.generateImage(options))
+                .assertNext(OpenAIClientTestBase::assertImageResponse)
+                .verifyComplete());
     }
 }

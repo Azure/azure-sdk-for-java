@@ -196,9 +196,6 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGenerateImage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
-        ImageGenerationOptions options = new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh");
-        ImageResponse imageResponse = client.generateImage(options);
-        assertNotNull(imageResponse.getData());
-        assertFalse(imageResponse.getData().isEmpty());
+        getImageGenerationRunner(options -> assertImageResponse(client.generateImage(options)));
     }
 }
