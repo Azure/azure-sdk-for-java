@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 
 import java.time.Duration;
@@ -389,6 +390,16 @@ public class CosmosItemRequestOptions {
     }
 
     /**
+     * Gets the list of regions to be excluded for the request/retries. These regions are excluded
+     * from the preferred region list.
+     *
+     * @return a list of excluded regions
+     * */
+    public List<String> getExcludedRegions() {
+        return UnmodifiableList.unmodifiableList(this.excludeRegions);
+    }
+
+    /**
      * Gets the partition key
      *
      * @return the partition key
@@ -525,10 +536,6 @@ public class CosmosItemRequestOptions {
 
     OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
         return this.operationContextAndListenerTuple;
-    }
-
-    List<String> getExcludedRegions() {
-        return excludeRegions;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

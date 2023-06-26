@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -356,12 +357,13 @@ public class CosmosQueryRequestOptions {
     }
 
     /**
-     * Gets the regions to exclude as a hint for retries
+     * Gets the list of regions to be excluded for the request/retries. These regions are excluded
+     * from the preferred region list.
      *
-     * @return the regions to exclude
-     */
-    List<String> getExcludedRegions() {
-        return this.excludeRegions;
+     * @return a list of excluded regions
+     * */
+    public List<String> getExcludedRegions() {
+        return UnmodifiableList.unmodifiableList(this.excludeRegions);
     }
 
     /**
