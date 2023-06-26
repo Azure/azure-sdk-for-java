@@ -15,10 +15,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.cognitiveservices.models.Account;
-import com.azure.resourcemanager.cognitiveservices.models.AccountProperties;
-import com.azure.resourcemanager.cognitiveservices.models.NetworkRuleAction;
-import com.azure.resourcemanager.cognitiveservices.models.NetworkRuleSet;
-import com.azure.resourcemanager.cognitiveservices.models.PublicNetworkAccess;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
 import com.azure.resourcemanager.resources.ResourceManager;
 import org.junit.jupiter.api.Assertions;
@@ -83,12 +79,6 @@ public class CognitiveServicesManagerTests extends TestBase {
                 .withRegion(REGION)
                 .withKind("CognitiveServices")
                 .withSku(new Sku().withName("S0"))
-                .withProperties(new AccountProperties()
-                    .withCustomSubDomainName(accountName)
-                    .withNetworkAcls(new NetworkRuleSet()
-                        .withDefaultAction(NetworkRuleAction.ALLOW))
-                    .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                )
                 .create();
             // @embedmeEnd
             account.refresh();
