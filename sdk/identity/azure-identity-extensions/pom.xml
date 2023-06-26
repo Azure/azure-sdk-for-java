@@ -22,13 +22,13 @@
     <dependency>
       <groupId>com.mysql</groupId>
       <artifactId>mysql-connector-j</artifactId>
-      <version>8.0.32</version> <!-- {x-version-update;com.mysql:mysql-connector-j;external_dependency} -->
+      <version>8.0.33</version> <!-- {x-version-update;com.mysql:mysql-connector-j;external_dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.5.4</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
+      <version>42.3.8</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -55,7 +55,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.9.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -77,8 +77,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.mysql:mysql-connector-j:[8.0.32]</include> <!-- {x-include-update;com.mysql:mysql-connector-j;external_dependency} -->
-                <include>org.postgresql:postgresql:[42.5.4]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
+                <include>com.mysql:mysql-connector-j:[8.0.33]</include> <!-- {x-include-update;com.mysql:mysql-connector-j;external_dependency} -->
+                <include>org.postgresql:postgresql:[42.3.8]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

@@ -37,8 +37,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help instantiation of {@link DocumentModelAdministrationClient FormRecognizerAdminClient}
- * and {@link DocumentModelAdministrationAsyncClient DocumentTrainingAsyncClient}, call {@link #buildClient()} buildClient} and
+ * This class provides a fluent builder API to help instantiation of {@link DocumentModelAdministrationClient DocumentModelAdministrationClient}
+ * and {@link DocumentModelAdministrationAsyncClient DocumentModelAdministrationAsyncClient}, call {@link #buildClient()} buildClient} and
  * {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  *
  * <p>
@@ -47,21 +47,25 @@ import java.util.Objects;
  * the builder access credential.
  * </p>
  *
- * <p><strong>Instantiating an asynchronous Document Model Administration Client</strong></p>
+ * <p><strong>Sample: Instantiating an asynchronous Document Model Administration Client</strong></p>
  *
  * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.initialization -->
  * <pre>
- * DocumentModelAdministrationAsyncClient documentModelAdministrationAsyncClient =
- *     new DocumentModelAdministrationClientBuilder&#40;&#41;.buildAsyncClient&#40;&#41;;
+ * DocumentModelAdministrationAsyncClient client = new DocumentModelAdministrationClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.initialization -->
  *
- * <p><strong>Instantiating a synchronous Document Model Administration Client</strong></p>
+ * <p><strong>Sample: Instantiating a synchronous Document Model Administration Client</strong></p>
  *
  * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization -->
  * <pre>
- * DocumentModelAdministrationClient documentModelAdministrationClient =
- *     new DocumentModelAdministrationClientBuilder&#40;&#41;.buildClient&#40;&#41;;
+ * DocumentModelAdministrationClient client = new DocumentModelAdministrationClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization -->
  *
@@ -126,7 +130,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      * settings are ignored.
      * </p>
      *
-     * @return A FormRecognizerAdminClient with the options set from the builder.
+     * @return A DocumentModelAdministrationClient with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or
      * {@link #credential(AzureKeyCredential)} has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
@@ -187,7 +191,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      * settings are ignored.
      * </p>
      *
-     * @return A DocumentTrainingAsyncClient with the options set from the builder.
+     * @return A DocumentModelAdministrationAsyncClient with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential)}
      * has not been set or {@code audience} is null when using {@link #credential(TokenCredential)}.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
@@ -326,7 +330,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
      * @return The updated DocumentModelAdministrationClientBuilder object.
-     * @see HttpClientOptions
+     * {@link HttpClientOptions}
      */
     @Override
     public DocumentModelAdministrationClientBuilder clientOptions(ClientOptions clientOptions) {

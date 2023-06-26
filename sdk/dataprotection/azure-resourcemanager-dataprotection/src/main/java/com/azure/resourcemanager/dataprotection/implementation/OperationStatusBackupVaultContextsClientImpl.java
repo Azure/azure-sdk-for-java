@@ -23,7 +23,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.dataprotection.fluent.OperationStatusBackupVaultContextsClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.OperationResourceInner;
-import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /**
@@ -60,13 +59,12 @@ public final class OperationStatusBackupVaultContextsClientImpl implements Opera
     public interface OperationStatusBackupVaultContextsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection"
-                + "/backupVaults/{vaultName}/operationStatus/{operationId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/operationStatus/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationResourceInner>> get(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("operationId") String operationId,

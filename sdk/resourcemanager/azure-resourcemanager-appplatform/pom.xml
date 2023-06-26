@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-appplatform</artifactId>
-  <version>2.28.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appplatform;current} -->
+  <version>2.29.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appplatform;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for App Platform Management</name>
@@ -47,7 +47,9 @@
       --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.model.implementation=ALL-UNNAMED
 
       --add-opens com.azure.resourcemanager.appplatform/com.azure.resourcemanager.appplatform=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <revapi.skip>true</revapi.skip>
   </properties>
 
   <developers>
@@ -61,7 +63,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.28.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
+      <version>2.29.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -83,13 +85,13 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.9.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.9.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -101,31 +103,31 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.5.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+      <version>4.5.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-keyvault</artifactId>
-      <version>2.28.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-keyvault;current} -->
+      <version>2.29.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-keyvault;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-dns</artifactId>
-      <version>2.28.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dns;current} -->
+      <version>2.29.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dns;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-appservice</artifactId>
-      <version>2.28.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appservice;current} -->
+      <version>2.29.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appservice;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>2.0.7</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

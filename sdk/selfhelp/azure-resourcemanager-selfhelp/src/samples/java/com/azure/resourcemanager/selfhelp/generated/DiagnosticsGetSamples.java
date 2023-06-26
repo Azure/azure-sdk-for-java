@@ -7,7 +7,7 @@ package com.azure.resourcemanager.selfhelp.generated;
 /** Samples for Diagnostics Get. */
 public final class DiagnosticsGetSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/GetDiagnosticForKeyVaultResource.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/stable/2023-06-01/examples/GetDiagnosticForKeyVaultResource.json
      */
     /**
      * Sample code: Gets a Diagnostic for a KeyVault resource.
