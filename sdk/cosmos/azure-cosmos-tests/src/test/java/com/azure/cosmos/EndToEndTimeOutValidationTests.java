@@ -138,7 +138,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         rule.disable();
     }
 
-    private static void verifyExpectError(Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono) {
+    static void verifyExpectError(Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono) {
         StepVerifier.create(cosmosItemResponseMono)
             .expectErrorMatches(throwable -> throwable instanceof OperationCancelledException)
             .verify();

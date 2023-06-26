@@ -14,7 +14,9 @@ import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.FixedDelayOptions;
@@ -41,12 +43,14 @@ public final class RouterClientBuilder implements ConfigurationTrait<RouterClien
     EndpointTrait<RouterClientBuilder>,
     HttpTrait<RouterClientBuilder>,
     ConnectionStringTrait<RouterClientBuilder>,
-    AzureKeyCredentialTrait<RouterClientBuilder> {
+    AzureKeyCredentialTrait<RouterClientBuilder>,
+    TokenCredentialTrait<RouterClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(RouterClientBuilder.class);
 
     private String endpoint;
     private HttpClient httpClient;
     private AzureKeyCredential credential;
+    private TokenCredential tokenCredential;
     private HttpPipeline httpPipeline;
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
     private RetryPolicy retryPolicy;
@@ -137,9 +141,25 @@ public final class RouterClientBuilder implements ConfigurationTrait<RouterClien
      * @param credential valid credential as a string
      * @return the updated RouterClientBuilder object
      */
+    @Override
     public RouterClientBuilder credential(AzureKeyCredential credential) {
         this.credential = Objects.requireNonNull(
             credential, "'credential' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
+     *
+     * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
+     * @return Updated {@link RouterClientBuilder} object.
+     * @throws NullPointerException If {@code tokenCredential} is null.
+     */
+    @Override
+    public RouterClientBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
     }
 
