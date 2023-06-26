@@ -357,7 +357,7 @@ public class CosmosQueryRequestOptions {
     }
 
     /**
-     * Gets the list of regions to be excluded for the request/retries. These regions are excluded
+     * Gets the list of regions to exclude for the request/retries. These regions are excluded
      * from the preferred region list.
      *
      * @return a list of excluded regions
