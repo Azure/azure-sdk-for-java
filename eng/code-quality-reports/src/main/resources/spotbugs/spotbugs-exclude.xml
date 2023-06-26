@@ -2421,6 +2421,18 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
+    <!--  The returned Disposable can be ignored since Scheduler is closed when Reactor closes. -->
+  <Match>
+    <Class name="com.azure.core.amqp.implementation.ReactorExecutor"/>
+    <Method name="start"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+    <Match>
+    <Class name="com.azure.core.amqp.implementation.ReactorExecutor"/>
+    <Method name="run"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
   <!-- For BinaryData, copying array contents degrades performance. The data returned as byte array from BinaryData is expected to be copied by the call if mutability is desired. -->
   <Match>
     <Class name="com.azure.core.implementation.util.ByteArrayContent"/>
