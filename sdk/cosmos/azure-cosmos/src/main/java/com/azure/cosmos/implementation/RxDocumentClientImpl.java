@@ -12,7 +12,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosSessionRetryOptions;
+import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -206,7 +206,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private ThroughputControlStore throughputControlStore;
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final String clientCorrelationId;
-    private final CosmosSessionRetryOptions sessionRetryOptions;
+    private final SessionRetryOptions sessionRetryOptions;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -224,7 +224,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-                                CosmosSessionRetryOptions sessionRetryOptions) {
+                                SessionRetryOptions sessionRetryOptions) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -263,7 +263,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-                                CosmosSessionRetryOptions sessionRetryOptions) {
+                                SessionRetryOptions sessionRetryOptions) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -301,7 +301,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-                                CosmosSessionRetryOptions sessionRetryOptions) {
+                                SessionRetryOptions sessionRetryOptions) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -377,7 +377,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          CosmosClientTelemetryConfig clientTelemetryConfig,
                          String clientCorrelationId,
                          CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-                         CosmosSessionRetryOptions sessionRetryOptions) {
+                         SessionRetryOptions sessionRetryOptions) {
 
         assert(clientTelemetryConfig != null);
         Boolean clientTelemetryEnabled = ImplementationBridgeHelpers

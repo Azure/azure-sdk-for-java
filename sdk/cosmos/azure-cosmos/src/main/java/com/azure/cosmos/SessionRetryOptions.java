@@ -6,15 +6,18 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 
 /**
- * {@link CosmosSessionRetryOptions} encapsulates hints which influence
+ * {@link SessionRetryOptions} encapsulates hints which influence
  * internal retry policies which are applied when the effective consistency
  * used for the request is <i>Session Consistency</i>.
  * */
-public final class CosmosSessionRetryOptions {
+public final class SessionRetryOptions {
 
     private final CosmosRegionSwitchHint regionSwitchHint;
 
-    CosmosSessionRetryOptions(CosmosRegionSwitchHint regionSwitchHint) {
+    /**
+     * Instantiates {@link SessionRetryOptions}
+     * */
+    SessionRetryOptions(CosmosRegionSwitchHint regionSwitchHint) {
         this.regionSwitchHint = regionSwitchHint;
     }
 
@@ -23,7 +26,7 @@ public final class CosmosSessionRetryOptions {
 
             new ImplementationBridgeHelpers.CosmosSessionRetryOptionsHelper.CosmosSessionRetryOptionsAccessor() {
                 @Override
-                public CosmosRegionSwitchHint getRegionSwitchHint(CosmosSessionRetryOptions sessionRetryOptions) {
+                public CosmosRegionSwitchHint getRegionSwitchHint(SessionRetryOptions sessionRetryOptions) {
                     return sessionRetryOptions.regionSwitchHint;
                 }
             });

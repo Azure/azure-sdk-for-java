@@ -20,7 +20,7 @@ import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosSessionRetryOptions;
+import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.ThroughputControlGroupConfig;
@@ -34,7 +34,6 @@ import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnectionMetadata;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -1565,7 +1564,7 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosSessionRetryOptionsAccessor {
-            CosmosRegionSwitchHint getRegionSwitchHint(CosmosSessionRetryOptions sessionRetryOptions);
+            CosmosRegionSwitchHint getRegionSwitchHint(SessionRetryOptions sessionRetryOptions);
         }
     }
 }

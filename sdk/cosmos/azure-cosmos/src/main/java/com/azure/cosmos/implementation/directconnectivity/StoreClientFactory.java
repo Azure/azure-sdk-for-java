@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.CosmosSessionRetryOptions;
+import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -84,7 +84,7 @@ public class StoreClientFactory implements AutoCloseable {
         GatewayServiceConfigurationReader serviceConfigurationReader,
         IAuthorizationTokenProvider authorizationTokenProvider,
         boolean useMultipleWriteLocations,
-        CosmosSessionRetryOptions sessionRetryOptions) {
+        SessionRetryOptions sessionRetryOptions) {
         this.throwIfClosed();
 
         return new StoreClient(diagnosticsClientContext,

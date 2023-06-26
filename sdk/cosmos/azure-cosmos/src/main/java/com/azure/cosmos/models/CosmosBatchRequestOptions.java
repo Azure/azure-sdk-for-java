@@ -7,6 +7,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 
 import java.util.HashMap;
 import java.util.List;
@@ -106,7 +107,7 @@ public final class CosmosBatchRequestOptions {
     }
 
     /**
-     * List of regions to be excluded for the request/retries. Example "East US" or "East US, West US"
+     * List of regions to exclude for the request/retries. Example "East US" or "East US, West US"
      * These regions will be excluded from the preferred regions list
      *
      * @param excludeRegions list of regions
@@ -115,6 +116,19 @@ public final class CosmosBatchRequestOptions {
     public CosmosBatchRequestOptions setExcludedRegions(List<String> excludeRegions) {
         this.excludeRegions = excludeRegions;
         return this;
+    }
+
+    /**
+     * Gets the list of regions to be excluded for the request/retries. These regions are excluded
+     * from the preferred region list.
+     *
+     * @return a list of excluded regions
+     * */
+    public List<String> getExcludedRegions() {
+        if (this.excludeRegions == null) {
+            return null;
+        }
+        return UnmodifiableList.unmodifiableList(this.excludeRegions);
     }
 
     /**

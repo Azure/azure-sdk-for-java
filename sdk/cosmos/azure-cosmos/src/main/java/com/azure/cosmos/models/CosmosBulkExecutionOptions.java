@@ -4,10 +4,12 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -295,7 +297,7 @@ public final class CosmosBulkExecutionOptions {
     }
 
     /**
-     * List of regions to be excluded for the request/retries. Example "East US" or "East US, West US"
+     * List of regions to exclude for the request/retries. Example "East US" or "East US, West US"
      * These regions will be excluded from the preferred regions list
      *
      * @param excludeRegions list of regions
@@ -304,6 +306,19 @@ public final class CosmosBulkExecutionOptions {
     public CosmosBulkExecutionOptions setExcludedRegions(List<String> excludeRegions) {
         this.excludeRegions = excludeRegions;
         return this;
+    }
+
+    /**
+     * Gets the list of regions to be excluded for the request/retries. These regions are excluded
+     * from the preferred region list.
+     *
+     * @return a list of excluded regions
+     * */
+    public List<String> getExcludedRegions() {
+        if (this.excludeRegions == null) {
+            return null;
+        }
+        return UnmodifiableList.unmodifiableList(this.excludeRegions);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
