@@ -182,7 +182,49 @@ public class DefaultAzureCredentialTest {
         Assert.assertEquals(clientId, workloadIdentityCredential.getClientId());
     }
 
+    @Test
+    public void testWorkloadCredentialForMultiTenantFlowShouldSetTenantAndClientId() {
+        String clientId = "dummy-client-id";
+        String tokenFilePath = "/test/token";
+        String tenantId = "testToken"; // tokenid of the additional tenant
 
+        // test
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
+            .workloadIdentityClientId(clientId)
+            .tokenFilePath(tokenFilePath)
+            .tenantId(tenantId)
+            .build();
+        WorkloadIdentityCredential workloadIdentityCredential = credential.getWorkloadIdentityCredentialIfPresent();
+        Assert.assertEquals(workloadIdentityCredential.getClientId(), clientId);
+        Assert.assertEquals(workloadIdentityCredential.getTenantId(), tenantId);
+    }
+
+    @Test
+    public void testWorkloadIdentityCredentialForMultiTenantFlow() {
+        String clientId = "dummy-client-id";
+        String tokenFilePath = "/test/token";
+        String tenantId = "testToken"; // tokenid of the additional tenant
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        String token1 = "token1";
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+        // mock
+        try (MockedConstruction<IdentityClient> mocked = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithWorkloadIdentityConfidentialClient(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+        })) {
+            // test
+            DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
+                .workloadIdentityClientId(clientId)
+                .tokenFilePath(tokenFilePath)
+                .tenantId(tenantId)
+                .build();
+
+            StepVerifier.create(credential.getToken(request)).expectNextMatches(accessToken -> token1.equals(accessToken.getToken()) && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond()).verifyComplete();
+            Assert.assertNotNull(mocked);
+            WorkloadIdentityCredential workloadIdentityCredential = credential.getWorkloadIdentityCredentialIfPresent();
+            Assert.assertNotNull(workloadIdentityCredential);
+        }
+    }
 
     @Test
     public void testUseAzureCliCredential() {
@@ -408,4 +450,5 @@ public class DefaultAzureCredentialTest {
         StepVerifier.create(credential.getToken(request))
             .verifyErrorMatches(e -> e.getCause() instanceof MsalServiceException);
     }
+
 }

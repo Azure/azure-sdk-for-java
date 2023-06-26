@@ -62,7 +62,7 @@ public class WorkloadIdentityCredential implements TokenCredential {
      *
      * @param tenantId ID of the application's Azure Active Directory tenant. Also called its directory ID.
      * @param clientId The client ID of an Azure AD app registration.
-     * @param federatedTokenFilePath The path to a file containing a Kubernetes service account token that authenticates the identity.
+     * @param federatedTokenFilePath The path to a file containing a federated token that authenticates the identity.
      * @param identityClientOptions The identity client options to use for authentication.
      */
     WorkloadIdentityCredential(String tenantId, String clientId, String federatedTokenFilePath, IdentityClientOptions identityClientOptions) {
@@ -122,5 +122,8 @@ public class WorkloadIdentityCredential implements TokenCredential {
     String getClientId() {
         return this.identityClient.getClientId();
     }
+
+    String getTenantId() { return this.identityClient.getTenantId(); }
+
 }
 

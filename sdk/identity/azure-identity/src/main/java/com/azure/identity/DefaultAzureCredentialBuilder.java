@@ -66,9 +66,11 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     private String tenantId;
     private String managedIdentityClientId;
     private String workloadIdentityClientId;
+    private String tokenFilePath;
     private String managedIdentityResourceId;
     private List<String> additionallyAllowedTenants = IdentityUtil
         .getAdditionalTenantsFromEnvironment(Configuration.getGlobalConfiguration().clone());
+    static final String AZURE_FEDERATED_TOKEN_FILE = "AZURE_FEDERATED_TOKEN_FILE";
 
 
     /**
@@ -152,6 +154,18 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      */
     public DefaultAzureCredentialBuilder workloadIdentityClientId(String clientId) {
         this.workloadIdentityClientId = clientId;
+        return this;
+    }
+
+    /**
+     * Configure the path to a file containing the federated token that authenticates the identity.
+     * The file path is required to authenticate.
+     *
+     * @param tokenFilePath the path to the file containing the token to use for authentication.
+     * @return An updated instance of this builder with the tenant id set as specified.
+     */
+    public DefaultAzureCredentialBuilder tokenFilePath(String tokenFilePath) {
+        this.tokenFilePath = tokenFilePath;
         return this;
     }
 
@@ -268,6 +282,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
             ? Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
         tenantId = CoreUtils.isNullOrEmpty(tenantId) ? configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID) : tenantId;
         managedIdentityClientId = CoreUtils.isNullOrEmpty(managedIdentityClientId) ? configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) : managedIdentityClientId;
+        tokenFilePath = CoreUtils.isNullOrEmpty(tokenFilePath) ? configuration.get(AZURE_FEDERATED_TOKEN_FILE) : tokenFilePath;
     }
 
     private ArrayList<TokenCredential> getCredentialsChain() {
@@ -295,7 +310,11 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         if (!CoreUtils.isNullOrEmpty(azureAuthorityHost)) {
             identityClientOptions.setAuthorityHost(azureAuthorityHost);
         }
-        return new WorkloadIdentityCredential(null, clientId, null,
-                identityClientOptions.clone());
+
+        System.out.println("tenantId:"+tenantId);
+        System.out.println("clientId"+clientId);
+        System.out.println("tokenFilePath"+tokenFilePath);
+
+        return new WorkloadIdentityCredential(tenantId, clientId, tokenFilePath, identityClientOptions.clone());
     }
 }

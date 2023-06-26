@@ -52,7 +52,7 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
 
 
     /**
-     * Configure the path to a file containing a Kubernetes service account token that authenticates the identity.
+     * Configure the path to a file containing a federated token that authenticates the identity.
      * The file path is required to authenticate.
      *
      * @param tokenFilePath the path to the file containing the token to use for authentication.
@@ -70,7 +70,7 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
      */
     public WorkloadIdentityCredential build() {
         ValidationUtil.validate(this.getClass().getSimpleName(), LOGGER, "Client ID", clientId,
-            "Tenant ID", tenantId, "Service Token File Path", tokenFilePath);
+            "Tenant ID", tenantId, "Federated Token File Path", tokenFilePath);
 
         return new WorkloadIdentityCredential(tenantId, clientId, tokenFilePath, identityClientOptions.clone());
     }
