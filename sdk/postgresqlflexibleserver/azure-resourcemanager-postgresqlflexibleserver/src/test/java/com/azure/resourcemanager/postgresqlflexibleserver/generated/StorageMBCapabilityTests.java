@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.StorageMBCapability;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.StorageMbCapability;
 
-public final class StorageMBCapabilityTests {
+public final class StorageMbCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageMBCapability model =
+        StorageMbCapability model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"gzjaoyfhrtxilne\",\"supportedIops\":7928784198213019505,\"storageSizeMB\":186603150154642680,\"supportedUpgradableTierList\":[{\"name\":\"uvfqawrlyxwj\",\"tierName\":\"prbnwbxgjvtbv\",\"iops\":7661305214436261701,\"isBaseline\":true,\"status\":\"rujqg\"}],\"status\":\"muouqfp\"}")
-                .toObject(StorageMBCapability.class);
+                    "{\"supportedIops\":298107669,\"storageSizeMb\":2815796580995720417,\"defaultIopsTier\":\"xppbhtqqro\",\"supportedIopsTiers\":[{\"name\":\"psalgbqux\",\"iops\":596871405,\"status\":\"Default\",\"reason\":\"zjaoyfhrtxil\"}],\"status\":\"Available\",\"reason\":\"ujysvle\"}")
+                .toObject(StorageMbCapability.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageMBCapability model = new StorageMBCapability();
-        model = BinaryData.fromObject(model).toObject(StorageMBCapability.class);
+        StorageMbCapability model = new StorageMbCapability();
+        model = BinaryData.fromObject(model).toObject(StorageMbCapability.class);
     }
 }

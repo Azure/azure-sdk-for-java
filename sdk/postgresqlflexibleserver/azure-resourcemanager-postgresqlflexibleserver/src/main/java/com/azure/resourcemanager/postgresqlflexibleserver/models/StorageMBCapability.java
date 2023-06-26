@@ -10,84 +10,69 @@ import java.util.List;
 
 /** storage size in MB capability. */
 @Immutable
-public final class StorageMBCapability {
+public final class StorageMbCapability extends CapabilityBase {
     /*
-     * storage MB name
-     */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
-
-    /*
-     * supported IOPS
+     * Supported IOPS
      */
     @JsonProperty(value = "supportedIops", access = JsonProperty.Access.WRITE_ONLY)
-    private Long supportedIops;
+    private Integer supportedIops;
 
     /*
-     * storage size in MB
+     * Storage size in MB
      */
-    @JsonProperty(value = "storageSizeMB", access = JsonProperty.Access.WRITE_ONLY)
-    private Long storageSizeMB;
+    @JsonProperty(value = "storageSizeMb", access = JsonProperty.Access.WRITE_ONLY)
+    private Long storageSizeMb;
 
     /*
-     * The supportedUpgradableTierList property.
+     * Default tier for IOPS
      */
-    @JsonProperty(value = "supportedUpgradableTierList", access = JsonProperty.Access.WRITE_ONLY)
-    private List<StorageTierCapability> supportedUpgradableTierList;
+    @JsonProperty(value = "defaultIopsTier", access = JsonProperty.Access.WRITE_ONLY)
+    private String defaultIopsTier;
 
     /*
-     * The status
+     * List of available options to upgrade the storage performance
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
-    private String status;
+    @JsonProperty(value = "supportedIopsTiers", access = JsonProperty.Access.WRITE_ONLY)
+    private List<StorageTierCapability> supportedIopsTiers;
 
-    /** Creates an instance of StorageMBCapability class. */
-    public StorageMBCapability() {
+    /** Creates an instance of StorageMbCapability class. */
+    public StorageMbCapability() {
     }
 
     /**
-     * Get the name property: storage MB name.
-     *
-     * @return the name value.
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the supportedIops property: supported IOPS.
+     * Get the supportedIops property: Supported IOPS.
      *
      * @return the supportedIops value.
      */
-    public Long supportedIops() {
+    public Integer supportedIops() {
         return this.supportedIops;
     }
 
     /**
-     * Get the storageSizeMB property: storage size in MB.
+     * Get the storageSizeMb property: Storage size in MB.
      *
-     * @return the storageSizeMB value.
+     * @return the storageSizeMb value.
      */
-    public Long storageSizeMB() {
-        return this.storageSizeMB;
+    public Long storageSizeMb() {
+        return this.storageSizeMb;
     }
 
     /**
-     * Get the supportedUpgradableTierList property: The supportedUpgradableTierList property.
+     * Get the defaultIopsTier property: Default tier for IOPS.
      *
-     * @return the supportedUpgradableTierList value.
+     * @return the defaultIopsTier value.
      */
-    public List<StorageTierCapability> supportedUpgradableTierList() {
-        return this.supportedUpgradableTierList;
+    public String defaultIopsTier() {
+        return this.defaultIopsTier;
     }
 
     /**
-     * Get the status property: The status.
+     * Get the supportedIopsTiers property: List of available options to upgrade the storage performance.
      *
-     * @return the status value.
+     * @return the supportedIopsTiers value.
      */
-    public String status() {
-        return this.status;
+    public List<StorageTierCapability> supportedIopsTiers() {
+        return this.supportedIopsTiers;
     }
 
     /**
@@ -95,9 +80,11 @@ public final class StorageMBCapability {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (supportedUpgradableTierList() != null) {
-            supportedUpgradableTierList().forEach(e -> e.validate());
+        super.validate();
+        if (supportedIopsTiers() != null) {
+            supportedIopsTiers().forEach(e -> e.validate());
         }
     }
 }
