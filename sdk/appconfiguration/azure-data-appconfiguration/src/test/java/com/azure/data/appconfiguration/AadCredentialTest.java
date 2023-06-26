@@ -4,19 +4,21 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import static com.azure.data.appconfiguration.ConfigurationClientTestBase.FAKE_CONNECTION_STRING;
@@ -31,14 +33,13 @@ public class AadCredentialTest extends TestProxyTestBase {
     static String connectionString;
     static TokenCredential tokenCredential;
 
-    private void setup(HttpClient httpClient, ConfigurationServiceVersion serviceVersion)
-        throws InvalidKeyException, NoSuchAlgorithmException {
+    private void setup(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         if (interceptorManager.isPlaybackMode()) {
             connectionString = FAKE_CONNECTION_STRING;
             String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();
             // In playback mode use connection string because CI environment doesn't set up to support AAD
             client = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
+                .credential(new MockTokenCredential())
                 .endpoint(endpoint)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .buildClient();
@@ -53,20 +54,37 @@ public class AadCredentialTest extends TestProxyTestBase {
                 .httpClient(httpClient)
                 .credential(tokenCredential)
                 .endpoint(endpoint)
-                .serviceVersion(serviceVersion);
-
+                .serviceVersion(serviceVersion)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+            builder = setHttpClient(httpClient, builder);
             if (interceptorManager.isRecordMode()) {
-                builder.addPolicy(interceptorManager.getRecordPolicy()); // Record
+                builder.addPolicy(interceptorManager.getRecordPolicy())
+                    .addPolicy(new RetryPolicy()); // Record
             }
             client = builder.buildClient();
         }
     }
 
-    @Disabled("Disable it until resource is in production. The resource for testing is still a dogfood environment.")
+    ConfigurationClientBuilder setHttpClient(HttpClient httpClient, ConfigurationClientBuilder builder) {
+        if (interceptorManager.isRecordMode()) {
+            return builder
+                .httpClient(buildSyncAssertingClient(httpClient));
+        } else if (interceptorManager.isPlaybackMode()) {
+            return builder
+                .httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
+        }
+        return builder;
+    }
+
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertSync()
+            .build();
+    }
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void aadAuthenticationAzConfigClient(HttpClient httpClient, ConfigurationServiceVersion serviceVersion)
-        throws Exception {
+    public void aadAuthenticationAzConfigClient(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         setup(httpClient, serviceVersion);
         final String key = "newKey";
         final String value = "newValue";
@@ -75,5 +93,4 @@ public class AadCredentialTest extends TestProxyTestBase {
         Assertions.assertEquals(addedSetting.getKey(), key);
         Assertions.assertEquals(addedSetting.getValue(), value);
     }
-
 }

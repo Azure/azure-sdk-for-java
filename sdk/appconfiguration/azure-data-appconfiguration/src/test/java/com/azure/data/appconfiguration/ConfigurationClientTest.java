@@ -78,7 +78,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 .serviceVersion(serviceVersion)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-            setHttpClient(httpClient, builder);
+            builder = setHttpClient(httpClient, builder);
 
             if (interceptorManager.isRecordMode()) {
                 builder
