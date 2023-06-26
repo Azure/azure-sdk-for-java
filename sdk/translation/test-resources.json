@@ -54,6 +54,7 @@
     "txtEndpointValue": "[format('https://api.cognitive.microsofttranslator.com')]",
     "txtCustomEndpointValue": "[format('https://{0}.cognitiveservices.azure.com', parameters('baseName'))]",
     "txtRegionValue": "[format('{0}', parameters('location'))]",
+    "tokenURLValue": "[format('https://{0}.api.cognitive.microsoft.com', parameters('location'))]",
     "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/a97b65f3-24c7-4388-baec-2e87135dc908')]",
     "uniqueSubDomainName": "[format('{0}-{1}', parameters('baseName'), parameters('endpointPrefix'))]",
     "endpointValue": "[format('https://{0}-{1}{2}', parameters('baseName'), parameters('endpointPrefix'), parameters('endpointSuffix'))]",
@@ -159,6 +160,10 @@
     "TEXT_TRANSLATION_REGION": {
       "type": "string",
       "value": "[variables('txtRegionValue')]"
+    },
+    "TEXT_TRANSLATION_TOKEN_URL": {
+      "type": "string",
+      "value": "[variables('tokenURLValue')]"
     }
   }
 }
