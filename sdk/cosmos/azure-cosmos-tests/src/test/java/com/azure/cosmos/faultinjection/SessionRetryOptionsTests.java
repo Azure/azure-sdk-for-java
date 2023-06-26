@@ -260,7 +260,6 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
 
     @AfterClass(groups = {"multi-region"}, timeOut = SHUTDOWN_TIMEOUT)
     public void afterClass() {
-        safeDeleteCollection(cosmosAsyncContainer);
         safeCloseAsync(cosmosAsyncClient);
     }
 
