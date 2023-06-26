@@ -11,6 +11,7 @@ import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageOperationResponse;
+import com.azure.ai.openai.models.ImageResponse;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -196,9 +197,8 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGenerateImage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
         ImageGenerationOptions options = new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh");
-        ImageOperationResponse imageOperationResponse = client.generateImage(options);
-        assertNotNull(imageOperationResponse.getResult());
-        assertNotNull(imageOperationResponse.getResult().getData());
-        assertFalse(imageOperationResponse.getResult().getData().isEmpty());
+        ImageResponse imageResponse = client.generateImage(options);
+        assertNotNull(imageResponse.getData());
+        assertFalse(imageResponse.getData().isEmpty());
     }
 }

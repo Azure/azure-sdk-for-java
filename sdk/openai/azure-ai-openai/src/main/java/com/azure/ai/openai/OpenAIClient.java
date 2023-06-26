@@ -15,6 +15,7 @@ import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageOperationResponse;
+import com.azure.ai.openai.models.ImageResponse;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -559,13 +560,13 @@ public final class OpenAIClient {
      * @return the {@link ImageOperationResponse} for polling of status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ImageOperationResponse generateImage(ImageGenerationOptions imageGenerationOptions) {
+    ImageResponse generateImage(ImageGenerationOptions imageGenerationOptions) {
         RequestOptions requestOptions = new RequestOptions();
         BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
         return openAIServiceClient != null
             ? openAIServiceClient.generateImageWithResponse(imageGenerationOptionsBinaryData, requestOptions)
                 .getValue()
-                .toObject(ImageOperationResponse.class)
+                .toObject(ImageResponse.class)
             : this.serviceClient.beginStartGenerateImage(imageGenerationOptionsBinaryData, requestOptions)
             // option 1
             .waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED).getValue()
@@ -574,7 +575,8 @@ public final class OpenAIClient {
             // option 3
 //            .waitForCompletion()
 //            .getValue()
-            .toObject(ImageOperationResponse.class);
+            .toObject(ImageOperationResponse.class)
+            .getResult();
     }
 
     /**
