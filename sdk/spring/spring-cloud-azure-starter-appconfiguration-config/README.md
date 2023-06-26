@@ -211,6 +211,26 @@ spring:
 
 In this case, the snapshot is loaded first then keys from the filter are loaded. If there are duplicate keys, the last key loaded has the highest priority.
 
+If previously you used these keys in your application outside of a snapshot than they will most likely contain a prefix like `/application/`, when using a key filter the prefix was automatically removed, but it isn't with a snapshot, which means you have to trim your key names.
+
+```yaml
+spring:
+  cloud:
+    azure:
+      appconfiguration:
+        stores:
+         -
+           connection-string: <connection-string>
+           selects:
+             -
+              snapshot-name: <snapshot-name>
+           trim:
+             - /application/
+```
+
+This will trim the prefix from all keys in the snapshot, and will also trim any other keys selected if they begin with the prefix. This has also been added to the key filter, so you can use it there as well, though it overrides the key-filter name trim.
+
+
 NOTE: If you are only using snapshots, you don't have to monitor the configuration store, as snapshots are immutable. But if you are using snapshots and other configuration data, you can still monitor the configuration store.
 
 
