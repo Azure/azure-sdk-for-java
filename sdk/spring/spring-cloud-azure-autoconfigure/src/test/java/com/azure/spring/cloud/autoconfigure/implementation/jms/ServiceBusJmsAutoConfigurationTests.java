@@ -130,6 +130,7 @@ class ServiceBusJmsAutoConfigurationTests {
                 assertThat(context).hasSingleBean(ConnectionFactory.class);
                 assertThat(context).hasSingleBean(JmsTemplate.class);
                 assertThat(context).hasSingleBean(DefaultJmsListenerContainerFactoryConfigurer.class);
+                assertThat(context).hasBean("jmsListenerContainerFactory");
                 assertThat(context).hasBean("topicJmsListenerContainerFactory");
                 assertThat(context).doesNotHaveBean("amqpOpenPropertiesCustomizer");
             });
