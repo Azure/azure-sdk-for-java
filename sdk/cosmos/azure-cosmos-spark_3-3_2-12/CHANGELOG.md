@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.20.0 (2023-06-23)
+### 4.20.0 (2023-06-26)
 
 #### Features Added
 * Added `feed_detail` diagnostics mode. - See [PR 35501](https://github.com/Azure/azure-sdk-for-java/pull/35501)
