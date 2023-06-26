@@ -9,6 +9,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.amqp.implementation.ReactorReceiver;
+import com.azure.core.amqp.implementation.ReceiversPumpingScheduler;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.handler.ReceiverUnsettledDeliveries;
 import com.azure.core.util.logging.ClientLogger;
@@ -134,7 +135,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     public Flux<Message> receive() {
         if (isV2) {
             return super.receive()
-                .publishOn(Schedulers.boundedElastic());
+                .publishOn(ReceiversPumpingScheduler.instance());
         }
         // Remove empty update disposition messages. The deliveries themselves are ACKs with no message.
         return super.receive()
