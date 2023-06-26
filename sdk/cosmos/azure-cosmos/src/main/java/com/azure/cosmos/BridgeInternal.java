@@ -682,5 +682,6 @@ public final class BridgeInternal {
         CosmosAsyncClient.initialize();
         CosmosDiagnosticsThresholds.initialize();
         CosmosContainerProactiveInitConfig.initialize();
+        CosmosSessionRetryOptions.initialize();
     }
 }

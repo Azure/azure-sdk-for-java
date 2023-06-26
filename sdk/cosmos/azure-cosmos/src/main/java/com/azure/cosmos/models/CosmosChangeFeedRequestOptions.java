@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -45,6 +46,7 @@ public final class CosmosChangeFeedRequestOptions {
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private Function<JsonNode, ?> itemFactoryMethod;
     private CosmosDiagnosticsThresholds thresholds;
+    private List<String> excludeRegions;
 
     private CosmosChangeFeedRequestOptions(
         FeedRangeInternal feedRange,
@@ -465,6 +467,19 @@ public final class CosmosChangeFeedRequestOptions {
     }
 
     /**
+     * List of regions to be excluded for the request/retries. Example "East US" or "East US, West US"
+     * These regions will be excluded from the preferred regions list
+     *
+     * @param excludeRegions list of regions
+     * @return the {@link CosmosChangeFeedRequestOptions}
+     */
+    public CosmosChangeFeedRequestOptions setExcludedRegions(List<String> excludeRegions) {
+        this.excludeRegions = excludeRegions;
+        return this;
+    }
+
+
+    /**
      * Sets the custom change feed request option value by key
      *
      * @param name  a string representing the custom option's name
@@ -581,6 +596,11 @@ public final class CosmosChangeFeedRequestOptions {
                     }
 
                     fluxOptions.setMaxItemCount(requestOptions.getMaxItemCount());
+                }
+
+                @Override
+                public List<String> getExcludeRegions(CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions) {
+                    return cosmosChangeFeedRequestOptions.excludeRegions;
                 }
             });
     }

@@ -209,7 +209,7 @@ In addition a required query parameter has been added for security. No token nam
 /application/spring.cloud.appconfiguration.stores[0].monitoring.push-notification.secondary-token.secret=[secondary-token-secret]
 ```
 
-To setup the webhook open your app store and open the events tab. Select "+ Event Subscription". Set the name of your Event and select the Endpoint type of Web Hook. Select "Select an endpoint". You endpoint will be your look as following:
+To setup the webhook open your app store and open the events tab. Select "+ Event Subscription". Set the name of your Event and select the Endpoint type of Web Hook. Select "Select an endpoint". Enter your endpoint and connection information, it should look like:
 
 `http://myApplication.azurewebsites.net/actuator/appconfiguration-refresh?myTokenName=mySecret`
 

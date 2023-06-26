@@ -34,7 +34,44 @@ import java.util.stream.Collectors;
  * workload across different instances and track progress when events are processed. Based on the number of instances
  * running, each EventProcessorClient may own zero or more partitions to balance the workload among all the instances.
  *
- * <p>To create an instance of EventProcessorClient, use the fluent {@link EventProcessorClientBuilder}.</p>
+ * <p><strong>Sample: Construct an {@link com.azure.messaging.eventhubs.EventProcessorClient}</strong></p>
+ *
+ * <p>The sample below uses an in-memory {@link com.azure.messaging.eventhubs.CheckpointStore} but
+ * <a href="https://central.sonatype.com/artifact/com.azure/azure-messaging-eventhubs-checkpointstore-blob">
+ *     azure-messaging-eventhubs-checkpointstore-blob</a> provides a checkpoint store backed by Azure Blob Storage.
+ * Additionally, {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host name.  It is listed under the
+ * "Essentials" panel after navigating to the Event Hubs Namespace via Azure Portal.  The credential used is
+ * {@code DefaultAzureCredential} because it combines commonly used credentials in deployment and development and
+ * chooses the credential to used based on its running environment.  The {@code consumerGroup} is found by navigating
+ * to the Event Hub instance, and selecting "Consumer groups" under the "Entities" panel. The {@code consumerGroup} is
+ * required.  The credential used is {@code DefaultAzureCredential} because it combines
+ * commonly used credentials in deployment and development and chooses the credential to used based on its running
+ * environment.</p>
+ *
+ * <!-- src_embed com.azure.messaging.eventhubs.eventprocessorclientbuilder.construct -->
+ * <pre>
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+ * EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder&#40;&#41;
+ *     .consumerGroup&#40;&quot;&lt;&lt; CONSUMER GROUP NAME &gt;&gt;&quot;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+ *         credential&#41;
+ *     .checkpointStore&#40;new SampleCheckpointStore&#40;&#41;&#41;
+ *     .processEvent&#40;eventContext -&gt; &#123;
+ *         System.out.printf&#40;&quot;Partition id = %s and sequence number of event = %s%n&quot;,
+ *             eventContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
+ *             eventContext.getEventData&#40;&#41;.getSequenceNumber&#40;&#41;&#41;;
+ *     &#125;&#41;
+ *     .processError&#40;errorContext -&gt; &#123;
+ *         System.out.printf&#40;&quot;Error occurred in partition processor for partition %s, %s%n&quot;,
+ *             errorContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
+ *             errorContext.getThrowable&#40;&#41;&#41;;
+ *     &#125;&#41;
+ *     .buildEventProcessorClient&#40;&#41;;
+ * </pre>
+ *<!-- end com.azure.messaging.eventhubs.eventprocessorclientbuilder.construct -->
  *
  * @see EventProcessorClientBuilder
  */
@@ -134,8 +171,32 @@ public class EventProcessorClient {
      * <p><strong>Starting the processor to consume events from all partitions</strong></p>
      * <!-- src_embed com.azure.messaging.eventhubs.eventprocessorclient.startstop -->
      * <pre>
+     * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+     *
+     * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+     * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+     * EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder&#40;&#41;
+     *     .consumerGroup&#40;EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME&#41;
+     *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+     *         credential&#41;
+     *     .processEvent&#40;eventContext -&gt; &#123;
+     *         System.out.printf&#40;&quot;Partition id = %s and sequence number of event = %s%n&quot;,
+     *             eventContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
+     *             eventContext.getEventData&#40;&#41;.getSequenceNumber&#40;&#41;&#41;;
+     *     &#125;&#41;
+     *     .processError&#40;errorContext -&gt; &#123;
+     *         System.out.printf&#40;&quot;Error occurred in partition processor for partition %s, %s%n&quot;,
+     *             errorContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
+     *             errorContext.getThrowable&#40;&#41;&#41;;
+     *     &#125;&#41;
+     *     .checkpointStore&#40;new SampleCheckpointStore&#40;&#41;&#41;
+     *     .buildEventProcessorClient&#40;&#41;;
+     *
      * eventProcessorClient.start&#40;&#41;;
+     *
      * &#47;&#47; Continue to perform other tasks while the processor is running in the background.
+     * &#47;&#47;
+     * &#47;&#47; Finally, stop the processor client when application is finished.
      * eventProcessorClient.stop&#40;&#41;;
      * </pre>
      * <!-- end com.azure.messaging.eventhubs.eventprocessorclient.startstop -->
@@ -167,8 +228,32 @@ public class EventProcessorClient {
      * <p><strong>Stopping the processor</strong></p>
      * <!-- src_embed com.azure.messaging.eventhubs.eventprocessorclient.startstop -->
      * <pre>
+     * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+     *
+     * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+     * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+     * EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder&#40;&#41;
+     *     .consumerGroup&#40;EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME&#41;
+     *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+     *         credential&#41;
+     *     .processEvent&#40;eventContext -&gt; &#123;
+     *         System.out.printf&#40;&quot;Partition id = %s and sequence number of event = %s%n&quot;,
+     *             eventContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
+     *             eventContext.getEventData&#40;&#41;.getSequenceNumber&#40;&#41;&#41;;
+     *     &#125;&#41;
+     *     .processError&#40;errorContext -&gt; &#123;
+     *         System.out.printf&#40;&quot;Error occurred in partition processor for partition %s, %s%n&quot;,
+     *             errorContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
+     *             errorContext.getThrowable&#40;&#41;&#41;;
+     *     &#125;&#41;
+     *     .checkpointStore&#40;new SampleCheckpointStore&#40;&#41;&#41;
+     *     .buildEventProcessorClient&#40;&#41;;
+     *
      * eventProcessorClient.start&#40;&#41;;
+     *
      * &#47;&#47; Continue to perform other tasks while the processor is running in the background.
+     * &#47;&#47;
+     * &#47;&#47; Finally, stop the processor client when application is finished.
      * eventProcessorClient.stop&#40;&#41;;
      * </pre>
      * <!-- end com.azure.messaging.eventhubs.eventprocessorclient.startstop -->
