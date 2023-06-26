@@ -15,20 +15,13 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.webpubsub.models.AclAction;
-import com.azure.resourcemanager.webpubsub.models.NetworkAcl;
 import com.azure.resourcemanager.webpubsub.models.ResourceSku;
-import com.azure.resourcemanager.webpubsub.models.WebPubSubNetworkACLs;
-import com.azure.resourcemanager.webpubsub.models.WebPubSubRequestType;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubResource;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubSkuTier;
-import com.azure.resourcemanager.webpubsub.models.WebPubSubTlsSettings;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Random;
 
 public class WebPubSubManagerTests extends TestBase {
@@ -86,21 +79,7 @@ public class WebPubSubManagerTests extends TestBase {
                 .define(resourceName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
-                .withSku(new ResourceSku().withName("Premium_P1").withCapacity(1).withTier(WebPubSubSkuTier.PREMIUM))
-                .withTls(new WebPubSubTlsSettings().withClientCertEnabled(false))
-                .withNetworkACLs(new WebPubSubNetworkACLs()
-                    .withDefaultAction(AclAction.DENY)
-                    .withPublicNetwork(new NetworkAcl().withAllow(
-                        Arrays.asList(WebPubSubRequestType.SERVER_CONNECTION,
-                            WebPubSubRequestType.CLIENT_CONNECTION,
-                            WebPubSubRequestType.RESTAPI,
-                            WebPubSubRequestType.TRACE)
-                    ))
-                    .withPrivateEndpoints(Collections.emptyList())
-                )
-                .withDisableAadAuth(false)
-                .withDisableLocalAuth(false)
-                .withPublicNetworkAccess("Enabled")
+                .withSku(new ResourceSku().withName("Free_F1").withCapacity(1).withTier(WebPubSubSkuTier.FREE))
                 .create();
             // @embedmeEnd
             webPubSubResource.refresh();
