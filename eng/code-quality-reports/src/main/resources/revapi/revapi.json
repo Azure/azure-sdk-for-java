@@ -303,6 +303,17 @@
           "code" : "java.method.removed",
           "old" : "method void com.mysql.cj.protocol.ServerSession::setOldStatusFlags(int)",
           "justification" : "Fix method removed."
+        },
+        {
+          "code" : "java.field.removed",
+          "old" : "field com.mysql.cj.conf.PropertyKey.ociConfigProfile",
+          "justification" : "Fix field removed."
+        },
+        {
+          "regex": true,
+          "code" : "java.method.addedToInterface",
+          "new" : "method (void|int) com.mysql.cj.protocol.ServerSession::(getOldStatusFlags()|setOldStatusFlags(int))",
+          "justification" : "Method was added to an interface."
         }
       ]
     }
