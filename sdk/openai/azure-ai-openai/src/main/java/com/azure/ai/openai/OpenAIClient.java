@@ -26,10 +26,13 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import java.nio.ByteBuffer;
+import java.time.Duration;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -558,9 +561,19 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     ImageOperationResponse generateImage(ImageGenerationOptions imageGenerationOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return beginStartGenerateImage(BinaryData.fromObject(imageGenerationOptions), requestOptions)
-            .waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-            .getValue()
+        BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
+        return openAIServiceClient != null
+            ? openAIServiceClient.generateImageWithResponse(imageGenerationOptionsBinaryData, requestOptions)
+                .getValue()
+                .toObject(ImageOperationResponse.class)
+            : this.serviceClient.beginStartGenerateImage(imageGenerationOptionsBinaryData, requestOptions)
+            // option 1
+            .waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED).getValue()
+            // option 2
+//            .getFinalResult()
+            // option 3
+//            .waitForCompletion()
+//            .getValue()
             .toObject(ImageOperationResponse.class);
     }
 

@@ -9,6 +9,8 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
+import com.azure.ai.openai.models.ImageGenerationOptions;
+import com.azure.ai.openai.models.ImageOperationResponse;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -21,6 +23,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -186,5 +189,16 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             Embeddings resultEmbeddings = assertAndGetValueFromResponse(response, Embeddings.class, 200);
             assertEmbeddings(resultEmbeddings);
         });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGenerateImage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        ImageGenerationOptions options = new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh");
+        ImageOperationResponse imageOperationResponse = client.generateImage(options);
+        assertNotNull(imageOperationResponse.getResult());
+        assertNotNull(imageOperationResponse.getResult().getData());
+        assertFalse(imageOperationResponse.getResult().getData().isEmpty());
     }
 }
