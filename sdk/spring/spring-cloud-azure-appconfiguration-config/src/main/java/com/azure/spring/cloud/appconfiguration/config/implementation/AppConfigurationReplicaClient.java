@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import java.io.UncheckedIOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import org.springframework.util.StringUtils;
 
@@ -100,16 +100,8 @@ class AppConfigurationReplicaClient {
                 }
             }
             throw e;
-        } catch (Exception e) { // TODO (mametcal) This should be an UnknownHostException, but currently it isn't
-            // catchable.
-            if (e.getMessage().startsWith("java.net.UnknownHostException")
-                || e.getMessage().startsWith("java.net.WebSocketHandshakeException")
-                || e.getMessage().startsWith("java.net.SocketException")
-                || e.getMessage().startsWith("java.io.IOException") || e.getMessage()
-                    .startsWith("io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused")) {
-                throw new AppConfigurationStatusException(e.getMessage(), null, null);
-            }
-            throw e;
+        } catch (UncheckedIOException e) {
+            throw new AppConfigurationStatusException(e.getMessage(), null, null);
         }
     }
 
@@ -136,27 +128,19 @@ class AppConfigurationReplicaClient {
                 }
             }
             throw e;
-        } catch (Exception e) { // TODO (mametcal) This should be an UnknownHostException, but currently it isn't
-            // catchable.
-            if (e.getMessage().startsWith("java.net.UnknownHostException")
-                || e.getMessage().startsWith("java.net.WebSocketHandshakeException")
-                || e.getMessage().startsWith("java.net.SocketException")
-                || e.getMessage().startsWith("java.io.IOException") || e.getMessage()
-                    .startsWith("io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused")) {
-                throw new AppConfigurationStatusException(e.getMessage(), null, null);
-            }
-            throw e;
+        } catch (UncheckedIOException e) {
+            throw new AppConfigurationStatusException(e.getMessage(), null, null);
         }
     }
-    
+
     List<ConfigurationSetting> listSettingSnapshot(String snapshotName) {
-        ConfigurationSettingSnapshot snapshot = client.getSnapshot(snapshotName);
-        if (!CompositionType.KEY.equals(snapshot.getCompositionType())) {
-            throw new IllegalArgumentException("Snapshot " + snapshotName + " needs to be of type Key.");
-        }
-        
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         try {
+            ConfigurationSettingSnapshot snapshot = client.getSnapshot(snapshotName);
+            if (!CompositionType.KEY.equals(snapshot.getCompositionType())) {
+                throw new IllegalArgumentException("Snapshot " + snapshotName + " needs to be of type Key.");
+            }
+
             PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettingsForSnapshot(snapshotName);
             this.failedAttempts = 0;
             settings.forEach(setting -> configurationSettings.add(NormalizeNull.normalizeNullLabel(setting)));
@@ -170,16 +154,8 @@ class AppConfigurationReplicaClient {
                 }
             }
             throw e;
-        } catch (Exception e) { // TODO (mametcal) This should be an UnknownHostException, but currently it isn't
-            // catchable.
-            if (e.getMessage().startsWith("java.net.UnknownHostException")
-                || e.getMessage().startsWith("java.net.WebSocketHandshakeException")
-                || e.getMessage().startsWith("java.net.SocketException")
-                || e.getMessage().startsWith("java.io.IOException") || e.getMessage()
-                    .startsWith("io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused")) {
-                throw new AppConfigurationStatusException(e.getMessage(), null, null);
-            }
-            throw e;
+        } catch (UncheckedIOException e) {
+            throw new AppConfigurationStatusException(e.getMessage(), null, null);
         }
     }
 

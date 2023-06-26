@@ -5,6 +5,7 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -90,14 +91,22 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
                     .setLabelFilter(label);
 
                 // * for wildcard match
-                processConfigurationSettings(replicaClient.listSettings(settingSelector), settingSelector.getKeyFilter(), trim);
+                processConfigurationSettings(replicaClient.listSettings(settingSelector),
+                    settingSelector.getKeyFilter(), trim);
             }
         }
     }
 
-    private void processConfigurationSettings(List<ConfigurationSetting> settings, String keyFilter, List<String> trim) throws JsonProcessingException {
+    private void processConfigurationSettings(List<ConfigurationSetting> settings, String keyFilter,
+        List<String> trimStrings) throws JsonProcessingException {
         for (ConfigurationSetting setting : settings) {
-            String key = setting.getKey().trim().replaceFirst("^"+trim, "").replace('/', '.');
+            if (trimStrings == null & StringUtils.hasText(keyFilter)) {
+                trimStrings = new ArrayList<>();
+                trimStrings.add(keyFilter.substring(0, keyFilter.length() - 1));
+            }
+
+            String key = trimKey(setting.getKey(), trimStrings);
+
             if (setting instanceof SecretReferenceConfigurationSetting) {
                 String entry = getKeyVaultEntry((SecretReferenceConfigurationSetting) setting);
 
@@ -109,13 +118,23 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
                 && JsonConfigurationParser.isJsonContentType(setting.getContentType())) {
                 Map<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
                 for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
-                    key = jsonSetting.getKey().trim().replaceFirst("^"+trim, "");
+                    key = trimKey(jsonSetting.getKey(), trimStrings);
                     properties.put(key, jsonSetting.getValue());
                 }
             } else {
                 properties.put(key, setting.getValue());
             }
         }
+    }
+
+    private String trimKey(String key, List<String> trimStrings) {
+        key = key.trim();
+        for (String trim : trimStrings) {
+            if (key.startsWith(trim)) {
+                return key.replaceFirst("^" + trim, "").replace('/', '.');
+            }
+        }
+        return key.replace("/", ".");
     }
 
     /**

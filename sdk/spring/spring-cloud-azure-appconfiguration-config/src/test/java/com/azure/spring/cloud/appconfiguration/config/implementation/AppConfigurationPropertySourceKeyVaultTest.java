@@ -124,7 +124,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         when(clientManagerMock.getSecret(Mockito.any(URI.class), Mockito.anyInt())).thenReturn(secret);
 
         try {
-            propertySource.initProperties();
+            propertySource.initProperties(null);
         } catch (IOException e) {
             fail("Failed Reading in Feature Flags");
         }
