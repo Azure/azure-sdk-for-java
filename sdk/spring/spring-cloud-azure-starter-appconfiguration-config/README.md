@@ -233,6 +233,8 @@ This will trim the prefix from all keys in the snapshot, and will also trim any 
 
 NOTE: If you are only using snapshots, you don't have to monitor the configuration store, as snapshots are immutable. But if you are using snapshots and other configuration data, you can still monitor the configuration store.
 
+NOTE: If your snapshot includes feature flags they will automatically be loaded even if feature flags are disabled. If feature flags are enabled, the feature flags will be loaded, any feature flags loaded this way take priority of feature flags loaded from snapshots.
+
 #### Configuration Refresh
 
 Configuration Refresh feature allows the application to load the latest property value from configuration store automatically, without restarting the application.
