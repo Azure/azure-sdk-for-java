@@ -288,7 +288,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         // Using a specific partition in the case that an epoch receiver was created
         // (i.e. EventHubConsumerAsyncClientIntegrationTest), which this scenario will fail when trying to create a
-        // receiver for this scenario.
+        // receiver.
         SendOptions sendOptions = new SendOptions().setPartitionId("3");
         Boolean partitionIdExists = bufferedProducer.getPartitionIds()
             .any(id -> id.equals(sendOptions.getPartitionId()))
