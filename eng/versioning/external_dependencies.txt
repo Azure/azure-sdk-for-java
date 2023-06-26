@@ -69,8 +69,8 @@ io.netty:netty-transport-native-kqueue;4.1.90.Final
 io.projectreactor.netty:reactor-netty;1.1.5
 io.projectreactor.netty:reactor-netty-http;1.1.5
 io.projectreactor:reactor-core;3.5.4
-io.vertx:vertx-codegen;4.4.2
-io.vertx:vertx-core;4.4.2
+io.vertx:vertx-codegen;4.4.4
+io.vertx:vertx-core;4.4.4
 jakarta.validation:jakarta.validation-api;3.0.2
 javax.annotation:javax.annotation-api;1.3.2
 javax.json:javax.json-api;1.1.4
@@ -85,7 +85,6 @@ org.apache.kafka:kafka-clients;3.3.2
 org.apache.logging.log4j:log4j-api;2.19.0
 org.apache.logging.log4j:log4j-core;2.19.0
 org.apache.logging.log4j:log4j-slf4j-impl;2.19.0
-org.apache.logging.log4j:log4j-slf4j2-impl;2.19.0
 org.apache.maven:maven-core;3.5.4
 org.apache.maven.archetype:archetype-packaging;3.2.0
 org.apache.maven.archetype:maven-archetype-plugin;3.2.0
@@ -173,13 +172,14 @@ org.springframework.cloud:spring-cloud-context;4.0.2
 org.springframework.cloud:spring-cloud-sleuth-api;3.1.8
 org.springframework.cloud:spring-cloud-starter-sleuth;3.1.8
 org.springframework.cloud:spring-cloud-starter-stream-kafka;4.0.2
+org.springframework.cloud:spring-cloud-stream-binder-test;3.2.8
 org.springframework.cloud:spring-cloud-stream;4.0.2
 
 ## Test dependency versions
 org.objenesis:objenesis;3.1
 cglib:cglib-nodep;3.2.7
 com.github.docker-java:docker-java;3.2.1
-com.github.tomakehurst:wiremock-standalone;2.24.1
+com.github.tomakehurst:wiremock-jre8-standalone;2.35.0
 com.jcraft:jsch;0.1.55
 com.microsoft.azure:adal4j;1.6.5
 com.microsoft.azure:azure;1.24.1
@@ -398,8 +398,10 @@ spring_redis.clients:jedis;3.8.0
 # Spring Boot 3 dependency versions
 attestation_com.nimbusds:nimbus-jose-jwt;9.22
 com.github.tomakehurst:wiremock-jre8;2.33.2
+com.github.tomakehurst:wiremock-standalone;2.24.1
 jakarta.servlet:jakarta.servlet-api;6.0.0
 jakarta.xml.bind:jakarta.xml.bind-api;4.0.0
+org.apache.logging.log4j:log4j-slf4j2-impl;2.19.0
 org.springframework.boot:spring-boot-starter-log4j2;3.0.5
 org.springframework.cloud:spring-cloud-stream-test-binder;4.0.2
 pl.pragmatists:JUnitParams;1.1.1

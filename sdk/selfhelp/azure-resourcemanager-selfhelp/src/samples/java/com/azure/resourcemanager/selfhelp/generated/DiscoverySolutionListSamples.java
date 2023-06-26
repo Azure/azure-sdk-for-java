@@ -7,7 +7,7 @@ package com.azure.resourcemanager.selfhelp.generated;
 /** Samples for DiscoverySolution List. */
 public final class DiscoverySolutionListSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/ListDiscoverySolutionsForKeyVaultResource.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/stable/2023-06-01/examples/ListDiscoverySolutionsForKeyVaultResource.json
      */
     /**
      * Sample code: List DiscoverySolutions for a KeyVault resource.

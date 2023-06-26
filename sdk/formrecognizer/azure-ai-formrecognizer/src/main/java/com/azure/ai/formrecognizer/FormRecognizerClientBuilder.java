@@ -306,7 +306,7 @@ public final class FormRecognizerClientBuilder implements
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
      * @return The updated FormRecognizerClientBuilder object.
-     * @see HttpClientOptions
+     * {@link HttpClientOptions}
      */
     @Override
     public FormRecognizerClientBuilder clientOptions(ClientOptions clientOptions) {

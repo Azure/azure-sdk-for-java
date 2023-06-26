@@ -7,7 +7,7 @@ package com.azure.resourcemanager.storagecache.generated;
 /** Samples for ResourceProvider GetRequiredAmlFSSubnetsSize. */
 public final class ResourceProviderGetRequiredAmlFSSubnetsSizeSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/getRequiredAmlFSSubnetsSize.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/getRequiredAmlFSSubnetsSize.json
      */
     /**
      * Sample code: getRequiredAmlFilesystemSubnetsSize.

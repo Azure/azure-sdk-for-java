@@ -145,8 +145,8 @@ Licensed under the MIT License.
 
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j2-impl</artifactId>
-      <version>2.19.0</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j2-impl;external_dependency} -->
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <version>2.19.0</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -189,7 +189,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.6.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+      <version>4.6.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
       <scope>compile</scope>
     </dependency>
   </dependencies>
@@ -278,7 +278,7 @@ Licensed under the MIT License.
                 <include>org.apache.commons:commons-lang3:[3.12.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
                 <include>org.apache.logging.log4j:log4j-api:[2.19.0]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
                 <include>org.apache.logging.log4j:log4j-core:[2.19.0]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
-                <include>org.apache.logging.log4j:log4j-slf4j2-impl:[2.19.0]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-slf4j2-impl;external_dependency} -->
+                <include>org.apache.logging.log4j:log4j-slf4j-impl:[2.19.0]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
                 <include>org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir:[1.1.0]</include> <!-- {x-include-update;cosmos_org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir;external_dependency} -->
               </includes>
             </bannedDependencies>

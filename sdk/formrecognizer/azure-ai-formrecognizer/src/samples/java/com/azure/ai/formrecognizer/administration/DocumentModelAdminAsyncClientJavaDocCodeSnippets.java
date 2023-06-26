@@ -23,6 +23,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -41,9 +42,21 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
      */
     public void documentModelAdministrationAsyncClientInitialization() {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.initialization
-        DocumentModelAdministrationAsyncClient documentModelAdministrationAsyncClient =
-            new DocumentModelAdministrationClientBuilder().buildAsyncClient();
+        DocumentModelAdministrationAsyncClient client = new DocumentModelAdministrationClientBuilder()
+            .endpoint("{endpoint}")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAsyncClient();
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.initialization
+    }
+
+    public void documentModelAdministrationAsyncClientKeyCred() {
+        // BEGIN: readme-sample-createDocumentModelAdministrationAsyncClient
+        DocumentModelAdministrationAsyncClient documentModelAdministrationAsyncClient =
+            new DocumentModelAdministrationClientBuilder()
+                .credential(new AzureKeyCredential("{key}"))
+                .endpoint("{endpoint}")
+                .buildAsyncClient();
+        // END: readme-sample-createDocumentModelAdministrationAsyncClient
     }
 
     /**

@@ -72,10 +72,6 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
         return this.innerModel().cacheSizeGB();
     }
 
-    public Double scalingFactor() {
-        return this.innerModel().scalingFactor();
-    }
-
     public CacheHealth health() {
         return this.innerModel().health();
     }
@@ -346,11 +342,6 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
 
     public CacheImpl withCacheSizeGB(Integer cacheSizeGB) {
         this.innerModel().withCacheSizeGB(cacheSizeGB);
-        return this;
-    }
-
-    public CacheImpl withScalingFactor(Double scalingFactor) {
-        this.innerModel().withScalingFactor(scalingFactor);
         return this;
     }
 

@@ -58,7 +58,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>4.1.0-beta.2</version>
+    <version>4.0.8</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -146,10 +146,11 @@ DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilde
 ```
 
 ```java readme-sample-createDocumentModelAdministrationClient
-DocumentModelAdministrationClient documentModelAdminClient = new DocumentModelAdministrationClientBuilder()
-    .credential(new AzureKeyCredential("{key}"))
-    .endpoint("{endpoint}")
-    .buildClient();
+DocumentModelAdministrationClient client =
+    new DocumentModelAdministrationClientBuilder()
+        .credential(new AzureKeyCredential("{key}"))
+        .endpoint("{endpoint}")
+        .buildClient();
 ```
 
 #### Create a Document Analysis client with Azure Active Directory credential
@@ -164,7 +165,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.9.0</version>
+    <version>1.9.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -180,10 +181,9 @@ Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds
 running environment. For more information about using Azure Active Directory authorization with Form Recognizer, see [the associated documentation][aad_authorization].
 
 ```java readme-sample-createDocumentAnalysisClientWithAAD
-TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
     .endpoint("{endpoint}")
-    .credential(credential)
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
 
@@ -239,7 +239,7 @@ Extract text, table structures, and selection marks like radio buttons and check
 // analyze document layout using file input stream
 File layoutDocument = new File("local/file_path/filename.png");
 Path filePath = layoutDocument.toPath();
-BinaryData layoutDocumentData = BinaryData.fromFile(filePath);
+BinaryData layoutDocumentData = BinaryData.fromFile(filePath, (int) layoutDocument.length());
 
 SyncPoller<OperationResult, AnalyzeResult> analyzeLayoutResultPoller =
     documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", layoutDocumentData);
@@ -281,7 +281,7 @@ for (int i = 0; i < tables.size(); i++) {
 }
 ```
 
-### Use a General Document Model 
+### Use a General Document Model
 Analyze key-value pairs, tables, styles, and selection marks from documents using the general document model provided by
 the Form Recognizer service.
 Select the General Document Model by passing modelId="prebuilt-document" into the beginAnalyzeDocumentFromUrl method as follows:

@@ -13,7 +13,7 @@ public final class ResourceUsageInnerTests {
         ResourceUsageInner model =
             BinaryData
                 .fromString(
-                    "{\"limit\":974943815,\"unit\":\"tzlcuiywgqywgn\",\"currentValue\":974991639,\"name\":{\"value\":\"hzgpphrcgyncocpe\",\"localizedValue\":\"vmmcoofs\"}}")
+                    "{\"limit\":1125977089,\"unit\":\"vcltbgsncgh\",\"currentValue\":630804167,\"name\":{\"value\":\"zhbijhtxfv\",\"localizedValue\":\"bfs\"}}")
                 .toObject(ResourceUsageInner.class);
     }
 
