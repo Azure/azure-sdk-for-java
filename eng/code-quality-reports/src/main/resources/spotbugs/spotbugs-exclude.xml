@@ -763,6 +763,12 @@
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
+  <!-- Initial implementation of RendersImpl is using an inline class -->
+  <Match>
+    <Class name="com.azure.maps.render.implementation.RendersImpl"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
   <!-- Initial implementation of Storage Blob Batch is using an inline class -->
   <Match>
     <Class name="com.azure.storage.blob.batch.BlobBatchAsyncClient"/>
