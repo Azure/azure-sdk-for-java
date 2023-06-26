@@ -68,18 +68,4 @@ public final class TimeSeriesElement {
         this.data = data;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getMetadatavalues() != null) {
-            getMetadatavalues().forEach(e -> e.validate());
-        }
-        if (getData() != null) {
-            getData().forEach(e -> e.validate());
-        }
-    }
 }

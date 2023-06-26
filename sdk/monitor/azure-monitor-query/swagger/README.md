@@ -20,7 +20,6 @@ required-parameter-client-methods: false
 required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
 credential-types: tokencredential
-client-side-validations: true
 artifact-id: azure-monitor-query
 customization-class: src/main/java/LogsCustomization.java
 enable-sync-stack: true
@@ -45,7 +44,6 @@ required-parameter-client-methods: false
 required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
 credential-types: tokencredential
-client-side-validations: true
 artifact-id: azure-monitor-query
 customization-class: src/main/java/MetricsCustomization.java
 enable-sync-stack: true
@@ -75,7 +73,6 @@ required-parameter-client-methods: false
 required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
 credential-types: tokencredential
-client-side-validations: true
 artifact-id: azure-monitor-query
 customization-class: src/main/java/MetricsNamespacesCustomization.java
 enable-sync-stack: true
@@ -101,7 +98,6 @@ required-parameter-client-methods: false
 required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
 credential-types: tokencredential
-client-side-validations: true
 artifact-id: azure-monitor-query
 customization-class: src/main/java/MetricsDefinitionsCustomization.java
 enable-sync-stack: true
@@ -128,7 +124,6 @@ required-parameter-client-methods: false
 required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
 credential-types: tokencredential
-client-side-validations: true
 artifact-id: azure-monitor-query
 enable-sync-stack: true
 ```

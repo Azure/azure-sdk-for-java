@@ -82,23 +82,4 @@ public final class AdditionalInfoErrorResponseError {
     public String getMessage() {
         return this.message;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getAdditionalInfo() != null) {
-            getAdditionalInfo().forEach(e -> e.validate());
-        }
-        if (getCode() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property code in model AdditionalInfoErrorResponseError");
-        }
-        if (getMessage() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property message in model AdditionalInfoErrorResponseError");
-        }
-    }
 }

@@ -39,15 +39,4 @@ public final class MetricResultsResponse {
         this.values = values;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getValues() != null) {
-            getValues().forEach(e -> e.validate());
-        }
-    }
 }

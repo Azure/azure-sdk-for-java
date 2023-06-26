@@ -184,26 +184,4 @@ public final class MetricResultsResponseValuesItem {
     public List<Metric> getValue() {
         return this.value;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getStarttime() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property starttime in model MetricResultsResponseValuesItem");
-        }
-        if (getEndtime() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property endtime in model MetricResultsResponseValuesItem");
-        }
-        if (getValue() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property value in model MetricResultsResponseValuesItem");
-        } else {
-            getValue().forEach(e -> e.validate());
-        }
-    }
 }

@@ -169,15 +169,4 @@ public final class MetricValue {
         this.count = count;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getTimeStamp() == null) {
-            throw new IllegalArgumentException("Missing required property timeStamp in model MetricValue");
-        }
-    }
 }

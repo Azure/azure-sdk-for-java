@@ -64,15 +64,4 @@ public final class MetadataValue {
         this.value = value;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getName() != null) {
-            getName().validate();
-        }
-    }
 }

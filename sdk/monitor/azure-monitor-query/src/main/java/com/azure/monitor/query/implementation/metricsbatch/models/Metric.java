@@ -179,34 +179,4 @@ public final class Metric {
         this.errorMessage = errorMessage;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getId() == null) {
-            throw new IllegalArgumentException("Missing required property id in model Metric");
-        }
-        if (getName() == null) {
-            throw new IllegalArgumentException("Missing required property name in model Metric");
-        } else {
-            getName().validate();
-        }
-        if (getDisplayDescription() == null) {
-            throw new IllegalArgumentException("Missing required property displayDescription in model Metric");
-        }
-        if (getType() == null) {
-            throw new IllegalArgumentException("Missing required property type in model Metric");
-        }
-        if (getUnit() == null) {
-            throw new IllegalArgumentException("Missing required property unit in model Metric");
-        }
-        if (getTimeseries() == null) {
-            throw new IllegalArgumentException("Missing required property timeseries in model Metric");
-        } else {
-            getTimeseries().forEach(e -> e.validate());
-        }
-    }
 }

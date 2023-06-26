@@ -36,17 +36,4 @@ public final class AdditionalInfoErrorResponse {
     public AdditionalInfoErrorResponseError getError() {
         return this.error;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getError() == null) {
-            throw new IllegalArgumentException("Missing required property error in model AdditionalInfoErrorResponse");
-        } else {
-            getError().validate();
-        }
-    }
 }

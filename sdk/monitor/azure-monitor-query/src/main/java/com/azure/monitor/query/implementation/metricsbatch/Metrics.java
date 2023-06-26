@@ -138,23 +138,6 @@ public final class Metrics {
             Integer top,
             String orderBy,
             String filter) {
-        if (this.client.getEndpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null.");
-        }
-        if (subscriptionId == null) {
-            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
-        }
-        if (metricnamespace == null) {
-            throw new IllegalArgumentException("Parameter metricnamespace is required and cannot be null.");
-        }
-        if (metricnames == null) {
-            throw new IllegalArgumentException("Parameter metricnames is required and cannot be null.");
-        }
-        if (resourceIds == null) {
-            throw new IllegalArgumentException("Parameter resourceIds is required and cannot be null.");
-        } else {
-            resourceIds.validate();
-        }
         final String accept = "application/json";
         String metricnamesConverted =
                 metricnames.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
@@ -223,23 +206,6 @@ public final class Metrics {
             String orderBy,
             String filter,
             Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null.");
-        }
-        if (subscriptionId == null) {
-            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
-        }
-        if (metricnamespace == null) {
-            throw new IllegalArgumentException("Parameter metricnamespace is required and cannot be null.");
-        }
-        if (metricnames == null) {
-            throw new IllegalArgumentException("Parameter metricnames is required and cannot be null.");
-        }
-        if (resourceIds == null) {
-            throw new IllegalArgumentException("Parameter resourceIds is required and cannot be null.");
-        } else {
-            resourceIds.validate();
-        }
         final String accept = "application/json";
         String metricnamesConverted =
                 metricnames.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
@@ -425,23 +391,6 @@ public final class Metrics {
             String orderBy,
             String filter,
             Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null.");
-        }
-        if (subscriptionId == null) {
-            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
-        }
-        if (metricnamespace == null) {
-            throw new IllegalArgumentException("Parameter metricnamespace is required and cannot be null.");
-        }
-        if (metricnames == null) {
-            throw new IllegalArgumentException("Parameter metricnames is required and cannot be null.");
-        }
-        if (resourceIds == null) {
-            throw new IllegalArgumentException("Parameter resourceIds is required and cannot be null.");
-        } else {
-            resourceIds.validate();
-        }
         final String accept = "application/json";
         String metricnamesConverted =
                 metricnames.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
