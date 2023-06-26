@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.jms;
+package com.azure.spring.cloud.autoconfigure.implementation.jms;
 
 import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
 

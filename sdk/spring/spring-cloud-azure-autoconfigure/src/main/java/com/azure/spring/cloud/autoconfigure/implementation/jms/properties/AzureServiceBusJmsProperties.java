@@ -14,6 +14,7 @@ import org.springframework.jms.support.QosSettings;
 import org.springframework.util.StringUtils;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Map;
 
 @ConfigurationProperties(prefix = AzureServiceBusJmsProperties.PREFIX)

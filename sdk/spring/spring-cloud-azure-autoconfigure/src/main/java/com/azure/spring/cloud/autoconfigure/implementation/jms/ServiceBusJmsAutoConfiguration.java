@@ -4,10 +4,9 @@
 package com.azure.spring.cloud.autoconfigure.implementation.jms;
 
 import com.azure.spring.cloud.autoconfigure.implementation.condition.ConditionalOnMissingProperty;
+import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsConnectionFactoryCustomizer;
-import com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsPasswordlessConfiguration;
 import com.azure.spring.cloud.core.implementation.util.AzurePasswordlessPropertiesUtils;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;

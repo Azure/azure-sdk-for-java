@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.passwordless;
+package com.azure.spring.cloud.autoconfigure.implementation.passwordless;
 
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.core.implementation.util.AzurePasswordlessPropertiesUtils;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
-import com.azure.spring.cloud.service.implementation.passwordless.AzureRedisPasswordlessProperties;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,12 +25,12 @@ class MergeAzureCommonPropertiesTest {
         globalProperties.getProfile().setSubscriptionId("global-sub");
         globalProperties.getProfile().setTenantId("global-tenant-id");
 
-        AzureRedisPasswordlessProperties passwordlessProperties = new AzureRedisPasswordlessProperties();
+        AzureServiceBusJmsProperties passwordlessProperties = new AzureServiceBusJmsProperties();
 
-        AzureRedisPasswordlessProperties result = new AzureRedisPasswordlessProperties();
+        AzureServiceBusJmsProperties result = new AzureServiceBusJmsProperties();
         AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(globalProperties, passwordlessProperties, result);
 
-        assertEquals("https://*.cacheinfra.windows.net:10225/appid/.default", result.getScopes());
+        assertEquals("https://servicebus.azure.net/.default", result.getScopes());
         assertEquals("global-client-id", result.getCredential().getClientId());
         assertEquals("global-client-secret", result.getCredential().getClientSecret());
         assertEquals("global-password", result.getCredential().getPassword());
@@ -45,7 +45,7 @@ class MergeAzureCommonPropertiesTest {
     void testGetPropertiesFromAzurePasswordlessProperties() {
         AzureGlobalProperties globalProperties = new AzureGlobalProperties();
 
-        AzureRedisPasswordlessProperties passwordlessProperties = new AzureRedisPasswordlessProperties();
+        AzureServiceBusJmsProperties passwordlessProperties = new AzureServiceBusJmsProperties();
         passwordlessProperties.setScopes("scopes-us-gov");
         passwordlessProperties.getCredential().setClientId("client-id");
         passwordlessProperties.getCredential().setClientSecret("client-secret");
@@ -56,7 +56,7 @@ class MergeAzureCommonPropertiesTest {
         passwordlessProperties.getProfile().setSubscriptionId("sub");
         passwordlessProperties.getProfile().setTenantId("tenant-id");
 
-        AzureRedisPasswordlessProperties result = new AzureRedisPasswordlessProperties();
+        AzureServiceBusJmsProperties result = new AzureServiceBusJmsProperties();
         AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(globalProperties, passwordlessProperties, result);
 
         assertEquals("scopes-us-gov", result.getScopes());
@@ -89,7 +89,7 @@ class MergeAzureCommonPropertiesTest {
         globalProperties.getProxy().setHostname("global-proxy-hostname");
         globalProperties.getProxy().setPort(1111);
 
-        AzureRedisPasswordlessProperties passwordlessProperties = new AzureRedisPasswordlessProperties();
+        AzureServiceBusJmsProperties passwordlessProperties = new AzureServiceBusJmsProperties();
         passwordlessProperties.setScopes("scope");
         passwordlessProperties.getCredential().setClientSecret("client-secret");
         passwordlessProperties.getCredential().setPassword("password");
@@ -97,7 +97,7 @@ class MergeAzureCommonPropertiesTest {
         passwordlessProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
         passwordlessProperties.getProfile().setSubscriptionId("sub");
 
-        AzureRedisPasswordlessProperties result = new AzureRedisPasswordlessProperties();
+        AzureServiceBusJmsProperties result = new AzureServiceBusJmsProperties();
         AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(globalProperties, passwordlessProperties, result);
 
         assertEquals("scope", result.getScopes());
