@@ -3,6 +3,7 @@ package com.azure;
 import com.azure.core.http.*;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.InterceptorManager;
+import com.azure.core.test.TestBase;
 import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.TestResourceNamer;
@@ -18,8 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-
-import com.azure.core.test.TestBase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import reactor.core.publisher.Mono;
@@ -28,7 +27,7 @@ import reactor.util.annotation.Nullable;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -39,10 +38,12 @@ import java.util.concurrent.CountDownLatch;
 import java.util.zip.GZIPInputStream;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
-
-@SpringBootTest(classes = {Application.class, ControllerTest.TestConfiguration.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"applicationinsights.native.spring.non-native.enabled=true"} // To execute the with a JVM and as a GraalVM native executable
+@SpringBootTest(classes = {Application.class, ControllerTest.TestConfiguration.class}
+    , webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    properties = {"applicationinsights.connection.string=InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;IngestionEndpoint=https://test.in.applicationinsights.azure.com/;LiveEndpoint=https://test.livediagnostics.monitor.azure.com/"
+        , "applicationinsights.native.spring.non-native.enabled=true"} // To execute the with a JVM and as a GraalVM native executable
 )
 public class ControllerTest extends TestBase {
 //public class ControllerTest {
@@ -57,11 +58,19 @@ public class ControllerTest extends TestBase {
 
     private static InterceptorManager INTERCEPTOR_MANAGER;
 
+    private static TestContextManager TEST_CONTEXT_MANAGER;
+
     @Override
     @BeforeEach
-    public void setupTest(TestInfo testInfo)  {
+    public void setupTest(TestInfo testInfo) {
         System.out.println("setup test");
-       //Method testMethod = testInfo.getTestMethod().get();
+        //Method testMethod = testInfo.getTestMethod().get();
+
+        this.interceptorManager = INTERCEPTOR_MANAGER;
+        this.testContextManager = TEST_CONTEXT_MANAGER;
+        this.testResourceNamer = new TestResourceNamer(testContextManager, interceptorManager.getRecordedData());
+
+       /*
         Method testMethod;
 
         try {
@@ -81,6 +90,7 @@ public class ControllerTest extends TestBase {
         countDownLatch = new CountDownLatch(1);
         customValidationPolicy = new CustomValidationPolicy(countDownLatch);
         testResourceNamer = new TestResourceNamer(testContextManager, interceptorManager.getRecordedData());
+        */
         //beforeTest();
     }
 
@@ -88,10 +98,30 @@ public class ControllerTest extends TestBase {
     static class TestConfiguration {
 
         @Bean
-        HttpPipeline httpPipeline() {
+        HttpPipeline httpPipeline() throws URISyntaxException {
             System.out.println("TestConfiguration.httpPipeline");
-           return getHttpPipeline(customValidationPolicy);
-           //return null;
+
+            Method testMethod;
+
+            try {
+                testMethod = ControllerTest.class.getMethod("controller_should_return_ok");
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            }
+
+            TEST_CONTEXT_MANAGER = new TestContextManager(testMethod, TestMode.PLAYBACK);
+            String playbackRecordName = "controller_should_return_ok";
+            boolean doNotRecord = TEST_CONTEXT_MANAGER.doNotRecordTest();
+            System.out.println("doNotRecord = " + doNotRecord); // false
+            String testName = TEST_CONTEXT_MANAGER.getTestName(); //controller_should_return_ok
+            System.out.println("testName = " + testName);
+
+            INTERCEPTOR_MANAGER = new InterceptorManager(testName, new HashMap<>(), doNotRecord, playbackRecordName);
+            countDownLatch = new CountDownLatch(1);
+            customValidationPolicy = new CustomValidationPolicy(countDownLatch);
+
+            return getHttpPipeline(customValidationPolicy);
+            //return null;
         }
 
         HttpPipeline getHttpPipeline(@Nullable HttpPipelinePolicy policy) {
@@ -177,12 +207,13 @@ public class ControllerTest extends TestBase {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void controller_should_return_ok() throws InterruptedException, MalformedURLException {
+    public void controller_should_return_ok() throws InterruptedException, URISyntaxException {
         String response = restTemplate.getForObject(Controller.URL, String.class);
+
 
         countDownLatch.await(10, SECONDS);
 
-       // assertThat(customValidationPolicy.url).isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
+        // assertThat(customValidationPolicy.url).isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
         assertThat(customValidationPolicy.actualTelemetryItems.size()).isEqualTo(1);
 
         assertThat(response).isEqualTo("OK!");
