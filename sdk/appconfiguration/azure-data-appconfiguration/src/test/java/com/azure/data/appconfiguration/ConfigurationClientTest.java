@@ -6,9 +6,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
@@ -75,15 +72,12 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         return clientSetup(credentials -> {
             ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
                 .connectionString(connectionString)
-                .serviceVersion(serviceVersion)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+                .serviceVersion(serviceVersion);
 
             builder = setHttpClient(httpClient, builder);
 
             if (interceptorManager.isRecordMode()) {
-                builder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .addPolicy(new RetryPolicy());
+                builder.addPolicy(interceptorManager.getRecordPolicy());
             } else if (interceptorManager.isPlaybackMode()) {
                 interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Sync-Token"))));
             }
@@ -92,14 +86,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     private ConfigurationClientBuilder setHttpClient(HttpClient httpClient, ConfigurationClientBuilder builder) {
-        if (interceptorManager.isRecordMode()) {
-            return builder
-                .httpClient(buildSyncAssertingClient(httpClient));
-        } else if (interceptorManager.isPlaybackMode()) {
-            return builder
-                .httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
+        if (interceptorManager.isPlaybackMode()) {
+            return builder.httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
         }
-        return builder;
+        return builder.httpClient(buildSyncAssertingClient(httpClient));
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {

@@ -4,12 +4,8 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
-import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
@@ -18,8 +14,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.Arrays;
 
 import static com.azure.data.appconfiguration.ConfigurationClientTestBase.FAKE_CONNECTION_STRING;
 import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -43,37 +37,30 @@ public class AadCredentialTest extends TestProxyTestBase {
                 .endpoint(endpoint)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .buildClient();
-            // since running in playback mode won't have the token credential, so skipping matching it.
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setExcludedHeaders(Arrays.asList("x-ms-content-sha256"))));
         } else {
             connectionString = Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
             tokenCredential = new DefaultAzureCredentialBuilder().build();
-
             String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();
             ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
-                .httpClient(httpClient)
-                .credential(tokenCredential)
                 .endpoint(endpoint)
-                .serviceVersion(serviceVersion)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+                .credential(tokenCredential)
+                .serviceVersion(serviceVersion);
+
             builder = setHttpClient(httpClient, builder);
+
             if (interceptorManager.isRecordMode()) {
-                builder.addPolicy(interceptorManager.getRecordPolicy())
-                    .addPolicy(new RetryPolicy()); // Record
+                builder.addPolicy(interceptorManager.getRecordPolicy()); // Record
             }
+
             client = builder.buildClient();
         }
     }
 
     ConfigurationClientBuilder setHttpClient(HttpClient httpClient, ConfigurationClientBuilder builder) {
-        if (interceptorManager.isRecordMode()) {
-            return builder
-                .httpClient(buildSyncAssertingClient(httpClient));
-        } else if (interceptorManager.isPlaybackMode()) {
-            return builder
-                .httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
+        if (interceptorManager.isPlaybackMode()) {
+            return builder.httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
         }
-        return builder;
+        return builder.httpClient(buildSyncAssertingClient(httpClient));
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
