@@ -15,7 +15,7 @@ import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
-import org.eclipse.jetty.util.thread.QueuedThreadPool;
+import org.eclipse.jetty.util.thread.ExecutorThreadPool;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -53,7 +53,7 @@ public class LocalTestServer {
      * @throws RuntimeException If the server cannot configure SSL.
      */
     public LocalTestServer(RequestHandler requestHandler, int maxThreads) {
-        this.server = new Server(new QueuedThreadPool(maxThreads));
+        this.server = new Server(new ExecutorThreadPool(maxThreads));
 
         HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory();
         this.httpConnector = new ServerConnector(server, httpConnectionFactory);

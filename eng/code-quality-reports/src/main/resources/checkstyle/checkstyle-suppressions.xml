@@ -562,4 +562,8 @@ the main ServiceBusClientBuilder. -->
 
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.search.documents.indexes.models.SynonymMap"/>
 
+  <suppress checks="MissingJavadocMethod" files="com.azure.core.test.http.HttpClientTests"/>
+  <suppress checks="MissingJavadocType" files="com.azure.core.test.http.HttpClientTests"/>
+  <suppress checks="JavadocThrowsChecks" files="com.azure.core.test.http.HttpClientTests"/>
+
 </suppressions>

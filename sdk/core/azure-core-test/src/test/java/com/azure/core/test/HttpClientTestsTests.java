@@ -9,6 +9,7 @@ import com.azure.core.test.http.LocalTestServer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 
 public class HttpClientTestsTests extends HttpClientTests {
     private static LocalTestServer server;
@@ -40,5 +41,17 @@ public class HttpClientTestsTests extends HttpClientTests {
     @Override
     protected HttpClient createHttpClient() {
         return new HttpURLConnectionHttpClient();
+    }
+
+    @Override
+    @Disabled("HttpUrlConnection client doesn't support PATCH requests.")
+    public void asyncPatchRequest() {
+        super.asyncPatchRequest();
+    }
+
+    @Override
+    @Disabled("HttpUrlConnection client doesn't support PATCH requests.")
+    public void syncPatchRequest() {
+        super.syncPatchRequest();
     }
 }
