@@ -4,10 +4,10 @@
 
 package com.azure.resourcemanager.graphservices.generated;
 
-/** Samples for AccountOperation Delete. */
-public final class AccountOperationDeleteSamples {
+/** Samples for Accounts Delete. */
+public final class AccountsDeleteSamples {
     /*
-     * x-ms-original-file: specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Delete.json
+     * x-ms-original-file: specification/graphservicesprod/resource-manager/Microsoft.GraphServices/stable/2023-04-13/examples/Accounts_Delete.json
      */
     /**
      * Sample code: Delete account resource.
@@ -16,7 +16,7 @@ public final class AccountOperationDeleteSamples {
      */
     public static void deleteAccountResource(com.azure.resourcemanager.graphservices.GraphServicesManager manager) {
         manager
-            .accountOperations()
+            .accounts()
             .deleteByResourceGroupWithResponse(
                 "testResourceGroupGRAM", "11111111-aaaa-1111-bbbb-111111111111", com.azure.core.util.Context.NONE);
     }

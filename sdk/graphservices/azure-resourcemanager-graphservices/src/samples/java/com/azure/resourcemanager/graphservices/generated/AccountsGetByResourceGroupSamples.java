@@ -4,10 +4,10 @@
 
 package com.azure.resourcemanager.graphservices.generated;
 
-/** Samples for AccountOperation GetByResourceGroup. */
-public final class AccountOperationGetByResourceGroupSamples {
+/** Samples for Accounts GetByResourceGroup. */
+public final class AccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Get.json
+     * x-ms-original-file: specification/graphservicesprod/resource-manager/Microsoft.GraphServices/stable/2023-04-13/examples/Accounts_Get.json
      */
     /**
      * Sample code: Get accounts.
@@ -16,7 +16,7 @@ public final class AccountOperationGetByResourceGroupSamples {
      */
     public static void getAccounts(com.azure.resourcemanager.graphservices.GraphServicesManager manager) {
         manager
-            .accountOperations()
+            .accounts()
             .getByResourceGroupWithResponse(
                 "testResourceGroupGRAM", "11111111-aaaa-1111-bbbb-111111111111", com.azure.core.util.Context.NONE);
     }

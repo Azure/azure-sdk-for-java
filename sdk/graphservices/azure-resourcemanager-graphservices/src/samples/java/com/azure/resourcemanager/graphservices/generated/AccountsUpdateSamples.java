@@ -8,10 +8,10 @@ import com.azure.resourcemanager.graphservices.models.AccountResource;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for AccountOperation Update. */
-public final class AccountOperationUpdateSamples {
+/** Samples for Accounts Update. */
+public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Update.json
+     * x-ms-original-file: specification/graphservicesprod/resource-manager/Microsoft.GraphServices/stable/2023-04-13/examples/Accounts_Update.json
      */
     /**
      * Sample code: Update account resource.
@@ -21,7 +21,7 @@ public final class AccountOperationUpdateSamples {
     public static void updateAccountResource(com.azure.resourcemanager.graphservices.GraphServicesManager manager) {
         AccountResource resource =
             manager
-                .accountOperations()
+                .accounts()
                 .getByResourceGroupWithResponse(
                     "testResourceGroupGRAM", "11111111-aaaa-1111-bbbb-111111111111", com.azure.core.util.Context.NONE)
                 .getValue();
