@@ -400,7 +400,7 @@ com.github.tomakehurst:wiremock-jre8;2.33.2
 com.github.tomakehurst:wiremock-standalone;2.24.1
 jakarta.servlet:jakarta.servlet-api;6.0.0
 jakarta.xml.bind:jakarta.xml.bind-api;4.0.0
-org.apache.httpcomponents.client5:httpclient5;5.2.1
+org.apache.httpcomponents.client5:httpclient5;5.1.4
 org.apache.logging.log4j:log4j-slf4j2-impl;2.19.0
 org.springframework.boot:spring-boot-starter-log4j2;3.0.5
 org.springframework.cloud:spring-cloud-stream-test-binder;4.0.2

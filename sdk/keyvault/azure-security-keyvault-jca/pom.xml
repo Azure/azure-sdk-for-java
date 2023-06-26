@@ -31,9 +31,9 @@
   <dependencies>
     <!-- Apache HttpClient -->
     <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-      <version>4.5.14</version> <!-- {x-version-update;org.apache.httpcomponents:httpclient;external_dependency} -->
+      <groupId>org.apache.httpcomponents.client5</groupId>
+      <artifactId>httpclient5</artifactId>
+      <version>5.1.4</version> <!-- {x-version-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
     </dependency>
     <!-- Conscrypt -->
     <dependency>
@@ -209,7 +209,7 @@
               <includes>
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.14.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>org.conscrypt:conscrypt-openjdk-uber:[2.2.1]</include> <!-- {x-include-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
-                <include>org.apache.httpcomponents:httpclient:[4.5.14]</include> <!-- {x-include-update;org.apache.httpcomponents:httpclient;external_dependency} -->
+                <include>org.apache.httpcomponents.client5:httpclient5:[5.1.4]</include> <!-- {x-include-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
                 <include>org.slf4j:slf4j-nop:[2.0.7]</include> <!-- {x-include-update;org.slf4j:slf4j-nop;external_dependency} -->
               </includes>
             </bannedDependencies>

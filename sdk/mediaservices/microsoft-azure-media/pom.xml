@@ -70,9 +70,9 @@
       <version>1.2.0</version> <!-- {x-version-update;media_com.microsoft.azure:adal4j;external_dependency} -->
   	</dependency>
     <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-      <version>4.5.14</version> <!-- {x-version-update;org.apache.httpcomponents:httpclient;external_dependency} -->
+      <groupId>org.apache.httpcomponents.client5</groupId>
+      <artifactId>httpclient5</artifactId>
+      <version>5.1.4</version> <!-- {x-version-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>javax.xml.bind</groupId>
