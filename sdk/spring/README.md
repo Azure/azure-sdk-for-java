@@ -76,6 +76,7 @@ The following application starters are provided by Spring Cloud Azure under the 
 | spring-cloud-azure-starter-appconfiguration          | Starter for using Azure App Configuration                          |
 | spring-cloud-azure-starter-cosmos                    | Starter for using Azure Cosmos DB                                  |
 | spring-cloud-azure-starter-eventhubs                 | Starter for using Azure Event Hubs                                 |
+| spring-cloud-azure-starter-eventgrid                 | Starter for using Azure Event Grid                                 |
 | spring-cloud-azure-starter-integration-eventhubs     | Starter for using Azure Event Hubs and Spring Integration          |
 | spring-cloud-azure-starter-integration-servicebus    | Starter for using Azure Service Bus and Spring Integration         |
 | spring-cloud-azure-starter-integration-storage-queue | Starter for using Azure Storage Queue and Spring Integration       |
