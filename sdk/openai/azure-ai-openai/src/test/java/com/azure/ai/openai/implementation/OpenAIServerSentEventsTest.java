@@ -11,6 +11,8 @@ import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -20,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class OpenAIServerSentEventsTest {
 
     @Test
-    @DoNotRecord
     public void testEmptyFluxByteBuffer() {
         OpenAIServerSentEvents<TestModel> objectOpenAIServerSentEvents = new OpenAIServerSentEvents<>(Flux.empty(), TestModel.class);
         StepVerifier.create(objectOpenAIServerSentEvents.getEvents())
@@ -28,7 +29,6 @@ public class OpenAIServerSentEventsTest {
     }
 
     @Test
-    @DoNotRecord
     public void testSingleEventFluxByteBuffer() {
         String jsonTestModel = BinaryData.fromObject(new TestModel().setName("foo").setValue("value")).toString();
         String sse = "data: " + jsonTestModel;
@@ -43,7 +43,6 @@ public class OpenAIServerSentEventsTest {
     }
 
     @Test
-    @DoNotRecord
     public void testMultipleEventsFluxByteBuffer() {
         String jsonTestModel = BinaryData.fromObject(new TestModel().setName("foo").setValue("value")).toString();
         String sse = "data: " + jsonTestModel;
@@ -67,7 +66,6 @@ public class OpenAIServerSentEventsTest {
     }
 
     @Test
-    @DoNotRecord
     public void testMultipleEventsSplitAcrossFluxByteBuffer() {
         String jsonTestModel = BinaryData.fromObject(new TestModel().setName("foo").setValue("value")).toString();
         String sse1 = "data: " + jsonTestModel;
@@ -91,7 +89,6 @@ public class OpenAIServerSentEventsTest {
     }
 
     @Test
-    @DoNotRecord
     public void testEventSplitAcrossByteBuffers() {
         String jsonTestModel = BinaryData.fromObject(new TestModel().setName("foo").setValue("value")).toString();
         String sse1 = "data: " + jsonTestModel;
@@ -122,6 +119,32 @@ public class OpenAIServerSentEventsTest {
             .assertNext(testModel -> {
                 assertEquals("foo", testModel.getName());
                 assertEquals("value", testModel.getValue());
+            }).assertNext(testModel -> {
+                assertEquals("foo2", testModel.getName());
+                assertEquals("value2", testModel.getValue());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void testMultiByteChars() {
+        String jsonTestModel = BinaryData.fromObject(new TestModel().setName("罗杰·费德勒").setValue("瑞士")).toString();
+        String sse1 = "data: " + jsonTestModel;
+
+        String jsonTestModel2 = BinaryData.fromObject(new TestModel().setName("foo2").setValue("value2")).toString();
+        String sse2 = "data: " + jsonTestModel2;
+
+        String fullData = sse1 + "\n\n" + sse2;
+
+        byte[] fullDataBytes = fullData.getBytes(StandardCharsets.UTF_8);
+        ByteBuffer bb1 = ByteBuffer.wrap(Arrays.copyOfRange(fullDataBytes, 0, 47));
+        ByteBuffer bb2 = ByteBuffer.wrap(Arrays.copyOfRange(fullDataBytes, 47, fullDataBytes.length));
+
+        OpenAIServerSentEvents<TestModel> objectOpenAIServerSentEvents = new OpenAIServerSentEvents<>(Flux.just(bb1, bb2), TestModel.class);
+        StepVerifier.create(objectOpenAIServerSentEvents.getEvents())
+            .assertNext(testModel -> {
+                assertEquals("罗杰·费德勒", testModel.getName());
+                assertEquals("瑞士", testModel.getValue());
             }).assertNext(testModel -> {
                 assertEquals("foo2", testModel.getName());
                 assertEquals("value2", testModel.getValue());

@@ -3,28 +3,22 @@
 
 package com.azure.ai.openai.implementation;
 
-import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 public final class OpenAIServerSentEvents<T> {
 
+    private static final String STREAM_COMPLETION_EVENT = "data: [DONE]";
     private final Flux<ByteBuffer> source;
     private final Class<T> type;
-    private AtomicReference<String> lastLine = new AtomicReference<>("");
-    private AtomicBoolean expectEmptyLine = new AtomicBoolean();
+    private ByteArrayOutputStream outStream;
 
     private static final ObjectMapper SERIALIZER = new ObjectMapper()
         .enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS)
@@ -36,87 +30,58 @@ public final class OpenAIServerSentEvents<T> {
     public OpenAIServerSentEvents(Flux<ByteBuffer> source, Class<T> type) {
         this.source = source;
         this.type = type;
+        this.outStream = new ByteArrayOutputStream();
     }
 
     public Flux<T> getEvents() {
+        return mapByteBuffersToEvents();
+    }
+
+    private Flux<T> mapByteBuffersToEvents() {
         return source.concatMap(byteBuffer -> {
-            try {
-                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteBuffer.array());
-                BufferedReader reader = new BufferedReader(new InputStreamReader(byteArrayInputStream, StandardCharsets.UTF_8));
-                String currentLine = getFirstDataLine(reader);
-                currentLine = lastLine.get() + currentLine;
-                List<T> values = new ArrayList<>();
-                while (currentLine != null) {
-                    if ("data: [DONE]".equals(currentLine)) {
-                        return Flux.fromIterable(values);
+            List<T> values = new ArrayList<>();
+            byte[] array = byteBuffer.array();
+            for (byte b : array) {
+                if (b == 0xA) {
+                    String currentLine = outStream.toString();
+                    try {
+                        handleCurrentLine(currentLine, values);
+                    } catch (JsonProcessingException e) {
+                        return Flux.error(e);
                     }
-
-                    if (expectEmptyLine.get() && !currentLine.isEmpty()) {
-                        return Flux.error(new UnsupportedOperationException("Multi-line data not supported " + currentLine));
-                    }
-
-                    if (!expectEmptyLine.get()) {
-                        expectEmptyLine.set(true);
-                        // The expected line format of the server sent event is data: {...}
-                        String[] split = currentLine.split(":", 2);
-                        if (split.length != 2) {
-                            String line = reader.readLine();
-                            if (line == null) {
-                                lastLine.set(currentLine);
-                                expectEmptyLine.set(false);
-                                return Flux.fromIterable(values);
-                            }
-                            return Flux.error(new IllegalStateException("Invalid data format " + currentLine));
-                        }
-
-                        String dataValue = split[1];
-                        if (split[1].startsWith(" ")) {
-                            dataValue = split[1].substring(1);
-                        }
-
-                        if (!dataValue.isEmpty() && isValidJson(dataValue)) {
-                            T value = SERIALIZER.readValue(dataValue, type);
-                            values.add(value);
-                            lastLine.set("");
-                        } else {
-                            lastLine.set(currentLine);
-                            expectEmptyLine.set(false);
-                        }
-                    } else {
-                        expectEmptyLine.set(false);
-                    }
-                    currentLine = reader.readLine();
+                    outStream = new ByteArrayOutputStream();
+                } else {
+                    outStream.write(b);
                 }
-                return Flux.fromIterable(values);
-            } catch (IOException e) {
-                return Flux.error(e);
             }
-        });
+            try {
+                handleCurrentLine(outStream.toString(), values);
+                outStream = new ByteArrayOutputStream();
+            } catch (Exception e) {
+                // do nothing as this is the last line in this byte buffer which might be truncated
+                // and will be concatenated with the new byte buffer in the Flux
+            }
+            return Flux.fromIterable(values);
+        }).cache();
     }
 
-    private String getFirstDataLine(BufferedReader reader) throws IOException {
-        String currentLine = reader.readLine();
-        if (currentLine != null && currentLine.isEmpty() && expectEmptyLine.get()) {
-            currentLine = reader.readLine();
-            if (currentLine != null && currentLine.isEmpty()) {
-                // this happens when the line separate of the last line of previous bytebuffer was split
-                // across byte buffer boundaries and this bytebuffer starts with two line separators.
-                currentLine = reader.readLine();
-            }
-            expectEmptyLine.set(false);
+    private void handleCurrentLine(String currentLine, List<T> values) throws JsonProcessingException {
+        if (currentLine.isEmpty() || STREAM_COMPLETION_EVENT.equals(currentLine)) {
+            return;
         }
-        return currentLine;
-    }
 
-    private static boolean isValidJson(String json) {
-        try {
-            SERIALIZER.readTree(json);
-            return true;
-        } catch (JacksonException exception) {
-            // This can happen if the byte buffers are split resulting in a partial data line in this bytebuffer.
-            // So, concatenating the last line of this bytebuffer with the first line of the
-            // next bytebuffer should form a valid data event.
-            return false;
+        // The expected line format of the server sent event is data: {...}
+        String[] split = currentLine.split(":", 2);
+        if (split.length != 2) {
+            throw new IllegalStateException("Invalid data format " + currentLine);
         }
+
+        String dataValue = split[1];
+        if (split[1].startsWith(" ")) {
+            dataValue = split[1].substring(1);
+        }
+
+        T value = SERIALIZER.readValue(dataValue, type);
+        values.add(value);
     }
 }
