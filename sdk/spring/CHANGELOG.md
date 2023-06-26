@@ -2,13 +2,11 @@
 
 ## 5.3.0-beta.1 (Unreleased)
 
-### Features Added
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+#### Features Added
+- Added autoconfiguration for the Event Grid client [#35613](https://github.com/Azure/azure-sdk-for-java/pull/35613).
 
 ## 5.2.0 (2023-06-02)
 - This release is compatible with Spring Boot 3.0.0-3.0.5. (Note: 3.0.x (x>1) should be supported, but they aren't tested with this release.)
