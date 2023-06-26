@@ -139,8 +139,22 @@ public class CosmosContainer {
 
     /**
      * Sets the throughput for the current container.
-     *
-     * @param throughputProperties the throughput properties.
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.replaceThroughput -->
+     * <pre>
+     * ThroughputProperties throughputProperties =
+     *     ThroughputProperties.createAutoscaledThroughput&#40;1000&#41;;
+     * try &#123;
+     *     ThroughputResponse throughputResponse =
+     *         cosmosContainer.replaceThroughput&#40;throughputProperties&#41;;
+     *     System.out.println&#40;throughputResponse&#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     ce.printStackTrace&#40;&#41;;
+     * &#125; catch &#40;Exception e&#41; &#123;
+     *     e.printStackTrace&#40;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.replaceThroughput -->
+     * @param throughputProperties the throughput properties (Optional).
      * @return the throughput response.
      */
     public ThroughputResponse replaceThroughput(ThroughputProperties throughputProperties) {
@@ -149,7 +163,18 @@ public class CosmosContainer {
 
     /**
      * Gets the throughput for the current container.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.readThroughput -->
+     * <pre>
+     * try &#123;
+     *     ThroughputResponse throughputResponse = cosmosContainer.readThroughput&#40;&#41;;
+     *     System.out.println&#40;throughputResponse&#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     ce.printStackTrace&#40;&#41;;
+     * &#125; catch &#40;Exception e&#41; &#123;
+     *     e.printStackTrace&#40;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.readThroughput -->
      * @return the throughput response.
      */
     public ThroughputResponse readThroughput() {
@@ -453,7 +478,27 @@ public class CosmosContainer {
      * <br/>
      * This operation is used to retrieve a single item from a container based on its unique identifier (ID) and partition key.
      * The readItem operation provides direct access to a specific item using its unique identifier, which consists of the item's ID and the partition key value. This operation is efficient for retrieving a known item by its ID and partition key without the need for complex querying.
-     * 
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.readItem -->
+     * <pre>
+     * &#47;&#47; Read an item
+     * try &#123;
+     *     CosmosItemResponse&lt;Passenger&gt; response = cosmosContainer.readItem&#40;
+     *         passenger.getId&#40;&#41;,
+     *         new PartitionKey&#40;passenger.getId&#40;&#41;&#41;,
+     *         Passenger.class
+     *     &#41;;
+     *     Passenger passengerItem = response.getItem&#40;&#41;;
+     * &#125; catch &#40;NotFoundException e&#41; &#123;
+     *     &#47;&#47; catch exception if item not found
+     *     System.out.printf&#40;&quot;Passenger with item id %s not found&#92;n&quot;,
+     *         passenger.getId&#40;&#41;&#41;;
+     * &#125; catch &#40;Exception e&#41; &#123;
+     *     System.out.println&#40;e.getMessage&#40;&#41;&#41;;
+     * &#125;
+     *
+     * &#47;&#47; ...
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.readItem -->
      * @param <T> the type parameter.
      * @param itemId the item id.
      * @param partitionKey the partition key.
@@ -550,6 +595,25 @@ public class CosmosContainer {
     /**
      * Deletes an item in the current container.
      *
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.deleteItem -->
+     * <pre>
+     * try &#123;
+     *     CosmosItemRequestOptions options = new CosmosItemRequestOptions&#40;&#41;;
+     *     CosmosItemResponse&lt;Object&gt; deleteItemResponse = cosmosContainer.deleteItem&#40;
+     *         passenger.getId&#40;&#41;,
+     *         new PartitionKey&#40;passenger.getId&#40;&#41;&#41;,
+     *         options
+     *     &#41;;
+     *     System.out.println&#40;deleteItemResponse&#41;;
+     * &#125; catch &#40;NotFoundException e&#41; &#123;
+     *     &#47;&#47; catch exception if item not found
+     *     System.out.printf&#40;&quot;Passenger with item id %s not found&#92;n&quot;,
+     *         passenger.getId&#40;&#41;&#41;;
+     * &#125; catch &#40;Exception e&#41; &#123;
+     *     System.out.println&#40;e.getMessage&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.deleteItem -->
      * @param itemId the item id.
      * @param partitionKey the partition key.
      * @param options the options.
@@ -733,6 +797,14 @@ public class CosmosContainer {
      * Obtains a list of {@link FeedRange} that can be used to parallelize Feed
      * operations.
      *
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.getFeedRanges -->
+     * <pre>
+     * List&lt;FeedRange&gt; feedRanges = cosmosContainer.getFeedRanges&#40;&#41;;
+     * for &#40;FeedRange feedRange : feedRanges&#41; &#123;
+     *     System.out.println&#40;&quot;Feed range: &quot; + feedRange&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.getFeedRanges -->
      * @return An unmodifiable list of {@link FeedRange}
      */
     public List<FeedRange> getFeedRanges() {

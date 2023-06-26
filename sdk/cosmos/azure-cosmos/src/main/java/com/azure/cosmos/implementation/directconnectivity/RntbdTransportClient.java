@@ -299,14 +299,16 @@ public class RntbdTransportClient extends TransportClient {
         final boolean isAddressUriUnderOpenConnectionsFlow = this.proactiveOpenConnectionsProcessor
                 .isAddressUriUnderOpenConnectionsFlow(addressUri.getURIAsString());
 
-        final int minRequiredChannelsForEndpoint = (isAddressUriUnderOpenConnectionsFlow) ?
-                Configs.getMinConnectionPoolSizePerEndpoint() : 1;
+        final RntbdEndpoint.Config config = this.endpointProvider.config();
+
+        final int minConnectionPoolSizePerEndpoint = (isAddressUriUnderOpenConnectionsFlow) ?
+                config.minConnectionPoolSizePerEndpoint() : 1;
 
         final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(
                 request.requestContext.locationEndpointToRoute,
                 addressUri,
                 this.proactiveOpenConnectionsProcessor,
-                minRequiredChannelsForEndpoint);
+                minConnectionPoolSizePerEndpoint);
 
         final RntbdRequestRecord record = endpoint.request(requestArgs, this.addressSelector);
 
@@ -639,6 +641,13 @@ public class RntbdTransportClient extends TransportClient {
         @JsonProperty()
         private final Duration timeoutDetectionOnWriteTimeLimit;
 
+        /**
+         * Used during the open connections flow to determine the
+         * minimum no. of connections to keep open to a particular
+         * endpoint.
+         * */
+        @JsonProperty
+        private final int minConnectionPoolSizePerEndpoint;
 
         // endregion
 
@@ -681,6 +690,7 @@ public class RntbdTransportClient extends TransportClient {
             this.timeoutDetectionHighFrequencyTimeLimit = builder.timeoutDetectionHighFrequencyTimeLimit;
             this.timeoutDetectionOnWriteThreshold = builder.timeoutDetectionOnWriteThreshold;
             this.timeoutDetectionOnWriteTimeLimit = builder.timeoutDetectionOnWriteTimeLimit;
+            this.minConnectionPoolSizePerEndpoint = builder.minConnectionPoolSizePerEndpoint;
 
             this.connectTimeout = builder.connectTimeout == null
                 ? builder.tcpNetworkRequestTimeout
@@ -722,6 +732,7 @@ public class RntbdTransportClient extends TransportClient {
             this.timeoutDetectionOnWriteThreshold = 1;
             this.timeoutDetectionOnWriteTimeLimit = Duration.ofSeconds(6L);
             this.preferTcpNative = true;
+            this.minConnectionPoolSizePerEndpoint = connectionPolicy.getMinConnectionPoolSizePerEndpoint();
         }
 
         // endregion
@@ -852,6 +863,10 @@ public class RntbdTransportClient extends TransportClient {
 
         public Duration timeoutDetectionOnWriteTimeLimit() {
             return this.timeoutDetectionOnWriteTimeLimit;
+        }
+
+        public int minConnectionPoolSizePerEndpoint() {
+            return this.minConnectionPoolSizePerEndpoint;
         }
 
         // endregion
@@ -1026,7 +1041,7 @@ public class RntbdTransportClient extends TransportClient {
             private Duration timeoutDetectionHighFrequencyTimeLimit;
             private int timeoutDetectionOnWriteThreshold;
             private Duration timeoutDetectionOnWriteTimeLimit;
-
+            private int minConnectionPoolSizePerEndpoint;
 
             // endregion
 
@@ -1068,6 +1083,7 @@ public class RntbdTransportClient extends TransportClient {
                 this.timeoutDetectionHighFrequencyTimeLimit = DEFAULT_OPTIONS.timeoutDetectionHighFrequencyTimeLimit;
                 this.timeoutDetectionOnWriteThreshold = DEFAULT_OPTIONS.timeoutDetectionOnWriteThreshold;
                 this.timeoutDetectionOnWriteTimeLimit = DEFAULT_OPTIONS.timeoutDetectionOnWriteTimeLimit;
+                this.minConnectionPoolSizePerEndpoint = connectionPolicy.getMinConnectionPoolSizePerEndpoint();
             }
 
             // endregion

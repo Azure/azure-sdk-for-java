@@ -10,7 +10,7 @@ import java.util.List;
 
 /** An object representing the summarization result of a single document. */
 @Fluent
-public class AbstractiveSummaryDocumentResult extends DocumentResult {
+public final class AbstractiveSummaryDocumentResult extends DocumentResult {
     /*
      * A list of abstractive summaries.
      */

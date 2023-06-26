@@ -83,7 +83,7 @@
 /sdk/communication/azure-communication-phonenumbers/ @miguhern @whisper6284 @RoyHerrod @danielav7
 
 # PRLabel: %Communication - SMS
-/sdk/communication/azure-communication-sms/          @RoyHerrod @arifibrahim4
+/sdk/communication/azure-communication-sms/          @DimaKolomiiets @ozgurcivi-msft @gfeitosa-msft @besh2014 @phermanov-msft @ilyapaliakou-msft
 
 # PRLabel: %Communication - Resource Manager
 /sdk/communication/sdk/communication/azure-resourcemanager-communication/
@@ -164,7 +164,7 @@
 /sdk/monitor/azure-monitor-ingestion*/               @srnagar @lmolkova @jairmyree
 
 # PRLabel: %Mixed Reality Authentication
-/sdk/mixedreality/azure-mixedreality-authentication/ @craigktreasure
+/sdk/mixedreality/azure-mixedreality-authentication/ @RamonArguelles
 
 # PRLabel: %Open AI
 /sdk/openai/azure-ai-openai/                         @brandom-msft @jpalvarezl @mssfang

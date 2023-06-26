@@ -9,11 +9,11 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-analytics-purview-sharing</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-analytics-purview-sharing;current} -->
+  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-analytics-purview-sharing;current} -->
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK for PurviewShareClient Management</name>
-  <description>This package contains Microsoft Azure PurviewShareClient client library.</description>
+  <name>Microsoft Azure SDK for Purview Sharing</name>
+  <description>This package contains the Microsoft Azure Purview Sharing client library.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -59,13 +59,13 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.9.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.9.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -83,7 +83,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.9.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.9.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -340,8 +340,8 @@ public final class FieldBuilder {
         if (hasAnalyzerName) {
             searchField.setAnalyzerName(LexicalAnalyzerName.fromString(analyzerName));
         } else if (hasSearchAnalyzerName || hasIndexAnalyzerName) {
-            searchField.setAnalyzerName(LexicalAnalyzerName.fromString(searchAnalyzerName));
-            searchField.setAnalyzerName(LexicalAnalyzerName.fromString(indexAnalyzerName));
+            searchField.setSearchAnalyzerName(LexicalAnalyzerName.fromString(searchAnalyzerName));
+            searchField.setIndexAnalyzerName(LexicalAnalyzerName.fromString(indexAnalyzerName));
         }
 
         if (hasNormalizerName) {

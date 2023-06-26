@@ -10,12 +10,10 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Received share sink. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "storeKind",
-        defaultImpl = Sink.class)
+/**
+ * Holds details on the destination of the mapped artifact.
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "storeKind", defaultImpl = Sink.class)
 @JsonTypeName("Sink")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AdlsGen2Account", value = AdlsGen2AccountSink.class),
@@ -29,12 +27,15 @@ public class Sink {
     @JsonProperty(value = "storeReference", required = true)
     private StoreReference storeReference;
 
-    /** Creates an instance of Sink class. */
-    public Sink() {}
+    /**
+     * Creates an instance of Sink class.
+     */
+    public Sink() {
+    }
 
     /**
      * Get the storeReference property: A Store Reference for an artifact or sink.
-     *
+     * 
      * @return the storeReference value.
      */
     public StoreReference getStoreReference() {
@@ -43,7 +44,7 @@ public class Sink {
 
     /**
      * Set the storeReference property: A Store Reference for an artifact or sink.
-     *
+     * 
      * @param storeReference the storeReference value to set.
      * @return the Sink object itself.
      */

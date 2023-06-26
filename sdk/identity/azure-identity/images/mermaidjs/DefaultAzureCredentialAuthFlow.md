@@ -4,6 +4,9 @@
 %% 1. Install mermaid CLI (see https://github.com/mermaid-js/mermaid-cli/blob/master/README.md)
 %%    v10.0.2 is known good for our process. npm install -g @mermaid-js/mermaid-cli@10.0.2
 %% 2. Run command: mmdc -i DefaultAzureCredentialAuthFlow.md -o DefaultAzureCredentialAuthFlow.svg
+%% 3. Generate in .png, run command: mmdc -i DefaultAzureCredentialAuthFlow.md -o DefaultAzureCredentialAuthFlow.png
+%% 4. Copy the generated .png file to azure-identity/src/main/java/com/azure/identity/doc-files directory
+
 
 flowchart LR;
     A(Environment):::deployed --> B(Workload Identity):::deployed --> C(Managed Identity):::deployed --> D(Azure Developer CLI):::developer --> E(IntelliJ):::developer --> F(Azure CLI):::developer --> G(Azure PowerShell):::developer;

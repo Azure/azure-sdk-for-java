@@ -20,6 +20,15 @@ public final class ConnectivityType extends ExpandableStringEnum<ConnectivityTyp
     public static final ConnectivityType PUBLIC = fromString("PUBLIC");
 
     /**
+     * Creates a new instance of ConnectivityType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectivityType() {
+    }
+
+    /**
      * Creates or finds a ConnectivityType from its string representation.
      *
      * @param name a name to look for.

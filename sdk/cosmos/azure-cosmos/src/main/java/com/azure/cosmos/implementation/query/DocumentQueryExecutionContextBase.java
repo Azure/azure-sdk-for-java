@@ -128,9 +128,13 @@ implements IDocumentQueryExecutionContext<T> {
             ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
                 getCosmosQueryRequestOptionsAccessor()
                 .getEndToEndOperationLatencyPolicyConfig(cosmosQueryRequestOptions);
+
         if (endToEndOperationLatencyConfig != null) {
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
         }
+        request.requestContext.setExcludeRegions( ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
+            getCosmosQueryRequestOptionsAccessor().getExcludeRegions(cosmosQueryRequestOptions));
+
         request.requestContext.setRequestCancellationStatusOnTimeout(this.queryCancellationStatusOnTimeout);
         return request;
     }

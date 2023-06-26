@@ -4,6 +4,6 @@
 
 /**
  * Package containing the inner data models for AzureDatabricksManagementClient. The Microsoft Azure management APIs
- * allow end users to operate on Azure Databricks Workspace resources.
+ * allow end users to operate on Azure Databricks Workspace / Access Connector resources.
  */
 package com.azure.resourcemanager.databricks.fluent.models;

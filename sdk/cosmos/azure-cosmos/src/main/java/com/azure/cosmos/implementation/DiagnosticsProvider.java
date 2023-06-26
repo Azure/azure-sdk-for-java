@@ -697,7 +697,9 @@ public final class DiagnosticsProvider {
             clientAccessor.getEffectiveConsistencyLevel(client, operationType, consistencyLevel),
             maxItemCount,
             thresholds,
-            trackingId);
+            trackingId,
+            clientAccessor.getConnectionMode(client),
+            clientAccessor.getUserAgent(client));
 
         return diagnosticsEnabledPublisher(
             cosmosCtx,
@@ -1249,7 +1251,7 @@ public final class DiagnosticsProvider {
                 }
 
                 String activityId = storeResponseDiagnostics.getActivityId();
-                if (requestSessionToken != null && !requestSessionToken.isEmpty()) {
+                if (activityId != null && !activityId.isEmpty()) {
                     attributes.put("rntbd.activity_id", activityId);
                 }
 

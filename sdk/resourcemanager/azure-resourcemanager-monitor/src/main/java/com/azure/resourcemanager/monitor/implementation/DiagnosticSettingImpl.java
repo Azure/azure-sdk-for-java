@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import reactor.core.publisher.Mono;
 
 /** The Azure metric definition entries are of type DiagnosticSetting. */
@@ -219,8 +222,10 @@ class DiagnosticSettingImpl
 
     @Override
     public Mono<DiagnosticSetting> createResourceAsync() {
-        this.innerModel().withLogs(new ArrayList<>(logSet.values()));
-        this.innerModel().withLogs(new ArrayList<>(logCategoryGroupSet.values()));
+        this.innerModel()
+            .withLogs(new ArrayList<>(
+                Stream.concat(logSet.values().stream(),
+                logCategoryGroupSet.values().stream()).distinct().collect(Collectors.toList())));
         this.innerModel().withMetrics(new ArrayList<>(metricSet.values()));
         return this
             .manager()

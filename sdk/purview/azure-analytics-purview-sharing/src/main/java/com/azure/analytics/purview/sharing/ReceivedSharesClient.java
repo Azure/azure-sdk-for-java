@@ -4,7 +4,6 @@
 
 package com.azure.analytics.purview.sharing;
 
-import com.azure.analytics.purview.sharing.implementation.ReceivedSharesImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -22,16 +21,16 @@ import com.azure.core.util.polling.SyncPoller;
 /** Initializes a new instance of the synchronous PurviewShareClient type. */
 @ServiceClient(builder = ReceivedSharesClientBuilder.class)
 public final class ReceivedSharesClient {
-    @Generated private final ReceivedSharesImpl serviceClient;
+    @Generated private final ReceivedSharesAsyncClient client;
 
     /**
      * Initializes an instance of ReceivedSharesClient class.
      *
-     * @param serviceClient the service client implementation.
+     * @param client the async client.
      */
     @Generated
-    ReceivedSharesClient(ReceivedSharesImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    ReceivedSharesClient(ReceivedSharesAsyncClient client) {
+        this.client = client;
     }
 
     /**
@@ -59,7 +58,7 @@ public final class ReceivedSharesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getReceivedShareWithResponse(String receivedShareId, RequestOptions requestOptions) {
-        return this.serviceClient.getReceivedShareWithResponse(receivedShareId, requestOptions);
+        return this.client.getReceivedShareWithResponse(receivedShareId, requestOptions).block();
     }
 
     /**
@@ -98,7 +97,9 @@ public final class ReceivedSharesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCreateOrReplaceReceivedShare(
             String receivedShareId, BinaryData receivedShare, RequestOptions requestOptions) {
-        return this.serviceClient.beginCreateOrReplaceReceivedShare(receivedShareId, receivedShare, requestOptions);
+        return this.client
+                .beginCreateOrReplaceReceivedShare(receivedShareId, receivedShare, requestOptions)
+                .getSyncPoller();
     }
 
     /**
@@ -137,7 +138,7 @@ public final class ReceivedSharesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, Void> beginDeleteReceivedShare(
             String receivedShareId, RequestOptions requestOptions) {
-        return this.serviceClient.beginDeleteReceivedShare(receivedShareId, requestOptions);
+        return this.client.beginDeleteReceivedShare(receivedShareId, requestOptions).getSyncPoller();
     }
 
     /**
@@ -150,7 +151,6 @@ public final class ReceivedSharesClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -176,8 +176,8 @@ public final class ReceivedSharesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getAllAttachedReceivedShares(String referenceName, RequestOptions requestOptions) {
-        return this.serviceClient.getAllAttachedReceivedShares(referenceName, requestOptions);
+    public PagedIterable<BinaryData> listAttachedReceivedShares(String referenceName, RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listAttachedReceivedShares(referenceName, requestOptions));
     }
 
     /**
@@ -190,7 +190,6 @@ public final class ReceivedSharesClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -215,8 +214,8 @@ public final class ReceivedSharesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getAllDetachedReceivedShares(RequestOptions requestOptions) {
-        return this.serviceClient.getAllDetachedReceivedShares(requestOptions);
+    public PagedIterable<BinaryData> listDetachedReceivedShares(RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listDetachedReceivedShares(requestOptions));
     }
 
     /**
@@ -270,7 +269,7 @@ public final class ReceivedSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> activateTenantEmailRegistrationWithResponse(
             BinaryData tenantEmailRegistration, RequestOptions requestOptions) {
-        return this.serviceClient.activateTenantEmailRegistrationWithResponse(tenantEmailRegistration, requestOptions);
+        return this.client.activateTenantEmailRegistrationWithResponse(tenantEmailRegistration, requestOptions).block();
     }
 
     /**
@@ -305,6 +304,6 @@ public final class ReceivedSharesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> registerTenantEmailRegistrationWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.registerTenantEmailRegistrationWithResponse(requestOptions);
+        return this.client.registerTenantEmailRegistrationWithResponse(requestOptions).block();
     }
 }

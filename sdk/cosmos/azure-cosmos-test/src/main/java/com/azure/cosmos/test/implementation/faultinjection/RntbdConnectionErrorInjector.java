@@ -80,7 +80,7 @@ public class RntbdConnectionErrorInjector {
                                 return Flux.fromIterable(
                                         this.endpointProvider
                                             .list()
-                                            .filter(rntbdEndpoint -> regionEndpoint == rntbdEndpoint.serverKey())
+                                            .filter(rntbdEndpoint -> regionEndpoint.equals(rntbdEndpoint.serviceEndpoint()))
                                             .collect(Collectors.toList())
                                     )
                                     .flatMap(rntbdEndpoint -> {

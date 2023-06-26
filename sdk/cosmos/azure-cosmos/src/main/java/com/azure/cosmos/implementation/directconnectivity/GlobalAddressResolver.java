@@ -24,8 +24,10 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenCon
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -164,22 +166,34 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                         AddressInformation addressInformation =
                                                             collectionToAddresses.right;
 
-                                                        Map<String, Integer> containerLinkToMinConnectionsMap = ImplementationBridgeHelpers
+                                                        Map<CosmosContainerIdentity, ContainerDirectConnectionMetadata> containerPropertiesMap = ImplementationBridgeHelpers
                                                             .CosmosContainerProactiveInitConfigHelper
                                                             .getCosmosContainerProactiveInitConfigAccessor()
-                                                            .getContainerLinkToMinConnectionsMap(proactiveContainerInitConfig);
+                                                            .getContainerPropertiesMap(proactiveContainerInitConfig);
 
-                                                        int connectionsPerEndpointCountForContainer = containerLinkToMinConnectionsMap
-                                                            .getOrDefault(
-                                                                containerLinkToCollection.left,
-                                                                Configs.getMinConnectionPoolSizePerEndpoint()
-                                                            );
+                                                        ContainerDirectConnectionMetadata containerDirectConnectionMetadata = containerPropertiesMap
+                                                                .get(cosmosContainerIdentity);
+
+                                                        int connectionsPerEndpointCountForContainer = containerDirectConnectionMetadata
+                                                                .getMinConnectionPoolSizePerEndpointForContainer();
 
                                                         return this.submitOpenConnectionInternal(
                                                                 endpointCache,
                                                                 addressInformation,
                                                                 containerLinkToCollection.getRight(),
                                                                 connectionsPerEndpointCountForContainer).then();
+                                                    })
+                                                    // onErrorResume helps to fallback in case of gateway issues when doing address resolution
+                                                    // requests for a specific region
+                                                    // this ensures connection warm up can move onto subsequent regions if configured
+                                                    .onErrorResume(throwable -> {
+                                                        // no particular reason to have specific handling for a CosmosException type
+                                                        // since any error thrown in the connection warmup flow is eventually swallowed
+                                                        // downstream
+                                                        Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
+                                                        logger.warn("An exception occurred when resolving addresses for region : {}",
+                                                                readEndpoint, unwrappedThrowable);
+                                                        return Flux.empty();
                                                     });
                                             }
 

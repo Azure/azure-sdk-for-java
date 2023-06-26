@@ -9,7 +9,7 @@ import com.azure.resourcemanager.databricks.models.VirtualNetworkPeeringProperti
 /** Samples for VNetPeering CreateOrUpdate. */
 public final class VNetPeeringCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/preview/2021-04-01-preview/examples/WorkspaceVirtualNetworkPeeringCreateOrUpdate.json
+     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceVirtualNetworkPeeringCreateOrUpdate.json
      */
     /**
      * Sample code: Create vNet Peering for Workspace.

@@ -53,6 +53,14 @@ public final class InnerErrorCode extends ExpandableStringEnum<InnerErrorCode> {
     public static final InnerErrorCode INVALID_COUNTRY_HINT = fromString("InvalidCountryHint");
 
     /**
+     * Creates a new instance of InnerErrorCode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InnerErrorCode() {}
+
+    /**
      * Creates or finds a InnerErrorCode from its string representation.
      *
      * @param name a name to look for.

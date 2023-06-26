@@ -58,6 +58,6 @@ public final class StorageTargetOperationsInvalidateMockTests {
 
         manager
             .storageTargetOperations()
-            .invalidate("vncjabudurgk", "kmokz", "jjklff", com.azure.core.util.Context.NONE);
+            .invalidate("lmcuvhixb", "xyfwnylrcool", "ttpkiwkkbnujrywv", com.azure.core.util.Context.NONE);
     }
 }

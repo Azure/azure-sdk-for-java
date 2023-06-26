@@ -54,7 +54,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-email</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -71,7 +71,7 @@ add the direct dependency to your project as follows.
 Email clients can be created and authenticated using the connection string acquired from an Azure Communication Resource in the [Azure Portal][azure_portal].
 
 ```java readme-sample-createEmailClientWithConnectionString
-String connectionString = "endpoint=https://<resource-name>.communication.azure.com/;accesskey=<access-key>";
+String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
 
 EmailClient emailClient = new EmailClientBuilder()
     .connectionString(connectionString)

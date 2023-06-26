@@ -52,6 +52,10 @@ public final class SqlInstanceSettings {
     @JsonProperty(value = "isIfiEnabled")
     private Boolean isIfiEnabled;
 
+    /** Creates an instance of SqlInstanceSettings class. */
+    public SqlInstanceSettings() {
+    }
+
     /**
      * Get the collation property: SQL Server Collation.
      *
