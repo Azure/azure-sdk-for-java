@@ -5,8 +5,8 @@ package com.azure.spring.cloud.autoconfigure.implementation.jms;
 
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.jms.ServiceBusJmsConnectionFactory;
-import com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsConnectionFactoryCustomizer;
 import com.azure.spring.cloud.core.implementation.connectionstring.ServiceBusConnectionString;
+import com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsConnectionFactoryCustomizer;
 import org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -56,20 +56,26 @@ class ServiceBusJmsConnectionFactoryFactory {
     private <T extends ServiceBusJmsConnectionFactory> T createConnectionFactoryInstance(Class<T> factoryClass) {
         try {
             T factory;
-            ServiceBusConnectionString serviceBusConnectionString = new ServiceBusConnectionString(properties.getConnectionString());
-            String host = serviceBusConnectionString.getEndpointUri().getHost();
-
-            String remoteUrl = String.format(AMQP_URI_FORMAT, host, properties.getIdleTimeout().toMillis());
-            String username = serviceBusConnectionString.getSharedAccessKeyName();
-            String password = serviceBusConnectionString.getSharedAccessKey();
-
-            if (StringUtils.hasLength(username) && StringUtils.hasLength(password)) {
-                factory = factoryClass.getConstructor(String.class, String.class, String.class)
-                                      .newInstance(username, password, remoteUrl);
-            } else {
+            if (properties.isPasswordlessEnabled()) {
+                String remoteUrl = String.format(AMQP_URI_FORMAT,
+                    properties.getNamespace() + "." + properties.getProfile().getEnvironment().getServiceBusDomainName(),
+                    properties.getIdleTimeout().toMillis());
                 factory = factoryClass.getConstructor(String.class).newInstance(remoteUrl);
-            }
+            } else {
+                ServiceBusConnectionString serviceBusConnectionString = new ServiceBusConnectionString(properties.getConnectionString());
+                String host = serviceBusConnectionString.getEndpointUri().getHost();
 
+                String remoteUrl = String.format(AMQP_URI_FORMAT, host, properties.getIdleTimeout().toMillis());
+                String username = serviceBusConnectionString.getSharedAccessKeyName();
+                String password = serviceBusConnectionString.getSharedAccessKey();
+
+                if (StringUtils.hasLength(username) && StringUtils.hasLength(password)) {
+                    factory = factoryClass.getConstructor(String.class, String.class, String.class)
+                        .newInstance(username, password, remoteUrl);
+                } else {
+                    factory = factoryClass.getConstructor(String.class).newInstance(remoteUrl);
+                }
+            }
             return factory;
         } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             throw new IllegalStateException("Unable to create JmsConnectionFactory", ex);

@@ -6,6 +6,7 @@
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Features Added
+- Support passwordless connections for JMS ServiceBus in Spring Boot 3. [#35608](https://github.com/Azure/azure-sdk-for-java/pull/35608).
 - Added autoconfiguration for the Event Grid client [#35613](https://github.com/Azure/azure-sdk-for-java/pull/35613).
 
 ## 5.2.0 (2023-06-02)

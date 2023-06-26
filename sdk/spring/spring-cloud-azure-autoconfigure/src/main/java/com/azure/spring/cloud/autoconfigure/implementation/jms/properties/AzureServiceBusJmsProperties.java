@@ -3,6 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.jms.properties;
 
+import com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.TokenCredentialConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties;
+import com.azure.spring.cloud.core.properties.PasswordlessProperties;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.jms.JmsPoolConnectionFactoryProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -11,19 +14,57 @@ import org.springframework.jms.support.QosSettings;
 import org.springframework.util.StringUtils;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 @ConfigurationProperties(prefix = AzureServiceBusJmsProperties.PREFIX)
-public class AzureServiceBusJmsProperties implements InitializingBean {
+public class AzureServiceBusJmsProperties implements InitializingBean, PasswordlessProperties {
 
     /**
      * Service Bus JMS properties prefix.
      */
     public static final String PREFIX = "spring.jms.servicebus";
 
+    private static final String SERVICE_BUS_SCOPE_AZURE = "https://servicebus.azure.net/.default";
+    private static final String SERVICE_BUS_SCOPE_AZURE_CHINA = SERVICE_BUS_SCOPE_AZURE;
+    private static final String SERVICE_BUS_SCOPE_AZURE_GERMANY = SERVICE_BUS_SCOPE_AZURE;
+    private static final String SERVICE_BUS_SCOPE_AZURE_US_GOVERNMENT = SERVICE_BUS_SCOPE_AZURE;
+
+    private static final Map<CloudType, String> SERVICEBUS_SCOPE_MAP = new HashMap<CloudType, String>() {
+        {
+            put(CloudType.AZURE, SERVICE_BUS_SCOPE_AZURE);
+            put(CloudType.AZURE_CHINA, SERVICE_BUS_SCOPE_AZURE_CHINA);
+            put(CloudType.AZURE_GERMANY, SERVICE_BUS_SCOPE_AZURE_GERMANY);
+            put(CloudType.AZURE_US_GOVERNMENT, SERVICE_BUS_SCOPE_AZURE_US_GOVERNMENT);
+        }
+    };
+
+    private AzureProfileConfigurationProperties profile = new AzureProfileConfigurationProperties();
+
+    /**
+     * The scopes required for the access token.
+     */
+    private String scopes;
+
+    private TokenCredentialConfigurationProperties credential = new TokenCredentialConfigurationProperties();
+
+    /**
+     * Whether to enable supporting azure identity token credentials.
+     *
+     * If the value is true, then 'spring.jms.servicebus.namespace' must be set.
+     * If the passwordlessEnabled is true, it will try to authenticate connections with Azure AD.
+     */
+    private boolean passwordlessEnabled = false;
+
     /**
      * Whether to enable Service Bus JMS autoconfiguration.
      */
     private boolean enabled = true;
+
+    /**
+     * The Service Bus namespace.
+     */
+    private String namespace;
 
     /**
      * Connection string to connect to a Service Bus namespace.
@@ -103,10 +144,60 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
         return prefetchPolicy;
     }
 
+    public String getNamespace() {
+        return namespace;
+    }
+
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
+    @Override
+    public String getScopes() {
+        return this.scopes == null ? getDefaultScopes() : this.scopes;
+    }
+
+    public void setScopes(String scopes) {
+        this.scopes = scopes;
+    }
+
+    @Override
+    public boolean isPasswordlessEnabled() {
+        return passwordlessEnabled;
+    }
+
+    public void setPasswordlessEnabled(boolean passwordlessEnabled) {
+        this.passwordlessEnabled = passwordlessEnabled;
+    }
+
+    @Override
+    public AzureProfileConfigurationProperties getProfile() {
+        return profile;
+    }
+
+    public void setProfile(AzureProfileConfigurationProperties profile) {
+        this.profile = profile;
+    }
+
+    @Override
+    public TokenCredentialConfigurationProperties getCredential() {
+        return credential;
+    }
+
+    public void setCredential(TokenCredentialConfigurationProperties credential) {
+        this.credential = credential;
+    }
+
     @Override
     public void afterPropertiesSet() throws Exception {
-        if (!StringUtils.hasText(connectionString)) {
-            throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' should be provided");
+        if (isPasswordlessEnabled()) {
+            if (!StringUtils.hasText(namespace)) {
+                throw new IllegalArgumentException("Passwordless connections enabled, 'spring.jms.servicebus.namespace' should be provided.");
+            }
+        } else {
+            if (!StringUtils.hasText(connectionString)) {
+                throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' should be provided.");
+            }
         }
 
         if (null == pricingTier || !pricingTier.matches("(?i)premium|standard|basic")) {
@@ -244,5 +335,9 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
         public void setPhase(Integer phase) {
             this.phase = phase;
         }
+    }
+
+    private String getDefaultScopes() {
+        return SERVICEBUS_SCOPE_MAP.getOrDefault(getProfile().getCloudType(), SERVICE_BUS_SCOPE_AZURE);
     }
 }
