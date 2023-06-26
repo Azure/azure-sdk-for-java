@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.47.0 (2023-06-23)
+### 4.47.0 (2023-06-26)
 
 #### Features Added
 * Added the capability to specify region switch hints through `CosmosClientBuilder#setSessionRetryOptions` for optimizing retries for `READ_SESSION_NOT_AVAILABLE` errors. - See [PR 35292](https://github.com/Azure/azure-sdk-for-java/pull/35292)
