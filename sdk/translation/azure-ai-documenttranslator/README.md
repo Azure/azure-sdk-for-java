@@ -40,11 +40,11 @@ String endpoint = String.format("https://%s.cognitiveservices.azure.com/translat
     "<document-translator-resource-name>");
 String apiKey = "<document-translator-api-key>";
 
-BatchDocumentTranslationRestClient client = new BatchDocumentTranslationClientBuilder()
+BatchDocumentTranslationClient client = new BatchDocumentTranslationClientBuilder()
     .credential(new AzureKeyCredential(apiKey))
     .endpoint(endpoint)
     .httpClient(new NettyAsyncHttpClientBuilder().build())
-    .buildRestClient();
+    .buildClient();
 ```
 
 ## Key concepts
