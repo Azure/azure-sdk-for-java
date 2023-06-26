@@ -406,7 +406,7 @@ com.azure.resourcemanager:azure-resourcemanager-reservations;1.0.0-beta.2;1.0.0-
 com.azure.resourcemanager:azure-resourcemanager-storagemover;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerservicefleet;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-voiceservices;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-graphservices;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-graphservices;1.0.0-beta.1;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-paloaltonetworks-ngfw;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-newrelicobservability;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-qumulo;1.0.0;1.1.0-beta.1
