@@ -80,6 +80,7 @@ org.apache.avro:avro;1.11.0
 org.apache.avro:avro-maven-plugin;1.11.0
 org.apache.commons:commons-compress;1.22
 org.apache.commons:commons-lang3;3.12.0
+org.apache.httpcomponents:httpclient;4.5.14
 org.apache.kafka:kafka-clients;3.3.2
 org.apache.logging.log4j:log4j-api;2.19.0
 org.apache.logging.log4j:log4j-core;2.19.0
@@ -400,7 +401,6 @@ com.github.tomakehurst:wiremock-jre8;2.33.2
 com.github.tomakehurst:wiremock-standalone;2.24.1
 jakarta.servlet:jakarta.servlet-api;6.0.0
 jakarta.xml.bind:jakarta.xml.bind-api;4.0.0
-org.apache.httpcomponents.client5:httpclient5;5.1.4
 org.apache.logging.log4j:log4j-slf4j2-impl;2.19.0
 org.springframework.boot:spring-boot-starter-log4j2;3.0.5
 org.springframework.cloud:spring-cloud-stream-test-binder;4.0.2
