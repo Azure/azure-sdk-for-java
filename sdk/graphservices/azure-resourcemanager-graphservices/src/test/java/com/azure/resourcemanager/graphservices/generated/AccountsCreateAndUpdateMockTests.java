@@ -13,9 +13,12 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.graphservices.GraphServicesManager;
 import com.azure.resourcemanager.graphservices.models.AccountResource;
+import com.azure.resourcemanager.graphservices.models.AccountResourceProperties;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -23,15 +26,15 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class AccountOperationsGetByResourceGroupWithResponseMockTests {
+public final class AccountsCreateAndUpdateMockTests {
     @Test
-    public void testGetByResourceGroupWithResponse() throws Exception {
+    public void testCreateAndUpdate() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"systemData\":{\"createdByType\":\"User\",\"createdAt\":\"2020-12-29T19:26:23Z\",\"lastModifiedByType\":\"ManagedIdentity\",\"lastModifiedAt\":\"2021-10-23T18:32:55Z\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"appId\":\"q\",\"billingPlanId\":\"ol\"},\"location\":\"p\",\"tags\":{\"jaoyfhrtx\":\"algbquxigjyjg\"},\"id\":\"lnerkujysvleju\",\"name\":\"fqawrlyxw\",\"type\":\"kcprbnw\"}";
+            "{\"systemData\":{\"createdByType\":\"ManagedIdentity\",\"createdAt\":\"2021-07-31T08:54:57Z\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-02-05T00:34:52Z\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"appId\":\"pteehzzv\",\"billingPlanId\":\"yqrimzin\"},\"location\":\"vswjdk\",\"tags\":{\"ohjtckw\":\"oodqxhcrm\",\"sqwpgrjb\":\"dsoifiyipj\",\"mocpc\":\"norcjxvsnbyxqab\",\"c\":\"shurzafbljjgpbto\"},\"id\":\"mkljavb\",\"name\":\"idtqajzyu\",\"type\":\"pku\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,12 +64,27 @@ public final class AccountOperationsGetByResourceGroupWithResponseMockTests {
 
         AccountResource response =
             manager
-                .accountOperations()
-                .getByResourceGroupWithResponse("rtumkdosvq", "hbmdgbbjfdd", com.azure.core.util.Context.NONE)
-                .getValue();
+                .accounts()
+                .define("prwzwbnguitnwui")
+                .withRegion("idf")
+                .withExistingResourceGroup("uouq")
+                .withProperties(new AccountResourceProperties().withAppId("y"))
+                .withTags(mapOf("dkfthwxmnt", "dzuhtymwi", "aop", "i", "jcmmxdcufufsrp", "km"))
+                .create();
 
-        Assertions.assertEquals("p", response.location());
-        Assertions.assertEquals("algbquxigjyjg", response.tags().get("jaoyfhrtx"));
-        Assertions.assertEquals("q", response.properties().appId());
+        Assertions.assertEquals("vswjdk", response.location());
+        Assertions.assertEquals("oodqxhcrm", response.tags().get("ohjtckw"));
+        Assertions.assertEquals("pteehzzv", response.properties().appId());
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

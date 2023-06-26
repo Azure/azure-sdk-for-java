@@ -12,23 +12,26 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.graphservices.GraphServicesManager;
+import com.azure.resourcemanager.graphservices.models.AccountResource;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class AccountOperationsDeleteByResourceGroupWithResponseMockTests {
+public final class AccountsGetByResourceGroupWithResponseMockTests {
     @Test
-    public void testDeleteWithResponse() throws Exception {
+    public void testGetByResourceGroupWithResponse() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{}";
+        String responseStr =
+            "{\"systemData\":{\"createdByType\":\"User\",\"createdAt\":\"2020-12-29T19:26:23Z\",\"lastModifiedByType\":\"ManagedIdentity\",\"lastModifiedAt\":\"2021-10-23T18:32:55Z\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"appId\":\"q\",\"billingPlanId\":\"ol\"},\"location\":\"p\",\"tags\":{\"jaoyfhrtx\":\"algbquxigjyjg\"},\"id\":\"lnerkujysvleju\",\"name\":\"fqawrlyxw\",\"type\":\"kcprbnw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -56,8 +59,14 @@ public final class AccountOperationsDeleteByResourceGroupWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .accountOperations()
-            .deleteByResourceGroupWithResponse("xgjvtbv", "ysszdnrujqguh", com.azure.core.util.Context.NONE);
+        AccountResource response =
+            manager
+                .accounts()
+                .getByResourceGroupWithResponse("rtumkdosvq", "hbmdgbbjfdd", com.azure.core.util.Context.NONE)
+                .getValue();
+
+        Assertions.assertEquals("p", response.location());
+        Assertions.assertEquals("algbquxigjyjg", response.tags().get("jaoyfhrtx"));
+        Assertions.assertEquals("q", response.properties().appId());
     }
 }
