@@ -190,7 +190,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.apache.httpcomponents.client5:httpclient5:[5.1.4]</include> <!-- {x-include-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
+                <include>org.apache.httpcomponents:httpclient:[4.5.14]</include> <!-- {x-include-update;org.apache.httpcomponents:httpclient;external_dependency} -->
                 <include>io.fabric8:kubernetes-client:[6.2.0]</include> <!-- {x-include-update;io.fabric8:kubernetes-client;external_dependency} -->
                 <include>com.jcraft:jsch:[0.1.55]</include> <!-- {x-include-update;resourcemanager_com.jcraft:jsch;external_dependency} -->
                 <include>org.slf4j:slf4j-simple:[2.0.7]</include> <!-- {x-include-update;org.slf4j:slf4j-simple;external_dependency} -->
