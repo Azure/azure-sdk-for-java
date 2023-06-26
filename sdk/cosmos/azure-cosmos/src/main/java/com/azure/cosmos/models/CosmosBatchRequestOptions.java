@@ -125,6 +125,9 @@ public final class CosmosBatchRequestOptions {
      * @return a list of excluded regions
      * */
     public List<String> getExcludedRegions() {
+        if (this.excludeRegions == null) {
+            return null;
+        }
         return UnmodifiableList.unmodifiableList(this.excludeRegions);
     }
 
