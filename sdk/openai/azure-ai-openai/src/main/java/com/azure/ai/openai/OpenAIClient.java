@@ -466,10 +466,8 @@ public final class OpenAIClient {
                         .generateImageWithResponse(imageGenerationOptionsBinaryData, requestOptions)
                         .getValue()
                         .toObject(ImageResponse.class)
-                : this.serviceClient
-                        .beginBeginAzureBatchImageGeneration(imageGenerationOptionsBinaryData, requestOptions)
-                        .waitUntil(Duration.ofSeconds(30), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                        .getValue()
+                : beginBeginAzureBatchImageGeneration(imageGenerationOptionsBinaryData, requestOptions)
+                        .getFinalResult()
                         .toObject(ImageOperationResponse.class)
                         .getResult();
     }

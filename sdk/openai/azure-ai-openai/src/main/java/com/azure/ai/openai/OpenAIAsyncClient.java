@@ -472,8 +472,7 @@ public final class OpenAIAsyncClient {
                         .generateImageWithResponseAsync(imageGenerationOptionsBinaryData, requestOptions)
                         .flatMap(FluxUtil::toMono)
                         .map(it -> it.toObject(ImageResponse.class))
-                : serviceClient
-                        .beginBeginAzureBatchImageGenerationAsync(imageGenerationOptionsBinaryData, requestOptions)
+                : beginBeginAzureBatchImageGeneration(imageGenerationOptionsBinaryData, requestOptions)
                         .last()
                         .flatMap(it -> it.getFinalResult())
                         .map(it -> it.toObject(ImageOperationResponse.class).getResult());
