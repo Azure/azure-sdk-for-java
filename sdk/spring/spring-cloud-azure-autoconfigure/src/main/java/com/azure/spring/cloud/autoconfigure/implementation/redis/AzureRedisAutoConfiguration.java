@@ -19,7 +19,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisOperations;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 
 /**
@@ -39,7 +42,8 @@ public class AzureRedisAutoConfiguration {
     @Primary
     @Bean
     RedisProperties redisProperties(AzureRedisProperties azureRedisProperties,
-                                    AzureResourceManager azureResourceManager) {
+                                    AzureResourceManager azureResourceManager) throws InvocationTargetException,
+        IllegalAccessException {
         String cacheName = azureRedisProperties.getName();
 
         String resourceGroup = azureRedisProperties.getResource().getResourceGroup();
@@ -63,7 +67,22 @@ public class AzureRedisAutoConfiguration {
         }
 
         redisProperties.setPassword(redisCache.keys().primaryKey());
-        redisProperties.setSsl(useSsl);
+        Method setSsl = ReflectionUtils.findMethod(RedisProperties.class, "setSsl", boolean.class);
+        if (setSsl == null) {
+            Object ssl = ReflectionUtils.findMethod(RedisProperties.class, "getSsl").invoke(redisProperties);
+            Class<?>[] innerClasses = RedisProperties.class.getDeclaredClasses();
+            Class<?> targetInnerClass = null;
+            for (Class<?> innerClass : innerClasses) {
+                if (innerClass.getSimpleName().equals("Ssl")) {
+                    targetInnerClass = innerClass;
+                    break;
+                }
+            }
+            ReflectionUtils.findMethod(targetInnerClass, "setEnabled", boolean.class)
+                           .invoke(ssl, useSsl);
+        } else {
+            setSsl.invoke(redisProperties, useSsl);
+        }
 
         return redisProperties;
     }

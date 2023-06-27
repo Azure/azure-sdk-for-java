@@ -314,14 +314,6 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- for the samples   -->
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-      <version>4.5.14</version> <!-- {x-version-update;org.apache.httpcomponents:httpclient;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
     <!-- used to test AzureJdbcAutoConfiguration -->
     <dependency>
       <groupId>com.mysql</groupId>
