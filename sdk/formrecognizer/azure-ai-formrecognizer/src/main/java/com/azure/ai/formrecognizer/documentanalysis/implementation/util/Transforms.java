@@ -45,8 +45,6 @@ import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormula;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormulaKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentImage;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentKeyValueElement;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentKeyValuePair;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentLine;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPage;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPageKind;
@@ -158,18 +156,7 @@ public class Transforms {
 
         // add key value pairs
         if (!CoreUtils.isNullOrEmpty(innerAnalyzeResult.getKeyValuePairs())) {
-            AnalyzeResultHelper.setKeyValuePairs(analyzeResult, innerAnalyzeResult.getKeyValuePairs()
-                .stream()
-                .map(innerKeyValuePair -> {
-                    DocumentKeyValuePair documentKeyValuePair = new DocumentKeyValuePair();
-                    DocumentKeyValuePairHelper.setValue(documentKeyValuePair,
-                        toDocumentKeyValueElement(innerKeyValuePair.getValue()));
-                    DocumentKeyValuePairHelper.setKey(documentKeyValuePair,
-                        toDocumentKeyValueElement(innerKeyValuePair.getKey()));
-                    DocumentKeyValuePairHelper.setConfidence(documentKeyValuePair, innerKeyValuePair.getConfidence());
-                    return documentKeyValuePair;
-                })
-                .collect(Collectors.toList()));
+            AnalyzeResultHelper.setKeyValuePairs(analyzeResult, innerAnalyzeResult.getKeyValuePairs());
         }
 
         // add styles
@@ -440,6 +427,7 @@ public class Transforms {
         }
         return  null;
     }
+
     private static DocumentFieldSchema toDocumentFieldSchema(
         com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldSchema innerDocSchema) {
         if (innerDocSchema != null) {
@@ -467,19 +455,6 @@ public class Transforms {
         properties.forEach((key, innerDocFieldSchema) ->
             schemaMap.put(key, toDocumentFieldSchema(innerDocFieldSchema)));
         return schemaMap;
-    }
-
-    private static DocumentKeyValueElement toDocumentKeyValueElement(
-        com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentKeyValueElement innerDocKeyValElement) {
-        if (innerDocKeyValElement == null) {
-            return null;
-        }
-        DocumentKeyValueElement documentKeyValueElement = new DocumentKeyValueElement();
-        DocumentKeyValueElementHelper.setContent(documentKeyValueElement, innerDocKeyValElement.getContent());
-        DocumentKeyValueElementHelper.setBoundingRegions(documentKeyValueElement,
-            toBoundingRegions(innerDocKeyValElement.getBoundingRegions()));
-        DocumentKeyValueElementHelper.setSpans(documentKeyValueElement, innerDocKeyValElement.getSpans());
-        return documentKeyValueElement;
     }
 
     private static Map<String, DocumentField> toDocumentFields(

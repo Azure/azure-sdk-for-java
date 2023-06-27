@@ -175,13 +175,6 @@
           "justification": "Using generated enum class now adds this annotation."
         },
         {
-          "ignore": true,
-          "code": "java.method.visibilityReduced",
-          "new": "method void com.azure.ai.formrecognizer.documentanalysis.models.AddressValue::<init>()|method void com.azure.ai.formrecognizer.documentanalysis.models.CurrencyValue::<init>(double)",
-          "newVisibility": "private",
-          "justification": "Default constructor made private to prevent direct instantiation."
-        },
-        {
           "regex": true,
           "code": "java.annotation.added",
           "new": "class com.azure.ai.textanalytics.models.HealthcareEntityRelationType",

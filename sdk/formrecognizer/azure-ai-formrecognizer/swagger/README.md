@@ -78,7 +78,7 @@ service-interface-as-public: true
 custom-strongly-typed-header-deserialization: true
 generic-response-type: true
 custom-types-subpackage: models
-custom-types: DocumentFormulaKind,DocumentAnnotationKind,DocumentPageKind,DocumentBarcodeKind,FontStyle,FontWeight,ParagraphRole,DocumentSignatureType,DocumentTableCellKind,AddressValue,CurrencyValue,DocumentLanguage,DocumentSpan,DocumentStyle
+custom-types: DocumentFormulaKind,DocumentAnnotationKind,DocumentPageKind,DocumentBarcodeKind,FontStyle,FontWeight,ParagraphRole,DocumentSignatureType,DocumentTableCellKind,AddressValue,LengthUnit,CurrencyValue,DocumentKeyValueElement,DocumentKeyValuePair,DocumentLanguage,DocumentSpan,DocumentStyle,DocumentTypeDetails
 required-fields-as-ctor-args: true
 enable-sync-stack: true
 polling: {}
@@ -92,6 +92,15 @@ directive:
     transform: >
       delete $.PathOperationId["format"];
       delete $.PathResultId["format"];
+```
+
+### Rename enum LengthUnit to DocumentPageLengthUnit
+``` yaml $(tag) == 'formrecognizer-documentanalysis'
+directive:
+  - from: swagger-document
+    where: $.definitions.LengthUnit
+    transform: >
+      $["x-ms-enum"].name = "DocumentPageLengthUnit";
 ```
 
 ### Rename properties on CurrencyValue

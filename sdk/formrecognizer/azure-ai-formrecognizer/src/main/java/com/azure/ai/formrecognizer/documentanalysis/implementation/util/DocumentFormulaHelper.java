@@ -3,11 +3,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcode;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormula;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormulaKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan;
 import com.azure.ai.formrecognizer.documentanalysis.models.Point;
 
+import java.io.LineNumberInputStream;
 import java.util.List;
 
 /**

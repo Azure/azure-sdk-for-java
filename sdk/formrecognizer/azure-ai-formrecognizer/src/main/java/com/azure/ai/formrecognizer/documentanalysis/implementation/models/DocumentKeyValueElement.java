@@ -7,7 +7,6 @@ package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan;
 import java.util.List;
 
 /** An object representing the field key or value in a key-value pair. */
