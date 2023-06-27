@@ -118,8 +118,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     private TextAnalyticsAsyncClient client;
 
     @BeforeAll
-    static void beforeAll() throws InterruptedException {
-        TimeUnit.SECONDS.sleep(180);
+    static void beforeAll() {
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
     }
 
@@ -130,7 +129,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest((ignored1, ignored2) -> false)
             .assertAsync()
             .build();
     }
@@ -1761,7 +1759,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33555")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {

@@ -1329,7 +1329,7 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
     }
 
     String getApiKey(boolean isStaticSource) {
-        return interceptorManager.isPlaybackMode() ? "apiKeyInPlayback"
+        return interceptorManager.isPlaybackMode() ? FAKE_API_KEY
             : isStaticSource ? AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY : AZURE_TEXT_ANALYTICS_API_KEY;
     }
 
@@ -1337,16 +1337,11 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
         TextAnalyticsServiceVersion serviceVersion, boolean isStaticResource) {
         TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder()
             .endpoint(getEndpoint(isStaticResource))
+            .credential(new AzureKeyCredential(getApiKey(isStaticResource)))
             .httpClient(httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
-        if (getTestMode() == TestMode.RECORD) {
+        if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new AzureKeyCredential(FAKE_API_KEY));
-        } else {
-            builder.credential(new AzureKeyCredential(getApiKey(isStaticResource)));
         }
         return builder;
     }

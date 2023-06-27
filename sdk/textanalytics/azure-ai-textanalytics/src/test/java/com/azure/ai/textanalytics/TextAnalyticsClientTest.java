@@ -131,7 +131,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest((ignored1, ignored2) -> false)
             .assertSync()
             .build();
     }
@@ -1710,7 +1709,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33555")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
