@@ -26,6 +26,8 @@ public final class DocumentAnnotationHelper {
 
         void setKind(DocumentAnnotation documentAnnotation, DocumentAnnotationKind kind);
 
+
+
         void setConfidence(DocumentAnnotation documentAnnotation, float confidence);
     }
 

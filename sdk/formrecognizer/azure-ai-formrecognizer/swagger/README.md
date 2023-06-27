@@ -78,13 +78,13 @@ service-interface-as-public: true
 custom-strongly-typed-header-deserialization: true
 generic-response-type: true
 custom-types-subpackage: models
-custom-types: DocumentFormulaKind,DocumentAnnotationKind,DocumentPageKind,DocumentBarcodeKind,FontStyle,FontWeight,ParagraphRole,DocumentSignatureType,DocumentTableCellKind,AddressValue,LengthUnit,CurrencyValue,DocumentKeyValueElement,DocumentKeyValuePair,DocumentLanguage,DocumentSpan,DocumentStyle,DocumentTypeDetails
+custom-types: DocumentFormulaKind,DocumentAnnotationKind,DocumentPageKind,DocumentBarcodeKind,FontStyle,FontWeight,DocumentSignatureType,DocumentTableCellKind
 required-fields-as-ctor-args: true
 enable-sync-stack: true
 polling: {}
-output-model-immutable: true
 ```
 
+### Expose PathOperationId & PathResultId as String
 ``` yaml $(tag) == 'formrecognizer-documentanalysis'
 directive:
   - from: swagger-document
@@ -94,21 +94,3 @@ directive:
       delete $.PathResultId["format"];
 ```
 
-### Rename enum LengthUnit to DocumentPageLengthUnit
-``` yaml $(tag) == 'formrecognizer-documentanalysis'
-directive:
-  - from: swagger-document
-    where: $.definitions.LengthUnit
-    transform: >
-      $["x-ms-enum"].name = "DocumentPageLengthUnit";
-```
-
-### Rename properties on CurrencyValue
-``` yaml $(tag) == 'formrecognizer-documentanalysis'
-directive:
-  - from: swagger-document
-    where: $.definitions.CurrencyValue.properties
-    transform: >
-      $.currencySymbol["x-ms-client-name"] = "symbol";
-      $.currencyCode["x-ms-client-name"] = "code";
-```

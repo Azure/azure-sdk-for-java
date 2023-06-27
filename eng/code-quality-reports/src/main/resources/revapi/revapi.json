@@ -171,12 +171,6 @@
         {
           "regex": true,
           "code": "java.annotation.added",
-          "new": "class com.azure.ai.formrecognizer.documentanalysis.models.(DocumentTableCellKind|DocumentSignatureType)",
-          "justification": "Using generated enum class now adds this annotation."
-        },
-        {
-          "regex": true,
-          "code": "java.annotation.added",
           "new": "class com.azure.ai.textanalytics.models.HealthcareEntityRelationType",
           "justification": "Skip JsonCreator annotation on the method fromString when serialization and deserialization."
         },

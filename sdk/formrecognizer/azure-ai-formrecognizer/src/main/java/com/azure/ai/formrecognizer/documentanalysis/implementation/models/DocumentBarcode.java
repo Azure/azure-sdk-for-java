@@ -5,14 +5,13 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcodeKind;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan;
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A barcode object. */
-@Immutable
+@Fluent
 public final class DocumentBarcode {
     /*
      * Barcode kind.
@@ -53,7 +52,7 @@ public final class DocumentBarcode {
      * @param confidence the confidence value to set.
      */
     @JsonCreator
-    private DocumentBarcode(
+    public DocumentBarcode(
             @JsonProperty(value = "kind", required = true) DocumentBarcodeKind kind,
             @JsonProperty(value = "value", required = true) String value,
             @JsonProperty(value = "span", required = true) DocumentSpan span,
@@ -89,6 +88,17 @@ public final class DocumentBarcode {
      */
     public List<Float> getPolygon() {
         return this.polygon;
+    }
+
+    /**
+     * Set the polygon property: Bounding polygon of the barcode.
+     *
+     * @param polygon the polygon value to set.
+     * @return the DocumentBarcode object itself.
+     */
+    public DocumentBarcode setPolygon(List<Float> polygon) {
+        this.polygon = polygon;
+        return this;
     }
 
     /**

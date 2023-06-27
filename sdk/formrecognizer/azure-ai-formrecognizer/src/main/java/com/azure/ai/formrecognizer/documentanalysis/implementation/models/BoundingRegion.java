@@ -31,7 +31,7 @@ public final class BoundingRegion {
      * @param polygon the polygon value to set.
      */
     @JsonCreator
-    private BoundingRegion(
+    public BoundingRegion(
             @JsonProperty(value = "pageNumber", required = true) int pageNumber,
             @JsonProperty(value = "polygon", required = true) List<Float> polygon) {
         this.pageNumber = pageNumber;

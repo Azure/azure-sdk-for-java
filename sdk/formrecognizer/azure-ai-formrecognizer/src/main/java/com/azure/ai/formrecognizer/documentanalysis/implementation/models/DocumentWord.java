@@ -4,8 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan;
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.List;
  * A word object consisting of a contiguous sequence of characters. For non-space delimited languages, such as Chinese,
  * Japanese, and Korean, each character is represented as its own word.
  */
-@Immutable
+@Fluent
 public final class DocumentWord {
     /*
      * Text content of the word.
@@ -48,7 +47,7 @@ public final class DocumentWord {
      * @param confidence the confidence value to set.
      */
     @JsonCreator
-    private DocumentWord(
+    public DocumentWord(
             @JsonProperty(value = "content", required = true) String content,
             @JsonProperty(value = "span", required = true) DocumentSpan span,
             @JsonProperty(value = "confidence", required = true) float confidence) {
@@ -73,6 +72,17 @@ public final class DocumentWord {
      */
     public List<Float> getPolygon() {
         return this.polygon;
+    }
+
+    /**
+     * Set the polygon property: Bounding polygon of the word.
+     *
+     * @param polygon the polygon value to set.
+     * @return the DocumentWord object itself.
+     */
+    public DocumentWord setPolygon(List<Float> polygon) {
+        this.polygon = polygon;
+        return this;
     }
 
     /**

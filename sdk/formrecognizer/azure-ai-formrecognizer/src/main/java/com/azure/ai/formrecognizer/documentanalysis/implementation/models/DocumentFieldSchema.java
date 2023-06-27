@@ -4,13 +4,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Description of the field semantic schema using a JSON Schema style syntax. */
-@Immutable
+@Fluent
 public final class DocumentFieldSchema {
     /*
      * Semantic data type of the field value.
@@ -48,7 +48,7 @@ public final class DocumentFieldSchema {
      * @param type the type value to set.
      */
     @JsonCreator
-    private DocumentFieldSchema(@JsonProperty(value = "type", required = true) DocumentFieldType type) {
+    public DocumentFieldSchema(@JsonProperty(value = "type", required = true) DocumentFieldType type) {
         this.type = type;
     }
 
@@ -71,12 +71,34 @@ public final class DocumentFieldSchema {
     }
 
     /**
+     * Set the description property: Field description.
+     *
+     * @param description the description value to set.
+     * @return the DocumentFieldSchema object itself.
+     */
+    public DocumentFieldSchema setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
      * Get the example property: Example field content.
      *
      * @return the example value.
      */
     public String getExample() {
         return this.example;
+    }
+
+    /**
+     * Set the example property: Example field content.
+     *
+     * @param example the example value to set.
+     * @return the DocumentFieldSchema object itself.
+     */
+    public DocumentFieldSchema setExample(String example) {
+        this.example = example;
+        return this;
     }
 
     /**
@@ -89,11 +111,33 @@ public final class DocumentFieldSchema {
     }
 
     /**
+     * Set the items property: Field type schema of each array element.
+     *
+     * @param items the items value to set.
+     * @return the DocumentFieldSchema object itself.
+     */
+    public DocumentFieldSchema setItems(DocumentFieldSchema items) {
+        this.items = items;
+        return this;
+    }
+
+    /**
      * Get the properties property: Named sub-fields of the object field.
      *
      * @return the properties value.
      */
     public Map<String, DocumentFieldSchema> getProperties() {
         return this.properties;
+    }
+
+    /**
+     * Set the properties property: Named sub-fields of the object field.
+     *
+     * @param properties the properties value to set.
+     * @return the DocumentFieldSchema object itself.
+     */
+    public DocumentFieldSchema setProperties(Map<String, DocumentFieldSchema> properties) {
+        this.properties = properties;
+        return this;
     }
 }

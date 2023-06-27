@@ -38,7 +38,7 @@ public final class QuotaDetails {
      * @param quotaResetDateTime the quotaResetDateTime value to set.
      */
     @JsonCreator
-    private QuotaDetails(
+    public QuotaDetails(
             @JsonProperty(value = "used", required = true) int used,
             @JsonProperty(value = "quota", required = true) int quota,
             @JsonProperty(value = "quotaResetDateTime", required = true) OffsetDateTime quotaResetDateTime) {

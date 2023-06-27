@@ -22,7 +22,7 @@ public final class DocumentBarcode {
     /*
      * Bounding polygon of the barcode.
      */
-    private List<Point> polygon;
+    private List<Float> polygon;
 
     /*
      * Location of the barcode in the reading order concatenated content.
@@ -57,7 +57,7 @@ public final class DocumentBarcode {
      *
      * @return the polygon value.
      */
-    public List<Point> getBoundingPolygon() {
+    public List<Float> getBoundingPolygon() {
         return this.polygon;
     }
 
@@ -67,7 +67,7 @@ public final class DocumentBarcode {
      * @param polygon the polygon value to set.
      * @return the DocumentBarcode object itself.
      */
-    void setPolygon(List<Point> polygon) {
+    void setPolygon(List<Float> polygon) {
         this.polygon = polygon;
     }
 
@@ -126,12 +126,6 @@ public final class DocumentBarcode {
             public void setValue(DocumentBarcode documentBarcode, String value) {
                 documentBarcode.setValue(value);
             }
-
-            @Override
-            public void setBoundingPolygon(DocumentBarcode documentBarcode, List<Point> polygon) {
-                documentBarcode.setPolygon(polygon);
-            }
-
         });
     }
 }
