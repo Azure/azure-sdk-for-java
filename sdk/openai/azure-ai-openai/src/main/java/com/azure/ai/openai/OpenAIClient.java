@@ -467,7 +467,8 @@ public final class OpenAIClient {
                         .getValue()
                         .toObject(ImageResponse.class)
                 : beginBeginAzureBatchImageGeneration(imageGenerationOptionsBinaryData, requestOptions)
-                        .getFinalResult()
+                        .waitForCompletion()
+                        .getValue()
                         .toObject(ImageOperationResponse.class)
                         .getResult();
     }
