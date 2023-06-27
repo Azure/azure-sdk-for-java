@@ -192,7 +192,7 @@ chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way 
 ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelId}",
     new ChatCompletionsOptions(chatMessages));
 
-System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
+System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
 for (ChatChoice choice : chatCompletions.getChoices()) {
     ChatMessage message = choice.getMessage();
     System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
@@ -215,7 +215,7 @@ IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletion
     new ChatCompletionsOptions(chatMessages));
 
 chatCompletionsStream.forEach(chatCompletions -> {
-    System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
+    System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
     for (ChatChoice choice : chatCompletions.getChoices()) {
         ChatMessage message = choice.getDelta();
         if (message != null) {
@@ -243,7 +243,7 @@ EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(
 Embeddings embeddings = client.getEmbeddings("{deploymentOrModelId}", embeddingsOptions);
 
 for (EmbeddingItem item : embeddings.getData()) {
-    System.out.printf("Index: %d.%n", item.getIndex());
+    System.out.printf("Index: %d.%n", item.getPromptIndex());
     for (Double embedding : item.getEmbedding()) {
         System.out.printf("%f;", embedding);
     }
