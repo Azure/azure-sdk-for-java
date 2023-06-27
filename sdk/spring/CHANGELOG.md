@@ -1,6 +1,19 @@
 # Release History
 
-## 5.3.0-beta.1 (Unreleased)
+## 5.3.0 (2023-06-28)
+- This release is compatible with Spring Boot 3.0.0-3.1.0. (Note: 3.0.x (x>1) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2022.0.0-2022.0.3. (Note: 2022.0.x (x>0) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.2.14.
+- Upgrade `azure-resourcemanager` to 2.28.0.
+
+#### Features Added
+- Added the following artifacts into current bom file:
+    - spring-cloud-azure-starter-data-cosmos
+    - azure-spring-data-cosmos
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
@@ -8,6 +21,10 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Features Added
 - Support passwordless connections for JMS ServiceBus in Spring Boot 3. [#35608](https://github.com/Azure/azure-sdk-for-java/pull/35608).
 - Added autoconfiguration for the Event Grid client [#35613](https://github.com/Azure/azure-sdk-for-java/pull/35613).
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#530-2023-06-28) for more details.
 
 ## 5.2.0 (2023-06-02)
 - This release is compatible with Spring Boot 3.0.0-3.0.5. (Note: 3.0.x (x>1) should be supported, but they aren't tested with this release.)
