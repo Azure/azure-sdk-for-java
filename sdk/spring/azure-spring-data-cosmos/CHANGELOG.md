@@ -1,6 +1,6 @@
 ## Release History
 
-### 3.36.0-beta.1 (Unreleased)
+### 3.36.0-beta.1 (2023-06-28)
 
 #### Features Added
 
