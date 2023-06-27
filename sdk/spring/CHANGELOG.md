@@ -4,6 +4,12 @@
 - This release is compatible with Spring Boot 3.0.0-3.1.0. (Note: 3.0.x (x>1) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2022.0.0-2022.0.3. (Note: 2022.0.x (x>0) should be supported, but they aren't tested with this release.)
 
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.2.14.
+- Upgrade `azure-resourcemanager` to 2.28.0.
+
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
