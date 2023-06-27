@@ -119,8 +119,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     private TextAnalyticsAsyncClient client;
 
     @BeforeAll
-    static void beforeAll() throws InterruptedException {
-        TimeUnit.SECONDS.sleep(180);
+    static void beforeAll() {
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
     }
 
