@@ -10,6 +10,11 @@
 - Upgrade `azure-sdk-bom` to 1.2.14.
 - Upgrade `azure-resourcemanager` to 2.28.0.
 
+#### Features Added
+- Added the following artifacts into current bom file:
+    - spring-cloud-azure-starter-data-cosmos
+    - azure-spring-data-cosmos
+
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
