@@ -310,9 +310,13 @@
           "justification" : "Fix field removed."
         },
         {
-          "regex": true,
           "code" : "java.method.addedToInterface",
-          "new" : "method (void|int) com.mysql.cj.protocol.(ServerSession::getOldStatusFlags()|ServerSession::setOldStatusFlags(int))",
+          "new" : "method int com.mysql.cj.protocol.ServerSession::getOldStatusFlags()",
+          "justification" : "Method was added to an interface."
+        },
+        {
+          "code" : "java.method.addedToInterface",
+          "new" : "method void com.mysql.cj.protocol.ServerSession::setOldStatusFlags(int)",
           "justification" : "Method was added to an interface."
         }
       ]
