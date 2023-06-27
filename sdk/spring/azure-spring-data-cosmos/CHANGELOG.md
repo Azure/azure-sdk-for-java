@@ -2,12 +2,6 @@
 
 ### 3.36.0-beta.1 (2023-06-28)
 
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
 #### Other Changes
 * Optimized default implementation of `findById(ID id)` from `CrudRepository` so that it will execute point reads where id is also the partition key, and log a warning where it is not. The new behaviour is more optimal, especially for large containers with many partitions - see [PR 35261](https://github.com/Azure/azure-sdk-for-java/pull/35261).
 
