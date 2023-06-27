@@ -4,20 +4,20 @@
 package com.azure.spring.cloud.service.implementation.passwordless;
 
 import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.properties.PasswordlessProperties;
 import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
 import com.azure.spring.cloud.core.properties.client.ClientProperties;
 import com.azure.spring.cloud.core.properties.profile.AzureProfileProperties;
 import com.azure.spring.cloud.core.properties.proxy.ProxyProperties;
-import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
-import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
 
 /**
- * Implement {@link TokenCredentialOptionsProvider} and {@link AzureProfileOptionsProvider} for Spring Cloud Azure
- * support for other third party services.
+ * Implement {@link PasswordlessProperties} for Spring Cloud Azure support for other third party services.
  */
-public class AzurePasswordlessProperties implements AzureProperties {
+public class AzurePasswordlessProperties implements PasswordlessProperties, AzureProperties {
 
     private AzureProfileProperties profile = new AzureProfileProperties();
+
+    private String scopes;
 
     private TokenCredentialProperties credential = new TokenCredentialProperties();
 
@@ -73,4 +73,13 @@ public class AzurePasswordlessProperties implements AzureProperties {
     public void setPasswordlessEnabled(boolean passwordlessEnabled) {
         this.passwordlessEnabled = passwordlessEnabled;
     }
+
+    public String getScopes() {
+        return scopes;
+    }
+
+    public void setScopes(String scopes) {
+        this.scopes = scopes;
+    }
+
 }

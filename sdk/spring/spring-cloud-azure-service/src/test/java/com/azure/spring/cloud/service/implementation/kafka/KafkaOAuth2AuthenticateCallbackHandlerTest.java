@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AZURE_TOKEN_CREDENTIAL;
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AzureKafkaPasswordlessPropertiesMapping.managedIdentityEnabled;
+import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AzureKafkaPasswordlessPropertiesMapping.MANAGED_IDENTITY_ENABLED;
 import static com.azure.spring.cloud.service.implementation.kafka.AzureOAuthBearerTokenTest.FAKE_TOKEN;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
@@ -87,7 +87,7 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
         Map<String, Object> configs = new HashMap<>();
         configs.put(BOOTSTRAP_SERVERS_CONFIG, KAFKA_BOOTSTRAP_SERVER);
         Jaas jaas = new Jaas(OAuthBearerLoginModule.class.getName());
-        jaas.getOptions().put(managedIdentityEnabled.propertyKey(), "true");
+        jaas.getOptions().put(MANAGED_IDENTITY_ENABLED.propertyKey(), "true");
         configs.put(SASL_JAAS_CONFIG, new Password(jaas.toString()));
 
         KafkaOAuth2AuthenticateCallbackHandler handler = new KafkaOAuth2AuthenticateCallbackHandler();
