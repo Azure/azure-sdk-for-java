@@ -3,19 +3,24 @@
 
 package com.azure.ai.openai.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 public final class OpenAIServerSentEvents<T> {
 
     private static final String STREAM_COMPLETION_EVENT = "data: [DONE]";
+    private static final ClientLogger LOGGER = new ClientLogger(OpenAIServerSentEvents.class);
     private final Flux<ByteBuffer> source;
     private final Class<T> type;
     private ByteArrayOutputStream outStream;
@@ -38,31 +43,38 @@ public final class OpenAIServerSentEvents<T> {
     }
 
     private Flux<T> mapByteBuffersToEvents() {
-        return source.concatMap(byteBuffer -> {
-            List<T> values = new ArrayList<>();
-            byte[] array = byteBuffer.array();
-            for (byte b : array) {
-                if (b == 0xA) {
-                    String currentLine = outStream.toString();
-                    try {
-                        handleCurrentLine(currentLine, values);
-                    } catch (JsonProcessingException e) {
-                        return Flux.error(e);
+        return source
+            .publishOn(Schedulers.boundedElastic())
+            .concatMap(byteBuffer -> {
+                List<T> values = new ArrayList<>();
+                byte[] byteArray = byteBuffer.array();
+                for (byte currentByte : byteArray) {
+                    if (currentByte == 0xA || currentByte == 0xD) {
+                        String currentLine;
+                        try {
+                            currentLine = outStream.toString(StandardCharsets.UTF_8.name());
+                            handleCurrentLine(currentLine, values);
+                        } catch (UnsupportedEncodingException | JsonProcessingException e) {
+                            return Flux.error(e);
+                        }
+                        outStream = new ByteArrayOutputStream();
+                    } else {
+                        outStream.write(currentByte);
                     }
-                    outStream = new ByteArrayOutputStream();
-                } else {
-                    outStream.write(b);
                 }
-            }
-            try {
-                handleCurrentLine(outStream.toString(), values);
-                outStream = new ByteArrayOutputStream();
-            } catch (Exception e) {
-                // do nothing as this is the last line in this byte buffer which might be truncated
-                // and will be concatenated with the new byte buffer in the Flux
-            }
-            return Flux.fromIterable(values);
-        }).cache();
+                try {
+                    handleCurrentLine(outStream.toString(StandardCharsets.UTF_8.name()), values);
+                    outStream = new ByteArrayOutputStream();
+                } catch (IllegalStateException | JsonProcessingException e) {
+                    // return the values collected so far, as this could be because the server sent event is
+                    // split across two byte buffers and the last line is incomplete and will be continued in
+                    // the next byte buffer
+                    return Flux.fromIterable(values);
+                } catch (UnsupportedEncodingException e) {
+                    return Flux.error(e);
+                }
+                return Flux.fromIterable(values);
+            }).cache();
     }
 
     private void handleCurrentLine(String currentLine, List<T> values) throws JsonProcessingException {

@@ -3,7 +3,6 @@
 
 package com.azure.ai.openai.implementation;
 
-import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -12,7 +11,6 @@ import reactor.test.StepVerifier;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -134,13 +132,18 @@ public class OpenAIServerSentEventsTest {
         String jsonTestModel2 = BinaryData.fromObject(new TestModel().setName("foo2").setValue("value2")).toString();
         String sse2 = "data: " + jsonTestModel2;
 
-        String fullData = sse1 + "\n\n" + sse2;
+        String jsonTestModel3 = BinaryData.fromObject(new TestModel().setName("罗杰·").setValue("Switzerland")).toString();
+        String sse3 = "data: " + jsonTestModel3;
+
+        String fullData = sse1 + "\n\n" + sse2 + "\r\n\r\n" + sse3;
 
         byte[] fullDataBytes = fullData.getBytes(StandardCharsets.UTF_8);
+        // split the events with some bytes of a multi-byte char are in separate byte buffers
         ByteBuffer bb1 = ByteBuffer.wrap(Arrays.copyOfRange(fullDataBytes, 0, 47));
-        ByteBuffer bb2 = ByteBuffer.wrap(Arrays.copyOfRange(fullDataBytes, 47, fullDataBytes.length));
+        ByteBuffer bb2 = ByteBuffer.wrap(Arrays.copyOfRange(fullDataBytes, 47, 100));
+        ByteBuffer bb3 = ByteBuffer.wrap(Arrays.copyOfRange(fullDataBytes, 100, fullDataBytes.length));
 
-        OpenAIServerSentEvents<TestModel> objectOpenAIServerSentEvents = new OpenAIServerSentEvents<>(Flux.just(bb1, bb2), TestModel.class);
+        OpenAIServerSentEvents<TestModel> objectOpenAIServerSentEvents = new OpenAIServerSentEvents<>(Flux.just(bb1, bb2, bb3), TestModel.class);
         StepVerifier.create(objectOpenAIServerSentEvents.getEvents())
             .assertNext(testModel -> {
                 assertEquals("罗杰·费德勒", testModel.getName());
@@ -148,6 +151,9 @@ public class OpenAIServerSentEventsTest {
             }).assertNext(testModel -> {
                 assertEquals("foo2", testModel.getName());
                 assertEquals("value2", testModel.getValue());
+            }).assertNext(testModel -> {
+                assertEquals("罗杰·", testModel.getName());
+                assertEquals("Switzerland", testModel.getValue());
             })
             .verifyComplete();
     }
