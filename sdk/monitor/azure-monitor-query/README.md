@@ -122,6 +122,24 @@ MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder(
     .buildAsyncClient();
 ```
 
+#### Configure clients for non-public Azure clouds
+
+By default, `LogQueryClient` and `MetricQueryClient` are configured to connect to the public Azure Cloud. These can be configured to connect to non-public Azure clouds by passing in the correct `endpoint` argument: For example:
+
+```java readme-sample-createLogsQueryClientForNonPublicAzureCloud
+LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint("https://api.loganalytics.azure.cn/v1")
+    .buildClient();
+```
+
+```java readme-sample-createMetricsQueryClientForNonPublicAzureCloud
+MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint("https://management.chinacloudapi.cn")
+    .buildClient();
+```
+
 ### Execute the query
 
 For examples of Logs and Metrics queries, see the [Examples](#examples) section.
