@@ -71,7 +71,7 @@ public class AzureChangeAnalysisManagerTest extends TestBase {
     public void test() {
         // @embedmeStart
         Assertions.assertTrue(azureChangeAnalysisManager.changes()
-            .list(OffsetDateTime.now().minusDays(1), OffsetDateTime.now().plusDays(1)).stream().count() > 0);
+            .list(OffsetDateTime.now().minusDays(1), OffsetDateTime.now().plusDays(7)).stream().count() > 0);
         // @embedmeEnd
     }
 
