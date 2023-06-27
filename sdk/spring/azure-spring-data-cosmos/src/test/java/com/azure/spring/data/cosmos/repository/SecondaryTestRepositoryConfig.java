@@ -48,14 +48,14 @@ public class SecondaryTestRepositoryConfig {
     @Value("${cosmos.secondary.responseContinuationTokenLimitInKb}")
     private int responseContinuationTokenLimitInKb;
 
-    @Value("${cosmos.diagnosticsThresholds.pointOperationLatencyThreshold}")
-    private int pointOperationLatencyThreshold;
+    @Value("${cosmos.diagnosticsThresholds.pointOperationLatencyThresholdInMS}")
+    private int pointOperationLatencyThresholdInMS;
 
-    @Value("${cosmos.diagnosticsThresholds.nonPointOperationLatencyThreshold}")
-    private int nonPointOperationLatencyThreshold;
+    @Value("${cosmos.diagnosticsThresholds.nonPointOperationLatencyThresholdInMS}")
+    private int nonPointOperationLatencyThresholdInMS;
 
-    @Value("${cosmos.diagnosticsThresholds.requestChargeThreshold}")
-    private int requestChargeThreshold;
+    @Value("${cosmos.diagnosticsThresholds.requestChargeThresholdInRU}")
+    private int requestChargeThresholdInRU;
 
     @Value("${cosmos.diagnosticsThresholds.payloadSizeInBytesThreshold}")
     private int payloadSizeInBytesThreshold;
@@ -70,10 +70,10 @@ public class SecondaryTestRepositoryConfig {
                 new CosmosClientTelemetryConfig()
                     .diagnosticsThresholds(
                         new CosmosDiagnosticsThresholds()
-                            .setNonPointOperationLatencyThreshold(Duration.ofSeconds(nonPointOperationLatencyThreshold))
-                            .setPointOperationLatencyThreshold(Duration.ofSeconds(pointOperationLatencyThreshold))
+                            .setNonPointOperationLatencyThreshold(Duration.ofMillis(nonPointOperationLatencyThresholdInMS))
+                            .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
                             .setPayloadSizeThreshold(payloadSizeInBytesThreshold)
-                            .setRequestChargeThreshold(requestChargeThreshold)
+                            .setRequestChargeThreshold(requestChargeThresholdInRU)
                     )
                     .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
     }

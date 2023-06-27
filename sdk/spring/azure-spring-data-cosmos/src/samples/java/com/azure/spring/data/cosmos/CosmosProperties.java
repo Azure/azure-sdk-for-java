@@ -28,11 +28,11 @@ public class CosmosProperties {
 
     private int responseContinuationTokenLimitInKb;
 
-    private int pointOperationLatencyThreshold;
+    private int pointOperationLatencyThresholdInMS;
 
-    private int nonPointOperationLatencyThreshold;
+    private int nonPointOperationLatencyThresholdInMS;
 
-    private int requestChargeThreshold;
+    private int requestChargeThresholdInRU;
 
     private int payloadSizeInBytesThreshold;
 
@@ -100,28 +100,28 @@ public class CosmosProperties {
         this.responseContinuationTokenLimitInKb = responseContinuationTokenLimitInKb;
     }
 
-    public int getPointOperationLatencyThreshold() {
-        return pointOperationLatencyThreshold;
+    public int getPointOperationLatencyThresholdInMS() {
+        return pointOperationLatencyThresholdInMS;
     }
 
-    public void setPointOperationLatencyThreshold(int pointOperationLatencyThreshold) {
-        this.pointOperationLatencyThreshold = pointOperationLatencyThreshold;
+    public void setPointOperationLatencyThresholdInMS(int pointOperationLatencyThresholdInMS) {
+        this.pointOperationLatencyThresholdInMS = pointOperationLatencyThresholdInMS;
     }
 
-    public int getNonPointOperationLatencyThreshold() {
-        return nonPointOperationLatencyThreshold;
+    public int getNonPointOperationLatencyThresholdInMS() {
+        return nonPointOperationLatencyThresholdInMS;
     }
 
-    public void setNonPointOperationLatencyThreshold(int nonPointOperationLatencyThreshold) {
-        this.nonPointOperationLatencyThreshold = nonPointOperationLatencyThreshold;
+    public void setNonPointOperationLatencyThresholdInMS(int nonPointOperationLatencyThresholdInMS) {
+        this.nonPointOperationLatencyThresholdInMS = nonPointOperationLatencyThresholdInMS;
     }
 
-    public int getRequestChargeThreshold() {
-        return requestChargeThreshold;
+    public int getRequestChargeThresholdInRU() {
+        return requestChargeThresholdInRU;
     }
 
-    public void setRequestChargeThreshold(int requestChargeThreshold) {
-        this.requestChargeThreshold = requestChargeThreshold;
+    public void setRequestChargeThresholdInRU(int requestChargeThresholdInRU) {
+        this.requestChargeThresholdInRU = requestChargeThresholdInRU;
     }
 
     public int getPayloadSizeInBytesThreshold() {
