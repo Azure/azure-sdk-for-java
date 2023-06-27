@@ -467,16 +467,16 @@ public final class OpenAIAsyncClient {
     public Mono<ImageResponse> generateImage(ImageGenerationOptions imageGenerationOptions) {
         RequestOptions requestOptions = new RequestOptions();
         BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
-        return openAIServiceClient != null ?
-            openAIServiceClient
-                .generateImageWithResponseAsync(imageGenerationOptionsBinaryData, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(it -> it.toObject(ImageResponse.class)) :
-            serviceClient
-                .beginStartGenerateImageAsync(imageGenerationOptionsBinaryData, requestOptions)
-                .last()
-                .flatMap(it -> it.getFinalResult())
-                .map(it -> it.toObject(ImageOperationResponse.class).getResult());
+        return openAIServiceClient != null
+                ? openAIServiceClient
+                        .generateImageWithResponseAsync(imageGenerationOptionsBinaryData, requestOptions)
+                        .flatMap(FluxUtil::toMono)
+                        .map(it -> it.toObject(ImageResponse.class))
+                : serviceClient
+                        .beginBeginAzureBatchImageGenerationAsync(imageGenerationOptionsBinaryData, requestOptions)
+                        .last()
+                        .flatMap(it -> it.getFinalResult())
+                        .map(it -> it.toObject(ImageOperationResponse.class).getResult());
     }
 
     /**
@@ -509,7 +509,7 @@ public final class OpenAIAsyncClient {
      *             }
      *         ]
      *     }
-     *     status: String(notRunning/running/succeeded/canceled/failed/deleted) (Required)
+     *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
      *     error (Optional): (recursive schema, see error above)
      * }
      * }</pre>
@@ -523,10 +523,12 @@ public final class OpenAIAsyncClient {
      * @return a polling status update or final response payload for an image operation along with {@link Response} on
      *     successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getImageOperationStatusWithResponse(
+    Mono<Response<BinaryData>> getAzureBatchImageGenerationOperationStatusWithResponse(
             String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.getImageOperationStatusWithResponseAsync(operationId, requestOptions);
+        return this.serviceClient.getAzureBatchImageGenerationOperationStatusWithResponseAsync(
+                operationId, requestOptions);
     }
 
     /**
@@ -574,30 +576,8 @@ public final class OpenAIAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<BinaryData, BinaryData> beginStartGenerateImage(
+    PollerFlux<BinaryData, BinaryData> beginBeginAzureBatchImageGeneration(
             BinaryData imageGenerationOptions, RequestOptions requestOptions) {
-        return this.serviceClient.beginStartGenerateImageAsync(imageGenerationOptions, requestOptions);
-    }
-
-    /**
-     * Returns the status of the images operation.
-     *
-     * @param operationId .
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a polling status update or final response payload for an image operation on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ImageOperationResponse> getImageOperationStatus(String operationId) {
-        // Generated convenience method for getImageOperationStatusWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getImageOperationStatusWithResponse(operationId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ImageOperationResponse.class));
+        return this.serviceClient.beginBeginAzureBatchImageGenerationAsync(imageGenerationOptions, requestOptions);
     }
 }
