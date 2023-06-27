@@ -312,7 +312,7 @@
         {
           "regex": true,
           "code" : "java.method.addedToInterface",
-          "new" : "method (void|int) com.mysql.cj.protocol.ServerSession::(getOldStatusFlags()|setOldStatusFlags(int))",
+          "new" : "method (void|int) com.mysql.cj.protocol.(ServerSession::getOldStatusFlags()|ServerSession::setOldStatusFlags(int))",
           "justification" : "Method was added to an interface."
         }
       ]
