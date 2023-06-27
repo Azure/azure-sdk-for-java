@@ -27,14 +27,12 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
 
     private static final String SERVICE_BUS_SCOPE_AZURE = "https://servicebus.azure.net/.default";
     private static final String SERVICE_BUS_SCOPE_AZURE_CHINA = SERVICE_BUS_SCOPE_AZURE;
-    private static final String SERVICE_BUS_SCOPE_AZURE_GERMANY = SERVICE_BUS_SCOPE_AZURE;
     private static final String SERVICE_BUS_SCOPE_AZURE_US_GOVERNMENT = SERVICE_BUS_SCOPE_AZURE;
 
     private static final Map<CloudType, String> SERVICEBUS_SCOPE_MAP = new HashMap<CloudType, String>() {
         {
             put(CloudType.AZURE, SERVICE_BUS_SCOPE_AZURE);
             put(CloudType.AZURE_CHINA, SERVICE_BUS_SCOPE_AZURE_CHINA);
-            put(CloudType.AZURE_GERMANY, SERVICE_BUS_SCOPE_AZURE_GERMANY);
             put(CloudType.AZURE_US_GOVERNMENT, SERVICE_BUS_SCOPE_AZURE_US_GOVERNMENT);
         }
     };
