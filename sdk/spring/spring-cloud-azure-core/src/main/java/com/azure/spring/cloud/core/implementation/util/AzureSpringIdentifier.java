@@ -49,6 +49,7 @@ public final class AzureSpringIdentifier {
     public static final String AZURE_SPRING_KEY_VAULT_CERTIFICATES = "az-sp-kv-ct/" + VERSION;
 
     public static final String AZURE_SPRING_MYSQL_OAUTH = "az-sp-mysql/" + VERSION;
+    public static final String AZURE_SPRING_OPENAI = "az-sp-opai/" + VERSION;
     public static final String AZURE_SPRING_POSTGRESQL_OAUTH = "az-sp-psql/" + VERSION;
 
     /**

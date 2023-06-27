@@ -2196,6 +2196,7 @@
         <Class name="com.azure.spring.cloud.core.implementation.credential.resolver.AzureNamedKeyCredentialResolver"/>
         <Class name="com.azure.spring.cloud.core.implementation.credential.resolver.AzureSasCredentialResolver"/>
         <Class name="com.azure.spring.cloud.service.implementation.storage.credential.StorageSharedKeyCredentialResolver"/>
+        <Class name="com.azure.spring.cloud.service.implementation.openai.credential.NonAzureOpenAIKeyCredentialResolver"/>
       </Or>
       <Method name="resolve"/>
     </And>

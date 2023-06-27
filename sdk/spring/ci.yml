@@ -135,6 +135,10 @@ parameters:
   displayName: 'spring-cloud-azure-starter-keyvault-secrets'
   type: boolean
   default: true
+- name: release_springcloudazurestarteropenai
+  displayName: 'spring-cloud-azure-starter-openai'
+  type: boolean
+  default: true
 - name: release_springcloudazurestarterservicebus
   displayName: 'spring-cloud-azure-starter-servicebus'
   type: boolean
@@ -416,6 +420,14 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterkeyvaultsecrets }}
+      - name: spring-cloud-azure-starter-openai
+        groupId: com.azure.spring
+        safeName: springcloudazurestarteropenai
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazurestarteropenai }}
       - name: spring-cloud-azure-starter-servicebus
         groupId: com.azure.spring
         safeName: springcloudazurestarterservicebus
