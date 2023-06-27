@@ -68,12 +68,12 @@ public class CryptographyAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(CryptographyAsyncClient.class);
 
     private final String keyCollection;
-    private final String keyId;
     private final HttpPipeline pipeline;
 
     private LocalKeyCryptographyClient localKeyCryptographyClient;
 
     final CryptographyClientImpl implClient;
+    final String keyId;
 
     JsonWebKey key;
 

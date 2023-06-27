@@ -49,7 +49,7 @@ public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient i
      */
     @Override
     public Mono<String> getKeyId() {
-        return implClient.getKeyIdAsync();
+        return Mono.defer(() -> Mono.just(this.keyId));
     }
 
     /**

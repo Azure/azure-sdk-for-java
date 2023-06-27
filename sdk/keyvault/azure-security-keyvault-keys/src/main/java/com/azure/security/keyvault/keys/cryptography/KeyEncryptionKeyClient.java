@@ -44,7 +44,7 @@ public final class KeyEncryptionKeyClient extends CryptographyClient implements 
      */
     @Override
     public String getKeyId() {
-        return implClient.getKeyId();
+        return this.keyId;
     }
 
     /**
