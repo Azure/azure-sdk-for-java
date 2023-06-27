@@ -71,10 +71,8 @@
  *
  * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization -->
  * <pre>
- * DocumentModelAdministrationClient client = new DocumentModelAdministrationClientBuilder&#40;&#41;
- *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
- *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .buildClient&#40;&#41;;
+ * DocumentModelAdministrationClient documentModelAdministrationClient =
+ *     new DocumentModelAdministrationClientBuilder&#40;&#41;.buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization  -->
  *
@@ -93,9 +91,9 @@
  *
  * <p>Let's take a look at the administration client scenarios and their respective usage below.</p>
  *
- * <br/>
+ * <br>
  *
- * <hr/>
+ * <hr>
  *
  * <h2>Build custom document models</h2>
  *
@@ -150,9 +148,9 @@
  * <a href="https://aka.ms/azsdk/formrecognizer/labelingtool">Form Recognizer Labeling Tool
  * .</a>.
  *
- * <br/>
+ * <br>
  *
- * <hr/>
+ * <hr>
  *
  * <h2>Manage models</h2>
  *

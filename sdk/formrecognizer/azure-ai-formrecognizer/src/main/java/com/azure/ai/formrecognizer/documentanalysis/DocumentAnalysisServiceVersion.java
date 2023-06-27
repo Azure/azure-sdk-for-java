@@ -18,7 +18,7 @@ public enum DocumentAnalysisServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2023-02-28-preview}.
      */
-    V2023_02_28_preview("2023-02-28-preview");
+    V2023_07_31("2023-07-31");
 
     private final String version;
 
@@ -39,6 +39,6 @@ public enum DocumentAnalysisServiceVersion implements ServiceVersion {
      */
     public static DocumentAnalysisServiceVersion getLatest() {
         // Switch to the latest preview once recordings are updated.
-        return V2023_02_28_preview;
+        return V2023_07_31;
     }
 }

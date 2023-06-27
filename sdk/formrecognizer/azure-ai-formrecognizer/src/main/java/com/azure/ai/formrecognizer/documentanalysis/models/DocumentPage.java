@@ -61,8 +61,6 @@ public final class DocumentPage {
      */
     private List<DocumentLine> lines;
 
-    private DocumentPageKind kind;
-
     /*
      * Extracted annotations from the page.
      */
@@ -77,11 +75,6 @@ public final class DocumentPage {
      * Extracted formulas from the page.
      */
     private List<DocumentFormula> formulas;
-
-    /*
-     * Extracted images from the page.
-     */
-    private List<DocumentImage> images;
 
     /**
      * Get the 1-based page number in the input document.
@@ -259,24 +252,6 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the kind of document page.
-     *
-     * @return the kind value.
-     */
-    public DocumentPageKind getKind() {
-        return this.kind;
-    }
-
-    /**
-     * Set the kind property: Kind of document page.
-     *
-     * @param kind the kind value to set.
-     */
-    void setKind(DocumentPageKind kind) {
-        this.kind = kind;
-    }
-
-    /**
      * Get the extracted annotations from the page.
      *
      * @return the annotations value.
@@ -333,25 +308,6 @@ public final class DocumentPage {
         this.formulas = formulas;
     }
 
-    /**
-     * Get the extracted images from the page.
-     *
-     * @return the images value.
-     */
-    public List<DocumentImage> getImages() {
-        return this.images;
-    }
-
-    /**
-     * Set the images property: Extracted images from the page.
-     *
-     * @param images the images value to set.
-     * @return the DocumentPage object itself.
-     */
-    void setImages(List<DocumentImage> images) {
-        this.images = images;
-    }
-
     static {
         DocumentPageHelper.setAccessor(new DocumentPageHelper.DocumentPageAccessor() {
             @Override
@@ -397,16 +353,6 @@ public final class DocumentPage {
             @Override
             public void setLines(DocumentPage documentPage, List<DocumentLine> lines) {
                 documentPage.setLines(lines);
-            }
-
-            @Override
-            public void setKind(DocumentPage documentPage, DocumentPageKind pageKind) {
-                documentPage.setKind(pageKind);
-            }
-
-            @Override
-            public void setImages(DocumentPage documentPage, List<DocumentImage> images) {
-                documentPage.setImages(images);
             }
 
             @Override
