@@ -78,10 +78,11 @@ service-interface-as-public: true
 custom-strongly-typed-header-deserialization: true
 generic-response-type: true
 custom-types-subpackage: models
-custom-types: DocumentFormulaKind,DocumentAnnotationKind,DocumentPageKind,DocumentBarcodeKind,FontStyle,FontWeight,DocumentSignatureType,DocumentTableCellKind
+custom-types: DocumentFormulaKind,DocumentAnnotationKind,DocumentPageKind,DocumentBarcodeKind,FontStyle,FontWeight,DocumentSignatureType,DocumentTableCellKind,ParagraphRole,DocumentKeyValueElement,DocumentKeyValuePair,DocumentStyle,DocumentTypeDetails
 required-fields-as-ctor-args: true
 enable-sync-stack: true
 polling: {}
+output-model-immutable: true
 ```
 
 ### Expose PathOperationId & PathResultId as String
