@@ -452,6 +452,34 @@ public final class OpenAIAsyncClient {
     }
 
     /**
+     * Starts the generation of a batch of images from a text caption.
+     *
+     * @param imageGenerationOptions Represents the request data used to generate images.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Mono} with the image generation result
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ImageResponse> generateImage(ImageGenerationOptions imageGenerationOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
+        return openAIServiceClient != null ?
+            openAIServiceClient
+                .generateImageWithResponseAsync(imageGenerationOptionsBinaryData, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(it -> it.toObject(ImageResponse.class)) :
+            serviceClient
+                .beginStartGenerateImageAsync(imageGenerationOptionsBinaryData, requestOptions)
+                .last()
+                .flatMap(it -> it.getFinalResult())
+                .map(it -> it.toObject(ImageOperationResponse.class).getResult());
+    }
+
+    /**
      * Returns the status of the images operation.
      *
      * <p><strong>Response Body Schema</strong>
@@ -495,9 +523,8 @@ public final class OpenAIAsyncClient {
      * @return a polling status update or final response payload for an image operation along with {@link Response} on
      *     successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getImageOperationStatusWithResponse(
+    Mono<Response<BinaryData>> getImageOperationStatusWithResponse(
             String operationId, RequestOptions requestOptions) {
         return this.serviceClient.getImageOperationStatusWithResponseAsync(operationId, requestOptions);
     }
@@ -550,34 +577,6 @@ public final class OpenAIAsyncClient {
     PollerFlux<BinaryData, BinaryData> beginStartGenerateImage(
             BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         return this.serviceClient.beginStartGenerateImageAsync(imageGenerationOptions, requestOptions);
-    }
-
-    /**
-     * Starts the generation of a batch of images from a text caption.
-     *
-     * @param imageGenerationOptions Represents the request data used to generate images.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Mono} with the image generation result
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ImageResponse> generateImage(ImageGenerationOptions imageGenerationOptions) {
-        RequestOptions requestOptions = new RequestOptions();
-        BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
-        return openAIServiceClient != null
-                ? openAIServiceClient
-                    .generateImageWithResponseAsync(imageGenerationOptionsBinaryData, requestOptions)
-                    .flatMap(FluxUtil::toMono)
-                    .map(it -> it.toObject(ImageResponse.class))
-                : serviceClient
-                    .beginStartGenerateImageAsync(imageGenerationOptionsBinaryData, requestOptions)
-                    .last()
-                    .flatMap(it -> it.getFinalResult())
-                    .map(it -> it.toObject(ImageOperationResponse.class).getResult());
     }
 
     /**

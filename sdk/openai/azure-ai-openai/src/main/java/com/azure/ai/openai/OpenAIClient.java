@@ -31,6 +31,8 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import java.nio.ByteBuffer;
+import java.time.Duration;
+
 import reactor.core.publisher.Flux;
 
 /** Initializes a new instance of the synchronous OpenAIClient type. */
@@ -445,6 +447,35 @@ public final class OpenAIClient {
     }
 
     /**
+     * Starts the generation of a batch of images from a text caption.
+     *
+     * @param imageGenerationOptions Represents the request data used to generate images.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ImageOperationResponse} for polling of status details for long running operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ImageResponse generateImage(ImageGenerationOptions imageGenerationOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
+        return openAIServiceClient != null ?
+            openAIServiceClient
+                .generateImageWithResponse(imageGenerationOptionsBinaryData, requestOptions)
+                .getValue()
+                .toObject(ImageResponse.class) :
+            this.serviceClient
+                .beginStartGenerateImage(imageGenerationOptionsBinaryData, requestOptions)
+                .waitUntil(Duration.ofSeconds(30), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .getValue()
+                .toObject(ImageOperationResponse.class)
+                .getResult();
+    }
+
+    /**
      * Returns the status of the images operation.
      *
      * <p><strong>Response Body Schema</strong>
@@ -487,9 +518,8 @@ public final class OpenAIClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a polling status update or final response payload for an image operation along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getImageOperationStatusWithResponse(String operationId, RequestOptions requestOptions) {
+    Response<BinaryData> getImageOperationStatusWithResponse(String operationId, RequestOptions requestOptions) {
         return this.serviceClient.getImageOperationStatusWithResponse(operationId, requestOptions);
     }
 
@@ -541,41 +571,6 @@ public final class OpenAIClient {
     SyncPoller<BinaryData, BinaryData> beginStartGenerateImage(
             BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         return this.serviceClient.beginStartGenerateImage(imageGenerationOptions, requestOptions);
-    }
-
-    /**
-     * Starts the generation of a batch of images from a text caption.
-     *
-     * @param imageGenerationOptions Represents the request data used to generate images.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ImageOperationResponse} for polling of status details for long running operations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ImageResponse generateImage(ImageGenerationOptions imageGenerationOptions) {
-        RequestOptions requestOptions = new RequestOptions();
-        BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
-        return openAIServiceClient != null
-                ? openAIServiceClient
-                        .generateImageWithResponse(imageGenerationOptionsBinaryData, requestOptions)
-                        .getValue()
-                        .toObject(ImageResponse.class)
-                : this.serviceClient
-                        .beginStartGenerateImage(imageGenerationOptionsBinaryData, requestOptions)
-                        . // option 1
-                        waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                        .getValue()
-                        . // option 2
-                        //            .getFinalResult()
-                        // option 3
-                        //            .waitForCompletion()
-                        //            .getValue()
-                        toObject(ImageOperationResponse.class)
-                        .getResult();
     }
 
     /**
