@@ -10,6 +10,10 @@
 - Added the following artifacts into current bom file:
     - spring-cloud-azure-starter-openai
 
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#3360-beta1-2023-06-28) for more details.
+
 ## 5.2.0 (2023-06-02)
 - This release is compatible with Spring Boot 3.0.0-3.0.5. (Note: 3.0.x (x>1) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2022.0.0-2022.0.2. (Note: 2022.0.x (x>0) should be supported, but they aren't tested with this release.)
