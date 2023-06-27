@@ -14,7 +14,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Text analytics entity recognition. */
+/**
+ *  Text analytics entity recognition.
+ * */
 @Fluent
 public final class EntityRecognitionSkill extends SearchIndexerSkill {
 
@@ -25,9 +27,11 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      */
     private final EntityRecognitionSkillVersion version;
 
+    @Deprecated
     private final EntityRecognitionSkillV1 v1Skill;
     private final EntityRecognitionSkillV3 v3Skill;
 
+    @Deprecated
     EntityRecognitionSkill(EntityRecognitionSkillV1 v1Skill) {
         super(v1Skill.getInputs(), v1Skill.getOutputs());
         this.version = EntityRecognitionSkillVersion.V1;
@@ -48,6 +52,7 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
+    @Deprecated
     public EntityRecognitionSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         this(inputs, outputs, EntityRecognitionSkillVersion.V1);
     }

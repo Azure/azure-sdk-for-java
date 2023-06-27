@@ -25,7 +25,7 @@ public final class Vector implements JsonSerializable<Vector> {
     /*
      * Number of nearest neighbors to return as top hits.
      */
-    private Integer k;
+    private Integer kNearestNeighborsCount;
 
     /*
      * Vector Fields of type Collection(Edm.Single) to be included in the vector searched.
@@ -56,22 +56,22 @@ public final class Vector implements JsonSerializable<Vector> {
     }
 
     /**
-     * Get the k property: Number of nearest neighbors to return as top hits.
+     * Get the kNearestNeighborsCount property: Number of nearest neighbors to return as top hits.
      *
-     * @return the k value.
+     * @return the kNearestNeighborsCount value.
      */
-    public Integer getK() {
-        return this.k;
+    public Integer getKNearestNeighborsCount() {
+        return this.kNearestNeighborsCount;
     }
 
     /**
-     * Set the k property: Number of nearest neighbors to return as top hits.
+     * Set the kNearestNeighborsCount property: Number of nearest neighbors to return as top hits.
      *
-     * @param k the k value to set.
+     * @param kNearestNeighborsCount the kNearestNeighborsCount value to set.
      * @return the Vector object itself.
      */
-    public Vector setK(Integer k) {
-        this.k = k;
+    public Vector setKNearestNeighborsCount(Integer kNearestNeighborsCount) {
+        this.kNearestNeighborsCount = kNearestNeighborsCount;
         return this;
     }
 
@@ -99,7 +99,7 @@ public final class Vector implements JsonSerializable<Vector> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeFloat(element));
-        jsonWriter.writeNumberField("k", this.k);
+        jsonWriter.writeNumberField("k", this.kNearestNeighborsCount);
         jsonWriter.writeStringField("fields", this.fields);
         return jsonWriter.writeEndObject();
     }
@@ -124,7 +124,7 @@ public final class Vector implements JsonSerializable<Vector> {
                             List<Float> value = reader.readArray(reader1 -> reader1.getFloat());
                             deserializedVector.value = value;
                         } else if ("k".equals(fieldName)) {
-                            deserializedVector.k = reader.getNullable(JsonReader::getInt);
+                            deserializedVector.kNearestNeighborsCount = reader.getNullable(JsonReader::getInt);
                         } else if ("fields".equals(fieldName)) {
                             deserializedVector.fields = reader.getString();
                         } else {

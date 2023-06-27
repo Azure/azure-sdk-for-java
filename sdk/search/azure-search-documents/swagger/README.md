@@ -246,6 +246,50 @@ directive:
       $["x-ms-enum"].name = "BlobIndexerPdfTextRotationAlgorithm";
 ```
 
+### Rename Dimensions
+
+To ensure alignment with `VectorSearchConfiguration` in intellisense and documentation, rename the `Dimensions` to `VectorSearchDimensions`.
+
+```yaml
+directive:
+- from: searchservice.json
+  where: $.definitions.SearchField.properties.dimensions
+  transform: $["x-ms-client-name"] = "vectorSearchDimensions";
+```
+
+### Add `arm-id` format for `AuthResourceId`
+
+Add `"format": "arm-id"` for `AuthResourceId` to generate as [Azure.Core.ResourceIdentifier](https://learn.microsoft.com/dotnet/api/azure.core.resourceidentifier?view=azure-dotnet).
+
+```yaml
+directive:
+- from: searchservice.json
+  where: $.definitions.WebApiSkill.properties.authResourceId
+  transform: $["x-ms-format"] = "arm-id";
+```
+
+### Rename Vector property `K`
+
+Rename Vector property `K` to `KNearestNeighborsCount`
+
+```yaml
+directive:
+- from: searchindex.json
+  where: $.definitions.Vector.properties.k
+  transform: $["x-ms-client-name"] = "KNearestNeighborsCount";
+```
+
+### Rename QueryResultDocumentSemanticFieldState
+
+Simplify `QueryResultDocumentSemanticFieldState` name by renaming it to `SemanticFieldState`
+
+```yaml
+directive:
+- from: searchindex.json
+  where: $.definitions.QueryResultDocumentSemanticFieldState
+  transform: $["x-ms-enum"].name = "SemanticFieldState";
+```
+
 ### Add serialization discriminator to LexicalNormalizer
 ``` yaml $(java)
 directive:
