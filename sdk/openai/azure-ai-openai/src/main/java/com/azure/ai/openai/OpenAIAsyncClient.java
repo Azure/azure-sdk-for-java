@@ -264,7 +264,8 @@ public final class OpenAIAsyncClient {
     /**
      * Return the embeddings for a given prompt.
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
      *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
      *     scenarios.
@@ -280,10 +281,11 @@ public final class OpenAIAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Embeddings> getEmbeddings(String deploymentId, EmbeddingsOptions embeddingsOptions) {
+    public Mono<Embeddings> getEmbeddings(String deploymentOrModelName, EmbeddingsOptions embeddingsOptions) {
         // Generated convenience method for getEmbeddingsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getEmbeddingsWithResponse(deploymentId, BinaryData.fromObject(embeddingsOptions), requestOptions)
+        return getEmbeddingsWithResponse(
+                        deploymentOrModelName, BinaryData.fromObject(embeddingsOptions), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(Embeddings.class));
     }
@@ -292,7 +294,8 @@ public final class OpenAIAsyncClient {
      * Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate text
      * that continues from or "completes" provided prompt data.
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param completionsOptions The configuration information for a completions request. Completions support a wide
      *     variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -306,10 +309,11 @@ public final class OpenAIAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Completions> getCompletions(String deploymentId, CompletionsOptions completionsOptions) {
+    public Mono<Completions> getCompletions(String deploymentOrModelName, CompletionsOptions completionsOptions) {
         // Generated convenience method for getCompletionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCompletionsWithResponse(deploymentId, BinaryData.fromObject(completionsOptions), requestOptions)
+        return getCompletionsWithResponse(
+                        deploymentOrModelName, BinaryData.fromObject(completionsOptions), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(Completions.class));
     }
@@ -367,7 +371,8 @@ public final class OpenAIAsyncClient {
      * Gets chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
      * text that continues from or "completes" provided prompt data.
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
      *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -382,11 +387,11 @@ public final class OpenAIAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChatCompletions> getChatCompletions(
-            String deploymentId, ChatCompletionsOptions chatCompletionsOptions) {
+            String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions) {
         // Generated convenience method for getChatCompletionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getChatCompletionsWithResponse(
-                        deploymentId, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                        deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
     }
