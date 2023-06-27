@@ -86,7 +86,9 @@ public class TextReplacementPolicy implements HttpPipelinePolicy {
         return next.process()
             .doOnError(throwable -> {
                 networkCallRecord.setException(new NetworkCallError(throwable));
-                recordedData.addNetworkCall(networkCallRecord);
+                if (recordedData != null) { // when using testproxy, recordedData will be set to null
+                    recordedData.addNetworkCall(networkCallRecord);
+                }
                 throw logger.logExceptionAsWarning(Exceptions.propagate(throwable));
             }).flatMap(httpResponse -> {
                 final HttpResponse bufferedResponse = httpResponse.buffer();

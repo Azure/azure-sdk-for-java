@@ -73,7 +73,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     private static final String ZERO_UUID = "00000000-0000-0000-0000-000000000000";
     private static final String ZERO_SUBSCRIPTION = ZERO_UUID;
     private static final String ZERO_TENANT = ZERO_UUID;
-    private static final String PLAYBACK_URI_BASE = "http://localhost:";
+    private static final String PLAYBACK_URI_BASE = "https://localhost:";
     private static final String AZURE_AUTH_LOCATION = "AZURE_AUTH_LOCATION";
     private static final String AZURE_TEST_LOG_LEVEL = "AZURE_TEST_LOG_LEVEL";
     private static final String HTTPS_PROXY_HOST = "https.proxyHost";
@@ -241,7 +241,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
         if (isPlaybackMode()) {
             if (interceptorManager.getRecordedData() == null) {
                 skipInPlayback();
-                return;
+//                return;
             }
 
             testProfile = PLAYBACK_PROFILE;
