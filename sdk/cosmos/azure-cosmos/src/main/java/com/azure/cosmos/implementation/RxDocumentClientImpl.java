@@ -38,6 +38,7 @@ import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
 import com.azure.cosmos.implementation.patch.PatchUtil;
+import com.azure.cosmos.implementation.pooling.PooledStringBuilder;
 import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactory;
 import com.azure.cosmos.implementation.query.IDocumentQueryClient;
 import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
@@ -2464,7 +2465,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         List<CosmosItemIdentity> idPartitionKeyPairList,
         String partitionKeySelector) {
 
-        StringBuilder queryStringBuilder = new StringBuilder();
+        PooledStringBuilder queryStringBuilder = PooledStringBuilder.createInstance();
         List<SqlParameter> parameters = new ArrayList<>();
 
         queryStringBuilder.append("SELECT * FROM c WHERE c.id IN ( ");
@@ -2491,11 +2492,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
         queryStringBuilder.append(" )");
 
-        return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
+        return new SqlQuerySpec(queryStringBuilder.toStringAndFree(), parameters);
     }
 
     private SqlQuerySpec createReadManyQuerySpec(List<CosmosItemIdentity> itemIdentities, String partitionKeySelector) {
-        StringBuilder queryStringBuilder = new StringBuilder();
+        PooledStringBuilder queryStringBuilder = PooledStringBuilder.createInstance();
         List<SqlParameter> parameters = new ArrayList<>();
 
         queryStringBuilder.append("SELECT * FROM c WHERE ( ");
@@ -2528,7 +2529,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
         queryStringBuilder.append(" )");
 
-        return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
+        return new SqlQuerySpec(queryStringBuilder.toStringAndFree(), parameters);
     }
 
     private SqlQuerySpec createReadManyQuerySpecMultiHash(

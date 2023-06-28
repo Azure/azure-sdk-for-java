@@ -4,6 +4,8 @@
 
 package com.azure.cosmos.encryption.implementation.mdesrc.cryptography;
 
+import com.azure.cosmos.implementation.pooling.PooledStringBuilder;
+
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -310,12 +312,13 @@ final class SqlSerializerUtil {
                     String strVal = new String(decryptedValue, 0, decryptedValue.length, charset);
                     if ((SSType.CHAR == ssType) || (SSType.NCHAR == ssType)) {
                         // Right pad the string for CHAR types.
-                        StringBuilder sb = new StringBuilder(strVal);
+                        PooledStringBuilder sb = PooledStringBuilder.createInstance();
+                        sb.append(strVal);
                         int padLength = precision - strVal.length();
                         for (int i = 0; i < padLength; i++) {
                             sb.append(' ');
                         }
-                        strVal = sb.toString();
+                        strVal = sb.toStringAndFree();
                     }
                     return convertStringToObject(strVal, jdbcType);
                 } catch (IllegalArgumentException e) {
@@ -371,12 +374,14 @@ final class SqlSerializerUtil {
                     String strVal = new String(decryptedValue, 0, decryptedValue.length, charset);
                     if ((SSType.CHAR == ssType) || (SSType.NCHAR == ssType)) {
                         // Right pad the string for CHAR types.
-                        StringBuilder sb = new StringBuilder(strVal);
+
+                        PooledStringBuilder sb = PooledStringBuilder.createInstance();
+                        sb.append(strVal);
                         int padLength = precision - strVal.length();
                         for (int i = 0; i < padLength; i++) {
                             sb.append(' ');
                         }
-                        strVal = sb.toString();
+                        strVal = sb.toStringAndFree();
                     }
                     return convertStringToObject(strVal, jdbcType);
                 } catch (IllegalArgumentException e) {
@@ -1017,12 +1022,13 @@ final class SqlSerializerUtil {
 
                 if ((SSType.BINARY == ssType) && (str.length() < (precision * 2))) {
 
-                    StringBuilder strbuf = new StringBuilder(str);
+                    PooledStringBuilder strbuf = PooledStringBuilder.createInstance();
+                    strbuf.append(str);
 
                     while (strbuf.length() < (precision * 2)) {
                         strbuf.append('0');
                     }
-                    return strbuf.toString();
+                    return strbuf.toStringAndFree();
                 }
                 return str;
 
@@ -2323,7 +2329,7 @@ final class SqlSerializerUtil {
         String guidTemplate = "NNNNNNNN-NNNN-NNNN-NNNN-NNNNNNNNNNNN";
         byte guid[] = inputGUID;
 
-        StringBuilder sb = new StringBuilder(guidTemplate.length());
+        PooledStringBuilder sb = PooledStringBuilder.createInstance();
         for (int i = 0; i < 4; i++) {
             sb.append(hexChars[(guid[3 - i] & 0xF0) >> 4]);
             sb.append(hexChars[guid[3 - i] & 0x0F]);
@@ -2349,7 +2355,7 @@ final class SqlSerializerUtil {
             sb.append(hexChars[guid[10 + i] & 0x0F]);
         }
 
-        return sb.toString();
+        return sb.toStringAndFree();
     }
 
     static final byte[] asGuidByteArray(UUID aId) {

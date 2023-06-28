@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.pooling.PooledStringBuilder;
 import com.azure.cosmos.models.ModelBridgeInternal;
 
 import javax.crypto.Mac;
@@ -133,7 +134,8 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
         }
 
         // Skipping lower casing of resourceId since it may now contain "ID" of the resource as part of the FullName
-        StringBuilder body = new StringBuilder();
+
+        PooledStringBuilder body = PooledStringBuilder.createInstance();
         body.append(ModelBridgeInternal.toLower(verb))
                 .append('\n')
                 .append(resourceSegment)
@@ -157,7 +159,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
         try {
 
-            byte[] digest = macInstance.get().doFinal(body.toString().getBytes(StandardCharsets.UTF_8));
+            byte[] digest = macInstance.get().doFinal(body.toStringAndFree().getBytes(StandardCharsets.UTF_8));
             String auth = Utils.encodeBase64String(digest);
             return AUTH_PREFIX + auth;
         }

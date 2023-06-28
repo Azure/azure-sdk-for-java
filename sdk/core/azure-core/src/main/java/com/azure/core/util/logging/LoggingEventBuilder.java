@@ -278,7 +278,6 @@ public final class LoggingEventBuilder {
         if (message == null) {
             message = "";
         }
-
         StringBuilder sb = new StringBuilder(20 + context.size() * 20 + message.length()
             + globalContextCached.length());
         sb.append("{\"")

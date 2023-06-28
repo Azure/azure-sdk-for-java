@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.pooling.PooledStringBuilder;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -75,9 +76,9 @@ public final class CosmosDiagnostics {
      */
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
+        PooledStringBuilder stringBuilder = PooledStringBuilder.createInstance();
         fillCosmosDiagnostics(null, stringBuilder);
-        return stringBuilder.toString();
+        return stringBuilder.toStringAndFree();
     }
 
     /**
@@ -250,7 +251,7 @@ public final class CosmosDiagnostics {
         return combinedStatistics;
     }
 
-    void fillCosmosDiagnostics(ObjectNode parentNode, StringBuilder stringBuilder) {
+    void fillCosmosDiagnostics(ObjectNode parentNode, PooledStringBuilder stringBuilder) {
         if (this.feedResponseDiagnostics != null) {
             if (parentNode != null) {
                 parentNode.put(USER_AGENT_KEY, this.feedResponseDiagnostics.getUserAgent());
