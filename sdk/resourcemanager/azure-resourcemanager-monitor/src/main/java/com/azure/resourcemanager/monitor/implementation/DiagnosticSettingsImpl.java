@@ -4,6 +4,7 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsOperationsClient;
@@ -13,9 +14,10 @@ import com.azure.resourcemanager.monitor.models.DiagnosticSetting;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettings;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategory;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.BatchDeletionImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.exception.AggregatedManagementException;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -23,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /** Implementation for DiagnosticSettings. */
 public class DiagnosticSettingsImpl
@@ -155,10 +156,14 @@ public class DiagnosticSettingsImpl
 
     @Override
     public Flux<String> deleteByIdsAsync(Collection<String> ids) {
-        Collection<String> encodedIds = ids == null ? null : ids.stream()
-            .map(ResourceUtils::encodeResourceId)
-            .collect(Collectors.toList());
-        return BatchDeletionImpl.deleteByIdsAsync(encodedIds, (rgName, name) -> this.inner().deleteAsync(rgName, name));
+        if (CoreUtils.isNullOrEmpty(ids)) {
+            return Flux.empty();
+        }
+        return Flux.fromIterable(ids)
+            .flatMapDelayError(id ->
+                deleteAsync(getResourceIdFromSettingsId(id), getNameFromSettingsId(id)).then(Mono.just(id)), 32, 32)
+            .onErrorMap(AggregatedManagementException::convertToManagementException)
+            .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler());
     }
 
     @Override
