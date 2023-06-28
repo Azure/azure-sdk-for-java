@@ -70,8 +70,9 @@ public class AzureChangeAnalysisManagerTest extends TestBase {
     @DoNotRecord(skipInPlayback = true)
     public void test() {
         // @embedmeStart
+        OffsetDateTime nowDateTime = OffsetDateTime.now();
         Assertions.assertTrue(azureChangeAnalysisManager.changes()
-            .list(OffsetDateTime.now().minusDays(1), OffsetDateTime.now().plusDays(7)).stream().count() > 0);
+            .list(nowDateTime.minusWeeks(2), nowDateTime).stream().count() > 0);
         // @embedmeEnd
     }
 
