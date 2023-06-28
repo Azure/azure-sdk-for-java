@@ -16,8 +16,9 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
-import com.azure.core.test.policy.TestProxyRecordPolicy;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.ResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -317,6 +318,13 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             // storage account endpoint
             textReplacementRules.put("https://[a-zA-Z0-9]+?" + AzureEnvironment.AZURE.getStorageEndpointSuffix().replace(".", "\\.") + "/", PLAYBACK_URI + "/");
             addTextReplacementRules(textReplacementRules);
+        }
+
+        if (!testContextManager.doNotRecordTest()) {
+            // don't match api-version when matching url
+            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version"))));
+            // sanitize subscription id
+            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("(?<=/subscriptions/)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL)));
         }
         initializeClients(httpPipeline, testProfile);
     }
