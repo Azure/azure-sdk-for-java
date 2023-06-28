@@ -83,7 +83,6 @@ public class StoreClient implements IStoreClient {
             sessionRetryOptions);
 
         addressResolver.setOpenConnectionsProcessor(this.transportClient.getProactiveOpenConnectionsProcessor());
-        addressResolver.setMetadataResponseHandler(this.transportClient.getMetadataResponseHandler());
     }
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {

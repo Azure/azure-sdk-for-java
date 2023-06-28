@@ -848,7 +848,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         }
 
         if (this.rntbdConnectionStateListener != null) {
-            this.rntbdConnectionStateListener.onException(throwable);
+            this.rntbdConnectionStateListener.onException(context, throwable);
         }
 
         if (this.pendingRequests.isEmpty()) {

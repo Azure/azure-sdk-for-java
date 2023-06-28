@@ -19,7 +19,6 @@ import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.Lists;
 import com.azure.cosmos.implementation.LockedException;
 import com.azure.cosmos.implementation.Longs;
-import com.azure.cosmos.implementation.MetadataResponseHandler;
 import com.azure.cosmos.implementation.MethodNotAllowedException;
 import com.azure.cosmos.implementation.MutableVolatile;
 import com.azure.cosmos.implementation.NotFoundException;
@@ -264,11 +263,6 @@ public class HttpTransportClient extends TransportClient {
     @Override
     public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
         throw new NotImplementedException("recordOpenConnectionsAndInitCachesStarted is not supported in httpTransportClient");
-    }
-
-    @Override
-    public MetadataResponseHandler getMetadataResponseHandler() {
-        return null;
     }
 
     private void beforeRequest(String activityId, URI uri, ResourceType resourceType, HttpHeaders requestHeaders) {

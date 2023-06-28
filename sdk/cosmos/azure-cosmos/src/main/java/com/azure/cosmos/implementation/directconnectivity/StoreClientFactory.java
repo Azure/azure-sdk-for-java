@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.MetadataResponseHandler;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -38,7 +37,6 @@ public class StoreClientFactory implements AutoCloseable {
 
         this.configs = configs;
         Protocol protocol = configs.getProtocol();
-        MetadataResponseHandler metadataResponseHandler = new MetadataResponseHandler(globalEndpointManager);
         if (enableTransportClientSharing) {
             this.transportClient = SharedTransportClient.getOrCreateInstance(
                 protocol,
@@ -48,8 +46,7 @@ public class StoreClientFactory implements AutoCloseable {
                 diagnosticsClientConfig,
                 addressResolver,
                 clientTelemetry,
-                globalEndpointManager,
-                metadataResponseHandler);
+                globalEndpointManager);
         } else {
             if (protocol == Protocol.HTTPS) {
                 this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent, globalEndpointManager);
@@ -63,8 +60,7 @@ public class StoreClientFactory implements AutoCloseable {
                         configs.getSslContext(),
                         addressResolver,
                         clientTelemetry,
-                        globalEndpointManager,
-                        metadataResponseHandler);
+                        globalEndpointManager);
                 diagnosticsClientConfig.withRntbdOptions(rntbdOptions.toDiagnosticsString());
 
             } else {

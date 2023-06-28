@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.LifeCycleUtils;
-import com.azure.cosmos.implementation.MetadataResponseHandler;
 import com.azure.cosmos.implementation.OperationCancelledException;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -64,9 +63,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssue;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.*;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 @JsonSerialize(using = RntbdTransportClient.JsonSerializer.class)
@@ -112,7 +109,6 @@ public class RntbdTransportClient extends TransportClient {
     private final RntbdServerErrorInjector serverErrorInjector;
     private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
     private final AddressSelector addressSelector;
-    private final MetadataResponseHandler metadataResponseHandler;
 
     // endregion
 
@@ -135,15 +131,13 @@ public class RntbdTransportClient extends TransportClient {
             final UserAgentContainer userAgent,
             final IAddressResolver addressResolver,
             final ClientTelemetry clientTelemetry,
-            final GlobalEndpointManager globalEndpointManager,
-            final MetadataResponseHandler metadataResponseHandler) {
+            final GlobalEndpointManager globalEndpointManager) {
         this(
             new Options.Builder(connectionPolicy).userAgent(userAgent).build(),
             configs.getSslContext(),
             addressResolver,
             clientTelemetry,
-            globalEndpointManager,
-            metadataResponseHandler);
+            globalEndpointManager);
     }
 
     //  TODO:(kuthapar) This constructor sets the globalEndpointmManager to null, which is not ideal.
@@ -155,7 +149,6 @@ public class RntbdTransportClient extends TransportClient {
         this.globalEndpointManager = null;
         this.metricConfig = null;
         this.addressSelector = null;
-        this.metadataResponseHandler = null;
         this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(endpointProvider);
         this.serverErrorInjector = new RntbdServerErrorInjector();
     }
@@ -165,8 +158,7 @@ public class RntbdTransportClient extends TransportClient {
         final SslContext sslContext,
         final IAddressResolver addressResolver,
         final ClientTelemetry clientTelemetry,
-        final GlobalEndpointManager globalEndpointManager,
-        final MetadataResponseHandler metadataResponseHandler) {
+        final GlobalEndpointManager globalEndpointManager) {
 
         this.serverErrorInjector = new RntbdServerErrorInjector();
         this.endpointProvider = new RntbdServiceEndpoint.Provider(
@@ -185,7 +177,6 @@ public class RntbdTransportClient extends TransportClient {
         this.channelAcquisitionContextEnabled = options.channelAcquisitionContextEnabled;
         this.globalEndpointManager = globalEndpointManager;
         this.addressSelector = new AddressSelector(addressResolver, Protocol.TCP);
-        this.metadataResponseHandler = metadataResponseHandler;
 
         if (clientTelemetry != null &&
             clientTelemetry.getClientTelemetryConfig() != null) {
@@ -243,11 +234,6 @@ public class RntbdTransportClient extends TransportClient {
     @Override
     public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
         this.proactiveOpenConnectionsProcessor.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
-    }
-
-    @Override
-    public MetadataResponseHandler getMetadataResponseHandler() {
-        return this.metadataResponseHandler;
     }
 
     /**

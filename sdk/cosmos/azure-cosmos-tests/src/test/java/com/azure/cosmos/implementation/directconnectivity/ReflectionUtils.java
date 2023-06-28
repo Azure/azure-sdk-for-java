@@ -389,6 +389,10 @@ public class ReflectionUtils {
         set(telemetry, httpClient, "httpClient");
     }
 
+    public static void setHttpClient(GatewayAddressCache gatewayAddressCache, HttpClient httpClient) {
+        set(gatewayAddressCache, httpClient, "httpClient");
+    }
+
     public static void setDefaultMinDurationBeforeEnforcingCollectionRoutingMapRefreshDuration(
         Duration newDuration) {
 

@@ -7,11 +7,10 @@ import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
-import io.netty.channel.ConnectTimeoutException;
+import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
@@ -59,7 +58,7 @@ public class RntbdConnectionStateListener {
         this.addressUris.add(addressUri);
     }
 
-    public void onException(Throwable exception) {
+    public void onException(ChannelHandlerContext channelHandlerContext, Throwable exception) {
         checkNotNull(exception, "expect non-null exception");
 
         this.metrics.record();
@@ -69,13 +68,13 @@ public class RntbdConnectionStateListener {
         // * or the channel has been shutdown gracefully
         if (exception instanceof IOException) {
             if (exception instanceof ClosedChannelException) {
-                this.metrics.recordAddressUpdated(this.onConnectionEvent(RntbdConnectionEvent.READ_EOF, exception));
+                this.metrics.recordAddressUpdated(this.onConnectionEvent(channelHandlerContext, RntbdConnectionEvent.READ_EOF, exception));
             } else {
-                this.metrics.recordAddressUpdated(this.onConnectionEvent(RntbdConnectionEvent.READ_FAILURE, exception));
+                this.metrics.recordAddressUpdated(this.onConnectionEvent(channelHandlerContext, RntbdConnectionEvent.READ_FAILURE, exception));
             }
         } else if (exception instanceof RntbdRequestManager.UnhealthyChannelException) {
             // A channel is closed due to Rntbd health check
-            this.metrics.recordAddressUpdated(this.onConnectionEvent(RntbdConnectionEvent.READ_FAILURE, exception));
+            this.metrics.recordAddressUpdated(this.onConnectionEvent(channelHandlerContext, RntbdConnectionEvent.READ_FAILURE, exception));
         } else {
             if (logger.isDebugEnabled()) {
                 logger.debug("Will not raise the connection state change event for error", exception);
@@ -136,16 +135,20 @@ public class RntbdConnectionStateListener {
 
     // region Privates
 
-    private int onConnectionEvent(final RntbdConnectionEvent event, final Throwable exception) {
+    private int onConnectionEvent(
+        final ChannelHandlerContext channelHandlerContext,
+        final RntbdConnectionEvent event,
+        final Throwable exception) {
 
         checkNotNull(exception, "expected non-null exception");
 
         if (event == RntbdConnectionEvent.READ_EOF || event == RntbdConnectionEvent.READ_FAILURE) {
             if (logger.isDebugEnabled()) {
-                logger.debug("onConnectionEvent({\"event\":{},\"time\":{},\"endpoint\":{},\"cause\":{})",
+                logger.debug("onConnectionEvent({\"event\":{},\"time\":{},\"endpoint\":{},\"channel\":{},\"cause\":{})",
                     event,
                     RntbdObjectMapper.toJson(Instant.now()),
                     RntbdObjectMapper.toJson(this.endpoint),
+                    RntbdObjectMapper.toJson(channelHandlerContext.channel().id()),
                     RntbdObjectMapper.toJson(exception));
             }
 
@@ -164,12 +167,13 @@ public class RntbdConnectionStateListener {
 
     public void attemptBackgroundAddressRefresh(RxDocumentServiceRequest request, AddressSelector addressSelector) {
         if (forceBackgroundAddressRefreshInProgress.compareAndSet(false, true)) {
+            logger.debug("background address refresh started from RntbdConnectionStateListener");
             // kickstart background address refresh
             addressSelector
                 .resolveAddressesAsync(request, true)
                 .subscribeOn(Schedulers.boundedElastic())
                 .doFinally(signalType -> {
-                    forceBackgroundAddressRefreshInProgress.set(false);
+                    forceBackgroundAddressRefreshInProgress.compareAndSet(true, false);
                 })
                 .subscribe();
         }

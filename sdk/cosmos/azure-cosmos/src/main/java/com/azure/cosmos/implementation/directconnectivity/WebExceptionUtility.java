@@ -119,8 +119,4 @@ public class WebExceptionUtility {
 
         return false;
     }
-
-    public static boolean isConnectionException(Exception ex) {
-        return isWebExceptionRetriable(ex);
-    }
 }
