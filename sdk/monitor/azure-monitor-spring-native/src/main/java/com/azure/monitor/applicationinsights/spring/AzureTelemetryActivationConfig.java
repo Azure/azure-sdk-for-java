@@ -13,13 +13,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 public class AzureTelemetryActivationConfig {
 
-    /**
-     *
-     * @param enableEvenWithNonNative ..
-     * @return ..
-     */
     @Bean
-    public AzureTelemetryActivation azureTelemetryActivation(@Value("${applicationinsights.native.spring.non-native.enabled:}") boolean enableEvenWithNonNative) {
+    AzureTelemetryActivation azureTelemetryActivation(@Value("${applicationinsights.native.spring.non-native.enabled:}") boolean enableEvenWithNonNative) {
         return new AzureTelemetryActivation(enableEvenWithNonNative);
     }
 
