@@ -93,13 +93,13 @@ com.azure:azure-core-test;1.18.0;1.19.0-beta.1
 com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.36;1.0.0-beta.37
 com.azure:azure-core-tracing-opentelemetry-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-version-tests;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-cosmos;4.46.0;4.47.0
+com.azure:azure-cosmos;4.47.0;4.48.0-beta.1
 com.azure:azure-cosmos-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure:azure-cosmos-dotnet-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3_2-12;1.0.0-beta.1;1.0.0-beta.1
-com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12;4.19.0;4.20.0
-com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12;4.19.0;4.20.0
-com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;4.19.0;4.20.0
+com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12;4.20.0;4.21.0-beta.1
+com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12;4.20.0;4.21.0-beta.1
+com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;4.20.0;4.21.0-beta.1
 com.azure:azure-cosmos-encryption;2.2.0;2.3.0-beta.1
 com.azure:azure-cosmos-test;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-cosmos-tests;1.0.0-beta.1;1.0.0-beta.1
@@ -351,7 +351,7 @@ com.azure.resourcemanager:azure-resourcemanager-maps;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-botservice;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-recoveryservicesbackup;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-deviceprovisioningservices;1.0.0;1.1.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-postgresqlflexibleserver;1.0.0-beta.6;1.0.0-beta.7
+com.azure.resourcemanager:azure-resourcemanager-postgresqlflexibleserver;1.0.0-beta.7;1.0.0-beta.8
 com.azure.resourcemanager:azure-resourcemanager-elastic;1.0.0-beta.4;1.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-webpubsub;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-security;1.0.0-beta.5;1.0.0-beta.6
@@ -364,7 +364,7 @@ com.azure.resourcemanager:azure-resourcemanager-quota;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-extendedlocation;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-logz;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-storagepool;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-dataprotection;1.0.0-beta.3;1.0.0-beta.4
+com.azure.resourcemanager:azure-resourcemanager-dataprotection;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-desktopvirtualization;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-loadtesting;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-automanage;1.0.0-beta.1;1.0.0-beta.2
@@ -415,6 +415,7 @@ com.azure.resourcemanager:azure-resourcemanager-selfhelp;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-networkcloud;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-cosmosdbforpostgresql;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-managementgroups;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-managednetworkfabric;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 
@@ -425,6 +426,7 @@ com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
+unreleased_com.azure:azure-core-amqp;2.9.0-beta.3
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid

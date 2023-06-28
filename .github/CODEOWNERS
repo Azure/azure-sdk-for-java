@@ -194,7 +194,7 @@
 /sdk/template/                                       @hallipr @weshaggard @JimSuplizio
 
 # PRLabel: %Cognitive - Text Analytics
-/sdk/textanalytics/                                  @samvaity @mssfang
+/sdk/textanalytics/                                  @samvaity @mssfang @quentinRobinson @wangyuantao
 
 # PRLabel: %Azure SDK Tools
 /sdk/tools/                                          @srnagar @jonathangiles
