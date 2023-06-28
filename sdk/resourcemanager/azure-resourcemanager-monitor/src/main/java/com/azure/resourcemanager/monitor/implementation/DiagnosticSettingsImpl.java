@@ -194,10 +194,16 @@ public class DiagnosticSettingsImpl
     }
 
     private String getResourceIdFromSettingsId(String diagnosticSettingId) {
-        diagnosticSettingId = ResourceUtils.encodeResourceId(diagnosticSettingId);
+        return getResourceIdFromSettingsId(diagnosticSettingId, true);
+    }
+
+    private String getResourceIdFromSettingsId(String diagnosticSettingId, boolean encodeResourceId) {
         if (diagnosticSettingId == null) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Parameter 'resourceId' is required and cannot be null."));
+        }
+        if (encodeResourceId) {
+            diagnosticSettingId = ResourceUtils.encodeResourceId(diagnosticSettingId);
         }
         int dsIdx = diagnosticSettingId.lastIndexOf(DiagnosticSettingImpl.DIAGNOSTIC_SETTINGS_URI);
         if (dsIdx == -1) {
@@ -211,8 +217,8 @@ public class DiagnosticSettingsImpl
     }
 
     private String getNameFromSettingsId(String diagnosticSettingId) {
-        String resourceId = getResourceIdFromSettingsId(diagnosticSettingId);
-        return ResourceUtils.encodeResourceId(diagnosticSettingId)
+        String resourceId = getResourceIdFromSettingsId(diagnosticSettingId, false);
+        return diagnosticSettingId
             .substring(resourceId.length() + DiagnosticSettingImpl.DIAGNOSTIC_SETTINGS_URI.length());
     }
 }
