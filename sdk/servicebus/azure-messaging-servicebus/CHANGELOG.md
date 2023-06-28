@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Fixed `NullPointerException` that happens when session receiver encounters an error and distributed tracing is enabled.
+  ([#TODO](https://github.com/Azure/azure-sdk-for-java/issues/TODO))
+
 ### Other Changes
 
 ## 7.15.0-beta.1 (2023-06-13)
