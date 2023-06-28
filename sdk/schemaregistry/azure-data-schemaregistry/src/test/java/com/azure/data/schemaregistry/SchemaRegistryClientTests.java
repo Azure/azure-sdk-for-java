@@ -9,6 +9,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
@@ -184,7 +185,8 @@ public class SchemaRegistryClientTests extends TestProxyTestBase {
      * Verifies that a 4xx is returned if we use an invalid schema format.
      */
 
-    @Test()
+    @Test
+    @RecordWithoutRequestBody
     public void registerSchemaInvalidFormat() {
         // Arrange
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
