@@ -1,24 +1,36 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch773555a0b?api-version=2022-10",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b750a427-f61d-4cd5-beb7-fab46aa269f7",
-      "Content-Type" : "application/json; serialization=Json"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "Strict-Transport-Security" : "max-age=31536000",
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "x-ms-error-code" : "InvalidRequest",
-      "retry-after" : "0",
-      "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Json schema validation failed: Unexpected character encountered while parsing number: \\\". Path 'title', line 1, position 120. TrackingId:7443aa3f-2367-4fd8-9da0-39a8562fbfa2_G13, SystemTracker:conniey-rg4-json.servicebus.windows.net:$schemaGroups\\/azsdk_java_group\\/schemas\\/sch773555a0b, Timestamp:2023-01-25T20:07:53\"}}",
-      "Date" : "Wed, 25 Jan 2023 20:07:53 GMT",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "sch773555a0b" ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/$schemaGroups/azsdk_java_group/schemas/sch955861a0c?api-version=2022-10",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "441",
+        "Content-Type": "application/json; serialization=Json",
+        "Date": "Wed, 28 Jun 2023 21:34:17 GMT",
+        "User-Agent": "azsdk-java-azure-data-schemaregistry/1.4.0-beta.3 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "6aae1c1c-f03b-4895-801b-8c250c9e6976"
+      },
+      "RequestBody": "{ \u0022$id\u0022: \u0022https://example.com/person.schema.json\u0022, \u0022$schema\u0022: \u0022https://json-schema.org/draft/2020-12/schema\u0022, \u0022title\u0022: 5\u0022Person2\u0022, \u0022type\u0022: \u0022object\u0022, \u0022properties\u0022: { \u0022firstName\u0022: { \u0022type\u0022: \u0022string\u0022, \u0022description\u0022: \u0022The person\u0027s first name.\u0022 }, \u0022lastName\u0022: { \u0022type\u0022: \u0022string\u0022, \u0022description\u0022: \u0022The person\u0027s last name.\u0022 }, \u0022age\u0022: { \u0022description\u0022: \u0022Age in years which must be equal to or greater than zero.\u0022, \u0022type\u0022: \u0022integer\u0022, \u0022minimum\u0022: 0 } } }",
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Content-Type": "application/json",
+        "Date": "Wed, 28 Jun 2023 21:34:19 GMT",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000",
+        "Transfer-Encoding": "chunked",
+        "x-ms-error-code": "InvalidRequest"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "InvalidRequest",
+          "message": "Json schema validation failed: Unexpected character encountered while parsing number: \u0022. Path \u0027title\u0027, line 1, position 120. TrackingId:58e85394-9640-47cd-b904-3e0c24e98935_G24, SystemTracker:t2db89c3d1246e61c-json.servicebus.windows.net:$schemaGroups/azsdk_java_group/schemas/sch955861a0c, Timestamp:2023-06-28T21:34:19"
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "0": "sch955861a0c"
+  }
 }

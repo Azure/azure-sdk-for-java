@@ -1,24 +1,48 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/bar:get-id?api-version=2022-10",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "978df406-ef2e-4beb-a0aa-33a0ef3fcbeb",
-      "Content-Type" : "application/json; serialization=Avro"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "Strict-Transport-Security" : "max-age=31536000",
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "x-ms-error-code" : "ItemNotFound",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"ItemNotFound\",\"message\":\"Schema azsdk_java_group\\/bar does not exist. TrackingId:98da1330-b66b-4f7d-b23c-db91eebccd86_G5, SystemTracker:conniey-rg4-avro.servicebus.windows.net:$schemaGroups\\/azsdk_java_group\\/schemas\\/bar:get-id, Timestamp:2023-01-25T20:07:34\"}}",
-      "Date" : "Wed, 25 Jan 2023 20:07:33 GMT",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/$schemaGroups/azsdk_java_group/schemas/bar:get-id?api-version=2022-10",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "154",
+        "Content-Type": "application/json; serialization=Avro",
+        "Date": "Wed, 28 Jun 2023 21:47:54 GMT",
+        "User-Agent": "azsdk-java-azure-data-schemaregistry/1.4.0-beta.3 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "1c7505b6-83d7-464d-9ebd-5165518b8aeb"
+      },
+      "RequestBody": {
+        "type": "record",
+        "namespace": "TestSchema",
+        "name": "Employee",
+        "fields": [
+          {
+            "name": "Name",
+            "type": "string"
+          },
+          {
+            "name": "Age",
+            "type": "int"
+          }
+        ]
+      },
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Content-Type": "application/json",
+        "Date": "Wed, 28 Jun 2023 21:47:57 GMT",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000",
+        "Transfer-Encoding": "chunked",
+        "x-ms-error-code": "ItemNotFound"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "ItemNotFound",
+          "message": "Schema azsdk_java_group/bar does not exist. TrackingId:008d8947-b791-44b2-8c59-b2ba69719229_G26, SystemTracker:t2db89c3d1246e61c-avro.servicebus.windows.net:$schemaGroups/azsdk_java_group/schemas/bar:get-id, Timestamp:2023-06-28T21:47:57"
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

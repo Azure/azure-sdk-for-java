@@ -1,53 +1,93 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch278234d9c?api-version=2022-10",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "de9e649c-422f-4f10-8715-6cfd97d43c4d",
-      "Content-Type" : "application/json; serialization=Avro"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/$schemaGroups/azsdk_java_group/schemas/sch1064964dd?api-version=2022-10",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "154",
+        "Content-Type": "application/json; serialization=Avro",
+        "Date": "Wed, 28 Jun 2023 21:47:54 GMT",
+        "User-Agent": "azsdk-java-azure-data-schemaregistry/1.4.0-beta.3 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "b91bd793-b36c-4c07-9dd1-2310d2132718"
+      },
+      "RequestBody": {
+        "type": "record",
+        "namespace": "TestSchema",
+        "name": "Employee",
+        "fields": [
+          {
+            "name": "Name",
+            "type": "string"
+          },
+          {
+            "name": "Age",
+            "type": "int"
+          }
+        ]
+      },
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 28 Jun 2023 21:47:58 GMT",
+        "Location": "https://t2db89c3d1246e61c-avro.servicebus.windows.net/$schemagroups/azsdk_java_group/schemas/sch1064964dd/versions/1?api-version=2022-10",
+        "Schema-Group-Name": "azsdk_java_group",
+        "Schema-Id": "082e78db3a004772acfc269052047db8",
+        "Schema-Id-Location": "https://t2db89c3d1246e61c-avro.servicebus.windows.net:443/$schemagroups/$schemas/082e78db3a004772acfc269052047db8?api-version=2022-10",
+        "Schema-Name": "sch1064964dd",
+        "Schema-Version": "1",
+        "Schema-Versions-Location": "https://t2db89c3d1246e61c-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch1064964dd/versions?api-version=2022-10",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000"
+      },
+      "ResponseBody": null
     },
-    "Response" : {
-      "Schema-Version" : "1",
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "Schema-Name" : "sch278234d9c",
-      "retry-after" : "0",
-      "Schema-Id-Location" : "https://conniey-rg4-avro.servicebus.windows.net:443/$schemagroups/$schemas/226e2dd02cbc422e9eb3d8a36bf87a34?api-version=2022-10",
-      "StatusCode" : "204",
-      "Date" : "Wed, 25 Jan 2023 20:07:53 GMT",
-      "Strict-Transport-Security" : "max-age=31536000",
-      "Schema-Id" : "226e2dd02cbc422e9eb3d8a36bf87a34",
-      "Schema-Group-Name" : "azsdk_java_group",
-      "Content-Length" : "0",
-      "Location" : "https://conniey-rg4-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch278234d9c/versions/1?api-version=2022-10",
-      "Schema-Versions-Location" : "https://conniey-rg4-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch278234d9c/versions?api-version=2022-10"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/$schemas/226e2dd02cbc422e9eb3d8a36bf87a34?api-version=2022-10",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4a050197-9d91-48c2-b581-1c11f6bcbfe8"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "Schema-Version" : "1",
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "Schema-Name" : "sch278234d9c",
-      "retry-after" : "0",
-      "Schema-Id-Location" : "https://conniey-rg4-avro.servicebus.windows.net:443/$schemagroups/$schemas/226e2dd02cbc422e9eb3d8a36bf87a34?api-version=2022-10",
-      "StatusCode" : "200",
-      "Date" : "Wed, 25 Jan 2023 20:08:00 GMT",
-      "Strict-Transport-Security" : "max-age=31536000",
-      "Schema-Id" : "226e2dd02cbc422e9eb3d8a36bf87a34",
-      "Schema-Group-Name" : "azsdk_java_group",
-      "Body" : "{\"type\":\"record\",\"namespace\":\"TestSchema\",\"name\":\"Employee\",\"fields\":[{\"name\":\"Name\",\"type\":\"string\"},{\"name\":\"Age\",\"type\":\"int\"}]}",
-      "Content-Type" : "application/json;serialization=Avro",
-      "Location" : "https://conniey-rg4-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch278234d9c/versions/1?api-version=2022-10",
-      "Schema-Versions-Location" : "https://conniey-rg4-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch278234d9c/versions?api-version=2022-10"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "sch278234d9c" ]
+    {
+      "RequestUri": "https://REDACTED/$schemaGroups/$schemas/082e78db3a004772acfc269052047db8?api-version=2022-10",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json; serialization=Avro, application/json; serialization=json, text/plain; charset=utf-8",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 28 Jun 2023 21:47:58 GMT",
+        "User-Agent": "azsdk-java-azure-data-schemaregistry/1.4.0-beta.3 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "b8e058c2-b4c6-42df-94f2-90a88b2428d8"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; serialization=Avro",
+        "Date": "Wed, 28 Jun 2023 21:47:58 GMT",
+        "Location": "https://t2db89c3d1246e61c-avro.servicebus.windows.net/$schemagroups/azsdk_java_group/schemas/sch1064964dd/versions/1?api-version=2022-10",
+        "Schema-Group-Name": "azsdk_java_group",
+        "Schema-Id": "082e78db3a004772acfc269052047db8",
+        "Schema-Id-Location": "https://t2db89c3d1246e61c-avro.servicebus.windows.net:443/$schemagroups/$schemas/082e78db3a004772acfc269052047db8?api-version=2022-10",
+        "Schema-Name": "sch1064964dd",
+        "Schema-Version": "1",
+        "Schema-Versions-Location": "https://t2db89c3d1246e61c-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch1064964dd/versions?api-version=2022-10",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000",
+        "Transfer-Encoding": "chunked"
+      },
+      "ResponseBody": {
+        "type": "record",
+        "namespace": "TestSchema",
+        "name": "Employee",
+        "fields": [
+          {
+            "name": "Name",
+            "type": "string"
+          },
+          {
+            "name": "Age",
+            "type": "int"
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {
+    "0": "sch1064964dd"
+  }
 }

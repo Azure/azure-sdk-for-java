@@ -3,27 +3,23 @@
 
 package com.azure.data.schemaregistry;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
 
 import static com.azure.data.schemaregistry.Constants.PLAYBACK_ENDPOINT;
 import static com.azure.data.schemaregistry.Constants.PLAYBACK_TEST_GROUP;
@@ -33,14 +29,11 @@ import static com.azure.data.schemaregistry.Constants.SCHEMA_REGISTRY_GROUP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests for {@link SchemaFormat#AVRO} using {@link SchemaRegistryAsyncClient}.
  */
-public class SchemaRegistryAsyncClientTests extends TestBase {
+public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
     static final String SCHEMA_CONTENT = "{\"type\" : \"record\",\"namespace\" : \"TestSchema\",\"name\" : \"Employee\",\"fields\" : [{ \"name\" : \"Name\" , \"type\" : \"string\" },{ \"name\" : \"Age\", \"type\" : \"int\" }]}";
 
     private String schemaGroup;
@@ -52,16 +45,8 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         TokenCredential tokenCredential;
         String endpoint;
         if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = mock(TokenCredential.class);
+            tokenCredential = new MockTokenCredential();
             schemaGroup = PLAYBACK_TEST_GROUP;
-
-            // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
-            when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
-                return Mono.fromCallable(() -> {
-                    return new AccessToken("foo", OffsetDateTime.now().plusMinutes(20));
-                });
-            });
-
             endpoint = PLAYBACK_ENDPOINT;
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
@@ -92,11 +77,6 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
             .assertAsync()
             .skipRequest((httpRequest, context) -> false)
             .build();
-    }
-
-    @Override
-    protected void afterTest() {
-        Mockito.framework().clearInlineMock(this);
     }
 
     /**
@@ -159,7 +139,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
                 assertTrue(error instanceof HttpResponseException);
 
                 final HttpResponseException responseException = ((HttpResponseException) error);
-                assertEquals(403, responseException.getResponse().getStatusCode());
+                assertEquals(415, responseException.getResponse().getStatusCode());
             })
             .verify();
     }

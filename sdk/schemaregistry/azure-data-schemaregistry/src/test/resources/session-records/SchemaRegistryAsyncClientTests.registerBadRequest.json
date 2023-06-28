@@ -1,24 +1,36 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch07370a357?api-version=2022-10",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "68ea894f-5dd6-42ec-85af-1ca8631ccd1b",
-      "Content-Type" : "application/json; serialization=Avro"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "Strict-Transport-Security" : "max-age=31536000",
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "x-ms-error-code" : "InvalidRequest",
-      "retry-after" : "0",
-      "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Json schema validation failed: 'type' was not found for field: name at 'fields[1]'. TrackingId:c70f0419-9209-498b-9d4d-1d9e0b92c9c3_G4, SystemTracker:conniey-rg4-avro.servicebus.windows.net:$schemaGroups\\/azsdk_java_group\\/schemas\\/sch07370a357, Timestamp:2023-01-25T20:07:55\"}}",
-      "Date" : "Wed, 25 Jan 2023 20:07:55 GMT",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "sch07370a357" ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/$schemaGroups/azsdk_java_group/schemas/sch97062acd1?api-version=2022-10",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "140",
+        "Content-Type": "application/json; serialization=Avro",
+        "Date": "Wed, 28 Jun 2023 21:47:54 GMT",
+        "User-Agent": "azsdk-java-azure-data-schemaregistry/1.4.0-beta.3 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "45793142-c8a5-43ad-b9c2-9143bac05ce1"
+      },
+      "RequestBody": "\u0022{\u0022type\u0022 : \u0022record\u0022,\u0022namespace\u0022 : \u0022TestSchema\u0022,\u0022name\u0022 : \u0022Employee\u0022,\u0022fields\u0022 : [{ \u0022name\u0022 : \u0022Name\u0022 , \u0022type\u0022 : \u0022string\u0022 },{ \u0022name\u0022 : \u0022Age\u0022 }]}\u0022",
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Content-Type": "application/json",
+        "Date": "Wed, 28 Jun 2023 21:47:57 GMT",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000",
+        "Transfer-Encoding": "chunked",
+        "x-ms-error-code": "InvalidRequest"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "InvalidRequest",
+          "message": "Json schema validation failed: \u0027type\u0027 was not found for field: name at \u0027fields[1]\u0027. TrackingId:3c4d0496-6318-4c33-9e78-fc3617cfb3d1_G14, SystemTracker:t2db89c3d1246e61c-avro.servicebus.windows.net:$schemaGroups/azsdk_java_group/schemas/sch97062acd1, Timestamp:2023-06-28T21:47:57"
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "0": "sch97062acd1"
+  }
 }

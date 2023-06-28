@@ -1,52 +1,65 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch234362196?api-version=2022-10",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2e6f6a8d-b731-4f77-a943-f750c7186a1a",
-      "Content-Type" : "text/plain; charset=utf-8"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/$schemaGroups/azsdk_java_group/schemas/sch879962789?api-version=2022-10",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "28",
+        "Content-Type": "text/plain; charset=utf-8",
+        "Date": "Wed, 28 Jun 2023 22:45:17 GMT",
+        "User-Agent": "azsdk-java-azure-data-schemaregistry/1.4.0-beta.3 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "7ab3d4a3-ed0c-48f1-a854-0c702b8d3e2b"
+      },
+      "RequestBody": "Person: int, string, decimal",
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 28 Jun 2023 22:45:32 GMT",
+        "Location": "https://t2db89c3d1246e61c-custom.servicebus.windows.net/$schemagroups/azsdk_java_group/schemas/sch879962789/versions/1?api-version=2022-10",
+        "Schema-Group-Name": "azsdk_java_group",
+        "Schema-Id": "a709ffe8859b4d2ba6487118ead2b420",
+        "Schema-Id-Location": "https://t2db89c3d1246e61c-custom.servicebus.windows.net:443/$schemagroups/$schemas/a709ffe8859b4d2ba6487118ead2b420?api-version=2022-10",
+        "Schema-Name": "sch879962789",
+        "Schema-Version": "1",
+        "Schema-Versions-Location": "https://t2db89c3d1246e61c-custom.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch879962789/versions?api-version=2022-10",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000"
+      },
+      "ResponseBody": null
     },
-    "Response" : {
-      "Schema-Version" : "1",
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "Schema-Name" : "sch234362196",
-      "retry-after" : "0",
-      "Schema-Id-Location" : "https://conniey-rg4-custom.servicebus.windows.net:443/$schemagroups/$schemas/c962e2d77d174ecfa46a75078cf5ce8b?api-version=2022-10",
-      "StatusCode" : "204",
-      "Date" : "Wed, 25 Jan 2023 20:07:37 GMT",
-      "Strict-Transport-Security" : "max-age=31536000",
-      "Schema-Id" : "c962e2d77d174ecfa46a75078cf5ce8b",
-      "Schema-Group-Name" : "azsdk_java_group",
-      "Content-Length" : "0",
-      "Location" : "https://conniey-rg4-custom.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch234362196/versions/1?api-version=2022-10",
-      "Schema-Versions-Location" : "https://conniey-rg4-custom.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch234362196/versions?api-version=2022-10"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch234362196:get-id?api-version=2022-10",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c44ded88-f729-45db-ad92-3639c41ddcc3",
-      "Content-Type" : "text/plain; charset=utf-8"
-    },
-    "Response" : {
-      "Schema-Version" : "1",
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "Schema-Name" : "sch234362196",
-      "retry-after" : "0",
-      "Schema-Id-Location" : "https://conniey-rg4-custom.servicebus.windows.net:443/$schemagroups/$schemas/c962e2d77d174ecfa46a75078cf5ce8b?api-version=2022-10",
-      "StatusCode" : "204",
-      "Date" : "Wed, 25 Jan 2023 20:07:47 GMT",
-      "Strict-Transport-Security" : "max-age=31536000",
-      "Schema-Id" : "c962e2d77d174ecfa46a75078cf5ce8b",
-      "Schema-Group-Name" : "azsdk_java_group",
-      "Content-Length" : "0",
-      "Location" : "https://conniey-rg4-custom.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch234362196/versions/1?api-version=2022-10",
-      "Schema-Versions-Location" : "https://conniey-rg4-custom.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch234362196/versions?api-version=2022-10"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "sch234362196" ]
+    {
+      "RequestUri": "https://REDACTED/$schemaGroups/azsdk_java_group/schemas/sch879962789:get-id?api-version=2022-10",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "28",
+        "Content-Type": "text/plain; charset=utf-8",
+        "Date": "Wed, 28 Jun 2023 22:45:33 GMT",
+        "User-Agent": "azsdk-java-azure-data-schemaregistry/1.4.0-beta.3 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "ea76f568-791a-4b6b-8a1f-1a2929ac2f7b"
+      },
+      "RequestBody": "Person: int, string, decimal",
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 28 Jun 2023 22:45:33 GMT",
+        "Location": "https://t2db89c3d1246e61c-custom.servicebus.windows.net/$schemagroups/azsdk_java_group/schemas/sch879962789/versions/1?api-version=2022-10",
+        "Schema-Group-Name": "azsdk_java_group",
+        "Schema-Id": "a709ffe8859b4d2ba6487118ead2b420",
+        "Schema-Id-Location": "https://t2db89c3d1246e61c-custom.servicebus.windows.net:443/$schemagroups/$schemas/a709ffe8859b4d2ba6487118ead2b420?api-version=2022-10",
+        "Schema-Name": "sch879962789",
+        "Schema-Version": "1",
+        "Schema-Versions-Location": "https://t2db89c3d1246e61c-custom.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch879962789/versions?api-version=2022-10",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "sch879962789"
+  }
 }

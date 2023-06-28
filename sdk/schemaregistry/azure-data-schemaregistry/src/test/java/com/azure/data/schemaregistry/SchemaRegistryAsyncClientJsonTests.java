@@ -3,22 +3,17 @@
 
 package com.azure.data.schemaregistry;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import reactor.core.publisher.Mono;
-
-import java.time.OffsetDateTime;
 
 import static com.azure.data.schemaregistry.Constants.PLAYBACK_ENDPOINT;
 import static com.azure.data.schemaregistry.Constants.PLAYBACK_TEST_GROUP;
@@ -26,14 +21,11 @@ import static com.azure.data.schemaregistry.Constants.RESOURCE_LENGTH;
 import static com.azure.data.schemaregistry.Constants.SCHEMA_REGISTRY_GROUP;
 import static com.azure.data.schemaregistry.Constants.SCHEMA_REGISTRY_JSON_FULLY_QUALIFIED_NAMESPACE;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests for {@link SchemaFormat#JSON} using {@link SchemaRegistryAsyncClient}.
  */
-public class SchemaRegistryAsyncClientJsonTests extends TestBase {
+public class SchemaRegistryAsyncClientJsonTests extends TestProxyTestBase {
     static final String SCHEMA_CONTENT = "{ \"$id\": \"https://example.com/person.schema.json\", \"$schema\": \"https://json-schema.org/draft/2020-12/schema\", \"title\": \"Person\", \"type\": \"object\", \"properties\": { \"firstName\": { \"type\": \"string\", \"description\": \"The person's first name.\" }, \"lastName\": { \"type\": \"string\", \"description\": \"The person's last name.\" }, \"age\": { \"description\": \"Age in years which must be equal to or greater than zero.\", \"type\": \"integer\", \"minimum\": 0 } } }";
 
     private SchemaRegistryClientBuilder builder;
@@ -45,16 +37,8 @@ public class SchemaRegistryAsyncClientJsonTests extends TestBase {
         String endpoint;
         String schemaGroup;
         if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = mock(TokenCredential.class);
+            tokenCredential = new MockTokenCredential();
             schemaGroup = PLAYBACK_TEST_GROUP;
-
-            // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
-            when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
-                return Mono.fromCallable(() -> {
-                    return new AccessToken("foo", OffsetDateTime.now().plusMinutes(20));
-                });
-            });
-
             endpoint = PLAYBACK_ENDPOINT;
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
@@ -78,11 +62,6 @@ public class SchemaRegistryAsyncClientJsonTests extends TestBase {
         }
 
         testBase = new SchemaRegistryAsyncClientTestsBase(schemaGroup, SchemaFormat.JSON);
-    }
-
-    @Override
-    protected void afterTest() {
-        Mockito.framework().clearInlineMock(this);
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {

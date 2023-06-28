@@ -1,52 +1,105 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch44847a44c?api-version=2022-10",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3d94096b-5a2e-4c71-a151-a108f5825079",
-      "Content-Type" : "application/json; serialization=Json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/$schemaGroups/azsdk_java_group/schemas/sch81764e10c?api-version=2022-10",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "439",
+        "Content-Type": "application/json; serialization=Json",
+        "Date": "Wed, 28 Jun 2023 21:34:17 GMT",
+        "User-Agent": "azsdk-java-azure-data-schemaregistry/1.4.0-beta.3 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "8ed64cf4-43c5-4c04-9f4c-66debe95cd1b"
+      },
+      "RequestBody": {
+        "$id": "https://example.com/person.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Person",
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "The person\u0027s first name."
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The person\u0027s last name."
+          },
+          "age": {
+            "description": "Age in years which must be equal to or greater than zero.",
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 28 Jun 2023 21:34:18 GMT",
+        "Location": "https://t2db89c3d1246e61c-json.servicebus.windows.net/$schemagroups/azsdk_java_group/schemas/sch81764e10c/versions/1?api-version=2022-10",
+        "Schema-Group-Name": "azsdk_java_group",
+        "Schema-Id": "ef174037507d49c2b9c94f5ef18d257e",
+        "Schema-Id-Location": "https://t2db89c3d1246e61c-json.servicebus.windows.net:443/$schemagroups/$schemas/ef174037507d49c2b9c94f5ef18d257e?api-version=2022-10",
+        "Schema-Name": "sch81764e10c",
+        "Schema-Version": "1",
+        "Schema-Versions-Location": "https://t2db89c3d1246e61c-json.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch81764e10c/versions?api-version=2022-10",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000"
+      },
+      "ResponseBody": null
     },
-    "Response" : {
-      "Schema-Version" : "1",
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "Schema-Name" : "sch44847a44c",
-      "retry-after" : "0",
-      "Schema-Id-Location" : "https://conniey-rg4-json.servicebus.windows.net:443/$schemagroups/$schemas/edd534dd72574035885dc27def579653?api-version=2022-10",
-      "StatusCode" : "204",
-      "Date" : "Wed, 25 Jan 2023 20:07:59 GMT",
-      "Strict-Transport-Security" : "max-age=31536000",
-      "Schema-Id" : "edd534dd72574035885dc27def579653",
-      "Schema-Group-Name" : "azsdk_java_group",
-      "Content-Length" : "0",
-      "Location" : "https://conniey-rg4-json.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch44847a44c/versions/1?api-version=2022-10",
-      "Schema-Versions-Location" : "https://conniey-rg4-json.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch44847a44c/versions?api-version=2022-10"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch44847a44c:get-id?api-version=2022-10",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "dd538fac-18e1-4263-9e9d-5bb25c2309ee",
-      "Content-Type" : "application/json; serialization=Json"
-    },
-    "Response" : {
-      "Schema-Version" : "1",
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "Schema-Name" : "sch44847a44c",
-      "retry-after" : "0",
-      "Schema-Id-Location" : "https://conniey-rg4-json.servicebus.windows.net:443/$schemagroups/$schemas/edd534dd72574035885dc27def579653?api-version=2022-10",
-      "StatusCode" : "204",
-      "Date" : "Wed, 25 Jan 2023 20:08:02 GMT",
-      "Strict-Transport-Security" : "max-age=31536000",
-      "Schema-Id" : "edd534dd72574035885dc27def579653",
-      "Schema-Group-Name" : "azsdk_java_group",
-      "Content-Length" : "0",
-      "Location" : "https://conniey-rg4-json.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch44847a44c/versions/1?api-version=2022-10",
-      "Schema-Versions-Location" : "https://conniey-rg4-json.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch44847a44c/versions?api-version=2022-10"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "sch44847a44c" ]
+    {
+      "RequestUri": "https://REDACTED/$schemaGroups/azsdk_java_group/schemas/sch81764e10c:get-id?api-version=2022-10",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "439",
+        "Content-Type": "application/json; serialization=Json",
+        "Date": "Wed, 28 Jun 2023 21:34:19 GMT",
+        "User-Agent": "azsdk-java-azure-data-schemaregistry/1.4.0-beta.3 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "f01faeb6-375e-48c0-9b7f-ed8dfb06107d"
+      },
+      "RequestBody": {
+        "$id": "https://example.com/person.schema.json",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "Person",
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "The person\u0027s first name."
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The person\u0027s last name."
+          },
+          "age": {
+            "description": "Age in years which must be equal to or greater than zero.",
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 28 Jun 2023 21:34:19 GMT",
+        "Location": "https://t2db89c3d1246e61c-json.servicebus.windows.net/$schemagroups/azsdk_java_group/schemas/sch81764e10c/versions/1?api-version=2022-10",
+        "Schema-Group-Name": "azsdk_java_group",
+        "Schema-Id": "ef174037507d49c2b9c94f5ef18d257e",
+        "Schema-Id-Location": "https://t2db89c3d1246e61c-json.servicebus.windows.net:443/$schemagroups/$schemas/ef174037507d49c2b9c94f5ef18d257e?api-version=2022-10",
+        "Schema-Name": "sch81764e10c",
+        "Schema-Version": "1",
+        "Schema-Versions-Location": "https://t2db89c3d1246e61c-json.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch81764e10c/versions?api-version=2022-10",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "sch81764e10c"
+  }
 }
