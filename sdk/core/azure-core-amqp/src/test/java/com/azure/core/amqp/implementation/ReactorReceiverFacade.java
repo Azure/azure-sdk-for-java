@@ -56,8 +56,18 @@ final class ReactorReceiverFacade {
         return messagesPublisher.wasSubscribed();
     }
 
+    /**
+     * @return the total number of subscriptions made to the message publisher.
+     */
     long getSubscriptionCountToMessages() {
         return messagesPublisher.subscribeCount();
+    }
+
+    /**
+     * asserts that all subscription made to the message publisher unsubscribed (i.e. no subscription leaking).
+     */
+    void assertNoPendingSubscriptionsToMessages() {
+        messagesPublisher.assertNoSubscribers();
     }
 
     long getRequestedMessages() {
