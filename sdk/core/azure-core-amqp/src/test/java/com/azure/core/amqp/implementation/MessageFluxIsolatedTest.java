@@ -95,15 +95,16 @@ public class MessageFluxIsolatedTest {
             verifier.create(() -> messageFlux)
                 .then(firstReceiverFacade.emit())
                 .then(firstReceiverFacade.errorEndpointStates(new AmqpException(true, "retriable", null)))
-                .then(firstReceiverFacade.completeMessages())
                 .thenAwait(UPSTREAM_DELAY_BEFORE_NEXT)
                 .then(secondReceiverFacade.emit())
+                .then(() -> firstReceiverFacade.assertNoPendingSubscriptionsToMessages()) // Subscription made to the 1st receiver should not be leaked when switching to 2nd.
                 .then(() -> upstream.complete())
                 .verifyComplete();
         }
 
         Assertions.assertTrue(firstReceiverFacade.wasSubscribedToMessages());
         Assertions.assertTrue(secondReceiverFacade.wasSubscribedToMessages());
+        secondReceiverFacade.assertNoPendingSubscriptionsToMessages();
         verify(firstReceiver).closeAsync();
         verify(secondReceiver).closeAsync();
         upstream.assertCancelled();
@@ -135,15 +136,16 @@ public class MessageFluxIsolatedTest {
             verifier.create(() -> messageFlux)
                 .then(firstReceiverFacade.emit())
                 .then(firstReceiverFacade.completeEndpointStates())
-                .then(firstReceiverFacade.completeMessages())
                 .thenAwait(UPSTREAM_DELAY_BEFORE_NEXT)
                 .then(secondReceiverFacade.emit())
+                .then(() -> firstReceiverFacade.assertNoPendingSubscriptionsToMessages())
                 .then(() -> upstream.complete())
                 .verifyComplete();
         }
 
         Assertions.assertTrue(firstReceiverFacade.wasSubscribedToMessages());
         Assertions.assertTrue(secondReceiverFacade.wasSubscribedToMessages());
+        secondReceiverFacade.assertNoPendingSubscriptionsToMessages();
         verify(firstReceiver).closeAsync();
         verify(secondReceiver).closeAsync();
         upstream.assertCancelled();
@@ -175,8 +177,8 @@ public class MessageFluxIsolatedTest {
             verifier.create(() -> messageFlux)
                 .then(firstReceiverFacade.emit())
                 .then(firstReceiverFacade.errorEndpointStates(new AmqpException(false, "non-retriable", null)))
-                .then(firstReceiverFacade.completeMessages())
                 .thenAwait(UPSTREAM_DELAY_BEFORE_NEXT)
+                .then(() -> firstReceiverFacade.assertNoPendingSubscriptionsToMessages())
                 .then(secondReceiverFacade.emit())
                 .then(() -> upstream.complete())
                 .verifyError();

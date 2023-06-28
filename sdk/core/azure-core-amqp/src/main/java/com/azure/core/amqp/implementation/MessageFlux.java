@@ -847,19 +847,26 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
             throw new IllegalStateException("The request accounting must be through update(,).");
         }
 
-        /**
-         * Invoked when the recoverable-receiver wants to terminate the mediator (and backing receiver's
-         * message publisher) by cancellation.
-         */
         @Override
         public void cancel() {
-            Operators.terminate(S, this);
-            Operators.onDiscardQueueWithClear(queue, parent.currentContext(), null);
+            // Remove (cancel) the Subscription to message publisher i.e. receiver.receive(),
+            if (Operators.terminate(S, this)) {
+                // discard the queue
+                Operators.onDiscardQueueWithClear(queue, parent.currentContext(), null);
+            }
+            // and remove (dispose) the Subscriptions to endpointStates publisher i.e. receiver.getEndpointStates().
+            endpointStateDisposables.dispose();
         }
 
+        /**
+         * When {@link RecoverableReactorReceiver} terminates (hence MessageFlux) due to
+         * downstream cancellation/upstream error or completion/retry-exhaust-error/non-retriable-error,
+         * it calls this method to close the current (i.e. last) mediator. The method is also called to
+         * close the current mediator when {@link RecoverableReactorReceiver } switches to a new mediator.
+         */
         @Override
         public Mono<Void> closeAsync() {
-            endpointStateDisposables.dispose();
+            this.cancel();
             return receiver.closeAsync();
         }
 
@@ -952,7 +959,6 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                 d.dispose();
             }
             if (m != null) {
-                m.cancel();
                 m.closeAsync().subscribe();
             }
         }
