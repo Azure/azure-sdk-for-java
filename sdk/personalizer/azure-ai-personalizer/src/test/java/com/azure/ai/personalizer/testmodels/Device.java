@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 // Not sure why but the ordering of serialization changes between Java 8 and 17
 // Using azure-json will fix this as it strongly enforces order.
-@JsonPropertyOrder({"isWindows", "isMobile"})
+@JsonPropertyOrder({"isMobile", "isWindows"})
 public class Device {
     @JsonGetter
     public boolean isMobile() {

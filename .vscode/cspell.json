@@ -167,7 +167,7 @@
     "sdk/parents/azure-sdk-parent/**",
     "sdk/parents/azure-data-sdk-parent/**",
     "sdk/personalizer/azure-ai-personalizer/**",
-    "sdk/personalizer/test-resources.ps1",
+    "sdk/personalizer/test-resources.json",
     "sdk/purview/azure-analytics-purview-administration/**",
     "sdk/quantum/azure-quantum-jobs/**",
     "sdk/purview/azure-analytics-purview-scanning/**",
