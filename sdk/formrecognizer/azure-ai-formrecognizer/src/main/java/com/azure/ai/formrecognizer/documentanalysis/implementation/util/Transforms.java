@@ -37,7 +37,6 @@ import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.BoundingRegion;
 import com.azure.ai.formrecognizer.documentanalysis.models.CurrencyValue;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisFeature;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnnotation;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnnotationKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcode;
