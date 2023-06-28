@@ -1,38 +1,37 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.personalizer;
+package com.azure.ai.personalizer.testmodels;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-public class CurrentFeatures {
+public class UserProfile {
     @JsonGetter
-    public String getDay() {
-        return day;
+    public String getProfileType() {
+        return profileType;
     }
 
     @JsonSetter
-    public CurrentFeatures setDay(String day) {
-        this.day = day;
+    public UserProfile setProfileType(String profileType) {
+        this.profileType = profileType;
         return this;
     }
 
     @JsonGetter
-    public String getWeather() {
-        return weather;
+    public String getLatLong() {
+        return latLong;
     }
 
     @JsonSetter
-    public CurrentFeatures setWeather(String weather) {
-        this.weather = weather;
+    public UserProfile setLatLong(String latLong) {
+        this.latLong = latLong;
         return this;
     }
 
     @JsonProperty
-    private String day;
-
+    String profileType;
     @JsonProperty
-    private String weather;
+    String latLong;
 }
