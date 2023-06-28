@@ -38,6 +38,8 @@
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-opens com.azure.ai.personalizer/com.azure.ai.personalizer=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+
+    <jacoco.min.branchcoverage>0.27</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
