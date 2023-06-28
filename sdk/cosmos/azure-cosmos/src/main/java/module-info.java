@@ -32,6 +32,7 @@ module com.azure.cosmos {
     exports com.azure.cosmos;
     exports com.azure.cosmos.models;
     exports com.azure.cosmos.util;
+    exports com.azure.cosmos.implementation.pooling;
 
     // export packages for multiple different modules
     exports com.azure.cosmos.implementation to com.azure.cosmos.encryption, com.azure.cosmos.test;
