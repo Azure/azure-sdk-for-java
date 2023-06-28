@@ -28,6 +28,9 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
     /** Static value Replica for CreateMode. */
     public static final CreateMode REPLICA = fromString("Replica");
 
+    /** Static value ReviveDropped for CreateMode. */
+    public static final CreateMode REVIVE_DROPPED = fromString("ReviveDropped");
+
     /**
      * Creates a new instance of CreateMode value.
      *

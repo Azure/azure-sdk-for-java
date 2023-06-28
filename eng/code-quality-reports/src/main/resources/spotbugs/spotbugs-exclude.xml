@@ -2511,6 +2511,11 @@
   </Match>
 
   <Match>
+    <Class name="com.azure.maps.render.implementation.RendersImpl"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <Match>
     <Class name="~com\.azure\.search.*"/>
     <Or>
       <Field name="odataType"/>

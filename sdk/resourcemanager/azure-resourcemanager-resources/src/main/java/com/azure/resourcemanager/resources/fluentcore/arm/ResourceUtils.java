@@ -211,4 +211,17 @@ public final class ResourceUtils {
                 resourceType,
                 resourceName);
     }
+
+    /**
+     * Ensure that the resource ID is properly encoded for path parameter.
+     *
+     * @param resourceId the resource ID, whether url-encoded or not
+     * @return properly encoded resource ID
+     */
+    public static String encodeResourceId(String resourceId) {
+        if (resourceId == null) {
+            return null;
+        }
+        return resourceId.replaceAll(" ", "%20");
+    }
 }

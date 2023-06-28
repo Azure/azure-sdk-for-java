@@ -337,6 +337,22 @@ service
 
 <br/>
 <details>
+<summary> containerservicefleet </summary>
+
+* [package-2023-03-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet#tag-package-2023-03-preview)
+    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-containerservicefleet/1.0.0-beta.1)
+</details>
+
+<br/>
+<details>
+<summary> cosmosdbforpostgresql </summary>
+
+* [package-2022-11-08](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresqlhsc/resource-manager#tag-package-2022-11-08)
+    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-cosmosdbforpostgresql/1.0.0-beta.1)
+</details>
+
+<br/>
+<details>
 <summary> costmanagement </summary>
 
 * [package-2022-10](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager#tag-package-2022-10)
@@ -393,6 +409,8 @@ service
 <details>
 <summary> databricks </summary>
 
+* [package-2023-05-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databricks/resource-manager#tag-package-2023-05-01)
+    * [1.0.0-beta.4](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-databricks/1.0.0-beta.4)
 * [package-2021-04-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databricks/resource-manager#tag-package-2021-04-01-preview)
     * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-databricks/1.0.0-beta.3)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-databricks/1.0.0-beta.2)
@@ -475,6 +493,7 @@ service
 * [package-preview-2022-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager#tag-package-preview-2022-11)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-dataprotection/1.0.0-beta.2)
 * [package-2023-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager#tag-package-2023-01)
+    * [1.0.0-beta.4](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-dataprotection/1.0.0-beta.4)
     * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-dataprotection/1.0.0-beta.3)
 * [package-2021-07](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager#tag-package-2021-07)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-dataprotection/1.0.0-beta.1)
@@ -969,6 +988,14 @@ service
 
 <br/>
 <details>
+<summary> managementgroups </summary>
+
+* [package-2021-04](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/managementgroups/resource-manager#tag-package-2021-04)
+    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-managementgroups/1.0.0-beta.1)
+</details>
+
+<br/>
+<details>
 <summary> maps </summary>
 
 * [package-2021-02](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maps/resource-manager#tag-package-2021-02)
@@ -1129,14 +1156,6 @@ service
 
 <br/>
 <details>
-<summary> paloaltonetworks-ngfw </summary>
-
-* package-2022-08-29-preview
-    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-paloaltonetworks-ngfw/1.0.0-beta.1)
-</details>
-
-<br/>
-<details>
 <summary> nginx </summary>
 
 * [package-2022-08-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/nginx/resource-manager#tag-package-2022-08-01)
@@ -1179,6 +1198,14 @@ service
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-orbital/1.0.0-beta.2)
 * [package-2022-03-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager#tag-package-2022-03-01)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-orbital/1.0.0-beta.1)
+</details>
+
+<br/>
+<details>
+<summary> paloaltonetworks-ngfw </summary>
+
+* [package-2022-08-29-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/paloaltonetworks/resource-manager#tag-package-2022-08-29-preview)
+    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-paloaltonetworks-ngfw/1.0.0-beta.1)
 </details>
 
 <br/>
@@ -1385,6 +1412,8 @@ service
 <details>
 <summary> resourcehealth </summary>
 
+* [package-2022-10](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resourcehealth/resource-manager#tag-package-2022-10)
+    * [1.1.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-resourcehealth/1.1.0-beta.1)
 * [package-2020-05-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resourcehealth/resource-manager#tag-package-2020-05-01)
     * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-resourcehealth/1.0.0)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-resourcehealth/1.0.0-beta.2)
@@ -1447,6 +1476,8 @@ service
 <details>
 <summary> selfhelp </summary>
 
+* [package-2023-06-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/help/resource-manager#tag-package-2023-06-01)
+    * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-selfhelp/1.0.0)
 * [package-2023-01-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/help/resource-manager#tag-package-2023-01-01-preview)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-selfhelp/1.0.0-beta.1)
 </details>
@@ -1503,6 +1534,8 @@ service
 <details>
 <summary> sqlvirtualmachine </summary>
 
+* [package-preview-2022-08](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sqlvirtualmachine/resource-manager#tag-package-preview-2022-08)
+    * [1.0.0-beta.4](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-sqlvirtualmachine/1.0.0-beta.4)
 * [package-preview-2022-07](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sqlvirtualmachine/resource-manager#tag-package-preview-2022-07)
     * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-sqlvirtualmachine/1.0.0-beta.3)
 * [package-preview-2021-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sqlvirtualmachine/resource-manager#tag-package-preview-2021-11)
@@ -1517,6 +1550,8 @@ service
 
 * [package-preview-2023-03](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager#tag-package-preview-2023-03)
     * [1.0.0-beta.8](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-storagecache/1.0.0-beta.8)
+* [package-2023-05](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager#tag-package-2023-05)
+    * [1.0.0-beta.9](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-storagecache/1.0.0-beta.9)
 * [package-2023-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager#tag-package-2023-01)
     * [1.0.0-beta.7](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-storagecache/1.0.0-beta.7)
 * [package-2022-05](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager#tag-package-2022-05)

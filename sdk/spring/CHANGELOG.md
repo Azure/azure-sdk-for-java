@@ -1,5 +1,22 @@
 # Release History
 
+# Release History
+
+## 4.9.0-beta.1 (Unreleased)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+
+#### Features Added
+- Added `spring-cloud-azure-starter-eventgrid` into current bom file.
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Added autoconfiguration for the Event Grid client [#35537](https://github.com/Azure/azure-sdk-for-java/pull/35537).
+
 ## 5.2.0 (2023-06-02)
 - This release is compatible with Spring Boot 3.0.0-3.0.5. (Note: 3.0.x (x>1) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2022.0.0-2022.0.2. (Note: 2022.0.x (x>0) should be supported, but they aren't tested with this release.)

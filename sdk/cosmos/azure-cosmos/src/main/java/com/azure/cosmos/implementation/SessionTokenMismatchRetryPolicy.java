@@ -3,9 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosSessionRetryOptions;
+import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.CosmosRegionSwitchHint;
 import org.slf4j.Logger;
@@ -25,9 +24,9 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
     private Duration currentBackoff;
     private RetryContext retryContext;
     private final AtomicInteger maxRetryAttemptsInCurrentRegion;
-    private final CosmosSessionRetryOptions sessionRetryOptions;
+    private final SessionRetryOptions sessionRetryOptions;
 
-    public SessionTokenMismatchRetryPolicy(RetryContext retryContext, int waitTimeInMilliseconds, CosmosSessionRetryOptions sessionRetryOptions) {
+    public SessionTokenMismatchRetryPolicy(RetryContext retryContext, int waitTimeInMilliseconds, SessionRetryOptions sessionRetryOptions) {
         this.waitTimeTimeoutHelper = new TimeoutHelper(Duration.ofMillis(Configs.getSessionTokenMismatchDefaultWaitTimeInMs()));
         this.maximumBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchMaximumBackoffTimeInMs());
         this.retryCount = new AtomicInteger();
@@ -38,7 +37,7 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         this.sessionRetryOptions = sessionRetryOptions;
     }
 
-    public SessionTokenMismatchRetryPolicy(RetryContext retryContext, CosmosSessionRetryOptions sessionRetryOptions) {
+    public SessionTokenMismatchRetryPolicy(RetryContext retryContext, SessionRetryOptions sessionRetryOptions) {
         this(retryContext, Configs.getSessionTokenMismatchDefaultWaitTimeInMs(), sessionRetryOptions);
     }
 
@@ -124,7 +123,7 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         return backoff;
     }
 
-    private boolean shouldRetryLocally(CosmosSessionRetryOptions sessionRetryOptions, int sessionTokenMismatchRetryAttempts) {
+    private boolean shouldRetryLocally(SessionRetryOptions sessionRetryOptions, int sessionTokenMismatchRetryAttempts) {
 
         if (sessionRetryOptions == null) {
             return true;
