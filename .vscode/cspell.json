@@ -386,6 +386,13 @@
   ],
   "overrides": [
     {
+      "filename": "sdk/identity/cgmanifest.json",
+      "words":[
+        "pwdb",
+        "bcprov"
+      ]
+    },
+    {
       "filename": "sdk/maps/azure-maps-traffic/README.md",
       "words": [
         "EPSG"
