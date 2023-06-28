@@ -28,10 +28,8 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
-import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import java.nio.ByteBuffer;
-import java.time.Duration;
 import reactor.core.publisher.Flux;
 
 /** Initializes a new instance of the synchronous OpenAIClient type. */
@@ -486,25 +484,22 @@ public final class OpenAIClient {
      *     result (Optional): {
      *         created: long (Required)
      *         data (Required): [
-     *              (Required){
-     *                 url: String (Optional)
-     *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     target: String (Optional)
-     *                     details (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     innererror (Optional): {
-     *                         code: String (Optional)
-     *                         innererror (Optional): (recursive schema, see innererror above)
-     *                     }
-     *                 }
-     *             }
+     *             DataModelBase (Required)
      *         ]
      *     }
      *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
-     *     error (Optional): (recursive schema, see error above)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
      * }
      * }</pre>
      *
@@ -533,6 +528,7 @@ public final class OpenAIClient {
      *     prompt: String (Required)
      *     n: Integer (Optional)
      *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     response_format: String(url/b64_json) (Optional)
      *     user: String (Optional)
      * }
      * }</pre>

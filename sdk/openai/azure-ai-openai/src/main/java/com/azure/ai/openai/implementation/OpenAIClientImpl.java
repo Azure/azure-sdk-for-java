@@ -859,25 +859,22 @@ public final class OpenAIClientImpl {
      *     result (Optional): {
      *         created: long (Required)
      *         data (Required): [
-     *              (Required){
-     *                 url: String (Optional)
-     *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     target: String (Optional)
-     *                     details (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     innererror (Optional): {
-     *                         code: String (Optional)
-     *                         innererror (Optional): (recursive schema, see innererror above)
-     *                     }
-     *                 }
-     *             }
+     *             DataModelBase (Required)
      *         ]
      *     }
      *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
-     *     error (Optional): (recursive schema, see error above)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
      * }
      * }</pre>
      *
@@ -918,25 +915,22 @@ public final class OpenAIClientImpl {
      *     result (Optional): {
      *         created: long (Required)
      *         data (Required): [
-     *              (Required){
-     *                 url: String (Optional)
-     *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     target: String (Optional)
-     *                     details (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     innererror (Optional): {
-     *                         code: String (Optional)
-     *                         innererror (Optional): (recursive schema, see innererror above)
-     *                     }
-     *                 }
-     *             }
+     *             DataModelBase (Required)
      *         ]
      *     }
      *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
-     *     error (Optional): (recursive schema, see error above)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
      * }
      * }</pre>
      *
@@ -971,6 +965,7 @@ public final class OpenAIClientImpl {
      *     prompt: String (Required)
      *     n: Integer (Optional)
      *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     response_format: String(url/b64_json) (Optional)
      *     user: String (Optional)
      * }
      * }</pre>
@@ -1030,6 +1025,7 @@ public final class OpenAIClientImpl {
      *     prompt: String (Required)
      *     n: Integer (Optional)
      *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     response_format: String(url/b64_json) (Optional)
      *     user: String (Optional)
      * }
      * }</pre>
@@ -1086,6 +1082,7 @@ public final class OpenAIClientImpl {
      *     prompt: String (Required)
      *     n: Integer (Optional)
      *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     response_format: String(url/b64_json) (Optional)
      *     user: String (Optional)
      * }
      * }</pre>
@@ -1146,6 +1143,7 @@ public final class OpenAIClientImpl {
      *     prompt: String (Required)
      *     n: Integer (Optional)
      *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     response_format: String(url/b64_json) (Optional)
      *     user: String (Optional)
      * }
      * }</pre>
