@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.resources.fluentcore.arm;
 
-import com.azure.resourcemanager.resources.models.PairedRegion;
 import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.resourcemanager.resources.models.ProviderResourceType;
 
