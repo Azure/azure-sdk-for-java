@@ -193,10 +193,23 @@ public class DiagnosticSettingsImpl
         return this.inner().getAsync(getResourceIdFromSettingsId(id), getNameFromSettingsId(id)).map(this::wrapModel);
     }
 
+    /**
+     * Get the resourceID from the diagnostic setting ID, with proper encoding.
+     *
+     * @param diagnosticSettingId ID of the diagnostic setting resource
+     * @return properly encoded resourceID of the diagnostic setting
+     */
     private String getResourceIdFromSettingsId(String diagnosticSettingId) {
         return getResourceIdFromSettingsId(diagnosticSettingId, true);
     }
 
+    /**
+     * Get the resourceID from the diagnostic setting ID.
+     *
+     * @param diagnosticSettingId ID of the diagnostic setting resource
+     * @param encodeResourceId whether to ensure the resourceID is properly encoded
+     * @return resourceID of the diagnostic setting
+     */
     private String getResourceIdFromSettingsId(String diagnosticSettingId, boolean encodeResourceId) {
         if (diagnosticSettingId == null) {
             throw logger.logExceptionAsError(
@@ -216,6 +229,12 @@ public class DiagnosticSettingsImpl
         return diagnosticSettingId.substring(0, dsIdx);
     }
 
+    /**
+     * Get raw diagnostic setting name from id.
+     *
+     * @param diagnosticSettingId ID of the diagnostic settting
+     * @return raw name of the diagnostic setting
+     */
     private String getNameFromSettingsId(String diagnosticSettingId) {
         String resourceId = getResourceIdFromSettingsId(diagnosticSettingId, false);
         return diagnosticSettingId

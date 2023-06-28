@@ -213,9 +213,9 @@ public final class ResourceUtils {
     }
 
     /**
-     * Properly encode resource ID in path parameter.
+     * Ensure that the resource ID is properly encoded for path parameter.
      *
-     * @param resourceId the resource ID to encode
+     * @param resourceId the resource ID, whether url-encoded or not
      * @return properly encoded resource ID
      */
     public static String encodeResourceId(String resourceId) {

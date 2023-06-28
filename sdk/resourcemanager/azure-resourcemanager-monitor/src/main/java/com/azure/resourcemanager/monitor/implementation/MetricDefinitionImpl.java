@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.AggregationType;
 import com.azure.resourcemanager.monitor.models.LocalizableString;
