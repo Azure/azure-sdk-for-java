@@ -27,7 +27,7 @@
         "Maven": {
           "ArtifactId": "bcprov-jdk15on",
           "GroupId": "org.bouncycastle",
-          "Version": "1.67"
+          "Version": "1.75"
         }
       }
     },
