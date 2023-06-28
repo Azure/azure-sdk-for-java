@@ -5,12 +5,14 @@ package com.azure.core.version.tests;
 
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.fasterxml.jackson.core.json.PackageVersion;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * Tests that a large payload doesn't trigger StreamReadConstraints introduced in Jackson 2.15.0.
@@ -73,6 +75,7 @@ public class LargePayloadTests {
 
     @Test
     public void tooLargeJsonPayload() {
+        assumeTrue(PackageVersion.VERSION.getMinorVersion() >= 15);
         assertThrows(IOException.class, () -> JacksonAdapter.createDefaultSerializerAdapter()
             .deserialize(TOO_LARGE_JSON, String.class, SerializerEncoding.JSON));
     }
@@ -86,6 +89,7 @@ public class LargePayloadTests {
 
     @Test
     public void tooLargeJsonPayloadSerializerJackson() {
+        assumeTrue(PackageVersion.VERSION.getMinorVersion() >= 15);
         assertThrows(IOException.class,
             () -> com.azure.core.serializer.json.jackson.JacksonAdapter.defaultSerializerAdapter()
                 .deserialize(TOO_LARGE_JSON, String.class, SerializerEncoding.JSON));
