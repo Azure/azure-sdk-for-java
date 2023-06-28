@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.resources.fluentcore.arm;
 
+import com.azure.resourcemanager.resources.models.PairedRegion;
 import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.resourcemanager.resources.models.ProviderResourceType;
 
@@ -210,5 +211,18 @@ public final class ResourceUtils {
                 prefixedParentPath,
                 resourceType,
                 resourceName);
+    }
+
+    /**
+     * Properly encode resource ID in path parameter.
+     *
+     * @param resourceId the resource ID to encode
+     * @return properly encoded resource ID
+     */
+    public static String encodeResourceId(String resourceId) {
+        if (resourceId == null) {
+            return null;
+        }
+        return resourceId.replaceAll(" ", "%20");
     }
 }
