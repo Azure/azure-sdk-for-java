@@ -41,7 +41,7 @@ public class LocalTestServer {
      * @throws RuntimeException If the server cannot configure SSL.
      */
     public LocalTestServer(RequestHandler requestHandler) {
-        this(requestHandler, 10);
+        this(requestHandler, 50);
     }
 
     /**

@@ -121,7 +121,7 @@ public class HttpClientTestsServer {
             } else {
                 throw new ServletException("Unexpected method: " + req.getMethod());
             }
-        }, 50);
+        }, 100);
     }
 
     private static byte[] addBom(byte[] arr1) {
