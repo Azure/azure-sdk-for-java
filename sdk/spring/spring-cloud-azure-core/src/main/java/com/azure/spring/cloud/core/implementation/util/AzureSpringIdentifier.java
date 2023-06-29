@@ -92,6 +92,9 @@ public final class AzureSpringIdentifier {
             Properties properties = PropertiesLoaderUtils.loadProperties(
                 new ClassPathResource("azure-spring-identifier.properties"));
             version = properties.getProperty("version");
+            if (version.contains("beta")) {
+                version = version.replace("beta", "b");
+            }
         } catch (IOException e) {
             LOGGER.warn("Can not get version.");
         }
