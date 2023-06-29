@@ -3,7 +3,9 @@
 ## 1.41.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added a base class `KeyCredential` that `AzureKeyCredential` extends from for `Non-Azure` endpoints and credentials.  
+
+- Added a `KeyCredential` to support key-based auth.
+- `AzureKeyCredential` is updated to extend from `KeyCredential`.
 
 ### Breaking Changes
 
