@@ -14,6 +14,7 @@
 - Added the following artifacts into current bom file:
     - spring-cloud-azure-starter-data-cosmos
     - azure-spring-data-cosmos
+    - spring-cloud-azure-starter-eventgrid
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
