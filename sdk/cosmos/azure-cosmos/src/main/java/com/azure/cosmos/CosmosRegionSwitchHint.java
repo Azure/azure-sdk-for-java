@@ -9,6 +9,8 @@ package com.azure.cosmos;
  */
 public final class CosmosRegionSwitchHint {
 
+    private CosmosRegionSwitchHint() {}
+
     /**
      * {@link  CosmosRegionSwitchHint#LOCAL_REGION_PREFERRED} corresponds to a hint
      * which will result in internal retry policies biasing the local region of a request
