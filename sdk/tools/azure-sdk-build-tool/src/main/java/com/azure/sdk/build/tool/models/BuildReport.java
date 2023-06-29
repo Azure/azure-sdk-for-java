@@ -1,25 +1,35 @@
 package com.azure.sdk.build.tool.models;
 
-import com.azure.sdk.build.tool.util.AnnotatedMethodCallerResult;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * The build report that contains detailed information about the build including failure messages, recommended
  * changes and Azure SDK usage.
  */
 public class BuildReport {
-    private final List<BuildError> errors;
-
-    private List<String> azureDependencies;
-    private Set<AnnotatedMethodCallerResult> serviceMethodCalls;
-    private Set<AnnotatedMethodCallerResult> betaMethodCalls;
-    private Set<OutdatedDependency> outdatedDirectDependencies;
-    private Set<OutdatedDependency> outdatedTransitiveDependencies;
+    @JsonProperty
+    private String groupId;
+    @JsonProperty
+    private String artifactId;
+    @JsonProperty
+    private String version;
+    @JsonProperty
     private String bomVersion;
-    private String jsonReport;
+    @JsonProperty
+    private List<String> azureDependencies;
+    @JsonProperty
+    private List<OutdatedDependency> outdatedDirectDependencies;
+    @JsonProperty
+    private List<OutdatedDependency> outdatedTransitiveDependencies;
+    @JsonProperty
+    private List<MethodCallDetails> serviceMethodCalls;
+    @JsonProperty
+    private List<MethodCallDetails> betaMethodCalls;
+    @JsonProperty
+    private final List<BuildError> errors;
 
     public BuildReport() {
         this.errors = new ArrayList<>();
@@ -41,20 +51,28 @@ public class BuildReport {
         errors.add(error);
     }
 
-    public void setServiceMethodCalls(Set<AnnotatedMethodCallerResult> serviceMethodCalls) {
+    public void setServiceMethodCalls(List<MethodCallDetails> serviceMethodCalls) {
         this.serviceMethodCalls = serviceMethodCalls;
     }
 
-    public void setBetaMethodCalls(Set<AnnotatedMethodCallerResult> betaMethodCalls) {
+    public void setBetaMethodCalls(List<MethodCallDetails> betaMethodCalls) {
         this.betaMethodCalls = betaMethodCalls;
     }
 
-    public void setOutdatedDirectDependencies(Set<OutdatedDependency> outdatedDirectDependencies) {
+    public void setOutdatedDirectDependencies(List<OutdatedDependency> outdatedDirectDependencies) {
         this.outdatedDirectDependencies = outdatedDirectDependencies;
     }
 
-    public void setOutdatedTransitiveDependencies(Set<OutdatedDependency> outdatedTransitiveDependencies) {
+    public List<OutdatedDependency> getOutdatedDirectDependencies() {
+        return outdatedDirectDependencies;
+    }
+
+    public void setOutdatedTransitiveDependencies(List<OutdatedDependency> outdatedTransitiveDependencies) {
         this.outdatedTransitiveDependencies = outdatedTransitiveDependencies;
+    }
+
+    public List<OutdatedDependency> getOutdatedTransitiveDependencies() {
+        return outdatedTransitiveDependencies;
     }
 
     public void setBomVersion(String bomVersion) {
@@ -65,19 +83,35 @@ public class BuildReport {
         this.azureDependencies = azureDependencies;
     }
 
-    public void setJsonReport(String jsonReport) {
-        this.jsonReport = jsonReport;
-    }
-
-    public String getJsonReport() {
-        return jsonReport;
-    }
-
-    public Set<AnnotatedMethodCallerResult> getServiceMethodCalls() {
+    public List<MethodCallDetails> getServiceMethodCalls() {
         return this.serviceMethodCalls;
     }
 
-    public Set<AnnotatedMethodCallerResult> getBetaMethodCalls() {
+    public List<MethodCallDetails> getBetaMethodCalls() {
         return this.betaMethodCalls;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setArtifactId(String artifactId) {
+        this.artifactId = artifactId;
+    }
+
+    public String getArtifactId() {
+        return artifactId;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getVersion() {
+        return version;
     }
 }

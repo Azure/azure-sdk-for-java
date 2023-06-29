@@ -12,7 +12,6 @@ import org.apache.maven.model.InputLocation;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.azure.sdk.build.tool.util.MojoUtils.failOrWarn;
@@ -81,6 +80,7 @@ public class DependencyCheckerTool implements Runnable {
                         " version" + usedBomVersion + " latest version: " + latestAvailableBomVersion, Arrays.asList(MavenUtils.toGAV(bomDependency.get())));
             }
             checkForAzureSdkDependencyVersions();
+            AzureSdkMojo.MOJO.getReport().setBomVersion(usedBomVersion);
         } else {
             failOrWarn(AzureSdkMojo.MOJO::isValidateAzureSdkBomUsed, BuildErrorCode.BOM_NOT_USED, getString("missingBomDependency"));
         }
@@ -114,21 +114,21 @@ public class DependencyCheckerTool implements Runnable {
     private void checkForAzureSdkTrackOneDependencies() {
         // Check direct dependencies first for any 'com.microsoft.azure' group IDs. These are under the users direct
         // control, so they could try to upgrade to a newer 'com.azure' version instead.
-        Set<OutdatedDependency> outdatedDirectDependencies = getDirectDependencies().stream()
+        List<OutdatedDependency> outdatedDirectDependencies = getDirectDependencies().stream()
                 .filter(a -> COM_MICROSOFT_AZURE_GROUP_ID.equals(a.getGroupId()))
                 .map(AzureDependencyMapping::lookupReplacement)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
 
         // check indirect dependencies too, but filter out any dependencies we've already discovered above
-        Set<OutdatedDependency> outdatedTransitiveDependencies = getAllDependencies().stream()
+        List<OutdatedDependency> outdatedTransitiveDependencies = getAllDependencies().stream()
                 .filter(d -> COM_MICROSOFT_AZURE_GROUP_ID.equals(d.getGroupId()))
                 .map(AzureDependencyMapping::lookupReplacement)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .filter(d -> !outdatedDirectDependencies.contains(d))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
 
         // The report is only concerned with GAV, so we simplify it here
         AzureSdkMojo.MOJO.getReport().setOutdatedDirectDependencies(outdatedDirectDependencies);
@@ -138,12 +138,12 @@ public class DependencyCheckerTool implements Runnable {
             // convert each track one dependency into actionable guidance
             String message = getString("deprecatedDirectDependency");
             for (OutdatedDependency outdatedDependency : outdatedDirectDependencies) {
-                message += "\n    - " + outdatedDependency.getGav() + " --> " + outdatedDependency.getSuggestedReplacementGav();
+                message += "\n    - " + outdatedDependency.getOutdatedDependency() + " --> " + outdatedDependency.getSuggestedReplacements();
             }
 
             List<String> outdatedDependencyGavs = outdatedDirectDependencies
                 .stream()
-                .map(OutdatedDependency::getGav)
+                .map(OutdatedDependency::getOutdatedDependency)
                 .collect(Collectors.toList());
             failOrWarn(AzureSdkMojo.MOJO::isValidateNoDeprecatedMicrosoftLibraryUsed, BuildErrorCode.DEPRECATED_DEPENDENCY_USED, message, outdatedDependencyGavs);
         }
@@ -151,11 +151,11 @@ public class DependencyCheckerTool implements Runnable {
             // convert each track one dependency into actionable guidance
             String message = getString("deprecatedIndirectDependency");
             for (OutdatedDependency outdatedDependency : outdatedDirectDependencies) {
-                message += "\n    - " + outdatedDependency.getGav();
+                message += "\n    - " + outdatedDependency.getOutdatedDependency();
             }
             List<String> outdatedTransitiveDependencyGavs = outdatedTransitiveDependencies
                 .stream()
-                .map(OutdatedDependency::getGav)
+                .map(OutdatedDependency::getOutdatedDependency)
                 .collect(Collectors.toList());
             failOrWarn(AzureSdkMojo.MOJO::isValidateNoDeprecatedMicrosoftLibraryUsed, BuildErrorCode.DEPRECATED_TRANSITIVE_DEPENDENCY, message, outdatedTransitiveDependencyGavs);
         }

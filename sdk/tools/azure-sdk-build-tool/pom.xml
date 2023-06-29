@@ -97,12 +97,6 @@
             <version>0.11.7</version> <!-- {x-version-update;net.oneandone.reflections8:reflections8;external_dependency} -->
         </dependency>
 
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-            <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
-        </dependency>
-
         <!-- Unit Test -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

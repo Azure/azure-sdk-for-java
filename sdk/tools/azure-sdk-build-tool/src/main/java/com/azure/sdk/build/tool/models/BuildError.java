@@ -1,14 +1,21 @@
 package com.azure.sdk.build.tool.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
- * Class to represent the build errrors.
+ * Class to represent the build errors.
  */
 public class BuildError {
+    @JsonIgnore
     private String message;
+    @JsonProperty
     private BuildErrorCode code;
+    @JsonProperty
     private BuildErrorLevel level;
+    @JsonProperty
     private List<String> additionalDetails;
 
     /**
