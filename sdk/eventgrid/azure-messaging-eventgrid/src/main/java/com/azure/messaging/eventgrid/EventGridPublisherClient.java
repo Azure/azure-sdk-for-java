@@ -236,13 +236,14 @@ public final class EventGridPublisherClient<T> {
     /**
      * Publishes the given events to the set topic or domain and gives the response issued by EventGrid.
      * @param events the events to publish.
+     * @param context the context to use along the pipeline.
      *
      * @return the response from the EventGrid service.
      * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendEventsWithResponse(Iterable<T> events) {
-        return this.sendEventsWithResponse(events, null);
+    public Response<Void> sendEventsWithResponse(Iterable<T> events, Context context) {
+        return this.sendEventsWithResponse(events, null, context);
     }
 
 
@@ -252,33 +253,34 @@ public final class EventGridPublisherClient<T> {
      * @param channelName the channel name to send to Event Grid service. This is only applicable for sending
      *   Cloud Events to a partner topic in partner namespace. For more details, refer to
      *   <a href=https://docs.microsoft.com/azure/event-grid/partner-events-overview>Partner Events Overview.</a>
+     * @param context the context to use along the pipeline.
      *
      * @return the response from the EventGrid service.
      * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     @SuppressWarnings("unchecked")
-    public Response<Void> sendEventsWithResponse(Iterable<T> events, String channelName) {
+    public Response<Void> sendEventsWithResponse(Iterable<T> events, String channelName, Context context) {
         if (this.eventClass == CloudEvent.class) {
-            return this.sendCloudEventsWithResponse((Iterable<CloudEvent>) events, channelName);
+            return this.sendCloudEventsWithResponse((Iterable<CloudEvent>) events, channelName, context);
         } else if (this.eventClass == EventGridEvent.class) {
-            return this.sendEventGridEventsWithResponse((Iterable<EventGridEvent>) events);
+            return this.sendEventGridEventsWithResponse((Iterable<EventGridEvent>) events, context);
         } else {
-            return this.sendCustomEventsWithResponse((Iterable<BinaryData>) events);
+            return this.sendCustomEventsWithResponse((Iterable<BinaryData>) events, context);
         }
     }
 
-    private Response<Void> sendCustomEventsWithResponse(Iterable<BinaryData> events) {
+    private Response<Void> sendCustomEventsWithResponse(Iterable<BinaryData> events, Context context) {
         if (events == null) {
             throw logger.logExceptionAsError(new NullPointerException("'events' cannot be null."));
         }
         List<Object> objectEvents = StreamSupport.stream(events.spliterator(), false)
             .map(event -> (Object) new RawValue(event.toString()))
             .collect(Collectors.toList());
-        return this.impl.publishCustomEventEventsWithResponse(this.hostname, objectEvents, Context.NONE);
+        return this.impl.publishCustomEventEventsWithResponse(this.hostname, objectEvents, context);
     }
 
-    private Response<Void> sendEventGridEventsWithResponse(Iterable<EventGridEvent> events) {
+    private Response<Void> sendEventGridEventsWithResponse(Iterable<EventGridEvent> events, Context context) {
         if (events == null) {
             throw logger.logExceptionAsError(new NullPointerException("'events' cannot be null."));
         }
@@ -286,17 +288,17 @@ public final class EventGridPublisherClient<T> {
         List<com.azure.messaging.eventgrid.implementation.models.EventGridEvent> eventGridEvents = StreamSupport.stream(events.spliterator(), false)
             .map(EventGridEvent::toImpl)
             .collect(Collectors.toList());
-        return this.impl.publishEventGridEventsWithResponse(this.hostname, eventGridEvents, Context.NONE);
+        return this.impl.publishEventGridEventsWithResponse(this.hostname, eventGridEvents, context);
     }
 
-    private Response<Void> sendCloudEventsWithResponse(Iterable<CloudEvent> events, String channelName) {
+    private Response<Void> sendCloudEventsWithResponse(Iterable<CloudEvent> events, String channelName, Context context) {
         if (events == null) {
             throw logger.logExceptionAsError(new NullPointerException("'events' cannot be null."));
         }
 
         List<CloudEvent> cloudEvents = StreamSupport.stream(events.spliterator(), false)
             .collect(Collectors.toList());
-        return this.impl.publishCloudEventEventsWithResponse(this.hostname, cloudEvents, channelName, Context.NONE);
+        return this.impl.publishCloudEventEventsWithResponse(this.hostname, cloudEvents, channelName, context);
     }
 
     /**
