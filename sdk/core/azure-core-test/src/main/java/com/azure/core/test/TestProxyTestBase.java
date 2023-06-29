@@ -43,7 +43,7 @@ public abstract class TestProxyTestBase extends TestBase {
         Path testClassPath = Paths.get(toURI(testInfo.getTestClass().get().getResource(testInfo.getTestClass().get().getSimpleName() + ".class")));
         if (isTestProxyEnabled() && (testMode == TestMode.PLAYBACK || testMode == TestMode.RECORD)) {
             testProxyManager = new TestProxyManager(testClassPath);
-            testProxyManager.startProxy();
+            // testProxyManager.startProxy();
         }
     }
 
