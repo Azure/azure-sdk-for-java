@@ -858,9 +858,7 @@ public final class OpenAIClientImpl {
      *     expires: Long (Optional)
      *     result (Optional): {
      *         created: long (Required)
-     *         data (Required): [
-     *             DataModelBase (Required)
-     *         ]
+     *         data: DataModelBase (Required)
      *     }
      *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
      *     error (Optional): {
@@ -914,9 +912,7 @@ public final class OpenAIClientImpl {
      *     expires: Long (Optional)
      *     result (Optional): {
      *         created: long (Required)
-     *         data (Required): [
-     *             DataModelBase (Required)
-     *         ]
+     *         data: DataModelBase (Required)
      *     }
      *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
      *     error (Optional): {
