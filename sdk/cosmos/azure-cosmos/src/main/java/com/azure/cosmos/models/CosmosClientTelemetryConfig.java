@@ -90,7 +90,11 @@ public final class CosmosClientTelemetryConfig {
         this.tracer = null;
         this.tracingOptions = null;
         this.samplingRate = 1;
-        this.isClientMetricsEnabled = new CosmosMicrometerMetricsOptions().isEnabled();
+        CosmosMicrometerMetricsOptions defaultMetricsOptions = new CosmosMicrometerMetricsOptions();
+        this.isClientMetricsEnabled = defaultMetricsOptions.isEnabled();
+        if (this.isClientMetricsEnabled) {
+            this.micrometerMetricsOptions = defaultMetricsOptions;
+        }
     }
 
     /**
