@@ -151,7 +151,7 @@ public class RntbdTransportClient extends TransportClient {
         this.globalEndpointManager = null;
         this.metricConfig = null;
         this.addressSelector = null;
-        this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(endpointProvider);
+        this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(endpointProvider, this.addressSelector);
         this.serverErrorInjector = new RntbdServerErrorInjector();
     }
 
@@ -171,14 +171,14 @@ public class RntbdTransportClient extends TransportClient {
             clientTelemetry,
             this.serverErrorInjector);
 
-        this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(this.endpointProvider);
-        this.proactiveOpenConnectionsProcessor.init();
-
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
         this.channelAcquisitionContextEnabled = options.channelAcquisitionContextEnabled;
         this.globalEndpointManager = globalEndpointManager;
         this.addressSelector = new AddressSelector(addressResolver, Protocol.TCP);
+
+        this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(this.endpointProvider, this.addressSelector);
+        this.proactiveOpenConnectionsProcessor.init();
 
         if (clientTelemetry != null &&
             clientTelemetry.getClientTelemetryConfig() != null) {
@@ -296,9 +296,10 @@ public class RntbdTransportClient extends TransportClient {
                 request.requestContext.locationEndpointToRoute,
                 addressUri,
                 this.proactiveOpenConnectionsProcessor,
-                minConnectionPoolSizePerEndpoint);
+                minConnectionPoolSizePerEndpoint,
+                this.addressSelector);
 
-        final RntbdRequestRecord record = endpoint.request(requestArgs, this.addressSelector);
+        final RntbdRequestRecord record = endpoint.request(requestArgs);
 
         final Context reactorContext = Context.of(KEY_ON_ERROR_DROPPED, onErrorDropHookWithReduceLogLevel);
 

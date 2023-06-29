@@ -71,6 +71,7 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -825,7 +826,7 @@ public final class RntbdTransportClientTest {
     }
 
     @Test(groups = "unit")
-    public void cancelRequestMono() throws InterruptedException, URISyntaxException {
+    public void cancelRequestMono() throws InterruptedException, URISyntaxException, IllegalAccessException {
         RxDocumentServiceRequest request =
             RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         URI locationToRoute = new URI("http://localhost-west:8080");
@@ -835,14 +836,14 @@ public final class RntbdTransportClientTest {
         RntbdRequestRecord rntbdRequestRecord = new AsyncRntbdRequestRecord(requestArgs, requestTimer);
 
         RntbdEndpoint rntbdEndpoint = Mockito.mock(RntbdServiceEndpoint.class);
-        Mockito.when(rntbdEndpoint.request(any(), any())).thenReturn(rntbdRequestRecord);
+        Mockito.when(rntbdEndpoint.request(any())).thenReturn(rntbdRequestRecord);
 
         RntbdEndpoint.Provider endpointProvider = Mockito.mock(RntbdEndpoint.Provider.class);
 
-
         RntbdTransportClient transportClient = new RntbdTransportClient(endpointProvider);
+        AddressSelector addressSelector = (AddressSelector) FieldUtils.readField(transportClient, "addressSelector", true);
 
-        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, addressUri, transportClient.getProactiveOpenConnectionsProcessor(), Configs.getMinConnectionPoolSizePerEndpoint())).thenReturn(rntbdEndpoint);
+        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, addressUri, transportClient.getProactiveOpenConnectionsProcessor(), Configs.getMinConnectionPoolSizePerEndpoint(), addressSelector)).thenReturn(rntbdEndpoint);
 
         transportClient
             .invokeStoreAsync(
@@ -1147,7 +1148,7 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
-        public RntbdRequestRecord request(final RntbdRequestArgs requestArgs, final AddressSelector addressSelector) {
+        public RntbdRequestRecord request(final RntbdRequestArgs requestArgs) {
             final RntbdRequestRecord requestRecord = new AsyncRntbdRequestRecord(requestArgs, this.requestTimer);
             this.fakeChannel.writeOutbound(requestRecord);
             return requestRecord;
@@ -1199,7 +1200,7 @@ public final class RntbdTransportClientTest {
             }
 
             @Override
-            public RntbdEndpoint createIfAbsent(URI serviceEndpoint, Uri addressUri, ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor, int minRequiredChannelsForEndpoint) {
+            public RntbdEndpoint createIfAbsent(URI serviceEndpoint, Uri addressUri, ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor, int minRequiredChannelsForEndpoint, AddressSelector addressSelector) {
                 return new FakeEndpoint(config, timer, addressUri, expected);
             }
 

@@ -24,6 +24,7 @@ import com.azure.cosmos.implementation.RequestEntityTooLargeException;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RetryWithException;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -959,6 +960,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         }
 
         final RntbdRequestRecord requestRecord = this.pendingRequests.get(transportRequestId);
+        final RxDocumentServiceRequest serviceRequest = requestRecord.args().serviceRequest();
 
         if (requestRecord == null) {
             logger.debug("response {} ignored because its requestRecord is missing: {}", transportRequestId, response);
@@ -1044,6 +1046,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     switch (subStatusCode) {
                         case SubStatusCodes.COMPLETING_SPLIT_OR_MERGE:
                             cause = new PartitionKeyRangeIsSplittingException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(serviceRequest);
                             break;
                         case SubStatusCodes.COMPLETING_PARTITION_MIGRATION:
                             cause = new PartitionIsMigratingException(error, lsn, partitionKeyRangeId, responseHeaders);

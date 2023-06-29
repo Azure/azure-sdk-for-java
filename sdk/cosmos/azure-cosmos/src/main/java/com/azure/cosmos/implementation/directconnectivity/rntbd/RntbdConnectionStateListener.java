@@ -32,6 +32,7 @@ public class RntbdConnectionStateListener {
     private final RntbdConnectionStateListenerMetrics metrics;
     private final Set<Uri> addressUris;
     private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
+    private final AddressSelector addressSelector;
     private final AtomicBoolean endpointValidationInProgress = new AtomicBoolean(false);
     private final AtomicBoolean forceBackgroundAddressRefreshInProgress = new AtomicBoolean(false);
 
@@ -42,11 +43,13 @@ public class RntbdConnectionStateListener {
 
     public RntbdConnectionStateListener(
         final RntbdEndpoint endpoint,
-        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
+        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
+        final AddressSelector addressSelector) {
         this.endpoint = checkNotNull(endpoint, "expected non-null endpoint");
         this.metrics = new RntbdConnectionStateListenerMetrics();
         this.addressUris = ConcurrentHashMap.newKeySet();
         this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
+        this.addressSelector = addressSelector;
     }
 
     // endregion
@@ -165,15 +168,27 @@ public class RntbdConnectionStateListener {
         return 0;
     }
 
-    public void attemptBackgroundAddressRefresh(RxDocumentServiceRequest request, AddressSelector addressSelector) {
-        if (forceBackgroundAddressRefreshInProgress.compareAndSet(false, true)) {
-            logger.debug("background address refresh started from RntbdConnectionStateListener");
+    public void attemptBackgroundAddressRefresh(RxDocumentServiceRequest request) {
+
+        if (request.requestContext == null) {
+            return;
+        }
+
+        if (request.requestContext.getRequestCancellationStatusOnTimeout() == null) {
+            return;
+        }
+
+        AtomicBoolean requestCancellationStatusOnTimeout = request.requestContext.getRequestCancellationStatusOnTimeout();
+
+        if (this.forceBackgroundAddressRefreshInProgress.compareAndSet(false, true) &&
+            requestCancellationStatusOnTimeout.get()) {
             // kickstart background address refresh
-            addressSelector
+            logger.debug("background address refresh started from RntbdConnectionStateListener");
+            this.addressSelector
                 .resolveAddressesAsync(request, true)
                 .subscribeOn(Schedulers.boundedElastic())
                 .doFinally(signalType -> {
-                    forceBackgroundAddressRefreshInProgress.compareAndSet(true, false);
+                    this.forceBackgroundAddressRefreshInProgress.compareAndSet(true, false);
                 })
                 .subscribe();
         }

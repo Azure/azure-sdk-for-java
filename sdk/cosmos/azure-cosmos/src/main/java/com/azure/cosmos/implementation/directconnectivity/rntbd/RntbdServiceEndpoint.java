@@ -115,7 +115,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final URI serviceEndpoint,
         final RntbdDurableEndpointMetrics durableMetrics,
         final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
-        final int minChannelsRequired) {
+        final int minChannelsRequired,
+        final AddressSelector addressSelector) {
 
         this.durableMetrics = durableMetrics;
         this.addressUri = addressUri;
@@ -148,7 +149,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.maxConcurrentRequests = config.maxConcurrentRequestsPerEndpoint();
 
         this.connectionStateListener = this.provider.addressResolver != null && config.isConnectionEndpointRediscoveryEnabled()
-            ? new RntbdConnectionStateListener(this, proactiveOpenConnectionsProcessor) : null;
+            ? new RntbdConnectionStateListener(this, proactiveOpenConnectionsProcessor, addressSelector) : null;
 
         this.channelPool =
             new RntbdClientChannelPool(
@@ -366,7 +367,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         }
     }
 
-    public RntbdRequestRecord request(final RntbdRequestArgs args, final AddressSelector addressSelector) {
+    public RntbdRequestRecord request(final RntbdRequestArgs args) {
 
         this.throwIfClosed();
 
@@ -395,7 +396,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         this.lastRequestNanoTime.set(args.nanoTimeCreated());
 
-        final RntbdRequestRecord record = this.write(args, addressSelector);
+        final RntbdRequestRecord record = this.write(args);
         record.serviceEndpointStatistics(stat);
 
         record.whenComplete((response, error) -> {
@@ -542,7 +543,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         }
     }
 
-    private RntbdRequestRecord write(final RntbdRequestArgs requestArgs, final AddressSelector addressSelector) {
+    private RntbdRequestRecord write(final RntbdRequestArgs requestArgs) {
 
         final RntbdRequestRecord requestRecord = new AsyncRntbdRequestRecord(requestArgs, this.requestTimer);
         requestRecord.stage(RntbdRequestRecord.Stage.CHANNEL_ACQUISITION_STARTED);
@@ -551,16 +552,16 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         logger.debug("\n  [{}]\n  {}\n  WRITE WHEN CONNECTED {}", this, requestArgs, connectedChannel);
 
         if (connectedChannel.isDone()) {
-            return writeWhenConnected(requestRecord, connectedChannel, addressSelector);
+            return writeWhenConnected(requestRecord, connectedChannel);
         } else {
-            connectedChannel.addListener(ignored -> writeWhenConnected(requestRecord, connectedChannel, addressSelector));
+            connectedChannel.addListener(ignored -> writeWhenConnected(requestRecord, connectedChannel));
         }
 
         return requestRecord;
     }
 
     private RntbdRequestRecord writeWhenConnected(
-        final RntbdRequestRecord requestRecord, final Future<? super Channel> connected, final AddressSelector addressSelector) {
+        final RntbdRequestRecord requestRecord, final Future<? super Channel> connected) {
 
         if (connected.isSuccess()) {
             final Channel channel = (Channel) connected.getNow();
@@ -603,16 +604,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410
             );
 
-            RxDocumentServiceRequest serviceRequest = requestArgs.serviceRequest();
-
-            BridgeInternal.setRequestHeaders(goneException, serviceRequest.getHeaders());
-
-            AtomicBoolean requestCancellationStatusOnTimeout = serviceRequest.requestContext.getRequestCancellationStatusOnTimeout();
-
-            if (requestCancellationStatusOnTimeout != null && requestCancellationStatusOnTimeout.get()) {
-                connectionStateListener.attemptBackgroundAddressRefresh(serviceRequest, addressSelector);
-            }
-
+            connectionStateListener.attemptBackgroundAddressRefresh(requestArgs.serviceRequest());
             requestRecord.completeExceptionally(goneException);
         }
 
@@ -770,7 +762,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             final URI serviceEndpoint,
             final Uri addressUri,
             ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
-            int minRequiredChannelsForEndpoint) {
+            int minRequiredChannelsForEndpoint,
+            AddressSelector addressSelector) {
             return endpoints.computeIfAbsent(
                 addressUri.getURI().getAuthority(),
                 authority -> {
@@ -790,7 +783,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                         serviceEndpoint,
                         durableEndpointMetrics,
                         proactiveOpenConnectionsProcessor,
-                        minRequiredChannelsForEndpoint);
+                        minRequiredChannelsForEndpoint,
+                        addressSelector);
 
                     durableEndpointMetrics.setEndpoint(endpoint);
 

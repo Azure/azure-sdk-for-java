@@ -99,7 +99,7 @@ public interface RntbdEndpoint extends AutoCloseable {
     @Override
     void close();
 
-    RntbdRequestRecord request(RntbdRequestArgs requestArgs, AddressSelector addressSelector);
+    RntbdRequestRecord request(RntbdRequestArgs requestArgs);
 
     OpenConnectionRntbdRequestRecord openConnection(RntbdRequestArgs requestArgs);
 
@@ -122,7 +122,8 @@ public interface RntbdEndpoint extends AutoCloseable {
             URI serviceEndpoint,
             Uri addressUri,
             ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
-            int minRequiredChannelsForEndpoint);
+            int minRequiredChannelsForEndpoint,
+            AddressSelector addressSelector);
 
         RntbdEndpoint get(URI physicalAddress);
 
