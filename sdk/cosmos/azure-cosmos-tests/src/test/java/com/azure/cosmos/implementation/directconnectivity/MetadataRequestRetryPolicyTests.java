@@ -11,15 +11,23 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ClientRetryPolicyTest;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpClientUnderTestWrapper;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.MetadataRequestRetryPolicy;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.ShouldRetryResult;
+import com.azure.cosmos.implementation.ShouldRetryValidator;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -40,11 +48,15 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import io.netty.handler.timeout.ReadTimeoutException;
+import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
+import java.net.SocketException;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Arrays;
@@ -56,6 +68,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
@@ -102,7 +115,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
 
     // this test does the following
     // 1.
-    @Test(groups = {"multi-region"}, dataProvider = "operationContext")
+    @Test(groups = {"multi-region"}, dataProvider = "operationContext", timeOut = TIMEOUT)
     public void forceBackgroundAddressRefresh_onConnectionTimeoutAndRequestCancellation_test(
         FaultInjectionOperationType faultInjectionOperationType,
         OperationType operationType,
@@ -212,6 +225,50 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             safeDeleteDatabase(database);
             safeClose(client);
         }
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void metadataRetryPolicyTest() {
+        GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
+        MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(globalEndpointManagerMock);
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
+
+        metadataRequestRetryPolicy.onBeforeSendRequest(request);
+
+        if (request.isAddressRefresh() && request.isReadOnlyRequest()) {
+            Mockito
+                .verify(globalEndpointManagerMock, Mockito.times(1))
+                .markEndpointUnavailableForRead(Mockito.any());
+        } else if (request.isAddressRefresh() && !request.isReadOnlyRequest()) {
+            Mockito
+                .verify(globalEndpointManagerMock, Mockito.times(1))
+                .markEndpointUnavailableForWrite(Mockito.any());
+        }
+
+        Exception exception = new SocketException("Some dummy exception.");
+
+        CosmosException cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, exception);
+        BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+
+        Mono<ShouldRetryResult> shouldRetry = metadataRequestRetryPolicy.shouldRetry(cosmosException);
+
+        ClientRetryPolicyTest.validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+            .shouldRetry(false)
+            .withException(cosmosException)
+            .build());
+
+        Exception readTimeoutException = ReadTimeoutException.INSTANCE;
+
+        cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.REQUEST_TIMEOUT, readTimeoutException);
+        BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+
+        shouldRetry = metadataRequestRetryPolicy.shouldRetry(cosmosException);
+
+        ClientRetryPolicyTest.validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+            .shouldRetry(false)
+            .withException(cosmosException)
+            .build());
     }
 
     private void performDocumentOperation(
