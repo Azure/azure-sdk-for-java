@@ -605,6 +605,13 @@ public final class CosmosClientTelemetryConfig {
                 public void addDiagnosticsHandler(CosmosClientTelemetryConfig config,
                                                   CosmosDiagnosticsHandler handler) {
 
+                    for (CosmosDiagnosticsHandler existingHandler : config.diagnosticHandlers) {
+                        if (existingHandler.getClass().getCanonicalName().equals(handler.getClass().getCanonicalName())) {
+                            // Handler already had been added - this can happen for example when multiple
+                            // Cosmos(Async)Clients are created from a single CosmosClientBuilder.
+                            return;
+                        }
+                    }
                     config.diagnosticHandlers.add(handler);
                 }
 
