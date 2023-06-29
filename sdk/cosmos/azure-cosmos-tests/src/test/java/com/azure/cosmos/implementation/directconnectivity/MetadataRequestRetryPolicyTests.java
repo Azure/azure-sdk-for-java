@@ -247,10 +247,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
         } else if (faultInjectedOperationType == OperationType.Read) {
 
             faultInjectedContainer
-                .createItem(testItem,
-                    new PartitionKey(testItem.getMypk()),
-                    new CosmosItemRequestOptions()
-                )
+                .createItem(testItem, new PartitionKey(testItem.getMypk()), new CosmosItemRequestOptions())
                 .block();
 
             httpClientUnderTestWrapper.capturedRequests.clear();
