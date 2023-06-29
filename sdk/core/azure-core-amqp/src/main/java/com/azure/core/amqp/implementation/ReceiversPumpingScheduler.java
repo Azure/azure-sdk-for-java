@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Disposable;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -10,20 +11,21 @@ import reactor.core.scheduler.Schedulers;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 /**
  * The common internal {@link Scheduler} instance that all {@link ReactorReceiver} instances use to pump events.
  * <p/>
  * The {@link ReceiversPumpingScheduler} is backed by a Reactor BoundedElastic Scheduler instance that dynamically creates
  * a bounded number {@code poolMaxSize} of single-threaded ExecutorService instances and pools them.
- * An abstraction named {@link Worker} front ends an ExecutorService, exposing API to schedule tasks to ExecutorService
- * instance it is associated with.
+ * An abstraction named {@link Worker} front ends such a pooled ExecutorService, exposing API to schedule tasks to
+ * ExecutorService instance it is associated with.
  * <p/>
  * Each {@link ReactorReceiver} creates a Worker instance using the publishOn operator. The publishOn operator obtains
  * Worker using {@link ReceiversPumpingScheduler#createWorker()}. A Worker instance is pinned to a ReactorReceiver
  * as long as the receiver is active, i.e., until the receiver terminates. Termination of receiver disposes of its Worker.
  * <p/>
- * If there is a need for a Worker when the pool has {@code poolMaxSize} the number of ExecutorService instances,
+ * If there is a need for a Worker when the BoundedElastic pool has {@code poolMaxSize} the number of ExecutorService instances,
  * the new Worker is assigned to a pooled ExecutorService instance with the least number of Workers. A pooled ExecutorService
  * is considered idle once all Workers associated with it are disposed of; if no new Workers are created and associated with
  * it within 60 seconds since idle, the ExecutorService (and its backing single-thread) is evicted from the pool.
@@ -33,13 +35,13 @@ import java.util.concurrent.atomic.AtomicReference;
  * For message processing, a 'setup' starting with 2-4 cores per node and replicating the nodes if needed is recommended.
  * Typical, observed 'use-cases' are 1 to ~5 active {@link ReactorReceiver} (with a max-concurrent-calls per receiver in
  * ProcessorClient). The default {@code poolMaxSize} is 20 *count(cpu) and serves well in common 'setup' and 'use-cases'
- * or beyond. As we can see, under typical 'setup' and 'use-cases' or beyond, this leads an arrangement of one Thread
- * in the pool dedicated to one {@link ReactorReceiver} instance.
+ * or beyond. Under common 'setup' and 'use-cases', this can lead an arrangement of one Thread in the pool dedicated to
+ * one {@link ReactorReceiver} instance.
  * <p/>
- * Note_1: There is no one-size-fits-all guidance for resource allocation. Resourcing depends on the nature of application work,
- * load (e.g, other executor services (e.g. DB, REST calls) in the application using platform threads) and other factors
- * and should be evaluated case by case. If pool size tuning is really needed for a 'setup' and 'use-case', the default
- * {@code poolMaxSize} can be overridden through the system property 'com.azure.core.amqp.receiversPumpingThreadPoolMaxSize'.
+ * Note_1: If pool size tuning is really needed for a 'setup' and 'use-case', the default {@code poolMaxSize} can be overridden
+ * through the system property 'com.azure.core.amqp.receiversPumpingThreadPoolMaxSize'. There is no one-size-fits-all guidance
+ * for resource allocation. Resourcing depends on the nature of application work, other executor service (e.g. for DB, REST calls)
+ * resources in the application, load on these resources etc... and should be evaluated case by case.
  * <p/>
  * Note_2: We didn't want the pool to scale unbounded fashion like {@link java.util.concurrent.Executors#newCachedThreadPool()}
  * for the same reasons that Reactor phased out the (unbounded) elastic Scheduler, and the recommendation from async experts
@@ -52,9 +54,8 @@ import java.util.concurrent.atomic.AtomicReference;
  * Overall the threading arrangement is close to T1 (e.g., T1 Service Bus library), where a shared internal pool (similar to
  * ReceiversPumpingScheduler) pumps the messages internally and different pool (customizable in T1) pump for max-concurrent-calls.
  * <p/>
- * Note_4: The idle timeout of '60-sec' for the pool is inspired by the Reactor's choice. The queue size of '100000' for
- * each pooled Java single-threaded ExecutorService is also uplifted from Reactor, however, this doesn't really matter due to
- * one Thread to one {@link ReactorReceiver} arrangement that pools reaches in typical cases.
+ * Note_4: The idle timeout of '60-sec' for the pool and the queue size of '100000' for each Java single-threaded ExecutorService
+ * in the pool are uplifted from the Reactor's choice for the same attributes.
  */
 public final class ReceiversPumpingScheduler implements Scheduler {
     private static final String NAME = "receiverPump";
@@ -136,9 +137,20 @@ public final class ReceiversPumpingScheduler implements Scheduler {
     }
 
     private ReceiversPumpingScheduler() {
-        final int poolMaxSize = Optional.ofNullable(System.getProperty("com.azure.core.amqp.receiversPumpingThreadPoolMaxSize"))
-            .map(Integer::parseInt)
-            .orElseGet(() -> 20 * Runtime.getRuntime().availableProcessors());
+        final Supplier<Integer> poolMaxSizeDefault = () -> 20 * Runtime.getRuntime().availableProcessors();
+        // Note: It would be nice to read the custom pool size using com.azure.core.util.Configuration.getGlobalConfiguration.
+        // It requires adding the key to the azure-core known configuration properties, let's evaluate it separately.
+        final Optional<Integer> poolMaxSizeOverridden = Optional.ofNullable(System.getProperty("com.azure.core.amqp.receiversPumpingThreadPoolMaxSize"))
+            .map(m -> {
+                try {
+                    return Integer.parseInt(m);
+                } catch (NumberFormatException e) {
+                    // Use poolMaxSizeDefault, the initialization log below hints the size is chosen.
+                    return null;
+                }
+            });
+        final int poolMaxSize = poolMaxSizeOverridden.orElseGet(poolMaxSizeDefault);
         this.inner = Schedulers.newBoundedElastic(poolMaxSize, TASK_QUEUE_CAP, NAME, IDLE_TTL_SECONDS, true);
+        (new ClientLogger(getClass())).atVerbose().log("Initialized common ReceiversPumpingScheduler(maxThreads={})", poolMaxSize);
     }
 }
