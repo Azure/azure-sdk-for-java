@@ -48,7 +48,7 @@ public final class AzureSpringIdentifier {
     //And given the limitation of Kafka, only . is allowed here.
     public static final String AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH = ".az-sp-kafka";
     public static final String AZURE_SPRING_KEY_VAULT_SECRETS = "az-sp-kv/" + VERSION;
-    public static final String AZURE_SPRING_KEY_VAULT_CERTIFICATES = "az-sp-kv-ct/" + VERSION;
+    public static final String AZURE_SPRING_KEY_VAULT_CERTIFICATES = "az-sp-kc/" + VERSION;
 
     public static final String AZURE_SPRING_MYSQL_OAUTH = "az-sp-mysql/" + VERSION;
     public static final String AZURE_SPRING_POSTGRESQL_OAUTH = "az-sp-psql/" + VERSION;
