@@ -618,18 +618,16 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
     }
 
     /**
-     * The mediator that coordinates between {@link RecoverableReactorReceiver} and a {@link AmqpReceiveLink}.
+     * The mediator that coordinates between {@link RecoverableReactorReceiver} and a receiver {@link AmqpReceiveLink}.
      */
     private static final class ReactorReceiverMediator implements AsyncCloseable, CoreSubscriber<Message>, Subscription {
         private static final Subscription CANCELLED_SUBSCRIPTION = Operators.cancelledSubscription();
         private final RecoverableReactorReceiver parent;
         private final AmqpReceiveLink receiver;
-        private final String receiverName;
-        private final String receiverEntityPath;
         private final int prefetch;
         private final CreditFlowMode creditFlowMode;
         private final ClientLogger logger;
-        private final Disposable.Composite endpointStateDisposables = Disposables.composite();
+        private final Disposable.Composite endpointStateDisposable = Disposables.composite();
         private CreditAccountingStrategy creditAccounting;
         private volatile boolean ready;
         private volatile Subscription s;
@@ -675,8 +673,6 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
             CreditFlowMode creditFlowMode, ClientLogger logger) {
             this.parent = parent;
             this.receiver = receiver;
-            this.receiverName = receiver.getLinkName();
-            this.receiverEntityPath = receiver.getEntityPath();
             this.prefetch = prefetch;
             this.creditFlowMode = creditFlowMode;
             this.logger = logger;
@@ -686,47 +682,43 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
 
         /**
          * Invoked by the parent {@link RecoverableReactorReceiver} when it is ready to use this new mediator
-         * (that mediate between the parent and the new receiver ({@link AmqpReceiveLink}) which mediator wraps).
-         * In response, this mediator notifies the parent about its readiness by invoking
+         * (The mediator facilitate communication between the parent and the new receiver ({@link AmqpReceiveLink}) that
+         * mediator wraps). In response, this mediator notifies the parent about its readiness by invoking
          * {@link RecoverableReactorReceiver#onMediatorReady(BiFunction)}.
          */
         void onParentReady() {
             updateLogWithReceiverId(logger.atWarning()).log("Setting next mediator and waiting for activation.");
-
             // 1. Subscribe for the messages on the Receiver (AmqpReceiveLink).
             receiver.receive().subscribe(this);
-
-            // 2. Subscribe for the Receiver (AmqpReceiveLink) terminal-state event.
-            final Disposable taskOnTerminate =  receiver.getEndpointStates()
-                .ignoreElements()
-                .subscribe(__ -> { },
-                    e -> {
+            // 2. Subscribe for the readiness and terminal-state event on the Receiver (AmqpReceiveLink) endpoint.
+            final Disposable endpointDisposable = receiver.getEndpointStates()
+                .publishOn(ReceiversPumpingScheduler.instance())
+                .doOnEach(event -> {
+                    if (event.isOnNext()) {
+                        if (event.get() == AmqpEndpointState.ACTIVE) {
+                            if (!ready) {
+                                updateLogWithReceiverId(logger.atWarning()).log("The mediator is active.");
+                                // Set the 'ready' flag to indicate AmqpReceiveLink's successful transition to the active state.
+                                // Once this flag is set, further drain-loop can use 'CreditAccountingStrategy' contract to
+                                // place credits (i.e., the flag ensures credit is placed on the Link only after it is active).
+                                ready = true;
+                                parent.onMediatorReady(this::updateDisposition);
+                            }
+                        }
+                        return;
+                    }
+                    if (event.isOnError()) {
+                        final Throwable e = event.getThrowable();
                         updateLogWithReceiverId(logger.atWarning()).log("Receiver emitted terminal error.", e);
                         onLinkError(e);
-                    },
-                    () -> {
+                        return;
+                    }
+                    if (event.isOnComplete()) {
                         updateLogWithReceiverId(logger.atWarning()).log("Receiver emitted terminal completion.");
                         onLinkComplete();
-                    });
-            this.endpointStateDisposables.add(taskOnTerminate);
-
-            // 3. Subscribe for the Receiver (AmqpReceiveLink) readiness event.
-            final Disposable taskOnActive = receiver.getEndpointStates()
-                .publishOn(Schedulers.boundedElastic())
-                .subscribe(state -> {
-                    if (state == AmqpEndpointState.ACTIVE) {
-                        if (!ready) {
-                            updateLogWithReceiverId(logger.atWarning()).log("The mediator is active.");
-                            // Set the 'ready' flag to indicate AmqpReceiveLink's successful transition to the ACTIVE state.
-                            // Once this flag is set, the drain-loop can request credit placement via 'RequestAccounting'
-                            // contract as needed, i.e., the flag ensures credit is placed on the Link only after it is ready.
-                            ready = true;
-                            // notify the parent about the readiness.
-                            parent.onMediatorReady(this::updateDisposition);
-                        }
                     }
-                });
-            this.endpointStateDisposables.add(taskOnActive);
+                }).subscribe(__ -> { }, __ -> { }, () -> { });
+            endpointStateDisposable.add(endpointDisposable);
         }
 
         /**
@@ -855,14 +847,20 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                 Operators.onDiscardQueueWithClear(queue, parent.currentContext(), null);
             }
             // and remove (dispose) the Subscriptions to endpointStates publisher i.e. receiver.getEndpointStates().
-            endpointStateDisposables.dispose();
+            endpointStateDisposable.dispose();
         }
 
         /**
-         * When {@link RecoverableReactorReceiver} terminates (hence MessageFlux) due to
-         * downstream cancellation/upstream error or completion/retry-exhaust-error/non-retriable-error,
-         * it calls this method to close the current (i.e. last) mediator. The method is also called to
-         * close the current mediator when {@link RecoverableReactorReceiver } switches to a new mediator.
+         * Close the mediator.
+         * <ul>
+         * Closing is triggered in the following cases -
+         * <ul>
+         * <li>When {@link RecoverableReactorReceiver} switches to a new (i.e., next) mediator, it closes the current mediator.</li>
+         * <li>When {@link RecoverableReactorReceiver} terminates (hence {@link MessageFlux}) due to
+         * "downstream cancellation/upstream error or completion/retry-exhaust-error/non-retriable-error", it closes
+         * the current (i.e., last) mediator. </li>
+         * </ul>
+         * </ul>
          */
         @Override
         public Mono<Void> closeAsync() {
