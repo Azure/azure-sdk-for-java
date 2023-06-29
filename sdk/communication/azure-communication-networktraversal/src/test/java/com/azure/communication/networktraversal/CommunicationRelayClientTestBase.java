@@ -16,14 +16,12 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class CommunicationRelayClientTestBase extends TestProxyTestBase {
@@ -52,11 +50,7 @@ public class CommunicationRelayClientTestBase extends TestProxyTestBase {
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
-
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(addBodyKeySanitizer());
-        }
-
+        addSanitizersAndMatchers();
         return builder;
     }
 
@@ -110,8 +104,8 @@ public class CommunicationRelayClientTestBase extends TestProxyTestBase {
     }
 
     private void addSanitizersAndMatchers() {
-        interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x" +
-            "-ms-hmac-string-to-sign-base64", "x-ms-content-sha"))));
+        interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(
+            Arrays.asList("x-ms-hmac-string-to-sign-base64", "x-ms-content-sha", "x-ms-content-sha256"))));
         interceptorManager.addSanitizers(addBodyKeySanitizer());
     }
 
