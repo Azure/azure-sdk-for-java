@@ -52,32 +52,31 @@ public class AnnotationProcessingTool implements Runnable {
         final ClassLoader classLoader = getCompleteClassLoader(getAllPaths());
 
         // Collect all calls to methods annotated with the Azure SDK @ServiceMethod annotation
-        Optional<Set<AnnotatedMethodCallerResult>> annotatedServiceCallerResults = getAnnotation("com.azure.core.annotation.ServiceMethod", classLoader)
+        Optional<Set<AnnotatedMethodCallerResult>> serviceMethodCallers = getAnnotation("com.azure.core.annotation.ServiceMethod", classLoader)
             .map(a -> findCallsToAnnotatedMethod(a, getAllPaths(), interestedPackages, true));
 
-        if (annotatedServiceCallerResults.isPresent()) {
-            List<MethodCallDetails> serviceMethodCallDetails = getBetaMethodCallDetails(annotatedServiceCallerResults.get());
+        if (serviceMethodCallers.isPresent()) {
+            List<MethodCallDetails> serviceMethodCallDetails = getMethodCallDetails(serviceMethodCallers.get());
             AzureSdkMojo.MOJO.getReport().setServiceMethodCalls(serviceMethodCallDetails);
         }
 
         // Collect all calls to methods annotated with the Azure SDK @Beta annotation
-        Optional<Set<AnnotatedMethodCallerResult>> annotatedMethodCallerResults = getAnnotation("com.azure.cosmos.util.Beta", classLoader)
+        Optional<Set<AnnotatedMethodCallerResult>> betaMethodCallers = getAnnotation("com.azure.cosmos.util.Beta", classLoader)
                 .map(a -> findCallsToAnnotatedMethod(a, getAllPaths(), interestedPackages, true));
-        if (annotatedMethodCallerResults.isPresent()) {
-            Set<AnnotatedMethodCallerResult> betaMethodCallers = annotatedMethodCallerResults.get();
-            List<MethodCallDetails> betaMethodCallDetails = getBetaMethodCallDetails(betaMethodCallers);
+        if (betaMethodCallers.isPresent()) {
+            List<MethodCallDetails> betaMethodCallDetails = getMethodCallDetails(betaMethodCallers.get());
 
             AzureSdkMojo.MOJO.getReport().setBetaMethodCalls(betaMethodCallDetails);
-            if (!betaMethodCallers.isEmpty()) {
+            if (!betaMethodCallers.get().isEmpty()) {
                 StringBuilder message = new StringBuilder();
                 message.append(getString("betaApiUsed")).append(System.lineSeparator());
-                betaMethodCallers.forEach(method -> message.append("   - ").append(method.toString()).append(System.lineSeparator()));
+                betaMethodCallers.get().forEach(method -> message.append("   - ").append(method.toString()).append(System.lineSeparator()));
                 failOrWarn(() -> AzureSdkMojo.MOJO.isValidateNoBetaApiUsed(), BuildErrorCode.BETA_API_USED, message.toString());
             }
         }
     }
 
-    private List<MethodCallDetails> getBetaMethodCallDetails(Set<AnnotatedMethodCallerResult> betaMethodCallers) {
+    private List<MethodCallDetails> getMethodCallDetails(Set<AnnotatedMethodCallerResult> betaMethodCallers) {
         return betaMethodCallers.stream()
             .map(AnnotatedMethodCallerResult::getAnnotatedMethod)
             .map(Method::toGenericString)
