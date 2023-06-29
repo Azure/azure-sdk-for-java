@@ -230,7 +230,7 @@ org.junit.vintage:junit-vintage-engine;5.9.3
 org.openjdk.jmh:jmh-core;1.36
 org.openjdk.jmh:jmh-generator-annprocess;1.36
 org.spockframework:spock-core;2.4-M1-groovy-4.0
-org.testng:testng;7.5
+org.testng:testng;7.5.1
 org.awaitility:awaitility;4.2.0
 uk.org.lidalia:slf4j-test;1.2.0
 uk.org.webcompere:system-stubs-jupiter;2.0.1
