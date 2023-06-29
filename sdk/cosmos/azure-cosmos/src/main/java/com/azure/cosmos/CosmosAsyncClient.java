@@ -98,7 +98,6 @@ public final class CosmosAsyncClient implements Closeable {
     private final DiagnosticsProvider diagnosticsProvider;
     private final Tag clientCorrelationTag;
     private final String accountTagValue;
-    private final boolean clientMetricsEnabled;
     private final boolean isSendClientTelemetryToServiceEnabled;
     private final MeterRegistry clientMetricRegistrySnapshot;
     private final CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
@@ -190,7 +189,6 @@ public final class CosmosAsyncClient implements Closeable {
 
         this.clientMetricRegistrySnapshot = telemetryConfigAccessor
             .getClientMetricRegistry(effectiveTelemetryConfig);
-        this.clientMetricsEnabled = clientMetricRegistrySnapshot != null;
 
         CosmosMeterOptions cpuMeterOptions = telemetryConfigAccessor
             .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.SYSTEM_CPU);
@@ -205,7 +203,7 @@ public final class CosmosAsyncClient implements Closeable {
             ".documents.azure.com", ""
         );
 
-        if (this.clientMetricsEnabled) {
+        if (this.clientMetricRegistrySnapshot != null) {
             telemetryConfigAccessor.setClientCorrelationTag(
                 effectiveTelemetryConfig,
                 this.clientCorrelationTag );
@@ -828,7 +826,7 @@ public final class CosmosAsyncClient implements Closeable {
 
                 @Override
                 public boolean shouldEnableEmptyPageDiagnostics(CosmosAsyncClient client) {
-                    return client.clientMetricsEnabled || client.isTransportLevelTracingEnabled();
+                    return client.clientMetricRegistrySnapshot != null || client.isTransportLevelTracingEnabled();
                 }
 
                 @Override

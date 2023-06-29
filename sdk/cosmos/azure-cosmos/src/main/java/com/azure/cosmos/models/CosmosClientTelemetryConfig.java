@@ -90,6 +90,7 @@ public final class CosmosClientTelemetryConfig {
         this.tracer = null;
         this.tracingOptions = null;
         this.samplingRate = 1;
+        this.isClientMetricsEnabled = new CosmosMicrometerMetricsOptions().isEnabled();
     }
 
     /**
@@ -540,6 +541,10 @@ public final class CosmosClientTelemetryConfig {
 
                 @Override
                 public MeterRegistry getClientMetricRegistry(CosmosClientTelemetryConfig config) {
+                    if (!config.isClientMetricsEnabled) {
+                        return null;
+                    }
+
                     return config.getClientMetricRegistry();
                 }
 
