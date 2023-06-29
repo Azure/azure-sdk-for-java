@@ -10,6 +10,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
@@ -142,6 +143,7 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
      * Verifies that a 4xx is returned if we use an invalid schema format.
      */
     @Test
+    @RecordWithoutRequestBody
     public void registerSchemaInvalidFormat() {
         // Arrange
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
@@ -163,6 +165,7 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
      * Verifies that if we register a schema and try to fetch it using an invalid schema format, an error is returned.
      */
     @Test
+    @RecordWithoutRequestBody
     public void registerAndGetSchemaPropertiesWithInvalidFormat() {
         // Arrange
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
