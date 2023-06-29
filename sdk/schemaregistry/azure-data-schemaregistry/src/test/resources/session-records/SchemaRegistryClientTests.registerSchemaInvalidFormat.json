@@ -1,22 +1,36 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/$schemaGroups/azsdk_java_group/schemas/sch4127775cb?api-version=2022-10",
+      "RequestUri": "https://REDACTED/$schemaGroups/azsdk_java_group/schemas/sch00896beee?api-version=2022-10",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "154",
         "Content-Type": "text/plain; charset=utf-8",
-        "Date": "Wed, 28 Jun 2023 23:51:50 GMT",
+        "Date": "Thu, 29 Jun 2023 00:09:41 GMT",
         "User-Agent": "azsdk-java-azure-data-schemaregistry/1.4.0-beta.3 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "ccc5f6a6-74b2-4ecc-bf34-41bdafde4b3d"
+        "x-ms-client-request-id": "b87336b6-8d05-4750-bb8c-14586ba3d07d"
       },
-      "RequestBody": null,
+      "RequestBody": {
+        "type": "record",
+        "namespace": "TestSchema",
+        "name": "Employee",
+        "fields": [
+          {
+            "name": "Name",
+            "type": "string"
+          },
+          {
+            "name": "Age",
+            "type": "int"
+          }
+        ]
+      },
       "StatusCode": 415,
       "ResponseHeaders": {
         "Content-Type": "application/json",
-        "Date": "Wed, 28 Jun 2023 23:51:52 GMT",
+        "Date": "Thu, 29 Jun 2023 00:09:44 GMT",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000",
         "Transfer-Encoding": "chunked",
@@ -25,12 +39,12 @@
       "ResponseBody": {
         "error": {
           "code": "InvalidSchemaType",
-          "message": "SubCode=41500, The messaging entity \u0027Schema of type Custom cannot be created within group \u0027azsdk_java_group\u0027 that supports Avro schema type.\u0027 could not be found. To know more visit https://aka.ms/sbResourceMgrExceptions. . TrackingId:6a470553-1c2c-4901-bcaf-d6a09127b924_D0, SystemTracker:NoSystemTracker, Timestamp:2023-06-28T23:51:52"
+          "message": "SubCode=41500, The messaging entity \u0027Schema of type Custom cannot be created within group \u0027azsdk_java_group\u0027 that supports Avro schema type.\u0027 could not be found. To know more visit https://aka.ms/sbResourceMgrExceptions. . TrackingId:173d605e-9fa6-48d9-ab28-3c0fa0eb4a97_D0, SystemTracker:NoSystemTracker, Timestamp:2023-06-29T00:09:44"
         }
       }
     }
   ],
   "Variables": {
-    "0": "sch4127775cb"
+    "0": "sch00896beee"
   }
 }

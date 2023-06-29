@@ -186,7 +186,6 @@ public class SchemaRegistryClientTests extends TestProxyTestBase {
      */
 
     @Test
-    @RecordWithoutRequestBody
     public void registerSchemaInvalidFormat() {
         // Arrange
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
