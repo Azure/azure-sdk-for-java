@@ -8,6 +8,10 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where unknown status was treated as complete status, 
+  in long-running operation with `OperationResourcePollingStrategy` polling strategy. 
+  ([#35628](https://github.com/Azure/azure-sdk-for-java/issues/35628))
+
 ### Other Changes
 
 ## 1.40.0 (2023-06-02)
