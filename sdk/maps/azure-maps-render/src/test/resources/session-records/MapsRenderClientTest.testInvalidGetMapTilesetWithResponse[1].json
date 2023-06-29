@@ -1,21 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.microsoft.com/map/tileset?api-version=2.1&tilesetId=null",
+    "Uri" : "https://REDACTED.microsoft.com/map/tileset?api-version=2022-08-01&tilesetId=null",
     "Headers" : {
-      "User-Agent" : "azsdk-java-JavaRenderSDK/2.1 (14.0.2; Windows 10; 10.0)"
+      "user-agent" : "azsdk-java-JavaRenderSDK/2.1 (17.0.5; Windows 10; 10.0)"
     },
     "Response" : {
       "X-Cache" : "CONFIG_NOCACHE",
-      "content-length" : "86",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "X-Content-Type-Options" : "nosniff",
       "x-ms-azuremaps-region" : "West US 2",
       "retry-after" : "0",
+      "Content-Length" : "86",
       "StatusCode" : "400",
-      "X-MSEdge-Ref" : "Ref A: CC1D1DF64C67464DA1C256F870BC6566 Ref B: PAOEDGE0611 Ref C: 2022-08-18T20:36:13Z",
+      "X-MSEdge-Ref" : "Ref A: 8CD2A7EEEE15479BBC36B68045340C52 Ref B: TPE30EDGE0913 Ref C: 2023-06-26T11:48:43Z",
       "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"Tileset not found for tileset id null.\"}}",
-      "Date" : "Thu, 18 Aug 2022 20:36:13 GMT",
+      "Date" : "Mon, 26 Jun 2023 11:48:43 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

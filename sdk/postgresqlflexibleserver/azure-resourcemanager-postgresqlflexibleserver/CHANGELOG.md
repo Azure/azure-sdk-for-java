@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.0.0-beta.8 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,230 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.7 (2023-06-26)
+
+- Azure Resource Manager PostgreSql client library for Java. This package contains Microsoft Azure SDK for PostgreSql Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, VNET rules, security alert policies, log files and configurations with new business model. Package tag package-flexibleserver-2023-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.NodeTypeCapability` was removed
+
+* `models.StorageMBCapability` was removed
+
+* `models.HyperscaleNodeEditionCapability` was removed
+
+* `models.CapabilityProperties` was removed
+
+* `models.VcoreCapability` was removed
+
+#### `models.StorageTierCapability` was modified
+
+* `isBaseline()` was removed
+* `status()` was removed
+* `java.lang.Long iops()` -> `java.lang.Integer iops()`
+* `tierName()` was removed
+
+#### `models.FastProvisioningEditionCapability` was modified
+
+* `java.lang.Long supportedStorageGb()` -> `java.lang.Integer supportedStorageGb()`
+
+#### `models.ServerVersionCapability` was modified
+
+* `supportedVcores()` was removed
+* `status()` was removed
+
+#### `models.FlexibleServerEditionCapability` was modified
+
+* `supportedServerVersions()` was removed
+* `status()` was removed
+
+#### `models.StorageEditionCapability` was modified
+
+* `supportedStorageMB()` was removed
+* `status()` was removed
+
+#### `models.Server$Definition` was modified
+
+* `withReplicaCapacity(java.lang.Integer)` was removed
+
+### Features Added
+
+* `models.ExecutionStatus` was added
+
+* `models.MigrationResource$Definition` was added
+
+* `models.LogFiles` was added
+
+* `models.MigrationResourceListResult` was added
+
+* `models.LtrBackupResponse` was added
+
+* `models.Migrations` was added
+
+* `models.MigrationMode` was added
+
+* `models.LtrBackupRequest` was added
+
+* `models.FlexibleServersTriggerLtrPreBackupResponse` was added
+
+* `models.ZoneRedundantHaSupportedEnum` was added
+
+* `models.MigrationResourceForPatch` was added
+
+* `models.RestrictedEnum` was added
+
+* `models.OverwriteDbsInTargetEnum` was added
+
+* `models.MigrationState` was added
+
+* `models.CapabilityStatus` was added
+
+* `models.AzureManagedDiskPerformanceTiers` was added
+
+* `models.StorageAutoGrowthSupportedEnum` was added
+
+* `models.MigrationResource$Update` was added
+
+* `models.ResourceProviders` was added
+
+* `models.MigrationStatus` was added
+
+* `models.StartDataMigrationEnum` was added
+
+* `models.ZoneRedundantHaAndGeoBackupSupportedEnum` was added
+
+* `models.StorageMbCapability` was added
+
+* `models.OnlineResizeSupportedEnum` was added
+
+* `models.MigrationNameAvailabilityResource` was added
+
+* `models.ServerSku` was added
+
+* `models.BackupStoreDetails` was added
+
+* `models.MigrationResource$UpdateStages` was added
+
+* `models.FlexibleServers` was added
+
+* `models.LogicalReplicationOnSourceDbEnum` was added
+
+* `models.KeyStatusEnum` was added
+
+* `models.CancelEnum` was added
+
+* `models.MigrationListFilter` was added
+
+* `models.FlexibleServerCapability` was added
+
+* `models.CapabilityBase` was added
+
+* `models.MigrationNameAvailabilityReason` was added
+
+* `models.LtrBackupOperations` was added
+
+* `models.LtrServerBackupOperation` was added
+
+* `models.ServerCapabilities` was added
+
+* `models.FastProvisioningSupportedEnum` was added
+
+* `models.LogFile` was added
+
+* `models.BackupRequestBase` was added
+
+* `models.ServerSkuCapability` was added
+
+* `models.LogFileListResult` was added
+
+* `models.StorageAutoGrow` was added
+
+* `models.BackupSettings` was added
+
+* `models.MigrationSubStateDetails` was added
+
+* `models.LtrServerBackupOperationList` was added
+
+* `models.LtrPreBackupRequest` was added
+
+* `models.LtrPreBackupResponse` was added
+
+* `models.MigrationResource` was added
+
+* `models.HaMode` was added
+
+* `models.GeoBackupSupportedEnum` was added
+
+* `models.MigrationSecretParameters` was added
+
+* `models.TriggerCutoverEnum` was added
+
+* `models.MigrationResource$DefinitionStages` was added
+
+* `models.MigrationSubState` was added
+
+* `models.DbServerMetadata` was added
+
+* `models.FlexibleServersTriggerLtrPreBackupHeaders` was added
+
+* `models.AdminCredentials` was added
+
+#### `models.FastProvisioningEditionCapability` was modified
+
+* `serverCount()` was added
+* `supportedTier()` was added
+
+#### `models.Storage` was modified
+
+* `withTier(models.AzureManagedDiskPerformanceTiers)` was added
+* `autoGrow()` was added
+* `iops()` was added
+* `withAutoGrow(models.StorageAutoGrow)` was added
+* `tier()` was added
+
+#### `models.UserAssignedIdentity` was modified
+
+* `tenantId()` was added
+
+#### `models.ServerForUpdate` was modified
+
+* `network()` was added
+* `withNetwork(models.Network)` was added
+
+#### `models.DataEncryption` was modified
+
+* `withPrimaryEncryptionKeyStatus(models.KeyStatusEnum)` was added
+* `withGeoBackupUserAssignedIdentityId(java.lang.String)` was added
+* `withGeoBackupKeyUri(java.lang.String)` was added
+* `geoBackupUserAssignedIdentityId()` was added
+* `withGeoBackupEncryptionKeyStatus(models.KeyStatusEnum)` was added
+* `geoBackupEncryptionKeyStatus()` was added
+* `geoBackupKeyUri()` was added
+* `primaryEncryptionKeyStatus()` was added
+
+#### `models.FlexibleServerEditionCapability` was modified
+
+* `defaultSkuName()` was added
+* `supportedServerSkus()` was added
+
+#### `models.Server$Update` was modified
+
+* `withNetwork(models.Network)` was added
+
+#### `models.StorageEditionCapability` was modified
+
+* `defaultStorageSizeMb()` was added
+* `supportedStorageMb()` was added
+
+#### `PostgreSqlManager` was modified
+
+* `serverCapabilities()` was added
+* `flexibleServers()` was added
+* `ltrBackupOperations()` was added
+* `logFiles()` was added
+* `migrations()` was added
+* `resourceProviders()` was added
 
 ## 1.0.0-beta.6 (2023-05-19)
 

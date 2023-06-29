@@ -6,20 +6,19 @@ package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachineGroupListResult;
-import org.junit.jupiter.api.Test;
 
 public final class SqlVirtualMachineGroupListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SqlVirtualMachineGroupListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"ysh\",\"sqlImageOffer\":\"zafb\",\"sqlImageSku\":\"Developer\",\"scaleType\":\"HA\",\"clusterManagerType\":\"WSFC\",\"clusterConfiguration\":\"Domainful\"},\"location\":\"mkljavb\",\"tags\":{\"hbzhfepg\":\"tqajzyulpkudjkrl\",\"paierh\":\"gqexzlocxs\",\"tjaodxobnb\":\"bcsglumma\",\"ajionpimexgstxg\":\"xkqpxo\"},\"id\":\"po\",\"name\":\"gmaajrm\",\"type\":\"djwzrlov\"}],\"nextLink\":\"lwhijcoejctbzaq\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"yulpkudjkr\",\"sqlImageOffer\":\"hbzhfepg\",\"sqlImageSku\":\"Developer\",\"scaleType\":\"HA\",\"clusterManagerType\":\"WSFC\",\"clusterConfiguration\":\"Domainful\"},\"location\":\"c\",\"tags\":{\"jtjaodxobnbdxkq\":\"erhhbcsglumm\",\"ajionpimexgstxg\":\"xo\",\"gmaajrm\":\"po\",\"clwhijcoejctbz\":\"djwzrlov\"},\"id\":\"qsqsy\",\"name\":\"bkbfkgukdkex\",\"type\":\"ppofmxaxcfjpgdd\"},{\"properties\":{\"provisioningState\":\"jjxhvpmo\",\"sqlImageOffer\":\"xhdzxibqeojnx\",\"sqlImageSku\":\"Enterprise\",\"scaleType\":\"HA\",\"clusterManagerType\":\"WSFC\",\"clusterConfiguration\":\"Domainful\"},\"location\":\"eic\",\"tags\":{\"uhrhcffcyddgl\":\"npzaoq\"},\"id\":\"jthjqkwpyei\",\"name\":\"xmqci\",\"type\":\"q\"}],\"nextLink\":\"khixuigdtopbo\"}")
                 .toObject(SqlVirtualMachineGroupListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SqlVirtualMachineGroupListResult model = new SqlVirtualMachineGroupListResult();
         model = BinaryData.fromObject(model).toObject(SqlVirtualMachineGroupListResult.class);
     }

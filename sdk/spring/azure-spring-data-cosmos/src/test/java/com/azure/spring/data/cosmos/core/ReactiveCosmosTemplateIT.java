@@ -28,6 +28,7 @@ import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.domain.AuditableEntity;
 import com.azure.spring.data.cosmos.domain.AutoScaleSample;
+import com.azure.spring.data.cosmos.domain.BasicItem;
 import com.azure.spring.data.cosmos.domain.GenIdEntity;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
@@ -67,6 +68,7 @@ import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
 import static com.azure.spring.data.cosmos.common.TestConstants.AGE;
 import static com.azure.spring.data.cosmos.common.TestConstants.FIRST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.HOBBIES;
+import static com.azure.spring.data.cosmos.common.TestConstants.ID_1;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.NEW_PASSPORT_IDS_BY_COUNTRY;
 import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_COUNTRY;
@@ -95,11 +97,14 @@ public class ReactiveCosmosTemplateIT {
     private static final Person TEST_PERSON_4 = new Person(TestConstants.ID_4, TestConstants.NEW_FIRST_NAME,
         TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
+    private static final BasicItem BASIC_ITEM = new BasicItem(ID_1);
     private static final String PRECONDITION_IS_NOT_MET = "is not met";
     private static final String WRONG_ETAG = "WRONG_ETAG";
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final JsonNode NEW_PASSPORT_IDS_BY_COUNTRY_JSON = OBJECT_MAPPER.convertValue(NEW_PASSPORT_IDS_BY_COUNTRY, JsonNode.class);
+
+    private static final String INVALID_ID = "http://xxx.html";
 
     private static final CosmosPatchOperations operations = CosmosPatchOperations
         .create()
@@ -128,9 +133,13 @@ public class ReactiveCosmosTemplateIT {
     private static ReactiveCosmosTemplate cosmosTemplate;
     private static String containerName;
     private static CosmosEntityInformation<Person, String> personInfo;
+
+    private static CosmosEntityInformation<BasicItem, String> itemInfo;
     private static AzureKeyCredential azureKeyCredential;
 
     private Person insertedPerson;
+
+    private BasicItem pointReadItem;
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -150,14 +159,17 @@ public class ReactiveCosmosTemplateIT {
             cosmosClientBuilder.credential(azureKeyCredential);
             client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
             personInfo = new CosmosEntityInformation<>(Person.class);
+            itemInfo = new CosmosEntityInformation<>(BasicItem.class);
             containerName = personInfo.getContainerName();
             cosmosTemplate = createReactiveCosmosTemplate(cosmosConfig, TestConstants.DB_NAME);
         }
 
-        collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, Person.class, GenIdEntity.class, AuditableEntity.class);
+        collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, Person.class, GenIdEntity.class, AuditableEntity.class, BasicItem.class);
 
         insertedPerson = cosmosTemplate.insert(TEST_PERSON,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON))).block();
+        pointReadItem = cosmosTemplate.insert(BASIC_ITEM,
+            new PartitionKey(BASIC_ITEM.getId())).block();
     }
 
     private ReactiveCosmosTemplate createReactiveCosmosTemplate(CosmosConfig config, String dbName) throws ClassNotFoundException {
@@ -184,6 +196,28 @@ public class ReactiveCosmosTemplateIT {
                     .verify();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+    }
+
+    @Test
+    public void testFindByIdWithInvalidId() {
+        final Mono<BasicItem> readMono = cosmosTemplate.findById(BasicItem.class.getSimpleName(),
+                INVALID_ID, BasicItem.class);
+        StepVerifier.create(readMono)
+            .expectErrorMatches(ex -> ex instanceof CosmosAccessException)
+            .verify();
+    }
+
+    @Test
+    public void testFindByIdPointRead() {
+        final Mono<BasicItem> findById = cosmosTemplate.findById(BasicItem.class.getSimpleName(),
+            BASIC_ITEM.getId(),
+            BasicItem.class);
+        StepVerifier.create(findById)
+            .consumeNextWith(actual -> Assert.assertEquals(actual, BASIC_ITEM))
+            .verifyComplete();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics().toString().contains("\"requestOperationType\":\"Read\"")).isTrue();
     }
 
     @Test
@@ -614,6 +648,7 @@ public class ReactiveCosmosTemplateIT {
         assertNotNull(throughput);
         assertEquals(Integer.parseInt(TestConstants.AUTOSCALE_MAX_THROUGHPUT),
             throughput.getProperties().getAutoscaleMaxThroughput());
+        cosmosTemplate.deleteContainer(autoScaleSampleInfo.getContainerName());
     }
 
     @Test
@@ -634,6 +669,7 @@ public class ReactiveCosmosTemplateIT {
         final CosmosAsyncDatabase database = client.getDatabase(configuredThroughputDbName);
         final ThroughputResponse response = database.readThroughput().block();
         assertEquals(expectedRequestUnits, response.getProperties().getManualThroughput());
+        deleteDatabaseIfExists(configuredThroughputDbName);
     }
 
     @Test

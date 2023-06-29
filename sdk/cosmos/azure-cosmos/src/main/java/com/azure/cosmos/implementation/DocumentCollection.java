@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.SerializableWrapper;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.ChangeFeedPolicy;
+import com.azure.cosmos.models.ComputedProperty;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -19,6 +20,8 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Collection;
+import java.util.Collections;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
 
@@ -291,6 +294,39 @@ public final class DocumentCollection extends Resource {
         }
 
         setProperty(this, Constants.Properties.CHANGE_FEED_POLICY, value);
+    }
+
+    /**
+     * Gets the computedProperties for this container in Azure Cosmos DB service.
+     *
+     * @return the computed properties.
+     */
+    public Collection<ComputedProperty> getComputedProperties() {
+        Collection<ComputedProperty> computedProperties = super.getList(Constants.Properties.COMPUTED_PROPERTIES, ComputedProperty.class);
+
+        if (computedProperties == null) {
+            return Collections.emptyList();
+        }
+
+        return computedProperties;
+    }
+
+    /**
+     * Sets the computedProperties for this container in Azure Cosmos DB service.
+     *
+     * @param computedProperties the computed properties associated with the container.
+     */
+    public void setComputedProperties(Collection<ComputedProperty> computedProperties) {
+        if (computedProperties == null || computedProperties.isEmpty()) {
+            throw new IllegalArgumentException("COMPUTED_PROPERTIES cannot be null or empty.");
+        }
+        computedProperties.forEach(computedProperty -> {
+            if (computedProperty == null) {
+                throw new IllegalArgumentException("COMPUTED_PROPERTIES cannot have null values.");
+            }
+        });
+
+        setProperty(this, Constants.Properties.COMPUTED_PROPERTIES, computedProperties);
     }
 
     /**

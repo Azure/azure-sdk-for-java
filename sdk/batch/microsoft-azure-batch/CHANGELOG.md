@@ -1,6 +1,6 @@
 # Release History
 
-## 10.2.0-beta.1 (Unreleased)
+## 11.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,30 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 11.0.0 (2023-05-23)
+
+### Features
+
+- Added a new enum `CriCompatible` to type `ContainerType`.
+- Added boolean property `enableAutomaticUpgrade` to the `VMExtension` model to determine whether the extension should be automatically upgraded by the platform if there is a newer version of the extension available.
+- Added boolean property `enableAcceleratedNetworking` to the `NetworkConfiguration` model to determine whether this pool should enable accelerated networking.
+
+### Breaking Changes
+
+- Changed property `type` in `ContainerConfiguration` from string type to enum type `ContainerType`.
+- Remove the following methods in `JobOperations`.
+   - `getAllJobsLifetimeStatistics()`.
+   - `getAllJobsLifetimeStatistics(Iterable<BatchClientBehavior> additionalBehaviors)`.
+- Remove the following methods in `PoolOperations`.
+    - `getAllPoolsLifetimeStatistics()`.
+    - `getAllPoolsLifetimeStatistics(Iterable<BatchClientBehavior> additionalBehaviors)`.
+
+### Other Changes
+
+- Added @Deprecated annotation to the `CertificateOperations` class. 
+    - This operation is deprecated and will be removed after February 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+  
 
 ## 10.1.0 (2022-11-15)
 

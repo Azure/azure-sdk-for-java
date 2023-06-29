@@ -10,6 +10,7 @@ import com.azure.resourcemanager.databricks.models.PrivateEndpoint;
 import com.azure.resourcemanager.databricks.models.PrivateEndpointConnectionProperties;
 import com.azure.resourcemanager.databricks.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.databricks.models.PrivateLinkServiceConnectionStatus;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class PrivateEndpointConnectionInnerTests {
@@ -18,15 +19,15 @@ public final class PrivateEndpointConnectionInnerTests {
         PrivateEndpointConnectionInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"privateEndpoint\":{\"id\":\"wclxxwrl\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"uskcqvkocrcj\",\"actionRequired\":\"wtnhxbnjbiksqr\"},\"provisioningState\":\"Succeeded\"},\"id\":\"sainqpjwnzl\",\"name\":\"jfm\",\"type\":\"pee\"}")
+                    "{\"properties\":{\"privateEndpoint\":{\"id\":\"w\"},\"groupIds\":[\"ryplwckbasyypn\",\"dhsgcba\",\"phejkotynqgoulz\",\"dlikwyqkgfgibma\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"keqsrxybzqqedq\",\"actionsRequired\":\"bciqfouflm\"},\"provisioningState\":\"Deleting\"},\"id\":\"zsm\",\"name\":\"dmgloug\",\"type\":\"b\"}")
                 .toObject(PrivateEndpointConnectionInner.class);
+        Assertions.assertEquals("ryplwckbasyypn", model.properties().groupIds().get(0));
         Assertions
             .assertEquals(
-                PrivateLinkServiceConnectionStatus.DISCONNECTED,
+                PrivateLinkServiceConnectionStatus.APPROVED,
                 model.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("uskcqvkocrcj", model.properties().privateLinkServiceConnectionState().description());
-        Assertions
-            .assertEquals("wtnhxbnjbiksqr", model.properties().privateLinkServiceConnectionState().actionRequired());
+        Assertions.assertEquals("keqsrxybzqqedq", model.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("bciqfouflm", model.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
@@ -36,18 +37,19 @@ public final class PrivateEndpointConnectionInnerTests {
                 .withProperties(
                     new PrivateEndpointConnectionProperties()
                         .withPrivateEndpoint(new PrivateEndpoint())
+                        .withGroupIds(Arrays.asList("ryplwckbasyypn", "dhsgcba", "phejkotynqgoulz", "dlikwyqkgfgibma"))
                         .withPrivateLinkServiceConnectionState(
                             new PrivateLinkServiceConnectionState()
-                                .withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED)
-                                .withDescription("uskcqvkocrcj")
-                                .withActionRequired("wtnhxbnjbiksqr")));
+                                .withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
+                                .withDescription("keqsrxybzqqedq")
+                                .withActionsRequired("bciqfouflm")));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionInner.class);
+        Assertions.assertEquals("ryplwckbasyypn", model.properties().groupIds().get(0));
         Assertions
             .assertEquals(
-                PrivateLinkServiceConnectionStatus.DISCONNECTED,
+                PrivateLinkServiceConnectionStatus.APPROVED,
                 model.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("uskcqvkocrcj", model.properties().privateLinkServiceConnectionState().description());
-        Assertions
-            .assertEquals("wtnhxbnjbiksqr", model.properties().privateLinkServiceConnectionState().actionRequired());
+        Assertions.assertEquals("keqsrxybzqqedq", model.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("bciqfouflm", model.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

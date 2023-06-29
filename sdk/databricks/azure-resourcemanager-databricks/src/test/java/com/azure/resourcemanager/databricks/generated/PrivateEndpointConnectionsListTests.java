@@ -17,9 +17,9 @@ public final class PrivateEndpointConnectionsListTests {
         PrivateEndpointConnectionsList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\"},\"id\":\"ulpkudjkrl\",\"name\":\"hbzhfepg\",\"type\":\"gqexzlocxs\"},{\"properties\":{\"provisioningState\":\"Creating\"},\"id\":\"erhhbcsglumm\",\"name\":\"jtjaodxobnbdxkq\",\"type\":\"xo\"}],\"nextLink\":\"jionpimexgstxgc\"}")
+                    "{\"value\":[{\"properties\":{\"groupIds\":[],\"provisioningState\":\"Updating\"},\"id\":\"pgacftadehxnlty\",\"name\":\"sop\",\"type\":\"usue\"},{\"properties\":{\"groupIds\":[],\"provisioningState\":\"Updating\"},\"id\":\"ej\",\"name\":\"avo\",\"type\":\"xzdmohctb\"},{\"properties\":{\"groupIds\":[],\"provisioningState\":\"Deleting\"},\"id\":\"xdn\",\"name\":\"nvowgujju\",\"type\":\"wdkcglhsl\"},{\"properties\":{\"groupIds\":[],\"provisioningState\":\"Succeeded\"},\"id\":\"ggd\",\"name\":\"jixhbk\",\"type\":\"ofqweykhmenevfye\"}],\"nextLink\":\"whybcib\"}")
                 .toObject(PrivateEndpointConnectionsList.class);
-        Assertions.assertEquals("jionpimexgstxgc", model.nextLink());
+        Assertions.assertEquals("whybcib", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,11 +30,19 @@ public final class PrivateEndpointConnectionsListTests {
                     Arrays
                         .asList(
                             new PrivateEndpointConnectionInner()
-                                .withProperties(new PrivateEndpointConnectionProperties()),
+                                .withProperties(
+                                    new PrivateEndpointConnectionProperties().withGroupIds(Arrays.asList())),
                             new PrivateEndpointConnectionInner()
-                                .withProperties(new PrivateEndpointConnectionProperties())))
-                .withNextLink("jionpimexgstxgc");
+                                .withProperties(
+                                    new PrivateEndpointConnectionProperties().withGroupIds(Arrays.asList())),
+                            new PrivateEndpointConnectionInner()
+                                .withProperties(
+                                    new PrivateEndpointConnectionProperties().withGroupIds(Arrays.asList())),
+                            new PrivateEndpointConnectionInner()
+                                .withProperties(
+                                    new PrivateEndpointConnectionProperties().withGroupIds(Arrays.asList()))))
+                .withNextLink("whybcib");
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionsList.class);
-        Assertions.assertEquals("jionpimexgstxgc", model.nextLink());
+        Assertions.assertEquals("whybcib", model.nextLink());
     }
 }

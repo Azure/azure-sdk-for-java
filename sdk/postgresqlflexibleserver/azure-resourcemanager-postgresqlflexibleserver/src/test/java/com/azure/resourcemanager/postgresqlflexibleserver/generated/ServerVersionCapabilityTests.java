@@ -13,7 +13,7 @@ public final class ServerVersionCapabilityTests {
         ServerVersionCapability model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"ufizuckyf\",\"supportedVersionsToUpgrade\":[\"fidfvzw\",\"zuhtymwisdkfthwx\",\"nteiwaopv\"],\"supportedVcores\":[{\"name\":\"c\",\"vCores\":4465069614160015486,\"supportedIops\":7874706781697000309,\"supportedMemoryPerVcoreMB\":4484717766489487799,\"status\":\"pymzidnsezcxtbzs\"},{\"name\":\"yc\",\"vCores\":7851183931824744763,\"supportedIops\":4763393061757508617,\"supportedMemoryPerVcoreMB\":190971854068748515,\"status\":\"iachbo\"}],\"status\":\"flnrosfqpteehzz\"}")
+                    "{\"name\":\"dfvzwdzuhty\",\"supportedVersionsToUpgrade\":[\"sdkf\",\"hwxmnteiwa\",\"pvkmijcmmxdcuf\",\"fsrpymzidnse\"],\"status\":\"Disabled\",\"reason\":\"bzsgfyccsne\"}")
                 .toObject(ServerVersionCapability.class);
     }
 

@@ -14,7 +14,7 @@
 
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-redis</artifactId>
-    <version>2.28.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-redis;current} -->
+    <version>2.29.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-redis;current} -->
     <packaging>jar</packaging>
 
     <name>Microsoft Azure SDK for Redis Cache Management</name>
@@ -48,7 +48,6 @@
 
         --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       </javaModulesSurefireArgLine>
-      <revapi.skip>true</revapi.skip>
     </properties>
 
     <developers>
@@ -62,7 +61,7 @@
       <dependency>
         <groupId>com.azure.resourcemanager</groupId>
         <artifactId>azure-resourcemanager-resources</artifactId>
-        <version>2.28.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
+        <version>2.29.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
       </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
@@ -85,7 +84,7 @@
       <dependency>
         <groupId>com.azure.resourcemanager</groupId>
         <artifactId>azure-resourcemanager-storage</artifactId>
-        <version>2.28.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;current} -->
+        <version>2.29.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;current} -->
         <scope>test</scope>
       </dependency>
       <dependency>

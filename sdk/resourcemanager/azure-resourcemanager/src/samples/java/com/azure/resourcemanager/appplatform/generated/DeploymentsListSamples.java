@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Deployments List. */
 public final class DeploymentsListSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Deployments_List.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Deployments_List.json
      */
     /**
      * Sample code: Deployments_List.

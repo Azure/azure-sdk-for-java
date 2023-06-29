@@ -14,11 +14,11 @@ public final class EndpointDetailTests {
         EndpointDetail model =
             BinaryData
                 .fromString(
-                    "{\"ipAddress\":\"w\",\"port\":537336258,\"latency\":34.096443644317674,\"isAccessible\":true}")
+                    "{\"ipAddress\":\"vxodpu\",\"port\":1447641859,\"latency\":97.60419370044511,\"isAccessible\":true}")
                 .toObject(EndpointDetail.class);
-        Assertions.assertEquals("w", model.ipAddress());
-        Assertions.assertEquals(537336258, model.port());
-        Assertions.assertEquals(34.096443644317674D, model.latency());
+        Assertions.assertEquals("vxodpu", model.ipAddress());
+        Assertions.assertEquals(1447641859, model.port());
+        Assertions.assertEquals(97.60419370044511D, model.latency());
         Assertions.assertEquals(true, model.isAccessible());
     }
 
@@ -26,14 +26,14 @@ public final class EndpointDetailTests {
     public void testSerialize() throws Exception {
         EndpointDetail model =
             new EndpointDetail()
-                .withIpAddress("w")
-                .withPort(537336258)
-                .withLatency(34.096443644317674D)
+                .withIpAddress("vxodpu")
+                .withPort(1447641859)
+                .withLatency(97.60419370044511D)
                 .withIsAccessible(true);
         model = BinaryData.fromObject(model).toObject(EndpointDetail.class);
-        Assertions.assertEquals("w", model.ipAddress());
-        Assertions.assertEquals(537336258, model.port());
-        Assertions.assertEquals(34.096443644317674D, model.latency());
+        Assertions.assertEquals("vxodpu", model.ipAddress());
+        Assertions.assertEquals(1447641859, model.port());
+        Assertions.assertEquals(97.60419370044511D, model.latency());
         Assertions.assertEquals(true, model.isAccessible());
     }
 }

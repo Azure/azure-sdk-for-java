@@ -7,8 +7,18 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Adding support for sas tokens with start and end times that only contain a date, no timestamp, ex: st=2021-06-21&se=2021-06-22.
 
 ### Other Changes
+
+## 12.21.2 (2023-06-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
 
 ## 12.22.0-beta.1 (2023-05-30)
 

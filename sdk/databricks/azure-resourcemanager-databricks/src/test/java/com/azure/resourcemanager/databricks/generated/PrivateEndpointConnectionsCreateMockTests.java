@@ -20,6 +20,7 @@ import com.azure.resourcemanager.databricks.models.PrivateLinkServiceConnectionS
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -35,7 +36,7 @@ public final class PrivateEndpointConnectionsCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"wuwprzqlv\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"lupj\",\"actionRequired\":\"hfxobbcswsrtj\"},\"provisioningState\":\"Succeeded\"},\"id\":\"lrbpbewtghfgbl\",\"name\":\"gw\",\"type\":\"zvlvqhjkbegib\"}";
+            "{\"properties\":{\"privateEndpoint\":{\"id\":\"xvy\"},\"groupIds\":[\"gkopkwhojvpajqgx\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ocmbqfqvmkcxoza\",\"actionsRequired\":\"helxprglya\"},\"provisioningState\":\"Succeeded\"},\"id\":\"ckcb\",\"name\":\"uejrjxgc\",\"type\":\"qibrhosxsdqrhzoy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,24 +67,27 @@ public final class PrivateEndpointConnectionsCreateMockTests {
         PrivateEndpointConnection response =
             manager
                 .privateEndpointConnections()
-                .define("it")
-                .withExistingWorkspace("otwmcdyt", "x")
+                .define("qsluicp")
+                .withExistingWorkspace("mgxcxrslpm", "twuoegrpkhjwni")
                 .withProperties(
                     new PrivateEndpointConnectionProperties()
                         .withPrivateEndpoint(new PrivateEndpoint())
+                        .withGroupIds(Arrays.asList("fy"))
                         .withPrivateLinkServiceConnectionState(
                             new PrivateLinkServiceConnectionState()
                                 .withStatus(PrivateLinkServiceConnectionStatus.REJECTED)
-                                .withDescription("isk")
-                                .withActionRequired("bkpyc")))
+                                .withDescription("pfvmwyhrfou")
+                                .withActionsRequired("taakc")))
                 .create();
 
+        Assertions.assertEquals("gkopkwhojvpajqgx", response.properties().groupIds().get(0));
         Assertions
             .assertEquals(
-                PrivateLinkServiceConnectionStatus.REJECTED,
+                PrivateLinkServiceConnectionStatus.APPROVED,
                 response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("lupj", response.properties().privateLinkServiceConnectionState().description());
         Assertions
-            .assertEquals("hfxobbcswsrtj", response.properties().privateLinkServiceConnectionState().actionRequired());
+            .assertEquals("ocmbqfqvmkcxoza", response.properties().privateLinkServiceConnectionState().description());
+        Assertions
+            .assertEquals("helxprglya", response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

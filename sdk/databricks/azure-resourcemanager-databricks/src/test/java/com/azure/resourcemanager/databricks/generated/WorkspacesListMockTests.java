@@ -34,7 +34,7 @@ public final class WorkspacesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"managedResourceGroupId\":\"yxoegukgjnp\",\"parameters\":{},\"provisioningState\":\"Ready\",\"uiDefinitionUri\":\"drqjsdpy\",\"authorizations\":[],\"createdBy\":{\"oid\":\"0fffa6f7-86b9-424f-92e5-e5b96795d9aa\",\"puid\":\"de\",\"applicationId\":\"5d43a7e7-f082-4948-819e-2740e33f9f02\"},\"updatedBy\":{\"oid\":\"6373efeb-5b4f-4a0a-b6fe-546e5dbc93f1\",\"puid\":\"cwif\",\"applicationId\":\"24e7319a-77e0-4a76-9ade-c7038179c99f\"},\"createdDateTime\":\"2021-09-22T07:17:11Z\",\"workspaceId\":\"zfbishcbkhaj\",\"workspaceUrl\":\"yeamdphagalpb\",\"storageAccountIdentity\":{\"principalId\":\"93a86fcb-54bc-4dc7-9d81-447d4ee11966\",\"tenantId\":\"cf93ddff-cc50-4665-ade4-45f4ce20df77\",\"type\":\"pwhonowkg\"},\"encryption\":{},\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\",\"requiredNsgRules\":\"AllRules\"},\"sku\":{\"name\":\"bin\",\"tier\":\"pu\"},\"location\":\"mryw\",\"tags\":{\"yx\":\"oqftiyqzrnkcq\",\"nwvlryavwhheunmm\":\"whzlsicohoq\",\"koklya\":\"hgyxzkonoc\",\"ewrmjmwvvjektc\":\"uconuqszfkbey\"},\"id\":\"senhwlrs\",\"name\":\"frzpwvlqdqgb\",\"type\":\"qylihkaetckt\"}]}";
+            "{\"value\":[{\"properties\":{\"managedResourceGroupId\":\"hzceuojgjrwjue\",\"parameters\":{},\"provisioningState\":\"Creating\",\"uiDefinitionUri\":\"qwgxhniskx\",\"authorizations\":[],\"createdBy\":{\"oid\":\"f51bdbd7-d603-44f1-bea7-3f978c6ff421\",\"puid\":\"gklwn\",\"applicationId\":\"89dee801-3f6e-423d-b143-1dfffa9cc2d4\"},\"updatedBy\":{\"oid\":\"b7013ef0-34ea-4e55-a7b7-e6531b3d6b19\",\"puid\":\"auwhvylwzbtdhx\",\"applicationId\":\"7dc283ad-32a6-40a3-a975-8b0a6ec69c1f\"},\"createdDateTime\":\"2021-01-21T23:49:51Z\",\"workspaceId\":\"mpowuwpr\",\"workspaceUrl\":\"lve\",\"storageAccountIdentity\":{\"principalId\":\"e28f7b89-5f44-4624-93ec-252384aaa981\",\"tenantId\":\"2c33366e-0625-4f1a-af5c-fa910e67f661\",\"type\":\"j\"},\"managedDiskIdentity\":{\"principalId\":\"8a5e180e-1ad9-4a42-aa85-c55ef8c0c157\",\"tenantId\":\"9e042c7e-8a91-4ef5-b395-26c85c41888b\",\"type\":\"obbc\"},\"diskEncryptionSetId\":\"s\",\"encryption\":{},\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Disabled\",\"requiredNsgRules\":\"AllRules\"},\"sku\":{\"name\":\"pbewtghfgblcgwx\",\"tier\":\"lvqhjkbegibtnmx\"},\"location\":\"bwwaloa\",\"tags\":{\"gwyzm\":\"gwrtzju\",\"mtsavjcbpwxqp\":\"txon\",\"yvxqtayriwwroy\":\"rknftguvriuhprwm\"},\"id\":\"bexrmcq\",\"name\":\"bycnojvkn\",\"type\":\"e\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,13 +64,13 @@ public final class WorkspacesListMockTests {
 
         PagedIterable<Workspace> response = manager.workspaces().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mryw", response.iterator().next().location());
-        Assertions.assertEquals("oqftiyqzrnkcq", response.iterator().next().tags().get("yx"));
-        Assertions.assertEquals("bin", response.iterator().next().sku().name());
-        Assertions.assertEquals("pu", response.iterator().next().sku().tier());
-        Assertions.assertEquals("yxoegukgjnp", response.iterator().next().managedResourceGroupId());
-        Assertions.assertEquals("drqjsdpy", response.iterator().next().uiDefinitionUri());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.iterator().next().publicNetworkAccess());
+        Assertions.assertEquals("bwwaloa", response.iterator().next().location());
+        Assertions.assertEquals("gwrtzju", response.iterator().next().tags().get("gwyzm"));
+        Assertions.assertEquals("pbewtghfgblcgwx", response.iterator().next().sku().name());
+        Assertions.assertEquals("lvqhjkbegibtnmx", response.iterator().next().sku().tier());
+        Assertions.assertEquals("hzceuojgjrwjue", response.iterator().next().managedResourceGroupId());
+        Assertions.assertEquals("qwgxhniskx", response.iterator().next().uiDefinitionUri());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.iterator().next().publicNetworkAccess());
         Assertions.assertEquals(RequiredNsgRules.ALL_RULES, response.iterator().next().requiredNsgRules());
     }
 }

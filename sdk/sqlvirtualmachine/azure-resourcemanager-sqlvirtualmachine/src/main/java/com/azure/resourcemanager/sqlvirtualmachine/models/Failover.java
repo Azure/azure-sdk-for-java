@@ -17,6 +17,15 @@ public final class Failover extends ExpandableStringEnum<Failover> {
     public static final Failover MANUAL = fromString("MANUAL");
 
     /**
+     * Creates a new instance of Failover value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Failover() {
+    }
+
+    /**
      * Creates or finds a Failover from its string representation.
      *
      * @param name a name to look for.
