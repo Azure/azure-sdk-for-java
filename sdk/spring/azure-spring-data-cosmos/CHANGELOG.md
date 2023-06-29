@@ -1,12 +1,19 @@
 ## Release History
 
-### 5.3.0-beta.1 (Unreleased)
+### 5.4.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
 
 #### Bugs Fixed
+
+#### Other Changes
+
+### 5.3.0 (2023-06-28)
+
+#### Features Added
+* Support Spring Data Commons 3 [34878](https://github.com/Azure/azure-sdk-for-java/pull/34878).
 
 #### Other Changes
 * Optimized default implementation of `findById(ID id)` from `CrudRepository` so that it will execute point reads where id is also the partition key, and log a warning where it is not. The new behavior is more optimal, especially for large containers with many partitions - see [PR 35403](https://github.com/Azure/azure-sdk-for-java/pull/35403).
