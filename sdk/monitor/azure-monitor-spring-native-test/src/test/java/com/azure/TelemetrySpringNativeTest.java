@@ -7,6 +7,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.TestResourceNamer;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.MessageData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -106,10 +107,12 @@ public class TelemetrySpringNativeTest extends TestBase {
         countDownLatch.await(10, SECONDS);
 
         assertThat(customValidationPolicy.url).isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
+
+
         assertThat(customValidationPolicy.actualTelemetryItems.size()).isEqualTo(1);
 
-        TelemetryItem firstTelemetry = customValidationPolicy.actualTelemetryItems.get(0);
-        assertThat(firstTelemetry.getName()).isEqualTo("Request");
+        TelemetryItem telemetry = customValidationPolicy.actualTelemetryItems.get(0);
+        assertThat(telemetry.getName()).isEqualTo("Request");
 
         assertThat(response).isEqualTo("OK!");
     }

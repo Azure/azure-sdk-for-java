@@ -3,17 +3,10 @@
 
 package com.azure.monitor.applicationinsights.spring;
 
-/**
- *
- */
 public final class AzureTelemetryActivation {
 
     private final boolean activated;
 
-    /**
-     *
-     * @param enableEvenWithNonNative ..
-     */
     public AzureTelemetryActivation(boolean enableEvenWithNonNative) {
         this.activated = isNativeRuntimeExecution() || enableEvenWithNonNative;
     }
@@ -23,10 +16,6 @@ public final class AzureTelemetryActivation {
         return imageCode != null;
     }
 
-    /**
-     *
-     * @return ...
-     */
     public boolean isTrue() {
         return activated;
     }

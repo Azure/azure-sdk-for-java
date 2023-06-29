@@ -10,17 +10,10 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.Ordered;
 
 // Necessary for SQL dependencies and metrics
-/**
- *
- */
 public class OtelGlobalRegistrationPostProcessor implements BeanPostProcessor, Ordered {
 
     private final AzureTelemetryActivation azureTelemetryActivation;
 
-    /**
-     *
-     * @param azureTelemetryActivation ...
-     */
     public OtelGlobalRegistrationPostProcessor(AzureTelemetryActivation azureTelemetryActivation) {
         this.azureTelemetryActivation = azureTelemetryActivation;
     }

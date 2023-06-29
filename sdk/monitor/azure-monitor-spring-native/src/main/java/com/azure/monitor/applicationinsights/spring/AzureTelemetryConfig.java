@@ -19,9 +19,6 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Optional;
 
-/**
- *
- */
 @Configuration(proxyBeanMethods = false)
 public class AzureTelemetryConfig {
 
@@ -31,12 +28,6 @@ public class AzureTelemetryConfig {
 
     private final Optional<AzureMonitorExporterBuilder> azureMonitorExporterBuilderOpt;
 
-    /**
-     *
-     * @param connectionStringSysProp ..
-     * @param azureTelemetryActivation ..
-     * @param httpPipeline ..
-     */
     public AzureTelemetryConfig(@Value("${applicationinsights.connection.string:}") String connectionStringSysProp, AzureTelemetryActivation azureTelemetryActivation, ObjectProvider<HttpPipeline> httpPipeline) {
         if (azureTelemetryActivation.isTrue()) {
             this.azureMonitorExporterBuilderOpt = createAzureMonitorExporterBuilder(connectionStringSysProp, httpPipeline);
@@ -45,7 +36,6 @@ public class AzureTelemetryConfig {
             azureMonitorExporterBuilderOpt = Optional.empty();
         }
     }
-
 
     private Optional<AzureMonitorExporterBuilder> createAzureMonitorExporterBuilder(String connectionStringSysProp, ObjectProvider<HttpPipeline> httpPipeline) {
         Optional<String> connectionString = ConnectionStringRetriever.retrieveConnectionString(connectionStringSysProp);
@@ -71,11 +61,6 @@ public class AzureTelemetryConfig {
         return Optional.empty();
     }
 
-
-    /**
-     *
-     * @return return
-     */
     @Bean
     public MetricExporter metricExporter() {
         if (!azureMonitorExporterBuilderOpt.isPresent()) {
@@ -84,10 +69,6 @@ public class AzureTelemetryConfig {
         return azureMonitorExporterBuilderOpt.get().buildMetricExporter();
     }
 
-    /**
-     *
-     * @return return
-     */
     @Bean
     public SpanExporter spanExporter() {
         if (!azureMonitorExporterBuilderOpt.isPresent()) {
@@ -96,10 +77,6 @@ public class AzureTelemetryConfig {
         return azureMonitorExporterBuilderOpt.get().buildTraceExporter();
     }
 
-    /**
-     *
-     * @return return
-     */
     @Bean
     public LogRecordExporter logRecordExporter() {
         if (!azureMonitorExporterBuilderOpt.isPresent()) {
@@ -120,11 +97,6 @@ public class AzureTelemetryConfig {
         }
     }
 
-    /**
-     *
-     * @param azureTelemetryActivation ...
-     * @return ...
-     */
     @Bean
     public OtelGlobalRegistrationPostProcessor otelGlobalRegistrationPostProcessor(AzureTelemetryActivation azureTelemetryActivation) {
         return new OtelGlobalRegistrationPostProcessor(azureTelemetryActivation);

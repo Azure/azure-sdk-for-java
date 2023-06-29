@@ -14,19 +14,13 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.Ordered;
 
-/** **/
 public class JvmMetricsPostProcessor implements BeanPostProcessor, Ordered {
 
     private final AzureTelemetryActivation azureTelemetryActivation;
 
-    /**
-     *
-     * @param azureTelemetryActivation ...
-     */
     public JvmMetricsPostProcessor(AzureTelemetryActivation azureTelemetryActivation) {
         this.azureTelemetryActivation = azureTelemetryActivation;
     }
-
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
