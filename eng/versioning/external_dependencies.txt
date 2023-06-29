@@ -204,7 +204,7 @@ io.projectreactor:reactor-test;3.4.29
 junit:junit;4.13.2
 commons-cli:commons-cli;1.3
 org.assertj:assertj-core;3.22.0
-org.bouncycastle:bcprov-jdk15on;1.75
+org.bouncycastle:bcprov-jdk15on;1.70
 org.eclipse.jetty:jetty-http;9.4.51.v20230217
 org.eclipse.jetty:jetty-server;9.4.51.v20230217
 org.eclipse.jgit:org.eclipse.jgit;4.5.7.201904151645-r
