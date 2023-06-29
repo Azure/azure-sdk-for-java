@@ -208,7 +208,4 @@ directive:
   where: $.parameters.Endpoint
   debug: true
   transform: >
-    $lib.log($);
     $["format"] = "";
-    $lib.log($);
-```
