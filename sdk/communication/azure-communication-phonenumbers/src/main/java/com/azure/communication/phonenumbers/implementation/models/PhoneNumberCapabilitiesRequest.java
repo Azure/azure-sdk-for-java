@@ -8,7 +8,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PhoneNumberCapabilitiesRequest model. */
+/** Capabilities of a phone number. */
 @Fluent
 public final class PhoneNumberCapabilitiesRequest {
     /*

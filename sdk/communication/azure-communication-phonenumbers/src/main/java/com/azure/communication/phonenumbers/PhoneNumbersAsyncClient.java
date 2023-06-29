@@ -14,6 +14,8 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSe
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReleasePhoneNumberResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
+import com.azure.communication.phonenumbers.models.OperatorInformationRequest;
+import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
@@ -45,6 +47,7 @@ import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -713,6 +716,21 @@ public final class PhoneNumbersAsyncClient {
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
+    }
+
+    /**
+     * Searches for operator information for a given list of phone numbers.
+     *
+     * @param phoneNumbers The phone number(s) whose operator information should be searched.
+     *
+     * @return A {@link OperatorInformationResult} which contains the results of the search.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<OperatorInformationResult> searchOperatorInformation(List<String> phoneNumbers) {
+        OperatorInformationRequest request = new OperatorInformationRequest();
+        request.setPhoneNumbers(phoneNumbers);
+        return client.operatorInformationSearchAsync(request)
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
     }
 
     private Mono<PhoneNumberOperation> getOperation(String operationId) {

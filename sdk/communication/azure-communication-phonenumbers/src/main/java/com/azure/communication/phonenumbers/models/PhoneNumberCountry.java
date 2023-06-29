@@ -7,7 +7,7 @@ package com.azure.communication.phonenumbers.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PhoneNumberCountry model. */
+/** Represents a country. */
 @Immutable
 public final class PhoneNumberCountry {
     /*

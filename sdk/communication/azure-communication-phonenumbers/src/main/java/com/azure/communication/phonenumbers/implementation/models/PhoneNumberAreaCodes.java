@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PhoneNumberAreaCodes model. */
+/** The list of available area codes. */
 @Immutable
 public final class PhoneNumberAreaCodes {
     /*

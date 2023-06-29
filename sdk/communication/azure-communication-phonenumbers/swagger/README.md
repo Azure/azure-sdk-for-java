@@ -23,10 +23,10 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 
 ### Code generation settings
 ``` yaml
-tag: package-phonenumber-2022-12-01
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/edf1d7365a436f0b124c0cecbefd63499e049af0/specification/communication/data-plane/PhoneNumbers/readme.md
+tag: package-phonenumber-2023-05-01-preview
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/4d2e746ac1e094f87bfe0807b1d51b375a6c5517/specification/communication/data-plane/PhoneNumbers/readme.md
 override-client-name: PhoneNumberAdminClient
-custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode
+custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode,OperatorDetails,OperatorInformation,OperatorInformationRequest,OperatorInformationResult,OperatorNumberType
 custom-types-subpackage: models
 models-subpackage: implementation.models
 java: true
@@ -190,4 +190,25 @@ directive:
     transform: >
       $["properties"]["localizedName"].readOnly = true;
       $["properties"]["countryCode"].readOnly = true;
+```
+
+### Change a generic error to more specific name
+``` yaml
+directive:
+  from: swagger-document
+  where: $.definitions.PhoneNumberSearchResult.properties.error.x-ms-enum
+  transform: >
+    $["name"] = "PhoneNumberSearchResultError";
+```
+
+### Change a generic error to more specific name
+``` yaml
+directive:
+  from: swagger-document
+  where: $.parameters.Endpoint
+  debug: true
+  transform: >
+    $lib.log($);
+    $["format"] = "";
+    $lib.log($);
 ```

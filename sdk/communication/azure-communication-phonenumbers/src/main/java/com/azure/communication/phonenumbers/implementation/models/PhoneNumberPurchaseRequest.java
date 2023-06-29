@@ -7,7 +7,7 @@ package com.azure.communication.phonenumbers.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PhoneNumberPurchaseRequest model. */
+/** The phone number search purchase request. */
 @Fluent
 public final class PhoneNumberPurchaseRequest {
     /*
