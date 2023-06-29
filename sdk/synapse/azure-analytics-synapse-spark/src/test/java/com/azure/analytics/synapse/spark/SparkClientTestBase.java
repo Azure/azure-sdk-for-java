@@ -43,7 +43,7 @@ public abstract class SparkClientTestBase extends TestProxyTestBase {
     private final Map<String, String> properties = CoreUtils.getProperties(SYNAPSE_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
-    private final String fakeSparkPool = "testsparkpool";
+    private final String fakeSparkPool = "Spark1";
     final String livyApiVersion = "2019-11-01-preview";
 
     protected String getEndpoint() {
