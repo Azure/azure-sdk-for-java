@@ -447,7 +447,7 @@ public class EventGridPublisherClientTests extends TestBase {
             "1.0")
             .setEventTime(OffsetDateTime.now()));
 
-        Response<Void> response = egClient.sendEventsWithResponse(events);
+        Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);
 
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 200);
@@ -546,7 +546,7 @@ public class EventGridPublisherClientTests extends TestBase {
             .setSubject("Test")
             .setTime(OffsetDateTime.now()));
 
-        Response<Void> response = egClient.sendEventsWithResponse(events);
+        Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);
 
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 200);
@@ -597,7 +597,7 @@ public class EventGridPublisherClientTests extends TestBase {
             .setTime(OffsetDateTime.now());
 
         Response<Void> response = egClient.sendEventsWithResponse(Arrays.asList(event),
-            getChannelName(EVENTGRID_PARTNER_CHANNEL_NAME));
+            getChannelName(EVENTGRID_PARTNER_CHANNEL_NAME), Context.NONE);
         assertEquals(200, response.getStatusCode());
     }
 
@@ -622,7 +622,7 @@ public class EventGridPublisherClientTests extends TestBase {
 
         HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
             egClient.sendEventsWithResponse(Arrays.asList(event),
-                getChannelName(EVENTGRID_PARTNER_CHANNEL_NAME));
+                getChannelName(EVENTGRID_PARTNER_CHANNEL_NAME), Context.NONE);
         });
         assertEquals(400, exception.getResponse().getStatusCode());
     }
@@ -653,7 +653,7 @@ public class EventGridPublisherClientTests extends TestBase {
             );
         }
 
-        Response<Void> response = egClient.sendEventsWithResponse(events);
+        Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);
         assertEquals(200, response.getStatusCode());
     }
 
@@ -675,7 +675,7 @@ public class EventGridPublisherClientTests extends TestBase {
                 }
             }));
         }
-        Response<Void> response = egClient.sendEventsWithResponse(events);
+        Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);
 
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 200);
@@ -700,7 +700,7 @@ public class EventGridPublisherClientTests extends TestBase {
                 }
             }, new JacksonJsonSerializerBuilder().build()));
         }
-        Response<Void> response = egClient.sendEventsWithResponse(events);
+        Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);
         assertEquals(200, response.getStatusCode());
     }
 
