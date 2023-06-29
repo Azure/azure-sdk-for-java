@@ -12,8 +12,11 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import net.minidev.json.JSONObject;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -94,7 +97,9 @@ public class PartiesClientTests extends TestBase {
 
         ScenesAsyncClient scenesClient = createScenesClient();
         BinaryData satelliteJob = BinaryData.fromString("{\"boundaryId\":\"contoso-boundary\",\"endDateTime\":\"2022-02-01T00:00:00Z\",\"partyId\":\"contoso-party\",\"source\":\"Sentinel_2_L2A\",\"startDateTime\":\"2022-01-01T00:00:00Z\",\"provider\":\"Microsoft\",\"data\":{\"imageNames\":[\"NDVI\"],\"imageFormats\":[\"TIF\"],\"imageResolutions\":[10]},\"name\":\"string\",\"description\":\"string\"}");
-        scenesClient.beginCreateSatelliteDataIngestionJob("contoso-job-35864", satelliteJob, null).getSyncPoller().waitForCompletion();
+        PollResponse<BinaryData> satelliteJobPollResponse = setPlaybackSyncPollerPollInterval(scenesClient.beginCreateSatelliteDataIngestionJob("contoso-job-35864", satelliteJob, null).getSyncPoller()).waitForCompletion();
+        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, satelliteJobPollResponse.getStatus());
+
         assertNotNull(scenesClient.getSatelliteDataIngestionJobDetailsWithResponse("contoso-job-35864", null).block().getValue());
 
         Iterable<BinaryData> scenes = scenesClient.list("Microsoft", "contoso-party", "contoso-boundary", "Sentinel_2_L2A", null).toIterable();
