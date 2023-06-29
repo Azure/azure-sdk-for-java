@@ -13,6 +13,8 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import org.eclipse.jetty.server.Response;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +33,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Server used when running {@link HttpClientTests}.
  */
+@Execution(ExecutionMode.SAME_THREAD)
 public class HttpClientTestsServer {
     private static final JacksonAdapter ADAPTER = new JacksonAdapter();
     private static final String PLAIN_RESPONSE = "/plainBytesNoHeader";

@@ -19,6 +19,8 @@ import io.vertx.core.net.SocketAddress;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.Mockito;
@@ -43,6 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests {@link VertxAsyncHttpClientBuilder}.
  */
+@Execution(ExecutionMode.SAME_THREAD)
 public class VertxAsyncHttpClientBuilderTests {
     private static final String PROXY_USERNAME = "foo";
     private static final String PROXY_PASSWORD = "bar";

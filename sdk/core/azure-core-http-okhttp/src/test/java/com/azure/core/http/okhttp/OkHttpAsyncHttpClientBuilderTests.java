@@ -21,6 +21,8 @@ import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -47,6 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Tests {@link OkHttpAsyncHttpClientBuilder}.
  */
+@Execution(ExecutionMode.SAME_THREAD)
 public class OkHttpAsyncHttpClientBuilderTests {
     private static final String COOKIE_VALIDATOR_PATH = "/cookieValidator";
     private static final String DEFAULT_PATH = "/default";

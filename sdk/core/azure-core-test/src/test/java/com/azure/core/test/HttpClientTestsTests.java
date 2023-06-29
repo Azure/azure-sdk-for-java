@@ -10,7 +10,10 @@ import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class HttpClientTestsTests extends HttpClientTests {
     private static LocalTestServer server;
 

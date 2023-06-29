@@ -4,6 +4,8 @@
 package com.azure.core.http.vertx;
 
 import com.azure.core.test.http.LocalTestServer;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import javax.servlet.ServletException;
 import java.util.Base64;
@@ -13,6 +15,7 @@ import java.util.Objects;
  * A simple Http proxy server that enforce basic proxy authentication, once authenticated any request matching
  * {@code serviceEndpoints} will be responded with an empty Http 200.
  */
+@Execution(ExecutionMode.SAME_THREAD)
 final class SimpleBasicAuthHttpProxyServer {
     private final String userName;
     private final String password;

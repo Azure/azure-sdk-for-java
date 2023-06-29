@@ -60,6 +60,8 @@ import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -116,6 +118,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Generic test suite for {@link HttpClient HttpClients}.
  */
+@Execution(ExecutionMode.SAME_THREAD)
 public abstract class HttpClientTests {
     private static final ClientLogger LOGGER = new ClientLogger(HttpClientTests.class);
 

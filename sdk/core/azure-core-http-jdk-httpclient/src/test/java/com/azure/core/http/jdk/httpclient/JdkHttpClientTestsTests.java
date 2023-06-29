@@ -9,7 +9,13 @@ import com.azure.core.test.http.HttpClientTests;
 import com.azure.core.test.http.LocalTestServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.condition.DisabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
+@DisabledForJreRange(max = JRE.JAVA_11)
+@Execution(ExecutionMode.SAME_THREAD)
 public class JdkHttpClientTestsTests extends HttpClientTests {
     private static LocalTestServer server;
 
