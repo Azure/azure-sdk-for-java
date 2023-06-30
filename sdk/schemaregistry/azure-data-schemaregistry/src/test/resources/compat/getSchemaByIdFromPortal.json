@@ -22,8 +22,6 @@
       "Content-Type" : "application/json;serialization=Avro",
       "Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/test/versions/1?api-version=2021-10",
       "Schema-Versions-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/test/versions?api-version=2021-10"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    }
+  } ]
 }
