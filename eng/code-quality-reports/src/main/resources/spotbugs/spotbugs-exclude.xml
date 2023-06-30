@@ -1727,7 +1727,7 @@
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9100 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache"/>
-    <Method name="getServerAddressesViaGatewayAsync"/>
+    <Method name="getServerAddressesViaGatewayInternalAsync"/>
     <Bug pattern="NP_NULL_PARAM_DEREF"/>
   </Match>
 

@@ -1055,11 +1055,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                             break;
                         case SubStatusCodes.NAME_CACHE_IS_STALE:
                             cause = new InvalidPartitionException(error, lsn, partitionKeyRangeId, responseHeaders);
-                            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(serviceRequest);
                             break;
                         case SubStatusCodes.PARTITION_KEY_RANGE_GONE:
                             cause = new PartitionKeyRangeGoneException(error, lsn, partitionKeyRangeId, responseHeaders);
-                            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(serviceRequest);
                             break;
                         default:
                             GoneException goneExceptionFromService =
@@ -1067,7 +1065,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                                     SubStatusCodes.SERVER_GENERATED_410);
                             goneExceptionFromService.setIsBasedOn410ResponseFromService();
                             cause = goneExceptionFromService;
-                            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(serviceRequest);
                             break;
                     }
                     break;
