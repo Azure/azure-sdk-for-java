@@ -16,6 +16,8 @@ import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.models.ExceptionPolicyItem;
 import com.azure.communication.jobrouter.models.JobQueue;
 import com.azure.communication.jobrouter.models.JobQueueItem;
+import com.azure.communication.jobrouter.models.RouterQueue;
+import com.azure.communication.jobrouter.models.RouterQueueItem;
 import com.azure.communication.jobrouter.models.options.CreateClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.options.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.options.CreateExceptionPolicyOptions;
@@ -546,7 +548,7 @@ public final class RouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobQueue createQueue(CreateQueueOptions createQueueOptions) {
+    public RouterQueue createQueue(CreateQueueOptions createQueueOptions) {
         return this.client.createQueue(createQueueOptions).block();
     }
 
@@ -561,8 +563,8 @@ public final class RouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobQueue> createQueueWithResponse(CreateQueueOptions createQueueOptions, Context context) {
-        JobQueue jobQueue = QueueAdapter.convertCreateQueueOptionsToJobQueue(createQueueOptions);
+    public Response<RouterQueue> createQueueWithResponse(CreateQueueOptions createQueueOptions, Context context) {
+        RouterQueue jobQueue = QueueAdapter.convertCreateQueueOptionsToJobQueue(createQueueOptions);
         return this.client.upsertQueueWithResponse(createQueueOptions.getQueueId(), jobQueue, context).block();
     }
 
@@ -576,7 +578,7 @@ public final class RouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobQueue updateQueue(UpdateQueueOptions updateQueueOptions) {
+    public RouterQueue updateQueue(UpdateQueueOptions updateQueueOptions) {
         return this.client.updateQueue(updateQueueOptions).block();
     }
 
@@ -591,8 +593,8 @@ public final class RouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobQueue> updateQueueWithResponse(UpdateQueueOptions updateQueueOptions, Context context) {
-        JobQueue jobQueue = QueueAdapter.convertUpdateQueueOptionsToJobQueue(updateQueueOptions);
+    public Response<RouterQueue> updateQueueWithResponse(UpdateQueueOptions updateQueueOptions, Context context) {
+        RouterQueue jobQueue = QueueAdapter.convertUpdateQueueOptionsToJobQueue(updateQueueOptions);
         return this.client.upsertQueueWithResponse(updateQueueOptions.getQueueId(), jobQueue, context).block();
     }
 
@@ -606,7 +608,7 @@ public final class RouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobQueue getQueue(String queueId) {
+    public RouterQueue getQueue(String queueId) {
         return this.client.getQueue(queueId).block();
     }
 
@@ -621,7 +623,7 @@ public final class RouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobQueue> getQueueWithResponse(String queueId, Context context) {
+    public Response<RouterQueue> getQueueWithResponse(String queueId, Context context) {
         return this.client.getQueueWithResponse(queueId, context).block();
     }
 
@@ -661,7 +663,7 @@ public final class RouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobQueueItem> listQueues() {
+    public PagedIterable<RouterQueueItem> listQueues() {
         return new PagedIterable<>(this.client.listQueues());
     }
 
@@ -675,7 +677,7 @@ public final class RouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobQueueItem> listQueues(ListQueuesOptions listQueuesOptions) {
+    public PagedIterable<RouterQueueItem> listQueues(ListQueuesOptions listQueuesOptions) {
         return new PagedIterable<>(this.client.listQueues(listQueuesOptions));
     }
 
@@ -690,7 +692,7 @@ public final class RouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobQueueItem> listQueues(ListQueuesOptions listQueuesOptions, Context context) {
+    public PagedIterable<RouterQueueItem> listQueues(ListQueuesOptions listQueuesOptions, Context context) {
         return new PagedIterable<>(this.client.listQueues(listQueuesOptions, context));
     }
 }

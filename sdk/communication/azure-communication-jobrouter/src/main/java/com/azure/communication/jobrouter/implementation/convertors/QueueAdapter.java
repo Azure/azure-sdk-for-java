@@ -3,6 +3,7 @@
 
 package com.azure.communication.jobrouter.implementation.convertors;
 
+import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.communication.jobrouter.models.options.CreateQueueOptions;
 import com.azure.communication.jobrouter.models.JobQueue;
 import com.azure.communication.jobrouter.models.LabelValue;
@@ -21,11 +22,11 @@ public class QueueAdapter {
      * @param createQueueOptions Container with options to create {@link JobQueue}
      * @return JobQueue
      */
-    public static JobQueue convertCreateQueueOptionsToJobQueue(CreateQueueOptions createQueueOptions) {
+    public static RouterQueue convertCreateQueueOptionsToJobQueue(CreateQueueOptions createQueueOptions) {
         Map<String, LabelValue> labelValueMap = createQueueOptions.getLabels();
         Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : null;
-        return new JobQueue()
+        return new RouterQueue()
             .setName(createQueueOptions.getName())
             .setLabels(labels)
             .setDistributionPolicyId(createQueueOptions.getDistributionPolicyId())
@@ -37,11 +38,11 @@ public class QueueAdapter {
      * @param updateQueueOptions Container with options to update {@link JobQueue}
      * @return JobQueue
      */
-    public static JobQueue convertUpdateQueueOptionsToJobQueue(UpdateQueueOptions updateQueueOptions) {
+    public static RouterQueue convertUpdateQueueOptionsToJobQueue(UpdateQueueOptions updateQueueOptions) {
         Map<String, LabelValue> labelValueMap = updateQueueOptions.getLabels();
         Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : null;
-        return new JobQueue()
+        return new RouterQueue()
             .setName(updateQueueOptions.getName())
             .setLabels(labels)
             .setDistributionPolicyId(updateQueueOptions.getDistributionPolicyId())

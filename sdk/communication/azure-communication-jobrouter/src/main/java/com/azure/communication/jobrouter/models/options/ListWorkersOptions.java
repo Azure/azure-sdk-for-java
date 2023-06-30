@@ -3,7 +3,7 @@
 
 package com.azure.communication.jobrouter.models.options;
 
-import com.azure.communication.jobrouter.models.WorkerStateSelector;
+import com.azure.communication.jobrouter.models.RouterWorkerStateSelector;
 
 /**
  * Request options to list workers.
@@ -14,7 +14,7 @@ public class ListWorkersOptions {
     /**
      * workerStateSelector.
      */
-    private final WorkerStateSelector workerStateSelector;
+    private final RouterWorkerStateSelector workerStateSelector;
 
     /**
      * channelId.
@@ -44,7 +44,7 @@ public class ListWorkersOptions {
      * @param hasCapacity hasCapacity.
      * @param maxPageSize maxPageSize.
      */
-    public ListWorkersOptions(WorkerStateSelector workerStateSelector, String channelId, String queueId, boolean hasCapacity, Integer maxPageSize) {
+    public ListWorkersOptions(RouterWorkerStateSelector workerStateSelector, String channelId, String queueId, boolean hasCapacity, Integer maxPageSize) {
         this.workerStateSelector = workerStateSelector;
         this.channelId = channelId;
         this.queueId = queueId;
@@ -56,7 +56,7 @@ public class ListWorkersOptions {
      * Returns workerStateSelector.
      * @return workerStateSelector.
      */
-    public WorkerStateSelector getWorkerStateSelector() {
+    public RouterWorkerStateSelector getWorkerStateSelector() {
         return this.workerStateSelector;
     }
 

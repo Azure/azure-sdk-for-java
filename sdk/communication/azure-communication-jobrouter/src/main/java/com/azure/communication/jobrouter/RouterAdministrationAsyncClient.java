@@ -18,6 +18,8 @@ import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.models.ExceptionPolicyItem;
 import com.azure.communication.jobrouter.models.JobQueue;
 import com.azure.communication.jobrouter.models.JobQueueItem;
+import com.azure.communication.jobrouter.models.RouterQueue;
+import com.azure.communication.jobrouter.models.RouterQueueItem;
 import com.azure.communication.jobrouter.models.options.CreateClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.options.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.options.CreateExceptionPolicyOptions;
@@ -851,12 +853,12 @@ public final class RouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobQueue> createQueue(CreateQueueOptions createQueueOptions) {
+    public Mono<RouterQueue> createQueue(CreateQueueOptions createQueueOptions) {
         try {
-            JobQueue jobQueue = QueueAdapter.convertCreateQueueOptionsToJobQueue(createQueueOptions);
+            RouterQueue jobQueue = QueueAdapter.convertCreateQueueOptionsToJobQueue(createQueueOptions);
             return withContext(context -> upsertQueueWithResponse(createQueueOptions.getQueueId(), jobQueue, context)
                 .flatMap(
-                    (Response<JobQueue> res) -> {
+                    (Response<RouterQueue> res) -> {
                         if (res.getValue() != null) {
                             return Mono.just(res.getValue());
                         } else {
@@ -878,9 +880,9 @@ public final class RouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobQueue>> createQueueWithResponse(CreateQueueOptions createQueueOptions) {
+    public Mono<Response<RouterQueue>> createQueueWithResponse(CreateQueueOptions createQueueOptions) {
         try {
-            JobQueue jobQueue = QueueAdapter.convertCreateQueueOptionsToJobQueue(createQueueOptions);
+            RouterQueue jobQueue = QueueAdapter.convertCreateQueueOptionsToJobQueue(createQueueOptions);
             return withContext(context -> upsertQueueWithResponse(createQueueOptions.getQueueId(), jobQueue, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -897,12 +899,12 @@ public final class RouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobQueue> updateQueue(UpdateQueueOptions updateQueueOptions) {
+    public Mono<RouterQueue> updateQueue(UpdateQueueOptions updateQueueOptions) {
         try {
-            JobQueue jobQueue = QueueAdapter.convertUpdateQueueOptionsToJobQueue(updateQueueOptions);
+            RouterQueue jobQueue = QueueAdapter.convertUpdateQueueOptionsToJobQueue(updateQueueOptions);
             return withContext(context -> upsertQueueWithResponse(updateQueueOptions.getQueueId(), jobQueue, context)
                 .flatMap(
-                    (Response<JobQueue> res) -> {
+                    (Response<RouterQueue> res) -> {
                         if (res.getValue() != null) {
                             return Mono.just(res.getValue());
                         } else {
@@ -924,16 +926,16 @@ public final class RouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobQueue>> updateQueueWithResponse(UpdateQueueOptions updateQueueOptions) {
+    public Mono<Response<RouterQueue>> updateQueueWithResponse(UpdateQueueOptions updateQueueOptions) {
         try {
-            JobQueue jobQueue = QueueAdapter.convertUpdateQueueOptionsToJobQueue(updateQueueOptions);
+            RouterQueue jobQueue = QueueAdapter.convertUpdateQueueOptionsToJobQueue(updateQueueOptions);
             return withContext(context -> upsertQueueWithResponse(updateQueueOptions.getQueueId(), jobQueue, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<JobQueue>> upsertQueueWithResponse(String id, JobQueue jobQueue, Context context) {
+    Mono<Response<RouterQueue>> upsertQueueWithResponse(String id, RouterQueue jobQueue, Context context) {
         try {
             return jobRouterAdmin.upsertQueueWithResponseAsync(id, jobQueue, context);
         } catch (RuntimeException ex) {
@@ -951,11 +953,11 @@ public final class RouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobQueue> getQueue(String queueId) {
+    public Mono<RouterQueue> getQueue(String queueId) {
         try {
             return withContext(context -> getQueueWithResponse(queueId, context)
                 .flatMap(
-                    (Response<JobQueue> res) -> {
+                    (Response<RouterQueue> res) -> {
                         if (res.getValue() != null) {
                             return Mono.just(res.getValue());
                         } else {
@@ -977,7 +979,7 @@ public final class RouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobQueue>> getQueueWithResponse(String queueId) {
+    public Mono<Response<RouterQueue>> getQueueWithResponse(String queueId) {
         try {
             return withContext(context -> getQueueWithResponse(queueId, context));
         } catch (RuntimeException ex) {
@@ -985,7 +987,7 @@ public final class RouterAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<JobQueue>> getQueueWithResponse(String id, Context context) {
+    Mono<Response<RouterQueue>> getQueueWithResponse(String id, Context context) {
         try {
             return jobRouterAdmin.getQueueWithResponseAsync(id, context);
         } catch (RuntimeException ex) {
@@ -1053,7 +1055,7 @@ public final class RouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobQueueItem> listQueues() {
+    public PagedFlux<RouterQueueItem> listQueues() {
         try {
             return jobRouterAdmin.listQueuesAsync(null);
         } catch (RuntimeException ex) {
@@ -1071,7 +1073,7 @@ public final class RouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobQueueItem> listQueues(ListQueuesOptions listQueuesOptions) {
+    public PagedFlux<RouterQueueItem> listQueues(ListQueuesOptions listQueuesOptions) {
         try {
             return jobRouterAdmin.listQueuesAsync(listQueuesOptions.getMaxPageSize());
         } catch (RuntimeException ex) {
@@ -1089,7 +1091,7 @@ public final class RouterAdministrationAsyncClient {
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    PagedFlux<JobQueueItem> listQueues(ListQueuesOptions listQueuesOptions, Context context) {
+    PagedFlux<RouterQueueItem> listQueues(ListQueuesOptions listQueuesOptions, Context context) {
         try {
             return jobRouterAdmin.listQueuesAsync(listQueuesOptions.getMaxPageSize(), context);
         } catch (RuntimeException ex) {

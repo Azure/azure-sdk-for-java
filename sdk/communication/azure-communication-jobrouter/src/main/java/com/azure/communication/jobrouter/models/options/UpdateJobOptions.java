@@ -4,6 +4,7 @@
 package com.azure.communication.jobrouter.models.options;
 
 import com.azure.communication.jobrouter.models.LabelValue;
+import com.azure.communication.jobrouter.models.RouterWorkerSelector;
 import com.azure.communication.jobrouter.models.WorkerSelector;
 
 import java.util.List;
@@ -53,7 +54,7 @@ public final class UpdateJobOptions {
      * A collection of manually specified label selectors, which a worker must
      * satisfy in order to process this job.
      */
-    private List<WorkerSelector> requestedWorkerSelectors;
+    private List<RouterWorkerSelector> requestedWorkerSelectors;
 
     /**
      * A set of key/value pairs that are identifying attributes used by the
@@ -145,7 +146,7 @@ public final class UpdateJobOptions {
      *   satisfy in order to process this job.
      * @return this
      */
-    public UpdateJobOptions setRequestedWorkerSelectors(List<WorkerSelector> requestedWorkerSelectors) {
+    public UpdateJobOptions setRequestedWorkerSelectors(List<RouterWorkerSelector> requestedWorkerSelectors) {
         this.requestedWorkerSelectors = requestedWorkerSelectors;
         return this;
     }
@@ -242,7 +243,7 @@ public final class UpdateJobOptions {
      * satisfy in order to process a job.
      * @return requestedWorkerSelectors
      */
-    public List<WorkerSelector> getRequestedWorkerSelectors() {
+    public List<RouterWorkerSelector> getRequestedWorkerSelectors() {
         return this.requestedWorkerSelectors;
     }
 

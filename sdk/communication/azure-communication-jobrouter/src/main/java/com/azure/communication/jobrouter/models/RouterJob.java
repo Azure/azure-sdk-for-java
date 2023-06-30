@@ -4,9 +4,9 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.communication.jobrouter.models.RouterWorkerSelector;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -27,16 +27,16 @@ public final class RouterJob {
     private String channelReference;
 
     /*
-     * The state of the Job.
+     * The status of the Job.
      */
-    @JsonProperty(value = "jobStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private RouterJobStatus jobStatus;
+    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
+    private RouterJobStatus status;
 
     /*
-     * The time a job was queued.
+     * The time a job was queued in UTC.
      */
-    @JsonProperty(value = "enqueueTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime enqueueTimeUtc;
+    @JsonProperty(value = "enqueuedAt", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime enqueuedAt;
 
     /*
      * The channel identifier. eg. voice, chat, etc.
@@ -73,14 +73,14 @@ public final class RouterJob {
      * satisfy in order to process this job.
      */
     @JsonProperty(value = "requestedWorkerSelectors")
-    private List<WorkerSelector> requestedWorkerSelectors;
+    private List<RouterWorkerSelector> requestedWorkerSelectors;
 
     /*
      * A collection of label selectors attached by a classification policy,
      * which a worker must satisfy in order to process this job.
      */
     @JsonProperty(value = "attachedWorkerSelectors", access = JsonProperty.Access.WRITE_ONLY)
-    private List<WorkerSelector> attachedWorkerSelectors;
+    private List<RouterWorkerSelector> attachedWorkerSelectors;
 
     /*
      * A set of key/value pairs that are identifying attributes used by the
@@ -94,7 +94,7 @@ public final class RouterJob {
      * Key is AssignmentId.
      */
     @JsonProperty(value = "assignments", access = JsonProperty.Access.WRITE_ONLY)
-    private Map<String, JobAssignment> assignments;
+    private Map<String, RouterJobAssignment> assignments;
 
     /*
      * A set of non-identifying attributes attached to this job
@@ -107,6 +107,18 @@ public final class RouterJob {
      */
     @JsonProperty(value = "notes")
     private Map<String, String> notes;
+
+    /*
+     * If set, job will be scheduled to be enqueued at a given time
+     */
+    @JsonProperty(value = "scheduledAt", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime scheduledAt;
+
+    /*
+     * The matchingMode property.
+     */
+    @JsonProperty(value = "matchingMode")
+    private JobMatchingMode matchingMode;
 
     /**
      * Get the id property: The id of the job.
@@ -138,21 +150,21 @@ public final class RouterJob {
     }
 
     /**
-     * Get the jobStatus property: The state of the Job.
+     * Get the status property: The status of the Job.
      *
-     * @return the jobStatus value.
+     * @return the status value.
      */
-    public RouterJobStatus getJobStatus() {
-        return this.jobStatus;
+    public RouterJobStatus getStatus() {
+        return this.status;
     }
 
     /**
-     * Get the enqueueTimeUtc property: The time a job was queued.
+     * Get the enqueuedAt property: The time a job was queued in UTC.
      *
-     * @return the enqueueTimeUtc value.
+     * @return the enqueuedAt value.
      */
-    public OffsetDateTime getEnqueueTimeUtc() {
-        return this.enqueueTimeUtc;
+    public OffsetDateTime getEnqueuedAt() {
+        return this.enqueuedAt;
     }
 
     /**
@@ -261,7 +273,7 @@ public final class RouterJob {
      *
      * @return the requestedWorkerSelectors value.
      */
-    public List<WorkerSelector> getRequestedWorkerSelectors() {
+    public List<RouterWorkerSelector> getRequestedWorkerSelectors() {
         return this.requestedWorkerSelectors;
     }
 
@@ -272,7 +284,7 @@ public final class RouterJob {
      * @param requestedWorkerSelectors the requestedWorkerSelectors value to set.
      * @return the RouterJob object itself.
      */
-    public RouterJob setRequestedWorkerSelectors(List<WorkerSelector> requestedWorkerSelectors) {
+    public RouterJob setRequestedWorkerSelectors(List<RouterWorkerSelector> requestedWorkerSelectors) {
         this.requestedWorkerSelectors = requestedWorkerSelectors;
         return this;
     }
@@ -283,7 +295,7 @@ public final class RouterJob {
      *
      * @return the attachedWorkerSelectors value.
      */
-    public List<WorkerSelector> getAttachedWorkerSelectors() {
+    public List<RouterWorkerSelector> getAttachedWorkerSelectors() {
         return this.attachedWorkerSelectors;
     }
 
@@ -314,7 +326,7 @@ public final class RouterJob {
      *
      * @return the assignments value.
      */
-    public Map<String, JobAssignment> getAssignments() {
+    public Map<String, RouterJobAssignment> getAssignments() {
         return this.assignments;
     }
 
@@ -355,6 +367,35 @@ public final class RouterJob {
      */
     public RouterJob setNotes(Map<String, String> notes) {
         this.notes = notes;
+        return this;
+    }
+
+    /**
+     * Get the scheduledAt property: If set, job will be scheduled to be enqueued at a given time.
+     *
+     * @return the scheduledAt value.
+     */
+    public OffsetDateTime getScheduledAt() {
+        return this.scheduledAt;
+    }
+
+    /**
+     * Get the matchingMode property: The matchingMode property.
+     *
+     * @return the matchingMode value.
+     */
+    public JobMatchingMode getMatchingMode() {
+        return this.matchingMode;
+    }
+
+    /**
+     * Set the matchingMode property: The matchingMode property.
+     *
+     * @param matchingMode the matchingMode value to set.
+     * @return the RouterJob object itself.
+     */
+    public RouterJob setMatchingMode(JobMatchingMode matchingMode) {
+        this.matchingMode = matchingMode;
         return this;
     }
 }

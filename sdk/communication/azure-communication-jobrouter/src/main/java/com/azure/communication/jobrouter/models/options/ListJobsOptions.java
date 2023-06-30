@@ -4,7 +4,10 @@
 package com.azure.communication.jobrouter.models.options;
 
 import com.azure.communication.jobrouter.models.JobStateSelector;
+import com.azure.communication.jobrouter.models.RouterJobStatusSelector;
 import com.azure.core.annotation.Fluent;
+
+import java.time.OffsetDateTime;
 
 /**
  * Request options to list jobs.
@@ -16,7 +19,7 @@ public class ListJobsOptions {
     /**
      * JobStateSelector.
      */
-    private final JobStateSelector jobStateSelector;
+    private final RouterJobStatusSelector jobStateSelector;
 
     /**
      * QueueId.
@@ -33,6 +36,10 @@ public class ListJobsOptions {
      */
     private final String classificationPolicyId;
 
+    private OffsetDateTime scheduledBefore;
+
+    private OffsetDateTime scheduledAfter;
+
     /**
      * MaxPageSize.
      */
@@ -47,7 +54,7 @@ public class ListJobsOptions {
      * @param classificationPolicyId ClassificationPolicyId.
      * @param maxPageSize Maximum number of items per page.
      */
-    public ListJobsOptions(JobStateSelector jobStateSelector, String queueId, String channelId, String classificationPolicyId, Integer maxPageSize) {
+    public ListJobsOptions(RouterJobStatusSelector jobStateSelector, String queueId, String channelId, String classificationPolicyId, Integer maxPageSize) {
         this.jobStateSelector = jobStateSelector;
         this.queueId = queueId;
         this.channelId = channelId;
@@ -56,10 +63,30 @@ public class ListJobsOptions {
     }
 
     /**
+     * Set scheduledBefore
+     * @param scheduledBefore
+     * @return ListJobOptions object
+     */
+    public ListJobsOptions setScheduledBefore(OffsetDateTime scheduledBefore) {
+        this.scheduledBefore = scheduledBefore;
+        return this;
+    }
+
+    /**
+     * Set scheduledAfter
+     * @param scheduledAfter
+     * @return ListJobOptions object
+     */
+    public ListJobsOptions setScheduledAfter(OffsetDateTime scheduledAfter) {
+        this.scheduledAfter = scheduledAfter;
+        return this;
+    }
+
+    /**
      * Returns jobStateSelector.
      * @return jobStateSelector.
      */
-    public JobStateSelector getJobStateSelector() {
+    public RouterJobStatusSelector getJobStateSelector() {
         return this.jobStateSelector;
     }
 
@@ -93,5 +120,21 @@ public class ListJobsOptions {
      */
     public Integer getMaxPageSize() {
         return this.maxPageSize;
+    }
+
+    /**
+     * Returns scheduledBefore
+     * @return scheduledBefore
+     */
+    public OffsetDateTime getScheduledBefore() {
+        return this.scheduledBefore;
+    }
+
+    /**
+     * Returns scheduledAfter
+     * @return scheduledAfter
+     */
+    public OffsetDateTime getScheduledAfter() {
+        return this.scheduledAfter;
     }
 }

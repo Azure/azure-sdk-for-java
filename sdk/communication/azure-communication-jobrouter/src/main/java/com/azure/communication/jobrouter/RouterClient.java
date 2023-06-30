@@ -11,6 +11,8 @@ import com.azure.communication.jobrouter.models.JobPositionDetails;
 import com.azure.communication.jobrouter.models.QueueStatistics;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobItem;
+import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
+import com.azure.communication.jobrouter.models.RouterQueueStatistics;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.RouterWorkerItem;
 import com.azure.communication.jobrouter.models.UnassignJobResult;
@@ -382,7 +384,7 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobPositionDetails getQueuePosition(String jobId) {
+    public RouterJobPositionDetails getQueuePosition(String jobId) {
         return this.client.getQueuePosition(jobId).block();
     }
 
@@ -397,7 +399,7 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobPositionDetails> getQueuePositionWithResponse(String jobId, Context context) {
+    public Response<RouterJobPositionDetails> getQueuePositionWithResponse(String jobId, Context context) {
         return this.client.getQueuePositionWithResponse(jobId, context).block();
     }
 
@@ -472,7 +474,7 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueueStatistics getQueueStatistics(String queueId) {
+    public RouterQueueStatistics getQueueStatistics(String queueId) {
         return this.client.getQueueStatistics(queueId).block();
     }
 
@@ -487,7 +489,7 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueueStatistics> getQueueStatisticsWithResponse(String queueId, Context context) {
+    public Response<RouterQueueStatistics> getQueueStatisticsWithResponse(String queueId, Context context) {
         return this.client.getQueueStatisticsWithResponse(queueId, context).block();
     }
 

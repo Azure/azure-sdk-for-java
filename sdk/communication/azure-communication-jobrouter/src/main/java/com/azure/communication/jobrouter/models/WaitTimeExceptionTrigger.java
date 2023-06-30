@@ -4,6 +4,7 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.communication.jobrouter.models.ExceptionTrigger;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -13,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("wait-time")
 @Fluent
-public final class WaitTimeExceptionTrigger extends JobExceptionTrigger {
+public final class WaitTimeExceptionTrigger extends ExceptionTrigger {
     /*
      * Threshold for wait time for this trigger.
      */
