@@ -6,8 +6,10 @@ package com.azure.resourcemanager.appservice;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
+import com.azure.resourcemanager.appservice.models.DeploymentSlot;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAppBasic;
+import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
 import com.azure.resourcemanager.appservice.models.IpFilterTag;
 import com.azure.resourcemanager.appservice.models.IpSecurityRestriction;
 import com.azure.resourcemanager.appservice.models.LogLevel;
@@ -283,5 +285,68 @@ public class WebAppsTests extends AppServiceTest {
         Assertions.assertEquals(1, webApp1.ipSecurityRules().size());
         Assertions.assertEquals("Allow", webApp1.ipSecurityRules().iterator().next().action());
         Assertions.assertEquals("Any", webApp1.ipSecurityRules().iterator().next().ipAddress());
+    }
+
+    @Test
+    public void canCreateAndUpdateContainerSize() {
+        rgName2 = null;
+        String deploymentSlotName = generateRandomResourceName("ds", 15);
+        String functionDeploymentSlotName = generateRandomResourceName("fds", 15);
+
+        WebApp webApp1 = appServiceManager.webApps()
+            .define(webappName1)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName1)
+            .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
+            .withContainerSize(1024)
+            .create();
+
+        FunctionApp functionApp1 = appServiceManager.functionApps()
+            .define(webappName2)
+            .withRegion(Region.US_WEST)
+            .withExistingResourceGroup(rgName1)
+            .withContainerSize(1024)
+            .create();
+
+        DeploymentSlot deploymentSlot = webApp1.deploymentSlots().define(deploymentSlotName)
+            .withConfigurationFromParent()
+            .withContainerSize(1532)
+            .create();
+
+        FunctionDeploymentSlot functionDeploymentSlot = functionApp1.deploymentSlots()
+            .define(functionDeploymentSlotName)
+            .withConfigurationFromParent()
+            .withContainerSize(1532)
+            .create();
+
+        Assertions.assertEquals(1024, webApp1.containerSize());
+        Assertions.assertEquals(1024, functionApp1.containerSize());
+        Assertions.assertEquals(1532, deploymentSlot.containerSize());
+        Assertions.assertEquals(1532, deploymentSlot.containerSize());
+
+        webApp1.update()
+            .withContainerSize(128)
+            .apply();
+
+        functionApp1.update()
+            .withContainerSize(128)
+            .apply();
+
+        Assertions.assertEquals(128, webApp1.containerSize());
+        Assertions.assertEquals(128, functionApp1.containerSize());
+
+        Assertions.assertEquals(1532, deploymentSlot.containerSize());
+        Assertions.assertEquals(1532, functionDeploymentSlot.containerSize());
+
+        deploymentSlot.update()
+            .withContainerSize(128)
+            .apply();
+
+        functionDeploymentSlot.update()
+            .withContainerSize(128)
+            .apply();
+
+        Assertions.assertEquals(128, deploymentSlot.containerSize());
+        Assertions.assertEquals(128, functionDeploymentSlot.containerSize());
     }
 }
