@@ -78,9 +78,16 @@ public final class AzureJsonUtils {
     }
 
     private static JsonParser configureParser(JsonParser parser, JsonOptions options) {
-        boolean nonNumericSupported = options == null || options.isNonNumericNumbersSupported();
-
-        return parser.configure(JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS.mappedFeature(), nonNumericSupported);
+        if (options == null) {
+            return parser.configure(JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS.mappedFeature(), true);
+        } else {
+            return parser.configure(JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS.mappedFeature(),
+                options.isNonNumericNumbersSupported())
+                .configure(JsonReadFeature.ALLOW_JAVA_COMMENTS.mappedFeature(), options.isAllowComments())
+                .configure(JsonReadFeature.ALLOW_TRAILING_COMMA.mappedFeature(), options.isAllowTrailingCommas())
+                .configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(),
+                    options.isAllowUnescapedControlCharacters());
+        }
     }
 
     /**

@@ -51,7 +51,15 @@ public final class GsonJsonReader extends JsonReader {
 
     private static com.google.gson.stream.JsonReader createGsonReader(Reader reader, JsonOptions options) {
         com.google.gson.stream.JsonReader gsonReader = new com.google.gson.stream.JsonReader(reader);
-        gsonReader.setLenient(options == null || options.isNonNumericNumbersSupported());
+
+        if (options == null) {
+            gsonReader.setLenient(true);
+        } else {
+            gsonReader.setLenient(options.isNonNumericNumbersSupported()
+                || options.isAllowComments()
+                || options.isAllowTrailingCommas()
+                || options.isAllowUnescapedControlCharacters());
+        }
 
         return gsonReader;
     }
