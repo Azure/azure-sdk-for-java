@@ -7,7 +7,7 @@ import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Resource
 import com.azure.core.annotation.Immutable;
 
 /**
- * The ResourceDetails model.
+ * The ResourceDetails model representing general information regarding the current resource.
  */
 @Immutable
 public final class ResourceDetails {

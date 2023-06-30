@@ -66,6 +66,12 @@ public class CertificateProperties {
     @JsonProperty(value = "dnsNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> dnsNames;
 
+    /*
+     * Provisioning state of the Certificate
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private CertificateResourceProvisioningState provisioningState;
+
     /**
      * Get the thumbprint property: The thumbprint of certificate.
      *
@@ -127,6 +133,15 @@ public class CertificateProperties {
      */
     public List<String> dnsNames() {
         return this.dnsNames;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the Certificate.
+     *
+     * @return the provisioningState value.
+     */
+    public CertificateResourceProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**

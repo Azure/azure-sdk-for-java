@@ -11,6 +11,18 @@
 ### Other Changes
 - Migrate test recordings to assets repo.
 
+## 11.5.8 (2023-06-09)
+
+### Other Changes
+
+- Properly set Index and Search Analyzer names in FieldBuilder
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.0` to version `1.4.1`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+
 ## 11.5.7 (2023-05-23)
 
 ### Other Changes

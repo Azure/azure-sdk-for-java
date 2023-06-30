@@ -13,7 +13,7 @@ public final class CapabilitiesListResultTests {
         CapabilitiesListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"zone\":\"wyahuxinpmqnja\",\"supportedHAMode\":[\"xj\",\"prozvcputegjvwmf\",\"atscmd\",\"pjhulsuuvmkj\"],\"geoBackupSupported\":false,\"zoneRedundantHaSupported\":true,\"zoneRedundantHaAndGeoBackupSupported\":true,\"supportedFlexibleServerEditions\":[],\"supportedHyperscaleNodeEditions\":[],\"fastProvisioningSupported\":true,\"supportedFastProvisioningEditions\":[],\"status\":\"ej\"}],\"nextLink\":\"vwryoqpso\"}")
+                    "{\"value\":[{\"name\":\"wyahuxinpmqnja\",\"supportedServerEditions\":[],\"supportedServerVersions\":[],\"fastProvisioningSupported\":\"Disabled\",\"supportedFastProvisioningEditions\":[],\"geoBackupSupported\":\"Enabled\",\"zoneRedundantHaSupported\":\"Disabled\",\"zoneRedundantHaAndGeoBackupSupported\":\"Enabled\",\"storageAutoGrowthSupported\":\"Enabled\",\"onlineResizeSupported\":\"Enabled\",\"restricted\":\"Disabled\",\"status\":\"Available\",\"reason\":\"t\"}],\"nextLink\":\"mdvpjhulsu\"}")
                 .toObject(CapabilitiesListResult.class);
     }
 

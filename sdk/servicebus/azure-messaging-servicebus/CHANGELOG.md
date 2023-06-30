@@ -1,6 +1,6 @@
 # Release History
 
-## 7.15.0-beta.1 (Unreleased)
+## 7.15.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,21 @@
 
 ### Bugs Fixed
 
+- Fixed `NullPointerException` that happens when session receiver encounters an error and distributed tracing is enabled.
+  ([#35660](https://github.com/Azure/azure-sdk-for-java/issues/35660))
+
 ### Other Changes
+
+## 7.15.0-beta.1 (2023-06-13)
+
+### Features Added
+
+- This version takes dependency on the Prefetch reliability redesign in azure-core-amqp 2.9.0-beta.2 and redesigns the non-session Processor to reduce thread switching and address undesired eager disposition.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core-amqp` from `2.8.6` to `2.9.0-beta.2`.
 
 ## 7.14.1 (2023-06-07)
 

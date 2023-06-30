@@ -73,10 +73,10 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         } else if (getTestMode() == TestMode.RECORD) {
             builder
                 .addPolicy(interceptorManager.getRecordPolicy())
-                .credential(new NonAzureOpenAIKeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPEN_AI_KEY")));
+                .credential(new NonAzureOpenAIKeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
         } else {
             builder
-                .credential(new NonAzureOpenAIKeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPEN_AI_KEY")));
+                .credential(new NonAzureOpenAIKeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
         }
         return builder;
     }
@@ -122,7 +122,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     void getEmbeddingRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
-        testRunner.accept("embedding", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
+        testRunner.accept("text-embedding-ada-002", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
     }
 
     void getEmbeddingNonAzureRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {

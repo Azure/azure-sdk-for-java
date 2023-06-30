@@ -10,11 +10,13 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.models.QueryDebugMode;
 import com.azure.search.documents.models.QueryLanguage;
 import com.azure.search.documents.models.QuerySpellerType;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
+import com.azure.search.documents.models.SemanticErrorHandling;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -96,6 +98,22 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     private String semanticConfiguration;
 
     /*
+     * Allows the user to choose whether a semantic call should fail completely, or to return partial results.
+     */
+    private SemanticErrorHandling semanticErrorHandling;
+
+    /*
+     * Allows the user to set an upper bound on the amount of time it takes for semantic enrichment to finish
+     * processing before the request fails.
+     */
+    private Integer semanticMaxWaitInMilliseconds;
+
+    /*
+     * Enables a debugging tool that can be used to further explore your search results.
+     */
+    private QueryDebugMode debug;
+
+    /*
      * The list of field names to which to scope the full-text search. When using fielded search
      * (fieldName:searchExpression) in a full Lucene query, the field names of each fielded search expression take
      * precedence over any field names listed in this parameter.
@@ -116,7 +134,9 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
      * This parameter is only valid if the query type is 'semantic'. If set, the query returns answers extracted from
      * key passages in the highest ranked documents. The number of answers returned can be configured by appending the
      * pipe character '|' followed by the 'count-<number of answers>' option after the answers parameter value, such as
-     * 'extractive|count-3'. Default count is 1.
+     * 'extractive|count-3'. Default count is 1. The confidence threshold can be configured by appending the pipe
+     * character '|' followed by the 'threshold-<confidence threshold>' option after the answers parameter value, such
+     * as 'extractive|threshold-0.9'. Default threshold is 0.7.
      */
     private String answers;
 
@@ -451,6 +471,70 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     }
 
     /**
+     * Get the semanticErrorHandling property: Allows the user to choose whether a semantic call should fail completely,
+     * or to return partial results.
+     *
+     * @return the semanticErrorHandling value.
+     */
+    public SemanticErrorHandling getSemanticErrorHandling() {
+        return this.semanticErrorHandling;
+    }
+
+    /**
+     * Set the semanticErrorHandling property: Allows the user to choose whether a semantic call should fail completely,
+     * or to return partial results.
+     *
+     * @param semanticErrorHandling the semanticErrorHandling value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setSemanticErrorHandling(SemanticErrorHandling semanticErrorHandling) {
+        this.semanticErrorHandling = semanticErrorHandling;
+        return this;
+    }
+
+    /**
+     * Get the semanticMaxWaitInMilliseconds property: Allows the user to set an upper bound on the amount of time it
+     * takes for semantic enrichment to finish processing before the request fails.
+     *
+     * @return the semanticMaxWaitInMilliseconds value.
+     */
+    public Integer getSemanticMaxWaitInMilliseconds() {
+        return this.semanticMaxWaitInMilliseconds;
+    }
+
+    /**
+     * Set the semanticMaxWaitInMilliseconds property: Allows the user to set an upper bound on the amount of time it
+     * takes for semantic enrichment to finish processing before the request fails.
+     *
+     * @param semanticMaxWaitInMilliseconds the semanticMaxWaitInMilliseconds value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setSemanticMaxWaitInMilliseconds(Integer semanticMaxWaitInMilliseconds) {
+        this.semanticMaxWaitInMilliseconds = semanticMaxWaitInMilliseconds;
+        return this;
+    }
+
+    /**
+     * Get the debug property: Enables a debugging tool that can be used to further explore your search results.
+     *
+     * @return the debug value.
+     */
+    public QueryDebugMode getDebug() {
+        return this.debug;
+    }
+
+    /**
+     * Set the debug property: Enables a debugging tool that can be used to further explore your search results.
+     *
+     * @param debug the debug value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setDebug(QueryDebugMode debug) {
+        this.debug = debug;
+        return this;
+    }
+
+    /**
      * Get the searchFields property: The list of field names to which to scope the full-text search. When using fielded
      * search (fieldName:searchExpression) in a full Lucene query, the field names of each fielded search expression
      * take precedence over any field names listed in this parameter.
@@ -518,7 +602,9 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
      * Get the answers property: This parameter is only valid if the query type is 'semantic'. If set, the query returns
      * answers extracted from key passages in the highest ranked documents. The number of answers returned can be
      * configured by appending the pipe character '|' followed by the 'count-&lt;number of answers&gt;' option after the
-     * answers parameter value, such as 'extractive|count-3'. Default count is 1.
+     * answers parameter value, such as 'extractive|count-3'. Default count is 1. The confidence threshold can be
+     * configured by appending the pipe character '|' followed by the 'threshold-&lt;confidence threshold&gt;' option
+     * after the answers parameter value, such as 'extractive|threshold-0.9'. Default threshold is 0.7.
      *
      * @return the answers value.
      */
@@ -530,7 +616,9 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
      * Set the answers property: This parameter is only valid if the query type is 'semantic'. If set, the query returns
      * answers extracted from key passages in the highest ranked documents. The number of answers returned can be
      * configured by appending the pipe character '|' followed by the 'count-&lt;number of answers&gt;' option after the
-     * answers parameter value, such as 'extractive|count-3'. Default count is 1.
+     * answers parameter value, such as 'extractive|count-3'. Default count is 1. The confidence threshold can be
+     * configured by appending the pipe character '|' followed by the 'threshold-&lt;confidence threshold&gt;' option
+     * after the answers parameter value, such as 'extractive|threshold-0.9'. Default threshold is 0.7.
      *
      * @param answers the answers value to set.
      * @return the SearchOptions object itself.
@@ -745,6 +833,9 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
                 "ScoringParameters", this.scoringParameters, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("scoringProfile", this.scoringProfile);
         jsonWriter.writeStringField("semanticConfiguration", this.semanticConfiguration);
+        jsonWriter.writeStringField("semanticErrorHandling", Objects.toString(this.semanticErrorHandling, null));
+        jsonWriter.writeNumberField("semanticMaxWaitInMilliseconds", this.semanticMaxWaitInMilliseconds);
+        jsonWriter.writeStringField("debug", Objects.toString(this.debug, null));
         jsonWriter.writeArrayField("searchFields", this.searchFields, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("queryLanguage", Objects.toString(this.queryLanguage, null));
         jsonWriter.writeStringField("speller", Objects.toString(this.speller, null));
@@ -804,6 +895,14 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
                             deserializedSearchOptions.scoringProfile = reader.getString();
                         } else if ("semanticConfiguration".equals(fieldName)) {
                             deserializedSearchOptions.semanticConfiguration = reader.getString();
+                        } else if ("semanticErrorHandling".equals(fieldName)) {
+                            deserializedSearchOptions.semanticErrorHandling =
+                                    SemanticErrorHandling.fromString(reader.getString());
+                        } else if ("semanticMaxWaitInMilliseconds".equals(fieldName)) {
+                            deserializedSearchOptions.semanticMaxWaitInMilliseconds =
+                                    reader.getNullable(JsonReader::getInt);
+                        } else if ("debug".equals(fieldName)) {
+                            deserializedSearchOptions.debug = QueryDebugMode.fromString(reader.getString());
                         } else if ("searchFields".equals(fieldName)) {
                             List<String> searchFields = reader.readArray(reader1 -> reader1.getString());
                             deserializedSearchOptions.searchFields = searchFields;

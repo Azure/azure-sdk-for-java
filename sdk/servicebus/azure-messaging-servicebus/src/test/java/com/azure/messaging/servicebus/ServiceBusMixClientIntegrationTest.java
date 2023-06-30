@@ -240,12 +240,20 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusProcessorClient processorA;
         // Initialize processor client
         if (isSessionEnabled) {
-            processorA = toClose(builder.sessionProcessor().disableAutoComplete().topicName(topicA).subscriptionName("subscription-session")
-                .processMessage(processMessage).processError(processError)
+            processorA = toClose(builder.sessionProcessor()
+                .disableAutoComplete()
+                .topicName(topicA)
+                .subscriptionName(TestUtils.getSessionSubscriptionBaseName())
+                .processMessage(processMessage)
+                .processError(processError)
                 .buildProcessorClient());
         } else {
-            processorA = toClose(builder.processor().disableAutoComplete().topicName(topicA).subscriptionName("subscription")
-                .processMessage(processMessage).processError(processError)
+            processorA = toClose(builder.processor()
+                .disableAutoComplete()
+                .topicName(topicA)
+                .subscriptionName(TestUtils.getSubscriptionBaseName())
+                .processMessage(processMessage)
+                .processError(processError)
                 .buildProcessorClient());
         }
 
@@ -404,10 +412,10 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusReceiverAsyncClient receiverA;
 
         if (isSessionEnabled) {
-            receiverA = builder.sessionReceiver().disableAutoComplete().topicName(topicA).subscriptionName("subscription-session")
+            receiverA = builder.sessionReceiver().disableAutoComplete().topicName(topicA).subscriptionName(TestUtils.getSessionSubscriptionBaseName())
                 .buildAsyncClient().acceptNextSession().block();
         } else {
-            receiverA = builder.receiver().disableAutoComplete().topicName(topicA).subscriptionName("subscription")
+            receiverA = builder.receiver().disableAutoComplete().topicName(topicA).subscriptionName(TestUtils.getSubscriptionBaseName())
                 .buildAsyncClient();
         }
 

@@ -4,18 +4,13 @@
 
 ### Setup
 ```ps
-Fork and clone https://github.com/Azure/autorest.java 
-git checkout main
-git submodule update --init --recursive
-mvn package -Dlocal
-npm install
 npm install -g autorest
 ```
 
 ### Generation
 ```ps
 cd <swagger-folder>
-autorest --java --use=C:/work/autorest.java
+autorest
 ```
 
 ### Code generation settings
@@ -27,6 +22,7 @@ repo: https://github.com/Azure/azure-rest-api-specs/blob/$(branch)
 ```yaml
 java: true
 output-folder: ..\
+use: '@autorest/java@4.1.17'
 generate-client-as-impl: true
 generate-sync-async-clients: true
 namespace: com.azure.analytics.synapse.spark
