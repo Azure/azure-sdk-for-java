@@ -1557,7 +1557,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
 
         List<ConfigurationSettingSnapshot> allExistingSnapshots = new ArrayList<>();
-        client.listSnapshots(new SnapshotSelector().setSnapshotStatusList(Arrays.asList(SnapshotStatus.READY)))
+        client.listSnapshots(new SnapshotSelector().setSnapshotStatus(SnapshotStatus.READY))
             .map(snapshot -> allExistingSnapshots.add(snapshot))
             .blockLast();
 

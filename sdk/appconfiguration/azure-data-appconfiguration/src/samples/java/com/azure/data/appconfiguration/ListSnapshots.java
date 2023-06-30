@@ -39,10 +39,10 @@ public class ListSnapshots {
 
         // 1. Prepare first setting.
         ConfigurationSetting setting = client.setConfigurationSetting("TestKey1", null, "value1");
-        System.out.printf(String.format("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting.getKey(), setting.getValue()));
+        System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting.getKey(), setting.getValue());
         // 1. Prepare second setting.
         ConfigurationSetting setting2 = client.setConfigurationSetting("TestKey2", null, "value2");
-        System.out.printf(String.format("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting2.getKey(), setting2.getValue()));
+        System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting2.getKey(), setting2.getValue());
         // 1. Prepare the snapshot filters
         List<SnapshotSettingFilter> filters = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
@@ -60,10 +60,10 @@ public class ListSnapshots {
 
         // 2. Prepare third setting.
         ConfigurationSetting setting3 = client.setConfigurationSetting("ProductKey1", null, "value1");
-        System.out.printf(String.format("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting.getKey(), setting.getValue()));
+        System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting.getKey(), setting.getValue());
         // 2. Prepare fourth setting.
         ConfigurationSetting setting4 = client.setConfigurationSetting("ProductKey2", null, "value2");
-        System.out.printf(String.format("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting2.getKey(), setting2.getValue()));
+        System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting2.getKey(), setting2.getValue());
         // 2. Prepare the snapshot filters
         List<SnapshotSettingFilter> filters2 = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
@@ -104,8 +104,8 @@ public class ListSnapshots {
         // List the configuration settings in the snapshot
         client.listConfigurationSettingsForSnapshot(snapshotNameProduct).forEach(
             settingInSnapshot -> {
-                System.out.printf(String.format("[ConfigurationSetting in snapshot] Key: %s, Value: %s%n",
-                    settingInSnapshot.getKey(), settingInSnapshot.getValue()));
+                System.out.printf("[ConfigurationSetting in snapshot] Key: %s, Value: %s%n",
+                    settingInSnapshot.getKey(), settingInSnapshot.getValue());
             }
         );
 

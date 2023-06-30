@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.appconfiguration;
+package com.azure.data.appconfiguration.implementation;
 
 
 import com.azure.core.http.rest.Response;
@@ -13,8 +13,6 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
-import com.azure.data.appconfiguration.implementation.CreateSnapshotOperationDetailPropertiesHelper;
 import com.azure.data.appconfiguration.implementation.models.CreateSnapshotHeaders;
 import com.azure.data.appconfiguration.implementation.models.OperationDetails;
 import com.azure.data.appconfiguration.implementation.models.State;
@@ -33,17 +31,17 @@ import static com.azure.data.appconfiguration.implementation.models.State.SUCCEE
 /**
  * A helper util client for creating a snapshot.
  */
-class CreateSnapshotUtilClient {
+public class CreateSnapshotUtilClient {
     private static final ClientLogger LOGGER = new ClientLogger(CreateSnapshotUtilClient.class);
     private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(30);
 
     private final AzureAppConfigurationImpl service;
 
-    CreateSnapshotUtilClient(AzureAppConfigurationImpl service) {
+    public CreateSnapshotUtilClient(AzureAppConfigurationImpl service) {
         this.service = service;
     }
 
-    PollerFlux<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> beginCreateSnapshot(String name,
+    public PollerFlux<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> beginCreateSnapshot(String name,
         ConfigurationSettingSnapshot snapshot) {
         try {
             return new PollerFlux<>(
@@ -70,7 +68,7 @@ class CreateSnapshotUtilClient {
         }
     }
 
-    SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> beginCreateSnapshot(String name,
+    public SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> beginCreateSnapshot(String name,
         ConfigurationSettingSnapshot snapshot, Context context) {
         try {
             final Context finalContext = getNotNullContext(context);

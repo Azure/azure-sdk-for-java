@@ -19,14 +19,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
+import com.azure.data.appconfiguration.implementation.CreateSnapshotUtilClient;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.implementation.models.DeleteKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.GetSnapshotHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.implementation.models.PutKeyValueHeaders;
-import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
-import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
@@ -38,7 +37,6 @@ import com.azure.data.appconfiguration.models.SnapshotSelector;
 import com.azure.data.appconfiguration.models.SnapshotStatus;
 
 import java.time.OffsetDateTime;
-import java.util.Objects;
 
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithResponse;
@@ -46,9 +44,10 @@ import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
 import static com.azure.data.appconfiguration.implementation.Utility.enableSyncRestProxy;
 import static com.azure.data.appconfiguration.implementation.Utility.getEtag;
-import static com.azure.data.appconfiguration.implementation.Utility.getEtagSnapshot;
+import static com.azure.data.appconfiguration.implementation.Utility.iterableToList;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
+import static com.azure.data.appconfiguration.implementation.Utility.updateSnapshotSync;
 import static com.azure.data.appconfiguration.implementation.Utility.validateSetting;
 
 /**
@@ -1338,11 +1337,8 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSettingSnapshot archiveSnapshot(String name) {
-        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot> response =
-            serviceClient.updateSnapshotWithResponse(name,
-                new SnapshotUpdateParameters().setStatus(SnapshotStatus.ARCHIVED),
-                null, null, Context.NONE);
-        return response.getValue();
+        return updateSnapshotSync(name, null, SnapshotStatus.ARCHIVED, false, serviceClient,
+            Context.NONE).getValue();
     }
 
     /**
@@ -1370,12 +1366,8 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSettingSnapshot> archiveSnapshotWithResponse(ConfigurationSettingSnapshot snapshot,
                                                                               boolean ifUnchanged, Context context) {
-        Objects.requireNonNull(snapshot);
-        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot> response =
-            serviceClient.updateSnapshotWithResponse(snapshot.getName(),
-                new SnapshotUpdateParameters().setStatus(SnapshotStatus.ARCHIVED),
-                getEtagSnapshot(ifUnchanged, snapshot), null, context);
-        return new SimpleResponse<>(response, response.getValue());
+        return updateSnapshotSync(snapshot.getName(), snapshot, SnapshotStatus.ARCHIVED, ifUnchanged, serviceClient,
+            context);
     }
 
     /**
@@ -1397,11 +1389,8 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSettingSnapshot recoverSnapshot(String name) {
-        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot> response =
-            serviceClient.updateSnapshotWithResponse(name,
-                new SnapshotUpdateParameters().setStatus(SnapshotStatus.READY),
-                null, null, Context.NONE);
-        return response.getValue();
+        return updateSnapshotSync(name, null, SnapshotStatus.READY, false, serviceClient,
+            Context.NONE).getValue();
     }
 
     /**
@@ -1427,12 +1416,8 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSettingSnapshot> recoverSnapshotWithResponse(ConfigurationSettingSnapshot snapshot,
                                                                               boolean ifUnchanged, Context context) {
-        Objects.requireNonNull(snapshot);
-        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot> response =
-            serviceClient.updateSnapshotWithResponse(snapshot.getName(),
-                new SnapshotUpdateParameters().setStatus(SnapshotStatus.READY),
-                getEtagSnapshot(ifUnchanged, snapshot), null, context);
-        return new SimpleResponse<>(response, response.getValue());
+        return updateSnapshotSync(snapshot.getName(), snapshot, SnapshotStatus.READY, ifUnchanged, serviceClient,
+            context);
     }
 
     /**
@@ -1488,7 +1473,7 @@ public final class ConfigurationClient {
                 selector == null ? null : selector.getName(),
                 null,
                 null,
-                selector == null ? null : selector.getSnapshotStatus(),
+                selector == null ? null : iterableToList(selector.getSnapshotStatus()),
                 enableSyncRestProxy(addTracingNamespace(context))),
             nextLink -> serviceClient.getSnapshotsNextSinglePage(nextLink,
                 enableSyncRestProxy(addTracingNamespace(context))));

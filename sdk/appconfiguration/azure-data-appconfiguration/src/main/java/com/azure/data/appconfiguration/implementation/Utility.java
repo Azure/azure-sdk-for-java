@@ -3,11 +3,17 @@
 
 package com.azure.data.appconfiguration.implementation;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
+import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
+import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.SettingFields;
+import com.azure.data.appconfiguration.models.SnapshotStatus;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -73,6 +79,15 @@ public class Utility {
         return settingFieldsList;
     }
 
+    //  Iterable to List
+    public static <E> List<E> iterableToList(Iterable<E> iterable) {
+        List<E> outputList = new ArrayList<>();
+        for (E item : iterable) {
+            outputList.add(item);
+        }
+        return outputList;
+    }
+
     /*
      * Azure Configuration service requires that the ETag value is surrounded in quotation marks.
      *
@@ -92,7 +107,11 @@ public class Utility {
     }
 
     public static String getEtagSnapshot(boolean isEtagRequired, ConfigurationSettingSnapshot snapshot) {
-        return isEtagRequired ? getETagValue(snapshot.getEtag()) : null;
+        if (!isEtagRequired) {
+            return null;
+        }
+        Objects.requireNonNull(snapshot);
+        return getETagValue(snapshot.getEtag());
     }
 
     /*
@@ -135,5 +154,26 @@ public class Utility {
     public static Context addTracingNamespace(Context context) {
         context = context == null ? Context.NONE : context;
         return context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE);
+    }
+
+    public static Response<ConfigurationSettingSnapshot> updateSnapshotSync(String snapshotName,
+        ConfigurationSettingSnapshot snapshot, SnapshotStatus status, boolean ifUnchanged,
+        AzureAppConfigurationImpl serviceClient, Context context) {
+
+        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot> response =
+            serviceClient.updateSnapshotWithResponse(snapshotName,
+                new SnapshotUpdateParameters().setStatus(status),
+                getEtagSnapshot(ifUnchanged, snapshot), null, context);
+        return new SimpleResponse<>(response, response.getValue());
+    }
+
+    public static Mono<Response<ConfigurationSettingSnapshot>> updateSnapshotAsync(String snapshotName,
+        ConfigurationSettingSnapshot snapshot, SnapshotStatus status, boolean ifUnchanged,
+        AzureAppConfigurationImpl serviceClient) {
+        return serviceClient.updateSnapshotWithResponseAsync(snapshotName,
+                new SnapshotUpdateParameters().setStatus(status),
+                getEtagSnapshot(ifUnchanged, snapshot),
+                null)
+            .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 }

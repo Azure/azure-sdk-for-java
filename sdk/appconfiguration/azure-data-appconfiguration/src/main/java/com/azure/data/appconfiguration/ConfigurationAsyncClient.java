@@ -18,10 +18,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
+import com.azure.data.appconfiguration.implementation.CreateSnapshotUtilClient;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
-import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
@@ -45,9 +45,10 @@ import static com.azure.data.appconfiguration.implementation.ConfigurationSettin
 import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
 import static com.azure.data.appconfiguration.implementation.Utility.getEtag;
-import static com.azure.data.appconfiguration.implementation.Utility.getEtagSnapshot;
+import static com.azure.data.appconfiguration.implementation.Utility.iterableToList;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
+import static com.azure.data.appconfiguration.implementation.Utility.updateSnapshotAsync;
 import static com.azure.data.appconfiguration.implementation.Utility.validateSettingAsync;
 
 /**
@@ -1078,24 +1079,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName) {
-        return new PagedFlux<>(
-            () -> withContext(
-                context -> serviceClient.getKeyValuesSinglePageAsync(
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        snapshotName,
-                        addTracingNamespace(context))
-                    .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),
-            nextLink -> withContext(
-                context -> serviceClient.getKeyValuesNextSinglePageAsync(
-                        nextLink,
-                        null,
-                        addTracingNamespace(context))
-                    .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse)))
-        );
+        return listConfigurationSettingsForSnapshot(snapshotName, null);
     }
 
     /**
@@ -1305,9 +1289,8 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSettingSnapshot> archiveSnapshot(String name) {
-        return serviceClient.updateSnapshotWithResponseAsync(name,
-                new SnapshotUpdateParameters().setStatus(SnapshotStatus.ARCHIVED), null, null)
-            .map(response -> response.getValue());
+        return updateSnapshotAsync(name, null, SnapshotStatus.ARCHIVED, false, serviceClient)
+            .map(Response::getValue);
     }
 
     /**
@@ -1335,11 +1318,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSettingSnapshot>> archiveSnapshotWithResponse(
         ConfigurationSettingSnapshot snapshot, boolean ifUnchanged) {
-        Objects.requireNonNull(snapshot);
-        return serviceClient.updateSnapshotWithResponseAsync(snapshot.getName(),
-                new SnapshotUpdateParameters().setStatus(SnapshotStatus.ARCHIVED),
-                getEtagSnapshot(ifUnchanged, snapshot), null)
-            .map(response -> new SimpleResponse<>(response, response.getValue()));
+        return updateSnapshotAsync(snapshot.getName(), snapshot, SnapshotStatus.ARCHIVED, ifUnchanged, serviceClient);
     }
 
     /**
@@ -1364,9 +1343,8 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSettingSnapshot> recoverSnapshot(String name) {
-        return serviceClient.updateSnapshotWithResponseAsync(name,
-                new SnapshotUpdateParameters().setStatus(SnapshotStatus.READY), null, null)
-            .map(response -> response.getValue());
+        return updateSnapshotAsync(name, null, SnapshotStatus.READY, false, serviceClient)
+            .map(Response::getValue);
     }
 
     /**
@@ -1394,11 +1372,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSettingSnapshot>> recoverSnapshotWithResponse(
         ConfigurationSettingSnapshot snapshot, boolean ifUnchanged) {
-        Objects.requireNonNull(snapshot);
-        return serviceClient.updateSnapshotWithResponseAsync(snapshot.getName(),
-                new SnapshotUpdateParameters().setStatus(SnapshotStatus.READY),
-                getEtagSnapshot(ifUnchanged, snapshot), null)
-            .map(response -> new SimpleResponse<>(response, response.getValue()));
+        return updateSnapshotAsync(snapshot.getName(), snapshot, SnapshotStatus.READY, ifUnchanged, serviceClient);
     }
 
     /**
@@ -1429,7 +1403,7 @@ public final class ConfigurationAsyncClient {
                         selector == null ? null : selector.getName(),
                         null,
                         null,
-                        selector == null ? null : selector.getSnapshotStatus(),
+                        selector == null ? null : iterableToList(selector.getSnapshotStatus()),
                         addTracingNamespace(context))),
                 nextLink -> withContext(
                     context -> serviceClient.getSnapshotsNextSinglePageAsync(nextLink, addTracingNamespace(context)))
