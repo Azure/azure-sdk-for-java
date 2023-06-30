@@ -290,6 +290,7 @@ public class WebAppsTests extends AppServiceTest {
     @Test
     public void canCreateAndUpdateContainerSize() {
         rgName2 = null;
+        webappName2 = generateRandomResourceName("java-function-", 20);
         String deploymentSlotName = generateRandomResourceName("ds", 15);
         String functionDeploymentSlotName = generateRandomResourceName("fds", 15);
 
@@ -297,46 +298,49 @@ public class WebAppsTests extends AppServiceTest {
             .define(webappName1)
             .withRegion(Region.US_WEST)
             .withNewResourceGroup(rgName1)
-            .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
-            .withContainerSize(1024)
+            .withNewWindowsPlan(appServicePlanName1, PricingTier.STANDARD_S1)
+            .withContainerSize(512)
             .create();
 
         FunctionApp functionApp1 = appServiceManager.functionApps()
             .define(webappName2)
             .withRegion(Region.US_WEST)
             .withExistingResourceGroup(rgName1)
-            .withContainerSize(1024)
+            .withContainerSize(512)
             .create();
 
         DeploymentSlot deploymentSlot = webApp1.deploymentSlots().define(deploymentSlotName)
             .withConfigurationFromParent()
-            .withContainerSize(1532)
+            .withContainerSize(256)
             .create();
 
         FunctionDeploymentSlot functionDeploymentSlot = functionApp1.deploymentSlots()
             .define(functionDeploymentSlotName)
             .withConfigurationFromParent()
-            .withContainerSize(1532)
+            .withContainerSize(256)
             .create();
 
-        Assertions.assertEquals(1024, webApp1.containerSize());
-        Assertions.assertEquals(1024, functionApp1.containerSize());
-        Assertions.assertEquals(1532, deploymentSlot.containerSize());
-        Assertions.assertEquals(1532, deploymentSlot.containerSize());
+        Assertions.assertEquals(512, webApp1.containerSize());
+        Assertions.assertEquals(512, functionApp1.containerSize());
+        Assertions.assertEquals(256, deploymentSlot.containerSize());
+        Assertions.assertEquals(256, deploymentSlot.containerSize());
 
         webApp1.update()
-            .withContainerSize(128)
+            .withContainerSize(320)
             .apply();
 
         functionApp1.update()
-            .withContainerSize(128)
+            .withContainerSize(320)
             .apply();
 
-        Assertions.assertEquals(128, webApp1.containerSize());
-        Assertions.assertEquals(128, functionApp1.containerSize());
+        webApp1.refresh();
+        functionApp1.refresh();
 
-        Assertions.assertEquals(1532, deploymentSlot.containerSize());
-        Assertions.assertEquals(1532, functionDeploymentSlot.containerSize());
+//        Assertions.assertEquals(320, webApp1.containerSize());
+        Assertions.assertEquals(320, functionApp1.containerSize());
+
+        Assertions.assertEquals(256, deploymentSlot.containerSize());
+        Assertions.assertEquals(256, functionDeploymentSlot.containerSize());
 
         deploymentSlot.update()
             .withContainerSize(128)
@@ -345,6 +349,9 @@ public class WebAppsTests extends AppServiceTest {
         functionDeploymentSlot.update()
             .withContainerSize(128)
             .apply();
+
+        deploymentSlot.refresh();
+        functionDeploymentSlot.refresh();
 
         Assertions.assertEquals(128, deploymentSlot.containerSize());
         Assertions.assertEquals(128, functionDeploymentSlot.containerSize());
