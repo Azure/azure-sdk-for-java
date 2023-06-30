@@ -18,7 +18,12 @@ public class DefaultJsonReaderContractTests extends JsonReaderContractTests {
 
     @Override
     public JsonReader getJsonReader(String json) throws IOException {
-        this.reader = DefaultJsonReader.fromString(json, new JsonOptions());
+        return getJsonReader(json, new JsonOptions());
+    }
+
+    @Override
+    protected JsonReader getJsonReader(String json, JsonOptions jsonOptions) throws IOException {
+        this.reader = DefaultJsonReader.fromString(json, jsonOptions ==  null ? new JsonOptions() : jsonOptions);
         return reader;
     }
 

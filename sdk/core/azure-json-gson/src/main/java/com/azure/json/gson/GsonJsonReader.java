@@ -27,6 +27,9 @@ public final class GsonJsonReader extends JsonReader {
     private final String jsonString;
     private final boolean resetSupported;
     private final boolean nonNumericNumbersSupported;
+    private final boolean allowComments;
+    private final boolean allowTrailingCommas;
+    private final boolean allowUnescapedControlCharacters;
 
     private JsonToken currentToken;
     private boolean consumed = false;
@@ -88,17 +91,25 @@ public final class GsonJsonReader extends JsonReader {
 
     private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString,
         JsonOptions options) {
-        this(reader, resetSupported, jsonBytes, jsonString, options.isNonNumericNumbersSupported());
+        this(reader, resetSupported, jsonBytes, jsonString, options.isNonNumericNumbersSupported(),
+            options.isAllowComments(), options.isAllowTrailingCommas(), options.isAllowUnescapedControlCharacters());
     }
 
     private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString,
-        boolean nonNumericNumbersSupported) {
+        boolean nonNumericNumbersSupported, boolean allowComments, boolean allowTrailingCommas,
+        boolean allowUnescapedControlCharacters) {
         this.reader = new com.google.gson.stream.JsonReader(reader);
-        this.reader.setLenient(nonNumericNumbersSupported);
+        this.reader.setLenient(nonNumericNumbersSupported
+            || allowComments
+            || allowTrailingCommas
+            || allowUnescapedControlCharacters);
         this.resetSupported = resetSupported;
         this.jsonBytes = jsonBytes;
         this.jsonString = jsonString;
         this.nonNumericNumbersSupported = nonNumericNumbersSupported;
+        this.allowComments = allowComments;
+        this.allowTrailingCommas = allowTrailingCommas;
+        this.allowUnescapedControlCharacters = allowUnescapedControlCharacters;
     }
 
     @Override
@@ -236,7 +247,8 @@ public final class GsonJsonReader extends JsonReader {
         if (currentToken == JsonToken.START_OBJECT || currentToken == JsonToken.FIELD_NAME) {
             consumed = true;
             String json = readRemainingFieldsAsJsonObject();
-            return new GsonJsonReader(new StringReader(json), true, null, json, nonNumericNumbersSupported);
+            return new GsonJsonReader(new StringReader(json), true, null, json, nonNumericNumbersSupported,
+                allowComments, allowTrailingCommas, allowUnescapedControlCharacters);
         } else {
             throw new IllegalStateException("Cannot buffer a JSON object from a non-object, non-field name "
                 + "starting location. Starting location: " + currentToken());
@@ -257,9 +269,10 @@ public final class GsonJsonReader extends JsonReader {
         if (jsonBytes != null) {
             return new GsonJsonReader(
                 new InputStreamReader(new ByteArrayInputStream(jsonBytes), StandardCharsets.UTF_8), true, jsonBytes,
-                null, nonNumericNumbersSupported);
+                null, nonNumericNumbersSupported, allowComments, allowTrailingCommas, allowUnescapedControlCharacters);
         } else {
-            return new GsonJsonReader(new StringReader(jsonString), true, null, jsonString, nonNumericNumbersSupported);
+            return new GsonJsonReader(new StringReader(jsonString), true, null, jsonString, nonNumericNumbersSupported,
+                allowComments, allowTrailingCommas, allowUnescapedControlCharacters);
         }
     }
 

@@ -3,6 +3,7 @@
 
 package com.azure.json.contract;
 
+import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -52,6 +53,15 @@ public abstract class JsonReaderContractTests {
      * @return The {@link JsonReader} that a test will use.
      */
     protected abstract JsonReader getJsonReader(String json) throws IOException;
+
+    /**
+     * Creates an instance of {@link JsonReader} that will be used by a test.
+     *
+     * @param json The JSON to be read.
+     * @param jsonOptions The {@link JsonOptions} to use when creating the {@link JsonReader}.
+     * @return The {@link JsonReader} that a test will use.
+     */
+    protected abstract JsonReader getJsonReader(String json, JsonOptions jsonOptions) throws IOException;
 
     @ParameterizedTest
     @MethodSource("basicOperationsSupplier")
@@ -656,8 +666,43 @@ public abstract class JsonReaderContractTests {
             Arguments.of("[]", 2, "]"),
 
             Arguments.of("{\"field\":\"value\"}", 2, "field"),
+            Arguments.of("{\"\\\"field\\\"\":\"value\"}", 2, "\"field\""),
 
             Arguments.of("{\"field\":\"value\"}", 3, "value"),
+            Arguments.of("{\"field\":\"\\\"value\\\"\"}", 3, "\"value\""),
+            Arguments.of("{\"field\":42}", 3, "42"),
+            Arguments.of("{\"field\":42.0}", 3, "42.0"),
+            Arguments.of("{\"field\":true}", 3, "true"),
+            Arguments.of("{\"field\":false}", 3, "false"),
+            Arguments.of("{\"field\":null}", 3, "null")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("getRawTextSupplier")
+    public void getRawToken(String json, int nextTokens, String expected) throws IOException {
+        try (JsonReader reader = getJsonReader(json)) {
+            for (int i = 0; i < nextTokens; i++) {
+                reader.nextToken();
+            }
+
+            assertEquals(expected, reader.getRawText());
+        }
+    }
+
+    private static Stream<Arguments> getRawTextSupplier() {
+        return Stream.of(
+            Arguments.of("{}", 1, "{"),
+            Arguments.of("{}", 2, "}"),
+
+            Arguments.of("[]", 1, "["),
+            Arguments.of("[]", 2, "]"),
+
+            Arguments.of("{\"field\":\"value\"}", 2, "field"),
+            Arguments.of("{\"\\\"field\\\"\":\"value\"}", 2, "\\\"field\\\""),
+
+            Arguments.of("{\"field\":\"value\"}", 3, "value"),
+            Arguments.of("{\"field\":\"\\\"value\\\"\"}", 3, "\\\"value\\\""),
             Arguments.of("{\"field\":42}", 3, "42"),
             Arguments.of("{\"field\":42.0}", 3, "42.0"),
             Arguments.of("{\"field\":true}", 3, "true"),
@@ -774,6 +819,41 @@ public abstract class JsonReaderContractTests {
             Arguments.of("{}", reader, Collections.emptyMap()),
             Arguments.of("{\"boolean\":true,\"int\":42,\"decimal\":42.0,\"string\":\"hello\"}", reader, map)
         );
+    }
+
+    private static final String JSON_WITH_COMMENTS = String.join("\n",
+        "{",
+        "    // This is a comment",
+        "    \"field\": \"value\",",
+        "    /* This is another comment */",
+        "    \"field2\": \"value2\"",
+        "}");
+
+    @Test
+    public void canReadJsonWithCommentsWhenConfigured() throws IOException {
+        JsonOptions jsonOptions = new JsonOptions().setAllowComments(true);
+
+        try (JsonReader jsonReader = getJsonReader(JSON_WITH_COMMENTS, jsonOptions)) {
+            Map<String, String> map = jsonReader.readMap(JsonReader::getString);
+
+            assertEquals("value", map.get("field"));
+            assertEquals("value2", map.get("field2"));
+        }
+    }
+
+    @Test
+    public void defaultConfigurationCannotReadComments() throws IOException {
+        JsonOptions jsonOptions = new JsonOptions()
+            .setAllowComments(false)
+            .setAllowTrailingCommas(false)
+            .setAllowUnescapedControlCharacters(false)
+            .setNonNumericNumbersSupported(false);
+
+        // Set non-numeric support is normally true but in GSON there isn't fine grain control between lenient parsing.
+        // Explicitly disable all lenient parsing.
+        try (JsonReader jsonReader = getJsonReader(JSON_WITH_COMMENTS, jsonOptions)) {
+            assertThrows(IOException.class, jsonReader::readUntyped);
+        }
     }
 
     private static void assertJsonReaderStructInitialization(JsonReader reader, JsonToken expectedInitialToken)

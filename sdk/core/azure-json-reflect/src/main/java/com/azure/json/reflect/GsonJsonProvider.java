@@ -15,35 +15,59 @@ import java.io.Writer;
 
 
 class GsonJsonProvider implements JsonProvider {
+    private static final String JSON_READER_EXCEPTION = "Both 'json' and 'options' must be passed as non-null to "
+        + "create an instance of JsonReader.";
+
+    private static final String JSON_WRITER_EXCEPTION = "Both 'json' and 'options' must be passed as non-null to "
+        + "create an instance of JsonWriter.";
+
     static final boolean INITIALIZED = GsonJsonReader.INITIALIZED && GsonJsonWriter.INITIALIZED;
 
     @Override
     public JsonReader createReader(byte[] json, JsonOptions options) {
+        validate(json, options, JSON_READER_EXCEPTION);
+
         return GsonJsonReader.fromBytes(json, options);
     }
 
     @Override
     public JsonReader createReader(String json, JsonOptions options) {
+        validate(json, options, JSON_READER_EXCEPTION);
+
         return GsonJsonReader.fromString(json, options);
     }
 
     @Override
     public JsonReader createReader(InputStream json, JsonOptions options) {
+        validate(json, options, JSON_READER_EXCEPTION);
+
         return GsonJsonReader.fromStream(json, options);
     }
 
     @Override
     public JsonReader createReader(Reader json, JsonOptions options) {
+        validate(json, options, JSON_READER_EXCEPTION);
+
         return GsonJsonReader.fromReader(json, options);
     }
 
     @Override
     public JsonWriter createWriter(OutputStream json, JsonOptions options) {
+        validate(json, options, JSON_WRITER_EXCEPTION);
+
         return GsonJsonWriter.toStream(json, options);
     }
 
     @Override
     public JsonWriter createWriter(Writer json, JsonOptions options) {
+        validate(json, options, JSON_WRITER_EXCEPTION);
+
         return GsonJsonWriter.toWriter(json, options);
+    }
+
+    private static void validate(Object json, JsonOptions options, String exceptionMessage) {
+        if (json == null || options == null) {
+            throw new NullPointerException(exceptionMessage);
+        }
     }
 }

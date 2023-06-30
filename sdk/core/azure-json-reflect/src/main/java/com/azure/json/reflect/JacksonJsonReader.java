@@ -24,6 +24,9 @@ import static com.azure.json.reflect.MetaFactoryFactory.createMetaFactory;
 final class JacksonJsonReader extends JsonReader {
     private static final Class<?> JACKSON_JSON_TOKEN;
     private static final Object ALLOW_NAN_MAPPED;
+    private static final Object ALLOW_JAVA_COMMENTS_MAPPED;
+    private static final Object ALLOW_TRAILING_COMMA_MAPPED;
+    private static final Object ALLOW_UNESCAPED_CONTROL_CHARS_MAPPED;
     private static final Object JSON_FACTORY;
 
     private static final JsonFactoryCreateJsonParser JSON_FACTORY_CREATE_JSON_PARSER;
@@ -48,6 +51,9 @@ final class JacksonJsonReader extends JsonReader {
         Class<?> jacksonJsonToken = null;
 
         Object allowNaNMapped = null;
+        Object allowJavaCommentsMapped = null;
+        Object allowTrailingCommaMapped = null;
+        Object allowUnescapedControlCharsMapped = null;
         Object jsonFactory = null;
 
         JsonFactoryCreateJsonParser jsonFactoryCreateJsonParser = null;
@@ -67,33 +73,70 @@ final class JacksonJsonReader extends JsonReader {
         boolean initialized = false;
 
         try {
-            Class<?> jacksonJsonFactoryClass = Class.forName("com.fasterxml.jackson.core.JsonFactory");
-            Class<?> jacksonJsonParserClass = Class.forName("com.fasterxml.jackson.core.JsonParser");
+            Class<?> jacksonJsonFactoryClass = Class.forName("com.fasterxml.jackson.core.JsonFactory", true,
+                JacksonJsonReader.class.getClassLoader());
+            Class<?> jacksonJsonParserClass = Class.forName("com.fasterxml.jackson.core.JsonParser", true,
+                JacksonJsonReader.class.getClassLoader());
 
-            jacksonJsonToken = Class.forName("com.fasterxml.jackson.core.JsonToken");
+            jacksonJsonToken = Class.forName("com.fasterxml.jackson.core.JsonToken", true,
+                JacksonJsonReader.class.getClassLoader());
 
             // Get JsonParser.Feature enum value for allowing non-numeric numbers
-            Class<?> jsonParserFeature = Arrays.stream(jacksonJsonParserClass.getDeclaredClasses()).filter(c -> "Feature".equals(c.getSimpleName())).findAny().orElse(null);
-            Class<?> jsonReadFeature = Class.forName("com.fasterxml.jackson.core.json.JsonReadFeature");
-            MethodHandle jsonReadFeatureMappedFeature = lookup.findVirtual(jsonReadFeature, "mappedFeature", methodType(jsonParserFeature));
-            MethodHandle jsonReadFeatureValueOf = lookup.findStatic(jsonReadFeature, "valueOf", methodType(jsonReadFeature, String.class));
-            allowNaNMapped = jsonReadFeatureMappedFeature.invoke(jsonReadFeatureValueOf.invoke("ALLOW_NON_NUMERIC_NUMBERS"));
+            Class<?> jsonParserFeature = Arrays.stream(jacksonJsonParserClass.getDeclaredClasses())
+                .filter(c -> "Feature".equals(c.getSimpleName()))
+                .findAny()
+                .orElse(null);
+            Class<?> jsonReadFeature = Class.forName("com.fasterxml.jackson.core.json.JsonReadFeature", true,
+                JacksonJsonReader.class.getClassLoader());
+            MethodHandle jsonReadFeatureMappedFeature = lookup.findVirtual(jsonReadFeature, "mappedFeature",
+                methodType(jsonParserFeature));
+            MethodHandle jsonReadFeatureValueOf = lookup.findStatic(jsonReadFeature, "valueOf",
+                methodType(jsonReadFeature, String.class));
+            allowNaNMapped = jsonReadFeatureMappedFeature.invoke(
+                jsonReadFeatureValueOf.invoke("ALLOW_NON_NUMERIC_NUMBERS"));
+            allowJavaCommentsMapped = jsonReadFeatureMappedFeature.invoke(
+                jsonReadFeatureValueOf.invoke("ALLOW_JAVA_COMMENTS"));
+            allowTrailingCommaMapped = jsonReadFeatureMappedFeature.invoke(
+                jsonReadFeatureValueOf.invoke("ALLOW_TRAILING_COMMA"));
+            allowUnescapedControlCharsMapped = jsonReadFeatureMappedFeature.invoke(
+                jsonReadFeatureValueOf.invoke("ALLOW_UNESCAPED_CONTROL_CHARS"));
 
             jsonFactory = lookup.findConstructor(jacksonJsonFactoryClass, methodType(void.class)).invoke();
 
-            jsonFactoryCreateJsonParser = createMetaFactory("createParser", jacksonJsonFactoryClass, methodType(jacksonJsonParserClass, Reader.class), JsonFactoryCreateJsonParser.class, methodType(Object.class, Object.class, Reader.class), lookup);
-            jsonParserConfigure = createMetaFactory("configure", jacksonJsonParserClass, methodType(jacksonJsonParserClass, jsonParserFeature, boolean.class), JsonParserConfigure.class, methodType(Object.class, Object.class, Object.class, boolean.class), lookup);
-            jsonParserClose = createMetaFactory("close", jacksonJsonParserClass, methodType(void.class), JsonParserClose.class, methodType(void.class, Object.class), lookup);
-            jsonParserSkipChildren = createMetaFactory("skipChildren", jacksonJsonParserClass, methodType(jacksonJsonParserClass), JsonParserSkipChildren.class, methodType(Object.class, Object.class), lookup);
-            jsonParserNextToken = createMetaFactory("nextToken", jacksonJsonParserClass, methodType(jacksonJsonToken), JsonParserNextToken.class, methodType(Object.class, Object.class), lookup);
-            jsonParserCurrentName = createMetaFactory("currentName", jacksonJsonParserClass, methodType(String.class), JsonParserCurrentName.class, methodType(String.class, Object.class), lookup);
-            jsonParserGetValueAsString = createMetaFactory("getValueAsString", jacksonJsonParserClass, methodType(String.class), JsonParserGetValueAsString.class, methodType(String.class, Object.class), lookup);
-            jsonParserGetBinaryValue = createMetaFactory("getBinaryValue", jacksonJsonParserClass, methodType(byte[].class), JsonParserGetBinaryValue.class, methodType(byte[].class, Object.class), lookup);
-            jsonParserGetBooleanValue = createMetaFactory("getBooleanValue", jacksonJsonParserClass, methodType(boolean.class), JsonParserGetBooleanValue.class, methodType(boolean.class, Object.class), lookup);
-            jsonParserGetIntValue = createMetaFactory("getIntValue", jacksonJsonParserClass, methodType(int.class), JsonParserGetIntValue.class, methodType(int.class, Object.class), lookup);
-            jsonParserGetLongValue = createMetaFactory("getLongValue", jacksonJsonParserClass, methodType(long.class), JsonParserGetLongValue.class, methodType(long.class, Object.class), lookup);
-            jsonParserGetFloatValue = createMetaFactory("getFloatValue", jacksonJsonParserClass, methodType(float.class), JsonParserGetFloatValue.class, methodType(float.class, Object.class), lookup);
-            jsonParserGetDoubleValue = createMetaFactory("getDoubleValue", jacksonJsonParserClass, methodType(double.class), JsonParserGetDoubleValue.class, methodType(double.class, Object.class), lookup);
+            jsonFactoryCreateJsonParser = createMetaFactory("createParser", jacksonJsonFactoryClass,
+                methodType(jacksonJsonParserClass, Reader.class), JsonFactoryCreateJsonParser.class,
+                methodType(Object.class, Object.class, Reader.class), lookup);
+            jsonParserConfigure = createMetaFactory("configure", jacksonJsonParserClass,
+                methodType(jacksonJsonParserClass, jsonParserFeature, boolean.class), JsonParserConfigure.class,
+                methodType(Object.class, Object.class, Object.class, boolean.class), lookup);
+            jsonParserClose = createMetaFactory("close", jacksonJsonParserClass, methodType(void.class),
+                JsonParserClose.class, methodType(void.class, Object.class), lookup);
+            jsonParserSkipChildren = createMetaFactory("skipChildren", jacksonJsonParserClass,
+                methodType(jacksonJsonParserClass), JsonParserSkipChildren.class,
+                methodType(Object.class, Object.class), lookup);
+            jsonParserNextToken = createMetaFactory("nextToken", jacksonJsonParserClass, methodType(jacksonJsonToken),
+                JsonParserNextToken.class, methodType(Object.class, Object.class), lookup);
+            jsonParserCurrentName = createMetaFactory("currentName", jacksonJsonParserClass, methodType(String.class),
+                JsonParserCurrentName.class, methodType(String.class, Object.class), lookup);
+            jsonParserGetValueAsString = createMetaFactory("getValueAsString", jacksonJsonParserClass,
+                methodType(String.class), JsonParserGetValueAsString.class, methodType(String.class, Object.class),
+                lookup);
+            jsonParserGetBinaryValue = createMetaFactory("getBinaryValue", jacksonJsonParserClass,
+                methodType(byte[].class), JsonParserGetBinaryValue.class, methodType(byte[].class, Object.class),
+                lookup);
+            jsonParserGetBooleanValue = createMetaFactory("getBooleanValue", jacksonJsonParserClass,
+                methodType(boolean.class), JsonParserGetBooleanValue.class, methodType(boolean.class, Object.class),
+                lookup);
+            jsonParserGetIntValue = createMetaFactory("getIntValue", jacksonJsonParserClass, methodType(int.class),
+                JsonParserGetIntValue.class, methodType(int.class, Object.class), lookup);
+            jsonParserGetLongValue = createMetaFactory("getLongValue", jacksonJsonParserClass, methodType(long.class),
+                JsonParserGetLongValue.class, methodType(long.class, Object.class), lookup);
+            jsonParserGetFloatValue = createMetaFactory("getFloatValue", jacksonJsonParserClass,
+                methodType(float.class), JsonParserGetFloatValue.class, methodType(float.class, Object.class),
+                lookup);
+            jsonParserGetDoubleValue = createMetaFactory("getDoubleValue", jacksonJsonParserClass,
+                methodType(double.class), JsonParserGetDoubleValue.class, methodType(double.class, Object.class),
+                lookup);
 
             initialized = true;
         } catch (Throwable e) {
@@ -106,6 +149,9 @@ final class JacksonJsonReader extends JsonReader {
 
         JACKSON_JSON_TOKEN = jacksonJsonToken;
         ALLOW_NAN_MAPPED = allowNaNMapped;
+        ALLOW_JAVA_COMMENTS_MAPPED = allowJavaCommentsMapped;
+        ALLOW_TRAILING_COMMA_MAPPED = allowTrailingCommaMapped;
+        ALLOW_UNESCAPED_CONTROL_CHARS_MAPPED = allowUnescapedControlCharsMapped;
         JSON_FACTORY = jsonFactory;
 
         JSON_FACTORY_CREATE_JSON_PARSER = jsonFactoryCreateJsonParser;
@@ -132,9 +178,13 @@ final class JacksonJsonReader extends JsonReader {
     private final String jsonString;
     private final boolean resetSupported;
     private final boolean nonNumericNumbersSupported;
+    private final boolean allowComments;
+    private final boolean allowTrailingCommas;
+    private final boolean allowUnescapedControlCharacters;
 
     static JsonReader fromBytes(byte[] json, JsonOptions options) throws IOException {
-        return new JacksonJsonReader(new InputStreamReader(new ByteArrayInputStream(json), StandardCharsets.UTF_8), true, json, null, options);
+        return new JacksonJsonReader(new InputStreamReader(new ByteArrayInputStream(json), StandardCharsets.UTF_8),
+            true, json, null, options);
     }
 
     static JsonReader fromString(String json, JsonOptions options) throws IOException {
@@ -149,11 +199,15 @@ final class JacksonJsonReader extends JsonReader {
         return new JacksonJsonReader(reader, reader.markSupported(), null, null, options);
     }
 
-    private JacksonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString, JsonOptions options) throws IOException {
-        this(reader, resetSupported, jsonBytes, jsonString, options.isNonNumericNumbersSupported());
+    private JacksonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString,
+        JsonOptions options) throws IOException {
+        this(reader, resetSupported, jsonBytes, jsonString, options.isNonNumericNumbersSupported(),
+            options.isAllowComments(), options.isAllowTrailingCommas(), options.isAllowUnescapedControlCharacters());
     }
 
-    private JacksonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString, boolean nonNumericNumbersSupported) throws IOException {
+    private JacksonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString,
+        boolean nonNumericNumbersSupported, boolean allowComments, boolean allowTrailingCommas,
+        boolean allowUnescapedControlCharacters) throws IOException {
         if (!INITIALIZED) {
             throw new IllegalStateException("No compatible version of Jackson is present on the classpath.");
         }
@@ -161,11 +215,18 @@ final class JacksonJsonReader extends JsonReader {
         jacksonJsonParser = JSON_FACTORY_CREATE_JSON_PARSER.createParser(JSON_FACTORY, reader);
         // Configure Jackson to support non-numeric numbers
         JSON_PARSER_CONFIGURE.configure(jacksonJsonParser, ALLOW_NAN_MAPPED, nonNumericNumbersSupported);
+        JSON_PARSER_CONFIGURE.configure(jacksonJsonParser, ALLOW_JAVA_COMMENTS_MAPPED, allowComments);
+        JSON_PARSER_CONFIGURE.configure(jacksonJsonParser, ALLOW_TRAILING_COMMA_MAPPED, allowTrailingCommas);
+        JSON_PARSER_CONFIGURE.configure(jacksonJsonParser, ALLOW_UNESCAPED_CONTROL_CHARS_MAPPED,
+            allowUnescapedControlCharacters);
 
         this.resetSupported = resetSupported;
         this.jsonBytes = jsonBytes;
         this.jsonString = jsonString;
         this.nonNumericNumbersSupported = nonNumericNumbersSupported;
+        this.allowComments = allowComments;
+        this.allowTrailingCommas = allowTrailingCommas;
+        this.allowUnescapedControlCharacters = allowUnescapedControlCharacters;
     }
 
     @Override
@@ -234,7 +295,8 @@ final class JacksonJsonReader extends JsonReader {
         JsonToken currentToken = currentToken();
         if (currentToken == JsonToken.START_OBJECT || currentToken == JsonToken.FIELD_NAME) {
             String json = readRemainingFieldsAsJsonObject();
-            return new JacksonJsonReader(new StringReader(json), true, null, json, nonNumericNumbersSupported);
+            return new JacksonJsonReader(new StringReader(json), true, null, json, nonNumericNumbersSupported,
+                allowComments, allowTrailingCommas, allowUnescapedControlCharacters);
         } else {
             throw new IllegalStateException("Cannot buffer a JSON object from a non-object, non-field name "
                 + "starting location. Starting location: " + currentToken());
@@ -253,9 +315,12 @@ final class JacksonJsonReader extends JsonReader {
         }
 
         if (jsonBytes != null) {
-            return new JacksonJsonReader(new InputStreamReader(new ByteArrayInputStream(jsonBytes), StandardCharsets.UTF_8), true, jsonBytes, null, nonNumericNumbersSupported);
+            return new JacksonJsonReader(new InputStreamReader(
+                new ByteArrayInputStream(jsonBytes), StandardCharsets.UTF_8), true, jsonBytes, null,
+                nonNumericNumbersSupported, allowComments, allowTrailingCommas, allowUnescapedControlCharacters);
         } else {
-            return new JacksonJsonReader(new StringReader(jsonString), true, null, jsonString, nonNumericNumbersSupported);
+            return new JacksonJsonReader(new StringReader(jsonString), true, null, jsonString,
+                nonNumericNumbersSupported, allowComments, allowTrailingCommas, allowUnescapedControlCharacters);
         }
     }
 
