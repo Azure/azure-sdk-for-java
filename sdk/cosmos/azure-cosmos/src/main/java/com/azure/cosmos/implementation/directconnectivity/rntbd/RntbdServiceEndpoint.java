@@ -604,7 +604,13 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410
             );
 
-            connectionStateListener.attemptBackgroundAddressRefresh(requestArgs.serviceRequest());
+            RxDocumentServiceRequest serviceRequest = requestArgs.serviceRequest();
+
+            if (serviceRequest.requestContext != null) {
+                serviceRequest.requestContext.forceRefreshAddressCache = true;
+            }
+
+            connectionStateListener.attemptBackgroundAddressRefresh(serviceRequest);
             requestRecord.completeExceptionally(goneException);
         }
 

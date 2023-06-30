@@ -222,8 +222,8 @@ public class ReplicatedResourceClient {
     }
 
     private Mono<StoreResponse> getStoreResponseMono(RxDocumentServiceRequest request, Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {
-        return invokeAsync(request, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
-            forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0());
+        return invokeAsync(request, new TimeoutHelper(forceRefreshAndTimeout.getValue2()) /*time left for request to complete*/,
+            forceRefreshAndTimeout.getValue1() /*inRetry*/, forceRefreshAndTimeout.getValue0() /*forceRefresh*/);
     }
 
     public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {

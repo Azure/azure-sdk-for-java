@@ -52,7 +52,8 @@ public class BackoffRetryUtility {
     }
 
     static public <T> Mono<T> executeAsync(
-        Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> callbackMethod, IRetryPolicy retryPolicy,
+        Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> callbackMethod,
+        IRetryPolicy retryPolicy,
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> inBackoffAlternateCallbackMethod,
         Duration minBackoffForInBackoffCallback,
         RxDocumentServiceRequest request,

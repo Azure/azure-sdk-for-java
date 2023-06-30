@@ -175,13 +175,14 @@ public class RntbdConnectionStateListener {
         }
 
         AtomicBoolean requestCancellationStatusOnTimeout = request.requestContext.getRequestCancellationStatusOnTimeout();
+        final boolean forceAddressRefresh = request.requestContext.forceRefreshAddressCache;
 
         if (this.forceBackgroundAddressRefreshInProgress.compareAndSet(false, true) &&
             requestCancellationStatusOnTimeout.get()) {
             // kickstart background address refresh
             logger.debug("background address refresh started from RntbdConnectionStateListener");
             this.addressSelector
-                .resolveAddressesAsync(request, true)
+                .resolveAddressesAsync(request, forceAddressRefresh)
                 .subscribeOn(Schedulers.boundedElastic())
                 .doFinally(signalType -> {
                     this.forceBackgroundAddressRefreshInProgress.compareAndSet(true, false);
