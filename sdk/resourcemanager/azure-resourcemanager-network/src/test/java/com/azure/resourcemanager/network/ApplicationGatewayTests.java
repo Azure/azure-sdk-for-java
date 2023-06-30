@@ -18,11 +18,14 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallMode;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySkuName;
 import com.azure.resourcemanager.network.models.ApplicationGatewayTier;
 import com.azure.resourcemanager.network.models.ApplicationGatewayWebApplicationFirewallConfiguration;
+import com.azure.resourcemanager.network.models.KnownWebApplicationGatewayManagedRuleSet;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.ResourceIdentityType;
+import com.azure.resourcemanager.network.models.WebApplicationFirewallMode;
+import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicy;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
@@ -503,6 +506,111 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                     .withoutIPAddress(addr.ipAddress())
                     .parent()
                     .apply()));
+    }
+
+    @Test
+    public void canAssociateWafPolicy() {
+        String appGatewayName = generateRandomResourceName("agwaf", 15);
+        String appPublicIp = generateRandomResourceName("pip", 15);
+        String wafPolicyName = generateRandomResourceName("waf", 15);
+
+        PublicIpAddress pip =
+            networkManager
+                .publicIpAddresses()
+                .define(appPublicIp)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withSku(PublicIPSkuType.STANDARD)
+                .withStaticIP()
+                .create();
+
+        WebApplicationFirewallPolicy wafPolicy =
+            networkManager
+                .webApplicationFirewallPolicies()
+                .define(wafPolicyName)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .withManagedRuleSet(KnownWebApplicationGatewayManagedRuleSet.OWASP_3_2)
+                .create();
+
+        ApplicationGateway appGateway =
+            networkManager
+                .applicationGateways()
+                .define(appGatewayName)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .defineRequestRoutingRule("rule1")
+                .fromPublicFrontend()
+                .fromFrontendHttpPort(80)
+                .toBackendHttpPort(8080)
+                .toBackendIPAddress("11.1.1.1")
+                .toBackendIPAddress("11.1.1.2")
+                .attach()
+                .withExistingPublicIpAddress(pip)
+                .withTier(ApplicationGatewayTier.WAF_V2)
+                .withSize(ApplicationGatewaySkuName.WAF_V2)
+                .withExistingWebApplicationFirewallPolicy(wafPolicy)
+                .create();
+
+        Assertions.assertNotNull(appGateway.getWebApplicationFirewallPolicy());
+        Assertions.assertNull(appGateway.webApplicationFirewallConfiguration());
+
+        wafPolicy.refresh();
+        // check association
+        Assertions.assertEquals(appGateway.id(), wafPolicy.getAssociatedApplicationGateways().iterator().next().id());
+        Assertions.assertEquals(wafPolicy.id(), appGateway.getWebApplicationFirewallPolicy().id());
+
+        appGateway.update()
+            .withNewWebApplicationFirewallPolicy(WebApplicationFirewallMode.PREVENTION)
+            .apply();
+
+        WebApplicationFirewallPolicy newPolicy = appGateway.getWebApplicationFirewallPolicy();
+
+        Assertions.assertNotNull(newPolicy);
+        Assertions.assertTrue(newPolicy.isEnabled());
+        Assertions.assertEquals(WebApplicationFirewallMode.PREVENTION, newPolicy.mode());
+        Assertions.assertNotEquals(newPolicy.id(), wafPolicy.id());
+        // check updated association
+        Assertions.assertEquals(appGateway.id(), newPolicy.getAssociatedApplicationGateways().iterator().next().id());
+        Assertions.assertEquals(newPolicy.id(), appGateway.getWebApplicationFirewallPolicy().id());
+
+        // invalid application gateway with mixed legacy WAF configuration and WAF policy
+        String invalidPolicyName = "invalid";
+
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            networkManager.applicationGateways()
+                .define("invalid")
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .defineRequestRoutingRule("rule1")
+                .fromPublicFrontend()
+                .fromFrontendHttpPort(80)
+                .toBackendHttpPort(8080)
+                .toBackendIPAddress("11.1.1.1")
+                .toBackendIPAddress("11.1.1.2")
+                .attach()
+                .withNewPublicIpAddress()
+                .withTier(ApplicationGatewayTier.WAF_V2)
+                .withSize(ApplicationGatewaySkuName.WAF_V2)
+                // mixed legacy WAF configuration and WAF policy
+                .withNewWebApplicationFirewallPolicy(
+                    networkManager
+                        .webApplicationFirewallPolicies()
+                        .define(invalidPolicyName)
+                        .withRegion(Region.US_EAST)
+                        .withExistingResourceGroup(rgName)
+                        .withManagedRuleSet(KnownWebApplicationGatewayManagedRuleSet.OWASP_3_2))
+                .withWebApplicationFirewall(true, ApplicationGatewayFirewallMode.PREVENTION)
+                .create();
+        });
+
+        // assert no policy is created
+        Assertions.assertTrue(
+            networkManager
+                .webApplicationFirewallPolicies()
+                .listByResourceGroup(rgName)
+                .stream()
+                .noneMatch(policy -> policy.name().equals(invalidPolicyName)));
     }
 
     private String createKeyVaultCertificate(String servicePrincipal, String identityPrincipal) {

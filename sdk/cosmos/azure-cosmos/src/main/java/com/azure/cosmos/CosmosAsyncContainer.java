@@ -721,7 +721,7 @@ public class CosmosAsyncContainer {
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig =
                 new CosmosContainerProactiveInitConfigBuilder(Collections.singletonList(cosmosContainerIdentity))
                     .setProactiveConnectionRegionsCount(1)
-                    .setMinConnectionsPerEndpointForContainer(cosmosContainerIdentity, Configs.getMinConnectionPoolSizePerEndpoint())
+                    .setMinConnectionPoolSizePerEndpointForContainer(cosmosContainerIdentity, Configs.getMinConnectionPoolSizePerEndpoint())
                     .build();
 
             return withContext(context -> openConnectionsAndInitCachesInternal(

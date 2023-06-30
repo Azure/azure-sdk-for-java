@@ -53,3 +53,8 @@ $status
 "
   exit $LASTEXITCODE
 }
+
+# Delete out TypeSpec temporary folders if they still exist.
+Get-ChildItem -Path $Directory -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
+    Remove-Item -Path $_.FullName -Recurse -Force
+}

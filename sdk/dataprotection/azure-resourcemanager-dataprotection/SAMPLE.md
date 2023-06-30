@@ -54,6 +54,14 @@
 - [List](#deletedbackupinstances_list)
 - [Undelete](#deletedbackupinstances_undelete)
 
+## DppResourceGuardProxy
+
+- [CreateOrUpdate](#dppresourceguardproxy_createorupdate)
+- [Delete](#dppresourceguardproxy_delete)
+- [Get](#dppresourceguardproxy_get)
+- [List](#dppresourceguardproxy_list)
+- [UnlockDelete](#dppresourceguardproxy_unlockdelete)
+
 ## ExportJobs
 
 - [Trigger](#exportjobs_trigger)
@@ -1337,6 +1345,135 @@ public final class DeletedBackupInstancesUndeleteSamples {
     public static void undeleteDeletedBackupInstance(
         com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
         manager.deletedBackupInstances().undelete("testrg", "testvault", "testbi", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DppResourceGuardProxy_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.dataprotection.models.ResourceGuardProxyBase;
+
+/** Samples for DppResourceGuardProxy CreateOrUpdate. */
+public final class DppResourceGuardProxyCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
+     */
+    /**
+     * Sample code: Create ResourceGuardProxy.
+     *
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void createResourceGuardProxy(
+        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager
+            .dppResourceGuardProxies()
+            .define("swaggerExample")
+            .withExistingBackupVault("SampleResourceGroup", "sampleVault")
+            .withProperties(
+                new ResourceGuardProxyBase()
+                    .withResourceGuardResourceId(
+                        "/subscriptions/f9e67185-f313-4e79-aa71-6458d429369d/resourceGroups/ResourceGuardSecurityAdminRG/providers/Microsoft.DataProtection/resourceGuards/ResourceGuardTestResource"))
+            .create();
+    }
+}
+```
+
+### DppResourceGuardProxy_Delete
+
+```java
+/** Samples for DppResourceGuardProxy Delete. */
+public final class DppResourceGuardProxyDeleteSamples {
+    /*
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
+     */
+    /**
+     * Sample code: Delete ResourceGuardProxy.
+     *
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void deleteResourceGuardProxy(
+        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager
+            .dppResourceGuardProxies()
+            .deleteWithResponse(
+                "SampleResourceGroup", "sampleVault", "swaggerExample", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DppResourceGuardProxy_Get
+
+```java
+/** Samples for DppResourceGuardProxy Get. */
+public final class DppResourceGuardProxyGetSamples {
+    /*
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
+     */
+    /**
+     * Sample code: Get ResourceGuardProxy.
+     *
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void getResourceGuardProxy(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager
+            .dppResourceGuardProxies()
+            .getWithResponse("SampleResourceGroup", "sampleVault", "swaggerExample", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DppResourceGuardProxy_List
+
+```java
+/** Samples for DppResourceGuardProxy List. */
+public final class DppResourceGuardProxyListSamples {
+    /*
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardProxyCRUD/ListResourceGuardProxy.json
+     */
+    /**
+     * Sample code: Get ResourceGuardProxies.
+     *
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void getResourceGuardProxies(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.dppResourceGuardProxies().list("SampleResourceGroup", "sampleVault", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DppResourceGuardProxy_UnlockDelete
+
+```java
+import com.azure.resourcemanager.dataprotection.models.UnlockDeleteRequest;
+import java.util.Arrays;
+
+/** Samples for DppResourceGuardProxy UnlockDelete. */
+public final class DppResourceGuardProxyUnlockDeleteSamples {
+    /*
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
+     */
+    /**
+     * Sample code: UnlockDelete ResourceGuardProxy.
+     *
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void unlockDeleteResourceGuardProxy(
+        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager
+            .dppResourceGuardProxies()
+            .unlockDeleteWithResponse(
+                "SampleResourceGroup",
+                "sampleVault",
+                "swaggerExample",
+                new UnlockDeleteRequest()
+                    .withResourceGuardOperationRequests(
+                        Arrays
+                            .asList(
+                                "/subscriptions/f9e67185-f313-4e79-aa71-6458d429369d/resourceGroups/ResourceGuardSecurityAdminRG/providers/Microsoft.DataProtection/resourceGuards/ResourceGuardTestResource/deleteBackupInstanceRequests/default"))
+                    .withResourceToBeDeleted(
+                        "/subscriptions/5e13b949-1218-4d18-8b99-7e12155ec4f7/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/backupVaults/sampleVault/backupInstances/TestBI9779f4de"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```

@@ -43,7 +43,7 @@ public final class ServiceBusReceiverInstrumentation {
      * Reports consumer lag metric.
      */
     public Context instrumentProcess(String name, ServiceBusReceivedMessage message, Context parent) {
-        if (!tracer.isEnabled() && !meter.isConsumerLagEnabled()) {
+        if (message == null || (!tracer.isEnabled() && !meter.isConsumerLagEnabled())) {
             return parent;
         }
 

@@ -82,6 +82,9 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
                 });
             });
 
+            when(tokenCredential.getTokenSync(any(TokenRequestContext.class)))
+                .thenAnswer(invocationOnMock -> new AccessToken("foo", OffsetDateTime.now().plusMinutes(20)));
+
             endpoint = PLAYBACK_ENDPOINT;
             eventHubName = "javaeventhub";
             connectionString = "foo-bar";

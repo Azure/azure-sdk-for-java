@@ -36,7 +36,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -66,27 +65,88 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.T
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getComposeDocumentModelRequest;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getInnerCopyAuthorization;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.toInnerDocTypes;
-import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getComposeModelOptions;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * This class provides an asynchronous client that contains model management operations
- * that apply to Azure Form Recognizer.
- * Operations allowed by the client are creating, building of custom document analysis models, deleting models,
- * listing models, copying a custom-built model to another Form Recognizer account, composing models from
- * component models, getting operation information and getting resource details.
+ * <p>This class provides an asynchronous client to connect to the Form Recognizer Azure Cognitive Service.</p>
+ * <p>This client provides asynchronous methods to perform:</p>
  *
- * <p><strong>Instantiating an asynchronous Document Model Administration Client</strong></p>
+ * <ol>
+ *     <li>Build a custom model: Extract data from your specific documents by building custom models using the
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient#beginBuildDocumentModel(String, DocumentModelBuildMode) beginBuidlDocumentModel}
+ *     method to provide a container SAS URL to your Azure Storage Blob container.</li>
+ *     <li>Composed custom models: Creates a new model from document types of collection of existing models using the
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient#beginComposeDocumentModel(List) beginComposeDocumentModel}
+ *     method.</li>
+ *     <li>Copy custom model: Copy a custom Form Recognizer model to a target Form Recognizer resource using the
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient#beginCopyDocumentModelTo(String, DocumentModelCopyAuthorization) beginCopyDocumentModelTo}
+ *     method.</li>
+ *     <li>Custom model management: Get detailed information, delete and list custom models using methods
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient#getDocumentModel(String) getDocumentModel},
+ *     {@link DocumentModelAdministrationAsyncClient#listDocumentModels() listDocumentModels} and
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient#deleteDocumentModel(String) deleteDocumentModel}
+ *     respectively.</li>
+ *     <li>Operations management: Get detailed information and list operations on the Form Recognizer account using
+ *     methods
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient#getOperation(String) getOperation}
+ *     and {@link DocumentModelAdministrationAsyncClient#listOperations()} respectively.</li>
+ *     <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
+ *     operation or registering callbacks to receive notifications when the analysis is complete.</li>
+ * </ol>
+ *
+ * <p><strong>Note: </strong>This client only supports
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion#V2022_08_31} and newer.
+ * To use an older service version, {@link com.azure.ai.formrecognizer.FormRecognizerClient} and
+ * {@link com.azure.ai.formrecognizer.training.FormTrainingClient}.</p>
+ *
+ * <p>Service clients are the point of interaction for developers to use Azure Form Recognizer.
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient} is the
+ * synchronous service client and
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient} is the
+ * asynchronous service client.
+ * The examples shown in this document use a credential object named DefaultAzureCredential for authentication, which is
+ * appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <p><strong>Sample: Construct a
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient} with
+ * DefaultAzureCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient}, using
+ * the `DefaultAzureCredentialBuilder` to configure it.</p>
+ *
  * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.initialization -->
  * <pre>
- * DocumentModelAdministrationAsyncClient documentModelAdministrationAsyncClient =
- *     new DocumentModelAdministrationClientBuilder&#40;&#41;.buildAsyncClient&#40;&#41;;
+ * DocumentModelAdministrationAsyncClient client = new DocumentModelAdministrationClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.initialization -->
+ * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.initialization  -->
  *
+ * <p>Further, see the code sample below to use
+ * {@link com.azure.core.credential.AzureKeyCredential AzureKeyCredential} for client creation.</p>
+ *
+ * <!-- src_embed readme-sample-createDocumentModelAdministrationAsyncClient -->
+ * <pre>
+ * DocumentModelAdministrationAsyncClient documentModelAdministrationAsyncClient =
+ *     new DocumentModelAdministrationClientBuilder&#40;&#41;
+ *         .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *         .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-createDocumentModelAdministrationAsyncClient  -->
+ *
+ * @see com.azure.ai.formrecognizer.documentanalysis.administration
  * @see DocumentModelAdministrationClientBuilder
- * @see DocumentModelAdministrationAsyncClient
+ * @see DocumentModelAdministrationClient
  */
 @ServiceClient(builder = DocumentModelAdministrationClientBuilder.class, isAsync = true)
 public final class DocumentModelAdministrationAsyncClient {
@@ -125,18 +185,10 @@ public final class DocumentModelAdministrationAsyncClient {
      * @return A new {@link DocumentAnalysisAsyncClient} object.
      */
     public DocumentAnalysisAsyncClient getDocumentAnalysisAsyncClient() {
-        return new DocumentAnalysisClientBuilder().endpoint(getEndpoint()).pipeline(getHttpPipeline())
+        return new DocumentAnalysisClientBuilder().endpoint(formRecognizerClientImpl.getEndpoint())
+            .pipeline(formRecognizerClientImpl.getHttpPipeline())
             .audience(this.audience)
             .buildAsyncClient();
-    }
-
-    /**
-     * Gets the pipeline the client is using.
-     *
-     * @return the pipeline the client is using.
-     */
-    HttpPipeline getHttpPipeline() {
-        return formRecognizerClientImpl.getHttpPipeline();
     }
 
     /**
@@ -146,15 +198,6 @@ public final class DocumentModelAdministrationAsyncClient {
      */
     String getEndpoint() {
         return formRecognizerClientImpl.getEndpoint();
-    }
-
-    /**
-     * Gets the audience the client is using.
-     *
-     * @return the audience the client is using.
-     */
-    DocumentAnalysisAudience getAudience() {
-        return audience;
     }
 
     /**
@@ -327,7 +370,7 @@ public final class DocumentModelAdministrationAsyncClient {
         return beginBuildDocumentModel(blobContainerUrl, buildMode, null, fileList, null, Context.NONE);
     }
 
-    PollerFlux<OperationResult, DocumentModelDetails> beginBuildDocumentModel(String blobContainerUrl,
+    private PollerFlux<OperationResult, DocumentModelDetails> beginBuildDocumentModel(String blobContainerUrl,
                                                                               DocumentModelBuildMode buildMode,
                                                                               String prefix,
                                                                               String fileList,
@@ -400,7 +443,7 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<ResourceDetails>> getResourceDetailsWithResponse(Context context) {
+    private Mono<Response<ResourceDetails>> getResourceDetailsWithResponse(Context context) {
         return miscellaneousImpl.getResourceInfoWithResponseAsync(context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, Transforms.toAccountProperties(response.getValue())));
@@ -455,7 +498,7 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<Void>> deleteDocumentModelWithResponse(String modelId, Context context) {
+    private Mono<Response<Void>> deleteDocumentModelWithResponse(String modelId, Context context) {
         if (CoreUtils.isNullOrEmpty(modelId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
                 + " be null or empty"));
@@ -523,7 +566,7 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<DocumentModelCopyAuthorization>> getCopyAuthorizationWithResponse(
+    private Mono<Response<DocumentModelCopyAuthorization>> getCopyAuthorizationWithResponse(
         CopyAuthorizationOptions copyAuthorizationOptions,
         Context context) {
         copyAuthorizationOptions = copyAuthorizationOptions == null
@@ -640,7 +683,7 @@ public final class DocumentModelAdministrationAsyncClient {
         return beginComposeDocumentModel(componentModelIds, composeDocumentModelOptions, Context.NONE);
     }
 
-    PollerFlux<OperationResult, DocumentModelDetails> beginComposeDocumentModel(List<String> componentModelIds,
+    private PollerFlux<OperationResult, DocumentModelDetails> beginComposeDocumentModel(List<String> componentModelIds,
                                                                                 ComposeDocumentModelOptions composeDocumentModelOptions, Context context) {
         try {
             if (CoreUtils.isNullOrEmpty(componentModelIds)) {
@@ -649,9 +692,8 @@ public final class DocumentModelAdministrationAsyncClient {
             String modelId = composeDocumentModelOptions.getModelId();
             modelId = modelId == null ? Utility.generateRandomModelID() : modelId;
 
-            composeDocumentModelOptions = getComposeModelOptions(composeDocumentModelOptions);
-
-            final ComposeDocumentModelRequest composeRequest = getComposeDocumentModelRequest(componentModelIds, composeDocumentModelOptions, modelId);
+            final ComposeDocumentModelRequest composeRequest
+                = getComposeDocumentModelRequest(componentModelIds, composeDocumentModelOptions, modelId);
 
             return new PollerFlux<OperationResult, DocumentModelDetails>(
                 DEFAULT_POLL_INTERVAL,
@@ -712,7 +754,7 @@ public final class DocumentModelAdministrationAsyncClient {
         return beginCopyDocumentModelTo(sourceModelId, target, null);
     }
 
-    PollerFlux<OperationResult, DocumentModelDetails> beginCopyDocumentModelTo(String sourceModelId,
+    private PollerFlux<OperationResult, DocumentModelDetails> beginCopyDocumentModelTo(String sourceModelId,
                                                                                DocumentModelCopyAuthorization target, Context context) {
         return new PollerFlux<OperationResult, DocumentModelDetails>(
             DEFAULT_POLL_INTERVAL,
@@ -818,7 +860,7 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<DocumentModelDetails>> getDocumentModelWithResponse(String modelId, Context context) {
+    private Mono<Response<DocumentModelDetails>> getDocumentModelWithResponse(String modelId, Context context) {
         if (CoreUtils.isNullOrEmpty(modelId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
                 + " be null or empty"));
@@ -894,7 +936,7 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<OperationDetails>> getOperationWithResponse(String operationId, Context context) {
+    private Mono<Response<OperationDetails>> getOperationWithResponse(String operationId, Context context) {
         if (CoreUtils.isNullOrEmpty(operationId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'operationId' is required and cannot"
                 + " be null or empty"));
@@ -1226,7 +1268,7 @@ public final class DocumentModelAdministrationAsyncClient {
         return beginBuildDocumentClassifier(docTypes, buildDocumentClassifierOptions, Context.NONE);
     }
 
-    PollerFlux<OperationResult, DocumentClassifierDetails> beginBuildDocumentClassifier(Map<String, ClassifierDocumentTypeDetails> docTypes, BuildDocumentClassifierOptions buildDocumentClassifierOptions,
+    private PollerFlux<OperationResult, DocumentClassifierDetails> beginBuildDocumentClassifier(Map<String, ClassifierDocumentTypeDetails> docTypes, BuildDocumentClassifierOptions buildDocumentClassifierOptions,
                                                                               Context context) {
 
         buildDocumentClassifierOptions =  buildDocumentClassifierOptions == null

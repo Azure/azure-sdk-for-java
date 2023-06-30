@@ -8,8 +8,8 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import joptsimple.util.KeyValuePair;
 import reactor.core.publisher.Mono;
-import wiremock.org.apache.http.NameValuePair;
 
 import java.io.FileInputStream;
 import java.util.List;
@@ -335,7 +335,7 @@ public interface AnnotationJavadocCodesnippets {
 
         // BEGIN: com.azure.core.annotation.Post.class2
         @Post("https://{functionApp}.azurewebsites.net/admin/functions/{name}/keys/{keyName}")
-        NameValuePair generateFunctionKey(@PathParam("functionApp") String functionApp,
+        KeyValuePair generateFunctionKey(@PathParam("functionApp") String functionApp,
             @PathParam("name") String name,
             @PathParam("keyName") String keyName);
         // END: com.azure.core.annotation.Post.class2

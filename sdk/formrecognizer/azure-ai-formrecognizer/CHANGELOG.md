@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 4.0.8 (2023-06-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+
 ## 4.1.0-beta.2 (2023-05-10)
 ### Bugs Fixed
 - Document Table cell now returns correct values for bounding boxes.

@@ -5,8 +5,8 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
-import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
@@ -46,6 +46,7 @@ public class RequestOptions {
     private String trackingId;
     private boolean nonIdempotentWriteRetriesEnabled = false;
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig;
+    private List<String> excludeRegions;
 
 
     /**
@@ -451,5 +452,13 @@ public class RequestOptions {
 
     public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig(){
         return this.endToEndOperationLatencyConfig;
+    }
+
+    public List<String> getExcludeRegions() {
+        return this.excludeRegions;
+    }
+
+    public void setExcludeRegions(List<String> excludeRegions) {
+        this.excludeRegions = excludeRegions;
     }
 }
