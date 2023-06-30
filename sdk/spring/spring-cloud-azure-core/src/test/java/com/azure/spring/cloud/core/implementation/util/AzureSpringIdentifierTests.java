@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 public class AzureSpringIdentifierTests {
 
     @Test
-    public void testFormatVersion() {
+    void testFormatVersion() {
         Assertions.assertEquals(AzureSpringIdentifier.formatVersion("4.10.0"), "4.10.0");
         Assertions.assertEquals(AzureSpringIdentifier.formatVersion("4.9.0-beta.1"), "4.9.0-beta.1");
         Assertions.assertEquals(AzureSpringIdentifier.formatVersion("4.10.0-beta.1"), "4.10.0-b.1");
