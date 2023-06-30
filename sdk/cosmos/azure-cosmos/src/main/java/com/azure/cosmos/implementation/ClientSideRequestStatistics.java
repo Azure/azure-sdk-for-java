@@ -128,7 +128,7 @@ public class ClientSideRequestStatistics {
         Instant responseTime = Instant.now();
 
         StoreResponseStatistics storeResponseStatistics = new StoreResponseStatistics();
-        storeResponseStatistics.requestStartTimeUTC = this.requestStartTimeUTC;
+        storeResponseStatistics.requestStartTimeUTC = this.extractRequestStartTime(storeResultDiagnostics);
         storeResponseStatistics.requestResponseTimeUTC = responseTime;
         storeResponseStatistics.storeResult = storeResultDiagnostics;
         storeResponseStatistics.requestOperationType = request.getOperationType();
@@ -404,6 +404,11 @@ public class ClientSideRequestStatistics {
         if (this.requestEndTimeUTC.isBefore(other)) {
             this.requestEndTimeUTC = other;
         }
+    }
+
+    private Instant extractRequestStartTime(StoreResultDiagnostics storeResultDiagnostics){
+        RequestTimeline requestTimeline = storeResultDiagnostics.getStoreResponseDiagnostics().getRequestTimeline();
+        return requestTimeline.getRequestStartTime();
     }
 
     public void recordContributingPointOperation(ClientSideRequestStatistics other) {

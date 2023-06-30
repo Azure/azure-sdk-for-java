@@ -151,6 +151,12 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
         return RntbdObjectMapper.toString(this);
     }
 
+    @JsonIgnore
+    public Instant getRequestStartTime() {
+        Event firstEvent = this.events.stream().findFirst().orElse(null);
+        return firstEvent != null ? firstEvent.getStartTime() : null;
+    }
+
     @JsonPropertyOrder({ "name", "startTimeUTC", "durationInMilliSecs" })
     public static final class Event {
 
