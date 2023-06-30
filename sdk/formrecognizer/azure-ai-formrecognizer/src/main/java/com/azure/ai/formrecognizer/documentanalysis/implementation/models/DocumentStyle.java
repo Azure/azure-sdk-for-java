@@ -6,13 +6,13 @@ package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.models.FontStyle;
 import com.azure.ai.formrecognizer.documentanalysis.models.FontWeight;
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An object representing observed text styles. */
-@Fluent
+@Immutable
 public final class DocumentStyle {
     /*
      * Is content handwritten?
@@ -70,7 +70,7 @@ public final class DocumentStyle {
      * @param confidence the confidence value to set.
      */
     @JsonCreator
-    public DocumentStyle(
+    private DocumentStyle(
             @JsonProperty(value = "spans", required = true) List<DocumentSpan> spans,
             @JsonProperty(value = "confidence", required = true) float confidence) {
         this.spans = spans;
@@ -87,17 +87,6 @@ public final class DocumentStyle {
     }
 
     /**
-     * Set the isHandwritten property: Is content handwritten?.
-     *
-     * @param isHandwritten the isHandwritten value to set.
-     * @return the DocumentStyle object itself.
-     */
-    public DocumentStyle setIsHandwritten(Boolean isHandwritten) {
-        this.isHandwritten = isHandwritten;
-        return this;
-    }
-
-    /**
      * Get the similarFontFamily property: Visually most similar font from among the set of supported font families,
      * with fallback fonts following CSS convention (ex. 'Arial, sans-serif').
      *
@@ -105,18 +94,6 @@ public final class DocumentStyle {
      */
     public String getSimilarFontFamily() {
         return this.similarFontFamily;
-    }
-
-    /**
-     * Set the similarFontFamily property: Visually most similar font from among the set of supported font families,
-     * with fallback fonts following CSS convention (ex. 'Arial, sans-serif').
-     *
-     * @param similarFontFamily the similarFontFamily value to set.
-     * @return the DocumentStyle object itself.
-     */
-    public DocumentStyle setSimilarFontFamily(String similarFontFamily) {
-        this.similarFontFamily = similarFontFamily;
-        return this;
     }
 
     /**
@@ -129,34 +106,12 @@ public final class DocumentStyle {
     }
 
     /**
-     * Set the fontStyle property: Font style.
-     *
-     * @param fontStyle the fontStyle value to set.
-     * @return the DocumentStyle object itself.
-     */
-    public DocumentStyle setFontStyle(FontStyle fontStyle) {
-        this.fontStyle = fontStyle;
-        return this;
-    }
-
-    /**
      * Get the fontWeight property: Font weight.
      *
      * @return the fontWeight value.
      */
     public FontWeight getFontWeight() {
         return this.fontWeight;
-    }
-
-    /**
-     * Set the fontWeight property: Font weight.
-     *
-     * @param fontWeight the fontWeight value to set.
-     * @return the DocumentStyle object itself.
-     */
-    public DocumentStyle setFontWeight(FontWeight fontWeight) {
-        this.fontWeight = fontWeight;
-        return this;
     }
 
     /**
@@ -169,34 +124,12 @@ public final class DocumentStyle {
     }
 
     /**
-     * Set the color property: Foreground color in #rrggbb hexadecimal format.
-     *
-     * @param color the color value to set.
-     * @return the DocumentStyle object itself.
-     */
-    public DocumentStyle setColor(String color) {
-        this.color = color;
-        return this;
-    }
-
-    /**
      * Get the backgroundColor property: Background color in #rrggbb hexadecimal format..
      *
      * @return the backgroundColor value.
      */
     public String getBackgroundColor() {
         return this.backgroundColor;
-    }
-
-    /**
-     * Set the backgroundColor property: Background color in #rrggbb hexadecimal format..
-     *
-     * @param backgroundColor the backgroundColor value to set.
-     * @return the DocumentStyle object itself.
-     */
-    public DocumentStyle setBackgroundColor(String backgroundColor) {
-        this.backgroundColor = backgroundColor;
-        return this;
     }
 
     /**

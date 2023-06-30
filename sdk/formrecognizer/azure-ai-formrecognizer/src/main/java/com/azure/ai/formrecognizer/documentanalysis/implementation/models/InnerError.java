@@ -4,12 +4,12 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Detailed error. */
-@Fluent
+@Immutable
 public final class InnerError {
     /*
      * Error code.
@@ -35,7 +35,7 @@ public final class InnerError {
      * @param code the code value to set.
      */
     @JsonCreator
-    public InnerError(@JsonProperty(value = "code", required = true) String code) {
+    private InnerError(@JsonProperty(value = "code", required = true) String code) {
         this.code = code;
     }
 
@@ -58,33 +58,11 @@ public final class InnerError {
     }
 
     /**
-     * Set the message property: Error message.
-     *
-     * @param message the message value to set.
-     * @return the InnerError object itself.
-     */
-    public InnerError setMessage(String message) {
-        this.message = message;
-        return this;
-    }
-
-    /**
      * Get the innererror property: Detailed error.
      *
      * @return the innererror value.
      */
     public InnerError getInnererror() {
         return this.innererror;
-    }
-
-    /**
-     * Set the innererror property: Detailed error.
-     *
-     * @param innererror the innererror value to set.
-     * @return the InnerError object itself.
-     */
-    public InnerError setInnererror(InnerError innererror) {
-        this.innererror = innererror;
-        return this;
     }
 }
