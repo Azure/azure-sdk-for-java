@@ -2015,12 +2015,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private static Throwable getCancellationException(RxDocumentServiceRequest request, Throwable throwable) {
         Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
         if (unwrappedException instanceof TimeoutException) {
-            if (request != null && request.requestContext != null) {
+            if (request.requestContext != null) {
                 request.requestContext.setRequestCancellationStatusOnTimeout(new AtomicBoolean(true));
+                CosmosException exception = new OperationCancelledException();
+                exception.setStackTrace(throwable.getStackTrace());
+                return BridgeInternal.setCosmosDiagnostics(exception, request.requestContext.cosmosDiagnostics);
             }
-            CosmosException exception = new OperationCancelledException();
-            exception.setStackTrace(throwable.getStackTrace());
-            return BridgeInternal.setCosmosDiagnostics(exception, request.requestContext.cosmosDiagnostics);
         }
         return throwable;
     }
