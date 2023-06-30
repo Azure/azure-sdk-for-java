@@ -70,6 +70,9 @@ public final class ReceiversPumpingScheduler implements Scheduler {
      * @return the Scheduler.
      */
     public static Scheduler instance() {
+        if (isVTSchedulerMode()) {
+            return Schedulers.boundedElastic();
+        }
         ReceiversPumpingScheduler scheduler = INSTANCE.get();
         if (scheduler != null) {
             return scheduler;
@@ -145,12 +148,41 @@ public final class ReceiversPumpingScheduler implements Scheduler {
                 try {
                     return Integer.parseInt(m);
                 } catch (NumberFormatException e) {
-                    // Use poolMaxSizeDefault, the initialization log below hints the size is chosen.
+                    // Use poolMaxSizeDefault (the initialization log below hints the size is chosen).
                     return null;
                 }
             });
         final int poolMaxSize = poolMaxSizeOverridden.orElseGet(poolMaxSizeDefault);
         this.inner = Schedulers.newBoundedElastic(poolMaxSize, TASK_QUEUE_CAP, NAME, IDLE_TTL_SECONDS, true);
-        (new ClientLogger(getClass())).atVerbose().log("Initialized common ReceiversPumpingScheduler(maxThreads={})", poolMaxSize);
+        (new ClientLogger(ReceiversPumpingScheduler.class)).atVerbose()
+            .log("Initialized common ReceiversPumpingScheduler(maxThreads={})", poolMaxSize);
+    }
+
+    private static boolean isVTSchedulerMode() {
+        // Check any of the Reactor's common (cached) Scheduler to see if "VirtualTimeScheduler" (VTScheduler) is injected;
+        // if so, ReceiversPumpingScheduler won't create its backing Scheduler and cache it in INSTANCE.
+        //
+        // Is there a better way to check VTScheduler? / should we request the Reactor guys for a new hook API to detect it?
+        //
+        // Problem: When running under 'StepVerifier.withVirtualTime', the Reactor-test infra reset the "Schedulers" factory
+        // such that VirtualTimeScheduler is returned from all Schedulers.new** APIs and from APIs to obtain common (cached)
+        // Scheduler instances. As part of the reset, the Reactor also internally clears its common (cached) Scheduler
+        // instances so that the next cache load loads VirtualTimeScheduler. Unfortunately, Reactor is not providing
+        // any hooks for such reset so that the application caching its own Scheduler can clear its cache (INSTANCE static
+        // member in our case) on reset. It leads to the problem of [1]. a test using 'StepVerifier.create' populating
+        // the INSTANCE with a real Scheduler S and following a 'StepVerifier.withVirtualTime' test end up using S rather
+        // than loading and using VirtualTimeScheduler [2]. a test_1 using 'StepVerifier.withVirtualTime' loads INSTANCE
+        // with VirtualTimeScheduler, dispose it at the end of test_2 execution, and a following test_2 using
+        // 'StepVerifier.withVirtualTime' uses the old cached disposed VirtualTimeScheduler.
+        //
+        final Scheduler s = Schedulers.boundedElastic();
+        if (s instanceof Supplier<?> && ((Supplier<?>) s).get() instanceof Scheduler) {
+            return ((Supplier<?>) s).get().getClass()
+                .getSimpleName().equals("VirtualTimeScheduler");
+        } else {
+            (new ClientLogger(ReceiversPumpingScheduler.class)).atVerbose()
+                .log("Can't perform VTScheduler check.");
+            return false;
+        }
     }
 }
