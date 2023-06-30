@@ -9,8 +9,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 
@@ -21,7 +21,7 @@ import java.util.function.Consumer;
 /**
  * Base class for TM clients test.
  */
-public class ClinicalMatchingClientTestBase extends TestBase {
+public class ClinicalMatchingClientTestBase extends TestProxyTestBase {
     private static final String FAKE_API_KEY = "fakeKeyPlaceholder";
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
 
