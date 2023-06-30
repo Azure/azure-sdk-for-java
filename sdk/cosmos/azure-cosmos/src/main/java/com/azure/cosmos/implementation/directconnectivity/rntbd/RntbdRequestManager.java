@@ -960,12 +960,13 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         }
 
         final RntbdRequestRecord requestRecord = this.pendingRequests.get(transportRequestId);
-        final RxDocumentServiceRequest serviceRequest = requestRecord.args().serviceRequest();
 
         if (requestRecord == null) {
             logger.debug("response {} ignored because its requestRecord is missing: {}", transportRequestId, response);
             return;
         }
+
+        final RxDocumentServiceRequest serviceRequest = requestRecord.args().serviceRequest();
 
         requestRecord.stage(RntbdRequestRecord.Stage.DECODE_STARTED, response.getDecodeStartTime());
 

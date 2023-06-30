@@ -230,6 +230,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             assertThat(connectionDelayRule.getHitCount()).isGreaterThanOrEqualTo(1);
 
             // track if force address refresh calls have been made
+            assertThat(httpClientWrapperByRegionMap.get(faultInjectedRegion).capturedRequests).isNotNull();
             assertThat(httpClientWrapperByRegionMap.get(faultInjectedRegion).capturedRequests.size()).isBetween(1, (int) connectionDelayRule.getHitCount());
         } catch (InterruptedException e) {
             logger.error("InterruptedException thrown...");
