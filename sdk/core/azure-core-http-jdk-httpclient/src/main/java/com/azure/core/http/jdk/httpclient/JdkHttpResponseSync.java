@@ -73,22 +73,13 @@ final class JdkHttpResponseSync extends JdkHttpResponseBase {
     @Override
     public void writeBodyTo(WritableByteChannel channel) throws IOException {
         if (bodyBytes != null) {
-            try {
-                channel.write(ByteBuffer.wrap(bodyBytes));
-            } catch (IOException ex) {
-                throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
-            }
+            channel.write(ByteBuffer.wrap(bodyBytes));
         } else {
             int nRead;
             byte[] data = new byte[STREAM_READ_SIZE];
-            try {
-                while ((nRead = bodyStream.read(data, 0, data.length)) != -1) {
-                    channel.write(ByteBuffer.wrap(data, 0, nRead));
-                }
-            } catch (IOException ex) {
-                throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+            while ((nRead = bodyStream.read(data, 0, data.length)) != -1) {
+                channel.write(ByteBuffer.wrap(data, 0, nRead));
             }
-
             close();
         }
     }
