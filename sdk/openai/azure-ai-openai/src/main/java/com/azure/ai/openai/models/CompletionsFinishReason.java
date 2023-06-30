@@ -12,15 +12,15 @@ import java.util.Collection;
 public final class CompletionsFinishReason extends ExpandableStringEnum<CompletionsFinishReason> {
 
     /** Completions ended normally and reached its end of token generation. */
-    @Generated public static final CompletionsFinishReason STOPPED = fromString("stopped");
+    @Generated public static final CompletionsFinishReason STOPPED = fromString("stop");
 
     /** Completions exhausted available token limits before generation could complete. */
-    @Generated public static final CompletionsFinishReason TOKEN_LIMIT_REACHED = fromString("tokenLimitReached");
+    @Generated public static final CompletionsFinishReason TOKEN_LIMIT_REACHED = fromString("length");
 
     /**
      * Completions generated a response that was identified as potentially sensitive per content moderation policies.
      */
-    @Generated public static final CompletionsFinishReason CONTENT_FILTERED = fromString("contentFiltered");
+    @Generated public static final CompletionsFinishReason CONTENT_FILTERED = fromString("content_filter");
 
     /**
      * Creates a new instance of CompletionsFinishReason value.
