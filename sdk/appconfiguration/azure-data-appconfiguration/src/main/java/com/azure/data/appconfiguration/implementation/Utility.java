@@ -81,6 +81,9 @@ public class Utility {
 
     //  Iterable to List
     public static <E> List<E> iterableToList(Iterable<E> iterable) {
+        if (iterable == null) {
+            return null;
+        }
         List<E> outputList = new ArrayList<>();
         for (E item : iterable) {
             outputList.add(item);
