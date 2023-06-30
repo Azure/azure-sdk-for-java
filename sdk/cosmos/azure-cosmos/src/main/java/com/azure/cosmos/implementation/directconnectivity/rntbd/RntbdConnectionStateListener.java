@@ -61,7 +61,7 @@ public class RntbdConnectionStateListener {
         this.addressUris.add(addressUri);
     }
 
-    public void onException(ChannelHandlerContext channelHandlerContext, Throwable exception) {
+    public void onException(Throwable exception) {
         checkNotNull(exception, "expect non-null exception");
 
         this.metrics.record();
@@ -71,13 +71,13 @@ public class RntbdConnectionStateListener {
         // * or the channel has been shutdown gracefully
         if (exception instanceof IOException) {
             if (exception instanceof ClosedChannelException) {
-                this.metrics.recordAddressUpdated(this.onConnectionEvent(channelHandlerContext, RntbdConnectionEvent.READ_EOF, exception));
+                this.metrics.recordAddressUpdated(this.onConnectionEvent(RntbdConnectionEvent.READ_EOF, exception));
             } else {
-                this.metrics.recordAddressUpdated(this.onConnectionEvent(channelHandlerContext, RntbdConnectionEvent.READ_FAILURE, exception));
+                this.metrics.recordAddressUpdated(this.onConnectionEvent(RntbdConnectionEvent.READ_FAILURE, exception));
             }
         } else if (exception instanceof RntbdRequestManager.UnhealthyChannelException) {
             // A channel is closed due to Rntbd health check
-            this.metrics.recordAddressUpdated(this.onConnectionEvent(channelHandlerContext, RntbdConnectionEvent.READ_FAILURE, exception));
+            this.metrics.recordAddressUpdated(this.onConnectionEvent(RntbdConnectionEvent.READ_FAILURE, exception));
         } else {
             if (logger.isDebugEnabled()) {
                 logger.debug("Will not raise the connection state change event for error", exception);
@@ -138,20 +138,16 @@ public class RntbdConnectionStateListener {
 
     // region Privates
 
-    private int onConnectionEvent(
-        final ChannelHandlerContext channelHandlerContext,
-        final RntbdConnectionEvent event,
-        final Throwable exception) {
+    private int onConnectionEvent(final RntbdConnectionEvent event, final Throwable exception) {
 
         checkNotNull(exception, "expected non-null exception");
 
         if (event == RntbdConnectionEvent.READ_EOF || event == RntbdConnectionEvent.READ_FAILURE) {
             if (logger.isDebugEnabled()) {
-                logger.debug("onConnectionEvent({\"event\":{},\"time\":{},\"endpoint\":{},\"channel\":{},\"cause\":{})",
+                logger.debug("onConnectionEvent({\"event\":{},\"time\":{},\"endpoint\":{},\"cause\":{})",
                     event,
                     RntbdObjectMapper.toJson(Instant.now()),
                     RntbdObjectMapper.toJson(this.endpoint),
-                    RntbdObjectMapper.toJson(channelHandlerContext.channel().id()),
                     RntbdObjectMapper.toJson(exception));
             }
 

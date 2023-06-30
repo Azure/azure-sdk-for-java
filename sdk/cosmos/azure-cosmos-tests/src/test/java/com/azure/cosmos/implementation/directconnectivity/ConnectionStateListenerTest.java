@@ -146,7 +146,7 @@ public class ConnectionStateListenerTest {
         RntbdConnectionStateListener connectionStateListener = new RntbdConnectionStateListener(endpointMock, proactiveOpenConnectionsProcessorMock, addressSelectorMock);
 
         connectionStateListener.onBeforeSendRequest(testRequestUri);
-        connectionStateListener.onException(null, exception);
+        connectionStateListener.onException(exception);
         RntbdConnectionStateListenerMetrics metrics = connectionStateListener.getMetrics();
         if (canHandle) {
             assertThat(metrics.getLastActionableContext().getRight()).isEqualTo(1);
