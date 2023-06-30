@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CommunicationIdentityAsyncTests extends CommunicationIdentityClientTestBase {
 
-    private static final List<CommunicationTokenScope> scopes = Collections.singletonList(CHAT);
+    private static final List<CommunicationTokenScope> SCOPES = Collections.singletonList(CHAT);
     private CommunicationIdentityAsyncClient asyncClient;
     private CommunicationIdentityClientBuilder builder;
 
@@ -99,7 +99,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "createUserAndTokenWithValidCustomExpiration " + testName);
 
         // Action & Assert
-        Mono<CommunicationUserIdentifierAndToken> createUserAndToken = asyncClient.createUserAndToken(scopes, tokenExpiresIn);
+        Mono<CommunicationUserIdentifierAndToken> createUserAndToken = asyncClient.createUserAndToken(SCOPES, tokenExpiresIn);
         StepVerifier.create(createUserAndToken)
             .assertNext(result -> {
                 verifyUserNotEmpty(result.getUser());
@@ -116,7 +116,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "createUserAndTokenWithInvalidCustomExpiration " + testName);
 
         // Action & Assert
-        Mono<CommunicationUserIdentifierAndToken> createUserAndToken = asyncClient.createUserAndToken(scopes, tokenExpiresIn);
+        Mono<CommunicationUserIdentifierAndToken> createUserAndToken = asyncClient.createUserAndToken(SCOPES, tokenExpiresIn);
         StepVerifier.create(createUserAndToken)
             .verifyErrorSatisfies(throwable -> {
                 assertNotNull(throwable.getMessage());
@@ -132,7 +132,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken =
-            asyncClient.createUserAndTokenWithResponse(scopes, tokenExpiresIn);
+            asyncClient.createUserAndTokenWithResponse(SCOPES, tokenExpiresIn);
         StepVerifier.create(createUserAndToken)
             .assertNext(result -> {
                 assertEquals(201, result.getStatusCode(), "Expect status code to be 201");
@@ -150,7 +150,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "createUserAndTokenWithResponseWithInvalidCustomExpiration " + testName);
 
         // Action & Assert
-        Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken = asyncClient.createUserAndTokenWithResponse(scopes, tokenExpiresIn);
+        Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken = asyncClient.createUserAndTokenWithResponse(SCOPES, tokenExpiresIn);
         StepVerifier.create(createUserAndToken)
             .verifyErrorSatisfies(throwable -> {
                 assertNotNull(throwable.getMessage());
@@ -165,7 +165,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
 
         // Action & Assert
-        Mono<CommunicationUserIdentifierAndToken> createUserAndToken = asyncClient.createUserAndToken(scopes, tokenExpiresIn);
+        Mono<CommunicationUserIdentifierAndToken> createUserAndToken = asyncClient.createUserAndToken(SCOPES, tokenExpiresIn);
         StepVerifier.create(createUserAndToken)
             .verifyErrorSatisfies(throwable -> {
                 assertTrue(throwable instanceof IllegalArgumentException);
@@ -181,7 +181,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
 
         // Action & Assert
-        Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken = asyncClient.createUserAndTokenWithResponse(scopes, tokenExpiresIn);
+        Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken = asyncClient.createUserAndTokenWithResponse(SCOPES, tokenExpiresIn);
         StepVerifier.create(createUserAndToken)
             .verifyErrorSatisfies(throwable -> {
                 assertTrue(throwable instanceof IllegalArgumentException);
@@ -197,7 +197,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken =
-            asyncClient.createUserAndTokenWithResponse(scopes);
+            asyncClient.createUserAndTokenWithResponse(SCOPES);
         StepVerifier.create(createUserAndToken)
             .assertNext(result -> {
                 assertEquals(201, result.getStatusCode(), "Expect status code to be 201");
@@ -291,7 +291,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         StepVerifier.create(
             asyncClient.createUser()
                 .flatMap((CommunicationUserIdentifier communicationUser) -> {
-                    return asyncClient.getToken(communicationUser, scopes)
+                    return asyncClient.getToken(communicationUser, SCOPES)
                         .flatMap((AccessToken communicationUserToken) -> {
                             return asyncClient.revokeTokens(communicationUser);
                         });
@@ -308,7 +308,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         StepVerifier.create(
             asyncClient.createUser()
                 .flatMap((CommunicationUserIdentifier communicationUser) -> {
-                    return asyncClient.getToken(communicationUser, scopes)
+                    return asyncClient.getToken(communicationUser, SCOPES)
                         .flatMap((AccessToken communicationUserToken) -> {
                             return asyncClient.revokeTokensWithResponse(communicationUser);
                         });
@@ -365,7 +365,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         StepVerifier.create(
                 asyncClient.createUser()
                     .flatMap(communicationUser -> {
-                        return asyncClient.getToken(communicationUser, scopes, tokenExpiresIn);
+                        return asyncClient.getToken(communicationUser, SCOPES, tokenExpiresIn);
                     }))
             .assertNext(issuedToken -> {
                 verifyTokenNotEmpty(issuedToken);
@@ -384,7 +384,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         StepVerifier.create(
                 asyncClient.createUser()
                     .flatMap(communicationUser -> {
-                        return asyncClient.getToken(communicationUser, scopes, tokenExpiresIn);
+                        return asyncClient.getToken(communicationUser, SCOPES, tokenExpiresIn);
                     }))
             .verifyErrorSatisfies(throwable -> {
                 assertNotNull(throwable.getMessage());
@@ -402,7 +402,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         StepVerifier.create(
                 asyncClient.createUser()
                     .flatMap(communicationUser -> {
-                        return asyncClient.getTokenWithResponse(communicationUser, scopes, tokenExpiresIn);
+                        return asyncClient.getTokenWithResponse(communicationUser, SCOPES, tokenExpiresIn);
                     }))
             .assertNext(issuedToken -> {
                 verifyTokenNotEmpty(issuedToken.getValue());
@@ -422,7 +422,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         StepVerifier.create(
                 asyncClient.createUser()
                     .flatMap(communicationUser -> {
-                        return asyncClient.getTokenWithResponse(communicationUser, scopes, tokenExpiresIn);
+                        return asyncClient.getTokenWithResponse(communicationUser, SCOPES, tokenExpiresIn);
                     }))
             .verifyErrorSatisfies(throwable -> {
                 assertNotNull(throwable.getMessage());
@@ -440,7 +440,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         StepVerifier.create(
                 asyncClient.createUser()
                     .flatMap(communicationUser -> {
-                        return asyncClient.getToken(communicationUser, scopes, tokenExpiresIn);
+                        return asyncClient.getToken(communicationUser, SCOPES, tokenExpiresIn);
                     }))
             .verifyErrorSatisfies(throwable -> {
                 assertTrue(throwable instanceof IllegalArgumentException);
@@ -459,7 +459,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         StepVerifier.create(
                 asyncClient.createUser()
                     .flatMap(communicationUser -> {
-                        return asyncClient.getTokenWithResponse(communicationUser, scopes, tokenExpiresIn);
+                        return asyncClient.getTokenWithResponse(communicationUser, SCOPES, tokenExpiresIn);
                     }))
             .verifyErrorSatisfies(throwable -> {
                 assertTrue(throwable instanceof IllegalArgumentException);
@@ -477,7 +477,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         StepVerifier.create(
             asyncClient.createUser()
                 .flatMap(communicationUser -> {
-                    return asyncClient.getTokenWithResponse(communicationUser, scopes);
+                    return asyncClient.getTokenWithResponse(communicationUser, SCOPES);
                 }))
             .assertNext(issuedToken -> {
                 verifyTokenNotEmpty(issuedToken.getValue());
@@ -493,7 +493,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         StepVerifier.create(
-            asyncClient.getToken(null, scopes))
+            asyncClient.getToken(null, SCOPES))
             .verifyError(NullPointerException.class);
     }
 
@@ -514,7 +514,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         StepVerifier.create(
-            asyncClient.getTokenWithResponse(null, scopes))
+            asyncClient.getTokenWithResponse(null, SCOPES))
             .verifyError(NullPointerException.class);
     }
 

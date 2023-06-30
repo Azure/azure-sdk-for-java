@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CommunicationIdentityAsyncManagedIdentityTests extends CommunicationIdentityClientTestBase {
 
-    private static final List<CommunicationTokenScope> scopes = Collections.singletonList(CHAT);
+    private static final List<CommunicationTokenScope> SCOPES = Collections.singletonList(CHAT);
     private CommunicationIdentityAsyncClient asyncClient;
     private CommunicationIdentityClientBuilder builder;
 
@@ -71,7 +71,7 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
         StepVerifier.create(
                 asyncClient.createUser()
                     .flatMap(communicationUser -> {
-                        return asyncClient.getToken(communicationUser, scopes);
+                        return asyncClient.getToken(communicationUser, SCOPES);
                     }))
             .assertNext(this::verifyTokenNotEmpty)
             .verifyComplete();
@@ -86,7 +86,7 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
         StepVerifier.create(
                 asyncClient.createUser()
                     .flatMap(communicationUser -> {
-                        return asyncClient.getTokenWithResponse(communicationUser, scopes);
+                        return asyncClient.getTokenWithResponse(communicationUser, SCOPES);
                     }))
             .assertNext(issuedToken -> {
                 assertEquals(200, issuedToken.getStatusCode(), "Expect status code to be 200");
@@ -135,7 +135,7 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
         StepVerifier.create(
                         asyncClient.createUser()
                                 .flatMap(communicationUser -> {
-                                    return asyncClient.getToken(communicationUser, scopes)
+                                    return asyncClient.getToken(communicationUser, SCOPES)
                                             .flatMap(communicationUserToken -> {
                                                 return asyncClient.revokeTokens(communicationUser);
                                             });
@@ -152,7 +152,7 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
         StepVerifier.create(
                         asyncClient.createUser()
                                 .flatMap(communicationUser -> {
-                                    return asyncClient.getToken(communicationUser, scopes)
+                                    return asyncClient.getToken(communicationUser, SCOPES)
                                             .flatMap(communicationUserToken -> {
                                                 return asyncClient.revokeTokensWithResponse(communicationUser);
                                             });

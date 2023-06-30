@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CommunicationIdentityManagedIdentityTests extends CommunicationIdentityClientTestBase {
 
-    private static final List<CommunicationTokenScope> scopes = Collections.singletonList(CHAT);
+    private static final List<CommunicationTokenScope> SCOPES = Collections.singletonList(CHAT);
     private CommunicationIdentityClient client;
     private CommunicationIdentityClientBuilder builder;
 
@@ -63,7 +63,7 @@ public class CommunicationIdentityManagedIdentityTests extends CommunicationIden
         verifyUserNotEmpty(communicationUser);
 
         // Action & Assert
-        AccessToken issuedToken = client.getToken(communicationUser, scopes);
+        AccessToken issuedToken = client.getToken(communicationUser, SCOPES);
         verifyTokenNotEmpty(issuedToken);
     }
 
@@ -74,7 +74,7 @@ public class CommunicationIdentityManagedIdentityTests extends CommunicationIden
         CommunicationUserIdentifier communicationUser = client.createUser();
 
         // Action & Assert
-        Response<AccessToken> response = client.getTokenWithResponse(communicationUser, scopes, Context.NONE);
+        Response<AccessToken> response = client.getTokenWithResponse(communicationUser, SCOPES, Context.NONE);
         assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
         verifyTokenNotEmpty(response.getValue());
     }
@@ -108,7 +108,7 @@ public class CommunicationIdentityManagedIdentityTests extends CommunicationIden
         client = setupClient(builder, "revokeTokenUsingManagedIdentitySync");
         CommunicationUserIdentifier communicationUser = client.createUser();
         verifyUserNotEmpty(communicationUser);
-        AccessToken issuedToken = client.getToken(communicationUser, scopes);
+        AccessToken issuedToken = client.getToken(communicationUser, SCOPES);
         verifyTokenNotEmpty(issuedToken);
 
         // Action & Assert
@@ -121,7 +121,7 @@ public class CommunicationIdentityManagedIdentityTests extends CommunicationIden
         client = setupClient(builder, "revokeTokenWithResponseUsingManagedIdentitySync");
         CommunicationUserIdentifier communicationUser = client.createUser();
         verifyUserNotEmpty(communicationUser);
-        AccessToken issuedToken = client.getToken(communicationUser, scopes);
+        AccessToken issuedToken = client.getToken(communicationUser, SCOPES);
         verifyTokenNotEmpty(issuedToken);
 
         // Action & Assert

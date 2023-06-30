@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CommunicationIdentityTests extends CommunicationIdentityClientTestBase {
     private static final String TEST_SUFFIX = "Sync";
-    private static final List<CommunicationTokenScope> scopes = Collections.singletonList(CHAT);
+    private static final List<CommunicationTokenScope> SCOPES = Collections.singletonList(CHAT);
     private CommunicationIdentityClient client;
     private CommunicationIdentityClientBuilder builder;
 
@@ -106,7 +106,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "createUserAndTokenWithResponseSync");
 
         // Action & Assert
-        Response<CommunicationUserIdentifierAndToken> response = client.createUserAndTokenWithResponse(scopes, Context.NONE);
+        Response<CommunicationUserIdentifierAndToken> response = client.createUserAndTokenWithResponse(SCOPES, Context.NONE);
         CommunicationUserIdentifierAndToken result = response.getValue();
         assertEquals(201, response.getStatusCode(), "Expect status code to be 201");
         verifyUserNotEmpty(result.getUser());
@@ -120,7 +120,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "createUserAndTokenWithValidCustomExpiration " + testName + TEST_SUFFIX);
 
         // Action & Assert
-        CommunicationUserIdentifierAndToken result = client.createUserAndToken(scopes, tokenExpiresIn);
+        CommunicationUserIdentifierAndToken result = client.createUserAndToken(SCOPES, tokenExpiresIn);
         verifyUserNotEmpty(result.getUser());
         verifyTokenNotEmpty(result.getUserToken());
         assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
@@ -133,7 +133,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "createUserAndTokenWithResponseWithValidCustomExpiration " + testName + TEST_SUFFIX);
 
         // Action & Assert
-        Response<CommunicationUserIdentifierAndToken> response = client.createUserAndTokenWithResponse(scopes, tokenExpiresIn, Context.NONE);
+        Response<CommunicationUserIdentifierAndToken> response = client.createUserAndTokenWithResponse(SCOPES, tokenExpiresIn, Context.NONE);
         CommunicationUserIdentifierAndToken result = response.getValue();
         assertEquals(201, response.getStatusCode(), "Expect status code to be 201");
         verifyUserNotEmpty(result.getUser());
@@ -149,7 +149,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
         // Action & Assert
         try {
-            client.createUserAndToken(scopes, tokenExpiresIn);
+            client.createUserAndToken(SCOPES, tokenExpiresIn);
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().contains("400"));
@@ -166,7 +166,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
         // Action & Assert
         try {
-            client.createUserAndTokenWithResponse(scopes, tokenExpiresIn, Context.NONE);
+            client.createUserAndTokenWithResponse(SCOPES, tokenExpiresIn, Context.NONE);
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().contains("400"));
@@ -183,7 +183,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
         // Action & Assert
         try {
-            client.createUserAndToken(scopes, tokenExpiresIn);
+            client.createUserAndToken(SCOPES, tokenExpiresIn);
         } catch (IllegalArgumentException exception) {
             assertNotNull(exception.getMessage());
             assertEquals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE, exception.getMessage());
@@ -200,7 +200,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
         // Action & Assert
         try {
-            client.createUserAndTokenWithResponse(scopes, tokenExpiresIn, Context.NONE);
+            client.createUserAndTokenWithResponse(SCOPES, tokenExpiresIn, Context.NONE);
         } catch (IllegalArgumentException exception) {
             assertNotNull(exception.getMessage());
             assertEquals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE, exception.getMessage());
@@ -215,9 +215,9 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "createUserAndTokenWithResponseSync");
 
         // Action & Assert
-        Response<CommunicationUserIdentifierAndToken> response = client.createUserAndTokenWithResponse(scopes, null);
+        Response<CommunicationUserIdentifierAndToken> response = client.createUserAndTokenWithResponse(SCOPES, null);
         CommunicationUserIdentifierAndToken result = response.getValue();
-        assertEquals(201, response.getStatusCode(),"Expect status code to be 201");
+        assertEquals(201, response.getStatusCode(), "Expect status code to be 201");
         verifyUserNotEmpty(result.getUser());
         verifyTokenNotEmpty(result.getUserToken());
     }
@@ -263,7 +263,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "revokeTokenSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
         verifyUserNotEmpty(communicationUser);
-        AccessToken issuedToken = client.getToken(communicationUser, scopes);
+        AccessToken issuedToken = client.getToken(communicationUser, SCOPES);
         verifyTokenNotEmpty(issuedToken);
 
         // Action & Assert
@@ -275,7 +275,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Arrange
         client = setupClient(builder, "revokeTokenWithResponseSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
-        AccessToken issuedToken = client.getToken(communicationUser, scopes);
+        AccessToken issuedToken = client.getToken(communicationUser, SCOPES);
         verifyTokenNotEmpty(issuedToken);
 
         // Action & Assert
@@ -289,7 +289,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "revokeTokenWithResponseSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
         verifyUserNotEmpty(communicationUser);
-        AccessToken issuedToken = client.getToken(communicationUser, scopes);
+        AccessToken issuedToken = client.getToken(communicationUser, SCOPES);
         verifyTokenNotEmpty(issuedToken);
 
         // Action & Assert
@@ -316,7 +316,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "getTokenSync");
 
         // Action & Assert
-        assertThrows(NullPointerException.class, () -> client.getToken(null, scopes));
+        assertThrows(NullPointerException.class, () -> client.getToken(null, SCOPES));
     }
 
     @Test
@@ -338,7 +338,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         verifyUserNotEmpty(communicationUser);
 
         // Action & Assert
-        Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, scopes, Context.NONE);
+        Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, SCOPES, Context.NONE);
         assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 200");
         verifyTokenNotEmpty(issuedTokenResponse.getValue());
     }
@@ -352,7 +352,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         verifyUserNotEmpty(communicationUser);
 
         // Action & Assert
-        AccessToken issuedToken = client.getToken(communicationUser, scopes, tokenExpiresIn);
+        AccessToken issuedToken = client.getToken(communicationUser, SCOPES, tokenExpiresIn);
         verifyTokenNotEmpty(issuedToken);
         assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedToken.getExpiresAt());
     }
@@ -367,7 +367,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
         // Action & Assert
         try {
-            client.getToken(communicationUser, scopes, tokenExpiresIn);
+            client.getToken(communicationUser, SCOPES, tokenExpiresIn);
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().contains("400"));
@@ -385,7 +385,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         verifyUserNotEmpty(communicationUser);
 
         // Action & Assert
-        Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, scopes, tokenExpiresIn, Context.NONE);
+        Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, SCOPES, tokenExpiresIn, Context.NONE);
         assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 200");
         verifyTokenNotEmpty(issuedTokenResponse.getValue());
         assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedTokenResponse.getValue().getExpiresAt());
@@ -401,7 +401,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
         // Action & Assert
         try {
-            client.getTokenWithResponse(communicationUser, scopes, tokenExpiresIn, Context.NONE);
+            client.getTokenWithResponse(communicationUser, SCOPES, tokenExpiresIn, Context.NONE);
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().contains("400"));
@@ -420,7 +420,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
         // Action & Assert
         try {
-            client.getToken(communicationUser, scopes, tokenExpiresIn);
+            client.getToken(communicationUser, SCOPES, tokenExpiresIn);
         } catch (IllegalArgumentException exception) {
             assertNotNull(exception.getMessage());
             assertEquals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE, exception.getMessage());
@@ -439,7 +439,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
         // Action & Assert
         try {
-            client.getTokenWithResponse(communicationUser, scopes, tokenExpiresIn, Context.NONE);
+            client.getTokenWithResponse(communicationUser, SCOPES, tokenExpiresIn, Context.NONE);
         } catch (IllegalArgumentException exception) {
             assertNotNull(exception.getMessage());
             assertEquals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE, exception.getMessage());
@@ -456,7 +456,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         verifyUserNotEmpty(communicationUser);
 
         // Action & Assert
-        Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, scopes, null);
+        Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, SCOPES, null);
         assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 200");
         verifyTokenNotEmpty(issuedTokenResponse.getValue());
     }

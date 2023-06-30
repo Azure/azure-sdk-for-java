@@ -129,7 +129,7 @@ public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
         customSanitizers.add(new TestProxySanitizer(URI_IDENTITY_REPLACER_REGEX, "/identities/" + REDACTED, TestProxySanitizerType.URL));
         interceptorManager.addSanitizers(customSanitizers);
 
-        if(interceptorManager.isPlaybackMode()) {
+        if (interceptorManager.isPlaybackMode()) {
             /** Skipping matching authentication headers since running in playback mode don't rely on environment variables */
             interceptorManager.addMatchers(Collections.singletonList(
                 new CustomMatcher().setExcludedHeaders(Arrays.asList("x-ms-hmac-string-to-sign-base64", "x-ms-content-sha256"))));
