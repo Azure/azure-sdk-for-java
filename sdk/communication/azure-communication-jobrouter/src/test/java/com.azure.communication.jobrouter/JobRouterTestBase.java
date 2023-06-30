@@ -28,6 +28,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 
 import java.time.Duration;
@@ -37,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-class JobRouterTestBase extends TestBase {
+class JobRouterTestBase extends TestProxyTestBase {
     protected static final String JAVA_LIVE_TESTS = "JAVA_LIVE_TESTS";
 
     protected String getConnectionString() {
@@ -87,11 +88,13 @@ class JobRouterTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             httpClient = interceptorManager.getPlaybackClient();
         }
-        policies.add(interceptorManager.getRecordPolicy());
+        if (interceptorManager.isRecordMode()) {
+            policies.add(interceptorManager.getRecordPolicy());
+        }
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .build();
 
         return pipeline;

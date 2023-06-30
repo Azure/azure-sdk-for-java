@@ -1,44 +1,78 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "PATCH",
-    "Uri" : "https://REDACTED.communication.azure.com/routing/distributionPolicies/JAVA_LIVE_TESTS-LongestIdle-DistributionPolicy?api-version=2022-07-18-preview",
-    "Headers" : {
-      "content-type" : "application/merge-patch+json",
-      "x-ms-client-request-id" : "5c29fb2a-39b6-47c7-9f7e-1b1536670b5e"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/routing/distributionPolicies/JAVA_LIVE_TESTS-LongestIdle-DistributionPolicy?api-version=2022-07-18-preview",
+      "RequestMethod": "PATCH",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "165",
+        "Content-Type": "application/merge-patch\u002Bjson",
+        "Date": "Thu, 29 Jun 2023 23:18:28 GMT",
+        "User-Agent": "ReactorNetty/1.0.31",
+        "x-ms-client-request-id": "4d4c1933-4a09-4589-845c-e79444e9bf2c",
+        "x-ms-content-sha256": "YmYeE9kq0TZKDHa0SlEHBc207\u002BCNKaWVnuy8s3YryD0=",
+        "x-ms-date": "Thu, 29 Jun 2023 23:18:28 GMT",
+        "x-ms-hmac-string-to-sign-base64": "UEFUQ0gKL3JvdXRpbmcvZGlzdHJpYnV0aW9uUG9saWNpZXMvSkFWQV9MSVZFX1RFU1RTLUxvbmdlc3RJZGxlLURpc3RyaWJ1dGlvblBvbGljeT9hcGktdmVyc2lvbj0yMDIyLTA3LTE4LXByZXZpZXcKVGh1LCAyOSBKdW4gMjAyMyAyMzoxODoyOCBHTVQ7dDZmZjNiODRiZTBhNDU0Y2YtY29tbXVuaWNhdGlvbi5jb21tdW5pY2F0aW9uLmF6dXJlLmNvbTtZbVllRTlrcTBUWktESGEwU2xFSEJjMjA3K0NOS2FXVm51eThzM1lyeUQwPQ=="
+      },
+      "RequestBody": {
+        "name": "JAVA_LIVE_TESTS-LongestIdle-DistributionPolicy-Name",
+        "offerTtlSeconds": 10.0,
+        "mode": {
+          "kind": "longest-idle",
+          "minConcurrentOffers": 1,
+          "maxConcurrentOffers": 10
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2021-04-07-preview1, 2022-07-18-preview",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 29 Jun 2023 23:18:29 GMT",
+        "ETag": "\u0022290583dc-0000-0700-0000-649e10c30000\u0022",
+        "Last-Modified": "Thu, 29 Jun 2023 23:16:19 GMT",
+        "trace-id": "09649c19-986a-67bf-2b0d-828783d9de5c",
+        "Transfer-Encoding": "chunked",
+        "X-Azure-Ref": "0RhGeZAAAAAAEoB0r0Z4AQrCSabvK4AFfV1NURURHRTAxMTYAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Cache": "CONFIG_NOCACHE"
+      },
+      "ResponseBody": {
+        "id": "JAVA_LIVE_TESTS-LongestIdle-DistributionPolicy",
+        "name": "JAVA_LIVE_TESTS-LongestIdle-DistributionPolicy-Name",
+        "offerTtlSeconds": 10,
+        "mode": {
+          "kind": "longest-idle",
+          "minConcurrentOffers": 1,
+          "maxConcurrentOffers": 10,
+          "bypassSelectors": false
+        }
+      }
     },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
-      "trace-id" : "c2981f78-d967-1b25-342d-7d5eb72d259a",
-      "ETag" : "\"7a0ff52a-0000-0700-0000-645982600000\"",
-      "Last-Modified" : "Mon, 08 May 2023 23:14:40 GMT",
-      "retry-after" : "0",
-      "X-Azure-Ref" : "0X4JZZAAAAACUNBcW4HVUTrb81BSVC6RPWVZSMzExMDAwMTE1MDQ1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
-      "StatusCode" : "200",
-      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-LongestIdle-DistributionPolicy\",\"name\":\"JAVA_LIVE_TESTS-LongestIdle-DistributionPolicy-Name\",\"offerTtlSeconds\":10,\"mode\":{\"kind\":\"longest-idle\",\"minConcurrentOffers\":1,\"maxConcurrentOffers\":10,\"bypassSelectors\":false}}",
-      "Date" : "Mon, 08 May 2023 23:14:39 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.communication.azure.com/routing/distributionPolicies/JAVA_LIVE_TESTS-LongestIdle-DistributionPolicy?api-version=2022-07-18-preview",
-    "Headers" : {
-      "x-ms-client-request-id" : "ec285210-1b92-48aa-be41-01676c05fa9c"
-    },
-    "Response" : {
-      "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
-      "trace-id" : "b94355bc-ce86-aaa8-8753-ac295b93602f",
-      "retry-after" : "0",
-      "X-Azure-Ref" : "0YIJZZAAAAAAZFxHWc7s6QL9oOCdoWWOjWVZSMzExMDAwMTE1MDQ1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
-      "Content-Length" : "0",
-      "StatusCode" : "204",
-      "Body" : "",
-      "Date" : "Mon, 08 May 2023 23:14:39 GMT"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/routing/distributionPolicies/JAVA_LIVE_TESTS-LongestIdle-DistributionPolicy?api-version=2022-07-18-preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 29 Jun 2023 23:18:31 GMT",
+        "User-Agent": "ReactorNetty/1.0.31",
+        "x-ms-client-request-id": "e842d1f5-39c6-45c2-966e-a07bce961f78",
+        "x-ms-content-sha256": "47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=",
+        "x-ms-date": "Thu, 29 Jun 2023 23:18:31 GMT",
+        "x-ms-hmac-string-to-sign-base64": "REVMRVRFCi9yb3V0aW5nL2Rpc3RyaWJ1dGlvblBvbGljaWVzL0pBVkFfTElWRV9URVNUUy1Mb25nZXN0SWRsZS1EaXN0cmlidXRpb25Qb2xpY3k/YXBpLXZlcnNpb249MjAyMi0wNy0xOC1wcmV2aWV3ClRodSwgMjkgSnVuIDIwMjMgMjM6MTg6MzEgR01UO3Q2ZmYzYjg0YmUwYTQ1NGNmLWNvbW11bmljYXRpb24uY29tbXVuaWNhdGlvbi5henVyZS5jb207NDdERVFwajhIQlNhKy9USW1XKzVKQ2V1UWVSa201Tk1wSldaRzNoU3VGVT0="
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "api-supported-versions": "2021-04-07-preview1, 2022-07-18-preview",
+        "Date": "Thu, 29 Jun 2023 23:18:30 GMT",
+        "trace-id": "f495c63f-2041-bda2-1a48-cbdf4cda512a",
+        "X-Azure-Ref": "0RxGeZAAAAAC4TWk1vf1yS57v4YQIMDPiV1NURURHRTA4MTIAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Cache": "CONFIG_NOCACHE"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
 }

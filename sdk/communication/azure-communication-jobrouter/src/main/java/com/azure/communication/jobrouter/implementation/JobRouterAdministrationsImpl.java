@@ -69,7 +69,7 @@ public final class JobRouterAdministrationsImpl {
     @ServiceInterface(name = "AzureCommunicationSe")
     public interface JobRouterAdministrationsService {
         @Patch("/routing/classificationPolicies/{id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200,201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ClassificationPolicy>> upsertClassificationPolicy(
                 @HostParam("endpoint") String endpoint,
@@ -110,7 +110,7 @@ public final class JobRouterAdministrationsImpl {
                 Context context);
 
         @Patch("/routing/distributionPolicies/{id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200,201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<DistributionPolicy>> upsertDistributionPolicy(
                 @HostParam("endpoint") String endpoint,
@@ -151,7 +151,7 @@ public final class JobRouterAdministrationsImpl {
                 Context context);
 
         @Patch("/routing/exceptionPolicies/{id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200,201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ExceptionPolicy>> upsertExceptionPolicy(
                 @HostParam("endpoint") String endpoint,
@@ -192,7 +192,7 @@ public final class JobRouterAdministrationsImpl {
                 Context context);
 
         @Patch("/routing/queues/{id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200,201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<JobQueue>> upsertQueue(
                 @HostParam("endpoint") String endpoint,

@@ -1,44 +1,95 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "PATCH",
-    "Uri" : "https://REDACTED.communication.azure.com/routing/exceptionPolicies/JAVA_LIVE_TESTS-CreateExceptionPolicy-ExceptionPolicy?api-version=2022-07-18-preview",
-    "Headers" : {
-      "content-type" : "application/merge-patch+json",
-      "x-ms-client-request-id" : "532da9dc-ca5d-4596-a72d-b8f0e8a84e54"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/routing/exceptionPolicies/JAVA_LIVE_TESTS-CreateExceptionPolicy-ExceptionPolicy?api-version=2022-07-18-preview",
+      "RequestMethod": "PATCH",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "377",
+        "Content-Type": "application/merge-patch\u002Bjson",
+        "Date": "Thu, 29 Jun 2023 23:21:36 GMT",
+        "User-Agent": "ReactorNetty/1.0.31",
+        "x-ms-client-request-id": "8d25db18-06ad-462c-853f-a817b6e5a373",
+        "x-ms-content-sha256": "x77httoh4XofseFXChbIosZLPZWQomW/jgh1A79XznU=",
+        "x-ms-date": "Thu, 29 Jun 2023 23:21:36 GMT",
+        "x-ms-hmac-string-to-sign-base64": "UEFUQ0gKL3JvdXRpbmcvZXhjZXB0aW9uUG9saWNpZXMvSkFWQV9MSVZFX1RFU1RTLUNyZWF0ZUV4Y2VwdGlvblBvbGljeS1FeGNlcHRpb25Qb2xpY3k/YXBpLXZlcnNpb249MjAyMi0wNy0xOC1wcmV2aWV3ClRodSwgMjkgSnVuIDIwMjMgMjM6MjE6MzYgR01UO3Q2ZmYzYjg0YmUwYTQ1NGNmLWNvbW11bmljYXRpb24uY29tbXVuaWNhdGlvbi5henVyZS5jb207eDc3aHR0b2g0WG9mc2VGWENoYklvc1pMUFpXUW9tVy9qZ2gxQTc5WHpuVT0="
+      },
+      "RequestBody": {
+        "name": "JAVA_LIVE_TESTS-CreateExceptionPolicy-ExceptionPolicy-Name",
+        "exceptionRules": {
+          "JAVA_LIVE_TESTS-CreateExceptionPolicy-ExceptionPolicy": {
+            "trigger": {
+              "kind": "queue-length",
+              "threshold": 1
+            },
+            "actions": {
+              "CancelledDueToMaxQueueLengthReached": {
+                "kind": "cancel",
+                "note": "Job Cancelled as maximum queue length is reached.",
+                "dispositionCode": "CancelledDueToMaxQueueLengthReached"
+              }
+            }
+          }
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2021-04-07-preview1, 2022-07-18-preview",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 29 Jun 2023 23:21:37 GMT",
+        "ETag": "\u002243034364-0000-0700-0000-649e119b0000\u0022",
+        "Last-Modified": "Thu, 29 Jun 2023 23:19:55 GMT",
+        "trace-id": "13864938-ff1b-055a-d5e9-a02e720754c7",
+        "Transfer-Encoding": "chunked",
+        "X-Azure-Ref": "0ARKeZAAAAAB7M3ewoEhhTpxdC8ET3XfqV1NURURHRTA4MTgAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Cache": "CONFIG_NOCACHE"
+      },
+      "ResponseBody": {
+        "id": "JAVA_LIVE_TESTS-CreateExceptionPolicy-ExceptionPolicy",
+        "name": "JAVA_LIVE_TESTS-CreateExceptionPolicy-ExceptionPolicy-Name",
+        "exceptionRules": {
+          "JAVA_LIVE_TESTS-CreateExceptionPolicy-ExceptionPolicy": {
+            "trigger": {
+              "kind": "queue-length",
+              "threshold": 1
+            },
+            "actions": {
+              "CancelledDueToMaxQueueLengthReached": {
+                "kind": "cancel",
+                "note": "Job Cancelled as maximum queue length is reached.",
+                "dispositionCode": "CancelledDueToMaxQueueLengthReached"
+              }
+            }
+          }
+        }
+      }
     },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
-      "trace-id" : "e7b5c67c-f5ee-cb47-6b1f-d888509c7c15",
-      "ETag" : "\"4108b464-0000-0700-0000-6459826c0000\"",
-      "Last-Modified" : "Mon, 08 May 2023 23:14:52 GMT",
-      "retry-after" : "0",
-      "X-Azure-Ref" : "0a4JZZAAAAADTQtiRpf1dTp0hjUSa8Rc5WVZSMzExMDAwMTE1MDQ1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
-      "StatusCode" : "200",
-      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-CreateExceptionPolicy-ExceptionPolicy\",\"name\":\"JAVA_LIVE_TESTS-CreateExceptionPolicy-ExceptionPolicy-Name\",\"exceptionRules\":{\"JAVA_LIVE_TESTS-CreateExceptionPolicy-ExceptionPolicy\":{\"trigger\":{\"kind\":\"queue-length\",\"threshold\":1},\"actions\":{\"CancelledDueToMaxQueueLengthReached\":{\"kind\":\"cancel\",\"note\":\"Job Cancelled as maximum queue length is reached.\",\"dispositionCode\":\"CancelledDueToMaxQueueLengthReached\"}}}}}",
-      "Date" : "Mon, 08 May 2023 23:14:51 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.communication.azure.com/routing/exceptionPolicies/JAVA_LIVE_TESTS-CreateExceptionPolicy-ExceptionPolicy?api-version=2022-07-18-preview",
-    "Headers" : {
-      "x-ms-client-request-id" : "567fd005-8be5-497e-bf88-b7cf968c078b"
-    },
-    "Response" : {
-      "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
-      "trace-id" : "e5b08717-7b83-8894-f92f-bd07dcfcb290",
-      "retry-after" : "0",
-      "X-Azure-Ref" : "0bIJZZAAAAAApuUFzQUwCQYrsE0L+7ywdWVZSMzExMDAwMTE1MDQ1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
-      "Content-Length" : "0",
-      "StatusCode" : "204",
-      "Body" : "",
-      "Date" : "Mon, 08 May 2023 23:14:51 GMT"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/routing/exceptionPolicies/JAVA_LIVE_TESTS-CreateExceptionPolicy-ExceptionPolicy?api-version=2022-07-18-preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 29 Jun 2023 23:21:37 GMT",
+        "User-Agent": "ReactorNetty/1.0.31",
+        "x-ms-client-request-id": "64014404-7bee-4e67-85f3-4606970512fd",
+        "x-ms-content-sha256": "47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=",
+        "x-ms-date": "Thu, 29 Jun 2023 23:21:37 GMT",
+        "x-ms-hmac-string-to-sign-base64": "REVMRVRFCi9yb3V0aW5nL2V4Y2VwdGlvblBvbGljaWVzL0pBVkFfTElWRV9URVNUUy1DcmVhdGVFeGNlcHRpb25Qb2xpY3ktRXhjZXB0aW9uUG9saWN5P2FwaS12ZXJzaW9uPTIwMjItMDctMTgtcHJldmlldwpUaHUsIDI5IEp1biAyMDIzIDIzOjIxOjM3IEdNVDt0NmZmM2I4NGJlMGE0NTRjZi1jb21tdW5pY2F0aW9uLmNvbW11bmljYXRpb24uYXp1cmUuY29tOzQ3REVRcGo4SEJTYSsvVEltVys1SkNldVFlUmttNU5NcEpXWkczaFN1RlU9"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "api-supported-versions": "2021-04-07-preview1, 2022-07-18-preview",
+        "Date": "Thu, 29 Jun 2023 23:21:37 GMT",
+        "trace-id": "c4ed3d02-e60e-15a9-7682-054588a8c13f",
+        "X-Azure-Ref": "0ARKeZAAAAADf0iq0DAsrS6jY\u002B3Q3OOVDV1NURURHRTA4MTgAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Cache": "CONFIG_NOCACHE"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
 }
