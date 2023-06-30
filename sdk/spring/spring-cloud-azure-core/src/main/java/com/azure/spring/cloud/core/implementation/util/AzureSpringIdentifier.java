@@ -39,7 +39,7 @@ public final class AzureSpringIdentifier {
     //    b2c: for AAD B2C
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureSpringIdentifier.class);
     public static final String VERSION = getVersion();
-    public static final int MAX_VERSION_LENGTH = 13;
+    public static final int MAX_VERSION_LENGTH = 12;
     public static final String AZURE_SPRING_APP_CONFIG = "az-sp-cfg/" + VERSION;
     public static final String AZURE_SPRING_EVENT_HUBS = "az-sp-eh/" + VERSION;
 
@@ -94,17 +94,22 @@ public final class AzureSpringIdentifier {
                 new ClassPathResource("azure-spring-identifier.properties"));
             version = properties.getProperty("version");
             //Add this logic to avoid creating app id failed
-            if (version.length() >= MAX_VERSION_LENGTH) {
-                if (version.contains("beta")) {
-                    version = version.replace("beta", "b");
-                } else if (version.contains("alpha")) {
-                    version = version.replace("alpha", "a");
-                } else {
-                    throw new RuntimeException("version is too long to create application id");
-                }
-            }
+            version = formatVersion(version);
         } catch (IOException e) {
             LOGGER.warn("Can not get version.");
+        }
+        return version;
+    }
+
+    static String formatVersion(String version) {
+        if (version.length() > MAX_VERSION_LENGTH) {
+            if (version.contains("beta")) {
+                version = version.replace("beta", "b");
+            } else if (version.contains("alpha")) {
+                version = version.replace("alpha", "a");
+            } else {
+                throw new RuntimeException("version is too long to create application id");
+            }
         }
         return version;
     }
