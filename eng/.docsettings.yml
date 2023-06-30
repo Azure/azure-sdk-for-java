@@ -15,6 +15,7 @@ omitted_paths:
   - "*/resource-manager/*"
   - "sdk/*/mgmt-*/*"
   - "sdk/*/swagger/*"
+  - "sdk/*/codegen/*"
   - doc/*
   - eng/*
   - common/smoke-tests/*
