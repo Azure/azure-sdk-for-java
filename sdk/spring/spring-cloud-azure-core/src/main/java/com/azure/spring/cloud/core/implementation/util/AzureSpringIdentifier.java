@@ -97,11 +97,11 @@ public final class AzureSpringIdentifier {
             if (version.length() >= MAX_VERSION_LENGTH) {
                 if (version.contains("beta")) {
                     version = version.replace("beta", "b");
-                }
-                else if (version.contains("alpha")) {
+                } else if (version.contains("alpha")) {
                     version = version.replace("alpha", "a");
+                } else {
+                    throw new RuntimeException("version is too long to create application id");
                 }
-                else throw new RuntimeException("version is too long to create application id");
             }
         } catch (IOException e) {
             LOGGER.warn("Can not get version.");
