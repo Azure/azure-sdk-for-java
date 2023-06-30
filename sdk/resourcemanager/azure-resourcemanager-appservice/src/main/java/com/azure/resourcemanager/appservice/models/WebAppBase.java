@@ -942,6 +942,17 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             WithCreate<FluentT> withAccessRule(IpSecurityRestriction ipSecurityRule);
         }
 
+        /** The stage of web app definition allowing to configure container size. */
+        interface WithContainerSize<FluentT> {
+            /**
+             * Specifies the container size for the web app.
+             *
+             * @param containerSize container size
+             * @return the next stage of the definition
+             */
+            WithCreate<FluentT> withContainerSize(int containerSize);
+        }
+
         /**
          * A site definition with sufficient inputs to create a new web app / deployments slot in the cloud, but
          * exposing additional optional inputs to specify.
@@ -963,7 +974,8 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
                 WithAuthentication<FluentT>,
                 WithDiagnosticLogging<FluentT>,
                 WithManagedServiceIdentity<FluentT>,
-                WithNetworkAccess<FluentT> {
+                WithNetworkAccess<FluentT>,
+                WithContainerSize<FluentT> {
         }
     }
 
@@ -1569,7 +1581,7 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             Update<FluentT> withExistingUserAssignedManagedServiceIdentity(Identity identity);
         }
 
-        /** The stage of storage account update allowing to configure network access. */
+        /** The stage of web app update allowing to configure network access. */
         interface WithNetworkAccess<FluentT> {
             /**
              * Specifies that access to web app should be allowed from all networks.
@@ -1653,6 +1665,17 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
              */
             Update<FluentT> withoutIpAddressRangeAccess(String ipAddressCidr);
         }
+
+        /** The stage of web app update allowing to configure container size. */
+        interface WithContainerSize<FluentT> {
+            /**
+             * Specifies the container size for the web app.
+             *
+             * @param containerSize container size
+             * @return the next stage of the update
+             */
+            Update<FluentT> withContainerSize(int containerSize);
+        }
     }
 
     /**
@@ -1677,6 +1700,7 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             UpdateStages.WithManagedServiceIdentity<FluentT>,
             UpdateStages.WithSystemAssignedIdentityBasedAccess<FluentT>,
             UpdateStages.WithUserAssignedManagedServiceIdentityBasedAccess<FluentT>,
-            UpdateStages.WithNetworkAccess<FluentT> {
+            UpdateStages.WithNetworkAccess<FluentT>,
+            UpdateStages.WithContainerSize<FluentT> {
     }
 }
