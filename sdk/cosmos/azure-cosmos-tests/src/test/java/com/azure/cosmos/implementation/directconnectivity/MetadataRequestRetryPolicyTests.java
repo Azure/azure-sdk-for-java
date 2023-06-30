@@ -85,15 +85,22 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
 
     @BeforeClass(groups = {"multi-region"})
     public void beforeClass() {
-        this.clientBuilder = getClientBuilder();
-        CosmosAsyncClient client = this.clientBuilder.buildAsyncClient();
-        AsyncDocumentClient documentClient = BridgeInternal.getContextClient(client);
 
-        GlobalEndpointManager globalEndpointManager = documentClient.getGlobalEndpointManager();
-        this.databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+        CosmosAsyncClient client = null;
 
-        this.writeRegionMap = getRegionsMap(this.databaseAccount, true);
-        this.readRegionMap = getRegionsMap(this.databaseAccount, false);
+        try {
+            this.clientBuilder = getClientBuilder();
+            client = this.clientBuilder.buildAsyncClient();
+            AsyncDocumentClient documentClient = BridgeInternal.getContextClient(client);
+
+            GlobalEndpointManager globalEndpointManager = documentClient.getGlobalEndpointManager();
+            this.databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+
+            this.writeRegionMap = getRegionsMap(this.databaseAccount, true);
+            this.readRegionMap = getRegionsMap(this.databaseAccount, false);
+        } finally {
+            safeClose(client);
+        }
     }
 
     @DataProvider(name = "operationContext")
@@ -114,23 +121,23 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
 
 
     // this test does the following
-    // 1.
+    // 1. Simulate a region issue by injecting connection establishment failures with replicas
+    // 2. Keep a low end-to-end timeout but a high connectTimeout - this will cause the operation
+    // to be cancelled before connectTimeout is reached
+    // 3. This will help us to verify two things:
+    //      3.1 Connection establishment is not affected by cancellation of the operation
+    //      3.2 Using a cancellation status on the request associated with the operation
+    //          we can trigger force address refresh calls in the background when connectionTimeout
+    //          is also hit
     @Test(groups = {"multi-region"}, dataProvider = "operationContext", timeOut = TIMEOUT)
     public void forceBackgroundAddressRefresh_onConnectionTimeoutAndRequestCancellation_test(
         FaultInjectionOperationType faultInjectionOperationType,
         OperationType operationType,
         boolean isWrite) {
 
-        // Item to create
-        String itemId = UUID.randomUUID().toString();
-        String pkVal = UUID.randomUUID().toString();
-        String propertyVal = UUID.randomUUID().toString();
-
         // Get preferred regions
         List<String> preferredRegions = (isWrite) ? this.writeRegionMap.keySet().stream().collect(Collectors.toList())
             : this.readRegionMap.keySet().stream().collect(Collectors.toList());
-
-        TestItem testItem = new TestItem(itemId, pkVal, propertyVal);
 
         DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
 
@@ -184,7 +191,8 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             database.createContainer(containerId, "/mypk").block();
             container = database.getContainer(containerId);
 
-            // fault injection setup
+            // fault injection setup to inject a connection delay
+            // this connection delay injection will trigger connectTimeoutExceptions
             FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
                 .connectionType(FaultInjectionConnectionType.DIRECT)
                 .region(faultInjectedRegion)
@@ -206,6 +214,8 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfigForFaultyOperation
                 = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofMillis(500)).build();
 
+            TestItem testItem = new TestItem(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
+
             performDocumentOperation(
                 container,
                 testItem,
@@ -214,9 +224,12 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                 httpClientWrapperByRegionMap.get(faultInjectedRegion),
                 cosmosEndToEndOperationLatencyPolicyConfigForFaultyOperation);
 
-            Thread.sleep(15000);
+            // allow enough time for operation and connection establishment to timeout
+            Thread.sleep(5000);
 
             assertThat(connectionDelayRule.getHitCount()).isGreaterThanOrEqualTo(1);
+
+            // track if force address refresh calls have been made
             assertThat(httpClientWrapperByRegionMap.get(faultInjectedRegion).capturedRequests.size()).isBetween(1, (int) connectionDelayRule.getHitCount());
         } catch (InterruptedException e) {
             logger.error("InterruptedException thrown...");
@@ -279,6 +292,8 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
         HttpClientUnderTestWrapper httpClientUnderTestWrapper,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfigForFaultyOperation) throws InterruptedException {
 
+        final int idleTimeInMillis = 5000;
+
         if (faultInjectedOperationType == OperationType.Query) {
             faultInjectedContainer
                 .createItem(testItem, new PartitionKey(testItem.getMypk()), new CosmosItemRequestOptions())
@@ -286,13 +301,13 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
 
             httpClientUnderTestWrapper.capturedRequests.clear();
 
-            // allow enough time for connections to be deemed unhealthy
+            // allow enough time for connections to be deemed unhealthy and their closure
             // due to idleConnectionTimeout being reached
-            Thread.sleep(5000);
+            Thread.sleep(idleTimeInMillis);
             CosmosFaultInjectionHelper.configureFaultInjectionRules(faultInjectedContainer, Arrays.asList(connectionDelayFault)).block();
 
             String query = String.format("SELECT * FROM c WHERE c.id = '%s'", testItem.getId());
-            // 500ms
+
             CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions()
                 .setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfigForFaultyOperation);
 
@@ -308,7 +323,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                 .block();
 
             httpClientUnderTestWrapper.capturedRequests.clear();
-            Thread.sleep(5000);
+            Thread.sleep(idleTimeInMillis);
             CosmosFaultInjectionHelper.configureFaultInjectionRules(faultInjectedContainer, Arrays.asList(connectionDelayFault)).block();
 
             CosmosItemRequestOptions requestOptionsForRead = new CosmosItemRequestOptions()
@@ -334,7 +349,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                 .block();
 
             httpClientUnderTestWrapper.capturedRequests.clear();
-            Thread.sleep(5000);
+            Thread.sleep(idleTimeInMillis);
             CosmosFaultInjectionHelper.configureFaultInjectionRules(faultInjectedContainer, Arrays.asList(connectionDelayFault)).block();
 
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions()
@@ -350,7 +365,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                 .block();
 
             httpClientUnderTestWrapper.capturedRequests.clear();
-            Thread.sleep(5000);
+            Thread.sleep(idleTimeInMillis);
             CosmosFaultInjectionHelper.configureFaultInjectionRules(faultInjectedContainer, Arrays.asList(connectionDelayFault)).block();
 
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions()
@@ -377,7 +392,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                 .block();
 
             httpClientUnderTestWrapper.capturedRequests.clear();
-            Thread.sleep(5000);
+            Thread.sleep(idleTimeInMillis);
             CosmosFaultInjectionHelper.configureFaultInjectionRules(faultInjectedContainer, Arrays.asList(connectionDelayFault)).block();
 
             faultInjectedContainer
