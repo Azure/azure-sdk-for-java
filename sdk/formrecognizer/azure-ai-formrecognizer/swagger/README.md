@@ -63,7 +63,7 @@ directive:
 ### To run, use `autorest --tag:formrecognizer-documentanalysis README.md`
 ``` yaml $(tag) == 'formrecognizer-documentanalysis'
 use: '@autorest/java@4.1.13'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/FormRecognizer/preview/2023-02-28-preview/FormRecognizer.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs-pr/5882bfa058e12423c83afd6795ec257b434bbc69/specification/cognitiveservices/data-plane/FormRecognizer/stable/2023-07-31/FormRecognizer.json?token=GHSAT0AAAAAACDOBFKSMWLGRLSVIYQMKCMCZE7IWKA
 java: true
 output-folder: ..\
 generate-client-as-impl: true

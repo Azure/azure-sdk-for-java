@@ -528,7 +528,6 @@ public final class DocumentAnalysisClient {
                     locale,
                     StringIndexType.UTF16CODE_UNIT,
                     features,
-                    queryFields,
                     document,
                     document.getLength(),
                     context);
@@ -538,7 +537,6 @@ public final class DocumentAnalysisClient {
                     locale,
                     StringIndexType.UTF16CODE_UNIT,
                     features,
-                    queryFields,
                     new AnalyzeDocumentRequest().setUrlSource(documentUrl),
                     context);
             }

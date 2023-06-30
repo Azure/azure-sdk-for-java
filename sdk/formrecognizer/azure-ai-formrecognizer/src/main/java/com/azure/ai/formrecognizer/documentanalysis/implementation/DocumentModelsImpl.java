@@ -95,7 +95,6 @@ public final class DocumentModelsImpl {
                 @QueryParam("stringIndexType") StringIndexType stringIndexType,
                 @QueryParam("api-version") String apiVersion,
                 @QueryParam("features") String features,
-                @QueryParam("queryFields") String queryFields,
                 @BodyParam("application/json") AnalyzeDocumentRequest analyzeRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -111,7 +110,6 @@ public final class DocumentModelsImpl {
                 @QueryParam("stringIndexType") StringIndexType stringIndexType,
                 @QueryParam("api-version") String apiVersion,
                 @QueryParam("features") String features,
-                @QueryParam("queryFields") String queryFields,
                 @BodyParam("application/json") AnalyzeDocumentRequest analyzeRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -127,7 +125,6 @@ public final class DocumentModelsImpl {
                 @QueryParam("stringIndexType") StringIndexType stringIndexType,
                 @QueryParam("api-version") String apiVersion,
                 @QueryParam("features") String features,
-                @QueryParam("queryFields") String queryFields,
                 @HeaderParam("Content-Type") ContentType contentType,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> analyzeRequest,
                 @HeaderParam("Content-Length") Long contentLength,
@@ -145,7 +142,6 @@ public final class DocumentModelsImpl {
                 @QueryParam("stringIndexType") StringIndexType stringIndexType,
                 @QueryParam("api-version") String apiVersion,
                 @QueryParam("features") String features,
-                @QueryParam("queryFields") String queryFields,
                 @HeaderParam("Content-Type") ContentType contentType,
                 @BodyParam("application/octet-stream") BinaryData analyzeRequest,
                 @HeaderParam("Content-Length") Long contentLength,
@@ -163,7 +159,6 @@ public final class DocumentModelsImpl {
                 @QueryParam("stringIndexType") StringIndexType stringIndexType,
                 @QueryParam("api-version") String apiVersion,
                 @QueryParam("features") String features,
-                @QueryParam("queryFields") String queryFields,
                 @HeaderParam("Content-Type") ContentType contentType,
                 @BodyParam("application/octet-stream") BinaryData analyzeRequest,
                 @HeaderParam("Content-Length") Long contentLength,
@@ -181,7 +176,6 @@ public final class DocumentModelsImpl {
                 @QueryParam("stringIndexType") StringIndexType stringIndexType,
                 @QueryParam("api-version") String apiVersion,
                 @QueryParam("features") String features,
-                @QueryParam("queryFields") String queryFields,
                 @BodyParam("text/html") String analyzeRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -197,7 +191,6 @@ public final class DocumentModelsImpl {
                 @QueryParam("stringIndexType") StringIndexType stringIndexType,
                 @QueryParam("api-version") String apiVersion,
                 @QueryParam("features") String features,
-                @QueryParam("queryFields") String queryFields,
                 @BodyParam("text/html") String analyzeRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -394,7 +387,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -408,19 +400,12 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             AnalyzeDocumentRequest analyzeRequest) {
         final String accept = "application/json";
         String featuresConverted =
                 (features == null)
                         ? null
                         : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String queryFieldsConverted =
-                (queryFields == null)
-                        ? null
-                        : queryFields.stream()
-                                .map(value -> Objects.toString(value, ""))
-                                .collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.analyzeDocument(
@@ -431,7 +416,6 @@ public final class DocumentModelsImpl {
                                 stringIndexType,
                                 this.client.getApiVersion(),
                                 featuresConverted,
-                                queryFieldsConverted,
                                 analyzeRequest,
                                 accept,
                                 context));
@@ -448,7 +432,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -463,7 +446,6 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             AnalyzeDocumentRequest analyzeRequest,
             Context context) {
         final String accept = "application/json";
@@ -471,12 +453,6 @@ public final class DocumentModelsImpl {
                 (features == null)
                         ? null
                         : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String queryFieldsConverted =
-                (queryFields == null)
-                        ? null
-                        : queryFields.stream()
-                                .map(value -> Objects.toString(value, ""))
-                                .collect(Collectors.joining(","));
         return service.analyzeDocument(
                 this.client.getEndpoint(),
                 modelId,
@@ -485,7 +461,6 @@ public final class DocumentModelsImpl {
                 stringIndexType,
                 this.client.getApiVersion(),
                 featuresConverted,
-                queryFieldsConverted,
                 analyzeRequest,
                 accept,
                 context);
@@ -502,7 +477,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -517,7 +491,6 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             AnalyzeDocumentRequest analyzeRequest,
             Context context) {
         final String accept = "application/json";
@@ -525,12 +498,6 @@ public final class DocumentModelsImpl {
                 (features == null)
                         ? null
                         : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String queryFieldsConverted =
-                (queryFields == null)
-                        ? null
-                        : queryFields.stream()
-                                .map(value -> Objects.toString(value, ""))
-                                .collect(Collectors.joining(","));
         return service.analyzeDocumentSync(
                 this.client.getEndpoint(),
                 modelId,
@@ -539,7 +506,6 @@ public final class DocumentModelsImpl {
                 stringIndexType,
                 this.client.getApiVersion(),
                 featuresConverted,
-                queryFieldsConverted,
                 analyzeRequest,
                 accept,
                 context);
@@ -556,7 +522,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -570,13 +535,12 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             AnalyzeDocumentRequest analyzeRequest) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () ->
                         this.analyzeDocumentWithResponseAsync(
-                                modelId, pages, locale, stringIndexType, features, queryFields, analyzeRequest),
+                                modelId, pages, locale, stringIndexType, features, analyzeRequest),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
@@ -597,7 +561,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -612,21 +575,13 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             AnalyzeDocumentRequest analyzeRequest,
             Context context) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () ->
                         this.analyzeDocumentWithResponseAsync(
-                                modelId,
-                                pages,
-                                locale,
-                                stringIndexType,
-                                features,
-                                queryFields,
-                                analyzeRequest,
-                                context),
+                                modelId, pages, locale, stringIndexType, features, analyzeRequest, context),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
@@ -647,7 +602,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -661,20 +615,12 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             AnalyzeDocumentRequest analyzeRequest) {
         return SyncPoller.createPoller(
                 Duration.ofSeconds(1),
                 () ->
                         this.analyzeDocumentWithResponse(
-                                modelId,
-                                pages,
-                                locale,
-                                stringIndexType,
-                                features,
-                                queryFields,
-                                analyzeRequest,
-                                Context.NONE),
+                                modelId, pages, locale, stringIndexType, features, analyzeRequest, Context.NONE),
                 new SyncDefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
@@ -695,7 +641,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -710,21 +655,13 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             AnalyzeDocumentRequest analyzeRequest,
             Context context) {
         return SyncPoller.createPoller(
                 Duration.ofSeconds(1),
                 () ->
                         this.analyzeDocumentWithResponse(
-                                modelId,
-                                pages,
-                                locale,
-                                stringIndexType,
-                                features,
-                                queryFields,
-                                analyzeRequest,
-                                context),
+                                modelId, pages, locale, stringIndexType, features, analyzeRequest, context),
                 new SyncDefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
@@ -746,7 +683,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -762,7 +698,6 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             Flux<ByteBuffer> analyzeRequest,
             Long contentLength) {
         final String accept = "application/json";
@@ -770,12 +705,6 @@ public final class DocumentModelsImpl {
                 (features == null)
                         ? null
                         : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String queryFieldsConverted =
-                (queryFields == null)
-                        ? null
-                        : queryFields.stream()
-                                .map(value -> Objects.toString(value, ""))
-                                .collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.analyzeDocument(
@@ -786,7 +715,6 @@ public final class DocumentModelsImpl {
                                 stringIndexType,
                                 this.client.getApiVersion(),
                                 featuresConverted,
-                                queryFieldsConverted,
                                 contentType,
                                 analyzeRequest,
                                 contentLength,
@@ -806,7 +734,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -823,7 +750,6 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             Flux<ByteBuffer> analyzeRequest,
             Long contentLength,
             Context context) {
@@ -832,12 +758,6 @@ public final class DocumentModelsImpl {
                 (features == null)
                         ? null
                         : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String queryFieldsConverted =
-                (queryFields == null)
-                        ? null
-                        : queryFields.stream()
-                                .map(value -> Objects.toString(value, ""))
-                                .collect(Collectors.joining(","));
         return service.analyzeDocument(
                 this.client.getEndpoint(),
                 modelId,
@@ -846,7 +766,6 @@ public final class DocumentModelsImpl {
                 stringIndexType,
                 this.client.getApiVersion(),
                 featuresConverted,
-                queryFieldsConverted,
                 contentType,
                 analyzeRequest,
                 contentLength,
@@ -866,7 +785,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -882,7 +800,6 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             Flux<ByteBuffer> analyzeRequest,
             Long contentLength) {
         return PollerFlux.create(
@@ -895,7 +812,6 @@ public final class DocumentModelsImpl {
                                 locale,
                                 stringIndexType,
                                 features,
-                                queryFields,
                                 analyzeRequest,
                                 contentLength),
                 new DefaultPollingStrategy<>(
@@ -919,7 +835,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -936,7 +851,6 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             Flux<ByteBuffer> analyzeRequest,
             Long contentLength,
             Context context) {
@@ -950,7 +864,6 @@ public final class DocumentModelsImpl {
                                 locale,
                                 stringIndexType,
                                 features,
-                                queryFields,
                                 analyzeRequest,
                                 contentLength,
                                 context),
@@ -975,7 +888,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -991,7 +903,6 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             BinaryData analyzeRequest,
             Long contentLength) {
         final String accept = "application/json";
@@ -999,12 +910,6 @@ public final class DocumentModelsImpl {
                 (features == null)
                         ? null
                         : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String queryFieldsConverted =
-                (queryFields == null)
-                        ? null
-                        : queryFields.stream()
-                                .map(value -> Objects.toString(value, ""))
-                                .collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.analyzeDocument(
@@ -1015,7 +920,6 @@ public final class DocumentModelsImpl {
                                 stringIndexType,
                                 this.client.getApiVersion(),
                                 featuresConverted,
-                                queryFieldsConverted,
                                 contentType,
                                 analyzeRequest,
                                 contentLength,
@@ -1035,7 +939,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -1052,7 +955,6 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             BinaryData analyzeRequest,
             Long contentLength,
             Context context) {
@@ -1061,12 +963,6 @@ public final class DocumentModelsImpl {
                 (features == null)
                         ? null
                         : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String queryFieldsConverted =
-                (queryFields == null)
-                        ? null
-                        : queryFields.stream()
-                                .map(value -> Objects.toString(value, ""))
-                                .collect(Collectors.joining(","));
         return service.analyzeDocument(
                 this.client.getEndpoint(),
                 modelId,
@@ -1075,7 +971,6 @@ public final class DocumentModelsImpl {
                 stringIndexType,
                 this.client.getApiVersion(),
                 featuresConverted,
-                queryFieldsConverted,
                 contentType,
                 analyzeRequest,
                 contentLength,
@@ -1095,7 +990,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -1112,7 +1006,6 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             BinaryData analyzeRequest,
             Long contentLength,
             Context context) {
@@ -1121,12 +1014,6 @@ public final class DocumentModelsImpl {
                 (features == null)
                         ? null
                         : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String queryFieldsConverted =
-                (queryFields == null)
-                        ? null
-                        : queryFields.stream()
-                                .map(value -> Objects.toString(value, ""))
-                                .collect(Collectors.joining(","));
         return service.analyzeDocumentSync(
                 this.client.getEndpoint(),
                 modelId,
@@ -1135,7 +1022,6 @@ public final class DocumentModelsImpl {
                 stringIndexType,
                 this.client.getApiVersion(),
                 featuresConverted,
-                queryFieldsConverted,
                 contentType,
                 analyzeRequest,
                 contentLength,
@@ -1155,7 +1041,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1171,7 +1056,6 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             BinaryData analyzeRequest,
             Long contentLength) {
         return PollerFlux.create(
@@ -1184,7 +1068,6 @@ public final class DocumentModelsImpl {
                                 locale,
                                 stringIndexType,
                                 features,
-                                queryFields,
                                 analyzeRequest,
                                 contentLength),
                 new DefaultPollingStrategy<>(
@@ -1208,7 +1091,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -1225,7 +1107,6 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             BinaryData analyzeRequest,
             Long contentLength,
             Context context) {
@@ -1239,7 +1120,6 @@ public final class DocumentModelsImpl {
                                 locale,
                                 stringIndexType,
                                 features,
-                                queryFields,
                                 analyzeRequest,
                                 contentLength,
                                 context),
@@ -1264,7 +1144,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1280,7 +1159,6 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             BinaryData analyzeRequest,
             Long contentLength) {
         return SyncPoller.createPoller(
@@ -1293,7 +1171,6 @@ public final class DocumentModelsImpl {
                                 locale,
                                 stringIndexType,
                                 features,
-                                queryFields,
                                 analyzeRequest,
                                 contentLength,
                                 Context.NONE),
@@ -1318,7 +1195,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -1335,7 +1211,6 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             BinaryData analyzeRequest,
             Long contentLength,
             Context context) {
@@ -1349,7 +1224,6 @@ public final class DocumentModelsImpl {
                                 locale,
                                 stringIndexType,
                                 features,
-                                queryFields,
                                 analyzeRequest,
                                 contentLength,
                                 context),
@@ -1373,7 +1247,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1387,19 +1260,12 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             String analyzeRequest) {
         final String accept = "application/json";
         String featuresConverted =
                 (features == null)
                         ? null
                         : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String queryFieldsConverted =
-                (queryFields == null)
-                        ? null
-                        : queryFields.stream()
-                                .map(value -> Objects.toString(value, ""))
-                                .collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.analyzeDocument(
@@ -1410,7 +1276,6 @@ public final class DocumentModelsImpl {
                                 stringIndexType,
                                 this.client.getApiVersion(),
                                 featuresConverted,
-                                queryFieldsConverted,
                                 analyzeRequest,
                                 accept,
                                 context));
@@ -1427,7 +1292,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1442,7 +1306,6 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             String analyzeRequest,
             Context context) {
         final String accept = "application/json";
@@ -1450,12 +1313,6 @@ public final class DocumentModelsImpl {
                 (features == null)
                         ? null
                         : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String queryFieldsConverted =
-                (queryFields == null)
-                        ? null
-                        : queryFields.stream()
-                                .map(value -> Objects.toString(value, ""))
-                                .collect(Collectors.joining(","));
         return service.analyzeDocument(
                 this.client.getEndpoint(),
                 modelId,
@@ -1464,7 +1321,6 @@ public final class DocumentModelsImpl {
                 stringIndexType,
                 this.client.getApiVersion(),
                 featuresConverted,
-                queryFieldsConverted,
                 analyzeRequest,
                 accept,
                 context);
@@ -1481,7 +1337,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1496,7 +1351,6 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             String analyzeRequest,
             Context context) {
         final String accept = "application/json";
@@ -1504,12 +1358,6 @@ public final class DocumentModelsImpl {
                 (features == null)
                         ? null
                         : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String queryFieldsConverted =
-                (queryFields == null)
-                        ? null
-                        : queryFields.stream()
-                                .map(value -> Objects.toString(value, ""))
-                                .collect(Collectors.joining(","));
         return service.analyzeDocumentSync(
                 this.client.getEndpoint(),
                 modelId,
@@ -1518,7 +1366,6 @@ public final class DocumentModelsImpl {
                 stringIndexType,
                 this.client.getApiVersion(),
                 featuresConverted,
-                queryFieldsConverted,
                 analyzeRequest,
                 accept,
                 context);
@@ -1535,7 +1382,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1549,13 +1395,12 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             String analyzeRequest) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () ->
                         this.analyzeDocumentWithResponseAsync(
-                                modelId, pages, locale, stringIndexType, features, queryFields, analyzeRequest),
+                                modelId, pages, locale, stringIndexType, features, analyzeRequest),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
@@ -1576,7 +1421,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1591,21 +1435,13 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             String analyzeRequest,
             Context context) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () ->
                         this.analyzeDocumentWithResponseAsync(
-                                modelId,
-                                pages,
-                                locale,
-                                stringIndexType,
-                                features,
-                                queryFields,
-                                analyzeRequest,
-                                context),
+                                modelId, pages, locale, stringIndexType, features, analyzeRequest, context),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
@@ -1626,7 +1462,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1640,20 +1475,12 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             String analyzeRequest) {
         return SyncPoller.createPoller(
                 Duration.ofSeconds(1),
                 () ->
                         this.analyzeDocumentWithResponse(
-                                modelId,
-                                pages,
-                                locale,
-                                stringIndexType,
-                                features,
-                                queryFields,
-                                analyzeRequest,
-                                Context.NONE),
+                                modelId, pages, locale, stringIndexType, features, analyzeRequest, Context.NONE),
                 new SyncDefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
@@ -1674,7 +1501,6 @@ public final class DocumentModelsImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
-     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param analyzeRequest Analyze request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1689,21 +1515,13 @@ public final class DocumentModelsImpl {
             String locale,
             StringIndexType stringIndexType,
             List<DocumentAnalysisFeature> features,
-            List<String> queryFields,
             String analyzeRequest,
             Context context) {
         return SyncPoller.createPoller(
                 Duration.ofSeconds(1),
                 () ->
                         this.analyzeDocumentWithResponse(
-                                modelId,
-                                pages,
-                                locale,
-                                stringIndexType,
-                                features,
-                                queryFields,
-                                analyzeRequest,
-                                context),
+                                modelId, pages, locale, stringIndexType, features, analyzeRequest, context),
                 new SyncDefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),

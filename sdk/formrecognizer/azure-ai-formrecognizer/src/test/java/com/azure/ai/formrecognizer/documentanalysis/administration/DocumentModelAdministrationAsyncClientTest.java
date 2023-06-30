@@ -7,7 +7,7 @@ import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.documentanalysis.TestUtils;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobContentSource;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobFileListSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobFileListContentSource;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentClassifierOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ClassifierDocumentTypeDetails;
@@ -584,11 +584,11 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         beginClassifierRunner((trainingFilesUrl) -> {
             Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
                 = new HashMap<String, ClassifierDocumentTypeDetails>();
-            documentTypeDetailsMap.put("IRS-1040-A", new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListSource(trainingFilesUrl, "IRS-1040-A.jsonl")));
-            documentTypeDetailsMap.put("IRS-1040-B", new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListSource(trainingFilesUrl, "IRS-1040-B.jsonl")));
-            documentTypeDetailsMap.put("IRS-1040-C", new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListSource(trainingFilesUrl, "IRS-1040-C.jsonl")));
-            documentTypeDetailsMap.put("IRS-1040-D", new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListSource(trainingFilesUrl, "IRS-1040-D.jsonl")));
-            documentTypeDetailsMap.put("IRS-1040-E", new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListSource(trainingFilesUrl, "IRS-1040-E.jsonl")));
+            documentTypeDetailsMap.put("IRS-1040-A", new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-A.jsonl")));
+            documentTypeDetailsMap.put("IRS-1040-B", new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-B.jsonl")));
+            documentTypeDetailsMap.put("IRS-1040-C", new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-C.jsonl")));
+            documentTypeDetailsMap.put("IRS-1040-D", new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-D.jsonl")));
+            documentTypeDetailsMap.put("IRS-1040-E", new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-E.jsonl")));
             SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
                 client.beginBuildDocumentClassifier(documentTypeDetailsMap,
                         new BuildDocumentClassifierOptions().setDescription("Json L classifier model"))

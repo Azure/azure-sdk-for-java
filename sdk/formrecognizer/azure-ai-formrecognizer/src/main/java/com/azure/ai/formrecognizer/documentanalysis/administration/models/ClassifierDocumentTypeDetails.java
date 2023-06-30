@@ -16,7 +16,7 @@ public final class ClassifierDocumentTypeDetails {
     /*
      * Azure Blob Storage file list specifying the training data.
      */
-    private AzureBlobFileListSource azureBlobFileListSource;
+    private AzureBlobFileListContentSource azureBlobFileListContentSource;
 
     /** Creates an instance of ClassifierDocumentTypeDetails class. */
     public ClassifierDocumentTypeDetails() {}
@@ -44,20 +44,21 @@ public final class ClassifierDocumentTypeDetails {
     /**
      * Get the Azure Blob Storage file list specifying the training data.
      *
-     * @return the azureBlobFileListSource value.
+     * @return the azureBlobFileListContentSource value.
      */
-    public AzureBlobFileListSource getAzureBlobFileListSource() {
-        return this.azureBlobFileListSource;
+    public AzureBlobFileListContentSource getAzureBlobFileListSource() {
+        return this.azureBlobFileListContentSource;
     }
 
     /**
      * Set the Azure Blob Storage file list specifying the training data.
      *
-     * @param azureBlobFileListSource the azureBlobFileListSource value to set.
+     * @param azureBlobFileListContentSource the azureBlobFileListContentSource value to set.
      * @return the ClassifierDocumentTypeDetails object itself.
      */
-    public ClassifierDocumentTypeDetails setAzureBlobFileListSource(AzureBlobFileListSource azureBlobFileListSource) {
-        this.azureBlobFileListSource = azureBlobFileListSource;
+    public ClassifierDocumentTypeDetails setAzureBlobFileListSource(
+        AzureBlobFileListContentSource azureBlobFileListContentSource) {
+        this.azureBlobFileListContentSource = azureBlobFileListContentSource;
         return this;
     }
 }
