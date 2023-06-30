@@ -29,10 +29,12 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.Configuration;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,6 +89,7 @@ class JobRouterTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             httpClient = interceptorManager.getPlaybackClient();
+            addMatchers();
         }
         if (interceptorManager.isRecordMode()) {
             policies.add(interceptorManager.getRecordPolicy());
@@ -98,6 +101,11 @@ class JobRouterTestBase extends TestProxyTestBase {
             .build();
 
         return pipeline;
+    }
+
+    private void addMatchers() {
+        interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(
+            Arrays.asList("x-ms-hmac-string-to-sign-base64"))));
     }
 
     protected JobQueue createQueue(RouterAdministrationClient routerAdminClient, String queueId, String distributionPolicyId) {
@@ -128,22 +136,5 @@ class JobRouterTestBase extends TestProxyTestBase {
             .setName(distributionPolicyName);
 
         return routerAdminClient.createDistributionPolicy(createDistributionPolicyOptions);
-    }
-
-    protected RouterJob createJob(RouterClient routerClient, String queueId) {
-        CreateJobOptions createJobOptions = new CreateJobOptions("job-id", "chat-channel", queueId)
-            .setPriority(1)
-            .setChannelReference("12345")
-            .setRequestedWorkerSelectors(
-                new ArrayList<WorkerSelector>() {
-                    {
-                        new WorkerSelector()
-                            .setKey("Some-skill")
-                            .setLabelOperator(LabelOperator.GREATER_THAN)
-                            .setValue(10);
-                    }
-                }
-            );
-        return routerClient.createJob(createJobOptions);
     }
 }
