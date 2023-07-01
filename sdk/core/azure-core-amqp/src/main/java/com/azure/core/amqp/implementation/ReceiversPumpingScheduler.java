@@ -169,11 +169,12 @@ public final class ReceiversPumpingScheduler implements Scheduler {
         // Scheduler instances. As part of the reset, the Reactor also internally clears its common (cached) Scheduler
         // instances so that the next cache load loads VirtualTimeScheduler. Unfortunately, Reactor is not providing
         // any hooks for such reset so that the application caching its own Scheduler can clear its cache (INSTANCE static
-        // member in our case) on reset. It leads to the problem of [1]. a test using 'StepVerifier.create' populating
-        // the INSTANCE with a real Scheduler S and following a 'StepVerifier.withVirtualTime' test end up using S rather
-        // than loading and using VirtualTimeScheduler [2]. a test_1 using 'StepVerifier.withVirtualTime' loads INSTANCE
-        // with VirtualTimeScheduler, dispose it at the end of test_2 execution, and a following test_2 using
-        // 'StepVerifier.withVirtualTime' uses the old cached disposed VirtualTimeScheduler.
+        // member in our case) on reset. It leads to the problem of
+        // [1]. a test_1 using 'StepVerifier.create' populating the INSTANCE with a real Scheduler S and a following
+        // test_2 using 'StepVerifier.withVirtualTime' end up using S rather than loading and using VirtualTimeScheduler.
+        // [2]. a test_1 using 'StepVerifier.withVirtualTime' loads INSTANCE with VirtualTimeScheduler, dispose it
+        // at the end of test_2 execution, and a following test_2 using 'StepVerifier.withVirtualTime' uses the old cached
+        // disposed VirtualTimeScheduler.
         //
         final Scheduler s = Schedulers.boundedElastic();
         if (s instanceof Supplier<?> && ((Supplier<?>) s).get() instanceof Scheduler) {
