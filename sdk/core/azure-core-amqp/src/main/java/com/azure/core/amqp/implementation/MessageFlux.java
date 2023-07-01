@@ -690,20 +690,22 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
             updateLogWithReceiverId(logger.atWarning()).log("Setting next mediator and waiting for activation.");
             // 1. Subscribe for the messages on the Receiver (AmqpReceiveLink).
             receiver.receive().subscribe(this);
-            // 2. Subscribe for the readiness and terminal-state event on the Receiver (AmqpReceiveLink) endpoint.
+            // 2. Subscribe for the readiness (active) and terminal event on the Receiver (AmqpReceiveLink) endpoint.
             final Disposable endpointDisposable = receiver.getEndpointStates()
+                .filter(s -> s == AmqpEndpointState.ACTIVE)
+                // ^ Pass down only readiness (active) event and terminal events.
                 .publishOn(ReceiversPumpingScheduler.instance())
+                // ^ Offload any initial drain (upon readiness) and final drain (upon termination) to ReceiversPumpingScheduler.
                 .doOnEach(event -> {
                     if (event.isOnNext()) {
-                        if (event.get() == AmqpEndpointState.ACTIVE) {
-                            if (!ready) {
-                                updateLogWithReceiverId(logger.atWarning()).log("The mediator is active.");
-                                // Set the 'ready' flag to indicate AmqpReceiveLink's successful transition to the active state.
-                                // Once this flag is set, further drain-loop can use 'CreditAccountingStrategy' contract to
-                                // place credits (i.e., the flag ensures credit is placed on the Link only after it is active).
-                                ready = true;
-                                parent.onMediatorReady(this::updateDisposition);
-                            }
+                        assert event.get() == AmqpEndpointState.ACTIVE;
+                        if (!ready) {
+                            updateLogWithReceiverId(logger.atWarning()).log("The mediator is active.");
+                            // Set the 'ready' flag to indicate AmqpReceiveLink's successful transition to the active state.
+                            // Once this flag is set, further drain-loop can use 'CreditAccountingStrategy' contract to
+                            // place credits (i.e., the flag ensures credit is placed on the Link only after it is active).
+                            ready = true;
+                            parent.onMediatorReady(this::updateDisposition);
                         }
                         return;
                     }
