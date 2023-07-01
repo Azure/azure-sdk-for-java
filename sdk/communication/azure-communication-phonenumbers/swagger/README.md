@@ -24,7 +24,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 ### Code generation settings
 ``` yaml
 tag: package-phonenumber-2023-05-01-preview
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/4d2e746ac1e094f87bfe0807b1d51b375a6c5517/specification/communication/data-plane/PhoneNumbers/readme.md
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/2d4881cf7101773b8c677a267b53d915b30a8c6c/specification/communication/data-plane/PhoneNumbers/readme.md
 override-client-name: PhoneNumberAdminClient
 custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode,OperatorDetails,OperatorInformation,OperatorInformationRequest,OperatorInformationResult,OperatorNumberType
 custom-types-subpackage: models
@@ -191,21 +191,3 @@ directive:
       $["properties"]["localizedName"].readOnly = true;
       $["properties"]["countryCode"].readOnly = true;
 ```
-
-### Change a generic error to more specific name
-``` yaml
-directive:
-  from: swagger-document
-  where: $.definitions.PhoneNumberSearchResult.properties.error.x-ms-enum
-  transform: >
-    $["name"] = "PhoneNumberSearchResultError";
-```
-
-### Change a generic error to more specific name
-``` yaml
-directive:
-  from: swagger-document
-  where: $.parameters.Endpoint
-  debug: true
-  transform: >
-    $["format"] = "";
