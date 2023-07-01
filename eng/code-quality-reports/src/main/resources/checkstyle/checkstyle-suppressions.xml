@@ -126,6 +126,7 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Cryptography Client exception for service client instantiation as it provides client side crypto and is not entirely based on REST service -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*CryptographyAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*CryptographyClient.java"/>
 
   <!-- Suppress method name "acceptNextSession" and "acceptSession" for ServiceBusSessionReceiverAsyncClient and ServiceBusSessionReceiverClient-->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="ServiceBusSessionReceiver(Async)?Client.java"/>
