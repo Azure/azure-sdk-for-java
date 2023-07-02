@@ -23,7 +23,7 @@ com.github.spotbugs:spotbugs;4.2.2
 com.github.spotbugs:spotbugs-annotations;4.2.2
 com.github.spotbugs:spotbugs-maven-plugin;4.2.2
 com.google.code.gson:gson;2.10
-com.google.guava:guava;30.1.1-jre
+com.google.guava:guava;32.0.1-jre
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
 com.microsoft.azure:applicationinsights-core;3.4.1
 com.microsoft.azure:azure-annotations;1.7.0
@@ -53,24 +53,24 @@ io.fabric8:kubernetes-client;5.12.3
 io.micrometer:micrometer-core;1.9.10
 io.micrometer:micrometer-registry-azure-monitor;1.9.10
 io.micrometer:micrometer-registry-graphite;1.9.10
-io.netty:netty-buffer;4.1.91.Final
-io.netty:netty-common;4.1.91.Final
-io.netty:netty-codec;4.1.91.Final
-io.netty:netty-codec-http;4.1.91.Final
-io.netty:netty-codec-http2;4.1.91.Final
-io.netty:netty-transport;4.1.91.Final
-io.netty:netty-handler;4.1.91.Final
-io.netty:netty-handler-proxy;4.1.91.Final
-io.netty:netty-tcnative;2.0.59.Final
-io.netty:netty-tcnative-boringssl-static;2.0.59.Final
-io.netty:netty-transport-native-epoll;4.1.91.Final
-io.netty:netty-transport-native-unix-common;4.1.91.Final
-io.netty:netty-transport-native-kqueue;4.1.91.Final
-io.projectreactor.netty:reactor-netty;1.0.31
-io.projectreactor.netty:reactor-netty-http;1.0.31
-io.projectreactor:reactor-core;3.4.29
-io.vertx:vertx-codegen;4.4.2
-io.vertx:vertx-core;4.4.2
+io.netty:netty-buffer;4.1.94.Final
+io.netty:netty-common;4.1.94.Final
+io.netty:netty-codec;4.1.94.Final
+io.netty:netty-codec-http;4.1.94.Final
+io.netty:netty-codec-http2;4.1.94.Final
+io.netty:netty-transport;4.1.94.Final
+io.netty:netty-handler;4.1.94.Final
+io.netty:netty-handler-proxy;4.1.94.Final
+io.netty:netty-tcnative;2.0.61.Final
+io.netty:netty-tcnative-boringssl-static;2.0.61.Final
+io.netty:netty-transport-native-epoll;4.1.94.Final
+io.netty:netty-transport-native-unix-common;4.1.94.Final
+io.netty:netty-transport-native-kqueue;4.1.94.Final
+io.projectreactor.netty:reactor-netty;1.0.33
+io.projectreactor.netty:reactor-netty-http;1.0.33
+io.projectreactor:reactor-core;3.4.30
+io.vertx:vertx-codegen;4.4.4
+io.vertx:vertx-core;4.4.4
 jakarta.validation:jakarta.validation-api;2.0.2
 javax.annotation:javax.annotation-api;1.3.2
 javax.json:javax.json-api;1.1.4
@@ -179,7 +179,7 @@ org.springframework.cloud:spring-cloud-stream;3.2.8
 org.objenesis:objenesis;3.1
 cglib:cglib-nodep;3.2.7
 com.github.docker-java:docker-java;3.2.1
-com.github.tomakehurst:wiremock-standalone;2.24.1
+com.github.tomakehurst:wiremock-jre8-standalone;2.35.0
 com.jcraft:jsch;0.1.55
 com.microsoft.azure:adal4j;1.6.5
 com.microsoft.azure:azure;1.24.1
@@ -204,7 +204,7 @@ io.projectreactor:reactor-test;3.4.29
 junit:junit;4.13.2
 commons-cli:commons-cli;1.3
 org.assertj:assertj-core;3.22.0
-org.bouncycastle:bcprov-jdk15on;1.68
+org.bouncycastle:bcprov-jdk15on;1.70
 org.eclipse.jetty:jetty-http;9.4.51.v20230217
 org.eclipse.jetty:jetty-server;9.4.51.v20230217
 org.eclipse.jgit:org.eclipse.jgit;4.5.7.201904151645-r
@@ -321,12 +321,9 @@ org.testcontainers:junit-jupiter;1.17.6
 # sdk\keyvault\microsoft-azure-keyvault-test\pom.xml
 test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
-# sdk\attestation\azure-security-attestation
-attestation_com.nimbusds:nimbus-jose-jwt;9.22
-
 # everything under sdk\cosmos
 cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.13.5
-cosmos_com.google.guava:guava;30.1.1-jre
+cosmos_com.google.guava:guava;32.0.1-jre
 cosmos_com.microsoft.data.encryption:cryptography;0.2.2.jre8-preview
 cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;0.2.2.jre8-preview
 cosmos_io.dropwizard.metrics:metrics-core;4.1.0

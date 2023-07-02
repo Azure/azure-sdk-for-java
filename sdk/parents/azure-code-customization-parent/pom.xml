@@ -57,4 +57,23 @@
       <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure.tools:azure-autorest-customization;external_dependency} -->
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.azure.tools:azure-autorest-customization:[1.0.0-beta.7]</include> <!-- {x-include-update;com.azure.tools:azure-autorest-customization;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

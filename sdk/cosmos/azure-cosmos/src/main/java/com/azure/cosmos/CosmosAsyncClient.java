@@ -68,6 +68,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB service.
  * This asynchronous client is used to configure and execute requests against the service.
+ * <p>
+ * CosmosAsyncClient is thread-safe.
+ * It's recommended to maintain a single instance of CosmosAsyncClient per lifetime of the application which enables efficient connection management and performance.
+ * CosmosAsyncClient initialization is a heavy operation - don't use initialization CosmosAsyncClient instances as credentials or network connectivity validations.
  */
 @ServiceClient(
     builder = CosmosClientBuilder.class,
@@ -119,6 +123,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
         this.nonIdempotentWriteRetryPolicy = builder.getNonIdempotentWriteRetryPolicy();
         CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationConfig();
+        SessionRetryOptions sessionRetryOptions = builder.getSessionRetryOptions();
 
         CosmosClientTelemetryConfig effectiveTelemetryConfig = telemetryConfigAccessor
             .createSnapshot(
@@ -161,6 +166,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .withClientCorrelationId(clientCorrelationId)
                                        .withEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig)
+                                       .withSessionRetryOptions(sessionRetryOptions)
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();

@@ -13,11 +13,13 @@ import java.time.Duration;
 public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
     private boolean isEnabled = true;
     private final Duration endToEndOperationTimeout;
+    private AvailabilityStrategy availabilityStrategy;
 
     /**
      * Create a builder for {@link CosmosEndToEndOperationLatencyPolicyConfig} with end to end operation timeout
+     *
      * @param endToEndOperationTimeout the timeout for request cancellation in Duration. Setting very low timeouts
-     *                                can cause the request to never succeed.
+     *                                 can cause the request to never succeed.
      */
     public CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration endToEndOperationTimeout) {
         this.endToEndOperationTimeout = endToEndOperationTimeout;
@@ -29,7 +31,13 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
      * @return the {@link CosmosEndToEndOperationLatencyPolicyConfig}
      */
     public CosmosEndToEndOperationLatencyPolicyConfig build() {
-        return new CosmosEndToEndOperationLatencyPolicyConfig(isEnabled, endToEndOperationTimeout);
+        if (endToEndOperationTimeout == null && isEnabled) {
+            throw new IllegalArgumentException("endToEndOperationTimeout must be set if the policy is enabled");
+        }
+        if (endToEndOperationTimeout != null && endToEndOperationTimeout.isNegative()) {
+            throw new IllegalArgumentException("endToEndOperationTimeout must be a positive Duration");
+        }
+        return new CosmosEndToEndOperationLatencyPolicyConfig(isEnabled, endToEndOperationTimeout, availabilityStrategy);
     }
 
     /**
@@ -45,4 +53,15 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
         return this;
     }
 
+    /**
+     * Sets the availability strategy to be used for the policy.
+     *
+     * @param availabilityStrategy the availability strategy to be used for the policy
+     * @return current CosmosEndToEndOperationConfigBuilder
+     */
+    public CosmosEndToEndOperationLatencyPolicyConfigBuilder availabilityStrategy(
+        AvailabilityStrategy availabilityStrategy) {
+        this.availabilityStrategy = availabilityStrategy;
+        return this;
+    }
 }

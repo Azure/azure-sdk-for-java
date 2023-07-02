@@ -3,23 +3,23 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/sms?api-version=2021-03-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-sms/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "490b1f02-2e10-4caa-b942-e19fa9477b69",
-      "Content-Type" : "application/json"
+      "content-type" : "application/json",
+      "x-ms-client-request-id" : "ac3d5444-8421-4a6a-ba93-00157eb84d97",
+      "user-agent" : "azsdk-java-azure-communication-sms/1.2.0-beta.1 (11.0.19; Windows 11; 10.0)"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
       "api-supported-versions" : "2020-07-20-preview1, 2020-08-20-preview, 2021-03-07",
-      "X-Processing-Time" : "633ms",
-      "MS-CV" : "bjGLtdIQhESMbQ+rLgSmng.0",
+      "X-Processing-Time" : "210ms",
+      "MS-CV" : "x8BPh3xdaE+36Ta4+qyPFg.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0jb/DYAAAAADSf/rwoJv1SqKdTHX01f5LWVZSMzBFREdFMDMxMwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "0LP+KZAAAAACvcXnrUVM/S6ApT+BwANOgSEVMMDFFREdFMjAxNgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "Content-Length" : "357",
       "StatusCode" : "202",
-      "Body" : "{\"value\":[{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_202106111954537e35c845-233a-4eff-a362-8e651c0055f8_noam\",\"httpStatusCode\":202,\"repeatabilityResult\":\"accepted\",\"successful\":true},{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_20210611195453fc2e49df-008f-49fe-8b44-ba0472332dcb_noam\",\"httpStatusCode\":202,\"repeatabilityResult\":\"accepted\",\"successful\":true}]}",
-      "Date" : "Fri, 11 Jun 2021 19:54:53 GMT",
-      "Content-Type" : "application/json; charset=utf-8",
-      "Request-Context" : "appId="
+      "Body" : "{\"value\":[{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_2023061512081292ddff98-2f56-4414-ba9f-bea547889559_noam\",\"httpStatusCode\":202,\"repeatabilityResult\":\"accepted\",\"successful\":true},{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_202306151208127dea58ec-8986-479a-ae1a-3490359e5d93_noam\",\"httpStatusCode\":202,\"repeatabilityResult\":\"accepted\",\"successful\":true}]}",
+      "Date" : "Thu, 15 Jun 2023 12:08:12 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],

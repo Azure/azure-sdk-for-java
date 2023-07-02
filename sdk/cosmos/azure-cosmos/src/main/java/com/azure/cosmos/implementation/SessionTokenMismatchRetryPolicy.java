@@ -4,7 +4,9 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
+import com.azure.cosmos.CosmosRegionSwitchHint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -15,29 +17,28 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(SessionTokenMismatchRetryPolicy.class);
-
     private static final int BACKOFF_MULTIPLIER = 2;
-
     private final Duration maximumBackoff;
     private final TimeoutHelper waitTimeTimeoutHelper;
     private final AtomicInteger retryCount;
-
     private Duration currentBackoff;
     private RetryContext retryContext;
+    private final AtomicInteger maxRetryAttemptsInCurrentRegion;
+    private final SessionRetryOptions sessionRetryOptions;
 
-    public SessionTokenMismatchRetryPolicy(RetryContext retryContext, int waitTimeInMilliSeconds)
-    {
-        this.waitTimeTimeoutHelper = new TimeoutHelper(Duration.ofMillis(waitTimeInMilliSeconds));
+    public SessionTokenMismatchRetryPolicy(RetryContext retryContext, int waitTimeInMilliseconds, SessionRetryOptions sessionRetryOptions) {
+        this.waitTimeTimeoutHelper = new TimeoutHelper(Duration.ofMillis(Configs.getSessionTokenMismatchDefaultWaitTimeInMs()));
         this.maximumBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchMaximumBackoffTimeInMs());
-
         this.retryCount = new AtomicInteger();
         this.retryCount.set(0);
         this.currentBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchInitialBackoffTimeInMs());
+        this.maxRetryAttemptsInCurrentRegion = new AtomicInteger(Configs.getMaxRetriesInLocalRegionWhenRemoteRegionPreferred());
         this.retryContext = retryContext;
+        this.sessionRetryOptions = sessionRetryOptions;
     }
 
-    public SessionTokenMismatchRetryPolicy(RetryContext retryContext) {
-        this(retryContext, Configs.getSessionTokenMismatchDefaultWaitTimeInMs());
+    public SessionTokenMismatchRetryPolicy(RetryContext retryContext, SessionRetryOptions sessionRetryOptions) {
+        this(retryContext, Configs.getSessionTokenMismatchDefaultWaitTimeInMs(), sessionRetryOptions);
     }
 
     @Override
@@ -64,6 +65,22 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
                 "SessionTokenMismatchRetryPolicy not retrying because it has exceeded " +
                     "the time limit. Retry count = {}",
                 this.retryCount);
+
+            return Mono.just(ShouldRetryResult.noRetry());
+        }
+
+        // when retry is directed to the current region
+        // we should use the region-switch hint to determine
+        // to move to a different region
+        // special case of switching to the same region again:
+        //   1. for single-write account, if the original read request is directed
+        //      to the write region then region switch using ClientRetryPolicy will route
+        //      the retry to the same write region again, therefore the DIFFERENT_REGION_PREFERRED
+        //      hint causes quicker switch to the same write region which is reasonable
+        if (!shouldRetryLocally(sessionRetryOptions, retryCount.get())) {
+
+            LOGGER.debug("SessionTokenMismatchRetryPolicy not retrying because it a retry attempt for the current region and " +
+                "fallback to a different region is preferred ");
 
             return Mono.just(ShouldRetryResult.noRetry());
         }
@@ -104,5 +121,29 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         }
 
         return backoff;
+    }
+
+    private boolean shouldRetryLocally(SessionRetryOptions sessionRetryOptions, int sessionTokenMismatchRetryAttempts) {
+
+        if (sessionRetryOptions == null) {
+            return true;
+        }
+
+        CosmosRegionSwitchHint regionSwitchHint = ImplementationBridgeHelpers
+            .CosmosSessionRetryOptionsHelper
+            .getCosmosSessionRetryOptionsAccessor()
+            .getRegionSwitchHint(sessionRetryOptions);
+
+        if (regionSwitchHint == null || regionSwitchHint == CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED) {
+            return true;
+        }
+
+        // SessionTokenMismatchRetryPolicy is invoked after 1 attempt on a region
+        // sessionTokenMismatchRetryAttempts increments only after shouldRetry triggers
+        // another attempt on the same region
+        // hence to curb the retry attempts on a region,
+        // compare sessionTokenMismatchRetryAttempts with max retry attempts allowed on the region - 1
+        return !(regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED
+            && sessionTokenMismatchRetryAttempts == (this.maxRetryAttemptsInCurrentRegion.get() - 1));
     }
 }

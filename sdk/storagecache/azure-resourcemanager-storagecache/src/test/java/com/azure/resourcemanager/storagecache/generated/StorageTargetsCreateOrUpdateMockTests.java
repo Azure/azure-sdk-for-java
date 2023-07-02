@@ -40,7 +40,7 @@ public final class StorageTargetsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"junctions\":[],\"targetType\":\"blobNfs\",\"provisioningState\":\"Succeeded\",\"state\":\"Ready\",\"nfs3\":{\"target\":\"ksrpqv\",\"usageModel\":\"zraehtwd\",\"verificationTimer\":1778813982,\"writeBackTimer\":1438579727},\"clfs\":{\"target\":\"byrcdlbhshfwp\"},\"unknown\":{\"attributes\":{}},\"blobNfs\":{\"target\":\"wity\",\"usageModel\":\"evxccedcp\",\"verificationTimer\":586634828,\"writeBackTimer\":684475424},\"allocationPercentage\":167865446},\"location\":\"zxltjcvn\",\"id\":\"tiugcxnav\",\"name\":\"wxqibyq\",\"type\":\"nyowxwlmdjrkvfg\"}";
+            "{\"properties\":{\"junctions\":[],\"targetType\":\"clfs\",\"provisioningState\":\"Succeeded\",\"state\":\"Flushing\",\"nfs3\":{\"target\":\"fxtsgum\",\"usageModel\":\"glikkxwslolb\",\"verificationTimer\":1224144822,\"writeBackTimer\":845097361},\"clfs\":{\"target\":\"vfelfktgplcrpwj\"},\"unknown\":{\"attributes\":{}},\"blobNfs\":{\"target\":\"igbrnjw\",\"usageModel\":\"kpnb\",\"verificationTimer\":1716189852,\"writeBackTimer\":1901897096},\"allocationPercentage\":1268634918},\"location\":\"kagfhsxtt\",\"id\":\"gzxnfaazpxdtnk\",\"name\":\"mkqjj\",\"type\":\"wuenvr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -71,38 +71,38 @@ public final class StorageTargetsCreateOrUpdateMockTests {
         StorageTarget response =
             manager
                 .storageTargets()
-                .define("piyylhalnswhccsp")
-                .withExistingCache("ah", "icslfaoq")
+                .define("gsopbyrqufegxu")
+                .withExistingCache("wjygvjayvblmhvk", "uhbxvvy")
                 .withJunctions(Arrays.asList())
-                .withTargetType(StorageTargetType.UNKNOWN)
-                .withState(OperationalStateType.BUSY)
+                .withTargetType(StorageTargetType.CLFS)
+                .withState(OperationalStateType.SUSPENDED)
                 .withNfs3(
                     new Nfs3Target()
-                        .withTarget("ywuggwoluhcz")
-                        .withUsageModel("emh")
-                        .withVerificationTimer(200585156)
-                        .withWriteBackTimer(1060937316))
-                .withClfs(new ClfsTarget().withTarget("z"))
+                        .withTarget("l")
+                        .withUsageModel("ngitvgbmhrixkwm")
+                        .withVerificationTimer(1594893264)
+                        .withWriteBackTimer(2074654020))
+                .withClfs(new ClfsTarget().withTarget("grhbpn"))
                 .withUnknown(new UnknownTarget().withAttributes(mapOf()))
                 .withBlobNfs(
                     new BlobNfsTarget()
-                        .withTarget("eypqwdxggicccn")
-                        .withUsageModel("huexmk")
-                        .withVerificationTimer(171161135)
-                        .withWriteBackTimer(1054348500))
+                        .withTarget("ccbdre")
+                        .withUsageModel("hcexdrrvqa")
+                        .withVerificationTimer(396764740)
+                        .withWriteBackTimer(1584778168))
                 .create();
 
-        Assertions.assertEquals(StorageTargetType.BLOB_NFS, response.targetType());
-        Assertions.assertEquals(OperationalStateType.READY, response.state());
-        Assertions.assertEquals("ksrpqv", response.nfs3().target());
-        Assertions.assertEquals("zraehtwd", response.nfs3().usageModel());
-        Assertions.assertEquals(1778813982, response.nfs3().verificationTimer());
-        Assertions.assertEquals(1438579727, response.nfs3().writeBackTimer());
-        Assertions.assertEquals("byrcdlbhshfwp", response.clfs().target());
-        Assertions.assertEquals("wity", response.blobNfs().target());
-        Assertions.assertEquals("evxccedcp", response.blobNfs().usageModel());
-        Assertions.assertEquals(586634828, response.blobNfs().verificationTimer());
-        Assertions.assertEquals(684475424, response.blobNfs().writeBackTimer());
+        Assertions.assertEquals(StorageTargetType.CLFS, response.targetType());
+        Assertions.assertEquals(OperationalStateType.FLUSHING, response.state());
+        Assertions.assertEquals("fxtsgum", response.nfs3().target());
+        Assertions.assertEquals("glikkxwslolb", response.nfs3().usageModel());
+        Assertions.assertEquals(1224144822, response.nfs3().verificationTimer());
+        Assertions.assertEquals(845097361, response.nfs3().writeBackTimer());
+        Assertions.assertEquals("vfelfktgplcrpwj", response.clfs().target());
+        Assertions.assertEquals("igbrnjw", response.blobNfs().target());
+        Assertions.assertEquals("kpnb", response.blobNfs().usageModel());
+        Assertions.assertEquals(1716189852, response.blobNfs().verificationTimer());
+        Assertions.assertEquals(1901897096, response.blobNfs().writeBackTimer());
     }
 
     @SuppressWarnings("unchecked")

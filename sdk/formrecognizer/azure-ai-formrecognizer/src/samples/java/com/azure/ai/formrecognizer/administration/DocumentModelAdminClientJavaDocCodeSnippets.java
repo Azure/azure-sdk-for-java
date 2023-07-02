@@ -20,9 +20,11 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Operat
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -42,9 +44,25 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      */
     public void documentModelAdministrationClientInInitialization() {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization
-        DocumentModelAdministrationClient documentModelAdministrationClient =
-            new DocumentModelAdministrationClientBuilder().buildClient();
+        DocumentModelAdministrationClient client = new DocumentModelAdministrationClientBuilder()
+            .endpoint("{endpoint}")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization
+    }
+
+
+    /**
+     * Code snippet for getting sync DocumentModelAdministration client using the AzureKeyCredential authentication.
+     */
+    public void documentModelAdministrationClientKeyCred() {
+        // BEGIN: readme-sample-createDocumentModelAdministrationClient
+        DocumentModelAdministrationClient client =
+            new DocumentModelAdministrationClientBuilder()
+                .credential(new AzureKeyCredential("{key}"))
+                .endpoint("{endpoint}")
+                .buildClient();
+        // END: readme-sample-createDocumentModelAdministrationClient
     }
 
     /**
@@ -113,7 +131,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     public void beginBuildModelWithFileList() {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String
         String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
-        String fileList = "";
+        String fileList = "sample.jsonl";
 
         DocumentModelDetails documentModelDetails
             = documentModelAdministrationClient.beginBuildDocumentModel(blobContainerUrl,

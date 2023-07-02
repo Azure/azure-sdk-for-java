@@ -80,16 +80,16 @@ public final class RenderClientImpl {
         return this.serializerAdapter;
     }
 
-    /** The RenderV2sImpl object to access its operations. */
-    private final RenderV2sImpl renderV2s;
+    /** The RendersImpl object to access its operations. */
+    private final RendersImpl renders;
 
     /**
-     * Gets the RenderV2sImpl object to access its operations.
+     * Gets the RendersImpl object to access its operations.
      *
-     * @return the RenderV2sImpl object.
+     * @return the RendersImpl object.
      */
-    public RenderV2sImpl getRenderV2s() {
-        return this.renderV2s;
+    public RendersImpl getRenders() {
+        return this.renders;
     }
 
     /**
@@ -151,6 +151,6 @@ public final class RenderClientImpl {
         this.clientId = clientId;
         this.host = host;
         this.apiVersion = apiVersion;
-        this.renderV2s = new RenderV2sImpl(this);
+        this.renders = new RendersImpl(this);
     }
 }
