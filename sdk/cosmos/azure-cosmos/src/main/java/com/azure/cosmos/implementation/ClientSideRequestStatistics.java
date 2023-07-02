@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import io.micrometer.core.lang.NonNull;
 
 import java.io.IOException;
 import java.net.URI;
@@ -228,7 +229,11 @@ public class ClientSideRequestStatistics {
         return identifier;
     }
 
-    public void recordAddressResolutionEnd(String identifier, String exceptionMessage) {
+    public void recordAddressResolutionEnd(
+        String identifier,
+        String exceptionMessage,
+        String faultInjectionId,
+        List<String> faultInjectionEvaluationResult) {
         if (StringUtils.isEmpty(identifier)) {
             return;
         }
@@ -248,6 +253,8 @@ public class ClientSideRequestStatistics {
             resolutionStatistics.endTimeUTC = responseTime;
             resolutionStatistics.exceptionMessage = exceptionMessage;
             resolutionStatistics.inflightRequest = false;
+            resolutionStatistics.faultInjectionRuleId = faultInjectionId;
+            resolutionStatistics.faultInjectionEvaluationResults = faultInjectionEvaluationResult;
         }
     }
 
@@ -643,6 +650,10 @@ public class ClientSideRequestStatistics {
         private boolean forceRefresh;
         @JsonSerialize
         private boolean forceCollectionRoutingMapRefresh;
+        @JsonSerialize
+        private String faultInjectionRuleId;
+        @JsonSerialize
+        private List<String> faultInjectionEvaluationResults;
 
         // If one replica return error we start address call in parallel,
         // on other replica  valid response, we end the current user request,
@@ -676,6 +687,14 @@ public class ClientSideRequestStatistics {
 
         public boolean isForceCollectionRoutingMapRefresh() {
             return forceCollectionRoutingMapRefresh;
+        }
+
+        public String getFaultInjectionRuleId() {
+            return faultInjectionRuleId;
+        }
+
+        public List<String> getFaultInjectionEvaluationResults() {
+            return faultInjectionEvaluationResults;
         }
     }
 

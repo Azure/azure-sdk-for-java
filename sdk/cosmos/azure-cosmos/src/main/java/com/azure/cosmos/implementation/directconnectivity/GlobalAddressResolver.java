@@ -54,13 +54,13 @@ public class GlobalAddressResolver implements IAddressResolver {
     private final RxPartitionKeyRangeCache routingMapProvider;
     private final int maxEndpoints;
     private final GatewayServiceConfigurationReader serviceConfigReader;
-    private final GatewayServerErrorInjector gatewayServerErrorInjector;
     final Map<URI, EndpointCache> addressCacheByEndpoint;
     private final boolean tcpConnectionEndpointRediscoveryEnabled;
     private ApiType apiType;
     private HttpClient httpClient;
     private ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
     private ConnectionPolicy connectionPolicy;
+    private GatewayServerErrorInjector gatewayServerErrorInjector;
 
     public GlobalAddressResolver(
         DiagnosticsClientContext diagnosticsClientContext,
@@ -90,7 +90,6 @@ public class GlobalAddressResolver implements IAddressResolver {
         this.maxEndpoints = maxBackupReadEndpoints + 2; // for write and alternate write getEndpoint (during failover)
         this.addressCacheByEndpoint = new ConcurrentHashMap<>();
         this.apiType = apiType;
-        this.gatewayServerErrorInjector = new GatewayServerErrorInjector();
 
         for (URI endpoint : endpointManager.getWriteEndpoints()) {
             this.getOrAddEndpoint(endpoint);
@@ -256,7 +255,17 @@ public class GlobalAddressResolver implements IAddressResolver {
         }
     }
 
-    public void configureFaultInjectorProvider(IFaultInjectorProvider faultInjectorProvider) {
+    public synchronized void configureFaultInjectorProvider(IFaultInjectorProvider faultInjectorProvider, Configs configs) {
+        if (this.gatewayServerErrorInjector == null) {
+            this.gatewayServerErrorInjector = new GatewayServerErrorInjector(configs);
+
+            // setup gatewayServerErrorInjector for existing address cache
+            // For the new ones added later, the gatewayServerErrorInjector will pass through constructor
+            for (EndpointCache endpointCache : this.addressCacheByEndpoint.values()) {
+                endpointCache.addressCache.setGatewayServerErrorInjector(this.gatewayServerErrorInjector);
+            }
+        }
+
         this.gatewayServerErrorInjector.registerServerErrorInjector(faultInjectorProvider.getServerErrorInjector());
     }
 

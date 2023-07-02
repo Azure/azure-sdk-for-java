@@ -153,19 +153,14 @@ public final class FaultInjectionRuleBuilder {
             throw new IllegalArgumentException("STALED_ADDRESSES exception can not be injected for rule with gateway connection type");
         }
 
-        if (this.condition.getOperationType() != null
-            && this.condition.getOperationType() == FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH) {
-            throw new IllegalArgumentException("METADATA_REQUEST_ADDRESS_REFRESH operation type can not be injected for rule with gateway connection type");
-        }
-
         // for metadata request related rule, only CONNECTION_DELAY, RESPONSE_DELAY, TOO_MANY_REQUEST error can be injected
         if (ImplementationBridgeHelpers
                 .FaultInjectionConditionHelper
                 .getFaultInjectionConditionAccessor()
                 .isMetadataOperationType(this.condition)) {
             if (serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.TOO_MANY_REQUEST
-                || serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.RESPONSE_DELAY
-                || serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.CONNECTION_DELAY) {
+                && serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.RESPONSE_DELAY
+                && serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.CONNECTION_DELAY) {
 
                 throw new IllegalArgumentException("Error type " + serverErrorResult.getServerErrorType() + " is not supported for rule with metadata request");
             }

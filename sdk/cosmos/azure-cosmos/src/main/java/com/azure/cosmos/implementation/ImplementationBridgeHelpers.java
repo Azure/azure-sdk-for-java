@@ -734,6 +734,11 @@ public class ImplementationBridgeHelpers {
             void setSamplingRateSnapshot(CosmosDiagnostics cosmosDiagnostics, double samplingRate);
 
             CosmosDiagnostics create(DiagnosticsClientContext clientContext, double samplingRate);
+            void recordAddressResolutionEnd(
+                RxDocumentServiceRequest request,
+                String identifier,
+                String errorMessage,
+                long transportRequestId);
         }
     }
 

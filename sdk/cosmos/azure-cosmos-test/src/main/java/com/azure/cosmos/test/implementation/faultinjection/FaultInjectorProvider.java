@@ -44,7 +44,9 @@ public class FaultInjectorProvider implements IFaultInjectorProvider {
             .flatMap(rule -> this.ruleStore.configureFaultInjectionRule(rule, this.containerNameLink))
             .doOnNext(effectiveRule -> {
                 // Important step: this step will start the connection error injection task
-                this.connectionErrorInjector.accept(effectiveRule);
+                if (this.connectionErrorInjector != null) {
+                    this.connectionErrorInjector.accept(effectiveRule);
+                }
             })
             .then();
     }

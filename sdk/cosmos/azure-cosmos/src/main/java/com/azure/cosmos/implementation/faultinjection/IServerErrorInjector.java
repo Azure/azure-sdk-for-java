@@ -9,7 +9,7 @@ import com.azure.cosmos.implementation.Utils;
 import java.time.Duration;
 
 /***
- * Rntbd server error injector.
+ * Rntbd or gateway server error injector.
  */
 public interface IServerErrorInjector {
 

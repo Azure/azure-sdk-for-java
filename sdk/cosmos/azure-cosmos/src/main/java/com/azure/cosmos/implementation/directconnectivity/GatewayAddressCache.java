@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.JavaStreamUtils;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataDiagnostics;
@@ -106,7 +107,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final ConnectionPolicy connectionPolicy;
     private final boolean replicaAddressValidationEnabled;
     private final Set<Uri.HealthStatus> replicaValidationScopes;
-    private final GatewayServerErrorInjector gatewayServerErrorInjector;
+    private GatewayServerErrorInjector gatewayServerErrorInjector;
 
     public GatewayAddressCache(
         DiagnosticsClientContext clientContext,
@@ -327,6 +328,10 @@ public class GatewayAddressCache implements IAddressCache {
         this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
     }
 
+    public void setGatewayServerErrorInjector(GatewayServerErrorInjector gatewayServerErrorInjector) {
+        this.gatewayServerErrorInjector = gatewayServerErrorInjector;
+    }
+
     public Mono<List<Address>> getServerAddressesViaGatewayAsync(
         RxDocumentServiceRequest request,
         String collectionRid,
@@ -336,6 +341,10 @@ public class GatewayAddressCache implements IAddressCache {
             logger.debug("getServerAddressesViaGatewayAsync collectionRid {}, partitionKeyRangeIds {}", collectionRid,
                 JavaStreamUtils.toString(partitionKeyRangeIds, ","));
         }
+
+        // track address refresh has happened, this is only meant to be used for fault injection validation
+        request.faultInjectionRequestContext.recordAddressRefresh(forceRefresh);
+
         request.setAddressRefresh(true, forceRefresh);
         String entryUrl = PathsHelper.generatePath(ResourceType.Document, collectionRid, true);
         HashMap<String, String> addressQuery = new HashMap<>();
@@ -403,6 +412,12 @@ public class GatewayAddressCache implements IAddressCache {
         Duration responseTimeout= Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, responseTimeout);
 
+        if (tokenProvider.getAuthorizationTokenType() == AuthorizationTokenType.AadToken) {
+            httpResponseMono = tokenProvider
+                .populateAuthorizationHeader(httpHeaders)
+                .then(httpResponseMono);
+        }
+
         if (this.gatewayServerErrorInjector != null) {
             httpResponseMono =
                 this.gatewayServerErrorInjector.injectGatewayErrors(
@@ -410,12 +425,6 @@ public class GatewayAddressCache implements IAddressCache {
                     httpRequest,
                     request,
                     httpResponseMono);
-        }
-
-        if (tokenProvider.getAuthorizationTokenType() == AuthorizationTokenType.AadToken) {
-            httpResponseMono = tokenProvider
-                .populateAuthorizationHeader(httpHeaders)
-                .then(httpResponseMono);
         }
 
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(request, clientContext, httpResponseMono, httpRequest);
@@ -434,11 +443,21 @@ public class GatewayAddressCache implements IAddressCache {
                 if (logger.isDebugEnabled()) {
                     logger.debug("getServerAddressesViaGatewayAsync deserializes result");
                 }
-                logAddressResolutionEnd(request, identifier, null);
+                logAddressResolutionEnd(
+                    request,
+                    identifier,
+                    null,
+                    httpRequest.reactorNettyRequestRecord().getTransportRequestId());
+
                 return dsr.getQueryResponse(null, Address.class);
             }).onErrorResume(throwable -> {
             Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
-            logAddressResolutionEnd(request, identifier, unwrappedException.toString());
+            logAddressResolutionEnd(
+                request,
+                identifier,
+                unwrappedException.toString(),
+                httpRequest.reactorNettyRequestRecord().getTransportRequestId());
+
             if (!(unwrappedException instanceof Exception)) {
                 // fatal error
                 logger.error("Unexpected failure {}", unwrappedException.getMessage(), unwrappedException);
@@ -790,11 +809,21 @@ public class GatewayAddressCache implements IAddressCache {
                     metadataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
                 }
 
-                logAddressResolutionEnd(request, identifier, null);
+                logAddressResolutionEnd(
+                    request,
+                    identifier,
+                    null,
+                    httpRequest.reactorNettyRequestRecord().getTransportRequestId());
+
                 return dsr.getQueryResponse(null, Address.class);
             }).onErrorResume(throwable -> {
             Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
-            logAddressResolutionEnd(request, identifier, unwrappedException.toString());
+            logAddressResolutionEnd(
+                request,
+                identifier,
+                unwrappedException.toString(),
+                httpRequest.reactorNettyRequestRecord().getTransportRequestId());
+
             if (!(unwrappedException instanceof Exception)) {
                 // fatal error
                 logger.error("Unexpected failure {}", unwrappedException.getMessage(), unwrappedException);
@@ -1121,9 +1150,16 @@ public class GatewayAddressCache implements IAddressCache {
         return null;
     }
 
-    private static void logAddressResolutionEnd(RxDocumentServiceRequest request, String identifier, String errorMessage) {
+    private static void logAddressResolutionEnd(
+        RxDocumentServiceRequest request,
+        String identifier,
+        String errorMessage,
+        long transportRequestId) {
         if (request.requestContext.cosmosDiagnostics != null) {
-            BridgeInternal.recordAddressResolutionEnd(request.requestContext.cosmosDiagnostics, identifier, errorMessage);
+            ImplementationBridgeHelpers
+                .CosmosDiagnosticsHelper
+                .getCosmosDiagnosticsAccessor()
+                .recordAddressResolutionEnd(request, identifier, errorMessage, transportRequestId);
         }
     }
 

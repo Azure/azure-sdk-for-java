@@ -122,6 +122,12 @@ public class FaultInjectionRuleProcessor {
             && this.connectionMode != ConnectionMode.DIRECT) {
             throw new IllegalArgumentException("Direct connection type rule is not supported when client is not in direct mode.");
         }
+
+        if (rule.getCondition().getOperationType() != null
+            && rule.getCondition().getOperationType() == FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH
+            && this.connectionMode != ConnectionMode.DIRECT) {
+            throw new IllegalArgumentException("METADATA_REQUEST_ADDRESS_REFRESH operation type is not supported when client is not in direct mode.");
+        }
     }
 
     private Mono<IFaultInjectionRuleInternal> getEffectiveRule(

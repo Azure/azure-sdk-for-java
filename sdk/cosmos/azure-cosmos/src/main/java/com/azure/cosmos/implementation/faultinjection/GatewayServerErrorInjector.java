@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.faultinjection;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.http.HttpRequest;
@@ -22,7 +23,14 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 public class GatewayServerErrorInjector {
 
+    private final Configs configs;
+
     private List<IServerErrorInjector> faultInjectors = new ArrayList<>();
+
+    public GatewayServerErrorInjector(Configs configs) {
+        checkNotNull(configs, "Argument 'configs' can not be null");
+        this.configs = configs;
+    }
 
     public void registerServerErrorInjector(IServerErrorInjector serverErrorInjector) {
         checkNotNull(serverErrorInjector, "Argument 'serverErrorInjector' can not be null");
@@ -50,8 +58,7 @@ public class GatewayServerErrorInjector {
                 }
 
                 if (this.injectGatewayServerConnectionDelay(faultInjectionRequestArgs, delayToBeInjected)) {
-                    // TODO: wire up the connection acquire timeout from configs
-                    Duration connectionAcquireTimeout = Duration.ofSeconds(45);
+                    Duration connectionAcquireTimeout = this.configs.getConnectionAcquireTimeout();
                     if (delayToBeInjected.v.toMillis() >= connectionAcquireTimeout.toMillis()) {
                         return Mono.delay(connectionAcquireTimeout)
                             .then(Mono.error(new ConnectTimeoutException()));
