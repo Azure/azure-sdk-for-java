@@ -21,40 +21,48 @@ public final class ConsoleListTests {
         ConsoleList model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"v\",\"value\":[{\"extendedLocation\":{\"name\":\"slcqxypokkh\",\"type\":\"inqcymczngnbdxxe\"},\"properties\":{\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"nvudbchaqdtvqecr\",\"enabled\":\"True\",\"expiration\":\"2021-07-29T21:58:39Z\",\"privateLinkServiceId\":\"xdtddmflhuytxzv\",\"provisioningState\":\"Canceled\",\"virtualMachineAccessId\":\"pxbannovvoxc\"},\"location\":\"tprwnw\",\"tags\":{\"tlyo\":\"ev\",\"bcrymodizrx\":\"rrrouuxvnsa\",\"pmkmlmvevfx\":\"lobdxna\"},\"id\":\"op\",\"name\":\"hbzxli\",\"type\":\"hrdd\"}]}")
+                    "{\"nextLink\":\"urbuhhlkyqltq\",\"value\":[{\"extendedLocation\":{\"name\":\"gtuwkff\",\"type\":\"jk\"},\"properties\":{\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"idfv\",\"enabled\":\"True\",\"expiration\":\"2021-11-11T21:46:56Z\",\"privateLinkServiceId\":\"n\",\"provisioningState\":\"Canceled\",\"virtualMachineAccessId\":\"tkbu\"},\"location\":\"ogsf\",\"tags\":{\"nsharujtjiqxfzyj\":\"yi\",\"penuy\":\"ttvwkpqh\",\"guaucmfdjwnla\":\"bqeqqekewvnqvcd\",\"ikczvvitacgxmf\":\"punj\"},\"id\":\"sserxhtvsoxhlwn\",\"name\":\"sjgqrsxyp\",\"type\":\"uuuybnchrsziz\"}]}")
                 .toObject(ConsoleList.class);
-        Assertions.assertEquals("v", model.nextLink());
-        Assertions.assertEquals("tprwnw", model.value().get(0).location());
-        Assertions.assertEquals("ev", model.value().get(0).tags().get("tlyo"));
-        Assertions.assertEquals("slcqxypokkh", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("inqcymczngnbdxxe", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("urbuhhlkyqltq", model.nextLink());
+        Assertions.assertEquals("ogsf", model.value().get(0).location());
+        Assertions.assertEquals("yi", model.value().get(0).tags().get("nsharujtjiqxfzyj"));
+        Assertions.assertEquals("gtuwkff", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("jk", model.value().get(0).extendedLocation().type());
         Assertions.assertEquals(ConsoleEnabled.TRUE, model.value().get(0).enabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-29T21:58:39Z"), model.value().get(0).expiration());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-11T21:46:56Z"), model.value().get(0).expiration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConsoleList model =
             new ConsoleList()
-                .withNextLink("v")
+                .withNextLink("urbuhhlkyqltq")
                 .withValue(
                     Arrays
                         .asList(
                             new ConsoleInner()
-                                .withLocation("tprwnw")
-                                .withTags(mapOf("tlyo", "ev", "bcrymodizrx", "rrrouuxvnsa", "pmkmlmvevfx", "lobdxna"))
-                                .withExtendedLocation(
-                                    new ExtendedLocation().withName("slcqxypokkh").withType("inqcymczngnbdxxe"))
+                                .withLocation("ogsf")
+                                .withTags(
+                                    mapOf(
+                                        "nsharujtjiqxfzyj",
+                                        "yi",
+                                        "penuy",
+                                        "ttvwkpqh",
+                                        "guaucmfdjwnla",
+                                        "bqeqqekewvnqvcd",
+                                        "ikczvvitacgxmf",
+                                        "punj"))
+                                .withExtendedLocation(new ExtendedLocation().withName("gtuwkff").withType("jk"))
                                 .withEnabled(ConsoleEnabled.TRUE)
-                                .withExpiration(OffsetDateTime.parse("2021-07-29T21:58:39Z"))));
+                                .withExpiration(OffsetDateTime.parse("2021-11-11T21:46:56Z"))));
         model = BinaryData.fromObject(model).toObject(ConsoleList.class);
-        Assertions.assertEquals("v", model.nextLink());
-        Assertions.assertEquals("tprwnw", model.value().get(0).location());
-        Assertions.assertEquals("ev", model.value().get(0).tags().get("tlyo"));
-        Assertions.assertEquals("slcqxypokkh", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("inqcymczngnbdxxe", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("urbuhhlkyqltq", model.nextLink());
+        Assertions.assertEquals("ogsf", model.value().get(0).location());
+        Assertions.assertEquals("yi", model.value().get(0).tags().get("nsharujtjiqxfzyj"));
+        Assertions.assertEquals("gtuwkff", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("jk", model.value().get(0).extendedLocation().type());
         Assertions.assertEquals(ConsoleEnabled.TRUE, model.value().get(0).enabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-29T21:58:39Z"), model.value().get(0).expiration());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-11T21:46:56Z"), model.value().get(0).expiration());
     }
 
     @SuppressWarnings("unchecked")
