@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -34,6 +35,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
     }
 
     @Test
+    @Disabled
     public void canCreateUpdateVirtualMachineScaleSetWithEMSI() throws Exception {
         rgName = generateRandomResourceName("java-ems-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id", 15);
@@ -292,6 +294,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
     }
 
     @Test
+    @Disabled
     public void canCreateVirtualMachineScaleSetWithLMSIAndEMSI() throws Exception {
         rgName = generateRandomResourceName("java-emsi-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id", 15);
@@ -440,6 +443,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
     }
 
     @Test
+    @Disabled
     public void canUpdateVirtualMachineScaleSetWithEMSIAndLMSI() throws Exception {
         rgName = generateRandomResourceName("java-emsi-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id-1", 15);

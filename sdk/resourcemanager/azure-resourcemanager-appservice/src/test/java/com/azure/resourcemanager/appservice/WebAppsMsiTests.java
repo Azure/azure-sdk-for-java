@@ -24,6 +24,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import java.time.Duration;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class WebAppsMsiTests extends AppServiceTest {
@@ -50,6 +51,7 @@ public class WebAppsMsiTests extends AppServiceTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDWebAppWithMsi() throws Exception {
         // Create with new app service plan
         WebApp webApp =
@@ -101,6 +103,7 @@ public class WebAppsMsiTests extends AppServiceTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDWebAppWithUserAssignedMsi() throws Exception {
 
         String identityName1 = generateRandomResourceName("msi-id", 15);

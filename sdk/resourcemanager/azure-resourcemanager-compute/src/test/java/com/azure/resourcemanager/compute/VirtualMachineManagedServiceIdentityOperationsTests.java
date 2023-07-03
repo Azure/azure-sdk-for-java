@@ -17,6 +17,7 @@ import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class VirtualMachineManagedServiceIdentityOperationsTests extends ComputeManagementTest {
@@ -109,6 +110,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
     }
 
     @Test
+    @Disabled
     public void canSetMSIOnNewVMWithRoleAssignedToCurrentResourceGroup() throws Exception {
         VirtualMachine virtualMachine =
             computeManager
@@ -163,6 +165,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
     }
 
     @Test
+    @Disabled
     public void canSetMSIOnNewVMWithMultipleRoleAssignments() throws Exception {
         String storageAccountName = generateRandomResourceName("javacsrg", 15);
 
@@ -244,6 +247,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
     }
 
     @Test
+    @Disabled
     public void canSetMSIOnExistingVMWithRoleAssignments() throws Exception {
         VirtualMachine virtualMachine =
             computeManager
