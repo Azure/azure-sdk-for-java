@@ -41,17 +41,13 @@ public class MetadataRequestRetryPolicy implements IRetryPolicy {
 
         if (this.request == null) {
             logger.error("onBeforeSendRequest has not been invoked with the MetadataRequestRetryPolicy...");
-            return Mono.just(ShouldRetryResult.error(e));
+            return Mono.error(e);
         }
 
         CosmosException cosmosException = Utils.as(e, CosmosException.class);
 
         if (shouldMarkRegionAsUnavailable(cosmosException)) {
             URI locationEndpointToRoute = request.requestContext.locationEndpointToRoute;
-
-            if (!request.isAddressRefresh()) {
-                return Mono.just(ShouldRetryResult.error(e));
-            }
 
             if (shouldMarkRegionAsUnavailable(cosmosException)) {
                 if (request.isReadOnlyRequest()) {
@@ -62,7 +58,8 @@ public class MetadataRequestRetryPolicy implements IRetryPolicy {
             }
         }
 
-        return Mono.just(ShouldRetryResult.error(e));
+        // This simply bubbles up the error for the downstream retry policy to take care of
+        return Mono.error(e);
     }
 
     @Override

@@ -57,12 +57,12 @@ implements IDocumentQueryExecutionContext<T> {
     protected boolean shouldExecuteQueryRequest;
     private Supplier<String> operationContextTextProvider;
     private final OperationContextAndListenerTuple operationContext;
-    private final AtomicBoolean queryCancellationStatusOnTimeout;
+    private final AtomicBoolean isQueryCancelledOnTimeout;
 
     protected DocumentQueryExecutionContextBase(DiagnosticsClientContext diagnosticsClientContext,
                                                 IDocumentQueryClient client, ResourceType resourceTypeEnum,
                                                 Class<T> resourceType, SqlQuerySpec query, CosmosQueryRequestOptions cosmosQueryRequestOptions, String resourceLink,
-                                                UUID correlatedActivityId, AtomicBoolean queryCancellationStatusOnTimeout) {
+                                                UUID correlatedActivityId, AtomicBoolean isQueryCancelledOnTimeout) {
 
         // TODO: validate args are not null: client and feedOption should not be null
         this.client = client;
@@ -78,7 +78,7 @@ implements IDocumentQueryExecutionContext<T> {
             .CosmosQueryRequestOptionsHelper
             .getCosmosQueryRequestOptionsAccessor()
             .getOperationContext(cosmosQueryRequestOptions);
-        this.queryCancellationStatusOnTimeout = queryCancellationStatusOnTimeout;
+        this.isQueryCancelledOnTimeout = isQueryCancelledOnTimeout;
         this.operationContextTextProvider = () -> {
             String operationContextText = operationContext != null && operationContext.getOperationContext() != null ?
                 operationContext.getOperationContext().toString() : "n/a";
@@ -135,7 +135,7 @@ implements IDocumentQueryExecutionContext<T> {
         request.requestContext.setExcludeRegions( ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
             getCosmosQueryRequestOptionsAccessor().getExcludeRegions(cosmosQueryRequestOptions));
 
-        request.requestContext.setRequestCancellationStatusOnTimeout(this.queryCancellationStatusOnTimeout);
+        request.requestContext.setIsRequestCancelledOnTimeout(this.isQueryCancelledOnTimeout);
         return request;
     }
 
@@ -326,7 +326,7 @@ implements IDocumentQueryExecutionContext<T> {
                 executeQueryRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
             }
 
-            executeQueryRequest.requestContext.setRequestCancellationStatusOnTimeout(this.queryCancellationStatusOnTimeout);
+            executeQueryRequest.requestContext.setIsRequestCancelledOnTimeout(this.isQueryCancelledOnTimeout);
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.QUERY_JSON);
             executeQueryRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(querySpec));
             break;

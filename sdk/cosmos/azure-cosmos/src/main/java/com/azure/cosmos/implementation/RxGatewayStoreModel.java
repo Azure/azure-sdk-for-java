@@ -247,7 +247,11 @@ public class RxGatewayStoreModel implements RxStoreModel {
             }
 
             Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, responseTimeout);
-            return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
+
+            MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(globalEndpointManager);
+            metadataRequestRetryPolicy.onBeforeSendRequest(request);
+
+            return BackoffRetryUtility.executeRetry(() -> toDocumentServiceResponse(httpResponseMono, request, httpRequest), metadataRequestRetryPolicy);
 
         } catch (Exception e) {
             return Mono.error(e);

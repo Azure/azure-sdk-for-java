@@ -86,9 +86,9 @@ public class OrderByDocumentQueryExecutionContext
             OrderbyRowComparer<Document> consumeComparer,
             UUID correlatedActivityId,
             boolean hasSelectValue,
-            final AtomicBoolean queryCancellationStatusOnTimeout) {
+            final AtomicBoolean isQueryCancelledOnTimeout) {
         super(diagnosticsClientContext, client, resourceTypeEnum, Document.class, query, cosmosQueryRequestOptions,
-            resourceLink, rewrittenQuery, correlatedActivityId, hasSelectValue, queryCancellationStatusOnTimeout);
+            resourceLink, rewrittenQuery, correlatedActivityId, hasSelectValue, isQueryCancelledOnTimeout);
         this.consumeComparer = consumeComparer;
         this.tracker = new RequestChargeTracker();
         this.queryMetricMap = new ConcurrentHashMap<>();
@@ -114,7 +114,7 @@ public class OrderByDocumentQueryExecutionContext
                 new OrderbyRowComparer<>(queryInfo.getOrderBy()),
                 initParams.getCorrelatedActivityId(),
                 queryInfo.hasSelectValue(),
-                initParams.getQueryCancellationStatusOnTimeout());
+                initParams.getisQueryCancelledOnTimeout());
 
         context.setTop(initParams.getTop());
 

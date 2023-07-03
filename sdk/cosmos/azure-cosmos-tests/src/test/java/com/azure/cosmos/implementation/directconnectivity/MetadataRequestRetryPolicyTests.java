@@ -109,11 +109,21 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             // 1. operation to fault inject on
             // 2. operation type corresponding to the fault injection operation type
             // 3. a boolean representing whether an operation is a write operation
-            {FaultInjectionOperationType.READ_ITEM, OperationType.Read, false},
-            {FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, true},
-            {FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace, true},
-            {FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert, true},
-            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, false}
+            {FaultInjectionOperationType.READ_ITEM, OperationType.Read, FaultInjectionServerErrorType.CONNECTION_DELAY, false},
+            {FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, FaultInjectionServerErrorType.CONNECTION_DELAY, true},
+            {FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace, FaultInjectionServerErrorType.CONNECTION_DELAY, true},
+            {FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert, FaultInjectionServerErrorType.CONNECTION_DELAY, true},
+            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, FaultInjectionServerErrorType.CONNECTION_DELAY, false},
+            {FaultInjectionOperationType.READ_ITEM, OperationType.Read, FaultInjectionServerErrorType.GONE, false},
+            {FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, FaultInjectionServerErrorType.GONE, true},
+            {FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace, FaultInjectionServerErrorType.GONE, true},
+            {FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert, FaultInjectionServerErrorType.GONE, true},
+            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, FaultInjectionServerErrorType.GONE, false},
+            {FaultInjectionOperationType.READ_ITEM, OperationType.Read, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, false},
+            {FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true},
+            {FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true},
+            {FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true},
+            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, false}
 //            {FaultInjectionOperationType.DELETE_ITEM, OperationType.Delete, true},
 //            {FaultInjectionOperationType.PATCH_ITEM, OperationType.Patch, true}
         };
@@ -133,6 +143,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
     public void forceBackgroundAddressRefresh_onConnectionTimeoutAndRequestCancellation_test(
         FaultInjectionOperationType faultInjectionOperationType,
         OperationType operationType,
+        FaultInjectionServerErrorType faultInjectionServerErrorType,
         boolean isWrite) {
 
         // Get preferred regions
@@ -141,13 +152,15 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
 
         DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
 
-        directConnectionConfig.setConnectTimeout(Duration.ofSeconds(3));
-        directConnectionConfig.setIdleConnectionTimeout(Duration.ofSeconds(1));
+        if (faultInjectionServerErrorType == FaultInjectionServerErrorType.CONNECTION_DELAY) {
+            directConnectionConfig.setConnectTimeout(Duration.ofSeconds(3));
+            directConnectionConfig.setIdleConnectionTimeout(Duration.ofSeconds(1));
+        }
 
         CosmosAsyncClient client = null;
         CosmosAsyncDatabase database = null;
         CosmosAsyncContainer container = null;
-        FaultInjectionRule connectionDelayRule = null;
+        FaultInjectionRule faultInjectionRule = null;
 
         try {
 
@@ -199,14 +212,22 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                 .operationType(faultInjectionOperationType)
                 .build();
 
-            FaultInjectionServerErrorResult connectionDelayErrorResult = FaultInjectionResultBuilders
-                .getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
-                .delay(Duration.ofSeconds(45))
-                .build();
+            FaultInjectionServerErrorResult faultInjectionServerErrorResult;
 
-            connectionDelayRule = new FaultInjectionRuleBuilder("connection-delay-" + UUID.randomUUID())
+            if (faultInjectionServerErrorType == FaultInjectionServerErrorType.CONNECTION_DELAY) {
+                faultInjectionServerErrorResult = FaultInjectionResultBuilders
+                    .getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
+                    .delay(Duration.ofSeconds(45))
+                    .build();
+            } else {
+                faultInjectionServerErrorResult = FaultInjectionResultBuilders
+                    .getResultBuilder(faultInjectionServerErrorType)
+                    .build();
+            }
+
+            faultInjectionRule = new FaultInjectionRuleBuilder("connection-delay-" + UUID.randomUUID())
                 .condition(faultInjectionCondition)
-                .result(connectionDelayErrorResult)
+                .result(faultInjectionServerErrorResult)
                 .duration(Duration.ofMinutes(10))
                 .build();
 
@@ -220,18 +241,18 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                 container,
                 testItem,
                 operationType,
-                connectionDelayRule,
+                faultInjectionRule,
                 httpClientWrapperByRegionMap.get(faultInjectedRegion),
                 cosmosEndToEndOperationLatencyPolicyConfigForFaultyOperation);
 
             // allow enough time for operation and connection establishment to timeout
             Thread.sleep(5000);
 
-            assertThat(connectionDelayRule.getHitCount()).isGreaterThanOrEqualTo(1);
+            assertThat(faultInjectionRule.getHitCount()).isGreaterThanOrEqualTo(1);
 
             // track if force address refresh calls have been made
             assertThat(httpClientWrapperByRegionMap.get(faultInjectedRegion).capturedRequests).isNotNull();
-            assertThat(httpClientWrapperByRegionMap.get(faultInjectedRegion).capturedRequests.size()).isBetween(1, (int) connectionDelayRule.getHitCount());
+            assertThat(httpClientWrapperByRegionMap.get(faultInjectedRegion).capturedRequests.size()).isBetween(1, (int) faultInjectionRule.getHitCount());
         } catch (InterruptedException e) {
             logger.error("InterruptedException thrown...");
         } finally {

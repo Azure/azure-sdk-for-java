@@ -71,9 +71,9 @@ public class ParallelDocumentQueryExecutionContext<T>
         String rewrittenQuery,
         UUID correlatedActivityId,
         boolean shouldUnwrapSelectValue,
-        final AtomicBoolean queryCancellationStatusOnTimeout) {
+        final AtomicBoolean isQueryCancelledOnTimeout) {
         super(diagnosticsClientContext, client, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink,
-                rewrittenQuery, correlatedActivityId, shouldUnwrapSelectValue, queryCancellationStatusOnTimeout);
+                rewrittenQuery, correlatedActivityId, shouldUnwrapSelectValue, isQueryCancelledOnTimeout);
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
         partitionKeyRangeToContinuationTokenMap = new HashMap<>();
     }
@@ -101,7 +101,7 @@ public class ParallelDocumentQueryExecutionContext<T>
                         || queryInfo.hasGroupBy()
                         || queryInfo.hasDCount()
                         || queryInfo.hasDistinct()),
-                initParams.getQueryCancellationStatusOnTimeout());
+                initParams.getisQueryCancelledOnTimeout());
         context.setTop(initParams.getTop());
 
         try {
@@ -123,7 +123,7 @@ public class ParallelDocumentQueryExecutionContext<T>
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap,
         CosmosQueryRequestOptions cosmosQueryRequestOptions, String collectionRid, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum,
-        final AtomicBoolean queryCancellationStatusOnTimeout) {
+        final AtomicBoolean isQueryCancelledOnTimeout) {
 
         ParallelDocumentQueryExecutionContext<T> context = new ParallelDocumentQueryExecutionContext<>(diagnosticsClientContext,
                                                                                                         queryClient,
@@ -135,7 +135,7 @@ public class ParallelDocumentQueryExecutionContext<T>
                                                                                                         sqlQuery.getQueryText(),
                                                                                                         activityId,
                                                                                                         false,
-                                                                                                        queryCancellationStatusOnTimeout);
+                                                                                                        isQueryCancelledOnTimeout);
 
         context
             .initializeReadMany(rangeQueryMap, cosmosQueryRequestOptions, collectionRid);

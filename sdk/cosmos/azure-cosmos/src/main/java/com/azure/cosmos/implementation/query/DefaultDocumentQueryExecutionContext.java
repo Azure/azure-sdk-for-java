@@ -63,7 +63,7 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
 
     public DefaultDocumentQueryExecutionContext(DiagnosticsClientContext diagnosticsClientContext, IDocumentQueryClient client, ResourceType resourceTypeEnum,
                                                 Class<T> resourceType, SqlQuerySpec query, CosmosQueryRequestOptions cosmosQueryRequestOptions, String resourceLink,
-                                                UUID correlatedActivityId, final AtomicBoolean queryCancellationStatusOnTimeout) {
+                                                UUID correlatedActivityId, final AtomicBoolean isQueryCancelledOnTimeout) {
 
         super(diagnosticsClientContext, client,
                 resourceTypeEnum,
@@ -72,7 +72,7 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
                 cosmosQueryRequestOptions,
                 resourceLink,
                 correlatedActivityId,
-                queryCancellationStatusOnTimeout);
+                isQueryCancelledOnTimeout);
 
         this.fetchSchedulingMetrics = new SchedulingStopwatch();
         this.fetchSchedulingMetrics.ready();

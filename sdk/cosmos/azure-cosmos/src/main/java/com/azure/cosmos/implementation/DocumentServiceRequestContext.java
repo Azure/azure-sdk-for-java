@@ -47,7 +47,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile boolean replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
     private final Set<Uri> failedEndpoints = ConcurrentHashMap.newKeySet();
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
-    private volatile AtomicBoolean requestCancellationStatusOnTimeout = null;
+    private volatile AtomicBoolean isRequestCancelledOnTimeout = null;
     private volatile List<String> excludeRegions;
 
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
@@ -145,12 +145,12 @@ public class DocumentServiceRequestContext implements Cloneable {
         this.endToEndOperationLatencyPolicyConfig = endToEndOperationLatencyPolicyConfig;
     }
 
-    public void setRequestCancellationStatusOnTimeout(AtomicBoolean requestCancellationStatusOnTimeout) {
-        this.requestCancellationStatusOnTimeout = requestCancellationStatusOnTimeout;
+    public void setIsRequestCancelledOnTimeout(AtomicBoolean isRequestCancelledOnTimeout) {
+        this.isRequestCancelledOnTimeout = isRequestCancelledOnTimeout;
     }
 
-    public AtomicBoolean getRequestCancellationStatusOnTimeout() {
-        return this.requestCancellationStatusOnTimeout;
+    public AtomicBoolean isRequestCancelledOnTimeout() {
+        return this.isRequestCancelledOnTimeout;
     }
 
     public List<String> getExcludeRegions() {

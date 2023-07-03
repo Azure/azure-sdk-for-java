@@ -276,7 +276,7 @@ public class DocumentQueryExecutionContextFactory {
         UUID correlatedActivityId,
         boolean queryPlanCachingEnabled,
         Map<String, PartitionedQueryExecutionInfo> queryPlanCache,
-        final AtomicBoolean queryCancellationStatusOnTimeout) {
+        final AtomicBoolean isQueryCancelledOnTimeout) {
 
         // return proxy
         Flux<Utils.ValueHolder<DocumentCollection>> collectionObs = Flux.just(new Utils.ValueHolder<>(null));
@@ -294,7 +294,7 @@ public class DocumentQueryExecutionContextFactory {
             cosmosQueryRequestOptions,
             resourceLink,
             correlatedActivityId,
-            queryCancellationStatusOnTimeout);
+            isQueryCancelledOnTimeout);
 
         if ((ResourceType.Document != resourceTypeEnum && (ResourceType.Conflict != resourceTypeEnum))) {
             return Flux.just(queryExecutionContext);
@@ -325,7 +325,7 @@ public class DocumentQueryExecutionContextFactory {
                     queryPlan.getLeft(),
                     collectionValueHolder.v,
                     correlatedActivityId,
-                    queryCancellationStatusOnTimeout)
+                    isQueryCancelledOnTimeout)
                     .single());
         }).flux();
     }
@@ -343,7 +343,7 @@ public class DocumentQueryExecutionContextFactory {
             List<Range<String>> targetRanges,
             DocumentCollection collection,
             UUID correlatedActivityId,
-            final AtomicBoolean queryCancellationStatusOnTimeout) {
+            final AtomicBoolean isQueryCancelledOnTimeout) {
 
         int initialPageSize = Utils.getValueOrDefault(
             ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(cosmosQueryRequestOptions),
@@ -410,7 +410,7 @@ public class DocumentQueryExecutionContextFactory {
             cosmosQueryRequestOptions,
             correlatedActivityId,
             feedRangeEpks,
-            queryCancellationStatusOnTimeout);
+            isQueryCancelledOnTimeout);
 
         return PipelinedQueryExecutionContextBase.createAsync(
             diagnosticsClientContext, client, documentQueryParams, resourceType, collection);
@@ -421,7 +421,7 @@ public class DocumentQueryExecutionContextFactory {
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, CosmosQueryRequestOptions cosmosQueryRequestOptions,
         String resourceId, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum,
-        final AtomicBoolean queryCancellationStatusOnTimeout) {
+        final AtomicBoolean isQueryCancelledOnTimeout) {
 
         return PipelinedQueryExecutionContext.createReadManyAsync(
             diagnosticsClientContext,
@@ -434,6 +434,6 @@ public class DocumentQueryExecutionContextFactory {
             activityId,
             klass,
             resourceTypeEnum,
-            queryCancellationStatusOnTimeout);
+            isQueryCancelledOnTimeout);
     }
 }

@@ -26,7 +26,7 @@ public class PipelinedDocumentQueryParams<T> {
     private CosmosQueryRequestOptions cosmosQueryRequestOptions;
     private final QueryInfo queryInfo;
     private final List<FeedRangeEpkImpl> feedRanges;
-    private final AtomicBoolean queryCancellationStatusOnTimeout;
+    private final AtomicBoolean isQueryCancelledOnTimeout;
 
     public PipelinedDocumentQueryParams(
         ResourceType resourceTypeEnum,
@@ -41,7 +41,7 @@ public class PipelinedDocumentQueryParams<T> {
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
         UUID correlatedActivityId,
         List<FeedRangeEpkImpl> feedRanges,
-        final AtomicBoolean queryCancellationStatusOnTimeout) {
+        final AtomicBoolean isQueryCancelledOnTimeout) {
 
         this.resourceTypeEnum = resourceTypeEnum;
         this.resourceType = resourceType;
@@ -55,7 +55,7 @@ public class PipelinedDocumentQueryParams<T> {
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
         this.correlatedActivityId = correlatedActivityId;
         this.feedRanges = feedRanges;
-        this.queryCancellationStatusOnTimeout = queryCancellationStatusOnTimeout;
+        this.isQueryCancelledOnTimeout = isQueryCancelledOnTimeout;
     }
 
     public int getTop() {
@@ -118,8 +118,8 @@ public class PipelinedDocumentQueryParams<T> {
         return feedRanges;
     }
 
-    public AtomicBoolean getQueryCancellationStatusOnTimeout() {
-        return queryCancellationStatusOnTimeout;
+    public AtomicBoolean getisQueryCancelledOnTimeout() {
+        return isQueryCancelledOnTimeout;
     }
 
     public <TNew> PipelinedDocumentQueryParams<TNew> convertGenericType(Class<TNew> tNew) {
@@ -136,6 +136,6 @@ public class PipelinedDocumentQueryParams<T> {
             this.cosmosQueryRequestOptions,
             this.correlatedActivityId,
             this.feedRanges,
-            this.queryCancellationStatusOnTimeout);
+            this.isQueryCancelledOnTimeout);
     }
 }

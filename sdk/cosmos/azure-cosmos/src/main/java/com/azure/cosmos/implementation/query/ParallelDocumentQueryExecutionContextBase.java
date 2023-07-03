@@ -46,8 +46,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                                                         IDocumentQueryClient client,
                                                         ResourceType resourceTypeEnum, Class<T> resourceType,
                                                         SqlQuerySpec query, CosmosQueryRequestOptions cosmosQueryRequestOptions, String resourceLink, String rewrittenQuery,
-                                                        UUID correlatedActivityId, boolean shouldUnwrapSelectValue, AtomicBoolean queryCancellationStatusOnTimeout) {
-        super(diagnosticsClientContext, client, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink, correlatedActivityId, queryCancellationStatusOnTimeout);
+                                                        UUID correlatedActivityId, boolean shouldUnwrapSelectValue, AtomicBoolean isQueryCancelledOnTimeout) {
+        super(diagnosticsClientContext, client, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink, correlatedActivityId, isQueryCancelledOnTimeout);
 
         this.factoryMethod =  DocumentQueryExecutionContextBase.getEffectiveFactoryMethod(
             this.cosmosQueryRequestOptions, shouldUnwrapSelectValue, resourceType);

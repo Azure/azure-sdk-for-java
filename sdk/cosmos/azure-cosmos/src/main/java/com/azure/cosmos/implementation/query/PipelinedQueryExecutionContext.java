@@ -98,7 +98,7 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, CosmosQueryRequestOptions cosmosQueryRequestOptions,
         String resourceId, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum,
-        final AtomicBoolean queryCancellationStatusOnTimeout) {
+        final AtomicBoolean isQueryCancelledOnTimeout) {
 
         Flux<IDocumentQueryExecutionComponent<T>> documentQueryExecutionComponentFlux =
             ParallelDocumentQueryExecutionContext.createReadManyQueryAsync(diagnosticsClientContext, queryClient,
@@ -107,7 +107,7 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
                 cosmosQueryRequestOptions, resourceId,
                 collectionLink, activityId, klass,
                 resourceTypeEnum,
-                queryCancellationStatusOnTimeout);
+                isQueryCancelledOnTimeout);
 
         final Function<JsonNode, T> factoryMethod = DocumentQueryExecutionContextBase.getEffectiveFactoryMethod(
             cosmosQueryRequestOptions, false, klass);

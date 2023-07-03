@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
-import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -170,22 +169,26 @@ public class RntbdConnectionStateListener {
             return;
         }
 
-        if (request.requestContext.getRequestCancellationStatusOnTimeout() == null) {
+        if (request.requestContext.isRequestCancelledOnTimeout() == null) {
             return;
         }
 
-        AtomicBoolean requestCancellationStatusOnTimeout = request.requestContext.getRequestCancellationStatusOnTimeout();
+        AtomicBoolean isRequestCancelledOnTimeout = request.requestContext.isRequestCancelledOnTimeout();
         final boolean forceAddressRefresh = request.requestContext.forceRefreshAddressCache;
+        final boolean performedBackgroundAddressRefresh = request.requestContext.performedBackgroundAddressRefresh;
 
-        if (this.forceBackgroundAddressRefreshInProgress.compareAndSet(false, true) &&
-            requestCancellationStatusOnTimeout.get()) {
-            // kickstart background address refresh
-            logger.debug("background address refresh started from RntbdConnectionStateListener");
+        if (this.forceBackgroundAddressRefreshInProgress.compareAndSet(false, true)
+            && isRequestCancelledOnTimeout.get()
+            && performedBackgroundAddressRefresh) {
             this.addressSelector
                 .resolveAddressesAsync(request, forceAddressRefresh)
                 .subscribeOn(Schedulers.boundedElastic())
+                .doOnSubscribe(ignore -> {
+                    logger.debug("Background address refresh started from RntbdConnectionStateListener...");
+                })
                 .doFinally(signalType -> {
                     this.forceBackgroundAddressRefreshInProgress.compareAndSet(true, false);
+                    request.requestContext.performedBackgroundAddressRefresh = true;
                 })
                 .subscribe();
         }
