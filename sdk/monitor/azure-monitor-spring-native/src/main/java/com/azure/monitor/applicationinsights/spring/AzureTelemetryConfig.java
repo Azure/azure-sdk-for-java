@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import io.opentelemetry.api.logs.GlobalLoggerProvider;
 import io.opentelemetry.sdk.logs.SdkLoggerProvider;
+import io.opentelemetry.sdk.logs.export.BatchLogRecordProcessor;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.logs.export.SimpleLogRecordProcessor;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
@@ -89,10 +90,11 @@ public class AzureTelemetryConfig {
 
     private void initOTelLogger(LogRecordExporter logRecordExporter) {
         if (azureMonitorExporterBuilderOpt.isPresent()) {
+            BatchLogRecordProcessor batchLogRecordProcessor = BatchLogRecordProcessor.builder(logRecordExporter).build();
             SdkLoggerProvider loggerProvider =
-                    SdkLoggerProvider.builder()
-                            .addLogRecordProcessor(SimpleLogRecordProcessor.create(logRecordExporter))
-                            .build();
+                SdkLoggerProvider.builder()
+                    .addLogRecordProcessor(batchLogRecordProcessor)
+                    .build();
             GlobalLoggerProvider.set(loggerProvider);
         }
     }
