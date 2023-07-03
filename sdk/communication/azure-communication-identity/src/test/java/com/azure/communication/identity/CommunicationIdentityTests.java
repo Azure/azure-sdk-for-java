@@ -37,7 +37,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @Test
     public void createIdentityClientUsingConnectionString() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingConnectionString(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilderUsingConnectionString(buildSyncAssertingClient(httpClient));
         client = setupClient(builder, "createIdentityClientUsingConnectionStringSync");
         assertNotNull(client);
 
