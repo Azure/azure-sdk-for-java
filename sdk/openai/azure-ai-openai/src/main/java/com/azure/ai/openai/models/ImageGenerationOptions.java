@@ -130,4 +130,36 @@ public final class ImageGenerationOptions {
         this.user = user;
         return this;
     }
+
+    /*
+     * The format in which image generation response items should be presented.
+     * Azure OpenAI only supports URL response items.
+     */
+    @Generated
+    @JsonProperty(value = "response_format")
+    private ImageGenerationResponseFormat responseFormat;
+
+    /**
+     * Get the responseFormat property: The format in which image generation response items should be presented. Azure
+     * OpenAI only supports URL response items.
+     *
+     * @return the responseFormat value.
+     */
+    @Generated
+    public ImageGenerationResponseFormat getResponseFormat() {
+        return this.responseFormat;
+    }
+
+    /**
+     * Set the responseFormat property: The format in which image generation response items should be presented. Azure
+     * OpenAI only supports URL response items.
+     *
+     * @param responseFormat the responseFormat value to set.
+     * @return the ImageGenerationOptions object itself.
+     */
+    @Generated
+    public ImageGenerationOptions setResponseFormat(ImageGenerationResponseFormat responseFormat) {
+        this.responseFormat = responseFormat;
+        return this;
+    }
 }

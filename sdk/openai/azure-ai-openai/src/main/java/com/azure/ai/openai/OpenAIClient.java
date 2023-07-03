@@ -472,51 +472,6 @@ public final class OpenAIClient {
     }
 
     /**
-     * Returns the status of the images operation.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     created: long (Required)
-     *     expires: Long (Optional)
-     *     result (Optional): {
-     *         created: long (Required)
-     *         data: DataModelBase (Required)
-     *     }
-     *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param operationId .
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a polling status update or final response payload for an image operation along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getAzureBatchImageGenerationOperationStatusWithResponse(
-            String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.getAzureBatchImageGenerationOperationStatusWithResponse(operationId, requestOptions);
-    }
-
-    /**
      * Starts the generation of a batch of images from a text caption.
      *
      * <p><strong>Request Body Schema</strong>
