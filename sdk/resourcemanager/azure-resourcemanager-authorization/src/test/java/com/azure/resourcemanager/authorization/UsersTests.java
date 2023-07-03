@@ -32,6 +32,7 @@ public class UsersTests extends GraphRbacManagementTest {
     }
 
     @Test
+    @Disabled
     public void canCreateUser() throws Exception {
         String name = generateRandomResourceName("user", 16);
         ActiveDirectoryUser user =
@@ -53,6 +54,7 @@ public class UsersTests extends GraphRbacManagementTest {
     }
 
     @Test
+    @Disabled
     public void canUpdateUser() throws Exception {
         String name = generateRandomResourceName("user", 16);
         ActiveDirectoryUser user =

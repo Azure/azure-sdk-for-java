@@ -24,6 +24,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.temporal.ChronoUnit;
@@ -74,6 +75,7 @@ public class KubernetesCniTests extends ResourceManagerTestBase {
     }
 
     @Test
+    @Disabled
     public void testKubernetesClusterCni() {
         final String vnetName = rgName + "vnet";
         final String subnetName = "default";

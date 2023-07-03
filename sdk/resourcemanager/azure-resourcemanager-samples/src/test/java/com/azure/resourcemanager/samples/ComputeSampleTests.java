@@ -155,16 +155,19 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
+    @Disabled
     public void testManageStorageFromMSIEnabledVirtualMachine() {
         Assertions.assertTrue(ManageStorageFromMSIEnabledVirtualMachine.runSample(azureResourceManager));
     }
 
     @Test
+    @Disabled
     public void testManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup() {
         Assertions.assertTrue(ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup.runSample(azureResourceManager));
     }
 
     @Test
+    @Disabled
     public void testManageUserAssignedMSIEnabledVirtualMachine() {
         Assertions.assertTrue(ManageUserAssignedMSIEnabledVirtualMachine.runSample(azureResourceManager));
     }

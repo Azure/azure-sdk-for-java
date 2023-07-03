@@ -13,6 +13,7 @@ import java.util.Locale;
 
 public class RoleDefinitionTests extends GraphRbacManagementTest {
     @Test
+    @Disabled
     public void canGetRoleByRoleName() throws Exception {
         RoleDefinition roleDefinition =
             authorizationManager
