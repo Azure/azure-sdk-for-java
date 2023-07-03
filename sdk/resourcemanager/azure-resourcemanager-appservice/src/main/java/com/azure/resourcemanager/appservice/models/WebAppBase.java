@@ -945,9 +945,10 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
         /** The stage of web app definition allowing to configure container size. */
         interface WithContainerSize<FluentT> {
             /**
-             * Specifies the container size for the web app.
+             * Specifies the the amount of memory allocated to each instance of the function app, measured in mebibytes.
              *
-             * @param containerSize container size
+             * @param containerSize container size, possible values: 128, 192, 256, 320, 384, 448, 512, 576, 640, 704,
+             *                      768, 832, 896, 960, 1024, 1088, 1152, 1216, 1280, 1344, 1408, 1472, 1536, etc
              * @return the next stage of the definition
              */
             WithCreate<FluentT> withContainerSize(int containerSize);
@@ -1669,9 +1670,10 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
         /** The stage of web app update allowing to configure container size. */
         interface WithContainerSize<FluentT> {
             /**
-             * Specifies the container size for the web app.
+             * Specifies the the amount of memory allocated to each instance of the function app, measured in mebibytes.
              *
-             * @param containerSize container size
+             * @param containerSize container size, possible values: 128, 192, 256, 320, 384, 448, 512, 576, 640, 704,
+             *                      768, 832, 896, 960, 1024, 1088, 1152, 1216, 1280, 1344, 1408, 1472, 1536, etc
              * @return the next stage of the update
              */
             Update<FluentT> withContainerSize(int containerSize);

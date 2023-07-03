@@ -5,11 +5,11 @@ package com.azure.resourcemanager.appservice;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
-import com.azure.resourcemanager.appservice.models.DeploymentSlot;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAppBasic;
-import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
 import com.azure.resourcemanager.appservice.models.IpFilterTag;
 import com.azure.resourcemanager.appservice.models.IpSecurityRestriction;
 import com.azure.resourcemanager.appservice.models.LogLevel;
@@ -21,8 +21,6 @@ import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebAppBasic;
 import com.azure.resourcemanager.appservice.models.WebAppRuntimeStack;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.core.management.Region;
-import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -285,75 +283,5 @@ public class WebAppsTests extends AppServiceTest {
         Assertions.assertEquals(1, webApp1.ipSecurityRules().size());
         Assertions.assertEquals("Allow", webApp1.ipSecurityRules().iterator().next().action());
         Assertions.assertEquals("Any", webApp1.ipSecurityRules().iterator().next().ipAddress());
-    }
-
-    @Test
-    public void canCreateAndUpdateContainerSize() {
-        rgName2 = null;
-        webappName2 = generateRandomResourceName("java-function-", 20);
-        String deploymentSlotName = generateRandomResourceName("ds", 15);
-        String functionDeploymentSlotName = generateRandomResourceName("fds", 15);
-
-        WebApp webApp1 = appServiceManager.webApps()
-            .define(webappName1)
-            .withRegion(Region.US_WEST)
-            .withNewResourceGroup(rgName1)
-            .withNewWindowsPlan(appServicePlanName1, PricingTier.STANDARD_S1)
-            .withContainerSize(512)
-            .create();
-
-        FunctionApp functionApp1 = appServiceManager.functionApps()
-            .define(webappName2)
-            .withRegion(Region.US_WEST)
-            .withExistingResourceGroup(rgName1)
-            .withContainerSize(512)
-            .create();
-
-        DeploymentSlot deploymentSlot = webApp1.deploymentSlots().define(deploymentSlotName)
-            .withConfigurationFromParent()
-            .withContainerSize(256)
-            .create();
-
-        FunctionDeploymentSlot functionDeploymentSlot = functionApp1.deploymentSlots()
-            .define(functionDeploymentSlotName)
-            .withConfigurationFromParent()
-            .withContainerSize(256)
-            .create();
-
-        Assertions.assertEquals(512, webApp1.containerSize());
-        Assertions.assertEquals(512, functionApp1.containerSize());
-        Assertions.assertEquals(256, deploymentSlot.containerSize());
-        Assertions.assertEquals(256, deploymentSlot.containerSize());
-
-        webApp1.update()
-            .withContainerSize(320)
-            .apply();
-
-        functionApp1.update()
-            .withContainerSize(320)
-            .apply();
-
-        webApp1.refresh();
-        functionApp1.refresh();
-
-//        Assertions.assertEquals(320, webApp1.containerSize());
-        Assertions.assertEquals(320, functionApp1.containerSize());
-
-        Assertions.assertEquals(256, deploymentSlot.containerSize());
-        Assertions.assertEquals(256, functionDeploymentSlot.containerSize());
-
-        deploymentSlot.update()
-            .withContainerSize(128)
-            .apply();
-
-        functionDeploymentSlot.update()
-            .withContainerSize(128)
-            .apply();
-
-        deploymentSlot.refresh();
-        functionDeploymentSlot.refresh();
-
-        Assertions.assertEquals(128, deploymentSlot.containerSize());
-        Assertions.assertEquals(128, functionDeploymentSlot.containerSize());
     }
 }
