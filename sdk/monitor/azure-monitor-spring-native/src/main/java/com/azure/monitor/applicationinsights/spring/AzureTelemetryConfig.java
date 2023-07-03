@@ -31,10 +31,18 @@ public class AzureTelemetryConfig {
     public AzureTelemetryConfig(@Value("${applicationinsights.connection.string:}") String connectionStringSysProp, AzureTelemetryActivation azureTelemetryActivation, ObjectProvider<HttpPipeline> httpPipeline) {
         if (azureTelemetryActivation.isTrue()) {
             this.azureMonitorExporterBuilderOpt = createAzureMonitorExporterBuilder(connectionStringSysProp, httpPipeline);
+            if (!isNativeRuntimeExecution()) {
+                LOGGER.warning("You are using Application Insights for Spring in a non-native GraalVM runtime environment. We recommend using the Application Insights Java agent.");
+            }
         } else {
-            LOGGER.info("Application Insights for Spring native is disabled for a non-native image runtime environment. We recommend using the Application Insights Java agent.");
             azureMonitorExporterBuilderOpt = Optional.empty();
         }
+
+    }
+
+    private static boolean isNativeRuntimeExecution() {
+        String imageCode = System.getProperty("org.graalvm.nativeimage.imagecode");
+        return imageCode != null;
     }
 
     private Optional<AzureMonitorExporterBuilder> createAzureMonitorExporterBuilder(String connectionStringSysProp, ObjectProvider<HttpPipeline> httpPipeline) {
@@ -42,12 +50,10 @@ public class AzureTelemetryConfig {
         if (connectionString.isPresent()) {
             try {
                 AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder().connectionString(connectionString.get());
-
                 HttpPipeline providedHttpPipeline = httpPipeline.getIfAvailable();
                 if (providedHttpPipeline != null) {
                     azureMonitorExporterBuilder = azureMonitorExporterBuilder.httpPipeline(providedHttpPipeline);
                 }
-
                 return Optional.of(azureMonitorExporterBuilder);
             } catch (IllegalArgumentException illegalArgumentException) {
                 String errorMessage = illegalArgumentException.getMessage();

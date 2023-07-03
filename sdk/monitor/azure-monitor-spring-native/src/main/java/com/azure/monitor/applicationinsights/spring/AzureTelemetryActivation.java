@@ -7,13 +7,9 @@ public final class AzureTelemetryActivation {
 
     private final boolean activated;
 
-    public AzureTelemetryActivation(boolean enableEvenWithNonNative) {
-        this.activated = isNativeRuntimeExecution() || enableEvenWithNonNative;
-    }
-
-    private static boolean isNativeRuntimeExecution() {
-        String imageCode = System.getProperty("org.graalvm.nativeimage.imagecode");
-        return imageCode != null;
+    public AzureTelemetryActivation() {
+        this.activated = true; // We leave the AzureTelemetryActivation class because it could be used to provide the ability
+        // to disable the starter features
     }
 
     public boolean isTrue() {

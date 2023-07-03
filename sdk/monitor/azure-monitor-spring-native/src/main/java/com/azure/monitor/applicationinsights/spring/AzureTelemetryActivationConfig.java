@@ -3,7 +3,6 @@
 
 package com.azure.monitor.applicationinsights.spring;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 public class AzureTelemetryActivationConfig {
 
     @Bean
-    public AzureTelemetryActivation azureTelemetryActivation(@Value("${applicationinsights.native.spring.non-native.enabled:}") boolean enableEvenWithNonNative) {
-        return new AzureTelemetryActivation(enableEvenWithNonNative);
+    public AzureTelemetryActivation azureTelemetryActivation() {
+        return new AzureTelemetryActivation();
     }
 
 

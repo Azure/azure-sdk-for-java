@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = {Application.class, TelemetrySpringNativeTest.TestConfiguration.class}
     , webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = {"applicationinsights.connection.string=InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;IngestionEndpoint=https://test.in.applicationinsights.azure.com/;LiveEndpoint=https://test.livediagnostics.monitor.azure.com/"
-        , "applicationinsights.native.spring.non-native.enabled=true"} // To execute the with a JVM and as a GraalVM native executable
+    }
 )
 // TestConfiguration is loaded before the execution of the @BeforeEach setupTest method. This is the reason why static fields are used and the method name is hardcoded in the
 // httpPipeline Spring bean.

@@ -55,16 +55,6 @@ docker run -e APPLICATIONINSIGHTS_CONNECTION_STRING="{CONNECTION_STRING}" {image
 ```
 where you have to replace `{CONNECTION_STRING}` and `{image-name}` by your connection string and the image name.
 
-
-### Troubleshooting
-
-This Spring boot starter is only enable when your Spring Boot application is executed as a Graal VM native image. 
-To enable the starter in a non-native Graal VM environement, set the `applicationinsights.native.spring.non-native.enabled` property to false:
-
-```
--Dapplicationinsights.native.spring.non-native.enabled=false
-```
-
 ## Contributing
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a
