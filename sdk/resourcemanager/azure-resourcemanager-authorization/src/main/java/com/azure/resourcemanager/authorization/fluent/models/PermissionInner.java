@@ -35,6 +35,20 @@ public final class PermissionInner {
     @JsonProperty(value = "notDataActions")
     private List<String> notDataActions;
 
+    /*
+     * The conditions on the role definition. This limits the resources it can be assigned to. e.g.:
+     * @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase
+     * 'foo_storage_container'
+     */
+    @JsonProperty(value = "condition", access = JsonProperty.Access.WRITE_ONLY)
+    private String condition;
+
+    /*
+     * Version of the condition. Currently the only accepted value is '2.0'
+     */
+    @JsonProperty(value = "conditionVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String conditionVersion;
+
     /** Creates an instance of PermissionInner class. */
     public PermissionInner() {
     }
@@ -117,6 +131,26 @@ public final class PermissionInner {
     public PermissionInner withNotDataActions(List<String> notDataActions) {
         this.notDataActions = notDataActions;
         return this;
+    }
+
+    /**
+     * Get the condition property: The conditions on the role definition. This limits the resources it can be assigned
+     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * StringEqualsIgnoreCase 'foo_storage_container'.
+     *
+     * @return the condition value.
+     */
+    public String condition() {
+        return this.condition;
+    }
+
+    /**
+     * Get the conditionVersion property: Version of the condition. Currently the only accepted value is '2.0'.
+     *
+     * @return the conditionVersion value.
+     */
+    public String conditionVersion() {
+        return this.conditionVersion;
     }
 
     /**

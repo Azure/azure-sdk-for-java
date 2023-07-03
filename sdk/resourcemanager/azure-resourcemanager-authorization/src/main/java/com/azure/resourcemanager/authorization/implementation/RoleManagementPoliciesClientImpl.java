@@ -148,7 +148,7 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
                 .error(
                     new IllegalArgumentException("Parameter roleManagementPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -187,7 +187,7 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
                 .error(
                     new IllegalArgumentException("Parameter roleManagementPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), scope, roleManagementPolicyName, apiVersion, accept, context);
@@ -273,7 +273,7 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -324,7 +324,7 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -411,7 +411,7 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
                 .error(
                     new IllegalArgumentException("Parameter roleManagementPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -450,7 +450,7 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
                 .error(
                     new IllegalArgumentException("Parameter roleManagementPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), scope, roleManagementPolicyName, apiVersion, accept, context);
@@ -522,7 +522,7 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listForScope(this.client.getEndpoint(), scope, apiVersion, accept, context))
@@ -560,7 +560,7 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

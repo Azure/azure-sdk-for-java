@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RoleDefinitions List. */
 public final class RoleDefinitionsListSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2022-04-01/examples/GetRoleDefinitionAtScope.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2022-05-01-preview/examples/GetRoleDefinitionAtScope.json
      */
     /**
      * Sample code: List role definitions for scope.
@@ -23,6 +21,6 @@ public final class RoleDefinitionsListSamples {
             .manager()
             .roleServiceClient()
             .getRoleDefinitions()
-            .list("scope", null, Context.NONE);
+            .list("scope", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -6,9 +6,7 @@ package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.authorization.models.PolicyAssignmentProperties;
-import com.azure.resourcemanager.authorization.models.RoleManagementPolicyRule;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** Role management policy assignment properties with scope. */
 @Fluent
@@ -30,12 +28,6 @@ public final class RoleManagementPolicyAssignmentProperties {
      */
     @JsonProperty(value = "policyId")
     private String policyId;
-
-    /*
-     * The readonly computed rule applied to the policy.
-     */
-    @JsonProperty(value = "effectiveRules", access = JsonProperty.Access.WRITE_ONLY)
-    private List<RoleManagementPolicyRule> effectiveRules;
 
     /*
      * Additional properties of scope, role definition and policy
@@ -108,15 +100,6 @@ public final class RoleManagementPolicyAssignmentProperties {
     }
 
     /**
-     * Get the effectiveRules property: The readonly computed rule applied to the policy.
-     *
-     * @return the effectiveRules value.
-     */
-    public List<RoleManagementPolicyRule> effectiveRules() {
-        return this.effectiveRules;
-    }
-
-    /**
      * Get the policyAssignmentProperties property: Additional properties of scope, role definition and policy.
      *
      * @return the policyAssignmentProperties value.
@@ -131,9 +114,6 @@ public final class RoleManagementPolicyAssignmentProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (effectiveRules() != null) {
-            effectiveRules().forEach(e -> e.validate());
-        }
         if (policyAssignmentProperties() != null) {
             policyAssignmentProperties().validate();
         }

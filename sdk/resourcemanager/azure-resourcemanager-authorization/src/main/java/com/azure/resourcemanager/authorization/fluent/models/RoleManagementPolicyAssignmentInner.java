@@ -6,9 +6,7 @@ package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.authorization.models.PolicyAssignmentProperties;
-import com.azure.resourcemanager.authorization.models.RoleManagementPolicyRule;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** Role management policy. */
 @Fluent
@@ -144,15 +142,6 @@ public final class RoleManagementPolicyAssignmentInner {
         }
         this.innerProperties().withPolicyId(policyId);
         return this;
-    }
-
-    /**
-     * Get the effectiveRules property: The readonly computed rule applied to the policy.
-     *
-     * @return the effectiveRules value.
-     */
-    public List<RoleManagementPolicyRule> effectiveRules() {
-        return this.innerProperties() == null ? null : this.innerProperties().effectiveRules();
     }
 
     /**

@@ -105,7 +105,7 @@ public final class EligibleChildResourcesClientImpl implements EligibleChildReso
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), scope, filter, apiVersion, accept, context))
@@ -148,7 +148,7 @@ public final class EligibleChildResourcesClientImpl implements EligibleChildReso
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

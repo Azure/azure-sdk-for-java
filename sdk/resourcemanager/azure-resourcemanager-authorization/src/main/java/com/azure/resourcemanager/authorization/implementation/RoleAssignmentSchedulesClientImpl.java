@@ -121,7 +121,7 @@ public final class RoleAssignmentSchedulesClientImpl implements RoleAssignmentSc
                     new IllegalArgumentException(
                         "Parameter roleAssignmentScheduleName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -161,7 +161,7 @@ public final class RoleAssignmentSchedulesClientImpl implements RoleAssignmentSc
                     new IllegalArgumentException(
                         "Parameter roleAssignmentScheduleName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), scope, roleAssignmentScheduleName, apiVersion, accept, context);
@@ -240,7 +240,7 @@ public final class RoleAssignmentSchedulesClientImpl implements RoleAssignmentSc
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -285,7 +285,7 @@ public final class RoleAssignmentSchedulesClientImpl implements RoleAssignmentSc
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2020-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

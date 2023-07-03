@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RoleManagementPolicyAssignments ListForScope. */
 public final class RoleManagementPolicyAssignmentsListForScopeSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/GetRoleManagementPolicyAssignmentByScope.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-10-01-preview/examples/GetRoleManagementPolicyAssignmentByScope.json
      */
     /**
      * Sample code: GetRoleManagementPolicyAssignmentByScope.
@@ -24,6 +22,7 @@ public final class RoleManagementPolicyAssignmentsListForScopeSamples {
             .roleServiceClient()
             .getRoleManagementPolicyAssignments()
             .listForScope(
-                "providers/Microsoft.Subscription/subscriptions/129ff972-28f8-46b8-a726-e497be039368", Context.NONE);
+                "providers/Microsoft.Subscription/subscriptions/129ff972-28f8-46b8-a726-e497be039368",
+                com.azure.core.util.Context.NONE);
     }
 }

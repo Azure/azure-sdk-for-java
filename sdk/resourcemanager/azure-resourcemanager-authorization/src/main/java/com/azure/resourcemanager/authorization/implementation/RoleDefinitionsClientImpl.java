@@ -135,7 +135,10 @@ public final class RoleDefinitionsClientImpl
     /**
      * Deletes a role definition.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -157,7 +160,7 @@ public final class RoleDefinitionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -169,7 +172,10 @@ public final class RoleDefinitionsClientImpl
     /**
      * Deletes a role definition.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -193,7 +199,7 @@ public final class RoleDefinitionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), scope, roleDefinitionId, apiVersion, accept, context);
@@ -202,7 +208,10 @@ public final class RoleDefinitionsClientImpl
     /**
      * Deletes a role definition.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -217,7 +226,10 @@ public final class RoleDefinitionsClientImpl
     /**
      * Deletes a role definition.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -233,7 +245,10 @@ public final class RoleDefinitionsClientImpl
     /**
      * Deletes a role definition.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -246,14 +261,17 @@ public final class RoleDefinitionsClientImpl
     }
 
     /**
-     * Get role definition by name (GUID).
+     * Get role definition by ID (GUID).
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition by name (GUID) along with {@link Response} on successful completion of {@link Mono}.
+     * @return role definition by ID (GUID) along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoleDefinitionInner>> getWithResponseAsync(String scope, String roleDefinitionId) {
@@ -270,7 +288,7 @@ public final class RoleDefinitionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -279,15 +297,18 @@ public final class RoleDefinitionsClientImpl
     }
 
     /**
-     * Get role definition by name (GUID).
+     * Get role definition by ID (GUID).
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition by name (GUID) along with {@link Response} on successful completion of {@link Mono}.
+     * @return role definition by ID (GUID) along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RoleDefinitionInner>> getWithResponseAsync(
@@ -305,21 +326,24 @@ public final class RoleDefinitionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), scope, roleDefinitionId, apiVersion, accept, context);
     }
 
     /**
-     * Get role definition by name (GUID).
+     * Get role definition by ID (GUID).
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition by name (GUID) on successful completion of {@link Mono}.
+     * @return role definition by ID (GUID) on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleDefinitionInner> getAsync(String scope, String roleDefinitionId) {
@@ -327,15 +351,18 @@ public final class RoleDefinitionsClientImpl
     }
 
     /**
-     * Get role definition by name (GUID).
+     * Get role definition by ID (GUID).
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition by name (GUID) along with {@link Response}.
+     * @return role definition by ID (GUID) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoleDefinitionInner> getWithResponse(String scope, String roleDefinitionId, Context context) {
@@ -343,14 +370,17 @@ public final class RoleDefinitionsClientImpl
     }
 
     /**
-     * Get role definition by name (GUID).
+     * Get role definition by ID (GUID).
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition by name (GUID).
+     * @return role definition by ID (GUID).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleDefinitionInner get(String scope, String roleDefinitionId) {
@@ -360,7 +390,10 @@ public final class RoleDefinitionsClientImpl
     /**
      * Creates or updates a role definition.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition.
      * @param roleDefinition The values for the role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -389,7 +422,7 @@ public final class RoleDefinitionsClientImpl
         } else {
             roleDefinition.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -409,7 +442,10 @@ public final class RoleDefinitionsClientImpl
     /**
      * Creates or updates a role definition.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition.
      * @param roleDefinition The values for the role definition.
      * @param context The context to associate with this operation.
@@ -439,7 +475,7 @@ public final class RoleDefinitionsClientImpl
         } else {
             roleDefinition.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -450,7 +486,10 @@ public final class RoleDefinitionsClientImpl
     /**
      * Creates or updates a role definition.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition.
      * @param roleDefinition The values for the role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -468,7 +507,10 @@ public final class RoleDefinitionsClientImpl
     /**
      * Creates or updates a role definition.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition.
      * @param roleDefinition The values for the role definition.
      * @param context The context to associate with this operation.
@@ -486,7 +528,10 @@ public final class RoleDefinitionsClientImpl
     /**
      * Creates or updates a role definition.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition.
      * @param roleDefinition The values for the role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -503,7 +548,10 @@ public final class RoleDefinitionsClientImpl
     /**
      * Get all role definitions that are applicable at scope and above.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as
      *     well.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -523,7 +571,7 @@ public final class RoleDefinitionsClientImpl
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), scope, filter, apiVersion, accept, context))
@@ -542,7 +590,10 @@ public final class RoleDefinitionsClientImpl
     /**
      * Get all role definitions that are applicable at scope and above.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as
      *     well.
      * @param context The context to associate with this operation.
@@ -563,7 +614,7 @@ public final class RoleDefinitionsClientImpl
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -582,7 +633,10 @@ public final class RoleDefinitionsClientImpl
     /**
      * Get all role definitions that are applicable at scope and above.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as
      *     well.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -598,7 +652,10 @@ public final class RoleDefinitionsClientImpl
     /**
      * Get all role definitions that are applicable at scope and above.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -613,7 +670,10 @@ public final class RoleDefinitionsClientImpl
     /**
      * Get all role definitions that are applicable at scope and above.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as
      *     well.
      * @param context The context to associate with this operation.
@@ -631,7 +691,10 @@ public final class RoleDefinitionsClientImpl
     /**
      * Get all role definitions that are applicable at scope and above.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -647,7 +710,10 @@ public final class RoleDefinitionsClientImpl
     /**
      * Get all role definitions that are applicable at scope and above.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as
      *     well.
      * @param context The context to associate with this operation.
@@ -685,7 +751,7 @@ public final class RoleDefinitionsClientImpl
         if (roleId == null) {
             return Mono.error(new IllegalArgumentException("Parameter roleId is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getById(this.client.getEndpoint(), roleId, apiVersion, accept, context))
@@ -716,7 +782,7 @@ public final class RoleDefinitionsClientImpl
         if (roleId == null) {
             return Mono.error(new IllegalArgumentException("Parameter roleId is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getById(this.client.getEndpoint(), roleId, apiVersion, accept, context);

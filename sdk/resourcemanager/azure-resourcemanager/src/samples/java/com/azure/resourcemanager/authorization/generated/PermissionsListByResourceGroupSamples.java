@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Permissions ListByResourceGroup. */
 public final class PermissionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2022-04-01/examples/GetPermissions.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2022-05-01-preview/examples/GetPermissions.json
      */
     /**
      * Sample code: List permissions for resource group.
@@ -23,6 +21,6 @@ public final class PermissionsListByResourceGroupSamples {
             .manager()
             .roleServiceClient()
             .getPermissions()
-            .listByResourceGroup("rgname", Context.NONE);
+            .listByResourceGroup("rgname", com.azure.core.util.Context.NONE);
     }
 }

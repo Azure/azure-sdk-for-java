@@ -7,7 +7,7 @@ package com.azure.resourcemanager.authorization.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Expanded info of resource scope. */
+/** The PolicyProperties model. */
 @Immutable
 public final class PolicyProperties {
     /*

@@ -23,7 +23,7 @@
     "dir": "azure-resourcemanager-authorization",
     "source": "specification/authorization/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.authorization",
-    "args": "--tag=package-2022-04-01"
+    "args": "--tag=package-2022-05-01-preview"
   },
   "authorization-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-authorization",

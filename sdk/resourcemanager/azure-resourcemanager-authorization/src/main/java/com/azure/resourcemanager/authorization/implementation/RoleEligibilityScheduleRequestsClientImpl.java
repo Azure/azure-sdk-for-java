@@ -65,8 +65,7 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
     public interface RoleEligibilityScheduleRequestsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/{scope}/providers/Microsoft.Authorization/roleEligibilityScheduleRequests"
-                + "/{roleEligibilityScheduleRequestName}")
+            "/{scope}/providers/Microsoft.Authorization/roleEligibilityScheduleRequests/{roleEligibilityScheduleRequestName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleEligibilityScheduleRequestInner>> create(
@@ -80,8 +79,7 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/{scope}/providers/Microsoft.Authorization/roleEligibilityScheduleRequests"
-                + "/{roleEligibilityScheduleRequestName}")
+            "/{scope}/providers/Microsoft.Authorization/roleEligibilityScheduleRequests/{roleEligibilityScheduleRequestName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleEligibilityScheduleRequestInner>> get(
@@ -106,8 +104,7 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/{scope}/providers/Microsoft.Authorization/roleEligibilityScheduleRequests"
-                + "/{roleEligibilityScheduleRequestName}/cancel")
+            "/{scope}/providers/Microsoft.Authorization/roleEligibilityScheduleRequests/{roleEligibilityScheduleRequestName}/cancel")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> cancel(
@@ -120,8 +117,7 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/{scope}/providers/Microsoft.Authorization/roleEligibilityScheduleRequests"
-                + "/{roleEligibilityScheduleRequestName}/validate")
+            "/{scope}/providers/Microsoft.Authorization/roleEligibilityScheduleRequests/{roleEligibilityScheduleRequestName}/validate")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleEligibilityScheduleRequestInner>> validate(
@@ -148,9 +144,11 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
      * Creates a role eligibility schedule request.
      *
      * @param scope The scope of the role eligibility schedule request to create. The scope can be any REST resource
-     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+     *     instance. For example, use '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/' for a
+     *     subscription,
+     *     '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for
+     *     a resource group, and
+     *     '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
      *     for a resource.
      * @param roleEligibilityScheduleRequestName The name of the role eligibility to create. It can be any valid GUID.
      * @param parameters Parameters for the role eligibility schedule request.
@@ -182,7 +180,7 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2022-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -203,9 +201,11 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
      * Creates a role eligibility schedule request.
      *
      * @param scope The scope of the role eligibility schedule request to create. The scope can be any REST resource
-     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+     *     instance. For example, use '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/' for a
+     *     subscription,
+     *     '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for
+     *     a resource group, and
+     *     '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
      *     for a resource.
      * @param roleEligibilityScheduleRequestName The name of the role eligibility to create. It can be any valid GUID.
      * @param parameters Parameters for the role eligibility schedule request.
@@ -241,7 +241,7 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2022-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -259,9 +259,11 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
      * Creates a role eligibility schedule request.
      *
      * @param scope The scope of the role eligibility schedule request to create. The scope can be any REST resource
-     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+     *     instance. For example, use '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/' for a
+     *     subscription,
+     *     '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for
+     *     a resource group, and
+     *     '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
      *     for a resource.
      * @param roleEligibilityScheduleRequestName The name of the role eligibility to create. It can be any valid GUID.
      * @param parameters Parameters for the role eligibility schedule request.
@@ -281,9 +283,11 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
      * Creates a role eligibility schedule request.
      *
      * @param scope The scope of the role eligibility schedule request to create. The scope can be any REST resource
-     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+     *     instance. For example, use '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/' for a
+     *     subscription,
+     *     '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for
+     *     a resource group, and
+     *     '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
      *     for a resource.
      * @param roleEligibilityScheduleRequestName The name of the role eligibility to create. It can be any valid GUID.
      * @param parameters Parameters for the role eligibility schedule request.
@@ -306,9 +310,11 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
      * Creates a role eligibility schedule request.
      *
      * @param scope The scope of the role eligibility schedule request to create. The scope can be any REST resource
-     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+     *     instance. For example, use '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/' for a
+     *     subscription,
+     *     '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for
+     *     a resource group, and
+     *     '/providers/Microsoft.Subscription/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
      *     for a resource.
      * @param roleEligibilityScheduleRequestName The name of the role eligibility to create. It can be any valid GUID.
      * @param parameters Parameters for the role eligibility schedule request.
@@ -352,7 +358,7 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
                     new IllegalArgumentException(
                         "Parameter roleEligibilityScheduleRequestName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2022-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -398,7 +404,7 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
                     new IllegalArgumentException(
                         "Parameter roleEligibilityScheduleRequestName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2022-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -481,7 +487,7 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2022-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -527,7 +533,7 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2022-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -668,7 +674,7 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
                     new IllegalArgumentException(
                         "Parameter roleEligibilityScheduleRequestName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2022-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -713,7 +719,7 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
                     new IllegalArgumentException(
                         "Parameter roleEligibilityScheduleRequestName is required and cannot be null."));
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2022-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -799,7 +805,7 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2022-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -854,7 +860,7 @@ public final class RoleEligibilityScheduleRequestsClientImpl implements RoleElig
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-10-01";
+        final String apiVersion = "2022-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

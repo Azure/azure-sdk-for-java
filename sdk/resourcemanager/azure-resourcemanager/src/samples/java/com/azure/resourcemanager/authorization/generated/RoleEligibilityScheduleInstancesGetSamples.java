@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RoleEligibilityScheduleInstances Get. */
 public final class RoleEligibilityScheduleInstancesGetSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/GetRoleEligibilityScheduleInstanceByName.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-10-01-preview/examples/GetRoleEligibilityScheduleInstanceByName.json
      */
     /**
      * Sample code: GetRoleEligibilityScheduleInstanceByName.
@@ -26,6 +24,6 @@ public final class RoleEligibilityScheduleInstancesGetSamples {
             .getWithResponse(
                 "providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f",
                 "21e4b59a-0499-4fe0-a3c3-43a3055b773a",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -19,7 +19,10 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
     /**
      * Deletes a role definition.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,7 +35,10 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
     /**
      * Deletes a role definition.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,7 +51,10 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
     /**
      * Deletes a role definition.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -59,7 +68,10 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
     /**
      * Deletes a role definition.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -70,54 +82,66 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
     RoleDefinitionInner delete(String scope, String roleDefinitionId);
 
     /**
-     * Get role definition by name (GUID).
+     * Get role definition by ID (GUID).
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition by name (GUID) along with {@link Response} on successful completion of {@link Mono}.
+     * @return role definition by ID (GUID) along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RoleDefinitionInner>> getWithResponseAsync(String scope, String roleDefinitionId);
 
     /**
-     * Get role definition by name (GUID).
+     * Get role definition by ID (GUID).
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition by name (GUID) on successful completion of {@link Mono}.
+     * @return role definition by ID (GUID) on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RoleDefinitionInner> getAsync(String scope, String roleDefinitionId);
 
     /**
-     * Get role definition by name (GUID).
+     * Get role definition by ID (GUID).
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition by name (GUID) along with {@link Response}.
+     * @return role definition by ID (GUID) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RoleDefinitionInner> getWithResponse(String scope, String roleDefinitionId, Context context);
 
     /**
-     * Get role definition by name (GUID).
+     * Get role definition by ID (GUID).
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition by name (GUID).
+     * @return role definition by ID (GUID).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     RoleDefinitionInner get(String scope, String roleDefinitionId);
@@ -125,7 +149,10 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
     /**
      * Creates or updates a role definition.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition.
      * @param roleDefinition The values for the role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,7 +167,10 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
     /**
      * Creates or updates a role definition.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition.
      * @param roleDefinition The values for the role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -155,7 +185,10 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
     /**
      * Creates or updates a role definition.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition.
      * @param roleDefinition The values for the role definition.
      * @param context The context to associate with this operation.
@@ -171,7 +204,10 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
     /**
      * Creates or updates a role definition.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param roleDefinitionId The ID of the role definition.
      * @param roleDefinition The values for the role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -185,7 +221,10 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
     /**
      * Get all role definitions that are applicable at scope and above.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as
      *     well.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -199,7 +238,10 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
     /**
      * Get all role definitions that are applicable at scope and above.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -211,7 +253,10 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
     /**
      * Get all role definitions that are applicable at scope and above.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -224,7 +269,10 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
     /**
      * Get all role definitions that are applicable at scope and above.
      *
-     * @param scope The scope of the role definition.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as
      *     well.
      * @param context The context to associate with this operation.
