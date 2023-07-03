@@ -41,7 +41,7 @@ public class MetadataRequestRetryPolicy implements IRetryPolicy {
 
         if (this.request == null) {
             logger.error("onBeforeSendRequest has not been invoked with the MetadataRequestRetryPolicy...");
-            return Mono.error(e);
+            return Mono.just(ShouldRetryResult.error(e));
         }
 
         CosmosException cosmosException = Utils.as(e, CosmosException.class);
@@ -59,7 +59,7 @@ public class MetadataRequestRetryPolicy implements IRetryPolicy {
         }
 
         // This simply bubbles up the error for the downstream retry policy to take care of
-        return Mono.error(e);
+        return Mono.just(ShouldRetryResult.error(cosmosException));
     }
 
     @Override

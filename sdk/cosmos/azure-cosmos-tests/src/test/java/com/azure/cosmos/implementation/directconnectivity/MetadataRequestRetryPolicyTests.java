@@ -271,7 +271,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
 
         metadataRequestRetryPolicy.onBeforeSendRequest(request);
 
-        if (request.isAddressRefresh() && request.isReadOnlyRequest()) {
+        if (request.isReadOnlyRequest()) {
             Mockito
                 .verify(globalEndpointManagerMock, Mockito.times(1))
                 .markEndpointUnavailableForRead(Mockito.any());
