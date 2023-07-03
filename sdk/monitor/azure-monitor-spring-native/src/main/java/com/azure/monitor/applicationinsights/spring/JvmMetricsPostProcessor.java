@@ -14,6 +14,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.Ordered;
 
+// See https://github.com/Azure/azure-sdk-for-java/issues/35725
 public class JvmMetricsPostProcessor implements BeanPostProcessor, Ordered {
 
     private final AzureTelemetryActivation azureTelemetryActivation;
