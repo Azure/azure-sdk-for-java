@@ -175,22 +175,22 @@ public class RntbdConnectionStateListener {
 
         AtomicBoolean isRequestCancelledOnTimeout = request.requestContext.isRequestCancelledOnTimeout();
         final boolean forceAddressRefresh = request.requestContext.forceRefreshAddressCache;
-        final boolean performedBackgroundAddressRefresh = request.requestContext.performedBackgroundAddressRefresh;
 
         if (this.forceBackgroundAddressRefreshInProgress.compareAndSet(false, true)
-            && isRequestCancelledOnTimeout.get()
-            && performedBackgroundAddressRefresh) {
+            && isRequestCancelledOnTimeout.get()) {
             this.addressSelector
                 .resolveAddressesAsync(request, forceAddressRefresh)
                 .subscribeOn(Schedulers.boundedElastic())
                 .doOnSubscribe(ignore -> {
-                    logger.debug("Background address refresh started from RntbdConnectionStateListener...");
+                    logger.debug("Background refresh of addresses started!");
                 })
                 .doFinally(signalType -> {
                     this.forceBackgroundAddressRefreshInProgress.compareAndSet(true, false);
-                    request.requestContext.performedBackgroundAddressRefresh = true;
                 })
-                .subscribe();
+                .subscribe(
+                    ignoreResult -> {},
+                    throwable -> {logger.warn("Background address refresh failed with {}", throwable.getMessage(), throwable);}
+                );
         }
     }
     // endregion
