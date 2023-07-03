@@ -10,7 +10,7 @@ import java.util.Arrays;
 /** Samples for BareMetalMachines RunCommand. */
 public final class BareMetalMachinesRunCommandSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BareMetalMachines_RunCommand.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_RunCommand.json
      */
     /**
      * Sample code: Run command on bare metal machine.

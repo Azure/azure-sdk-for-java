@@ -19,62 +19,71 @@ public final class StorageApplianceListTests {
         StorageApplianceList model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"iml\",\"value\":[{\"extendedLocation\":{\"name\":\"jxkcgxxlxsff\",\"type\":\"cvizqzdwlvw\"},\"properties\":{\"capacity\":7995359679400580024,\"capacityUsed\":4149594913386983887,\"clusterId\":\"bkjubdyhgkfmins\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"fttsttk\",\"managementIpv4Address\":\"ahbqactxtgzuk\",\"provisioningState\":\"Canceled\",\"rackId\":\"mmqtgqqqxhr\",\"rackSlot\":3642932980642992654,\"remoteVendorManagementFeature\":\"Supported\",\"remoteVendorManagementStatus\":\"Enabled\",\"serialNumber\":\"uisavokq\",\"storageApplianceSkuId\":\"zfvazi\"},\"location\":\"l\",\"tags\":{\"katnwxyi\":\"ttbaj\",\"igovi\":\"pidkqqfkuvscxkdm\"},\"id\":\"rxkpmloazuruoc\",\"name\":\"goorbteo\",\"type\":\"bfhjxakvvjgsl\"},{\"extendedLocation\":{\"name\":\"r\",\"type\":\"il\"},\"properties\":{\"capacity\":4699671859850911433,\"capacityUsed\":5269658629842403913,\"clusterId\":\"xnyed\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"vudtjuewbcihx\",\"managementIpv4Address\":\"whcjyxcc\",\"provisioningState\":\"Provisioning\",\"rackId\":\"payakkud\",\"rackSlot\":1791393814695153018,\"remoteVendorManagementFeature\":\"Supported\",\"remoteVendorManagementStatus\":\"Unsupported\",\"serialNumber\":\"lma\",\"storageApplianceSkuId\":\"stcyohpfkyrkdbd\"},\"location\":\"ogsjkmnwqjno\",\"tags\":{\"egfnmntfpmvmemfn\":\"yhddvia\",\"lchpodbzevwrdn\":\"zdwvvbalxl\"},\"id\":\"fukuvsjcswsmystu\",\"name\":\"uqypfcvle\",\"type\":\"chpqbmfpjba\"},{\"extendedLocation\":{\"name\":\"widf\",\"type\":\"xsspuunnoxyhk\"},\"properties\":{\"capacity\":8055152895694004280,\"capacityUsed\":8879508928062968266,\"clusterId\":\"pfhoqcaaewdao\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"l\",\"managementIpv4Address\":\"x\",\"provisioningState\":\"Succeeded\",\"rackId\":\"brm\",\"rackSlot\":5897306141430880557,\"remoteVendorManagementFeature\":\"Unsupported\",\"remoteVendorManagementStatus\":\"Unsupported\",\"serialNumber\":\"ykzkdncjdxo\",\"storageApplianceSkuId\":\"bzo\"},\"location\":\"culapzwyrpgogtq\",\"tags\":{\"lbfu\":\"n\",\"hvfcibyfmow\":\"jlyjtlvofq\"},\"id\":\"xrkjpvdw\",\"name\":\"fzwiivwzjbhyz\",\"type\":\"xjrk\"}]}")
+                    "{\"nextLink\":\"cizjxvydfceacvl\",\"value\":[{\"extendedLocation\":{\"name\":\"gdyftumrtwna\",\"type\":\"jslb\"},\"properties\":{\"capacity\":738500562819787288,\"capacityUsed\":5263273195459135313,\"clusterId\":\"ztsfmznbaeqp\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"nrnrp\",\"managementIpv4Address\":\"huwrykqgaifm\",\"provisioningState\":\"Provisioning\",\"rackId\":\"lb\",\"rackSlot\":3020386945325813203,\"remoteVendorManagementFeature\":\"Unsupported\",\"remoteVendorManagementStatus\":\"Enabled\",\"serialNumber\":\"jdz\",\"storageApplianceSkuId\":\"xcv\"},\"location\":\"rhnj\",\"tags\":{\"qfzgemjdftul\":\"lvtno\",\"tmczuomejwcwwqi\":\"ltducea\",\"vpkjpr\":\"knssxmojm\"},\"id\":\"kwcf\",\"name\":\"ql\",\"type\":\"yxgtczh\"},{\"extendedLocation\":{\"name\":\"ydbsd\",\"type\":\"hmkxmaehvbb\"},\"properties\":{\"capacity\":6488427573342094358,\"capacityUsed\":3755202150997171578,\"clusterId\":\"n\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"x\",\"managementIpv4Address\":\"xywr\",\"provisioningState\":\"Succeeded\",\"rackId\":\"yklyhpluodpvruud\",\"rackSlot\":7713015855877945152,\"remoteVendorManagementFeature\":\"Supported\",\"remoteVendorManagementStatus\":\"Disabled\",\"serialNumber\":\"ostgkts\",\"storageApplianceSkuId\":\"vdxec\"},\"location\":\"edqbc\",\"tags\":{\"dqkdlwwqfbu\":\"lhpl\"},\"id\":\"lkxt\",\"name\":\"qjfsmlmbtxhw\",\"type\":\"fwsrtawcoezbrhu\"},{\"extendedLocation\":{\"name\":\"skh\",\"type\":\"dyg\"},\"properties\":{\"capacity\":3757334132859952072,\"capacityUsed\":4463320086185749721,\"clusterId\":\"jb\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"rfmluiqtq\",\"managementIpv4Address\":\"avyvnqqyba\",\"provisioningState\":\"Canceled\",\"rackId\":\"uayjkqa\",\"rackSlot\":7781909264743877977,\"remoteVendorManagementFeature\":\"Unsupported\",\"remoteVendorManagementStatus\":\"Enabled\",\"serialNumber\":\"sjc\",\"storageApplianceSkuId\":\"hernntiewdjc\"},\"location\":\"quwrbehwag\",\"tags\":{\"xtdr\":\"uffkmrqemvvh\",\"znmwcp\":\"futacoebjvewzc\",\"v\":\"guaadraufactkahz\",\"eekulfgslqubkwd\":\"jjziuxxpsh\"},\"id\":\"enr\",\"name\":\"sutujba\",\"type\":\"pjuohminyfl\"}]}")
                 .toObject(StorageApplianceList.class);
-        Assertions.assertEquals("iml", model.nextLink());
-        Assertions.assertEquals("l", model.value().get(0).location());
-        Assertions.assertEquals("ttbaj", model.value().get(0).tags().get("katnwxyi"));
-        Assertions.assertEquals("jxkcgxxlxsff", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("cvizqzdwlvw", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("mmqtgqqqxhr", model.value().get(0).rackId());
-        Assertions.assertEquals(3642932980642992654L, model.value().get(0).rackSlot());
-        Assertions.assertEquals("uisavokq", model.value().get(0).serialNumber());
-        Assertions.assertEquals("zfvazi", model.value().get(0).storageApplianceSkuId());
+        Assertions.assertEquals("cizjxvydfceacvl", model.nextLink());
+        Assertions.assertEquals("rhnj", model.value().get(0).location());
+        Assertions.assertEquals("lvtno", model.value().get(0).tags().get("qfzgemjdftul"));
+        Assertions.assertEquals("gdyftumrtwna", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("jslb", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("lb", model.value().get(0).rackId());
+        Assertions.assertEquals(3020386945325813203L, model.value().get(0).rackSlot());
+        Assertions.assertEquals("jdz", model.value().get(0).serialNumber());
+        Assertions.assertEquals("xcv", model.value().get(0).storageApplianceSkuId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageApplianceList model =
             new StorageApplianceList()
-                .withNextLink("iml")
+                .withNextLink("cizjxvydfceacvl")
                 .withValue(
                     Arrays
                         .asList(
                             new StorageApplianceInner()
-                                .withLocation("l")
-                                .withTags(mapOf("katnwxyi", "ttbaj", "igovi", "pidkqqfkuvscxkdm"))
-                                .withExtendedLocation(
-                                    new ExtendedLocation().withName("jxkcgxxlxsff").withType("cvizqzdwlvw"))
-                                .withRackId("mmqtgqqqxhr")
-                                .withRackSlot(3642932980642992654L)
-                                .withSerialNumber("uisavokq")
-                                .withStorageApplianceSkuId("zfvazi"),
+                                .withLocation("rhnj")
+                                .withTags(
+                                    mapOf("qfzgemjdftul", "lvtno", "tmczuomejwcwwqi", "ltducea", "vpkjpr", "knssxmojm"))
+                                .withExtendedLocation(new ExtendedLocation().withName("gdyftumrtwna").withType("jslb"))
+                                .withRackId("lb")
+                                .withRackSlot(3020386945325813203L)
+                                .withSerialNumber("jdz")
+                                .withStorageApplianceSkuId("xcv"),
                             new StorageApplianceInner()
-                                .withLocation("ogsjkmnwqjno")
-                                .withTags(mapOf("egfnmntfpmvmemfn", "yhddvia", "lchpodbzevwrdn", "zdwvvbalxl"))
-                                .withExtendedLocation(new ExtendedLocation().withName("r").withType("il"))
-                                .withRackId("payakkud")
-                                .withRackSlot(1791393814695153018L)
-                                .withSerialNumber("lma")
-                                .withStorageApplianceSkuId("stcyohpfkyrkdbd"),
+                                .withLocation("edqbc")
+                                .withTags(mapOf("dqkdlwwqfbu", "lhpl"))
+                                .withExtendedLocation(new ExtendedLocation().withName("ydbsd").withType("hmkxmaehvbb"))
+                                .withRackId("yklyhpluodpvruud")
+                                .withRackSlot(7713015855877945152L)
+                                .withSerialNumber("ostgkts")
+                                .withStorageApplianceSkuId("vdxec"),
                             new StorageApplianceInner()
-                                .withLocation("culapzwyrpgogtq")
-                                .withTags(mapOf("lbfu", "n", "hvfcibyfmow", "jlyjtlvofq"))
-                                .withExtendedLocation(new ExtendedLocation().withName("widf").withType("xsspuunnoxyhk"))
-                                .withRackId("brm")
-                                .withRackSlot(5897306141430880557L)
-                                .withSerialNumber("ykzkdncjdxo")
-                                .withStorageApplianceSkuId("bzo")));
+                                .withLocation("quwrbehwag")
+                                .withTags(
+                                    mapOf(
+                                        "xtdr",
+                                        "uffkmrqemvvh",
+                                        "znmwcp",
+                                        "futacoebjvewzc",
+                                        "v",
+                                        "guaadraufactkahz",
+                                        "eekulfgslqubkwd",
+                                        "jjziuxxpsh"))
+                                .withExtendedLocation(new ExtendedLocation().withName("skh").withType("dyg"))
+                                .withRackId("uayjkqa")
+                                .withRackSlot(7781909264743877977L)
+                                .withSerialNumber("sjc")
+                                .withStorageApplianceSkuId("hernntiewdjc")));
         model = BinaryData.fromObject(model).toObject(StorageApplianceList.class);
-        Assertions.assertEquals("iml", model.nextLink());
-        Assertions.assertEquals("l", model.value().get(0).location());
-        Assertions.assertEquals("ttbaj", model.value().get(0).tags().get("katnwxyi"));
-        Assertions.assertEquals("jxkcgxxlxsff", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("cvizqzdwlvw", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("mmqtgqqqxhr", model.value().get(0).rackId());
-        Assertions.assertEquals(3642932980642992654L, model.value().get(0).rackSlot());
-        Assertions.assertEquals("uisavokq", model.value().get(0).serialNumber());
-        Assertions.assertEquals("zfvazi", model.value().get(0).storageApplianceSkuId());
+        Assertions.assertEquals("cizjxvydfceacvl", model.nextLink());
+        Assertions.assertEquals("rhnj", model.value().get(0).location());
+        Assertions.assertEquals("lvtno", model.value().get(0).tags().get("qfzgemjdftul"));
+        Assertions.assertEquals("gdyftumrtwna", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("jslb", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("lb", model.value().get(0).rackId());
+        Assertions.assertEquals(3020386945325813203L, model.value().get(0).rackSlot());
+        Assertions.assertEquals("jdz", model.value().get(0).serialNumber());
+        Assertions.assertEquals("xcv", model.value().get(0).storageApplianceSkuId());
     }
 
     @SuppressWarnings("unchecked")

@@ -14,19 +14,15 @@ public final class ClusterManagerPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterManagerPatchParameters model =
-            BinaryData
-                .fromString("{\"tags\":{\"uncuw\":\"ttexoqqpwcyyufmh\",\"unqndyfpchrqb\":\"qspkcdqzhlctd\"}}")
-                .toObject(ClusterManagerPatchParameters.class);
-        Assertions.assertEquals("ttexoqqpwcyyufmh", model.tags().get("uncuw"));
+            BinaryData.fromString("{\"tags\":{\"kdlpa\":\"es\"}}").toObject(ClusterManagerPatchParameters.class);
+        Assertions.assertEquals("es", model.tags().get("kdlpa"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterManagerPatchParameters model =
-            new ClusterManagerPatchParameters()
-                .withTags(mapOf("uncuw", "ttexoqqpwcyyufmh", "unqndyfpchrqb", "qspkcdqzhlctd"));
+        ClusterManagerPatchParameters model = new ClusterManagerPatchParameters().withTags(mapOf("kdlpa", "es"));
         model = BinaryData.fromObject(model).toObject(ClusterManagerPatchParameters.class);
-        Assertions.assertEquals("ttexoqqpwcyyufmh", model.tags().get("uncuw"));
+        Assertions.assertEquals("es", model.tags().get("kdlpa"));
     }
 
     @SuppressWarnings("unchecked")
