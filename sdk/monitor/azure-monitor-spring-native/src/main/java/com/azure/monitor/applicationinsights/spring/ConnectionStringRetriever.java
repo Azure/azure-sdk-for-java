@@ -20,8 +20,7 @@ final class ConnectionStringRetriever {
             if (connectionStringSysProp.isEmpty()) {
                 return Optional.empty();
             }
-            String connectionStringWithoutDoubleQuotes = connectionStringSysProp.replaceAll("\"", "");
-            return Optional.of(connectionStringWithoutDoubleQuotes);
+            return Optional.of(connectionStringSysProp);
         }
 
         String connectionStringFromEnvVar = getEnvVar(APPLICATIONINSIGHTS_CONNECTION_STRING_ENV);
