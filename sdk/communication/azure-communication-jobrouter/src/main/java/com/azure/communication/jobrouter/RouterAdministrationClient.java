@@ -20,6 +20,10 @@ import com.azure.communication.jobrouter.models.options.CreateClassificationPoli
 import com.azure.communication.jobrouter.models.options.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.options.CreateExceptionPolicyOptions;
 import com.azure.communication.jobrouter.models.options.CreateQueueOptions;
+import com.azure.communication.jobrouter.models.options.ListClassificationPoliciesOptions;
+import com.azure.communication.jobrouter.models.options.ListDistributionPoliciesOptions;
+import com.azure.communication.jobrouter.models.options.ListExceptionPoliciesOptions;
+import com.azure.communication.jobrouter.models.options.ListQueuesOptions;
 import com.azure.communication.jobrouter.models.options.UpdateClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.options.UpdateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.options.UpdateExceptionPolicyOptions;
@@ -179,15 +183,29 @@ public final class RouterAdministrationClient {
     /**
      * Retrieves existing classification policies.
      *
-     * @param maxPageSize Maximum page size.
+     * @param listClassificationPoliciesOptions options for listClassificationPolicies.
      * @return a paged collection of classification policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ClassificationPolicyItem> listClassificationPolicies(Integer maxPageSize) {
-        return new PagedIterable<>(this.client.listClassificationPolicies(maxPageSize));
+    public PagedIterable<ClassificationPolicyItem> listClassificationPolicies(ListClassificationPoliciesOptions listClassificationPoliciesOptions) {
+        return new PagedIterable<>(this.client.listClassificationPolicies(listClassificationPoliciesOptions));
+    }
+
+    /**
+     * Retrieves existing classification policies.
+     *
+     * @param listClassificationPoliciesOptions options for listClassificationPolicies.
+     * @param context Context for listClassificationPolicies.
+     * @return a paged collection of classification policies.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public PagedIterable<ClassificationPolicyItem> listClassificationPolicies(ListClassificationPoliciesOptions listClassificationPoliciesOptions, Context context) {
+        return new PagedIterable<>(this.client.listClassificationPolicies(listClassificationPoliciesOptions, context));
     }
 
     /**
@@ -322,15 +340,30 @@ public final class RouterAdministrationClient {
     /**
      * Retrieves existing distribution policies.
      *
-     * @param maxPageSize Maximum page size.
+     * @param listDistributionPoliciesOptions list options.
      * @return a paged collection of distribution policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DistributionPolicyItem> listDistributionPolicies(Integer maxPageSize) {
-        return new PagedIterable<>(this.client.listDistributionPolicies(maxPageSize));
+    public PagedIterable<DistributionPolicyItem> listDistributionPolicies(ListDistributionPoliciesOptions listDistributionPoliciesOptions) {
+        return new PagedIterable<>(this.client.listDistributionPolicies(listDistributionPoliciesOptions));
+    }
+
+    /**
+     * Retrieves existing distribution policies.
+     *
+     * @param listDistributionPoliciesOptions list options.
+     * @param context Context for listDistributionPolicies.
+     * @return a paged collection of distribution policies.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DistributionPolicyItem> listDistributionPolicies(ListDistributionPoliciesOptions listDistributionPoliciesOptions, Context context) {
+        return new PagedIterable<>(this.client.listDistributionPolicies(listDistributionPoliciesOptions, context));
     }
 
     /**
@@ -477,15 +510,30 @@ public final class RouterAdministrationClient {
     /**
      * Retrieves existing exception policies.
      *
-     * @param maxPageSize Maximum Number of objects to return per page.
+     * @param listExceptionPoliciesOptions options for listExceptionPolicies.
      * @return a paged collection of exception policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExceptionPolicyItem> listExceptionPolicies(Integer maxPageSize) {
-        return new PagedIterable<>(this.client.listExceptionPolicies(maxPageSize));
+    public PagedIterable<ExceptionPolicyItem> listExceptionPolicies(ListExceptionPoliciesOptions listExceptionPoliciesOptions) {
+        return new PagedIterable<>(this.client.listExceptionPolicies(listExceptionPoliciesOptions));
+    }
+
+    /**
+     * Retrieves existing exception policies.
+     *
+     * @param listExceptionPoliciesOptions options for listExceptionPolicies.
+     * @param context Context for listExceptionPolicies.
+     * @return a paged collection of exception policies.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ExceptionPolicyItem> listExceptionPolicies(ListExceptionPoliciesOptions listExceptionPoliciesOptions, Context context) {
+        return new PagedIterable<>(this.client.listExceptionPolicies(listExceptionPoliciesOptions, context));
     }
 
     /**
@@ -620,14 +668,29 @@ public final class RouterAdministrationClient {
     /**
      * Retrieves existing queues.
      *
-     * @param maxPageSize Number of objects to return per page.
+     * @param listQueuesOptions options for listQueues.
      * @return a paged collection of queues.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobQueueItem> listQueues(Integer maxPageSize) {
-        return new PagedIterable<>(this.client.listQueues(maxPageSize));
+    public PagedIterable<JobQueueItem> listQueues(ListQueuesOptions listQueuesOptions) {
+        return new PagedIterable<>(this.client.listQueues(listQueuesOptions));
+    }
+
+    /**
+     * Retrieves existing queues.
+     *
+     * @param listQueuesOptions options for listQueues.
+     * @param context Context for listQueues.
+     * @return a paged collection of queues.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<JobQueueItem> listQueues(ListQueuesOptions listQueuesOptions, Context context) {
+        return new PagedIterable<>(this.client.listQueues(listQueuesOptions, context));
     }
 }

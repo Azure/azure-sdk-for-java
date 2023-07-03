@@ -39,7 +39,6 @@ import com.azure.resourcemanager.networkcloud.models.StorageApplianceEnableRemot
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceList;
 import com.azure.resourcemanager.networkcloud.models.StorageAppliancePatchParameters;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceRunReadCommandsParameters;
-import com.azure.resourcemanager.networkcloud.models.StorageApplianceValidateHardwareParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -196,22 +195,6 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
             @PathParam("storageApplianceName") String storageApplianceName,
             @BodyParam("application/json")
                 StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}/validateHardware")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> validateHardware(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageApplianceName") String storageApplianceName,
-            @BodyParam("application/json")
-                StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -1328,7 +1311,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     /**
      * Patch the storage appliance.
      *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1388,7 +1371,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     /**
      * Patch the storage appliance.
      *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1447,7 +1430,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     /**
      * Patch the storage appliance.
      *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1479,7 +1462,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     /**
      * Patch the storage appliance.
      *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1509,7 +1492,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     /**
      * Patch the storage appliance.
      *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1540,7 +1523,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     /**
      * Patch the storage appliance.
      *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1563,7 +1546,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     /**
      * Patch the storage appliance.
      *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1590,7 +1573,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     /**
      * Patch the storage appliance.
      *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1615,7 +1598,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     /**
      * Patch the storage appliance.
      *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1637,7 +1620,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     /**
      * Patch the storage appliance.
      *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1664,7 +1647,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     /**
      * Patch the storage appliance.
      *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1683,7 +1666,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     /**
      * Patch the storage appliance.
      *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2660,332 +2643,6 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         Context context) {
         runReadCommandsAsync(
                 resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters, context)
-            .block();
-    }
-
-    /**
-     * Trigger hardware validation of the storage appliance.
-     *
-     * <p>Validate the hardware of the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceValidateHardwareParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> validateHardwareWithResponseAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageApplianceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
-        }
-        if (storageApplianceValidateHardwareParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter storageApplianceValidateHardwareParameters is required and cannot be null."));
-        } else {
-            storageApplianceValidateHardwareParameters.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .validateHardware(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            storageApplianceName,
-                            storageApplianceValidateHardwareParameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Trigger hardware validation of the storage appliance.
-     *
-     * <p>Validate the hardware of the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceValidateHardwareParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> validateHardwareWithResponseAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageApplianceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
-        }
-        if (storageApplianceValidateHardwareParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter storageApplianceValidateHardwareParameters is required and cannot be null."));
-        } else {
-            storageApplianceValidateHardwareParameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .validateHardware(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                storageApplianceName,
-                storageApplianceValidateHardwareParameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Trigger hardware validation of the storage appliance.
-     *
-     * <p>Validate the hardware of the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceValidateHardwareParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginValidateHardwareAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            validateHardwareWithResponseAsync(
-                resourceGroupName, storageApplianceName, storageApplianceValidateHardwareParameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
-    }
-
-    /**
-     * Trigger hardware validation of the storage appliance.
-     *
-     * <p>Validate the hardware of the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceValidateHardwareParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginValidateHardwareAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            validateHardwareWithResponseAsync(
-                resourceGroupName, storageApplianceName, storageApplianceValidateHardwareParameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Trigger hardware validation of the storage appliance.
-     *
-     * <p>Validate the hardware of the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceValidateHardwareParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginValidateHardware(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters) {
-        return this
-            .beginValidateHardwareAsync(
-                resourceGroupName, storageApplianceName, storageApplianceValidateHardwareParameters)
-            .getSyncPoller();
-    }
-
-    /**
-     * Trigger hardware validation of the storage appliance.
-     *
-     * <p>Validate the hardware of the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceValidateHardwareParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginValidateHardware(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters,
-        Context context) {
-        return this
-            .beginValidateHardwareAsync(
-                resourceGroupName, storageApplianceName, storageApplianceValidateHardwareParameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Trigger hardware validation of the storage appliance.
-     *
-     * <p>Validate the hardware of the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceValidateHardwareParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> validateHardwareAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters) {
-        return beginValidateHardwareAsync(
-                resourceGroupName, storageApplianceName, storageApplianceValidateHardwareParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Trigger hardware validation of the storage appliance.
-     *
-     * <p>Validate the hardware of the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceValidateHardwareParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> validateHardwareAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters,
-        Context context) {
-        return beginValidateHardwareAsync(
-                resourceGroupName, storageApplianceName, storageApplianceValidateHardwareParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Trigger hardware validation of the storage appliance.
-     *
-     * <p>Validate the hardware of the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceValidateHardwareParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void validateHardware(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters) {
-        validateHardwareAsync(resourceGroupName, storageApplianceName, storageApplianceValidateHardwareParameters)
-            .block();
-    }
-
-    /**
-     * Trigger hardware validation of the storage appliance.
-     *
-     * <p>Validate the hardware of the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceValidateHardwareParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void validateHardware(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters,
-        Context context) {
-        validateHardwareAsync(
-                resourceGroupName, storageApplianceName, storageApplianceValidateHardwareParameters, context)
             .block();
     }
 

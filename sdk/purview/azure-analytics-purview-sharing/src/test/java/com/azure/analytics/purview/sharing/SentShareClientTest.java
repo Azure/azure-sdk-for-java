@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -51,7 +52,7 @@ class SentShareClientTest extends PurviewShareTestBase {
         UserInvitation sentShareInvitation = new UserInvitation()
                 .setTargetEmail(super.consumerEmail)
                 .setNotify(true)
-                .setExpirationDate(OffsetDateTime.now().plusDays(60));
+                .setExpirationDate(OffsetDateTime.of(2500, 1, 1, 1, 1, 1, 1, ZoneOffset.UTC));
 
         Response<BinaryData> invitationResponse = sentSharesClient.createSentShareInvitationWithResponse(
                 sentShareId.toString(), sentShareInvitationId, BinaryData.fromObject(sentShareInvitation),

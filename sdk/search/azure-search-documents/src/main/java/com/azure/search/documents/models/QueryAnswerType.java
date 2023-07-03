@@ -13,7 +13,9 @@ import java.util.Collection;
  * This parameter is only valid if the query type is 'semantic'. If set, the query returns answers extracted from key
  * passages in the highest ranked documents. The number of answers returned can be configured by appending the pipe
  * character '|' followed by the 'count-&lt;number of answers&gt;' option after the answers parameter value, such as
- * 'extractive|count-3'. Default count is 1.
+ * 'extractive|count-3'. Default count is 1. The confidence threshold can be configured by appending the pipe character
+ * '|' followed by the 'threshold-&lt;confidence threshold&gt;' option after the answers parameter value, such as
+ * 'extractive|threshold-0.9'. Default threshold is 0.7.
  */
 public final class QueryAnswerType extends ExpandableStringEnum<QueryAnswerType> {
     /** Do not return answers for the query. */

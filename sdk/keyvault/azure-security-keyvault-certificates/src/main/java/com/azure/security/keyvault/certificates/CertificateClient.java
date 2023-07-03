@@ -14,19 +14,19 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.certificates.implementation.CertificateClientImpl;
-import com.azure.security.keyvault.certificates.models.CertificateOperation;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.DeletedCertificate;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
-import com.azure.security.keyvault.certificates.models.IssuerProperties;
-import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
+import com.azure.security.keyvault.certificates.models.CertificateOperation;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
+import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import com.azure.security.keyvault.certificates.models.CertificateProperties;
+import com.azure.security.keyvault.certificates.models.DeletedCertificate;
+import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
+import com.azure.security.keyvault.certificates.models.IssuerProperties;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
-import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import com.azure.security.keyvault.certificates.models.LifetimeAction;
-import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
+import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
 
 import java.util.List;
 import java.util.Map;
@@ -109,7 +109,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
-        return implClient.beginCreateCertificate(certificateName, policy, isEnabled, tags).getSyncPoller();
+        return implClient.beginCreateCertificate(certificateName, policy, isEnabled, tags, Context.NONE);
     }
 
     /**
@@ -141,7 +141,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy) {
-        return implClient.beginCreateCertificate(certificateName, policy, true, null).getSyncPoller();
+        return implClient.beginCreateCertificate(certificateName, policy, true, null, Context.NONE);
     }
 
     /**
@@ -167,7 +167,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
-        return implClient.getCertificateOperation(certificateName).getSyncPoller();
+        return implClient.getCertificateOperation(certificateName, Context.NONE);
     }
     /**
      * Gets information about the latest version of the specified certificate. This operation requires the certificates/get permission.
@@ -370,7 +370,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DeletedCertificate, Void> beginDeleteCertificate(String certificateName) {
-        return implClient.beginDeleteCertificate(certificateName).getSyncPoller();
+        return implClient.beginDeleteCertificate(certificateName, Context.NONE);
     }
 
     /**
@@ -489,7 +489,7 @@ public final class CertificateClient {
      * <p>Recovers the deleted certificate from the key vault enabled for soft-delete. Prints out the
      * recovered certificate details when a response has been received.</p>
 
-     * <!-- src_embed com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#String -->
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginRecoverDeletedCertificate#String -->
      * <pre>
      * SyncPoller&lt;KeyVaultCertificateWithPolicy, Void&gt; recoverDeletedCertPoller = certificateClient
      *     .beginRecoverDeletedCertificate&#40;&quot;deletedCertificateName&quot;&#41;;
@@ -500,7 +500,7 @@ public final class CertificateClient {
      *     recoverDeletedCertPollResponse.getValue&#40;&#41;.getProperties&#40;&#41;.getId&#40;&#41;&#41;;
      * recoverDeletedCertPoller.waitForCompletion&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#String -->
+     * <!-- end com.azure.security.keyvault.certificates.CertificateClient.beginRecoverDeletedCertificate#String -->
      *
      * @param certificateName The name of the deleted certificate to be recovered.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the certificate vault.
@@ -509,7 +509,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName) {
-        return implClient.beginRecoverDeletedCertificate(certificateName).getSyncPoller();
+        return implClient.beginRecoverDeletedCertificate(certificateName, Context.NONE);
     }
 
     /**
@@ -646,7 +646,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateProperties> listPropertiesOfCertificates() {
-        return new PagedIterable<>(implClient.listPropertiesOfCertificates(false, Context.NONE));
+        return implClient.listPropertiesOfCertificates(false, Context.NONE);
     }
 
     /**
@@ -678,7 +678,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateProperties> listPropertiesOfCertificates(boolean includePending, Context context) {
-        return new PagedIterable<>(implClient.listPropertiesOfCertificates(includePending, context));
+        return implClient.listPropertiesOfCertificates(includePending, context);
     }
 
     /**
@@ -729,7 +729,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedCertificate> listDeletedCertificates(boolean includePending, Context context) {
-        return new PagedIterable<>(implClient.listDeletedCertificates(includePending, context));
+        return implClient.listDeletedCertificates(includePending, context);
     }
 
     /**
@@ -794,7 +794,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName, Context context) {
-        return new PagedIterable<>(implClient.listPropertiesOfCertificateVersions(certificateName, context));
+        return implClient.listPropertiesOfCertificateVersions(certificateName, context);
     }
 
     /**
@@ -1133,7 +1133,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IssuerProperties> listPropertiesOfIssuers(Context context) {
-        return new PagedIterable<>(implClient.listPropertiesOfIssuers(context));
+        return implClient.listPropertiesOfIssuers(context);
     }
 
     /**
@@ -1251,7 +1251,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> setContacts(List<CertificateContact> contacts, Context context) {
-        return new PagedIterable<>(implClient.setContacts(contacts, context));
+        return implClient.setContacts(contacts, context);
     }
 
     /**
@@ -1296,7 +1296,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> listContacts(Context context) {
-        return new PagedIterable<>(implClient.listContacts(context));
+        return implClient.listContacts(context);
     }
 
     /**
@@ -1342,7 +1342,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> deleteContacts(Context context) {
-        return new PagedIterable<>(implClient.deleteContacts(context));
+        return implClient.deleteContacts(context);
     }
 
     /**

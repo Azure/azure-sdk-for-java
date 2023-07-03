@@ -4,8 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSignatureType;
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /** An object representing the content and location of a field value. */
-@Fluent
+@Immutable
 public final class DocumentField {
     /*
      * Data type of the field value.
@@ -135,7 +134,7 @@ public final class DocumentField {
      * @param type the type value to set.
      */
     @JsonCreator
-    public DocumentField(@JsonProperty(value = "type", required = true) DocumentFieldType type) {
+    private DocumentField(@JsonProperty(value = "type", required = true) DocumentFieldType type) {
         this.type = type;
     }
 
@@ -158,34 +157,12 @@ public final class DocumentField {
     }
 
     /**
-     * Set the valueString property: String value.
-     *
-     * @param valueString the valueString value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueString(String valueString) {
-        this.valueString = valueString;
-        return this;
-    }
-
-    /**
      * Get the valueDate property: Date value in YYYY-MM-DD format (ISO 8601).
      *
      * @return the valueDate value.
      */
     public LocalDate getValueDate() {
         return this.valueDate;
-    }
-
-    /**
-     * Set the valueDate property: Date value in YYYY-MM-DD format (ISO 8601).
-     *
-     * @param valueDate the valueDate value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueDate(LocalDate valueDate) {
-        this.valueDate = valueDate;
-        return this;
     }
 
     /**
@@ -198,34 +175,12 @@ public final class DocumentField {
     }
 
     /**
-     * Set the valueTime property: Time value in hh:mm:ss format (ISO 8601).
-     *
-     * @param valueTime the valueTime value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueTime(String valueTime) {
-        this.valueTime = valueTime;
-        return this;
-    }
-
-    /**
      * Get the valuePhoneNumber property: Phone number value in E.164 format (ex. +19876543210).
      *
      * @return the valuePhoneNumber value.
      */
     public String getValuePhoneNumber() {
         return this.valuePhoneNumber;
-    }
-
-    /**
-     * Set the valuePhoneNumber property: Phone number value in E.164 format (ex. +19876543210).
-     *
-     * @param valuePhoneNumber the valuePhoneNumber value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValuePhoneNumber(String valuePhoneNumber) {
-        this.valuePhoneNumber = valuePhoneNumber;
-        return this;
     }
 
     /**
@@ -238,34 +193,12 @@ public final class DocumentField {
     }
 
     /**
-     * Set the valueNumber property: Floating point value.
-     *
-     * @param valueNumber the valueNumber value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueNumber(Float valueNumber) {
-        this.valueNumber = valueNumber;
-        return this;
-    }
-
-    /**
      * Get the valueInteger property: Integer value.
      *
      * @return the valueInteger value.
      */
     public Long getValueInteger() {
         return this.valueInteger;
-    }
-
-    /**
-     * Set the valueInteger property: Integer value.
-     *
-     * @param valueInteger the valueInteger value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueInteger(Long valueInteger) {
-        this.valueInteger = valueInteger;
-        return this;
     }
 
     /**
@@ -278,34 +211,12 @@ public final class DocumentField {
     }
 
     /**
-     * Set the valueSelectionMark property: Selection mark value.
-     *
-     * @param valueSelectionMark the valueSelectionMark value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueSelectionMark(SelectionMarkState valueSelectionMark) {
-        this.valueSelectionMark = valueSelectionMark;
-        return this;
-    }
-
-    /**
      * Get the valueSignature property: Presence of signature.
      *
      * @return the valueSignature value.
      */
     public DocumentSignatureType getValueSignature() {
         return this.valueSignature;
-    }
-
-    /**
-     * Set the valueSignature property: Presence of signature.
-     *
-     * @param valueSignature the valueSignature value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueSignature(DocumentSignatureType valueSignature) {
-        this.valueSignature = valueSignature;
-        return this;
     }
 
     /**
@@ -318,34 +229,12 @@ public final class DocumentField {
     }
 
     /**
-     * Set the valueCountryRegion property: 3-letter country code value (ISO 3166-1 alpha-3).
-     *
-     * @param valueCountryRegion the valueCountryRegion value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueCountryRegion(String valueCountryRegion) {
-        this.valueCountryRegion = valueCountryRegion;
-        return this;
-    }
-
-    /**
      * Get the valueArray property: Array of field values.
      *
      * @return the valueArray value.
      */
     public List<DocumentField> getValueArray() {
         return this.valueArray;
-    }
-
-    /**
-     * Set the valueArray property: Array of field values.
-     *
-     * @param valueArray the valueArray value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueArray(List<DocumentField> valueArray) {
-        this.valueArray = valueArray;
-        return this;
     }
 
     /**
@@ -358,34 +247,12 @@ public final class DocumentField {
     }
 
     /**
-     * Set the valueObject property: Dictionary of named field values.
-     *
-     * @param valueObject the valueObject value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueObject(Map<String, DocumentField> valueObject) {
-        this.valueObject = valueObject;
-        return this;
-    }
-
-    /**
      * Get the valueCurrency property: Currency value.
      *
      * @return the valueCurrency value.
      */
     public CurrencyValue getValueCurrency() {
         return this.valueCurrency;
-    }
-
-    /**
-     * Set the valueCurrency property: Currency value.
-     *
-     * @param valueCurrency the valueCurrency value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueCurrency(CurrencyValue valueCurrency) {
-        this.valueCurrency = valueCurrency;
-        return this;
     }
 
     /**
@@ -398,34 +265,12 @@ public final class DocumentField {
     }
 
     /**
-     * Set the valueAddress property: Address value.
-     *
-     * @param valueAddress the valueAddress value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueAddress(AddressValue valueAddress) {
-        this.valueAddress = valueAddress;
-        return this;
-    }
-
-    /**
      * Get the valueBoolean property: Boolean value.
      *
      * @return the valueBoolean value.
      */
     public Boolean isValueBoolean() {
         return this.valueBoolean;
-    }
-
-    /**
-     * Set the valueBoolean property: Boolean value.
-     *
-     * @param valueBoolean the valueBoolean value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueBoolean(Boolean valueBoolean) {
-        this.valueBoolean = valueBoolean;
-        return this;
     }
 
     /**
@@ -438,34 +283,12 @@ public final class DocumentField {
     }
 
     /**
-     * Set the content property: Field content.
-     *
-     * @param content the content value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setContent(String content) {
-        this.content = content;
-        return this;
-    }
-
-    /**
      * Get the boundingRegions property: Bounding regions covering the field.
      *
      * @return the boundingRegions value.
      */
     public List<BoundingRegion> getBoundingRegions() {
         return this.boundingRegions;
-    }
-
-    /**
-     * Set the boundingRegions property: Bounding regions covering the field.
-     *
-     * @param boundingRegions the boundingRegions value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setBoundingRegions(List<BoundingRegion> boundingRegions) {
-        this.boundingRegions = boundingRegions;
-        return this;
     }
 
     /**
@@ -478,33 +301,11 @@ public final class DocumentField {
     }
 
     /**
-     * Set the spans property: Location of the field in the reading order concatenated content.
-     *
-     * @param spans the spans value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setSpans(List<DocumentSpan> spans) {
-        this.spans = spans;
-        return this;
-    }
-
-    /**
      * Get the confidence property: Confidence of correctly extracting the field.
      *
      * @return the confidence value.
      */
     public Float getConfidence() {
         return this.confidence;
-    }
-
-    /**
-     * Set the confidence property: Confidence of correctly extracting the field.
-     *
-     * @param confidence the confidence value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setConfidence(Float confidence) {
-        this.confidence = confidence;
-        return this;
     }
 }

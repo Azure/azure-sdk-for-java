@@ -14,29 +14,15 @@ public final class L3NetworkPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L3NetworkPatchParameters model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"ac\":\"yamlbnse\",\"m\":\"jvpilguooqja\",\"hrtdtpdelq\":\"itgueiookjbs\",\"vcjkgd\":\"cslmotoebnfxo\"}}")
-                .toObject(L3NetworkPatchParameters.class);
-        Assertions.assertEquals("yamlbnse", model.tags().get("ac"));
+            BinaryData.fromString("{\"tags\":{\"yetefyp\":\"gsnnf\"}}").toObject(L3NetworkPatchParameters.class);
+        Assertions.assertEquals("gsnnf", model.tags().get("yetefyp"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L3NetworkPatchParameters model =
-            new L3NetworkPatchParameters()
-                .withTags(
-                    mapOf(
-                        "ac",
-                        "yamlbnse",
-                        "m",
-                        "jvpilguooqja",
-                        "hrtdtpdelq",
-                        "itgueiookjbs",
-                        "vcjkgd",
-                        "cslmotoebnfxo"));
+        L3NetworkPatchParameters model = new L3NetworkPatchParameters().withTags(mapOf("yetefyp", "gsnnf"));
         model = BinaryData.fromObject(model).toObject(L3NetworkPatchParameters.class);
-        Assertions.assertEquals("yamlbnse", model.tags().get("ac"));
+        Assertions.assertEquals("gsnnf", model.tags().get("yetefyp"));
     }
 
     @SuppressWarnings("unchecked")

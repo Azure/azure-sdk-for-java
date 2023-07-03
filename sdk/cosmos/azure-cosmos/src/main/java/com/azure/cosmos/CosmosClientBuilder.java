@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
+import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -37,8 +38,12 @@ import java.util.Objects;
 import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
 
 /**
- * Helper class to build CosmosAsyncClient {@link CosmosAsyncClient} and CosmosClient {@link CosmosClient}
+ * Helper class to build {@link CosmosAsyncClient} and {@link CosmosClient}
  * instances as logical representation of the Azure Cosmos database service.
+ * <p>
+ * CosmosAsyncClient and CosmosClient are thread-safe.
+ * It's recommended to maintain a single instance of CosmosClient or CosmosAsyncClient per lifetime of the application which enables efficient connection management and performance.
+ * CosmosAsyncClient and CosmosClient initializations are heavy operations - don't use initialization CosmosAsyncClient or CosmosClient instances as credentials or network connectivity validations.
  * <p>
  * When building client, endpoint() and key() are mandatory APIs, without these the initialization will fail.
  * <p>
@@ -133,6 +138,7 @@ public class CosmosClientBuilder implements
     private Boolean clientTelemetryEnabledOverride = null;
     private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
+    private SessionRetryOptions sessionRetryOptions;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -800,6 +806,82 @@ public class CosmosClientBuilder implements
     }
 
     /**
+     * Sets the {@link SessionRetryOptions} instance on the client.
+     * <p>
+     * This setting helps in optimizing retry behavior associated with
+     * {@code NOT_FOUND / READ_SESSION_NOT_AVAILABLE} or {@code 404 / 1002} scenarios which happen
+     * when the targeted consistency used by the request is <i>Session Consistency</i> and a
+     * request goes to a region that does not have recent enough data which the
+     * request is looking for.
+     * <p>
+     * DISCLAIMER: Setting {@link SessionRetryOptions} will modify retry behavior
+     * for all operations or workloads executed through this instance of the client.
+     * <p>
+     * For multi-write accounts:
+     * <ul>
+     *     <li>
+     *         For a read request going to a local read region, it is possible to optimize
+     *         availability by having the request be retried on a different write region since
+     *         the other write region might have more upto date data.
+     *     </li>
+     *     <li>
+     *         For a read request going to a local write region, it could help to
+     *         switch to a different write region right away provided the local write region
+     *         does not have the most up to date data.
+     *     </li>
+     *     <li>
+     *         For a write request going to a local write region, it could help to
+     *         switch to a different write region right away provided the local write region
+     *         does not have the most up to date data.
+     *     </li>
+     * </ul>
+     * For single-write accounts:
+     * <ul>
+     *     <li>
+     *         If a read request goes to a local read region, it helps to switch to the write region quicker.
+     *     </li>
+     *     <li>
+     *         If a read request goes to a write region, the {@link SessionRetryOptions} setting does not
+     *         matter since the write region in a single-write account has the most up to date data.
+     *     </li>
+     *     <li>
+     *         For a write to a write region in a single-write account, {@code READ_SESSION_NOT_AVAILABLE} errors
+     *         do not apply since the write-region always has the most recent version of the data
+     *         and all writes go to the primary replica in this region. Therefore, replication lags causing errors
+     *         is not applicable here.
+     *     </li>
+     * </ul>
+     * About region switch hints:
+     * <ul>
+     *     <li>In order to prioritize the local region for retries, use the hint {@link CosmosRegionSwitchHint#LOCAL_REGION_PREFERRED}</li>
+     *     <li>In order to move retries to a different / remote region quicker, use the hint {@link CosmosRegionSwitchHint#REMOTE_REGION_PREFERRED}</li>
+     * </ul>
+     * Operations supported:
+     * <ul>
+     *     <li>Read</li>
+     *     <li>Query</li>
+     *     <li>Create</li>
+     *     <li>Replace</li>
+     *     <li>Upsert</li>
+     *     <li>Delete</li>
+     *     <li>Patch</li>
+     *     <li>Batch</li>
+     *     <li>Bulk</li>
+     * </ul>
+     *
+     * @param sessionRetryOptions The {@link SessionRetryOptions} instance.
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder sessionRetryOptions(SessionRetryOptions sessionRetryOptions) {
+        this.sessionRetryOptions = sessionRetryOptions;
+        return this;
+    }
+
+    SessionRetryOptions getSessionRetryOptions() {
+        return this.sessionRetryOptions;
+    }
+
+    /**
      * Gets the {@link CosmosEndToEndOperationLatencyPolicyConfig}
      * @return the {@link CosmosEndToEndOperationLatencyPolicyConfig}
      */
@@ -954,6 +1036,15 @@ public class CosmosClientBuilder implements
      * @return CosmosAsyncClient
      */
     public CosmosAsyncClient buildAsyncClient() {
+        return buildAsyncClient(true);
+    }
+
+    /**
+     * Builds a cosmos async client with the provided properties
+     *
+     * @return CosmosAsyncClient
+     */
+    CosmosAsyncClient buildAsyncClient(boolean logStartupInfo) {
         StopWatch stopwatch = new StopWatch();
         stopwatch.start();
         validateConfig();
@@ -976,7 +1067,9 @@ public class CosmosClientBuilder implements
             cosmosAsyncClient.recordOpenConnectionsAndInitCachesCompleted(new ArrayList<>());
         }
 
-        logStartupInfo(stopwatch, cosmosAsyncClient);
+        if (logStartupInfo) {
+            logStartupInfo(stopwatch, cosmosAsyncClient);
+        }
         return cosmosAsyncClient;
     }
 
@@ -1090,15 +1183,26 @@ public class CosmosClientBuilder implements
 
         if (logger.isInfoEnabled()) {
             long time = stopwatch.getTime();
+            String diagnosticsCfg = "";
+            String tracingCfg = "";
+            if (client.getClientTelemetryConfig() != null) {
+                diagnosticsCfg = client.getClientTelemetryConfig().toString();
+            }
+
+            DiagnosticsProvider provider = client.getDiagnosticsProvider();
+            if (provider != null) {
+                tracingCfg = provider.isEnabled() + ", " + provider.isRealTracer();
+            }
+
             // NOTE: if changing the logging below - do not log any confidential info like master key credentials etc.
             logger.info("Cosmos Client with (Correlation) ID [{}] started up in [{}] ms with the following " +
                     "configuration: serviceEndpoint [{}], preferredRegions [{}], connectionPolicy [{}], " +
                     "consistencyLevel [{}], contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
-                    "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}], proactiveContainerInit [{}].",
+                    "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}], proactiveContainerInit [{}], diagnostics [{}], tracing [{}]",
                 client.getContextClient().getClientCorrelationId(), time, getEndpoint(), getPreferredRegions(),
                 getConnectionPolicy(), getConsistencyLevel(), isContentResponseOnWriteEnabled(),
                 isSessionCapturingOverrideEnabled(), isConnectionSharingAcrossClientsEnabled(),
-                isClientTelemetryEnabled(), getProactiveContainerInitConfig());
+                isClientTelemetryEnabled(), getProactiveContainerInitConfig(), diagnosticsCfg, tracingCfg);
         }
     }
 

@@ -51,7 +51,8 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        // TODO: use the parameterized serviceVersion once we have a service release that responds with valid data
+        client = getOpenAIAsyncClient(httpClient, OpenAIServiceVersion.V2023_05_15);
         getCompletionsRunner((deploymentId, prompt) -> {
             StepVerifier.create(client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt)))
                 .recordWith(ArrayList::new)
@@ -160,7 +161,8 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        // TODO: use the parameterized serviceVersion once we have a service release that responds with valid data
+        client = getOpenAIAsyncClient(httpClient, OpenAIServiceVersion.V2023_05_15);
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
             StepVerifier.create(client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages)))
                 .recordWith(ArrayList::new)
@@ -214,5 +216,15 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                 })
                 .verifyComplete();
         });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGenerateImage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getImageGenerationRunner(options ->
+            StepVerifier.create(client.generateImage(options))
+                .assertNext(OpenAIClientTestBase::assertImageResponse)
+                .verifyComplete());
     }
 }

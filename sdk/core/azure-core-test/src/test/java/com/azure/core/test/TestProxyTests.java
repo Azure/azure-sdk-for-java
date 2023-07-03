@@ -365,7 +365,7 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Record")
-    public void testResetTestProxyData() throws MalformedURLException {
+    public void testResetTestProxyData() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
         final HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -373,8 +373,8 @@ public class TestProxyTests extends TestProxyTestBase {
             .policies(interceptorManager.getRecordPolicy())
             .build();
 
-        try (HttpResponse response = pipeline.sendSync(
-            new HttpRequest(HttpMethod.GET, new URL("http://localhost:3000")), Context.NONE)) {
+        try (HttpResponse response = pipeline.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost:3000"),
+            Context.NONE)) {
             assertEquals(200, response.getStatusCode());
             HttpHeaders headers = response.getRequest().getHeaders();
             assertNull(headers.get(HttpHeaderName.fromString("x-recording-upstream-base-uri")));

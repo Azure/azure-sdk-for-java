@@ -4,13 +4,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List document classifiers response object. */
-@Fluent
+@Immutable
 public final class GetDocumentClassifiersResponse {
     /*
      * List of document classifiers.
@@ -30,7 +30,7 @@ public final class GetDocumentClassifiersResponse {
      * @param value the value value to set.
      */
     @JsonCreator
-    public GetDocumentClassifiersResponse(
+    private GetDocumentClassifiersResponse(
             @JsonProperty(value = "value", required = true) List<DocumentClassifierDetails> value) {
         this.value = value;
     }
@@ -51,16 +51,5 @@ public final class GetDocumentClassifiersResponse {
      */
     public String getNextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: Link to the next page of document classifiers.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the GetDocumentClassifiersResponse object itself.
-     */
-    public GetDocumentClassifiersResponse setNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
     }
 }

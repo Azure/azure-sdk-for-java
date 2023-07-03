@@ -4,14 +4,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTableCellKind;
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An object representing the location and content of a table cell. */
-@Fluent
+@Immutable
 public final class DocumentTableCell {
     /*
      * Table cell kind.
@@ -70,7 +69,7 @@ public final class DocumentTableCell {
      * @param spans the spans value to set.
      */
     @JsonCreator
-    public DocumentTableCell(
+    private DocumentTableCell(
             @JsonProperty(value = "rowIndex", required = true) int rowIndex,
             @JsonProperty(value = "columnIndex", required = true) int columnIndex,
             @JsonProperty(value = "content", required = true) String content,
@@ -88,17 +87,6 @@ public final class DocumentTableCell {
      */
     public DocumentTableCellKind getKind() {
         return this.kind;
-    }
-
-    /**
-     * Set the kind property: Table cell kind.
-     *
-     * @param kind the kind value to set.
-     * @return the DocumentTableCell object itself.
-     */
-    public DocumentTableCell setKind(DocumentTableCellKind kind) {
-        this.kind = kind;
-        return this;
     }
 
     /**
@@ -129,34 +117,12 @@ public final class DocumentTableCell {
     }
 
     /**
-     * Set the rowSpan property: Number of rows spanned by this cell.
-     *
-     * @param rowSpan the rowSpan value to set.
-     * @return the DocumentTableCell object itself.
-     */
-    public DocumentTableCell setRowSpan(Integer rowSpan) {
-        this.rowSpan = rowSpan;
-        return this;
-    }
-
-    /**
      * Get the columnSpan property: Number of columns spanned by this cell.
      *
      * @return the columnSpan value.
      */
     public Integer getColumnSpan() {
         return this.columnSpan;
-    }
-
-    /**
-     * Set the columnSpan property: Number of columns spanned by this cell.
-     *
-     * @param columnSpan the columnSpan value to set.
-     * @return the DocumentTableCell object itself.
-     */
-    public DocumentTableCell setColumnSpan(Integer columnSpan) {
-        this.columnSpan = columnSpan;
-        return this;
     }
 
     /**
@@ -175,17 +141,6 @@ public final class DocumentTableCell {
      */
     public List<BoundingRegion> getBoundingRegions() {
         return this.boundingRegions;
-    }
-
-    /**
-     * Set the boundingRegions property: Bounding regions covering the table cell.
-     *
-     * @param boundingRegions the boundingRegions value to set.
-     * @return the DocumentTableCell object itself.
-     */
-    public DocumentTableCell setBoundingRegions(List<BoundingRegion> boundingRegions) {
-        this.boundingRegions = boundingRegions;
-        return this;
     }
 
     /**

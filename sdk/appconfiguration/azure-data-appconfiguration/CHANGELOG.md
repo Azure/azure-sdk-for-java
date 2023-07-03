@@ -4,11 +4,25 @@
 
 ### Features Added
 
+- Added new feature, `Configuration Setting Snapshot` to the library. You can create, get,
+  update(archive and recover) a snapshot, and list snapshots.
+- Added new APIs to support listing configuration settings by given snapshot name and setting 
+  fields.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.6 (2023-06-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
 
 ## 1.4.5 (2023-05-23)
 

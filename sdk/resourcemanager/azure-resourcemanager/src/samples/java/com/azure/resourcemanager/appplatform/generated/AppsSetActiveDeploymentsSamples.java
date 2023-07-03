@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for Apps SetActiveDeployments. */
 public final class AppsSetActiveDeploymentsSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Apps_SetActiveDeployments.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Apps_SetActiveDeployments.json
      */
     /**
      * Sample code: Apps_SetActiveDeployments.
