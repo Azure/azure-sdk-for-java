@@ -114,7 +114,7 @@ public class OrderByDocumentQueryExecutionContext
                 new OrderbyRowComparer<>(queryInfo.getOrderBy()),
                 initParams.getCorrelatedActivityId(),
                 queryInfo.hasSelectValue(),
-                initParams.getisQueryCancelledOnTimeout());
+                initParams.isQueryCancelledOnTimeout());
 
         context.setTop(initParams.getTop());
 

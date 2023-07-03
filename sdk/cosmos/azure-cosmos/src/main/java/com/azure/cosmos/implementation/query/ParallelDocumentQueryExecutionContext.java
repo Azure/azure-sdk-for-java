@@ -101,7 +101,7 @@ public class ParallelDocumentQueryExecutionContext<T>
                         || queryInfo.hasGroupBy()
                         || queryInfo.hasDCount()
                         || queryInfo.hasDistinct()),
-                initParams.getisQueryCancelledOnTimeout());
+                initParams.isQueryCancelledOnTimeout());
         context.setTop(initParams.getTop());
 
         try {

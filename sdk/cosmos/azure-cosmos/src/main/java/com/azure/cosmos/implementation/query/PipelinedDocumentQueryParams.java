@@ -118,7 +118,7 @@ public class PipelinedDocumentQueryParams<T> {
         return feedRanges;
     }
 
-    public AtomicBoolean getisQueryCancelledOnTimeout() {
+    public AtomicBoolean isQueryCancelledOnTimeout() {
         return isQueryCancelledOnTimeout;
     }
 
