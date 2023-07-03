@@ -19,6 +19,7 @@ import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.temporal.ChronoUnit;
@@ -70,15 +71,25 @@ public class GenericResourceTest extends ResourceManagerTestBase {
 
     @Test
     public void testResourceWithSpaceInName() {
-        String poolId = ensureElasticPoolWithSpace().id();
+        SqlElasticPool elasticPool = ensureElasticPoolWithSpace();
+        String poolId = elasticPool.id();
+        String poolName = elasticPool.name();
 
         GenericResource pool = azureResourceManager.genericResources().getById(poolId);
+        Assertions.assertNotNull(pool);
+        Assertions.assertEquals(poolName, pool.name());
 
         pool = pool.refresh();
+        Assertions.assertEquals(poolName, pool.name());
 
         pool.update()
-            .withTag("key1", "value1")
+            .withTag("keyInSpaceTest", "value")
             .apply();
+        Assertions.assertEquals(poolName, pool.name());
+        Assertions.assertTrue(pool.tags().containsKey("keyInSpaceTest"));
+
+        // status code 405
+//        Assertions.assertTrue(azureResourceManager.genericResources().checkExistenceById(poolId));
 
         azureResourceManager.genericResources().deleteById(poolId);
     }
