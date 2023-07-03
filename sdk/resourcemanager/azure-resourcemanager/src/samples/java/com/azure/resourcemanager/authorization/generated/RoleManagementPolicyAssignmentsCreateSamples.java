@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.authorization.fluent.models.RoleManagementPolicyAssignmentInner;
 
 /** Samples for RoleManagementPolicyAssignments Create. */
 public final class RoleManagementPolicyAssignmentsCreateSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/PutRoleManagementPolicyAssignment.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-10-01-preview/examples/PutRoleManagementPolicyAssignment.json
      */
     /**
      * Sample code: PutRoleManagementPolicyAssignment.
@@ -32,7 +31,7 @@ public final class RoleManagementPolicyAssignmentsCreateSamples {
                     .withRoleDefinitionId(
                         "/subscriptions/129ff972-28f8-46b8-a726-e497be039368/providers/Microsoft.Authorization/roleDefinitions/a1705bd2-3a8f-45a5-8683-466fcfd5cc24")
                     .withPolicyId(
-                        "/subscriptions/129ff972-28f8-46b8-a726-e497be039368/providers/Microsoft.Authorization/roleManagementPolicies/b959d571-f0b5-4042-88a7-01be6cb22db9"),
-                Context.NONE);
+                        "/providers/Microsoft.Subscription/subscriptions/129ff972-28f8-46b8-a726-e497be039368/providers/Microsoft.Authorization/roleManagementPolicies/b959d571-f0b5-4042-88a7-01be6cb22db9"),
+                com.azure.core.util.Context.NONE);
     }
 }

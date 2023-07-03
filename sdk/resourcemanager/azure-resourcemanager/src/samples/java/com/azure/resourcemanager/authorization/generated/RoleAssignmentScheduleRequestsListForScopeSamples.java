@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RoleAssignmentScheduleRequests ListForScope. */
 public final class RoleAssignmentScheduleRequestsListForScopeSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/GetRoleAssignmentScheduleRequestByScope.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2022-04-01-preview/examples/GetRoleAssignmentScheduleRequestByScope.json
      */
     /**
      * Sample code: GetRoleAssignmentScheduleRequestByScope.
@@ -26,6 +24,6 @@ public final class RoleAssignmentScheduleRequestsListForScopeSamples {
             .listForScope(
                 "providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f",
                 "assignedTo('A3BB8764-CB92-4276-9D2A-CA1E895E55EA')",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

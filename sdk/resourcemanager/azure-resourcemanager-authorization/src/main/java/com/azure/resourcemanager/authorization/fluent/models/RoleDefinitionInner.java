@@ -5,31 +5,14 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Role definition. */
 @Fluent
-public final class RoleDefinitionInner {
-    /*
-     * The role definition ID.
-     */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
-
-    /*
-     * The role definition name.
-     */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
-
-    /*
-     * The role definition type.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
-
+public final class RoleDefinitionInner extends ProxyResource {
     /*
      * Role definition properties.
      */
@@ -38,33 +21,6 @@ public final class RoleDefinitionInner {
 
     /** Creates an instance of RoleDefinitionInner class. */
     public RoleDefinitionInner() {
-    }
-
-    /**
-     * Get the id property: The role definition ID.
-     *
-     * @return the id value.
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The role definition name.
-     *
-     * @return the name value.
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the type property: The role definition type.
-     *
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
     }
 
     /**

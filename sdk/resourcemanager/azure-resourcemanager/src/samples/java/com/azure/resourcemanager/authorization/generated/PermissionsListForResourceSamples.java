@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Permissions ListForResource. */
 public final class PermissionsListForResourceSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2022-04-01/examples/GetResourcePermissions.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2022-05-01-preview/examples/GetResourcePermissions.json
      */
     /**
      * Sample code: List permissions for resource.
@@ -24,6 +22,11 @@ public final class PermissionsListForResourceSamples {
             .roleServiceClient()
             .getPermissions()
             .listForResource(
-                "rgname", "rpnamespace", "parentResourcePath", "resourceType", "resourceName", Context.NONE);
+                "rgname",
+                "rpnamespace",
+                "parentResourcePath",
+                "resourceType",
+                "resourceName",
+                com.azure.core.util.Context.NONE);
     }
 }

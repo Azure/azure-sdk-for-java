@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.authorization.fluent.models.RoleManagementPolicyInner;
 import com.azure.resourcemanager.authorization.models.ApprovalMode;
 import com.azure.resourcemanager.authorization.models.ApprovalSettings;
@@ -26,7 +25,7 @@ import java.util.Arrays;
 /** Samples for RoleManagementPolicies Update. */
 public final class RoleManagementPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/PatchPartialRoleManagementPolicy.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-10-01-preview/examples/PatchPartialRoleManagementPolicy.json
      */
     /**
      * Sample code: PatchPartialRoleManagementPolicy.
@@ -68,11 +67,11 @@ public final class RoleManagementPoliciesUpdateSamples {
                                     .withRecipientType(RecipientType.ADMIN)
                                     .withNotificationRecipients(Arrays.asList("admin_admin_eligible@test.com"))
                                     .withIsDefaultRecipientsEnabled(false))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/PatchRoleManagementPolicy.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-10-01-preview/examples/PatchRoleManagementPolicy.json
      */
     /**
      * Sample code: PatchRoleManagementPolicy.
@@ -305,6 +304,6 @@ public final class RoleManagementPoliciesUpdateSamples {
                                     .withNotificationLevel(NotificationLevel.CRITICAL)
                                     .withRecipientType(RecipientType.APPROVER)
                                     .withIsDefaultRecipientsEnabled(true))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

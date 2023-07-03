@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProviderOperationsMetadata List. */
 public final class ProviderOperationsMetadataListSamples {
     /*
@@ -24,6 +22,6 @@ public final class ProviderOperationsMetadataListSamples {
             .manager()
             .roleServiceClient()
             .getProviderOperationsMetadatas()
-            .list(null, Context.NONE);
+            .list(null, com.azure.core.util.Context.NONE);
     }
 }
