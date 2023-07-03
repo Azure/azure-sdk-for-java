@@ -2,7 +2,6 @@
 
 This project allows providing telemetry data to Azure Monitor for Spring Boot applications packaged as GraalVM native images.
 
-  
 [Source code][source_code] | [Package (Maven)][package_mvn] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation]
 
 ## Getting started
@@ -80,19 +79,14 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor
-[azure_subscription]: https://azure.microsoft.com/free/
+[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-spring-native/src
+[package_mvn]: https://mvnrepository.com/artifact/com.azure/applicationinsights-spring-native
 [api_reference_doc]: https://docs.microsoft.com/azure/azure-monitor/overview
 [product_documentation]: https://docs.microsoft.com/azure/azure-monitor/overview
-[azure_cli]: https://docs.microsoft.com/cli/azure
-[azure_portal]: https://portal.azure.com
-[custom_subdomain]: https://docs.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
-[opentelemetry_specification]: https://github.com/open-telemetry/opentelemetry-specification
+[azure_subscription]: https://azure.microsoft.com/free/
 [application_insights_resource]: https://docs.microsoft.com/azure/azure-monitor/app/create-new-resource
 [application_insights_intro]: https://docs.microsoft.com/azure/azure-monitor/app/app-insights-overview
-[azure_portal]: https://ms.portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/microsoft.insights%2Fcomponents
-[opentelemetry_io]: https://opentelemetry.io/
+[azure_portal]: https://portal.azure.com
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
