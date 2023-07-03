@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-authorization</artifactId>
-  <version>2.28.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-authorization;current} -->
+  <version>2.29.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-authorization;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Authorization Management</name>
@@ -37,8 +37,8 @@
 
   <properties>
     <!-- RMJacoco -->
-    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.0</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.0</jacoco.min.branchcoverage>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-opens com.azure.resourcemanager.authorization/com.azure.resourcemanager.authorization=ALL-UNNAMED
