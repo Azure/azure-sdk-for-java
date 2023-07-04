@@ -311,6 +311,9 @@ public final class CallMediaAsync {
         if (playSource.getVoiceName() != null) {
             textSourceInternal.setVoiceName(playSource.getVoiceName());
         }
+        if (playSource.getCustomVoiceEndpointId() != null) {
+            textSourceInternal.setCustomVoiceEndpointId(playSource.getCustomVoiceEndpointId());
+        }
 
         return new PlaySourceInternal()
             .setKind(PlaySourceTypeInternal.TEXT)
@@ -320,6 +323,10 @@ public final class CallMediaAsync {
 
     private PlaySourceInternal getPlaySourceInternalFromSsmlSource(SsmlSource playSource) {
         SsmlSourceInternal ssmlSourceInternal = new SsmlSourceInternal().setSsmlText(playSource.getSsmlText());
+        if (playSource.getCustomVoiceEndpointId() != null) {
+            ssmlSourceInternal.setCustomVoiceEndpointId(playSource.getCustomVoiceEndpointId());
+        }
+
         return new PlaySourceInternal()
             .setKind(PlaySourceTypeInternal.SSML)
             .setSsmlSource(ssmlSourceInternal)
