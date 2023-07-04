@@ -75,7 +75,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
 
     private CosmosClientBuilder clientBuilder;
-    private DatabaseAccount databaseAccount;
     private Map<String, String> writeRegionMap;
     private Map<String, String> readRegionMap;
 
@@ -95,10 +94,10 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             AsyncDocumentClient documentClient = BridgeInternal.getContextClient(client);
 
             GlobalEndpointManager globalEndpointManager = documentClient.getGlobalEndpointManager();
-            this.databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+            DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
 
-            this.writeRegionMap = getRegionsMap(this.databaseAccount, true);
-            this.readRegionMap = getRegionsMap(this.databaseAccount, false);
+            this.writeRegionMap = getRegionsMap(databaseAccount, true);
+            this.readRegionMap = getRegionsMap(databaseAccount, false);
         } finally {
             safeClose(client);
         }
@@ -141,22 +140,25 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
 
         return new Object[][]{
             {
-                new SocketException(""),
+                new SocketException("Socket has been closed"),
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
-                createRequest
+                createRequest,
+                true /* isNetworkFailure */
             },
             {
                 ReadTimeoutException.INSTANCE,
                 HttpConstants.StatusCodes.REQUEST_TIMEOUT,
                 HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
-                readRequest
+                readRequest,
+                true /* isNetworkFailure */
             },
             {
                 new NotFoundException(),
                 HttpConstants.StatusCodes.NOTFOUND,
                 HttpConstants.SubStatusCodes.UNKNOWN,
-                readRequest
+                readRequest,
+                false /* isNetworkFailure */
             }
         };
     }
@@ -303,7 +305,13 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
     }
 
     @Test(groups = {"unit"}, dataProvider = "metadataRetryPolicyTestContext", timeOut = TIMEOUT)
-    public void metadataRetryPolicyTest(Exception exception, int statusCode, int subStatusCode, RxDocumentServiceRequest request) {
+    public void metadataRetryPolicyTest(
+        Exception exception,
+        int statusCode,
+        int subStatusCode,
+        RxDocumentServiceRequest request,
+        boolean isNetworkFailure) {
+
         GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
         MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(globalEndpointManagerMock);
 
@@ -319,7 +327,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             .withException(cosmosException)
             .build());
 
-        if (WebExceptionUtility.isNetworkFailure(exception)) {
+        if (isNetworkFailure) {
             if (request.isReadOnlyRequest()) {
                 Mockito
                     .verify(globalEndpointManagerMock, Mockito.times(1))
@@ -467,7 +475,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
 
     private Map<String, String> getRegionsMap(DatabaseAccount databaseAccount, boolean isWriteableRegions) {
 
-        Map<String, String> regionMap = new HashMap<>();
+        Map<String, String> regionMap = new ConcurrentHashMap<>();
 
         Iterator<DatabaseAccountLocation> databaseAccountLocationIterator = isWriteableRegions ?
             databaseAccount.getWritableLocations().iterator() : databaseAccount.getReadableLocations().iterator();
