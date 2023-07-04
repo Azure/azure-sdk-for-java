@@ -22,6 +22,7 @@ import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpClientUnderTestWrapper;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.MetadataRequestRetryPolicy;
+import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
@@ -129,16 +130,55 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
         };
     }
 
+    @DataProvider(name = "metadataRetryPolicyTestContext")
+    public Object[][] metadataRetryPolicyTestContext() {
+
+        RxDocumentServiceRequest createRequest = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document);
+
+        RxDocumentServiceRequest readRequest = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
+
+        return new Object[][]{
+            {
+                new SocketException(""),
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
+                createRequest
+            },
+            {
+                ReadTimeoutException.INSTANCE,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
+                readRequest
+            },
+            {
+                new NotFoundException(),
+                HttpConstants.StatusCodes.NOTFOUND,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                readRequest
+            }
+        };
+    }
 
     // this test does the following
-    // 1. Simulate a region issue by injecting connection establishment failures with replicas
+    // Case 1: Region outage
+    // 1. Simulate a region issue by injecting connection establishment failures with replicas.
     // 2. Keep a low end-to-end timeout but a high connectTimeout - this will cause the operation
-    // to be cancelled before connectTimeout is reached
+    // to be cancelled before connectTimeout is reached.
     // 3. This will help us to verify two things:
-    //      3.1 Connection establishment is not affected by cancellation of the operation
+    //      3.1 Connection establishment is not affected by cancellation of the operation.
     //      3.2 Using a cancellation status on the request associated with the operation
     //          we can trigger force address refresh calls in the background when connectionTimeout
-    //          is also hit
+    //          is also hit.
+    // Case 2: Possibility of stale caches when requests get cancelled due to end-to-end timeout and
+    //         server-generated 410s are received by the SDK
+    // 1. Inject server-generated 410 exceptions
+    // 2. Keep a low end-to-end timeout but a high amount of time for which the 410 fault is applied. This will lead
+    // to the request to be cancelled.
+    // 3. This will help us to verify two things:
+    //      3.2 Using a cancellation status on the request associated with the operation
+    //          we can trigger force address refresh calls in the background when server-side generated 410s are thrown.
     @Test(groups = {"multi-region"}, dataProvider = "operationContext", timeOut = TIMEOUT)
     public void forceBackgroundAddressRefresh_onConnectionTimeoutAndRequestCancellation_test(
         FaultInjectionOperationType faultInjectionOperationType,
@@ -262,29 +302,15 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void metadataRetryPolicyTest() {
+    @Test(groups = {"unit"}, dataProvider = "metadataRetryPolicyTestContext", timeOut = TIMEOUT)
+    public void metadataRetryPolicyTest(Exception exception, int statusCode, int subStatusCode, RxDocumentServiceRequest request) {
         GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
         MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(globalEndpointManagerMock);
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
-
         metadataRequestRetryPolicy.onBeforeSendRequest(request);
 
-        if (request.isReadOnlyRequest()) {
-            Mockito
-                .verify(globalEndpointManagerMock, Mockito.times(1))
-                .markEndpointUnavailableForRead(Mockito.any());
-        } else if (request.isAddressRefresh() && !request.isReadOnlyRequest()) {
-            Mockito
-                .verify(globalEndpointManagerMock, Mockito.times(1))
-                .markEndpointUnavailableForWrite(Mockito.any());
-        }
-
-        Exception exception = new SocketException("Some dummy exception.");
-
-        CosmosException cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, exception);
-        BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+        CosmosException cosmosException = BridgeInternal.createCosmosException(null, statusCode, exception);
+        BridgeInternal.setSubStatusCode(cosmosException, subStatusCode);
 
         Mono<ShouldRetryResult> shouldRetry = metadataRequestRetryPolicy.shouldRetry(cosmosException);
 
@@ -293,17 +319,24 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             .withException(cosmosException)
             .build());
 
-        Exception readTimeoutException = ReadTimeoutException.INSTANCE;
-
-        cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.REQUEST_TIMEOUT, readTimeoutException);
-        BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
-
-        shouldRetry = metadataRequestRetryPolicy.shouldRetry(cosmosException);
-
-        ClientRetryPolicyTest.validateSuccess(shouldRetry, ShouldRetryValidator.builder()
-            .shouldRetry(false)
-            .withException(cosmosException)
-            .build());
+        if (WebExceptionUtility.isNetworkFailure(exception)) {
+            if (request.isReadOnlyRequest()) {
+                Mockito
+                    .verify(globalEndpointManagerMock, Mockito.times(1))
+                    .markEndpointUnavailableForRead(Mockito.any());
+            } else {
+                Mockito
+                    .verify(globalEndpointManagerMock, Mockito.times(1))
+                    .markEndpointUnavailableForWrite(Mockito.any());
+            }
+        } else {
+            Mockito
+                .verify(globalEndpointManagerMock, Mockito.times(0))
+                .markEndpointUnavailableForRead(Mockito.any());
+            Mockito
+                .verify(globalEndpointManagerMock, Mockito.times(0))
+                .markEndpointUnavailableForWrite(Mockito.any());
+        }
     }
 
     private void performDocumentOperation(
