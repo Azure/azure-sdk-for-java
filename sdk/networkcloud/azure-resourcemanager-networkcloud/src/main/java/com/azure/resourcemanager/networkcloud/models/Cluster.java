@@ -204,8 +204,9 @@ public interface Cluster {
      * Gets the hybridAksExtendedLocation property: ExtendedLocation represents the Azure custom location where the
      * resource will be created.
      *
-     * <p>The extended location (custom location) that represents the Hybrid AKS control plane location. This extended
-     * location is used when creating provisioned clusters (Hybrid AKS clusters).
+     * <p>Field Deprecated. This field will not be populated in an upcoming version. The extended location (custom
+     * location) that represents the Hybrid AKS control plane location. This extended location is used when creating
+     * provisioned clusters (Hybrid AKS clusters).
      *
      * @return the hybridAksExtendedLocation value.
      */
@@ -291,7 +292,6 @@ public interface Cluster {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithExtendedLocation,
             DefinitionStages.WithAggregatorOrSingleRackDefinition,
-            DefinitionStages.WithAnalyticsWorkspaceId,
             DefinitionStages.WithClusterType,
             DefinitionStages.WithClusterVersion,
             DefinitionStages.WithNetworkFabricId,
@@ -359,20 +359,7 @@ public interface Cluster {
              *     aggregator rack in a multi-rack cluster.
              * @return the next definition stage.
              */
-            WithAnalyticsWorkspaceId withAggregatorOrSingleRackDefinition(
-                RackDefinition aggregatorOrSingleRackDefinition);
-        }
-        /** The stage of the Cluster definition allowing to specify analyticsWorkspaceId. */
-        interface WithAnalyticsWorkspaceId {
-            /**
-             * Specifies the analyticsWorkspaceId property: The resource ID of the Log Analytics Workspace that will be
-             * used for storing relevant logs..
-             *
-             * @param analyticsWorkspaceId The resource ID of the Log Analytics Workspace that will be used for storing
-             *     relevant logs.
-             * @return the next definition stage.
-             */
-            WithClusterType withAnalyticsWorkspaceId(String analyticsWorkspaceId);
+            WithClusterType withAggregatorOrSingleRackDefinition(RackDefinition aggregatorOrSingleRackDefinition);
         }
         /** The stage of the Cluster definition allowing to specify clusterType. */
         interface WithClusterType {
@@ -411,6 +398,7 @@ public interface Cluster {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithAnalyticsWorkspaceId,
                 DefinitionStages.WithClusterLocation,
                 DefinitionStages.WithClusterServicePrincipal,
                 DefinitionStages.WithComputeDeploymentThreshold,
@@ -440,6 +428,18 @@ public interface Cluster {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the Cluster definition allowing to specify analyticsWorkspaceId. */
+        interface WithAnalyticsWorkspaceId {
+            /**
+             * Specifies the analyticsWorkspaceId property: The resource ID of the Log Analytics Workspace that will be
+             * used for storing relevant logs..
+             *
+             * @param analyticsWorkspaceId The resource ID of the Log Analytics Workspace that will be used for storing
+             *     relevant logs.
+             * @return the next definition stage.
+             */
+            WithCreate withAnalyticsWorkspaceId(String analyticsWorkspaceId);
         }
         /** The stage of the Cluster definition allowing to specify clusterLocation. */
         interface WithClusterLocation {

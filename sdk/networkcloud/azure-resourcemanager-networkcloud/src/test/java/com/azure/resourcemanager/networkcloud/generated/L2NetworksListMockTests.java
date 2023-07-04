@@ -33,7 +33,7 @@ public final class L2NetworksListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"extendedLocation\":{\"name\":\"ke\",\"type\":\"aonwivkcqhrxh\"},\"properties\":{\"clusterId\":\"nlccrm\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"pijubyq\",\"hybridAksClustersAssociatedIds\":[\"akfqfrkemyildud\",\"jascowvfdjkpd\"],\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"kk\",\"l2IsolationDomainId\":\"nmgzvyfijdkzuqnw\",\"provisioningState\":\"Failed\",\"virtualMachinesAssociatedIds\":[\"q\",\"ly\"]},\"location\":\"luqw\",\"tags\":{\"vqqugdrftbcv\":\"sutrjbhxykfhyqe\",\"fwhreagkhyxv\":\"xreuquowtlj\"},\"id\":\"qtvbczsu\",\"name\":\"mdgglmepjpfs\",\"type\":\"ykgsangpszng\"}]}";
+            "{\"value\":[{\"extendedLocation\":{\"name\":\"qmbzmq\",\"type\":\"ratbnxwbjs\"},\"properties\":{\"associatedResourceIds\":[\"irkfpksokdgo\",\"ewijymrhbguz\",\"zkye\"],\"clusterId\":\"f\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"hqosmf\",\"hybridAksClustersAssociatedIds\":[\"utycyarnroohguab\",\"oghktdpycz\",\"coe\",\"cnhz\"],\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"tjzcfyjzpt\",\"l2IsolationDomainId\":\"rl\",\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"infsz\",\"yglqdhmrjzral\",\"xpjb\"]},\"location\":\"psjoqcjenk\",\"tags\":{\"xfxjelgcmpzqj\":\"qzvs\"},\"id\":\"hhqxuwyvcacoyviv\",\"name\":\"s\",\"type\":\"zusjsz\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +63,12 @@ public final class L2NetworksListMockTests {
 
         PagedIterable<L2Network> response = manager.l2Networks().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("luqw", response.iterator().next().location());
-        Assertions.assertEquals("sutrjbhxykfhyqe", response.iterator().next().tags().get("vqqugdrftbcv"));
-        Assertions.assertEquals("ke", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("aonwivkcqhrxh", response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals(HybridAksPluginType.SRIOV, response.iterator().next().hybridAksPluginType());
-        Assertions.assertEquals("kk", response.iterator().next().interfaceName());
-        Assertions.assertEquals("nmgzvyfijdkzuqnw", response.iterator().next().l2IsolationDomainId());
+        Assertions.assertEquals("psjoqcjenk", response.iterator().next().location());
+        Assertions.assertEquals("qzvs", response.iterator().next().tags().get("xfxjelgcmpzqj"));
+        Assertions.assertEquals("qmbzmq", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("ratbnxwbjs", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals(HybridAksPluginType.DPDK, response.iterator().next().hybridAksPluginType());
+        Assertions.assertEquals("tjzcfyjzpt", response.iterator().next().interfaceName());
+        Assertions.assertEquals("rl", response.iterator().next().l2IsolationDomainId());
     }
 }

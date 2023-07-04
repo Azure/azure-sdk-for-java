@@ -13,7 +13,7 @@ public final class RackSkuInnerTests {
         RackSkuInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"computeMachines\":[{\"rackSlot\":7539437519035331400}],\"controllerMachines\":[{\"rackSlot\":4087873074712540915}],\"description\":\"uyqncygupkvipmd\",\"maxClusterSlots\":2136987072216768856,\"provisioningState\":\"Succeeded\",\"rackType\":\"Aggregator\",\"storageAppliances\":[{\"rackSlot\":6372000069745193000},{\"rackSlot\":6057091848782960858}],\"supportedRackSkuIds\":[\"ujbypelmcuvhixb\",\"xyfwnylrcool\",\"ttpkiwkkbnujrywv\",\"y\"]},\"id\":\"fpncurdo\",\"name\":\"wiithtywub\",\"type\":\"cbihwqk\"}")
+                    "{\"properties\":{\"computeMachines\":[{\"rackSlot\":2852050397956095725},{\"rackSlot\":5836746771606247390},{\"rackSlot\":2048885841709713152},{\"rackSlot\":5531211754310429800}],\"controllerMachines\":[{\"rackSlot\":8453503408932380902},{\"rackSlot\":4117453456715054302},{\"rackSlot\":4507235705510904790}],\"description\":\"kwpjgwwspughftqs\",\"maxClusterSlots\":3252241777928614661,\"provisioningState\":\"Succeeded\",\"rackType\":\"Compute\",\"storageAppliances\":[{\"rackSlot\":8951761838389562735},{\"rackSlot\":8116661577265939603},{\"rackSlot\":4469134217974888911},{\"rackSlot\":6715661271748105813}],\"supportedRackSkuIds\":[\"fi\"]},\"id\":\"hbotzingamvppho\",\"name\":\"zqzudph\",\"type\":\"amvdkfwynwcvtbv\"}")
                 .toObject(RackSkuInner.class);
     }
 
