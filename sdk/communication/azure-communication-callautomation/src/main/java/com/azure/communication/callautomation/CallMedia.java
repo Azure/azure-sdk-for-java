@@ -8,6 +8,7 @@ import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
+import com.azure.communication.callautomation.models.SendDtmfResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -152,10 +153,11 @@ public final class CallMedia {
      *
      * @param tones tones to be sent
      * @param targetParticipant the target participant
+     * @return Response for successful sendDtmf request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendDtmf(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
-        callMediaAsync.sendDtmf(tones, targetParticipant).block();
+    public SendDtmfResult sendDtmf(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
+        return callMediaAsync.sendDtmf(tones, targetParticipant).block();
     }
 
     /**
@@ -168,8 +170,8 @@ public final class CallMedia {
      * @return Response for successful sendDtmf request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendDtmfWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant,
-                                               String operationContext, Context context) {
+    public Response<SendDtmfResult> sendDtmfWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant,
+                                                         String operationContext, Context context) {
         return callMediaAsync.sendDtmfWithResponseInternal(targetParticipant, tones, operationContext, context).block();
     }
 

@@ -185,8 +185,8 @@ directive:
     from: ContinuousDtmfRecognitionRequest
     to: ContinuousDtmfRecognitionRequestInternal
 - rename-model:
-    from: SendDtmfRequest
-    to: SendDtmfRequestInternal
+    from: SendDtmfResponse
+    to: SendDtmfResponseInternal
 
 # Remove models
 - remove-model: AddParticipantFailed

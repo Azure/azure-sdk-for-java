@@ -4,6 +4,7 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
+import com.azure.communication.callautomation.implementation.accesshelpers.SendDtmfResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.ContinuousDtmfRecognitionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.DtmfOptionsInternal;
@@ -35,20 +36,24 @@ import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.RecognizeChoice;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.TextSource;
+import com.azure.communication.callautomation.models.SendDtmfResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -491,8 +496,8 @@ public final class CallMediaAsync {
      * @param targetParticipant the target participant
      * @return Response for successful sendDtmf request.
      */
-    public Mono<Void> sendDtmf(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
-        return sendDtmfWithResponse(tones, targetParticipant, null).then();
+    public Mono<SendDtmfResult> sendDtmf(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
+        return sendDtmfWithResponse(tones, targetParticipant, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -503,11 +508,11 @@ public final class CallMediaAsync {
      * @param operationContext operationContext (pass null if not applicable)
      * @return Response for successful sendDtmf request.
      */
-    public Mono<Response<Void>> sendDtmfWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant, String operationContext) {
+    public Mono<Response<SendDtmfResult>> sendDtmfWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant, String operationContext) {
         return withContext(context -> sendDtmfWithResponseInternal(targetParticipant, tones, operationContext, context));
     }
 
-    Mono<Response<Void>> sendDtmfWithResponseInternal(CommunicationIdentifier targetParticipant, List<DtmfTone> tones, String operationContext, Context context) {
+    Mono<Response<SendDtmfResult>> sendDtmfWithResponseInternal(CommunicationIdentifier targetParticipant, List<DtmfTone> tones, String operationContext, Context context) {
         try {
             context = context == null ? Context.NONE : context;
             SendDtmfRequestInternal requestInternal = new SendDtmfRequestInternal()
@@ -517,7 +522,13 @@ public final class CallMediaAsync {
                 .collect(Collectors.toList()))
                 .setOperationContext(operationContext);
 
-            return contentsInternal.sendDtmfWithResponseAsync(callConnectionId, requestInternal, context);
+            return contentsInternal.sendDtmfWithResponseAsync(
+                callConnectionId,
+                requestInternal,
+                UUID.randomUUID(),
+                OffsetDateTime.now(),
+                context
+            ).map(response -> new SimpleResponse<>(response, SendDtmfResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }

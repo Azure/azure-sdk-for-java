@@ -12,6 +12,7 @@ import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.RecognizeChoice;
 import com.azure.communication.callautomation.models.TextSource;
+import com.azure.communication.callautomation.models.SendDtmfResult;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -148,7 +149,7 @@ public class CallMediaUnitTests {
 
     @Test
     public void sendDtmfWithResponseTest() {
-        Response<Void> response = callMedia.sendDtmfWithResponse(
+        Response<SendDtmfResult> response = callMedia.sendDtmfWithResponse(
             Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()), new CommunicationUserIdentifier("id"),
             "ctx", Context.NONE
         );

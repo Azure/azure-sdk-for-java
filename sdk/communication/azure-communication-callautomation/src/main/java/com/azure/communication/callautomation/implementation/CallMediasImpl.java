@@ -9,7 +9,7 @@ import com.azure.communication.callautomation.implementation.models.ContinuousDt
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
 import com.azure.communication.callautomation.implementation.models.SendDtmfRequestInternal;
-import com.azure.communication.callautomation.implementation.models.SendDtmfResponse;
+import com.azure.communication.callautomation.implementation.models.SendDtmfResponseInternal;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -117,7 +117,7 @@ public final class CallMediasImpl {
         @Post("/calling/callConnections/{callConnectionId}:sendDtmf")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<SendDtmfResponse>> sendDtmf(
+        Mono<Response<SendDtmfResponseInternal>> sendDtmf(
                 @HostParam("endpoint") URL endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
@@ -712,7 +712,7 @@ public final class CallMediasImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SendDtmfResponse>> sendDtmfWithResponseAsync(
+    public Mono<Response<SendDtmfResponseInternal>> sendDtmfWithResponseAsync(
             String callConnectionId,
             SendDtmfRequestInternal sendDtmfRequest,
             UUID repeatabilityRequestID,
@@ -753,7 +753,7 @@ public final class CallMediasImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SendDtmfResponse>> sendDtmfWithResponseAsync(
+    public Mono<Response<SendDtmfResponseInternal>> sendDtmfWithResponseAsync(
             String callConnectionId,
             SendDtmfRequestInternal sendDtmfRequest,
             UUID repeatabilityRequestID,
@@ -792,7 +792,7 @@ public final class CallMediasImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendDtmfResponse> sendDtmfAsync(
+    public Mono<SendDtmfResponseInternal> sendDtmfAsync(
             String callConnectionId,
             SendDtmfRequestInternal sendDtmfRequest,
             UUID repeatabilityRequestID,
@@ -800,7 +800,7 @@ public final class CallMediasImpl {
         return sendDtmfWithResponseAsync(
                         callConnectionId, sendDtmfRequest, repeatabilityRequestID, repeatabilityFirstSent)
                 .flatMap(
-                        (Response<SendDtmfResponse> res) -> {
+                        (Response<SendDtmfResponseInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -829,7 +829,7 @@ public final class CallMediasImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendDtmfResponse> sendDtmfAsync(
+    public Mono<SendDtmfResponseInternal> sendDtmfAsync(
             String callConnectionId,
             SendDtmfRequestInternal sendDtmfRequest,
             UUID repeatabilityRequestID,
@@ -838,7 +838,7 @@ public final class CallMediasImpl {
         return sendDtmfWithResponseAsync(
                         callConnectionId, sendDtmfRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
                 .flatMap(
-                        (Response<SendDtmfResponse> res) -> {
+                        (Response<SendDtmfResponseInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -866,7 +866,7 @@ public final class CallMediasImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SendDtmfResponse sendDtmf(
+    public SendDtmfResponseInternal sendDtmf(
             String callConnectionId,
             SendDtmfRequestInternal sendDtmfRequest,
             UUID repeatabilityRequestID,
@@ -894,7 +894,7 @@ public final class CallMediasImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SendDtmfResponse> sendDtmfWithResponse(
+    public Response<SendDtmfResponseInternal> sendDtmfWithResponse(
             String callConnectionId,
             SendDtmfRequestInternal sendDtmfRequest,
             UUID repeatabilityRequestID,
