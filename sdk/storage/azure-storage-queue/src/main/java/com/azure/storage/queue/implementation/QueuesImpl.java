@@ -86,6 +86,32 @@ public final class QueuesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Put("/{queueName}")
+        @ExpectedResponses({201, 204})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        ResponseBase<QueuesCreateHeaders, Void> createSync(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-meta-") Map<String, String> metadata,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{queueName}")
+        @ExpectedResponses({201, 204})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        Response<Void> createNoCustomHeadersSync(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-meta-") Map<String, String> metadata,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Delete("/{queueName}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
@@ -102,6 +128,30 @@ public final class QueuesImpl {
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<Response<Void>> deleteNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Delete("/{queueName}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        ResponseBase<QueuesDeleteHeaders, Void> deleteSync(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Delete("/{queueName}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        Response<Void> deleteNoCustomHeadersSync(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("timeout") Integer timeout,
@@ -127,6 +177,32 @@ public final class QueuesImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<Response<Void>> getPropertiesNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/{queueName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        ResponseBase<QueuesGetPropertiesHeaders, Void> getPropertiesSync(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/{queueName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        Response<Void> getPropertiesNoCustomHeadersSync(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("comp") String comp,
@@ -164,6 +240,34 @@ public final class QueuesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Put("/{queueName}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        ResponseBase<QueuesSetMetadataHeaders, Void> setMetadataSync(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-meta-") Map<String, String> metadata,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{queueName}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        Response<Void> setMetadataNoCustomHeadersSync(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-meta-") Map<String, String> metadata,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("/{queueName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
@@ -181,6 +285,32 @@ public final class QueuesImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<Response<List<QueueSignedIdentifier>>> getAccessPolicyNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/{queueName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        ResponseBase<QueuesGetAccessPolicyHeaders, List<QueueSignedIdentifier>> getAccessPolicySync(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/{queueName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        Response<List<QueueSignedIdentifier>> getAccessPolicyNoCustomHeadersSync(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("comp") String comp,
@@ -208,6 +338,34 @@ public final class QueuesImpl {
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<Response<Void>> setAccessPolicyNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @BodyParam("application/xml") SignedIdentifiersWrapper queueAcl,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{queueName}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        ResponseBase<QueuesSetAccessPolicyHeaders, Void> setAccessPolicySync(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @BodyParam("application/xml") SignedIdentifiersWrapper queueAcl,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{queueName}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        Response<Void> setAccessPolicyNoCustomHeadersSync(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("comp") String comp,
@@ -407,6 +565,96 @@ public final class QueuesImpl {
     }
 
     /**
+     * creates a new queue under the given account.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param metadata Optional. Include this parameter to specify that the queue's metadata be returned as part of the
+     *     response body. Note that metadata requested with this parameter must be stored in accordance with the naming
+     *     restrictions imposed by the 2009-09-19 version of the Queue service. Beginning with this version, all
+     *     metadata names must adhere to the naming conventions for C# identifiers.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<QueuesCreateHeaders, Void> createWithResponse(
+            String queueName, Integer timeout, Map<String, String> metadata, String requestId, Context context) {
+        final String accept = "application/xml";
+        return service.createSync(
+                this.client.getUrl(),
+                queueName,
+                timeout,
+                metadata,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
+    }
+
+    /**
+     * creates a new queue under the given account.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param metadata Optional. Include this parameter to specify that the queue's metadata be returned as part of the
+     *     response body. Note that metadata requested with this parameter must be stored in accordance with the naming
+     *     restrictions imposed by the 2009-09-19 version of the Queue service. Beginning with this version, all
+     *     metadata names must adhere to the naming conventions for C# identifiers.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void create(String queueName, Integer timeout, Map<String, String> metadata, String requestId) {
+        createWithResponse(queueName, timeout, metadata, requestId, Context.NONE);
+    }
+
+    /**
+     * creates a new queue under the given account.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param metadata Optional. Include this parameter to specify that the queue's metadata be returned as part of the
+     *     response body. Note that metadata requested with this parameter must be stored in accordance with the naming
+     *     restrictions imposed by the 2009-09-19 version of the Queue service. Beginning with this version, all
+     *     metadata names must adhere to the naming conventions for C# identifiers.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> createNoCustomHeadersWithResponse(
+            String queueName, Integer timeout, Map<String, String> metadata, String requestId, Context context) {
+        final String accept = "application/xml";
+        return service.createNoCustomHeadersSync(
+                this.client.getUrl(),
+                queueName,
+                timeout,
+                metadata,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
+    }
+
+    /**
      * operation permanently deletes the specified queue.
      *
      * @param queueName The queue name.
@@ -548,6 +796,70 @@ public final class QueuesImpl {
             String queueName, Integer timeout, String requestId, Context context) {
         final String accept = "application/xml";
         return service.deleteNoCustomHeaders(
+                this.client.getUrl(), queueName, timeout, this.client.getVersion(), requestId, accept, context);
+    }
+
+    /**
+     * operation permanently deletes the specified queue.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<QueuesDeleteHeaders, Void> deleteWithResponse(
+            String queueName, Integer timeout, String requestId, Context context) {
+        final String accept = "application/xml";
+        return service.deleteSync(
+                this.client.getUrl(), queueName, timeout, this.client.getVersion(), requestId, accept, context);
+    }
+
+    /**
+     * operation permanently deletes the specified queue.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String queueName, Integer timeout, String requestId) {
+        deleteWithResponse(queueName, timeout, requestId, Context.NONE);
+    }
+
+    /**
+     * operation permanently deletes the specified queue.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteNoCustomHeadersWithResponse(
+            String queueName, Integer timeout, String requestId, Context context) {
+        final String accept = "application/xml";
+        return service.deleteNoCustomHeadersSync(
                 this.client.getUrl(), queueName, timeout, this.client.getVersion(), requestId, accept, context);
     }
 
@@ -705,6 +1017,75 @@ public final class QueuesImpl {
         final String comp = "metadata";
         final String accept = "application/xml";
         return service.getPropertiesNoCustomHeaders(
+                this.client.getUrl(), queueName, comp, timeout, this.client.getVersion(), requestId, accept, context);
+    }
+
+    /**
+     * Retrieves user-defined metadata and queue properties on the specified queue. Metadata is associated with the
+     * queue as name-values pairs.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<QueuesGetPropertiesHeaders, Void> getPropertiesWithResponse(
+            String queueName, Integer timeout, String requestId, Context context) {
+        final String comp = "metadata";
+        final String accept = "application/xml";
+        return service.getPropertiesSync(
+                this.client.getUrl(), queueName, comp, timeout, this.client.getVersion(), requestId, accept, context);
+    }
+
+    /**
+     * Retrieves user-defined metadata and queue properties on the specified queue. Metadata is associated with the
+     * queue as name-values pairs.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getProperties(String queueName, Integer timeout, String requestId) {
+        getPropertiesWithResponse(queueName, timeout, requestId, Context.NONE);
+    }
+
+    /**
+     * Retrieves user-defined metadata and queue properties on the specified queue. Metadata is associated with the
+     * queue as name-values pairs.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> getPropertiesNoCustomHeadersWithResponse(
+            String queueName, Integer timeout, String requestId, Context context) {
+        final String comp = "metadata";
+        final String accept = "application/xml";
+        return service.getPropertiesNoCustomHeadersSync(
                 this.client.getUrl(), queueName, comp, timeout, this.client.getVersion(), requestId, accept, context);
     }
 
@@ -905,6 +1286,100 @@ public final class QueuesImpl {
     }
 
     /**
+     * sets user-defined metadata on the specified queue. Metadata is associated with the queue as name-value pairs.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param metadata Optional. Include this parameter to specify that the queue's metadata be returned as part of the
+     *     response body. Note that metadata requested with this parameter must be stored in accordance with the naming
+     *     restrictions imposed by the 2009-09-19 version of the Queue service. Beginning with this version, all
+     *     metadata names must adhere to the naming conventions for C# identifiers.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<QueuesSetMetadataHeaders, Void> setMetadataWithResponse(
+            String queueName, Integer timeout, Map<String, String> metadata, String requestId, Context context) {
+        final String comp = "metadata";
+        final String accept = "application/xml";
+        return service.setMetadataSync(
+                this.client.getUrl(),
+                queueName,
+                comp,
+                timeout,
+                metadata,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
+    }
+
+    /**
+     * sets user-defined metadata on the specified queue. Metadata is associated with the queue as name-value pairs.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param metadata Optional. Include this parameter to specify that the queue's metadata be returned as part of the
+     *     response body. Note that metadata requested with this parameter must be stored in accordance with the naming
+     *     restrictions imposed by the 2009-09-19 version of the Queue service. Beginning with this version, all
+     *     metadata names must adhere to the naming conventions for C# identifiers.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void setMetadata(String queueName, Integer timeout, Map<String, String> metadata, String requestId) {
+        setMetadataWithResponse(queueName, timeout, metadata, requestId, Context.NONE);
+    }
+
+    /**
+     * sets user-defined metadata on the specified queue. Metadata is associated with the queue as name-value pairs.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param metadata Optional. Include this parameter to specify that the queue's metadata be returned as part of the
+     *     response body. Note that metadata requested with this parameter must be stored in accordance with the naming
+     *     restrictions imposed by the 2009-09-19 version of the Queue service. Beginning with this version, all
+     *     metadata names must adhere to the naming conventions for C# identifiers.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> setMetadataNoCustomHeadersWithResponse(
+            String queueName, Integer timeout, Map<String, String> metadata, String requestId, Context context) {
+        final String comp = "metadata";
+        final String accept = "application/xml";
+        return service.setMetadataNoCustomHeadersSync(
+                this.client.getUrl(),
+                queueName,
+                comp,
+                timeout,
+                metadata,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
+    }
+
+    /**
      * returns details about any stored access policies specified on the queue that may be used with Shared Access
      * Signatures.
      *
@@ -1063,6 +1538,76 @@ public final class QueuesImpl {
         final String comp = "acl";
         final String accept = "application/xml";
         return service.getAccessPolicyNoCustomHeaders(
+                this.client.getUrl(), queueName, comp, timeout, this.client.getVersion(), requestId, accept, context);
+    }
+
+    /**
+     * returns details about any stored access policies specified on the queue that may be used with Shared Access
+     * Signatures.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of signed identifiers along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<QueuesGetAccessPolicyHeaders, List<QueueSignedIdentifier>> getAccessPolicyWithResponse(
+            String queueName, Integer timeout, String requestId, Context context) {
+        final String comp = "acl";
+        final String accept = "application/xml";
+        return service.getAccessPolicySync(
+                this.client.getUrl(), queueName, comp, timeout, this.client.getVersion(), requestId, accept, context);
+    }
+
+    /**
+     * returns details about any stored access policies specified on the queue that may be used with Shared Access
+     * Signatures.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of signed identifiers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<QueueSignedIdentifier> getAccessPolicy(String queueName, Integer timeout, String requestId) {
+        return getAccessPolicyWithResponse(queueName, timeout, requestId, Context.NONE).getValue();
+    }
+
+    /**
+     * returns details about any stored access policies specified on the queue that may be used with Shared Access
+     * Signatures.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of signed identifiers along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<QueueSignedIdentifier>> getAccessPolicyNoCustomHeadersWithResponse(
+            String queueName, Integer timeout, String requestId, Context context) {
+        final String comp = "acl";
+        final String accept = "application/xml";
+        return service.getAccessPolicyNoCustomHeadersSync(
                 this.client.getUrl(), queueName, comp, timeout, this.client.getVersion(), requestId, accept, context);
     }
 
@@ -1250,6 +1795,102 @@ public final class QueuesImpl {
         final String accept = "application/xml";
         SignedIdentifiersWrapper queueAclConverted = new SignedIdentifiersWrapper(queueAcl);
         return service.setAccessPolicyNoCustomHeaders(
+                this.client.getUrl(),
+                queueName,
+                comp,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                queueAclConverted,
+                accept,
+                context);
+    }
+
+    /**
+     * sets stored access policies for the queue that may be used with Shared Access Signatures.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param queueAcl the acls for the queue.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<QueuesSetAccessPolicyHeaders, Void> setAccessPolicyWithResponse(
+            String queueName,
+            Integer timeout,
+            String requestId,
+            List<QueueSignedIdentifier> queueAcl,
+            Context context) {
+        final String comp = "acl";
+        final String accept = "application/xml";
+        SignedIdentifiersWrapper queueAclConverted = new SignedIdentifiersWrapper(queueAcl);
+        return service.setAccessPolicySync(
+                this.client.getUrl(),
+                queueName,
+                comp,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                queueAclConverted,
+                accept,
+                context);
+    }
+
+    /**
+     * sets stored access policies for the queue that may be used with Shared Access Signatures.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param queueAcl the acls for the queue.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void setAccessPolicy(
+            String queueName, Integer timeout, String requestId, List<QueueSignedIdentifier> queueAcl) {
+        setAccessPolicyWithResponse(queueName, timeout, requestId, queueAcl, Context.NONE);
+    }
+
+    /**
+     * sets stored access policies for the queue that may be used with Shared Access Signatures.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param queueAcl the acls for the queue.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> setAccessPolicyNoCustomHeadersWithResponse(
+            String queueName,
+            Integer timeout,
+            String requestId,
+            List<QueueSignedIdentifier> queueAcl,
+            Context context) {
+        final String comp = "acl";
+        final String accept = "application/xml";
+        SignedIdentifiersWrapper queueAclConverted = new SignedIdentifiersWrapper(queueAcl);
+        return service.setAccessPolicyNoCustomHeadersSync(
                 this.client.getUrl(),
                 queueName,
                 comp,

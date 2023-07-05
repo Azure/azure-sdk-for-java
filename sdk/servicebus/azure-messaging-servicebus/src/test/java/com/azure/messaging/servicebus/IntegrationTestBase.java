@@ -8,6 +8,7 @@ import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.models.AmqpMessageBody;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.experimental.util.tracing.LoggingTracerProvider;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
@@ -17,8 +18,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
@@ -243,13 +243,9 @@ public abstract class IntegrationTestBase extends TestBase {
             assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
                 "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
 
-            final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
-                .clientId(TestUtils.getPropertyValue("AZURE_CLIENT_ID"))
-                .clientSecret(TestUtils.getPropertyValue("AZURE_CLIENT_SECRET"))
-                .tenantId(TestUtils.getPropertyValue("AZURE_TENANT_ID"))
-                .build();
+            final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
-            return builder.credential(fullyQualifiedDomainName, clientSecretCredential);
+            return builder.credential(fullyQualifiedDomainName, tokenCredential);
         } else {
             return builder.connectionString(getConnectionString());
         }

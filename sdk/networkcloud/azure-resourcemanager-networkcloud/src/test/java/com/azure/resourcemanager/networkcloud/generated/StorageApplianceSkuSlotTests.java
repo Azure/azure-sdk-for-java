@@ -13,7 +13,7 @@ public final class StorageApplianceSkuSlotTests {
         StorageApplianceSkuSlot model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"capacityGB\":5688673926217036716,\"model\":\"qgzsles\"},\"rackSlot\":1707025009474935054}")
+                    "{\"properties\":{\"capacityGB\":3636581995811123220,\"model\":\"pirgnepttwq\"},\"rackSlot\":3780805237352846590}")
                 .toObject(StorageApplianceSkuSlot.class);
     }
 

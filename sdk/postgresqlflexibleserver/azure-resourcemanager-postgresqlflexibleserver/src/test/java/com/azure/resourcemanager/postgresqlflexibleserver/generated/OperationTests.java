@@ -14,15 +14,15 @@ public final class OperationTests {
         Operation model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"gmtsavjcbpwxqpsr\",\"display\":{\"provider\":\"tguvriuhp\",\"resource\":\"mdyvxqtayriw\",\"operation\":\"oyq\",\"description\":\"xrmcqibycnojvk\"},\"isDataAction\":false,\"origin\":\"NotSpecified\",\"properties\":{\"hpvgqz\":\"datazvahapjy\"}}")
+                    "{\"name\":\"obgbkdmoizp\",\"display\":{\"provider\":\"mgrcfbu\",\"resource\":\"mfqjhhkxbp\",\"operation\":\"ymjhxxjyngudivkr\",\"description\":\"wbxqzvszjfau\"},\"isDataAction\":true,\"origin\":\"system\",\"properties\":{\"qaqtdoqmcbxvwvxy\":\"datavetvt\",\"obl\":\"datalqbhsf\"}}")
                 .toObject(Operation.class);
-        Assertions.assertEquals(false, model.isDataAction());
+        Assertions.assertEquals(true, model.isDataAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Operation model = new Operation().withIsDataAction(false);
+        Operation model = new Operation().withIsDataAction(true);
         model = BinaryData.fromObject(model).toObject(Operation.class);
-        Assertions.assertEquals(false, model.isDataAction());
+        Assertions.assertEquals(true, model.isDataAction());
     }
 }

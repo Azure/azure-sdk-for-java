@@ -112,8 +112,12 @@ public class FaultInjectionServerErrorResultInternal {
                 break;
 
             case READ_SESSION_NOT_AVAILABLE:
+
+                final String badSessionToken = "1:1#1#1=1#1=1";
+
                 responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
                     Integer.toString(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE));
+                responseHeaders.put(HttpConstants.HttpHeaders.SESSION_TOKEN, badSessionToken);
                 cosmosException = new NotFoundException(null, lsn, partitionKeyRangeId, responseHeaders);
                 break;
 

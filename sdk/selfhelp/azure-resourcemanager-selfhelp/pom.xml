@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-selfhelp</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-selfhelp;current} -->
+  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-selfhelp;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Self Help Management</name>
-  <description>This package contains Microsoft Azure SDK for Self Help Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Help RP provider. Package tag package-2023-01-01-preview.</description>
+  <description>This package contains Microsoft Azure SDK for Self Help Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Help RP provider. Package tag package-2023-06-01.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

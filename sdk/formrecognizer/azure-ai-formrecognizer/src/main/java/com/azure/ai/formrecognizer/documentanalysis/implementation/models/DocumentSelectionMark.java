@@ -4,13 +4,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A selection mark object representing check boxes, radio buttons, and other elements indicating a selection. */
-@Fluent
+@Immutable
 public final class DocumentSelectionMark {
     /*
      * State of the selection mark.
@@ -44,7 +44,7 @@ public final class DocumentSelectionMark {
      * @param confidence the confidence value to set.
      */
     @JsonCreator
-    public DocumentSelectionMark(
+    private DocumentSelectionMark(
             @JsonProperty(value = "state", required = true) SelectionMarkState state,
             @JsonProperty(value = "span", required = true) DocumentSpan span,
             @JsonProperty(value = "confidence", required = true) float confidence) {
@@ -69,17 +69,6 @@ public final class DocumentSelectionMark {
      */
     public List<Float> getPolygon() {
         return this.polygon;
-    }
-
-    /**
-     * Set the polygon property: Bounding polygon of the selection mark.
-     *
-     * @param polygon the polygon value to set.
-     * @return the DocumentSelectionMark object itself.
-     */
-    public DocumentSelectionMark setPolygon(List<Float> polygon) {
-        this.polygon = polygon;
-        return this;
     }
 
     /**
