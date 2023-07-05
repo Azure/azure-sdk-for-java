@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Removed needlessly wrapping with an `UncheckedIOException` on `IOExpection` in the method of `writeBodyTo(WritableByteChannel channel)` of class `JdkHttpResponseSync`.
+
 ### Other Changes
 
 ## 1.0.0-beta.3 (2023-06-02)
