@@ -96,7 +96,7 @@ public class HDInsightTests extends TestBase {
                 .withExistingResourceGroup(resourceGroupName)
                 .withRegion(REGION)
                 .withProperties(new ClusterCreateProperties()
-                    .withClusterVersion("3.6")
+                    .withClusterVersion("4.0.3000.1")
                     .withOsType(OSType.LINUX)
                     .withTier(Tier.STANDARD)
                     .withClusterDefinition(new ClusterDefinition()
