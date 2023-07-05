@@ -66,6 +66,14 @@ public interface BareMetalMachine {
     SystemData systemData();
 
     /**
+     * Gets the associatedResourceIds property: The list of resource IDs for the other Microsoft.NetworkCloud resources
+     * that have attached this network.
+     *
+     * @return the associatedResourceIds value.
+     */
+    List<String> associatedResourceIds();
+
+    /**
      * Gets the bmcConnectionString property: The connection string for the baseboard management controller including IP
      * address and protocol.
      *
@@ -148,8 +156,8 @@ public interface BareMetalMachine {
     HardwareValidationStatus hardwareValidationStatus();
 
     /**
-     * Gets the hybridAksClustersAssociatedIds property: The list of the resource IDs for the HybridAksClusters that
-     * have nodes hosted on this bare metal machine.
+     * Gets the hybridAksClustersAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list
+     * of the resource IDs for the HybridAksClusters that have nodes hosted on this bare metal machine.
      *
      * @return the hybridAksClustersAssociatedIds value.
      */
@@ -265,8 +273,8 @@ public interface BareMetalMachine {
     String serviceTag();
 
     /**
-     * Gets the virtualMachinesAssociatedIds property: The list of the resource IDs for the VirtualMachines that are
-     * hosted on this bare metal machine.
+     * Gets the virtualMachinesAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list of
+     * the resource IDs for the VirtualMachines that are hosted on this bare metal machine.
      *
      * @return the virtualMachinesAssociatedIds value.
      */

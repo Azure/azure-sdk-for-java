@@ -20,50 +20,59 @@ public final class TrunkedNetworkListTests {
         TrunkedNetworkList model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"peewchpxlkt\",\"value\":[{\"extendedLocation\":{\"name\":\"ziycslevufuztck\",\"type\":\"yhjtqedcgzu\"},\"properties\":{\"clusterId\":\"mmrqz\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"vpglydz\",\"hybridAksClustersAssociatedIds\":[],\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"eevt\",\"isolationDomainIds\":[],\"provisioningState\":\"Accepted\",\"virtualMachinesAssociatedIds\":[],\"vlans\":[]},\"location\":\"utnwytpzdmovzvf\",\"tags\":{\"f\":\"wzqa\",\"cokpv\":\"gzuriglaecxndt\"},\"id\":\"mlqtmldgxob\",\"name\":\"irclnpk\",\"type\":\"iayz\"},{\"extendedLocation\":{\"name\":\"iykhy\",\"type\":\"wf\"},\"properties\":{\"clusterId\":\"lboxqvkjl\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"mdy\",\"hybridAksClustersAssociatedIds\":[],\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"igu\",\"isolationDomainIds\":[],\"provisioningState\":\"Provisioning\",\"virtualMachinesAssociatedIds\":[],\"vlans\":[]},\"location\":\"auzzptjazysd\",\"tags\":{\"qyuvvfonkp\":\"zwwva\",\"auy\":\"hqyikvy\"},\"id\":\"vluwmncsttij\",\"name\":\"y\",\"type\":\"vpo\"}]}")
+                    "{\"nextLink\":\"jcrxgibbdaxcon\",\"value\":[{\"extendedLocation\":{\"name\":\"auorsukokw\",\"type\":\"qplhlvnu\"},\"properties\":{\"associatedResourceIds\":[],\"clusterId\":\"zlrphwzs\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"eyuqdunvmnnrwr\",\"hybridAksClustersAssociatedIds\":[],\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"talywjhhgdnhxms\",\"isolationDomainIds\":[],\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[],\"vlans\":[]},\"location\":\"iloxggdufiq\",\"tags\":{\"chvcyyysfgdo\":\"euzaof\",\"qonmacj\":\"cubiipuipw\",\"izsh\":\"k\",\"gmblrri\":\"vcimpev\"},\"id\":\"bywdxsmicc\",\"name\":\"rwfscjfnynszquj\",\"type\":\"zdvoqytibyowbb\"},{\"extendedLocation\":{\"name\":\"gyavu\",\"type\":\"pthjoxo\"},\"properties\":{\"associatedResourceIds\":[],\"clusterId\":\"sks\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"lqol\",\"hybridAksClustersAssociatedIds\":[],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"xxlxsffgcvizq\",\"isolationDomainIds\":[],\"provisioningState\":\"Provisioning\",\"virtualMachinesAssociatedIds\":[],\"vlans\":[]},\"location\":\"w\",\"tags\":{\"ubdyhgk\":\"upfgfbk\",\"tsttktlahbq\":\"minsgowzf\"},\"id\":\"ctxtgzukxi\",\"name\":\"mmqtgqqqxhr\",\"type\":\"xrxc\"}]}")
                 .toObject(TrunkedNetworkList.class);
-        Assertions.assertEquals("peewchpxlkt", model.nextLink());
-        Assertions.assertEquals("utnwytpzdmovzvf", model.value().get(0).location());
-        Assertions.assertEquals("wzqa", model.value().get(0).tags().get("f"));
-        Assertions.assertEquals("ziycslevufuztck", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("yhjtqedcgzu", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("jcrxgibbdaxcon", model.nextLink());
+        Assertions.assertEquals("iloxggdufiq", model.value().get(0).location());
+        Assertions.assertEquals("euzaof", model.value().get(0).tags().get("chvcyyysfgdo"));
+        Assertions.assertEquals("auorsukokw", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("qplhlvnu", model.value().get(0).extendedLocation().type());
         Assertions.assertEquals(HybridAksPluginType.SRIOV, model.value().get(0).hybridAksPluginType());
-        Assertions.assertEquals("eevt", model.value().get(0).interfaceName());
+        Assertions.assertEquals("talywjhhgdnhxms", model.value().get(0).interfaceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TrunkedNetworkList model =
             new TrunkedNetworkList()
-                .withNextLink("peewchpxlkt")
+                .withNextLink("jcrxgibbdaxcon")
                 .withValue(
                     Arrays
                         .asList(
                             new TrunkedNetworkInner()
-                                .withLocation("utnwytpzdmovzvf")
-                                .withTags(mapOf("f", "wzqa", "cokpv", "gzuriglaecxndt"))
+                                .withLocation("iloxggdufiq")
+                                .withTags(
+                                    mapOf(
+                                        "chvcyyysfgdo",
+                                        "euzaof",
+                                        "qonmacj",
+                                        "cubiipuipw",
+                                        "izsh",
+                                        "k",
+                                        "gmblrri",
+                                        "vcimpev"))
                                 .withExtendedLocation(
-                                    new ExtendedLocation().withName("ziycslevufuztck").withType("yhjtqedcgzu"))
+                                    new ExtendedLocation().withName("auorsukokw").withType("qplhlvnu"))
                                 .withHybridAksPluginType(HybridAksPluginType.SRIOV)
-                                .withInterfaceName("eevt")
+                                .withInterfaceName("talywjhhgdnhxms")
                                 .withIsolationDomainIds(Arrays.asList())
                                 .withVlans(Arrays.asList()),
                             new TrunkedNetworkInner()
-                                .withLocation("auzzptjazysd")
-                                .withTags(mapOf("qyuvvfonkp", "zwwva", "auy", "hqyikvy"))
-                                .withExtendedLocation(new ExtendedLocation().withName("iykhy").withType("wf"))
-                                .withHybridAksPluginType(HybridAksPluginType.DPDK)
-                                .withInterfaceName("igu")
+                                .withLocation("w")
+                                .withTags(mapOf("ubdyhgk", "upfgfbk", "tsttktlahbq", "minsgowzf"))
+                                .withExtendedLocation(new ExtendedLocation().withName("gyavu").withType("pthjoxo"))
+                                .withHybridAksPluginType(HybridAksPluginType.OSDEVICE)
+                                .withInterfaceName("xxlxsffgcvizq")
                                 .withIsolationDomainIds(Arrays.asList())
                                 .withVlans(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(TrunkedNetworkList.class);
-        Assertions.assertEquals("peewchpxlkt", model.nextLink());
-        Assertions.assertEquals("utnwytpzdmovzvf", model.value().get(0).location());
-        Assertions.assertEquals("wzqa", model.value().get(0).tags().get("f"));
-        Assertions.assertEquals("ziycslevufuztck", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("yhjtqedcgzu", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("jcrxgibbdaxcon", model.nextLink());
+        Assertions.assertEquals("iloxggdufiq", model.value().get(0).location());
+        Assertions.assertEquals("euzaof", model.value().get(0).tags().get("chvcyyysfgdo"));
+        Assertions.assertEquals("auorsukokw", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("qplhlvnu", model.value().get(0).extendedLocation().type());
         Assertions.assertEquals(HybridAksPluginType.SRIOV, model.value().get(0).hybridAksPluginType());
-        Assertions.assertEquals("eevt", model.value().get(0).interfaceName());
+        Assertions.assertEquals("talywjhhgdnhxms", model.value().get(0).interfaceName());
     }
 
     @SuppressWarnings("unchecked")

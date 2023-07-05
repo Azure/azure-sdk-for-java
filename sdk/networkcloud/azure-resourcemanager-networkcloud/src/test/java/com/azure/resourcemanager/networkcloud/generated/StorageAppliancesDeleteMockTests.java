@@ -56,6 +56,6 @@ public final class StorageAppliancesDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.storageAppliances().delete("tyrilkfbnrqqxvz", "pbnfnqtx", com.azure.core.util.Context.NONE);
+        manager.storageAppliances().delete("dt", "wlwxlboncqbazqic", com.azure.core.util.Context.NONE);
     }
 }

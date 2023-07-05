@@ -37,7 +37,6 @@ import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.BoundingRegion;
 import com.azure.ai.formrecognizer.documentanalysis.models.CurrencyValue;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisFeature;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnnotation;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnnotationKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcode;
@@ -488,14 +487,6 @@ public class Transforms {
         return null;
     }
 
-    private static Map<String, DocumentFieldSchema> toDocumentFieldProperties(
-        Map<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldSchema> properties) {
-        Map<String, DocumentFieldSchema> schemaMap = new HashMap<>();
-        properties.forEach((key, innerDocFieldSchema) ->
-            schemaMap.put(key, toDocumentFieldSchema(innerDocFieldSchema)));
-        return schemaMap;
-    }
-
     private static DocumentKeyValueElement toDocumentKeyValueElement(
         com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentKeyValueElement innerDocKeyValElement) {
         if (innerDocKeyValElement == null) {
@@ -508,6 +499,14 @@ public class Transforms {
         DocumentKeyValueElementHelper.setSpans(documentKeyValueElement,
             toDocumentSpans(innerDocKeyValElement.getSpans()));
         return documentKeyValueElement;
+    }
+
+    private static Map<String, DocumentFieldSchema> toDocumentFieldProperties(
+        Map<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldSchema> properties) {
+        Map<String, DocumentFieldSchema> schemaMap = new HashMap<>();
+        properties.forEach((key, innerDocFieldSchema) ->
+            schemaMap.put(key, toDocumentFieldSchema(innerDocFieldSchema)));
+        return schemaMap;
     }
 
     private static Map<String, DocumentField> toDocumentFields(
@@ -849,16 +848,6 @@ public class Transforms {
         DocumentClassifierDetailsHelper.setExpiresOn(classifierDetails, inner.getExpirationDateTime());
 
         return classifierDetails;
-    }
-
-    public static List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentAnalysisFeature> toInnerDocAnalysisFeatures(List<DocumentAnalysisFeature> documentAnalysisFeatures) {
-        if (documentAnalysisFeatures != null) {
-            return documentAnalysisFeatures
-                .stream()
-                .map(documentAnalysisFeature -> com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentAnalysisFeature.fromString(documentAnalysisFeature.toString()))
-                .collect(Collectors.toList());
-        }
-        return null;
     }
 
     private static Map<String, ClassifierDocumentTypeDetails> fromInnerDocTypes(

@@ -16,6 +16,9 @@ public final class VirtualMachinePowerState extends ExpandableStringEnum<Virtual
     /** Static value Off for VirtualMachinePowerState. */
     public static final VirtualMachinePowerState OFF = fromString("Off");
 
+    /** Static value Unknown for VirtualMachinePowerState. */
+    public static final VirtualMachinePowerState UNKNOWN = fromString("Unknown");
+
     /**
      * Creates a new instance of VirtualMachinePowerState value.
      *
