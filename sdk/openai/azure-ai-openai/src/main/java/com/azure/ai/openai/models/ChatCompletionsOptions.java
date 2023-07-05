@@ -429,4 +429,71 @@ public final class ChatCompletionsOptions {
         this.model = model;
         return this;
     }
+
+    /*
+     * A list of functions the model may generate JSON inputs for.
+     */
+    @Generated
+    @JsonProperty(value = "functions")
+    private List<FunctionDefinition> functions;
+
+    /*
+     * Controls how the model responds to function calls. "none" means the model does not call a function,
+     * and responds to the end-user. "auto" means the model can pick between an end-user or calling a function.
+     * Specifying a particular function via `{"name": "my_function"}` forces the model to call that function.
+     * "none" is the default when no functions are present. "auto" is the default if functions are present.
+     */
+    @Generated
+    @JsonProperty(value = "function_call")
+    private FunctionCallModelBase functionCall;
+
+    /**
+     * Get the functions property: A list of functions the model may generate JSON inputs for.
+     *
+     * @return the functions value.
+     */
+    @Generated
+    public List<FunctionDefinition> getFunctions() {
+        return this.functions;
+    }
+
+    /**
+     * Set the functions property: A list of functions the model may generate JSON inputs for.
+     *
+     * @param functions the functions value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setFunctions(List<FunctionDefinition> functions) {
+        this.functions = functions;
+        return this;
+    }
+
+    /**
+     * Get the functionCall property: Controls how the model responds to function calls. "none" means the model does not
+     * call a function, and responds to the end-user. "auto" means the model can pick between an end-user or calling a
+     * function. Specifying a particular function via `{"name": "my_function"}` forces the model to call that function.
+     * "none" is the default when no functions are present. "auto" is the default if functions are present.
+     *
+     * @return the functionCall value.
+     */
+    @Generated
+    public FunctionCallModelBase getFunctionCall() {
+        return this.functionCall;
+    }
+
+    /**
+     * Set the functionCall property: Controls how the model responds to function calls. "none" means the model does not
+     * call a function, and responds to the end-user. "auto" means the model can pick between an end-user or calling a
+     * function. Specifying a particular function via `{"name": "my_function"}` forces the model to call that function.
+     * "none" is the default when no functions are present. "auto" is the default if functions are present.
+     *
+     * @param functionCall the functionCall value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setFunctionCall(FunctionCallModelBase functionCall) {
+        this.functionCall = functionCall;
+        return this;
+    }
 }

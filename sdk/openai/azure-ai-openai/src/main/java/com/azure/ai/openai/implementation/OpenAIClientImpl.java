@@ -546,7 +546,7 @@ public final class OpenAIClientImpl {
      *                     int (Required)
      *                 ]
      *             }
-     *             finish_reason: String(stop/length/content_filter) (Required)
+     *             finish_reason: String(stop/length/content_filter/function_call) (Required)
      *         }
      *     ]
      *     usage (Required): {
@@ -643,7 +643,7 @@ public final class OpenAIClientImpl {
      *                     int (Required)
      *                 ]
      *             }
-     *             finish_reason: String(stop/length/content_filter) (Required)
+     *             finish_reason: String(stop/length/content_filter/function_call) (Required)
      *         }
      *     ]
      *     usage (Required): {
@@ -689,10 +689,23 @@ public final class OpenAIClientImpl {
      * {
      *     messages (Required): [
      *          (Required){
-     *             role: String(system/assistant/user) (Required)
+     *             role: String(system/assistant/user/function) (Required)
      *             content: String (Optional)
+     *             name: String (Optional)
+     *             function_call (Optional): {
+     *                 name: String (Required)
+     *                 arguments: String (Required)
+     *             }
      *         }
      *     ]
+     *     functions (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             description: String (Optional)
+     *             parameters: Object (Optional)
+     *         }
+     *     ]
+     *     function_call: FunctionCallModelBase (Optional)
      *     max_tokens: Integer (Optional)
      *     temperature: Double (Optional)
      *     top_p: Double (Optional)
@@ -720,11 +733,16 @@ public final class OpenAIClientImpl {
      *     choices (Required): [
      *          (Required){
      *             message (Optional): {
-     *                 role: String(system/assistant/user) (Required)
+     *                 role: String(system/assistant/user/function) (Required)
      *                 content: String (Optional)
+     *                 name: String (Optional)
+     *                 function_call (Optional): {
+     *                     name: String (Required)
+     *                     arguments: String (Required)
+     *                 }
      *             }
      *             index: int (Required)
-     *             finish_reason: String(stop/length/content_filter) (Required)
+     *             finish_reason: String(stop/length/content_filter/function_call) (Required)
      *             delta (Optional): (recursive schema, see delta above)
      *         }
      *     ]
@@ -774,10 +792,23 @@ public final class OpenAIClientImpl {
      * {
      *     messages (Required): [
      *          (Required){
-     *             role: String(system/assistant/user) (Required)
+     *             role: String(system/assistant/user/function) (Required)
      *             content: String (Optional)
+     *             name: String (Optional)
+     *             function_call (Optional): {
+     *                 name: String (Required)
+     *                 arguments: String (Required)
+     *             }
      *         }
      *     ]
+     *     functions (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             description: String (Optional)
+     *             parameters: Object (Optional)
+     *         }
+     *     ]
+     *     function_call: FunctionCallModelBase (Optional)
      *     max_tokens: Integer (Optional)
      *     temperature: Double (Optional)
      *     top_p: Double (Optional)
@@ -805,11 +836,16 @@ public final class OpenAIClientImpl {
      *     choices (Required): [
      *          (Required){
      *             message (Optional): {
-     *                 role: String(system/assistant/user) (Required)
+     *                 role: String(system/assistant/user/function) (Required)
      *                 content: String (Optional)
+     *                 name: String (Optional)
+     *                 function_call (Optional): {
+     *                     name: String (Required)
+     *                     arguments: String (Required)
+     *                 }
      *             }
      *             index: int (Required)
-     *             finish_reason: String(stop/length/content_filter) (Required)
+     *             finish_reason: String(stop/length/content_filter/function_call) (Required)
      *             delta (Optional): (recursive schema, see delta above)
      *         }
      *     ]
