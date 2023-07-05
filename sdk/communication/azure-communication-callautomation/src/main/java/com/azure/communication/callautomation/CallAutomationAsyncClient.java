@@ -249,8 +249,8 @@ public final class CallAutomationAsyncClient {
                 .setAnsweredBy(sourceIdentity)
                 .setOperationContext(answerCallOptions.getOperationContext());
 
-            if (answerCallOptions.getAzureCognitiveServicesUrl() != null && !answerCallOptions.getAzureCognitiveServicesUrl().isEmpty()) {
-                request.setAzureCognitiveServicesEndpointUrl(answerCallOptions.getAzureCognitiveServicesUrl());
+            if (answerCallOptions.getAzureCognitiveServicesEndpointUrl() != null && !answerCallOptions.getAzureCognitiveServicesEndpointUrl().isEmpty()) {
+                request.setAzureCognitiveServicesEndpointUrl(answerCallOptions.getAzureCognitiveServicesEndpointUrl());
             }
 
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(
