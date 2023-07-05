@@ -1,28 +1,64 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person?api-version=2022-10",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f4945e1b-a946-4136-acb3-5f97c2898fb6",
-      "Content-Type" : "application/json; serialization=Avro"
-    },
-    "Response" : {
-      "Schema-Version" : "1",
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "Schema-Name" : "com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person",
-      "retry-after" : "0",
-      "Schema-Id-Location" : "https://conniey-rg10-avro.servicebus.windows.net:443/$schemagroups/$schemas/e8fe39a464f34aeebe7235a7232b34d0?api-version=2022-10",
-      "StatusCode" : "204",
-      "Date" : "Thu, 26 Jan 2023 01:42:28 GMT",
-      "Strict-Transport-Security" : "max-age=31536000",
-      "Schema-Id" : "e8fe39a464f34aeebe7235a7232b34d0",
-      "Schema-Group-Name" : "azsdk_java_group",
-      "Content-Length" : "0",
-      "Location" : "https://conniey-rg10-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person/versions/1?api-version=2022-10",
-      "Schema-Versions-Location" : "https://conniey-rg10-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person/versions?api-version=2022-10"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/$schemaGroups/azsdk_java_group/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person?api-version=2022-10",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "329",
+        "Content-Type": "application/json; serialization=Avro",
+        "Date": "Wed, 05 Jul 2023 20:55:16 GMT",
+        "User-Agent": "azsdk-java-azure-data-schemaregistry/1.4.0-beta.3 (11.0.5; Windows 10; 10.0)",
+        "x-ms-client-request-id": "e4c9980e-0856-452c-b159-6ab7c0e4ff59"
+      },
+      "RequestBody": {
+        "type": "record",
+        "name": "Person",
+        "namespace": "com.azure.data.schemaregistry.apacheavro.generatedtestsources",
+        "fields": [
+          {
+            "name": "name",
+            "type": {
+              "type": "string",
+              "avro.java.string": "String"
+            }
+          },
+          {
+            "name": "favourite_number",
+            "type": [
+              "int",
+              "null"
+            ]
+          },
+          {
+            "name": "favourite_colour",
+            "type": [
+              {
+                "type": "string",
+                "avro.java.string": "String"
+              },
+              "null"
+            ]
+          }
+        ]
+      },
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Wed, 05 Jul 2023 20:55:21 GMT",
+        "Location": "https://conniey-sr-avro.servicebus.windows.net/$schemagroups/azsdk_java_group/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person/versions/1?api-version=2022-10",
+        "Schema-Group-Name": "azsdk_java_group",
+        "Schema-Id": "a3140ebbb0054a53934dbb74405b7951",
+        "Schema-Id-Location": "https://conniey-sr-avro.servicebus.windows.net:443/$schemagroups/$schemas/a3140ebbb0054a53934dbb74405b7951?api-version=2022-10",
+        "Schema-Name": "com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person",
+        "Schema-Version": "1",
+        "Schema-Versions-Location": "https://conniey-sr-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person/versions?api-version=2022-10",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
 }
