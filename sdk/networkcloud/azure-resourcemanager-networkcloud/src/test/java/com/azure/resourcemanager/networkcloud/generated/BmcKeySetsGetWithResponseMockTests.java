@@ -32,7 +32,7 @@ public final class BmcKeySetsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"extendedLocation\":{\"name\":\"vr\",\"type\":\"tnvgyshqrdgrt\"},\"properties\":{\"azureGroupId\":\"mewjzlpyk\",\"detailedStatus\":\"SomeInvalid\",\"detailedStatusMessage\":\"zwjcaye\",\"expiration\":\"2021-09-19T19:02:57Z\",\"lastValidation\":\"2020-12-31T15:28:13Z\",\"privilegeLevel\":\"ReadOnly\",\"provisioningState\":\"Canceled\",\"userList\":[],\"userListStatus\":[]},\"location\":\"polwzrghsrlei\",\"tags\":{\"wtltngvmreuptrk\":\"scjfncjwvuagf\",\"xfsv\":\"zmijajwo\"},\"id\":\"ghmp\",\"name\":\"nwlslrcigtzjcvbx\",\"type\":\"lapsnsso\"}";
+            "{\"extendedLocation\":{\"name\":\"btmkekxpkzwaq\",\"type\":\"ofqovchiqbplv\"},\"properties\":{\"azureGroupId\":\"idu\",\"detailedStatus\":\"AllInvalid\",\"detailedStatusMessage\":\"kxbyjg\",\"expiration\":\"2021-05-22T03:29:48Z\",\"lastValidation\":\"2021-01-23T23:37:47Z\",\"privilegeLevel\":\"Administrator\",\"provisioningState\":\"Succeeded\",\"userList\":[],\"userListStatus\":[]},\"location\":\"a\",\"tags\":{\"x\":\"rhrdi\",\"bi\":\"wyjfowxwyovcxjs\"},\"id\":\"cu\",\"name\":\"dveksbuhoduch\",\"type\":\"lscrdpibfdyjduss\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,14 +61,17 @@ public final class BmcKeySetsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         BmcKeySet response =
-            manager.bmcKeySets().getWithResponse("hlcdc", "lregpq", "moj", com.azure.core.util.Context.NONE).getValue();
+            manager
+                .bmcKeySets()
+                .getWithResponse("toyrplixlajml", "pq", "evhamfowg", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("polwzrghsrlei", response.location());
-        Assertions.assertEquals("scjfncjwvuagf", response.tags().get("wtltngvmreuptrk"));
-        Assertions.assertEquals("vr", response.extendedLocation().name());
-        Assertions.assertEquals("tnvgyshqrdgrt", response.extendedLocation().type());
-        Assertions.assertEquals("mewjzlpyk", response.azureGroupId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-19T19:02:57Z"), response.expiration());
-        Assertions.assertEquals(BmcKeySetPrivilegeLevel.READ_ONLY, response.privilegeLevel());
+        Assertions.assertEquals("a", response.location());
+        Assertions.assertEquals("rhrdi", response.tags().get("x"));
+        Assertions.assertEquals("btmkekxpkzwaq", response.extendedLocation().name());
+        Assertions.assertEquals("ofqovchiqbplv", response.extendedLocation().type());
+        Assertions.assertEquals("idu", response.azureGroupId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-22T03:29:48Z"), response.expiration());
+        Assertions.assertEquals(BmcKeySetPrivilegeLevel.ADMINISTRATOR, response.privilegeLevel());
     }
 }

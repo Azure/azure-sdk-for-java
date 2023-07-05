@@ -123,7 +123,7 @@
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk15on</artifactId>
-      <version>1.75</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
+      <version>1.70</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -170,7 +170,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <archive>
             <manifest>

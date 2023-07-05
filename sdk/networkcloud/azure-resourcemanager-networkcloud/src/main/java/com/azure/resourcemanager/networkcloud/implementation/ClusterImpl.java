@@ -321,11 +321,6 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
-    public ClusterImpl withAnalyticsWorkspaceId(String analyticsWorkspaceId) {
-        this.innerModel().withAnalyticsWorkspaceId(analyticsWorkspaceId);
-        return this;
-    }
-
     public ClusterImpl withClusterType(ClusterType clusterType) {
         this.innerModel().withClusterType(clusterType);
         return this;
@@ -349,6 +344,11 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
             this.updateClusterUpdateParameters.withTags(tags);
             return this;
         }
+    }
+
+    public ClusterImpl withAnalyticsWorkspaceId(String analyticsWorkspaceId) {
+        this.innerModel().withAnalyticsWorkspaceId(analyticsWorkspaceId);
+        return this;
     }
 
     public ClusterImpl withClusterLocation(String clusterLocation) {

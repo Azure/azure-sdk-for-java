@@ -72,7 +72,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bareMetalMachineKeySets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BareMetalMachineKeySetList>> listByResourceGroup(
+        Mono<Response<BareMetalMachineKeySetList>> listByCluster(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -147,7 +147,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BareMetalMachineKeySetList>> listByResourceGroupNext(
+        Mono<Response<BareMetalMachineKeySetList>> listByClusterNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
@@ -155,20 +155,20 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
     }
 
     /**
-     * List bare metal machine key sets of the cluster in the resource group.
+     * List bare metal machine key sets of the cluster.
      *
-     * <p>Get a list of bare metal machine key sets of the cluster in the provided resource group.
+     * <p>Get a list of bare metal machine key sets for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machine key sets of the cluster in the provided resource group along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of bare metal machine key sets for the provided cluster along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BareMetalMachineKeySetInner>> listByResourceGroupSinglePageAsync(
+    private Mono<PagedResponse<BareMetalMachineKeySetInner>> listByClusterSinglePageAsync(
         String resourceGroupName, String clusterName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -194,7 +194,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
             .withContext(
                 context ->
                     service
-                        .listByResourceGroup(
+                        .listByCluster(
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
@@ -215,9 +215,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
     }
 
     /**
-     * List bare metal machine key sets of the cluster in the resource group.
+     * List bare metal machine key sets of the cluster.
      *
-     * <p>Get a list of bare metal machine key sets of the cluster in the provided resource group.
+     * <p>Get a list of bare metal machine key sets for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
@@ -225,11 +225,11 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machine key sets of the cluster in the provided resource group along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of bare metal machine key sets for the provided cluster along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BareMetalMachineKeySetInner>> listByResourceGroupSinglePageAsync(
+    private Mono<PagedResponse<BareMetalMachineKeySetInner>> listByClusterSinglePageAsync(
         String resourceGroupName, String clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -253,7 +253,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
+            .listByCluster(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
@@ -273,30 +273,29 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
     }
 
     /**
-     * List bare metal machine key sets of the cluster in the resource group.
+     * List bare metal machine key sets of the cluster.
      *
-     * <p>Get a list of bare metal machine key sets of the cluster in the provided resource group.
+     * <p>Get a list of bare metal machine key sets for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machine key sets of the cluster in the provided resource group as paginated response
-     *     with {@link PagedFlux}.
+     * @return a list of bare metal machine key sets for the provided cluster as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BareMetalMachineKeySetInner> listByResourceGroupAsync(
-        String resourceGroupName, String clusterName) {
+    private PagedFlux<BareMetalMachineKeySetInner> listByClusterAsync(String resourceGroupName, String clusterName) {
         return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, clusterName),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            () -> listByClusterSinglePageAsync(resourceGroupName, clusterName),
+            nextLink -> listByClusterNextSinglePageAsync(nextLink));
     }
 
     /**
-     * List bare metal machine key sets of the cluster in the resource group.
+     * List bare metal machine key sets of the cluster.
      *
-     * <p>Get a list of bare metal machine key sets of the cluster in the provided resource group.
+     * <p>Get a list of bare metal machine key sets for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
@@ -304,40 +303,39 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machine key sets of the cluster in the provided resource group as paginated response
-     *     with {@link PagedFlux}.
+     * @return a list of bare metal machine key sets for the provided cluster as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BareMetalMachineKeySetInner> listByResourceGroupAsync(
+    private PagedFlux<BareMetalMachineKeySetInner> listByClusterAsync(
         String resourceGroupName, String clusterName, Context context) {
         return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, clusterName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+            () -> listByClusterSinglePageAsync(resourceGroupName, clusterName, context),
+            nextLink -> listByClusterNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * List bare metal machine key sets of the cluster in the resource group.
+     * List bare metal machine key sets of the cluster.
      *
-     * <p>Get a list of bare metal machine key sets of the cluster in the provided resource group.
+     * <p>Get a list of bare metal machine key sets for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machine key sets of the cluster in the provided resource group as paginated response
-     *     with {@link PagedIterable}.
+     * @return a list of bare metal machine key sets for the provided cluster as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BareMetalMachineKeySetInner> listByResourceGroup(
-        String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, clusterName));
+    public PagedIterable<BareMetalMachineKeySetInner> listByCluster(String resourceGroupName, String clusterName) {
+        return new PagedIterable<>(listByClusterAsync(resourceGroupName, clusterName));
     }
 
     /**
-     * List bare metal machine key sets of the cluster in the resource group.
+     * List bare metal machine key sets of the cluster.
      *
-     * <p>Get a list of bare metal machine key sets of the cluster in the provided resource group.
+     * <p>Get a list of bare metal machine key sets for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
@@ -345,13 +343,13 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machine key sets of the cluster in the provided resource group as paginated response
-     *     with {@link PagedIterable}.
+     * @return a list of bare metal machine key sets for the provided cluster as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BareMetalMachineKeySetInner> listByResourceGroup(
+    public PagedIterable<BareMetalMachineKeySetInner> listByCluster(
         String resourceGroupName, String clusterName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, clusterName, context));
+        return new PagedIterable<>(listByClusterAsync(resourceGroupName, clusterName, context));
     }
 
     /**
@@ -1637,7 +1635,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BareMetalMachineKeySetInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<BareMetalMachineKeySetInner>> listByClusterNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1649,8 +1647,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
+            .withContext(context -> service.listByClusterNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<BareMetalMachineKeySetInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1676,7 +1673,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BareMetalMachineKeySetInner>> listByResourceGroupNextSinglePageAsync(
+    private Mono<PagedResponse<BareMetalMachineKeySetInner>> listByClusterNextSinglePageAsync(
         String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -1690,7 +1687,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .listByClusterNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

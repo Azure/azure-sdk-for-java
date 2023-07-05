@@ -22,6 +22,12 @@ public final class CloudServicesNetworkProperties {
     private List<EgressEndpoint> additionalEgressEndpoints;
 
     /*
+     * The list of resource IDs for the other Microsoft.NetworkCloud resources that have attached this network.
+     */
+    @JsonProperty(value = "associatedResourceIds", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> associatedResourceIds;
+
+    /*
      * The resource ID of the Network Cloud cluster this cloud services network is associated with.
      */
     @JsonProperty(value = "clusterId", access = JsonProperty.Access.WRITE_ONLY)
@@ -52,7 +58,8 @@ public final class CloudServicesNetworkProperties {
     private List<EgressEndpoint> enabledEgressEndpoints;
 
     /*
-     * The list of Hybrid AKS cluster resource IDs that are associated with this cloud services network.
+     * Field Deprecated. These fields will be empty/omitted. The list of Hybrid AKS cluster resource IDs that are
+     * associated with this cloud services network.
      */
     @JsonProperty(value = "hybridAksClustersAssociatedIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> hybridAksClustersAssociatedIds;
@@ -70,8 +77,8 @@ public final class CloudServicesNetworkProperties {
     private CloudServicesNetworkProvisioningState provisioningState;
 
     /*
-     * The list of virtual machine resource IDs, excluding any Hybrid AKS virtual machines, that are currently using
-     * this cloud services network.
+     * Field Deprecated. These fields will be empty/omitted. The list of virtual machine resource IDs, excluding any
+     * Hybrid AKS virtual machines, that are currently using this cloud services network.
      */
     @JsonProperty(value = "virtualMachinesAssociatedIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> virtualMachinesAssociatedIds;
@@ -101,6 +108,16 @@ public final class CloudServicesNetworkProperties {
         List<EgressEndpoint> additionalEgressEndpoints) {
         this.additionalEgressEndpoints = additionalEgressEndpoints;
         return this;
+    }
+
+    /**
+     * Get the associatedResourceIds property: The list of resource IDs for the other Microsoft.NetworkCloud resources
+     * that have attached this network.
+     *
+     * @return the associatedResourceIds value.
+     */
+    public List<String> associatedResourceIds() {
+        return this.associatedResourceIds;
     }
 
     /**
@@ -165,8 +182,8 @@ public final class CloudServicesNetworkProperties {
     }
 
     /**
-     * Get the hybridAksClustersAssociatedIds property: The list of Hybrid AKS cluster resource IDs that are associated
-     * with this cloud services network.
+     * Get the hybridAksClustersAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list
+     * of Hybrid AKS cluster resource IDs that are associated with this cloud services network.
      *
      * @return the hybridAksClustersAssociatedIds value.
      */
@@ -194,8 +211,9 @@ public final class CloudServicesNetworkProperties {
     }
 
     /**
-     * Get the virtualMachinesAssociatedIds property: The list of virtual machine resource IDs, excluding any Hybrid AKS
-     * virtual machines, that are currently using this cloud services network.
+     * Get the virtualMachinesAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list of
+     * virtual machine resource IDs, excluding any Hybrid AKS virtual machines, that are currently using this cloud
+     * services network.
      *
      * @return the virtualMachinesAssociatedIds value.
      */

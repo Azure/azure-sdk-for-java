@@ -13,17 +13,17 @@ public final class ExtendedLocationTests {
     public void testDeserialize() throws Exception {
         ExtendedLocation model =
             BinaryData
-                .fromString("{\"name\":\"lxofpdvhpfxxypin\",\"type\":\"nmayhuybb\"}")
+                .fromString("{\"name\":\"cciqihnhungbwjz\",\"type\":\"nfygxgispemvtz\"}")
                 .toObject(ExtendedLocation.class);
-        Assertions.assertEquals("lxofpdvhpfxxypin", model.name());
-        Assertions.assertEquals("nmayhuybb", model.type());
+        Assertions.assertEquals("cciqihnhungbwjz", model.name());
+        Assertions.assertEquals("nfygxgispemvtz", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExtendedLocation model = new ExtendedLocation().withName("lxofpdvhpfxxypin").withType("nmayhuybb");
+        ExtendedLocation model = new ExtendedLocation().withName("cciqihnhungbwjz").withType("nfygxgispemvtz");
         model = BinaryData.fromObject(model).toObject(ExtendedLocation.class);
-        Assertions.assertEquals("lxofpdvhpfxxypin", model.name());
-        Assertions.assertEquals("nmayhuybb", model.type());
+        Assertions.assertEquals("cciqihnhungbwjz", model.name());
+        Assertions.assertEquals("nfygxgispemvtz", model.type());
     }
 }

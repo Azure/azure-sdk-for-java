@@ -114,7 +114,7 @@ public class MonitorManagementTest extends ResourceManagerTestBase {
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withAdministratorLogin("admin123")
-            .withAdministratorPassword("Password$1")
+            .withAdministratorPassword(password())
             .create();
 
         // white space in pool name

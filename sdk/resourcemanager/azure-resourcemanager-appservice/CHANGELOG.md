@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported `withContainerSize` for `FunctionApp`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

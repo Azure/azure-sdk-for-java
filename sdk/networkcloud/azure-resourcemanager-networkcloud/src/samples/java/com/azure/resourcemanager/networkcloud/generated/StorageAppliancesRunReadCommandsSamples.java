@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for StorageAppliances RunReadCommands. */
 public final class StorageAppliancesRunReadCommandsSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/StorageAppliances_RunReadCommands.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/StorageAppliances_RunReadCommands.json
      */
     /**
      * Sample code: Run and retrieve output from read only commands on storage appliance.

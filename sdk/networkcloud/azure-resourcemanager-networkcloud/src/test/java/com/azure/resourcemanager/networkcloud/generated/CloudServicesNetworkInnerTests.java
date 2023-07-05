@@ -20,13 +20,13 @@ public final class CloudServicesNetworkInnerTests {
         CloudServicesNetworkInner model =
             BinaryData
                 .fromString(
-                    "{\"extendedLocation\":{\"name\":\"bkbfkgukdkex\",\"type\":\"ppofmxaxcfjpgdd\"},\"properties\":{\"additionalEgressEndpoints\":[{\"category\":\"j\",\"endpoints\":[]},{\"category\":\"hvpmoue\",\"endpoints\":[]}],\"clusterId\":\"dzxibqeojnxqbzvd\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"ndei\",\"enableDefaultEgressEndpoints\":\"False\",\"enabledEgressEndpoints\":[{\"category\":\"pzaoqvuhr\",\"endpoints\":[]},{\"category\":\"cffcyddglmj\",\"endpoints\":[]}],\"hybridAksClustersAssociatedIds\":[\"qkwpyeicxmqc\",\"wqvhkhixuigdt\",\"pbobjo\"],\"interfaceName\":\"m\",\"provisioningState\":\"Failed\",\"virtualMachinesAssociatedIds\":[\"a\"]},\"location\":\"rzayv\",\"tags\":{\"ln\":\"gvdfgiotkftutq\",\"qmi\":\"xlefgugnxkrx\"},\"id\":\"tthzrvqd\",\"name\":\"abhjybi\",\"type\":\"ehoqfbowskan\"}")
+                    "{\"extendedLocation\":{\"name\":\"pmivkwlzu\",\"type\":\"ccfwnfnbacfion\"},\"properties\":{\"additionalEgressEndpoints\":[{\"category\":\"etqgtzxdpnq\",\"endpoints\":[]}],\"associatedResourceIds\":[\"wxrjfeallnwsub\",\"snjampmng\",\"zscxaqwo\"],\"clusterId\":\"hcbonqvpkvlr\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"ase\",\"enableDefaultEgressEndpoints\":\"False\",\"enabledEgressEndpoints\":[{\"category\":\"f\",\"endpoints\":[]},{\"category\":\"okeyyienj\",\"endpoints\":[]}],\"hybridAksClustersAssociatedIds\":[\"wtgrhpdjpj\",\"masxazjpqyegu\",\"lhbxxhejjzzvdud\"],\"interfaceName\":\"dslfhotwmcy\",\"provisioningState\":\"Provisioning\",\"virtualMachinesAssociatedIds\":[\"jnpg\",\"cftadeh\"]},\"location\":\"ltyfsop\",\"tags\":{\"xzdmohctb\":\"uesnzwdejbavo\",\"ndnvo\":\"vudwx\"},\"id\":\"gujjugwdkcglh\",\"name\":\"lazjdyggdtjixhbk\",\"type\":\"ofqweykhmenevfye\"}")
                 .toObject(CloudServicesNetworkInner.class);
-        Assertions.assertEquals("rzayv", model.location());
-        Assertions.assertEquals("gvdfgiotkftutq", model.tags().get("ln"));
-        Assertions.assertEquals("bkbfkgukdkex", model.extendedLocation().name());
-        Assertions.assertEquals("ppofmxaxcfjpgdd", model.extendedLocation().type());
-        Assertions.assertEquals("j", model.additionalEgressEndpoints().get(0).category());
+        Assertions.assertEquals("ltyfsop", model.location());
+        Assertions.assertEquals("uesnzwdejbavo", model.tags().get("xzdmohctb"));
+        Assertions.assertEquals("pmivkwlzu", model.extendedLocation().name());
+        Assertions.assertEquals("ccfwnfnbacfion", model.extendedLocation().type());
+        Assertions.assertEquals("etqgtzxdpnq", model.additionalEgressEndpoints().get(0).category());
         Assertions
             .assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE, model.enableDefaultEgressEndpoints());
     }
@@ -35,21 +35,18 @@ public final class CloudServicesNetworkInnerTests {
     public void testSerialize() throws Exception {
         CloudServicesNetworkInner model =
             new CloudServicesNetworkInner()
-                .withLocation("rzayv")
-                .withTags(mapOf("ln", "gvdfgiotkftutq", "qmi", "xlefgugnxkrx"))
-                .withExtendedLocation(new ExtendedLocation().withName("bkbfkgukdkex").withType("ppofmxaxcfjpgdd"))
+                .withLocation("ltyfsop")
+                .withTags(mapOf("xzdmohctb", "uesnzwdejbavo", "ndnvo", "vudwx"))
+                .withExtendedLocation(new ExtendedLocation().withName("pmivkwlzu").withType("ccfwnfnbacfion"))
                 .withAdditionalEgressEndpoints(
-                    Arrays
-                        .asList(
-                            new EgressEndpoint().withCategory("j").withEndpoints(Arrays.asList()),
-                            new EgressEndpoint().withCategory("hvpmoue").withEndpoints(Arrays.asList())))
+                    Arrays.asList(new EgressEndpoint().withCategory("etqgtzxdpnq").withEndpoints(Arrays.asList())))
                 .withEnableDefaultEgressEndpoints(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE);
         model = BinaryData.fromObject(model).toObject(CloudServicesNetworkInner.class);
-        Assertions.assertEquals("rzayv", model.location());
-        Assertions.assertEquals("gvdfgiotkftutq", model.tags().get("ln"));
-        Assertions.assertEquals("bkbfkgukdkex", model.extendedLocation().name());
-        Assertions.assertEquals("ppofmxaxcfjpgdd", model.extendedLocation().type());
-        Assertions.assertEquals("j", model.additionalEgressEndpoints().get(0).category());
+        Assertions.assertEquals("ltyfsop", model.location());
+        Assertions.assertEquals("uesnzwdejbavo", model.tags().get("xzdmohctb"));
+        Assertions.assertEquals("pmivkwlzu", model.extendedLocation().name());
+        Assertions.assertEquals("ccfwnfnbacfion", model.extendedLocation().type());
+        Assertions.assertEquals("etqgtzxdpnq", model.additionalEgressEndpoints().get(0).category());
         Assertions
             .assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE, model.enableDefaultEgressEndpoints());
     }

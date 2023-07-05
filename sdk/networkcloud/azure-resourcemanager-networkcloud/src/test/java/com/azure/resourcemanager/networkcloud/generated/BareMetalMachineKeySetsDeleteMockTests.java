@@ -56,6 +56,6 @@ public final class BareMetalMachineKeySetsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.bareMetalMachineKeySets().delete("bhuhk", "lgw", "okhu", com.azure.core.util.Context.NONE);
+        manager.bareMetalMachineKeySets().delete("uwj", "e", "pjlh", com.azure.core.util.Context.NONE);
     }
 }
