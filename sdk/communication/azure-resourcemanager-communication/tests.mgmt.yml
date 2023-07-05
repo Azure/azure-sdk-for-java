@@ -1,0 +1,16 @@
+trigger: none
+
+pr: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: communication
+      Artifacts:
+        - name: azure-resourcemanager-communication
+          groupId: com.azure.resourcemanager
+          safeName: azureresourcemanagercommunication
+      Clouds: 'Public'
+      # Only run tests on Windows to save cost.
+      MatrixFilters:
+        - pool=.*(win).*
