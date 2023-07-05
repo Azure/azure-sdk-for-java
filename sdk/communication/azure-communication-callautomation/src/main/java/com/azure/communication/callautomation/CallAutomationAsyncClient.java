@@ -192,6 +192,7 @@ public final class CallAutomationAsyncClient {
             .setSource(sourceIdentity)
             .setTargets(targetsModel)
             .setCallbackUri(createCallOptions.getCallbackUrl())
+            .setAzureCognitiveServicesEndpointUrl(createCallOptions.getAzureCognitiveServicesUrl())
             .setOperationContext(createCallOptions.getOperationContext());
     }
 
@@ -205,6 +206,7 @@ public final class CallAutomationAsyncClient {
             .setSource(sourceIdentity)
             .setTargets(targetsModel)
             .setCallbackUri(createCallGroupOptions.getCallbackUrl())
+            .setAzureCognitiveServicesEndpointUrl(createCallGroupOptions.getAzureCognitiveServicesUrl())
             .setOperationContext(createCallGroupOptions.getOperationContext());
     }
 
