@@ -23,8 +23,9 @@
     </maven.javadoc.skip>   <!-- For the Application Insights Spring Boot starter for Spring native, users have only to declare the starter dependency. Users won't manipulate the Java classes of this Spring Boot starter. -->
   </properties>
 
+  <groupId>com.azure.spring</groupId>
   <artifactId>applicationinsights-spring-native</artifactId>
-  <version>1.0.0-beta.1</version>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:applicationinsights-spring-native;current} -->
 
   <distributionManagement>
     <site>
@@ -36,7 +37,7 @@
   <scm>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
-  
+
   <dependencies>
 
     <!-- OTel dependencies -->
@@ -60,7 +61,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-      <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+      <version>1.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
     </dependency>
 
 
