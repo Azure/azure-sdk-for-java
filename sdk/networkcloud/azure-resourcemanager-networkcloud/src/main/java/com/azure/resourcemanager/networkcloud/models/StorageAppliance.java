@@ -477,30 +477,4 @@ public interface StorageAppliance {
      */
     void runReadCommands(
         StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters, Context context);
-
-    /**
-     * Trigger hardware validation of the storage appliance.
-     *
-     * <p>Validate the hardware of the provided storage appliance.
-     *
-     * @param storageApplianceValidateHardwareParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void validateHardware(StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters);
-
-    /**
-     * Trigger hardware validation of the storage appliance.
-     *
-     * <p>Validate the hardware of the provided storage appliance.
-     *
-     * @param storageApplianceValidateHardwareParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void validateHardware(
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters, Context context);
 }

@@ -5,6 +5,8 @@ package com.azure.resourcemanager.appservice;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAppBasic;
@@ -19,8 +21,6 @@ import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebAppBasic;
 import com.azure.resourcemanager.appservice.models.WebAppRuntimeStack;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.core.management.Region;
-import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

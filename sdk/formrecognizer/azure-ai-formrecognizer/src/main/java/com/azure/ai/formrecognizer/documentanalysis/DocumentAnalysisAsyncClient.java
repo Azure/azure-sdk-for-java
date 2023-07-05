@@ -36,7 +36,6 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
-import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.toInnerDocAnalysisFeatures;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.activationOperation;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getAnalyzeDocumentOptions;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -258,7 +257,7 @@ public final class DocumentAnalysisAsyncClient {
                                 finalAnalyzeDocumentOptions.getLocale() == null ? null
                                     : finalAnalyzeDocumentOptions.getLocale(),
                                 StringIndexType.UTF16CODE_UNIT,
-                                toInnerDocAnalysisFeatures(finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures()),
+                                finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(),
                                 finalAnalyzeDocumentOptions.getQueryFields(),
                                 new AnalyzeDocumentRequest().setUrlSource(documentUrl),
                                 context)
@@ -420,7 +419,7 @@ public final class DocumentAnalysisAsyncClient {
                             finalAnalyzeDocumentOptions.getLocale() == null ? null
                                 : finalAnalyzeDocumentOptions.getLocale(),
                             StringIndexType.UTF16CODE_UNIT,
-                            toInnerDocAnalysisFeatures(finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures()),
+                            finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(),
                             finalAnalyzeDocumentOptions.getQueryFields(),
                             document,
                             document.getLength(),

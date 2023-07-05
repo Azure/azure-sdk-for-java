@@ -20,7 +20,7 @@ import com.azure.core.models.GeoPosition;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.maps.render.implementation.RenderV2sImpl;
+import com.azure.maps.render.implementation.RendersImpl;
 import com.azure.maps.render.implementation.models.BoundingBox;
 import com.azure.maps.render.implementation.models.ResponseFormat;
 import com.azure.maps.render.models.Copyright;
@@ -36,7 +36,7 @@ import com.azure.maps.render.models.TilesetId;
 
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous RenderClient type. 
+/** Initializes a new instance of the asynchronous RenderClient type.
 * Creating an async client using a {@link com.azure.core.credential.AzureKeyCredential}:
 * <!-- src_embed com.azure.maps.render.async.builder.key.instantiation -->
 * <pre>
@@ -69,10 +69,10 @@ import reactor.core.publisher.Mono;
 * MapsRenderAsyncClient client = builder.buildAsyncClient&#40;&#41;;
 * </pre>
 * <!-- end com.azure.maps.render.async.builder.ad.instantiation -->
-*/ 
+*/
 @ServiceClient(builder = MapsRenderClientBuilder.class, isAsync = true)
 public final class MapsRenderAsyncClient {
-    private final RenderV2sImpl serviceClient;
+    private final RendersImpl serviceClient;
     private static final ClientLogger LOGGER = new ClientLogger(MapsRenderAsyncClient.class);
 
     /**
@@ -80,13 +80,13 @@ public final class MapsRenderAsyncClient {
      *
      * @param serviceClient the service client implementation.
      */
-    MapsRenderAsyncClient(RenderV2sImpl serviceClient) {
+    MapsRenderAsyncClient(RendersImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
     /**
      * Get Map Tile
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_map_tile -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Tile&quot;&#41;;
@@ -113,12 +113,12 @@ public final class MapsRenderAsyncClient {
         }
         return BinaryData.fromFlux(responseMono.flatMapMany(response -> {
             return response.getValue();
-        })); 
+        }));
     }
 
     /**
      * Get Map Tile
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_map_tile -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Tile&quot;&#41;;
@@ -147,12 +147,12 @@ public final class MapsRenderAsyncClient {
             return Mono.just(new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
         } else {
             return Mono.error(new NullPointerException("Response is null"));
-        }      
+        }
     }
 
     /**
      * Get Map Tile
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_map_tile -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Tile&quot;&#41;;
@@ -194,7 +194,7 @@ public final class MapsRenderAsyncClient {
      * Get Map Tileset
      *
      * The Get Map Tileset API allows users to request metadata for a tileset.
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_map_tileset -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Tileset&quot;&#41;;
@@ -221,7 +221,7 @@ public final class MapsRenderAsyncClient {
      * Get Map Tileset
      *
      * The Get Map Tileset API allows users to request metadata for a tileset.
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_map_tileset -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Tileset&quot;&#41;;
@@ -243,9 +243,9 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Map Tileset
-     * 
+     *
      * The Get Map Tileset API allows users to request metadata for a tileset.
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_map_tileset -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Tileset&quot;&#41;;
@@ -276,7 +276,7 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Map Attribution
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_map_attribution -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Attribution&quot;&#41;;
@@ -304,7 +304,7 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Map Attribution
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_map_attribution -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Attribution&quot;&#41;;
@@ -329,10 +329,10 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Map Attribution
-     * 
+     *
      * The Get Map Attribution With Response API allows users to request map copyright attribution information for a section of a
      * tileset with response
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_map_attribution -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Attribution&quot;&#41;;
@@ -341,7 +341,7 @@ public final class MapsRenderAsyncClient {
      * asyncClient.getMapAttribution&#40;TilesetId.MICROSOFT_BASE, 6, bounds2&#41;.block&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.render.async.get_map_attribution -->
-     * 
+     *
      * @param tilesetId the tileset id.
      * @param zoom Zoom level for the desired map attribution.
      * @param bounds the {@code GeoBoundingBox} surrounding the area for which attribution is needed.
@@ -380,7 +380,7 @@ public final class MapsRenderAsyncClient {
         Mono<StreamResponse> responseMono = this.downloadMapStateTileWithResponse(statesetId, tileIndex, null);
         return BinaryData.fromFlux(responseMono.flatMapMany(response -> {
             return response.getValue();
-        })); 
+        }));
     }
 
     /**
@@ -400,7 +400,7 @@ public final class MapsRenderAsyncClient {
             return Mono.just(new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
         } else {
             return Mono.error(new NullPointerException("Response is null"));
-        }   
+        }
     }
 
     /**
@@ -439,7 +439,7 @@ public final class MapsRenderAsyncClient {
      * asyncClient.getCopyrightCaption&#40;&#41;.block&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.render.async.get_copyright_caption -->
-     * 
+     *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -461,7 +461,7 @@ public final class MapsRenderAsyncClient {
      *
      * As an alternative to copyrights for map request, one can receive captions for displaying the map provider
      * information on the map.
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_copyright_caption -->
      * <pre>
      * System.out.println&#40;&quot;Get Copyright Caption&quot;&#41;;
@@ -487,7 +487,7 @@ public final class MapsRenderAsyncClient {
      *
      * As an alternative to copyrights for map request, one can receive captions for displaying the map provider
      * information on the map.
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_copyright_caption -->
      * <pre>
      * System.out.println&#40;&quot;Get Copyright Caption&quot;&#41;;
@@ -522,7 +522,7 @@ public final class MapsRenderAsyncClient {
      * like to interact with the rendered map. If the map contents will be relatively unchanging, a static map is a good
      * choice. If you want to support a lot of zooming, panning and changing of the map content, the map tile service
      * would be a better choice.
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_map_static_image -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Static Image&quot;&#41;;
@@ -547,7 +547,7 @@ public final class MapsRenderAsyncClient {
         Mono<StreamResponse> responseMono = this.getMapStaticImageWithResponse(options, null);
         return BinaryData.fromFlux(responseMono.flatMapMany(response -> {
             return response.getValue();
-        }));  
+        }));
     }
 
     /**
@@ -560,7 +560,7 @@ public final class MapsRenderAsyncClient {
      * like to interact with the rendered map. If the map contents will be relatively unchanging, a static map is a good
      * choice. If you want to support a lot of zooming, panning and changing of the map content, the map tile service
      * would be a better choice.
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_map_static_image -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Static Image&quot;&#41;;
@@ -587,7 +587,7 @@ public final class MapsRenderAsyncClient {
             return Mono.just(new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
         } else {
             return Mono.error(new NullPointerException("Response is null"));
-        } 
+        }
     }
 
     /**
@@ -600,7 +600,7 @@ public final class MapsRenderAsyncClient {
      * like to interact with the rendered map. If the map contents will be relatively unchanging, a static map is a good
      * choice. If you want to support a lot of zooming, panning and changing of the map content, the map tile service
      * would be a better choice.
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_map_static_image -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Static Image&quot;&#41;;
@@ -650,12 +650,12 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Copyright From Bounding Box
-     * 
+     *
      * **Applies to**: S0 and S1 pricing tiers.
      *
      * Returns copyright information for a given bounding box. Bounding-box requests should specify the minimum and
      * maximum longitude and latitude (EPSG-3857) coordinates.
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_copyright_from_bounding_box -->
      * <pre>
      * GeoBoundingBox boundingBox2 = new GeoBoundingBox&#40;52.41064, 4.84228, 52.41072, 4.84239&#41;;
@@ -681,12 +681,12 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Copyright From Bounding Box
-     * 
+     *
      * **Applies to**: S0 and S1 pricing tiers.
      *
      * Returns copyright information for a given bounding box. Bounding-box requests should specify the minimum and
      * maximum longitude and latitude (EPSG-3857) coordinates.
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_copyright_from_bounding_box -->
      * <pre>
      * GeoBoundingBox boundingBox2 = new GeoBoundingBox&#40;52.41064, 4.84228, 52.41072, 4.84239&#41;;
@@ -709,17 +709,17 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Copyright From Bounding Box
-     * 
+     *
      * Returns copyright information for a given bounding box with response. Bounding-box requests should specify the minimum and
      * maximum longitude and latitude (EPSG-3857) coordinates.
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_copyright_from_bounding_box -->
      * <pre>
      * GeoBoundingBox boundingBox2 = new GeoBoundingBox&#40;52.41064, 4.84228, 52.41072, 4.84239&#41;;
      * asyncClient.getCopyrightFromBoundingBox&#40;boundingBox2, true&#41;.block&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.render.async.get_copyright_from_bounding_box -->
-     * 
+     *
      * @param boundingBox the {@code GeoBoundingBox} for which copyright information is needed.
      * @param includeText Yes/no value to exclude textual data from response. Only images and country names will be in
      *     response.
@@ -741,14 +741,14 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Copyright For Tile
-     * 
+     *
      * **Applies to**: S0 and S1 pricing tiers.
      *
      * Copyrights API is designed to serve copyright information for Render Tile service. In addition to basic
      * copyright for the whole map, API is serving specific groups of copyrights for some countries. Returns the
      * copyright information for a given tile. To obtain the copyright information for a particular tile, the request
      * should specify the tile's zoom level and x and y coordinates (see: Zoom Levels and Tile Grid).
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_copyright_for_tile -->
      * <pre>
      * asyncClient.getCopyrightForTile&#40;new TileIndex&#40;&#41;.setX&#40;9&#41;.setY&#40;22&#41;.setZ&#40;6&#41;, true&#41;.block&#40;&#41;;
@@ -773,14 +773,14 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Copyright For Tile
-     * 
+     *
      * **Applies to**: S0 and S1 pricing tiers.
      *
      * Copyrights API is designed to serve copyright information for Render Tile service. In addition to basic
      * copyright for the whole map, API is serving specific groups of copyrights for some countries. Returns the
      * copyright information for a given tile. To obtain the copyright information for a particular tile, the request
      * should specify the tile's zoom level and x and y coordinates (see: Zoom Levels and Tile Grid).
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_copyright_for_tile -->
      * <pre>
      * asyncClient.getCopyrightForTile&#40;new TileIndex&#40;&#41;.setX&#40;9&#41;.setY&#40;22&#41;.setZ&#40;6&#41;, true&#41;.block&#40;&#41;;
@@ -802,18 +802,18 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Copyright For Tile
-     * 
+     *
      * Copyrights With Response API is designed to serve copyright information for Render Tile service with response. In addition to basic
      * copyright for the whole map, API is serving specific groups of copyrights for some countries. Returns the
      * copyright information for a given tile. To obtain the copyright information for a particular tile, the request
      * should specify the tile's zoom level and x and y coordinates (see: Zoom Levels and Tile Grid)
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_copyright_for_tile -->
      * <pre>
      * asyncClient.getCopyrightForTile&#40;new TileIndex&#40;&#41;.setX&#40;9&#41;.setY&#40;22&#41;.setZ&#40;6&#41;, true&#41;.block&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.render.async.get_copyright_for_tile -->
-     * 
+     *
      * @param tileIndex Parameter group
      * @param includeText Yes/no value to exclude textual data from response. Only images and country names will be in
      *     response.
@@ -835,14 +835,14 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Copyright For World
-     * 
+     *
      * **Applies to**: S0 and S1 pricing tiers.
      *
      * Copyrights API is designed to serve copyright information for Render Tile service. In addition to basic
      * copyright for the whole map, API is serving specific groups of copyrights for some countries. Returns the
      * copyright information for the world. To obtain the default copyright information for the whole world, do not
      * specify a tile or bounding box.
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_copyright_for_world -->
      * <pre>
      * asyncClient.getCopyrightForWorld&#40;true&#41;.block&#40;&#41;;
@@ -866,14 +866,14 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Copyright For World
-     * 
+     *
      * **Applies to**: S0 and S1 pricing tiers.
      *
      * Copyrights API is designed to serve copyright information for Render Tile service. In addition to basic
      * copyright for the whole map, API is serving specific groups of copyrights for some countries. Returns the
      * copyright information for the world. To obtain the default copyright information for the whole world, do not
      * specify a tile or bounding box.
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_copyright_for_world -->
      * <pre>
      * asyncClient.getCopyrightForWorld&#40;true&#41;.block&#40;&#41;;
@@ -894,18 +894,18 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Copyright For World
-     * 
+     *
      * Copyrights with response API is designed to serve copyright information with response for Render Tile service. In addition to basic
      * copyright for the whole map, API is serving specific groups of copyrights for some countries. Returns the
      * copyright information for the world. To obtain the default copyright information for the whole world, do not
      * specify a tile or bounding box.
-     * 
+     *
      * <!-- src_embed com.azure.maps.render.async.get_copyright_for_world -->
      * <pre>
      * asyncClient.getCopyrightForWorld&#40;true&#41;.block&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.render.async.get_copyright_for_world -->
-     * 
+     *
      * @param includeText Yes/no value to exclude textual data from response. Only images and country names will be in
      *     response.
      * @param context the context associated with this operation.

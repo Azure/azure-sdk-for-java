@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.azure.messaging.servicebus.TestUtils.getEntityName;
 import static com.azure.messaging.servicebus.TestUtils.getServiceBusMessage;
 import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
@@ -210,7 +209,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
                 return builder.processor().queueName(queueName);
             case SUBSCRIPTION:
                 final String topicName = getTopicName(entityIndex);
-                final String subscriptionName = getEntityName(getSubscriptionBaseName(), 2);
+                final String subscriptionName = getSubscriptionBaseName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 

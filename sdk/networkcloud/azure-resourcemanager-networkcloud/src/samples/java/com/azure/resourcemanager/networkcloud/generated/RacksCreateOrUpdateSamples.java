@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for Racks CreateOrUpdate. */
 public final class RacksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Racks_Create.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Racks_Create.json
      */
     /**
      * Sample code: Create or update rack.
@@ -27,7 +27,7 @@ public final class RacksCreateOrUpdateSamples {
             .withExtendedLocation(
                 new ExtendedLocation()
                     .withName(
-                        "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
                     .withType("CustomLocation"))
             .withAvailabilityZone("1")
             .withRackLocation("Rack 28")

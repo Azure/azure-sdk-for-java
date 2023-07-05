@@ -109,8 +109,8 @@ public interface Console {
     ConsoleProvisioningState provisioningState();
 
     /**
-     * Gets the sshPublicKey property: SshPublicKey represents the public key used to authenticate with the virtual
-     * machine through SSH.
+     * Gets the sshPublicKey property: SshPublicKey represents the public key used to authenticate with a resource
+     * through SSH.
      *
      * <p>The SSH public key that will be provisioned for user access. The user is expected to have the corresponding
      * SSH private key for logging in.
@@ -229,14 +229,14 @@ public interface Console {
         /** The stage of the Console definition allowing to specify sshPublicKey. */
         interface WithSshPublicKey {
             /**
-             * Specifies the sshPublicKey property: SshPublicKey represents the public key used to authenticate with the
-             * virtual machine through SSH.
+             * Specifies the sshPublicKey property: SshPublicKey represents the public key used to authenticate with a
+             * resource through SSH.
              *
              * <p>The SSH public key that will be provisioned for user access. The user is expected to have the
              * corresponding SSH private key for logging in..
              *
-             * @param sshPublicKey SshPublicKey represents the public key used to authenticate with the virtual machine
-             *     through SSH.
+             * @param sshPublicKey SshPublicKey represents the public key used to authenticate with a resource through
+             *     SSH.
              *     <p>The SSH public key that will be provisioned for user access. The user is expected to have the
              *     corresponding SSH private key for logging in.
              * @return the next definition stage.
@@ -349,14 +349,14 @@ public interface Console {
         /** The stage of the Console update allowing to specify sshPublicKey. */
         interface WithSshPublicKey {
             /**
-             * Specifies the sshPublicKey property: SshPublicKey represents the public key used to authenticate with the
-             * virtual machine through SSH.
+             * Specifies the sshPublicKey property: SshPublicKey represents the public key used to authenticate with a
+             * resource through SSH.
              *
              * <p>The SSH public key that will be provisioned for user access. The user is expected to have the
              * corresponding SSH private key for logging in..
              *
-             * @param sshPublicKey SshPublicKey represents the public key used to authenticate with the virtual machine
-             *     through SSH.
+             * @param sshPublicKey SshPublicKey represents the public key used to authenticate with a resource through
+             *     SSH.
              *     <p>The SSH public key that will be provisioned for user access. The user is expected to have the
              *     corresponding SSH private key for logging in.
              * @return the next definition stage.

@@ -3,110 +3,77 @@
 
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.administration.PersonalizerAdministrationAsyncClient;
 import com.azure.ai.personalizer.administration.PersonalizerAdministrationClient;
 import com.azure.ai.personalizer.administration.PersonalizerAdministrationClientBuilder;
 import com.azure.ai.personalizer.administration.models.PersonalizerPolicy;
 import com.azure.ai.personalizer.administration.models.PersonalizerServiceProperties;
 import com.azure.ai.personalizer.models.PersonalizerAudience;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-
-import java.time.Duration;
+import com.azure.core.test.TestProxyTestBase;
 
 import static com.azure.ai.personalizer.TestUtils.INVALID_KEY;
-import static com.azure.ai.personalizer.TestUtils.ONE_NANO_DURATION;
 import static com.azure.ai.personalizer.TestUtils.PERSONALIZER_API_KEY_MULTI_SLOT;
 import static com.azure.ai.personalizer.TestUtils.PERSONALIZER_API_KEY_SINGLE_SLOT;
+import static com.azure.ai.personalizer.TestUtils.PERSONALIZER_API_KEY_STATIC;
 import static com.azure.ai.personalizer.TestUtils.PERSONALIZER_ENDPOINT_MULTI_SLOT;
 import static com.azure.ai.personalizer.TestUtils.PERSONALIZER_ENDPOINT_SINGLE_SLOT;
-import static com.azure.ai.personalizer.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
+import static com.azure.ai.personalizer.TestUtils.PERSONALIZER_ENDPOINT_STATIC;
 
+public abstract class PersonalizerTestBase extends TestProxyTestBase {
+    private PersonalizerAdministrationClientBuilder setBuilderProperties(HttpClient httpClient,
+        PersonalizerServiceVersion serviceVersion, boolean isSingleSlot, boolean isStatic) {
+        PersonalizerAdministrationClientBuilder builder = new PersonalizerAdministrationClientBuilder();
 
-public abstract class PersonalizerTestBase extends TestBase {
-
-    Duration durationTestMode;
-
-    /**
-     * Use duration of nearly zero value for PLAYBACK test mode, otherwise, use default duration value for LIVE mode.
-     */
-    @Override
-    protected void beforeTest() {
-        durationTestMode = interceptorManager.isPlaybackMode() ? ONE_NANO_DURATION : DEFAULT_POLL_INTERVAL;
-    }
-
-    public PersonalizerAdministrationClientBuilder setBuilderProperties(PersonalizerAdministrationClientBuilder builder,
-                                                                        HttpClient httpClient,
-                                                                        PersonalizerServiceVersion serviceVersion,
-                                                                        boolean isSingleSlot) {
-        String endpoint = getEndpoint(isSingleSlot);
+        String endpoint = getEndpoint(getTestMode(), isSingleSlot, isStatic);
         PersonalizerAudience audience = TestUtils.getAudience(endpoint);
 
-        builder = builder
-            .endpoint(endpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+        builder.endpoint(endpoint)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy())
             .audience(audience);
 
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new AzureKeyCredential(INVALID_KEY));
-        } else {
-            if (isSingleSlot) {
-                builder.credential(new AzureKeyCredential(PERSONALIZER_API_KEY_SINGLE_SLOT));
-            } else {
-                builder.credential(new AzureKeyCredential(PERSONALIZER_API_KEY_MULTI_SLOT));
-            }
+        if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
-        return builder;
+        return setCredential(builder, getTestMode(), isSingleSlot, isStatic);
     }
 
     public PersonalizerClientBuilder setBuilderProperties(PersonalizerClientBuilder builder,
-                                                          HttpClient httpClient,
-                                                          PersonalizerServiceVersion serviceVersion,
-                                                          boolean isSingleSlot) {
-        String endpoint = getEndpoint(isSingleSlot);
+        HttpClient httpClient, PersonalizerServiceVersion serviceVersion, boolean isSingleSlot) {
+        String endpoint = getEndpoint(getTestMode(), isSingleSlot, false);
         PersonalizerAudience audience = TestUtils.getAudience(endpoint);
 
-        builder = builder
-            .endpoint(endpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+        builder.endpoint(endpoint)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy())
             .audience(audience);
 
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new AzureKeyCredential(INVALID_KEY));
-        } else {
-            if (isSingleSlot) {
-                builder.credential(new AzureKeyCredential(PERSONALIZER_API_KEY_SINGLE_SLOT));
-            } else {
-                builder.credential(new AzureKeyCredential(PERSONALIZER_API_KEY_MULTI_SLOT));
-            }
+        if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
-        return builder;
+        return setCredential(builder, getTestMode(), isSingleSlot, false);
     }
 
     public PersonalizerClientBuilder getPersonalizerClientBuilder(HttpClient httpClient,
-                                                                  PersonalizerServiceVersion serviceVersion,
-                                                                  boolean isSingleSlot) {
+        PersonalizerServiceVersion serviceVersion, boolean isSingleSlot) {
         PersonalizerClientBuilder builder = new PersonalizerClientBuilder();
         return setBuilderProperties(builder, httpClient, serviceVersion, isSingleSlot);
     }
 
-    protected PersonalizerClient getClient(
-        HttpClient httpClient,
-        PersonalizerServiceVersion serviceVersion,
+    protected PersonalizerClient getClient(HttpClient httpClient, PersonalizerServiceVersion serviceVersion,
         boolean isSingleSlot) {
-        PersonalizerAdministrationClient adminClient = getAdministrationClient(httpClient, serviceVersion, isSingleSlot);
+        PersonalizerAdministrationClient adminClient = getAdministrationClientBuilder(httpClient, serviceVersion,
+            isSingleSlot)
+            .buildClient();
+
         if (!isSingleSlot) {
             enableMultiSlot(adminClient);
         }
@@ -115,28 +82,14 @@ public abstract class PersonalizerTestBase extends TestBase {
             .buildClient();
     }
 
-    protected PersonalizerAdministrationClientBuilder getAdministrationClientBuilder(
-        HttpClient httpClient,
-        PersonalizerServiceVersion serviceVersion,
-        boolean isSingleSlot) {
-        PersonalizerAdministrationClientBuilder builder = new PersonalizerAdministrationClientBuilder();
-        return setBuilderProperties(builder, httpClient, serviceVersion, isSingleSlot);
+    protected PersonalizerAdministrationClientBuilder getAdministrationClientBuilder(HttpClient httpClient,
+        PersonalizerServiceVersion serviceVersion, boolean isSingleSlot) {
+        return setBuilderProperties(httpClient, serviceVersion, isSingleSlot, false);
     }
 
-    protected PersonalizerAdministrationAsyncClient getAdministrationAsyncClient(
-        HttpClient httpClient,
-        PersonalizerServiceVersion serviceVersion,
-        boolean isSingleSlot) {
-        return getAdministrationClientBuilder(httpClient, serviceVersion, isSingleSlot)
-            .buildAsyncClient();
-    }
-
-    protected PersonalizerAdministrationClient getAdministrationClient(
-        HttpClient httpClient,
-        PersonalizerServiceVersion serviceVersion,
-        boolean isSingleSlot) {
-        return getAdministrationClientBuilder(httpClient, serviceVersion, isSingleSlot)
-            .buildClient();
+    protected PersonalizerAdministrationClientBuilder getStaticAdministrationClientBuilder(HttpClient httpClient,
+        PersonalizerServiceVersion serviceVersion) {
+        return setBuilderProperties(httpClient, serviceVersion, true, true); // Static is always single slot
     }
 
     private void enableMultiSlot(PersonalizerAdministrationClient adminClient) {
@@ -146,20 +99,43 @@ public abstract class PersonalizerTestBase extends TestBase {
         }
 
         PersonalizerServiceProperties serviceProperties = adminClient.getServiceProperties();
-        if (!serviceProperties.isAutoOptimizationEnabled()) {
+        if (serviceProperties.isAutoOptimizationEnabled()) {
             serviceProperties.setIsAutoOptimizationEnabled(false);
             adminClient.updateProperties(serviceProperties);
             //sleep 30 seconds to allow settings to propagate
             sleepIfRunningAgainstService(30000);
         }
 
-        adminClient.updatePolicy(new PersonalizerPolicy().setName("multislot").setArguments("--ccb_explore_adf --epsilon 0.2 --power_t 0 -l 0.001 --cb_type mtr -q ::"));
+        adminClient.updatePolicy(new PersonalizerPolicy().setName("multislot")
+            .setArguments("--ccb_explore_adf --epsilon 0.2 --power_t 0 -l 0.001 --cb_type mtr -q ::"));
         //sleep 30 seconds to allow settings to propagate
         sleepIfRunningAgainstService(30000);
     }
 
-    private String getEndpoint(boolean isSingleSlot) {
-        return interceptorManager.isPlaybackMode()
-            ? "https://localhost:8080" : (isSingleSlot ? PERSONALIZER_ENDPOINT_SINGLE_SLOT : PERSONALIZER_ENDPOINT_MULTI_SLOT);
+    private static String getEndpoint(TestMode testMode, boolean isSingleSlot, boolean isStatic) {
+        if (testMode == TestMode.PLAYBACK) {
+            return "https://fakeEndpoint.cognitiveservices.azure.com";
+        } else if (isStatic) {
+            return PERSONALIZER_ENDPOINT_STATIC;
+        } else if (isSingleSlot) {
+            return PERSONALIZER_ENDPOINT_SINGLE_SLOT;
+        } else {
+            return PERSONALIZER_ENDPOINT_MULTI_SLOT;
+        }
+    }
+
+    private static <T extends AzureKeyCredentialTrait<T>> T setCredential(T builder, TestMode testMode,
+        boolean isSingleSlot, boolean isStatic) {
+        if (testMode == TestMode.PLAYBACK) {
+            builder.credential(new AzureKeyCredential(INVALID_KEY));
+        } else if (isStatic) {
+            builder.credential(new AzureKeyCredential(PERSONALIZER_API_KEY_STATIC));
+        } else if (isSingleSlot) {
+            builder.credential(new AzureKeyCredential(PERSONALIZER_API_KEY_SINGLE_SLOT));
+        } else {
+            builder.credential(new AzureKeyCredential(PERSONALIZER_API_KEY_MULTI_SLOT));
+        }
+
+        return builder;
     }
 }

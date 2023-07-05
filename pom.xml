@@ -46,6 +46,7 @@
     <module>sdk/connectedvmware</module>
     <module>sdk/consumption</module>
     <module>sdk/containerregistry</module>
+    <module>sdk/containerservicefleet</module>
     <module>sdk/core</module>
     <module>sdk/cosmos</module>
     <module>sdk/cosmosdbforpostgresql</module>
@@ -110,6 +111,7 @@
     <module>sdk/machinelearningservices</module>
     <module>sdk/maintenance</module>
     <module>sdk/managedapplications</module>
+    <module>sdk/managednetworkfabric</module>
     <module>sdk/managementgroups</module>
     <module>sdk/maps</module>
     <module>sdk/mariadb</module>

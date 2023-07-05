@@ -13,6 +13,8 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
+import com.azure.ai.openai.models.ImageGenerationOptions;
+import com.azure.ai.openai.models.ImageResponse;
 import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import static com.azure.ai.openai.TestUtils.FAKE_API_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -73,10 +76,10 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         } else if (getTestMode() == TestMode.RECORD) {
             builder
                 .addPolicy(interceptorManager.getRecordPolicy())
-                .credential(new NonAzureOpenAIKeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPEN_AI_KEY")));
+                .credential(new NonAzureOpenAIKeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
         } else {
             builder
-                .credential(new NonAzureOpenAIKeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPEN_AI_KEY")));
+                .credential(new NonAzureOpenAIKeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
         }
         return builder;
     }
@@ -122,11 +125,17 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     void getEmbeddingRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
-        testRunner.accept("embedding", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
+        testRunner.accept("text-embedding-ada-002", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
     }
 
     void getEmbeddingNonAzureRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
         testRunner.accept("text-embedding-ada-002", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
+    }
+
+    void getImageGenerationRunner(Consumer<ImageGenerationOptions> testRunner) {
+        testRunner.accept(
+            new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh")
+        );
     }
 
     private List<ChatMessage> getChatMessages() {
@@ -231,5 +240,10 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
             assertTrue(embedding.size() > 0);
         }
         assertNotNull(actual.getUsage());
+    }
+
+    static void assertImageResponse(ImageResponse actual) {
+        assertNotNull(actual.getData());
+        assertFalse(actual.getData().isEmpty());
     }
 }

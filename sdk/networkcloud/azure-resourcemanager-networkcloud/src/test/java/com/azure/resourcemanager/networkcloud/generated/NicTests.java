@@ -13,7 +13,7 @@ public final class NicTests {
         Nic model =
             BinaryData
                 .fromString(
-                    "{\"lldpNeighbor\":{\"portDescription\":\"yxolniwp\",\"portName\":\"ukjfkgiawxklr\",\"systemDescription\":\"lwckbasyypnddhs\",\"systemName\":\"bacphejko\"},\"macAddress\":\"nqgoulzndli\",\"name\":\"yqkgfg\"}")
+                    "{\"lldpNeighbor\":{\"portDescription\":\"tbvpysszdnru\",\"portName\":\"guhmuouqfpr\",\"systemDescription\":\"wbnguitnwui\",\"systemName\":\"a\"},\"macAddress\":\"ufizuckyf\",\"name\":\"rfidfvzwdz\"}")
                 .toObject(Nic.class);
     }
 

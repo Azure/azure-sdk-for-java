@@ -88,6 +88,34 @@ public final class MessagesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Get("/{queueName}/messages")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        ResponseBase<MessagesDequeueHeaders, List<QueueMessageItemInternal>> dequeueSync(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @QueryParam("numofmessages") Integer numberOfMessages,
+                @QueryParam("visibilitytimeout") Integer visibilitytimeout,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/{queueName}/messages")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        Response<List<QueueMessageItemInternal>> dequeueNoCustomHeadersSync(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @QueryParam("numofmessages") Integer numberOfMessages,
+                @QueryParam("visibilitytimeout") Integer visibilitytimeout,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Delete("/{queueName}/messages")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
@@ -104,6 +132,30 @@ public final class MessagesImpl {
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<Response<Void>> clearNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Delete("/{queueName}/messages")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        ResponseBase<MessagesClearHeaders, Void> clearSync(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Delete("/{queueName}/messages")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        Response<Void> clearNoCustomHeadersSync(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("timeout") Integer timeout,
@@ -142,6 +194,36 @@ public final class MessagesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/{queueName}/messages")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        ResponseBase<MessagesEnqueueHeaders, List<SendMessageResult>> enqueueSync(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @QueryParam("visibilitytimeout") Integer visibilitytimeout,
+                @QueryParam("messagettl") Integer messageTimeToLive,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @BodyParam("application/xml") QueueMessage queueMessage,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/{queueName}/messages")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        Response<List<SendMessageResult>> enqueueNoCustomHeadersSync(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @QueryParam("visibilitytimeout") Integer visibilitytimeout,
+                @QueryParam("messagettl") Integer messageTimeToLive,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @BodyParam("application/xml") QueueMessage queueMessage,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("/{queueName}/messages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
@@ -160,6 +242,34 @@ public final class MessagesImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<Response<List<PeekedMessageItemInternal>>> peekNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @QueryParam("peekonly") String peekonly,
+                @QueryParam("numofmessages") Integer numberOfMessages,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/{queueName}/messages")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        ResponseBase<MessagesPeekHeaders, List<PeekedMessageItemInternal>> peekSync(
+                @HostParam("url") String url,
+                @PathParam("queueName") String queueName,
+                @QueryParam("peekonly") String peekonly,
+                @QueryParam("numofmessages") Integer numberOfMessages,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/{queueName}/messages")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        Response<List<PeekedMessageItemInternal>> peekNoCustomHeadersSync(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("peekonly") String peekonly,
@@ -402,6 +512,120 @@ public final class MessagesImpl {
     }
 
     /**
+     * The Dequeue operation retrieves one or more messages from the front of the queue.
+     *
+     * @param queueName The queue name.
+     * @param numberOfMessages Optional. A nonzero integer value that specifies the number of messages to retrieve from
+     *     the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a
+     *     single message is retrieved from the queue with this operation.
+     * @param visibilitytimeout Optional. Specifies the new visibility timeout value, in seconds, relative to server
+     *     time. The default value is 30 seconds. A specified value must be larger than or equal to 1 second, and cannot
+     *     be larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The
+     *     visibility timeout of a message can be set to a value later than the expiry time.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the object returned when calling Get Messages on a Queue along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<MessagesDequeueHeaders, List<QueueMessageItemInternal>> dequeueWithResponse(
+            String queueName,
+            Integer numberOfMessages,
+            Integer visibilitytimeout,
+            Integer timeout,
+            String requestId,
+            Context context) {
+        final String accept = "application/xml";
+        return service.dequeueSync(
+                this.client.getUrl(),
+                queueName,
+                numberOfMessages,
+                visibilitytimeout,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
+    }
+
+    /**
+     * The Dequeue operation retrieves one or more messages from the front of the queue.
+     *
+     * @param queueName The queue name.
+     * @param numberOfMessages Optional. A nonzero integer value that specifies the number of messages to retrieve from
+     *     the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a
+     *     single message is retrieved from the queue with this operation.
+     * @param visibilitytimeout Optional. Specifies the new visibility timeout value, in seconds, relative to server
+     *     time. The default value is 30 seconds. A specified value must be larger than or equal to 1 second, and cannot
+     *     be larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The
+     *     visibility timeout of a message can be set to a value later than the expiry time.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the object returned when calling Get Messages on a Queue.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<QueueMessageItemInternal> dequeue(
+            String queueName, Integer numberOfMessages, Integer visibilitytimeout, Integer timeout, String requestId) {
+        return dequeueWithResponse(queueName, numberOfMessages, visibilitytimeout, timeout, requestId, Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * The Dequeue operation retrieves one or more messages from the front of the queue.
+     *
+     * @param queueName The queue name.
+     * @param numberOfMessages Optional. A nonzero integer value that specifies the number of messages to retrieve from
+     *     the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a
+     *     single message is retrieved from the queue with this operation.
+     * @param visibilitytimeout Optional. Specifies the new visibility timeout value, in seconds, relative to server
+     *     time. The default value is 30 seconds. A specified value must be larger than or equal to 1 second, and cannot
+     *     be larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The
+     *     visibility timeout of a message can be set to a value later than the expiry time.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the object returned when calling Get Messages on a Queue along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<QueueMessageItemInternal>> dequeueNoCustomHeadersWithResponse(
+            String queueName,
+            Integer numberOfMessages,
+            Integer visibilitytimeout,
+            Integer timeout,
+            String requestId,
+            Context context) {
+        final String accept = "application/xml";
+        return service.dequeueNoCustomHeadersSync(
+                this.client.getUrl(),
+                queueName,
+                numberOfMessages,
+                visibilitytimeout,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
+    }
+
+    /**
      * The Clear operation deletes all messages from the specified queue.
      *
      * @param queueName The queue name.
@@ -543,6 +767,70 @@ public final class MessagesImpl {
             String queueName, Integer timeout, String requestId, Context context) {
         final String accept = "application/xml";
         return service.clearNoCustomHeaders(
+                this.client.getUrl(), queueName, timeout, this.client.getVersion(), requestId, accept, context);
+    }
+
+    /**
+     * The Clear operation deletes all messages from the specified queue.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<MessagesClearHeaders, Void> clearWithResponse(
+            String queueName, Integer timeout, String requestId, Context context) {
+        final String accept = "application/xml";
+        return service.clearSync(
+                this.client.getUrl(), queueName, timeout, this.client.getVersion(), requestId, accept, context);
+    }
+
+    /**
+     * The Clear operation deletes all messages from the specified queue.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void clear(String queueName, Integer timeout, String requestId) {
+        clearWithResponse(queueName, timeout, requestId, Context.NONE);
+    }
+
+    /**
+     * The Clear operation deletes all messages from the specified queue.
+     *
+     * @param queueName The queue name.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> clearNoCustomHeadersWithResponse(
+            String queueName, Integer timeout, String requestId, Context context) {
+        final String accept = "application/xml";
+        return service.clearNoCustomHeadersSync(
                 this.client.getUrl(), queueName, timeout, this.client.getVersion(), requestId, accept, context);
     }
 
@@ -837,6 +1125,148 @@ public final class MessagesImpl {
     }
 
     /**
+     * The Enqueue operation adds a new message to the back of the message queue. A visibility timeout can also be
+     * specified to make the message invisible until the visibility timeout expires. A message must be in a format that
+     * can be included in an XML request with UTF-8 encoding. The encoded message can be up to 64 KB in size for
+     * versions 2011-08-18 and newer, or 8 KB in size for previous versions.
+     *
+     * @param queueName The queue name.
+     * @param queueMessage A Message object which can be stored in a Queue.
+     * @param visibilitytimeout Optional. If specified, the request must be made using an x-ms-version of 2011-08-18 or
+     *     later. If not specified, the default value is 0. Specifies the new visibility timeout value, in seconds,
+     *     relative to server time. The new value must be larger than or equal to 0, and cannot be larger than 7 days.
+     *     The visibility timeout of a message cannot be set to a value later than the expiry time. visibilitytimeout
+     *     should be set to a value smaller than the time-to-live value.
+     * @param messageTimeToLive Optional. Specifies the time-to-live interval for the message, in seconds. Prior to
+     *     version 2017-07-29, the maximum time-to-live allowed is 7 days. For version 2017-07-29 or later, the maximum
+     *     time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
+     *     parameter is omitted, the default time-to-live is 7 days.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the object returned when calling Put Message on a Queue along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<MessagesEnqueueHeaders, List<SendMessageResult>> enqueueWithResponse(
+            String queueName,
+            QueueMessage queueMessage,
+            Integer visibilitytimeout,
+            Integer messageTimeToLive,
+            Integer timeout,
+            String requestId,
+            Context context) {
+        final String accept = "application/xml";
+        return service.enqueueSync(
+                this.client.getUrl(),
+                queueName,
+                visibilitytimeout,
+                messageTimeToLive,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                queueMessage,
+                accept,
+                context);
+    }
+
+    /**
+     * The Enqueue operation adds a new message to the back of the message queue. A visibility timeout can also be
+     * specified to make the message invisible until the visibility timeout expires. A message must be in a format that
+     * can be included in an XML request with UTF-8 encoding. The encoded message can be up to 64 KB in size for
+     * versions 2011-08-18 and newer, or 8 KB in size for previous versions.
+     *
+     * @param queueName The queue name.
+     * @param queueMessage A Message object which can be stored in a Queue.
+     * @param visibilitytimeout Optional. If specified, the request must be made using an x-ms-version of 2011-08-18 or
+     *     later. If not specified, the default value is 0. Specifies the new visibility timeout value, in seconds,
+     *     relative to server time. The new value must be larger than or equal to 0, and cannot be larger than 7 days.
+     *     The visibility timeout of a message cannot be set to a value later than the expiry time. visibilitytimeout
+     *     should be set to a value smaller than the time-to-live value.
+     * @param messageTimeToLive Optional. Specifies the time-to-live interval for the message, in seconds. Prior to
+     *     version 2017-07-29, the maximum time-to-live allowed is 7 days. For version 2017-07-29 or later, the maximum
+     *     time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
+     *     parameter is omitted, the default time-to-live is 7 days.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the object returned when calling Put Message on a Queue.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<SendMessageResult> enqueue(
+            String queueName,
+            QueueMessage queueMessage,
+            Integer visibilitytimeout,
+            Integer messageTimeToLive,
+            Integer timeout,
+            String requestId) {
+        return enqueueWithResponse(
+                        queueName, queueMessage, visibilitytimeout, messageTimeToLive, timeout, requestId, Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * The Enqueue operation adds a new message to the back of the message queue. A visibility timeout can also be
+     * specified to make the message invisible until the visibility timeout expires. A message must be in a format that
+     * can be included in an XML request with UTF-8 encoding. The encoded message can be up to 64 KB in size for
+     * versions 2011-08-18 and newer, or 8 KB in size for previous versions.
+     *
+     * @param queueName The queue name.
+     * @param queueMessage A Message object which can be stored in a Queue.
+     * @param visibilitytimeout Optional. If specified, the request must be made using an x-ms-version of 2011-08-18 or
+     *     later. If not specified, the default value is 0. Specifies the new visibility timeout value, in seconds,
+     *     relative to server time. The new value must be larger than or equal to 0, and cannot be larger than 7 days.
+     *     The visibility timeout of a message cannot be set to a value later than the expiry time. visibilitytimeout
+     *     should be set to a value smaller than the time-to-live value.
+     * @param messageTimeToLive Optional. Specifies the time-to-live interval for the message, in seconds. Prior to
+     *     version 2017-07-29, the maximum time-to-live allowed is 7 days. For version 2017-07-29 or later, the maximum
+     *     time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this
+     *     parameter is omitted, the default time-to-live is 7 days.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the object returned when calling Put Message on a Queue along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<SendMessageResult>> enqueueNoCustomHeadersWithResponse(
+            String queueName,
+            QueueMessage queueMessage,
+            Integer visibilitytimeout,
+            Integer messageTimeToLive,
+            Integer timeout,
+            String requestId,
+            Context context) {
+        final String accept = "application/xml";
+        return service.enqueueNoCustomHeadersSync(
+                this.client.getUrl(),
+                queueName,
+                visibilitytimeout,
+                messageTimeToLive,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                queueMessage,
+                accept,
+                context);
+    }
+
+    /**
      * The Peek operation retrieves one or more messages from the front of the queue, but does not alter the visibility
      * of the message.
      *
@@ -1026,6 +1456,102 @@ public final class MessagesImpl {
         final String peekonly = "true";
         final String accept = "application/xml";
         return service.peekNoCustomHeaders(
+                this.client.getUrl(),
+                queueName,
+                peekonly,
+                numberOfMessages,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
+    }
+
+    /**
+     * The Peek operation retrieves one or more messages from the front of the queue, but does not alter the visibility
+     * of the message.
+     *
+     * @param queueName The queue name.
+     * @param numberOfMessages Optional. A nonzero integer value that specifies the number of messages to retrieve from
+     *     the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a
+     *     single message is retrieved from the queue with this operation.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the object returned when calling Peek Messages on a Queue along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<MessagesPeekHeaders, List<PeekedMessageItemInternal>> peekWithResponse(
+            String queueName, Integer numberOfMessages, Integer timeout, String requestId, Context context) {
+        final String peekonly = "true";
+        final String accept = "application/xml";
+        return service.peekSync(
+                this.client.getUrl(),
+                queueName,
+                peekonly,
+                numberOfMessages,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
+    }
+
+    /**
+     * The Peek operation retrieves one or more messages from the front of the queue, but does not alter the visibility
+     * of the message.
+     *
+     * @param queueName The queue name.
+     * @param numberOfMessages Optional. A nonzero integer value that specifies the number of messages to retrieve from
+     *     the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a
+     *     single message is retrieved from the queue with this operation.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the object returned when calling Peek Messages on a Queue.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<PeekedMessageItemInternal> peek(
+            String queueName, Integer numberOfMessages, Integer timeout, String requestId) {
+        return peekWithResponse(queueName, numberOfMessages, timeout, requestId, Context.NONE).getValue();
+    }
+
+    /**
+     * The Peek operation retrieves one or more messages from the front of the queue, but does not alter the visibility
+     * of the message.
+     *
+     * @param queueName The queue name.
+     * @param numberOfMessages Optional. A nonzero integer value that specifies the number of messages to retrieve from
+     *     the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a
+     *     single message is retrieved from the queue with this operation.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the object returned when calling Peek Messages on a Queue along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<PeekedMessageItemInternal>> peekNoCustomHeadersWithResponse(
+            String queueName, Integer numberOfMessages, Integer timeout, String requestId, Context context) {
+        final String peekonly = "true";
+        final String accept = "application/xml";
+        return service.peekNoCustomHeadersSync(
                 this.client.getUrl(),
                 queueName,
                 peekonly,

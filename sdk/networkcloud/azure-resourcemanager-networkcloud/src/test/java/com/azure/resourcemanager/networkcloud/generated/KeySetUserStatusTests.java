@@ -12,8 +12,7 @@ public final class KeySetUserStatusTests {
     public void testDeserialize() throws Exception {
         KeySetUserStatus model =
             BinaryData
-                .fromString(
-                    "{\"azureUserName\":\"ttzhra\",\"status\":\"Active\",\"statusMessage\":\"fhonqjujeickpzvc\"}")
+                .fromString("{\"azureUserName\":\"zslzojhp\",\"status\":\"Active\",\"statusMessage\":\"mdxotngfdgu\"}")
                 .toObject(KeySetUserStatus.class);
     }
 
