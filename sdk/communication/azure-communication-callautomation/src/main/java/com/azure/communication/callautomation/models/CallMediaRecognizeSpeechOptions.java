@@ -17,6 +17,12 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
     @JsonProperty(value = "endSilenceTimeoutInMs")
     private Duration endSilenceTimeoutInMs;
 
+    /*
+     * Endpoint where the custom model was deployed.
+     */
+    @JsonProperty(value = "speechRecognitionModelEndpointId")
+    private String speechRecognitionModelEndpointId;
+
     /**
      * Get the endSilenceTimeoutInMs property: The length of end silence when user stops speaking and cogservice send
      * response.
@@ -111,6 +117,26 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
     @Override
     public CallMediaRecognizeSpeechOptions setInitialSilenceTimeout(Duration initialSilenceTimeout) {
         super.setInitialSilenceTimeout(initialSilenceTimeout);
+        return this;
+    }
+
+    /**
+     * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     *
+     * @return the speechRecognitionModelEndpointId value.
+     */
+    public String getSpeechRecognitionModelEndpointId() {
+        return this.speechRecognitionModelEndpointId;
+    }
+
+    /**
+     * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     *
+     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
+     * @return the CallMediaRecognizeSpeechOptions object itself.
+     */
+    public CallMediaRecognizeSpeechOptions setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
+        this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
         return this;
     }
 

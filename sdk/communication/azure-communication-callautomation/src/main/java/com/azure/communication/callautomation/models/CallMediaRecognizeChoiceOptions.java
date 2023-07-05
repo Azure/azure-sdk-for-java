@@ -22,6 +22,12 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      */
     private String speechLanguage;
 
+    /*
+     * Endpoint where the custom model was deployed.
+     */
+    @JsonProperty(value = "speechRecognitionModelEndpointId")
+    private String speechRecognitionModelEndpointId;
+
     /**
      * Get the list of recognize choice.
      *
@@ -48,6 +54,26 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      */
     public String getSpeechLanguage() {
         return this.speechLanguage;
+    }
+
+    /**
+     * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     *
+     * @return the speechRecognitionModelEndpointId value.
+     */
+    public String getSpeechRecognitionModelEndpointId() {
+        return this.speechRecognitionModelEndpointId;
+    }
+
+    /**
+     * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     *
+     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
+     * @return the CallMediaRecognizeChoiceOptions object itself.
+     */
+    public CallMediaRecognizeChoiceOptions setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
+        this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
+        return this;
     }
 
     /**

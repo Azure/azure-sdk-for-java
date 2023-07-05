@@ -408,6 +408,11 @@ public final class CallMediaAsync {
                 recognizeOptionsInternal.setSpeechLanguage(choiceRecognizeOptions.getSpeechLanguage());
             }
         }
+        if (choiceRecognizeOptions.getSpeechRecognitionModelEndpointId() != null) {
+            if (!choiceRecognizeOptions.getSpeechRecognitionModelEndpointId().isEmpty()) {
+                recognizeOptionsInternal.setSpeechRecognitionModelEndpointId(choiceRecognizeOptions.getSpeechRecognitionModelEndpointId());
+            }
+        }
 
         PlaySourceInternal playSourceInternal = getPlaySourceInternalFromRecognizeOptions(recognizeOptions);
 
@@ -430,6 +435,12 @@ public final class CallMediaAsync {
             .setTargetParticipant(CommunicationIdentifierConverter.convert(speechRecognizeOptions.getTargetParticipant()));
 
         recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) speechRecognizeOptions.getInitialSilenceTimeout().getSeconds());
+
+        if (speechRecognizeOptions.getSpeechRecognitionModelEndpointId() != null) {
+            if (!speechRecognizeOptions.getSpeechRecognitionModelEndpointId().isEmpty()) {
+                recognizeOptionsInternal.setSpeechRecognitionModelEndpointId(speechRecognizeOptions.getSpeechRecognitionModelEndpointId());
+            }
+        }
 
         PlaySourceInternal playSourceInternal = getPlaySourceInternalFromRecognizeOptions(recognizeOptions);
 
@@ -459,6 +470,12 @@ public final class CallMediaAsync {
             .setTargetParticipant(CommunicationIdentifierConverter.convert(speechOrDtmfRecognizeOptions.getTargetParticipant()));
 
         recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) speechOrDtmfRecognizeOptions.getInitialSilenceTimeout().getSeconds());
+
+        if (speechOrDtmfRecognizeOptions.getSpeechRecognitionModelEndpointId() != null) {
+            if (!speechOrDtmfRecognizeOptions.getSpeechRecognitionModelEndpointId().isEmpty()) {
+                recognizeOptionsInternal.setSpeechRecognitionModelEndpointId(speechOrDtmfRecognizeOptions.getSpeechRecognitionModelEndpointId());
+            }
+        }
 
         PlaySourceInternal playSourceInternal = getPlaySourceInternalFromRecognizeOptions(recognizeOptions);
 

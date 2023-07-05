@@ -19,6 +19,12 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
     private Duration endSilenceTimeoutInMs;
 
     /*
+     * Endpoint where the custom model was deployed.
+     */
+    @JsonProperty(value = "speechRecognitionModelEndpointId")
+    private String speechRecognitionModelEndpointId;
+
+    /*
      * Time to wait between DTMF inputs to stop recognizing.
      */
     @JsonProperty(value = "interToneTimeout")
@@ -94,6 +100,26 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
      */
     public Duration getEndSilenceTimeoutInMs() {
         return this.endSilenceTimeoutInMs;
+    }
+
+    /**
+     * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     *
+     * @return the speechRecognitionModelEndpointId value.
+     */
+    public String getSpeechRecognitionModelEndpointId() {
+        return this.speechRecognitionModelEndpointId;
+    }
+
+    /**
+     * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     *
+     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
+     * @return the CallMediaRecognizeSpeechOrDtmfOptions object itself.
+     */
+    public CallMediaRecognizeSpeechOrDtmfOptions setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
+        this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
+        return this;
     }
 
     /**
