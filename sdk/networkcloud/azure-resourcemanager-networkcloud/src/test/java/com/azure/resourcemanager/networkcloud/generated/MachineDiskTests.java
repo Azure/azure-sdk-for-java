@@ -12,7 +12,7 @@ public final class MachineDiskTests {
     public void testDeserialize() throws Exception {
         MachineDisk model =
             BinaryData
-                .fromString("{\"capacityGB\":1231282047241300712,\"connection\":\"PCIE\",\"type\":\"SSD\"}")
+                .fromString("{\"capacityGB\":6769661922262324698,\"connection\":\"SATA\",\"type\":\"SSD\"}")
                 .toObject(MachineDisk.class);
     }
 

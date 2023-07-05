@@ -19,35 +19,34 @@ public final class BareMetalMachineKeySetPatchParametersTests {
         BareMetalMachineKeySetPatchParameters model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"expiration\":\"2021-03-03T12:09:55Z\",\"jumpHostsAllowed\":[\"lnwcltyjed\",\"xxmlfmkqscazua\"],\"userList\":[{\"azureUserName\":\"z\",\"description\":\"uamwabzxrvxc\"},{\"azureUserName\":\"s\",\"description\":\"phai\"},{\"azureUserName\":\"mxyasflvgsgzw\",\"description\":\"akoi\"},{\"azureUserName\":\"knsmjblmljhlnymz\",\"description\":\"qyryuzcbmqqvxm\"}]},\"tags\":{\"nh\":\"gtayxonsupeujlz\",\"xfyqonmpqoxwdo\":\"vsqltnzoibgsxg\",\"iiqbi\":\"dbxiqx\"}}")
+                    "{\"properties\":{\"expiration\":\"2021-09-04T06:40:24Z\",\"jumpHostsAllowed\":[\"grkyuizabsnmfpph\",\"jee\"],\"userList\":[{\"azureUserName\":\"yhsgz\",\"description\":\"zbgomfgbeg\"},{\"azureUserName\":\"qgleohibetnluank\",\"description\":\"fxeeebtijvacvbm\"},{\"azureUserName\":\"z\",\"description\":\"q\"}]},\"tags\":{\"h\":\"jrnwxacev\"}}")
                 .toObject(BareMetalMachineKeySetPatchParameters.class);
-        Assertions.assertEquals("gtayxonsupeujlz", model.tags().get("nh"));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-03T12:09:55Z"), model.expiration());
-        Assertions.assertEquals("lnwcltyjed", model.jumpHostsAllowed().get(0));
-        Assertions.assertEquals("z", model.userList().get(0).azureUsername());
-        Assertions.assertEquals("uamwabzxrvxc", model.userList().get(0).description());
+        Assertions.assertEquals("jrnwxacev", model.tags().get("h"));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-04T06:40:24Z"), model.expiration());
+        Assertions.assertEquals("grkyuizabsnmfpph", model.jumpHostsAllowed().get(0));
+        Assertions.assertEquals("yhsgz", model.userList().get(0).azureUsername());
+        Assertions.assertEquals("zbgomfgbeg", model.userList().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BareMetalMachineKeySetPatchParameters model =
             new BareMetalMachineKeySetPatchParameters()
-                .withTags(mapOf("nh", "gtayxonsupeujlz", "xfyqonmpqoxwdo", "vsqltnzoibgsxg", "iiqbi", "dbxiqx"))
-                .withExpiration(OffsetDateTime.parse("2021-03-03T12:09:55Z"))
-                .withJumpHostsAllowed(Arrays.asList("lnwcltyjed", "xxmlfmkqscazua"))
+                .withTags(mapOf("h", "jrnwxacev"))
+                .withExpiration(OffsetDateTime.parse("2021-09-04T06:40:24Z"))
+                .withJumpHostsAllowed(Arrays.asList("grkyuizabsnmfpph", "jee"))
                 .withUserList(
                     Arrays
                         .asList(
-                            new KeySetUser().withAzureUsername("z").withDescription("uamwabzxrvxc"),
-                            new KeySetUser().withAzureUsername("s").withDescription("phai"),
-                            new KeySetUser().withAzureUsername("mxyasflvgsgzw").withDescription("akoi"),
-                            new KeySetUser().withAzureUsername("knsmjblmljhlnymz").withDescription("qyryuzcbmqqvxm")));
+                            new KeySetUser().withAzureUsername("yhsgz").withDescription("zbgomfgbeg"),
+                            new KeySetUser().withAzureUsername("qgleohibetnluank").withDescription("fxeeebtijvacvbm"),
+                            new KeySetUser().withAzureUsername("z").withDescription("q")));
         model = BinaryData.fromObject(model).toObject(BareMetalMachineKeySetPatchParameters.class);
-        Assertions.assertEquals("gtayxonsupeujlz", model.tags().get("nh"));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-03T12:09:55Z"), model.expiration());
-        Assertions.assertEquals("lnwcltyjed", model.jumpHostsAllowed().get(0));
-        Assertions.assertEquals("z", model.userList().get(0).azureUsername());
-        Assertions.assertEquals("uamwabzxrvxc", model.userList().get(0).description());
+        Assertions.assertEquals("jrnwxacev", model.tags().get("h"));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-04T06:40:24Z"), model.expiration());
+        Assertions.assertEquals("grkyuizabsnmfpph", model.jumpHostsAllowed().get(0));
+        Assertions.assertEquals("yhsgz", model.userList().get(0).azureUsername());
+        Assertions.assertEquals("zbgomfgbeg", model.userList().get(0).description());
     }
 
     @SuppressWarnings("unchecked")

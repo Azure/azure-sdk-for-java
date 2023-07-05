@@ -17,25 +17,25 @@ import com.azure.resourcemanager.networkcloud.models.BareMetalMachineKeySetPatch
 /** An instance of this class provides access to all the operations defined in BareMetalMachineKeySetsClient. */
 public interface BareMetalMachineKeySetsClient {
     /**
-     * List bare metal machine key sets of the cluster in the resource group.
+     * List bare metal machine key sets of the cluster.
      *
-     * <p>Get a list of bare metal machine key sets of the cluster in the provided resource group.
+     * <p>Get a list of bare metal machine key sets for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machine key sets of the cluster in the provided resource group as paginated response
-     *     with {@link PagedIterable}.
+     * @return a list of bare metal machine key sets for the provided cluster as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BareMetalMachineKeySetInner> listByResourceGroup(String resourceGroupName, String clusterName);
+    PagedIterable<BareMetalMachineKeySetInner> listByCluster(String resourceGroupName, String clusterName);
 
     /**
-     * List bare metal machine key sets of the cluster in the resource group.
+     * List bare metal machine key sets of the cluster.
      *
-     * <p>Get a list of bare metal machine key sets of the cluster in the provided resource group.
+     * <p>Get a list of bare metal machine key sets for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
@@ -43,11 +43,11 @@ public interface BareMetalMachineKeySetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machine key sets of the cluster in the provided resource group as paginated response
-     *     with {@link PagedIterable}.
+     * @return a list of bare metal machine key sets for the provided cluster as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BareMetalMachineKeySetInner> listByResourceGroup(
+    PagedIterable<BareMetalMachineKeySetInner> listByCluster(
         String resourceGroupName, String clusterName, Context context);
 
     /**

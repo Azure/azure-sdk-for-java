@@ -24,6 +24,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.networkcloud.fluent.NetworkCloud;
+import com.azure.resourcemanager.networkcloud.implementation.AgentPoolsImpl;
 import com.azure.resourcemanager.networkcloud.implementation.BareMetalMachineKeySetsImpl;
 import com.azure.resourcemanager.networkcloud.implementation.BareMetalMachinesImpl;
 import com.azure.resourcemanager.networkcloud.implementation.BmcKeySetsImpl;
@@ -31,8 +32,7 @@ import com.azure.resourcemanager.networkcloud.implementation.CloudServicesNetwor
 import com.azure.resourcemanager.networkcloud.implementation.ClusterManagersImpl;
 import com.azure.resourcemanager.networkcloud.implementation.ClustersImpl;
 import com.azure.resourcemanager.networkcloud.implementation.ConsolesImpl;
-import com.azure.resourcemanager.networkcloud.implementation.DefaultCniNetworksImpl;
-import com.azure.resourcemanager.networkcloud.implementation.HybridAksClustersImpl;
+import com.azure.resourcemanager.networkcloud.implementation.KubernetesClustersImpl;
 import com.azure.resourcemanager.networkcloud.implementation.L2NetworksImpl;
 import com.azure.resourcemanager.networkcloud.implementation.L3NetworksImpl;
 import com.azure.resourcemanager.networkcloud.implementation.MetricsConfigurationsImpl;
@@ -44,6 +44,7 @@ import com.azure.resourcemanager.networkcloud.implementation.StorageAppliancesIm
 import com.azure.resourcemanager.networkcloud.implementation.TrunkedNetworksImpl;
 import com.azure.resourcemanager.networkcloud.implementation.VirtualMachinesImpl;
 import com.azure.resourcemanager.networkcloud.implementation.VolumesImpl;
+import com.azure.resourcemanager.networkcloud.models.AgentPools;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineKeySets;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachines;
 import com.azure.resourcemanager.networkcloud.models.BmcKeySets;
@@ -51,8 +52,7 @@ import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworks;
 import com.azure.resourcemanager.networkcloud.models.ClusterManagers;
 import com.azure.resourcemanager.networkcloud.models.Clusters;
 import com.azure.resourcemanager.networkcloud.models.Consoles;
-import com.azure.resourcemanager.networkcloud.models.DefaultCniNetworks;
-import com.azure.resourcemanager.networkcloud.models.HybridAksClusters;
+import com.azure.resourcemanager.networkcloud.models.KubernetesClusters;
 import com.azure.resourcemanager.networkcloud.models.L2Networks;
 import com.azure.resourcemanager.networkcloud.models.L3Networks;
 import com.azure.resourcemanager.networkcloud.models.MetricsConfigurations;
@@ -85,9 +85,7 @@ public final class NetworkCloudManager {
 
     private Clusters clusters;
 
-    private DefaultCniNetworks defaultCniNetworks;
-
-    private HybridAksClusters hybridAksClusters;
+    private KubernetesClusters kubernetesClusters;
 
     private L2Networks l2Networks;
 
@@ -110,6 +108,8 @@ public final class NetworkCloudManager {
     private BmcKeySets bmcKeySets;
 
     private MetricsConfigurations metricsConfigurations;
+
+    private AgentPools agentPools;
 
     private Consoles consoles;
 
@@ -278,7 +278,7 @@ public final class NetworkCloudManager {
                 .append("-")
                 .append("com.azure.resourcemanager.networkcloud")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -396,27 +396,15 @@ public final class NetworkCloudManager {
     }
 
     /**
-     * Gets the resource collection API of DefaultCniNetworks. It manages DefaultCniNetwork.
+     * Gets the resource collection API of KubernetesClusters. It manages KubernetesCluster.
      *
-     * @return Resource collection API of DefaultCniNetworks.
+     * @return Resource collection API of KubernetesClusters.
      */
-    public DefaultCniNetworks defaultCniNetworks() {
-        if (this.defaultCniNetworks == null) {
-            this.defaultCniNetworks = new DefaultCniNetworksImpl(clientObject.getDefaultCniNetworks(), this);
+    public KubernetesClusters kubernetesClusters() {
+        if (this.kubernetesClusters == null) {
+            this.kubernetesClusters = new KubernetesClustersImpl(clientObject.getKubernetesClusters(), this);
         }
-        return defaultCniNetworks;
-    }
-
-    /**
-     * Gets the resource collection API of HybridAksClusters. It manages HybridAksCluster.
-     *
-     * @return Resource collection API of HybridAksClusters.
-     */
-    public HybridAksClusters hybridAksClusters() {
-        if (this.hybridAksClusters == null) {
-            this.hybridAksClusters = new HybridAksClustersImpl(clientObject.getHybridAksClusters(), this);
-        }
-        return hybridAksClusters;
+        return kubernetesClusters;
     }
 
     /**
@@ -550,6 +538,18 @@ public final class NetworkCloudManager {
             this.metricsConfigurations = new MetricsConfigurationsImpl(clientObject.getMetricsConfigurations(), this);
         }
         return metricsConfigurations;
+    }
+
+    /**
+     * Gets the resource collection API of AgentPools. It manages AgentPool.
+     *
+     * @return Resource collection API of AgentPools.
+     */
+    public AgentPools agentPools() {
+        if (this.agentPools == null) {
+            this.agentPools = new AgentPoolsImpl(clientObject.getAgentPools(), this);
+        }
+        return agentPools;
     }
 
     /**

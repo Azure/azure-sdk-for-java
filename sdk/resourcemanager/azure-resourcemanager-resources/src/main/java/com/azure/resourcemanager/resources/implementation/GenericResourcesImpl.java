@@ -106,7 +106,7 @@ public final class GenericResourcesImpl
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Parameter 'apiVersion' is required and cannot be null."));
         }
-        return this.inner().checkExistenceById(id, apiVersion);
+        return this.inner().checkExistenceById(ResourceUtils.encodeResourceId(id), apiVersion);
     }
 
     @Override
@@ -116,7 +116,7 @@ public final class GenericResourcesImpl
                 new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
         }
         return this.getApiVersionFromIdAsync(id)
-            .flatMap(apiVersion -> this.getByIdAsync(id, apiVersion));
+            .flatMap(apiVersion -> this.getByIdAsync(ResourceUtils.encodeResourceId(id), apiVersion));
     }
 
     @Override
@@ -134,7 +134,7 @@ public final class GenericResourcesImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter 'apiVersion' is required and cannot be null."));
         }
-        return this.inner().getByIdAsync(id, apiVersion)
+        return this.inner().getByIdAsync(ResourceUtils.encodeResourceId(id), apiVersion)
             .map(this::wrapModel)
             .map(r -> r.withApiVersion(apiVersion));
     }
@@ -146,7 +146,7 @@ public final class GenericResourcesImpl
                 new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
         }
         return getApiVersionFromIdAsync(id)
-            .flatMap(apiVersion -> this.deleteByIdAsync(id, apiVersion));
+            .flatMap(apiVersion -> this.deleteByIdAsync(ResourceUtils.encodeResourceId(id), apiVersion));
     }
 
     @Override
@@ -164,7 +164,7 @@ public final class GenericResourcesImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter 'apiVersion' is required and cannot be null."));
         }
-        return this.inner().deleteByIdAsync(id, apiVersion);
+        return this.inner().deleteByIdAsync(ResourceUtils.encodeResourceId(id), apiVersion);
     }
 
     @Override

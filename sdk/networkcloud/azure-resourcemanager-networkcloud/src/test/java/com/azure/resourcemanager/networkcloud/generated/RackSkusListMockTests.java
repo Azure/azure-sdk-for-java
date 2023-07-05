@@ -31,7 +31,7 @@ public final class RackSkusListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"computeMachines\":[],\"controllerMachines\":[],\"description\":\"tfy\",\"maxClusterSlots\":5871256241010959059,\"provisioningState\":\"Succeeded\",\"rackType\":\"Compute\",\"storageAppliances\":[],\"supportedRackSkuIds\":[\"gjiiytssiki\",\"bcufqbvntn\",\"gmqsorhcekxg\",\"lykmxcpwzvmdo\"]},\"id\":\"qdtiwlwxlb\",\"name\":\"ncq\",\"type\":\"azqicqchygtv\"}]}";
+            "{\"value\":[{\"properties\":{\"computeMachines\":[],\"controllerMachines\":[],\"description\":\"iyop\",\"maxClusterSlots\":3190184205890149822,\"provisioningState\":\"Succeeded\",\"rackType\":\"Aggregator\",\"storageAppliances\":[],\"supportedRackSkuIds\":[\"ucae\",\"hblkwqpatvbq\",\"dtcjbctv\",\"vuzqymt\"]},\"id\":\"wogtgitsq\",\"name\":\"zvbrzcdbanfzndsc\",\"type\":\"mxeatkdbmwnrdjy\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());

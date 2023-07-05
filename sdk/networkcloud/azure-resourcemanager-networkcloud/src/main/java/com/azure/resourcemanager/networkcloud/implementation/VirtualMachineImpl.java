@@ -71,6 +71,10 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         return this.innerModel().adminUsername();
     }
 
+    public String availabilityZone() {
+        return this.innerModel().availabilityZone();
+    }
+
     public String bareMetalMachineId() {
         return this.innerModel().bareMetalMachineId();
     }

@@ -4,13 +4,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Error info. */
-@Fluent
+@Immutable
 public final class Error {
     /*
      * Error code.
@@ -49,7 +49,7 @@ public final class Error {
      * @param message the message value to set.
      */
     @JsonCreator
-    public Error(
+    private Error(
             @JsonProperty(value = "code", required = true) String code,
             @JsonProperty(value = "message", required = true) String message) {
         this.code = code;
@@ -84,17 +84,6 @@ public final class Error {
     }
 
     /**
-     * Set the target property: Target of the error.
-     *
-     * @param target the target value to set.
-     * @return the Error object itself.
-     */
-    public Error setTarget(String target) {
-        this.target = target;
-        return this;
-    }
-
-    /**
      * Get the details property: List of detailed errors.
      *
      * @return the details value.
@@ -104,33 +93,11 @@ public final class Error {
     }
 
     /**
-     * Set the details property: List of detailed errors.
-     *
-     * @param details the details value to set.
-     * @return the Error object itself.
-     */
-    public Error setDetails(List<Error> details) {
-        this.details = details;
-        return this;
-    }
-
-    /**
      * Get the innererror property: Detailed error.
      *
      * @return the innererror value.
      */
     public InnerError getInnererror() {
         return this.innererror;
-    }
-
-    /**
-     * Set the innererror property: Detailed error.
-     *
-     * @param innererror the innererror value to set.
-     * @return the Error object itself.
-     */
-    public Error setInnererror(InnerError innererror) {
-        this.innererror = innererror;
-        return this;
     }
 }
