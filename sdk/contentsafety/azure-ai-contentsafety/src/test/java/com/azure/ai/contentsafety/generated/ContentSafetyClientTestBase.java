@@ -9,11 +9,11 @@ import com.azure.ai.contentsafety.ContentSafetyClientBuilder;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 
-class ContentSafetyClientTestBase extends TestBase {
+class ContentSafetyClientTestBase extends TestProxyTestBase {
     protected ContentSafetyClient contentSafetyClient;
 
     @Override
