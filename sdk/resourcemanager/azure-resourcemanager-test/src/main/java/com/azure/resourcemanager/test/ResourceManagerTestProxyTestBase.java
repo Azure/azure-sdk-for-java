@@ -325,6 +325,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version"))));
             // sanitize subscription id
             interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("(?<=/subscriptions/)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL)));
+            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("(?<=%2Fsubscriptions%2F)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL)));
         }
         initializeClients(httpPipeline, testProfile);
     }
