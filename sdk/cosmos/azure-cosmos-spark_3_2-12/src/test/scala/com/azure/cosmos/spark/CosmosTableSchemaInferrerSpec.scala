@@ -172,6 +172,89 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
     schema.fields(0).nullable shouldBe false
   }
 
+  "nested array properties" should "handle different schema elements" in {
+    val canRun = Platform.canRunTestAccessingDirectByteBuffer
+    assume(canRun._1, canRun._2)
+
+    val jsonText = "{ \"Actions\": " +
+      "[{ \"Condition\": [] }," +
+      "{ \"Condition\": [{ \"BodyPath\": \"{{ step1.StatusCode }}\"," +
+      "\"Value\": \"400\" }] }," +
+      "{ \"Condition\": [{ \"BodyPath\": \"{{ step1.StatusCode }}\"," +
+      "\"Operation\": 2," +
+      "\"Value\": \"400\" }] }]}"
+
+    val objectNode = objectMapper.readTree(jsonText).asInstanceOf[ObjectNode]
+
+    val docs = List[ObjectNode](objectNode)
+
+    val schema = CosmosTableSchemaInferrer.inferSchema(
+      docs, includeSystemProperties = true, includeTimestamp = true, allowNullForInferredProperties = false)
+    schema.fields should have size 1
+    schema.fields(0).dataType shouldBe ArrayType(StructType(Seq(
+      StructField("Condition", ArrayType(StructType(Seq(
+        StructField("BodyPath", StringType),
+        StructField("Operation", IntegerType),
+        StructField("Value", StringType)
+      ))))
+    )))
+    schema.fields(0).nullable shouldBe false
+  }
+
+  "nested objectNode properties" should "be detected" in {
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colVal1 = "testVal1"
+    val colVal2 = "testVal2"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val nestedObjectNode: ObjectNode = objectNode.putObject(colName1)
+    nestedObjectNode.put(colName1, colVal1)
+    objectNode.put(colName2, colVal2)
+    val docs = List[ObjectNode](objectNode)
+
+    val schema = CosmosTableSchemaInferrer.inferSchema(
+      docs, includeSystemProperties = true, includeTimestamp = true, allowNullForInferredProperties = false)
+    schema.fields should have size 2
+    schema.fields(0).dataType.asInstanceOf[StructType].fields should have size 1
+    schema.fields(0).dataType.asInstanceOf[StructType].fields(0).dataType shouldBe StringType
+    schema.fields(1).dataType shouldBe StringType
+    schema.fields(0).nullable shouldBe false
+    schema.fields(1).nullable shouldBe false
+  }
+
+  it should "map duplicate properties with different types to StringType" in {
+    val idVal1 = 20
+    val idVal2 = true
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put("id", idVal1)
+    val objectNode2: ObjectNode = objectMapper.createObjectNode()
+    objectNode2.put("id", idVal2)
+    val docs = List[ObjectNode](objectNode, objectNode2)
+
+    val schema = CosmosTableSchemaInferrer.inferSchema(
+      docs, includeSystemProperties = true, includeTimestamp = true, allowNullForInferredProperties = false)
+    schema.fields should have size 1
+    schema.fields(0).dataType shouldBe StringType
+    schema.fields(0).nullable shouldBe false
+  }
+
+  it should "map duplicate properties with same type to original type" in {
+    val idVal1 = 20
+    val idVal2 = 30
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put("id", idVal1)
+    val objectNode2: ObjectNode = objectMapper.createObjectNode()
+    objectNode2.put("id", idVal2)
+    val docs = List[ObjectNode](objectNode, objectNode2)
+
+    val schema = CosmosTableSchemaInferrer.inferSchema(
+      docs, includeSystemProperties = true, includeTimestamp = true, allowNullForInferredProperties = false)
+    schema.fields should have size 1
+    schema.fields(0).dataType shouldBe IntegerType
+    schema.fields(0).nullable shouldBe false
+  }
+
   it should "map duplicate properties when one is nullable" in {
     val idVal1 = 20
     val objectNode: ObjectNode = objectMapper.createObjectNode()
