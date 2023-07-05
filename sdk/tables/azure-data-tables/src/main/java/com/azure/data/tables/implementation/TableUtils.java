@@ -600,7 +600,7 @@ public final class TableUtils {
     public static String[] getKeysFromToken(String token) {
         String[] split = token.split(DELIMITER_CONTINUATION_TOKEN, 2);
         String[] keys = new String[2];
-        if (split.length == 0){
+        if (split.length == 0) {
             throw new RuntimeException("Split done incorrectly, must have partition key. Token: " + token);
         } else if (split.length == 2) {
             keys[0] = split[0];
