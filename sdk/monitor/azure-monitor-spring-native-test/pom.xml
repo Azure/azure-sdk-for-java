@@ -26,7 +26,7 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>3.1.0</version> <!-- {x-version-update;org.springframework.boot:spring-boot-dependencies;external_dependency} -->
+        <version>2.7.13</version> <!-- {x-version-update;org.springframework.boot:spring-boot-dependencies;external_dependency} -->
         <type>pom</type>
         <scope>import</scope>
       </dependency>
