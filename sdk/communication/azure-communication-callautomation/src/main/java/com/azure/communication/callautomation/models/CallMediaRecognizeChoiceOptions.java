@@ -5,6 +5,7 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Duration;
 import java.util.List;
@@ -20,6 +21,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     /*
      * Speech language to be recognized, If not set default is en-US
      */
+    @JsonProperty(value = "speechLanguage")
     private String speechLanguage;
 
     /*
@@ -48,7 +50,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     }
 
     /**
-     * Get the list of recognize choice.
+     * Get the speech language property.
      *
      * @return the speech language.
      */

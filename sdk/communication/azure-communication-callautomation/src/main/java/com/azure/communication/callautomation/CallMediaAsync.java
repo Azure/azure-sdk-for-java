@@ -436,6 +436,11 @@ public final class CallMediaAsync {
 
         recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) speechRecognizeOptions.getInitialSilenceTimeout().getSeconds());
 
+        if (speechRecognizeOptions.getSpeechLanguage() != null) {
+            if (!speechRecognizeOptions.getSpeechLanguage().isEmpty()) {
+                recognizeOptionsInternal.setSpeechLanguage(speechRecognizeOptions.getSpeechLanguage());
+            }
+        }
         if (speechRecognizeOptions.getSpeechRecognitionModelEndpointId() != null) {
             if (!speechRecognizeOptions.getSpeechRecognitionModelEndpointId().isEmpty()) {
                 recognizeOptionsInternal.setSpeechRecognitionModelEndpointId(speechRecognizeOptions.getSpeechRecognitionModelEndpointId());
@@ -471,6 +476,11 @@ public final class CallMediaAsync {
 
         recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) speechOrDtmfRecognizeOptions.getInitialSilenceTimeout().getSeconds());
 
+        if (speechOrDtmfRecognizeOptions.getSpeechLanguage() != null) {
+            if (!speechOrDtmfRecognizeOptions.getSpeechLanguage().isEmpty()) {
+                recognizeOptionsInternal.setSpeechLanguage(speechOrDtmfRecognizeOptions.getSpeechLanguage());
+            }
+        }
         if (speechOrDtmfRecognizeOptions.getSpeechRecognitionModelEndpointId() != null) {
             if (!speechOrDtmfRecognizeOptions.getSpeechRecognitionModelEndpointId().isEmpty()) {
                 recognizeOptionsInternal.setSpeechRecognitionModelEndpointId(speechOrDtmfRecognizeOptions.getSpeechRecognitionModelEndpointId());

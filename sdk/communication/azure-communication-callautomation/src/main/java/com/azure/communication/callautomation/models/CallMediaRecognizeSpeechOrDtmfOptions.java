@@ -19,6 +19,12 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
     private Duration endSilenceTimeoutInMs;
 
     /*
+     * Speech language to be recognized, If not set default is en-US
+     */
+    @JsonProperty(value = "speechLanguage")
+    private String speechLanguage;
+
+    /*
      * Endpoint where the custom model was deployed.
      */
     @JsonProperty(value = "speechRecognitionModelEndpointId")
@@ -100,6 +106,25 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
      */
     public Duration getEndSilenceTimeoutInMs() {
         return this.endSilenceTimeoutInMs;
+    }
+
+    /**
+     * Set the speech language property.
+     * @param speechLanguage the interToneTimeout value to set.
+     * @return the CallMediaRecognizeSpeechOrDtmfOptions object itself.
+     */
+    public CallMediaRecognizeSpeechOrDtmfOptions setSpeechLanguage(String speechLanguage) {
+        this.speechLanguage = speechLanguage;
+        return this;
+    }
+
+    /**
+     * Get the speech language property.
+     *
+     * @return the speech language.
+     */
+    public String getSpeechLanguage() {
+        return this.speechLanguage;
     }
 
     /**
