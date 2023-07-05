@@ -19,22 +19,22 @@ public final class BareMetalMachineListTests {
         BareMetalMachineList model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"a\",\"value\":[{\"extendedLocation\":{\"name\":\"hxqh\",\"type\":\"bifpikxwczb\"},\"properties\":{\"bmcConnectionString\":\"scnpqxuhivy\",\"bmcMacAddress\":\"n\",\"bootMacAddress\":\"wby\",\"clusterId\":\"k\",\"cordonStatus\":\"Uncordoned\",\"detailedStatus\":\"Provisioned\",\"detailedStatusMessage\":\"grtfwvu\",\"hybridAksClustersAssociatedIds\":[],\"kubernetesNodeName\":\"dcc\",\"kubernetesVersion\":\"h\",\"machineDetails\":\"jcny\",\"machineName\":\"j\",\"machineSkuId\":\"kryhtnapczwlokj\",\"oamIpv4Address\":\"mkkvnip\",\"oamIpv6Address\":\"xzjnchgejs\",\"osImage\":\"dmailzydehojw\",\"powerState\":\"Off\",\"provisioningState\":\"Failed\",\"rackId\":\"inpm\",\"rackSlot\":3546974038977071607,\"readyState\":\"False\",\"serialNumber\":\"wixjsprozvcp\",\"serviceTag\":\"eg\",\"virtualMachinesAssociatedIds\":[]},\"location\":\"mfdatscmdvpj\",\"tags\":{\"kjozkrwfnd\":\"suuv\",\"vwryoqpso\":\"odjpslwejd\",\"yffdfdos\":\"cctazakljlahbc\",\"hcrzevd\":\"gexpaojakhmsbz\"},\"id\":\"hlxaolthqtr\",\"name\":\"qjbpfzfsin\",\"type\":\"gvfcj\"}]}")
+                    "{\"nextLink\":\"a\",\"value\":[{\"extendedLocation\":{\"name\":\"hxqh\",\"type\":\"bifpikxwczb\"},\"properties\":{\"associatedResourceIds\":[],\"bmcConnectionString\":\"cnpqxuhivyqniwby\",\"bmcMacAddress\":\"rkxvdum\",\"bootMacAddress\":\"grtfwvu\",\"clusterId\":\"gaudcc\",\"cordonStatus\":\"Cordoned\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"nyejhkryhtnap\",\"hybridAksClustersAssociatedIds\":[],\"kubernetesNodeName\":\"kjyemkk\",\"kubernetesVersion\":\"ipjoxzjnchgejs\",\"machineDetails\":\"odmailzyd\",\"machineName\":\"h\",\"machineSkuId\":\"jwyahuxinpmqnja\",\"oamIpv4Address\":\"ixjsprozvcputeg\",\"oamIpv6Address\":\"wmfdatscmdvpjhul\",\"osImage\":\"uvm\",\"powerState\":\"Off\",\"provisioningState\":\"Canceled\",\"rackId\":\"rwfndiod\",\"rackSlot\":1798808176540213287,\"readyState\":\"True\",\"serialNumber\":\"ej\",\"serviceTag\":\"vwryoqpso\",\"virtualMachinesAssociatedIds\":[]},\"location\":\"tazak\",\"tags\":{\"yffdfdos\":\"ahbc\",\"hcrzevd\":\"gexpaojakhmsbz\",\"qjbpfzfsin\":\"hlxaolthqtr\"},\"id\":\"gvfcj\",\"name\":\"wzo\",\"type\":\"xjtfelluwfzit\"}]}")
                 .toObject(BareMetalMachineList.class);
         Assertions.assertEquals("a", model.nextLink());
-        Assertions.assertEquals("mfdatscmdvpj", model.value().get(0).location());
-        Assertions.assertEquals("suuv", model.value().get(0).tags().get("kjozkrwfnd"));
+        Assertions.assertEquals("tazak", model.value().get(0).location());
+        Assertions.assertEquals("ahbc", model.value().get(0).tags().get("yffdfdos"));
         Assertions.assertEquals("hxqh", model.value().get(0).extendedLocation().name());
         Assertions.assertEquals("bifpikxwczb", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("scnpqxuhivy", model.value().get(0).bmcConnectionString());
-        Assertions.assertEquals("n", model.value().get(0).bmcMacAddress());
-        Assertions.assertEquals("wby", model.value().get(0).bootMacAddress());
-        Assertions.assertEquals("jcny", model.value().get(0).machineDetails());
-        Assertions.assertEquals("j", model.value().get(0).machineName());
-        Assertions.assertEquals("kryhtnapczwlokj", model.value().get(0).machineSkuId());
-        Assertions.assertEquals("inpm", model.value().get(0).rackId());
-        Assertions.assertEquals(3546974038977071607L, model.value().get(0).rackSlot());
-        Assertions.assertEquals("wixjsprozvcp", model.value().get(0).serialNumber());
+        Assertions.assertEquals("cnpqxuhivyqniwby", model.value().get(0).bmcConnectionString());
+        Assertions.assertEquals("rkxvdum", model.value().get(0).bmcMacAddress());
+        Assertions.assertEquals("grtfwvu", model.value().get(0).bootMacAddress());
+        Assertions.assertEquals("odmailzyd", model.value().get(0).machineDetails());
+        Assertions.assertEquals("h", model.value().get(0).machineName());
+        Assertions.assertEquals("jwyahuxinpmqnja", model.value().get(0).machineSkuId());
+        Assertions.assertEquals("rwfndiod", model.value().get(0).rackId());
+        Assertions.assertEquals(1798808176540213287L, model.value().get(0).rackSlot());
+        Assertions.assertEquals("ej", model.value().get(0).serialNumber());
     }
 
     @org.junit.jupiter.api.Test
@@ -46,42 +46,34 @@ public final class BareMetalMachineListTests {
                     Arrays
                         .asList(
                             new BareMetalMachineInner()
-                                .withLocation("mfdatscmdvpj")
+                                .withLocation("tazak")
                                 .withTags(
-                                    mapOf(
-                                        "kjozkrwfnd",
-                                        "suuv",
-                                        "vwryoqpso",
-                                        "odjpslwejd",
-                                        "yffdfdos",
-                                        "cctazakljlahbc",
-                                        "hcrzevd",
-                                        "gexpaojakhmsbz"))
+                                    mapOf("yffdfdos", "ahbc", "hcrzevd", "gexpaojakhmsbz", "qjbpfzfsin", "hlxaolthqtr"))
                                 .withExtendedLocation(new ExtendedLocation().withName("hxqh").withType("bifpikxwczb"))
-                                .withBmcConnectionString("scnpqxuhivy")
-                                .withBmcMacAddress("n")
-                                .withBootMacAddress("wby")
-                                .withMachineDetails("jcny")
-                                .withMachineName("j")
-                                .withMachineSkuId("kryhtnapczwlokj")
-                                .withRackId("inpm")
-                                .withRackSlot(3546974038977071607L)
-                                .withSerialNumber("wixjsprozvcp")));
+                                .withBmcConnectionString("cnpqxuhivyqniwby")
+                                .withBmcMacAddress("rkxvdum")
+                                .withBootMacAddress("grtfwvu")
+                                .withMachineDetails("odmailzyd")
+                                .withMachineName("h")
+                                .withMachineSkuId("jwyahuxinpmqnja")
+                                .withRackId("rwfndiod")
+                                .withRackSlot(1798808176540213287L)
+                                .withSerialNumber("ej")));
         model = BinaryData.fromObject(model).toObject(BareMetalMachineList.class);
         Assertions.assertEquals("a", model.nextLink());
-        Assertions.assertEquals("mfdatscmdvpj", model.value().get(0).location());
-        Assertions.assertEquals("suuv", model.value().get(0).tags().get("kjozkrwfnd"));
+        Assertions.assertEquals("tazak", model.value().get(0).location());
+        Assertions.assertEquals("ahbc", model.value().get(0).tags().get("yffdfdos"));
         Assertions.assertEquals("hxqh", model.value().get(0).extendedLocation().name());
         Assertions.assertEquals("bifpikxwczb", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("scnpqxuhivy", model.value().get(0).bmcConnectionString());
-        Assertions.assertEquals("n", model.value().get(0).bmcMacAddress());
-        Assertions.assertEquals("wby", model.value().get(0).bootMacAddress());
-        Assertions.assertEquals("jcny", model.value().get(0).machineDetails());
-        Assertions.assertEquals("j", model.value().get(0).machineName());
-        Assertions.assertEquals("kryhtnapczwlokj", model.value().get(0).machineSkuId());
-        Assertions.assertEquals("inpm", model.value().get(0).rackId());
-        Assertions.assertEquals(3546974038977071607L, model.value().get(0).rackSlot());
-        Assertions.assertEquals("wixjsprozvcp", model.value().get(0).serialNumber());
+        Assertions.assertEquals("cnpqxuhivyqniwby", model.value().get(0).bmcConnectionString());
+        Assertions.assertEquals("rkxvdum", model.value().get(0).bmcMacAddress());
+        Assertions.assertEquals("grtfwvu", model.value().get(0).bootMacAddress());
+        Assertions.assertEquals("odmailzyd", model.value().get(0).machineDetails());
+        Assertions.assertEquals("h", model.value().get(0).machineName());
+        Assertions.assertEquals("jwyahuxinpmqnja", model.value().get(0).machineSkuId());
+        Assertions.assertEquals("rwfndiod", model.value().get(0).rackId());
+        Assertions.assertEquals(1798808176540213287L, model.value().get(0).rackSlot());
+        Assertions.assertEquals("ej", model.value().get(0).serialNumber());
     }
 
     @SuppressWarnings("unchecked")

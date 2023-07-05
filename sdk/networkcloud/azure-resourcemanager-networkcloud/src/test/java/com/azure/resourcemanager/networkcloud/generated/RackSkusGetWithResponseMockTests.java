@@ -30,7 +30,7 @@ public final class RackSkusGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"computeMachines\":[],\"controllerMachines\":[],\"description\":\"yqvgxia\",\"maxClusterSlots\":8345077467860913549,\"provisioningState\":\"Succeeded\",\"rackType\":\"Aggregator\",\"storageAppliances\":[],\"supportedRackSkuIds\":[\"wsaifmcwno\",\"bzlehgc\",\"kb\"]},\"id\":\"njolgjyyxpv\",\"name\":\"lszerqzevx\",\"type\":\"qe\"}";
+            "{\"properties\":{\"computeMachines\":[],\"controllerMachines\":[],\"description\":\"lfihcj\",\"maxClusterSlots\":2110046772829254579,\"provisioningState\":\"Succeeded\",\"rackType\":\"Aggregator\",\"storageAppliances\":[],\"supportedRackSkuIds\":[\"cwg\",\"xf\",\"vaknokzwjj\",\"r\"]},\"id\":\"ixldzyyfy\",\"name\":\"pqsixymmp\",\"type\":\"jivyqlkjuv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -58,6 +58,7 @@ public final class RackSkusGetWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        RackSku response = manager.rackSkus().getWithResponse("byjanep", com.azure.core.util.Context.NONE).getValue();
+        RackSku response =
+            manager.rackSkus().getWithResponse("bqbnaomhjrmkuh", com.azure.core.util.Context.NONE).getValue();
     }
 }

@@ -17,11 +17,11 @@ public final class CloudServicesNetworkPropertiesTests {
         CloudServicesNetworkProperties model =
             BinaryData
                 .fromString(
-                    "{\"additionalEgressEndpoints\":[{\"category\":\"zlcuiywgqywgndrv\",\"endpoints\":[]},{\"category\":\"hzgpphrcgyncocpe\",\"endpoints\":[]},{\"category\":\"vmmcoofs\",\"endpoints\":[]},{\"category\":\"zevgb\",\"endpoints\":[]}],\"clusterId\":\"qabcypm\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"lzu\",\"enableDefaultEgressEndpoints\":\"True\",\"enabledEgressEndpoints\":[{\"category\":\"nfnbacfionlebxe\",\"endpoints\":[]},{\"category\":\"gtzxdpn\",\"endpoints\":[]}],\"hybridAksClustersAssociatedIds\":[\"wxrjfeallnwsub\",\"snjampmng\",\"zscxaqwo\"],\"interfaceName\":\"hcbonqvpkvlr\",\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"seiphe\"]}")
+                    "{\"additionalEgressEndpoints\":[{\"category\":\"hybcibv\",\"endpoints\":[]},{\"category\":\"dcsi\",\"endpoints\":[]}],\"associatedResourceIds\":[\"aamdect\",\"hfiqscjeypvhe\"],\"clusterId\":\"kgqhcjrefovg\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"leyyvx\",\"enableDefaultEgressEndpoints\":\"False\",\"enabledEgressEndpoints\":[{\"category\":\"cattpngjcrcczsq\",\"endpoints\":[]}],\"hybridAksClustersAssociatedIds\":[\"mdajv\",\"ysou\",\"q\"],\"interfaceName\":\"a\",\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"pfhyhl\"]}")
                 .toObject(CloudServicesNetworkProperties.class);
-        Assertions.assertEquals("zlcuiywgqywgndrv", model.additionalEgressEndpoints().get(0).category());
+        Assertions.assertEquals("hybcibv", model.additionalEgressEndpoints().get(0).category());
         Assertions
-            .assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE, model.enableDefaultEgressEndpoints());
+            .assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE, model.enableDefaultEgressEndpoints());
     }
 
     @org.junit.jupiter.api.Test
@@ -31,14 +31,12 @@ public final class CloudServicesNetworkPropertiesTests {
                 .withAdditionalEgressEndpoints(
                     Arrays
                         .asList(
-                            new EgressEndpoint().withCategory("zlcuiywgqywgndrv").withEndpoints(Arrays.asList()),
-                            new EgressEndpoint().withCategory("hzgpphrcgyncocpe").withEndpoints(Arrays.asList()),
-                            new EgressEndpoint().withCategory("vmmcoofs").withEndpoints(Arrays.asList()),
-                            new EgressEndpoint().withCategory("zevgb").withEndpoints(Arrays.asList())))
-                .withEnableDefaultEgressEndpoints(CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE);
+                            new EgressEndpoint().withCategory("hybcibv").withEndpoints(Arrays.asList()),
+                            new EgressEndpoint().withCategory("dcsi").withEndpoints(Arrays.asList())))
+                .withEnableDefaultEgressEndpoints(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE);
         model = BinaryData.fromObject(model).toObject(CloudServicesNetworkProperties.class);
-        Assertions.assertEquals("zlcuiywgqywgndrv", model.additionalEgressEndpoints().get(0).category());
+        Assertions.assertEquals("hybcibv", model.additionalEgressEndpoints().get(0).category());
         Assertions
-            .assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE, model.enableDefaultEgressEndpoints());
+            .assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE, model.enableDefaultEgressEndpoints());
     }
 }
