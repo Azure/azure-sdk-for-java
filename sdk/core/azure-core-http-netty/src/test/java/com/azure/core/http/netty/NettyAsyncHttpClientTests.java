@@ -3,35 +3,18 @@
 
 package com.azure.core.http.netty;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.*;
 import com.azure.core.http.netty.implementation.MockProxyServer;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.LocalTestServer;
-import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
-import com.azure.core.util.Contexts;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.ProgressReporter;
+import com.azure.core.test.utils.TestUtils;
+import com.azure.core.util.*;
 import io.netty.handler.proxy.ProxyConnectException;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.resolver.NoopAddressResolverGroup;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -39,6 +22,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.ParallelFlux;
 import reactor.core.scheduler.Schedulers;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.test.StepVerifier;
@@ -59,23 +43,16 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertLinesMatch;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class NettyAsyncHttpClientTests {
@@ -301,23 +278,44 @@ public class NettyAsyncHttpClientTests {
 
     @Test
     public void testConcurrentRequests() {
-        HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
+        int numRequests = 100; // 100 = 1GB of data read
+        HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
 
-        int numberOfRequests = 100; // 100 = 100MB of data
-        Mono<Long> numberOfBytesMono = Flux.range(1, numberOfRequests)
-            .parallel(25)
+        ParallelFlux<byte[]> responses = Flux.range(1, numRequests)
+            .parallel()
             .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH)))
-                .flatMap(HttpResponse::getBodyAsByteArray)
-                .doOnNext(bytes -> assertArrayEquals(LONG_BODY, bytes)))
-            .sequential()
-            .map(bytes -> (long) bytes.length)
-            .reduce(0L, Long::sum);
+            .flatMap(ignored -> doRequest(client, "/long")
+                .flatMap(HttpResponse::getBodyAsByteArray));
 
-        StepVerifier.create(numberOfBytesMono)
-            .expectNext((long) numberOfRequests * LONG_BODY.length)
+        StepVerifier.create(responses)
+            .thenConsumeWhile(response -> {
+                TestUtils.assertArraysEqual(LONG_BODY, response);
+                return true;
+            })
             .expectComplete()
             .verify(Duration.ofSeconds(60));
+    }
+
+    @Test
+    public void testConcurrentRequestsSync() throws InterruptedException {
+        int numRequests = 100; // 100 = 1GB of data read
+        HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
+
+        ForkJoinPool pool = new ForkJoinPool();
+        List<Callable<Void>> requests = new ArrayList<>(numRequests);
+        for (int i = 0; i < numRequests; i++) {
+            requests.add(() -> {
+                try (HttpResponse response = doRequestSync(client, "/long")) {
+                    byte[] body = response.getBodyAsBinaryData().toBytes();
+                    TestUtils.assertArraysEqual(LONG_BODY, body);
+                    return null;
+                }
+            });
+        }
+
+        pool.invokeAll(requests);
+        pool.shutdown();
+        assertTrue(pool.awaitTermination(60, TimeUnit.SECONDS));
     }
 
     /**
@@ -479,30 +477,6 @@ public class NettyAsyncHttpClientTests {
             assertEquals(500, response.getStatusCode());
             assertEquals("error", response.getBodyAsString().block());
         }
-    }
-
-    @Test
-    public void testConcurrentRequestsSync() {
-        int numRequests = 100; // 100 = 1GB of data read
-        HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
-
-        Mono<Long> numBytesMono = Flux.range(1, numRequests)
-            .parallel(25)
-            .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> {
-                try (HttpResponse response = doRequestSync(client, "/long")) {
-                    byte[] body = response.getBodyAsBinaryData().toBytes();
-                    assertArrayEquals(LONG_BODY, body);
-                    return Flux.just((long) body.length);
-                }
-            })
-            .sequential()
-            .reduce(0L, Long::sum);
-
-        StepVerifier.create(numBytesMono)
-            .expectNext((long) numRequests * LONG_BODY.length)
-            .expectComplete()
-            .verify(Duration.ofSeconds(60));
     }
 
     @ParameterizedTest
@@ -687,13 +661,14 @@ public class NettyAsyncHttpClientTests {
         byte[] longBody = new byte[duplicateBytes.length * 100000];
 
         for (int i = 0; i < 100000; i++) {
-            System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length, duplicateBytes.length);
+            System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length,
+                duplicateBytes.length);
         }
 
         return longBody;
     }
 
-    private void checkBodyReceived(byte[] expectedBody, String path) {
+    private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, url(server, path)))
                 .flatMap(HttpResponse::getBodyAsByteArray))
@@ -717,7 +692,7 @@ public class NettyAsyncHttpClientTests {
         }
     }
 
-    private void checkBodyReceivedSync(byte[] expectedBody, String path) throws IOException {
+    private static void checkBodyReceivedSync(byte[] expectedBody, String path) throws IOException {
         HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
         try (HttpResponse response = doRequestSync(client, path)) {
             ByteArrayOutputStream outStream = new ByteArrayOutputStream();
@@ -727,7 +702,12 @@ public class NettyAsyncHttpClientTests {
         }
     }
 
-    private HttpResponse doRequestSync(HttpClient client, String path) {
+    private static Mono<HttpResponse> doRequest(HttpClient client, String path) {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
+        return client.send(request, Context.NONE);
+    }
+
+    private static HttpResponse doRequestSync(HttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
         return client.sendSync(request, Context.NONE);
     }
