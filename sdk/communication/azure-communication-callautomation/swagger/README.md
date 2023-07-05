@@ -368,7 +368,7 @@ directive:
     $.name = "DtmfOptionsInternal";
 ```
 
-### Rename Choice to GenderType
+### Rename GenderType to GenderTypeInternal
 ``` yaml
 directive:
 - from: swagger-document
