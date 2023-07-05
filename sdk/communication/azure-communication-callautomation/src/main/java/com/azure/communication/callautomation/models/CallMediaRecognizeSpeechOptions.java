@@ -128,7 +128,7 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
 
     /**
      * Set the speech language property.
-     * @param speechLanguage the interToneTimeout value to set.
+     * @param speechLanguage the speechLanguage value to set.
      * @return the CallMediaRecognizeSpeechOptions object itself.
      */
     public CallMediaRecognizeSpeechOptions setSpeechLanguage(String speechLanguage) {
