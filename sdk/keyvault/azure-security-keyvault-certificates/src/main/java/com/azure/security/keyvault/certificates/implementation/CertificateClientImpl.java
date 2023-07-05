@@ -23,6 +23,7 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
@@ -34,6 +35,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.certificates.CertificateAsyncClient;
 import com.azure.security.keyvault.certificates.CertificateServiceVersion;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
@@ -78,7 +80,7 @@ public class CertificateClientImpl {
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
 
     /**
-     * Creates a CertificateClientImpl instance that uses {@code pipeline} to service requests
+     * Creates a {@link CertificateClientImpl} instance that uses {@code pipeline} to service requests.
      *
      * @param vaultUrl URL for the Azure KeyVault service.
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
@@ -891,59 +893,105 @@ public class CertificateClientImpl {
                                                             Context context);
     }
 
-    public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName,
+    public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificateAsync(String certificateName,
+                                                                                                       CertificatePolicy policy,
+                                                                                                       Boolean isEnabled,
+                                                                                                       Map<String, String> tags) {
+        return new PollerFlux<>(getDefaultPollingInterval(),
+            activationOperationAsync(certificateName, policy, isEnabled, tags),
+            createPollOperationAsync(certificateName),
+            cancelOperationAsync(certificateName),
+            fetchResultOperationAsync(certificateName));
+    }
+
+    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName,
                                                                                                   CertificatePolicy policy,
                                                                                                   Boolean isEnabled,
-                                                                                                  Map<String, String> tags) {
-        return new PollerFlux<>(getDefaultPollingInterval(),
-            activationOperation(certificateName, policy, isEnabled, tags),
-            createPollOperation(certificateName),
-            cancelOperation(certificateName),
-            fetchResultOperation(certificateName));
+                                                                                                  Map<String, String> tags,
+                                                                                                  Context context) {
+        return SyncPoller.createPoller(getDefaultPollingInterval(),
+            cxt ->
+                new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                    activationOperation(certificateName, policy, isEnabled, tags, context).apply(cxt)),
+            createPollOperation(certificateName, context),
+            cancelOperation(certificateName, context),
+            fetchResultOperation(certificateName, context));
     }
 
-    private BiFunction<PollingContext<CertificateOperation>, PollResponse<CertificateOperation>, Mono<CertificateOperation>> cancelOperation(String certificateName) {
-        return (pollingContext, firstResponse) ->
-            withContext(context -> cancelCertificateOperationWithResponseAsync(certificateName, context))
-                .flatMap(FluxUtil::toMono);
-    }
-
-    private Function<PollingContext<CertificateOperation>, Mono<CertificateOperation>> activationOperation(String certificateName,
-                                                                                                           CertificatePolicy policy,
-                                                                                                           boolean enabled,
-                                                                                                           Map<String, String> tags) {
+    private Function<PollingContext<CertificateOperation>, Mono<CertificateOperation>> activationOperationAsync(String certificateName,
+                                                                                                                CertificatePolicy policy,
+                                                                                                                boolean enabled,
+                                                                                                                Map<String, String> tags) {
         return (pollingContext) ->
             withContext(context -> createCertificateWithResponseAsync(certificateName, policy, enabled, tags, context))
                 .flatMap(certificateOperationResponse -> Mono.just(certificateOperationResponse.getValue()));
     }
 
+    private Function<PollingContext<CertificateOperation>, CertificateOperation> activationOperation(String certificateName,
+                                                                                                     CertificatePolicy policy,
+                                                                                                     boolean enabled,
+                                                                                                     Map<String, String> tags,
+                                                                                                     Context context) {
+        return (pollingContext) ->
+            createCertificateWithResponse(certificateName, policy, enabled, tags, context).getValue();
+    }
+
+    private BiFunction<PollingContext<CertificateOperation>, PollResponse<CertificateOperation>, Mono<CertificateOperation>> cancelOperationAsync(String certificateName) {
+        return (pollingContext, firstResponse) ->
+            withContext(context -> cancelCertificateOperationWithResponseAsync(certificateName, context))
+                .flatMap(FluxUtil::toMono);
+    }
+    private BiFunction<PollingContext<CertificateOperation>, PollResponse<CertificateOperation>, CertificateOperation> cancelOperation(String certificateName, Context context) {
+        return (pollingContext, firstResponse) ->
+            cancelCertificateOperationWithResponse(certificateName, context).getValue();
+    }
+
     private Function<PollingContext<CertificateOperation>,
-        Mono<KeyVaultCertificateWithPolicy>> fetchResultOperation(String certificateName) {
+        Mono<KeyVaultCertificateWithPolicy>> fetchResultOperationAsync(String certificateName) {
         return (pollingContext) ->
             withContext(context -> getCertificateWithResponseAsync(certificateName, "", context))
                 .flatMap(certificateResponse -> Mono.just(certificateResponse.getValue()));
     }
 
-    /*
-   Polling operation to poll on create certificate operation status.
- */
-    private Function<PollingContext<CertificateOperation>, Mono<PollResponse<CertificateOperation>>> createPollOperation(String certificateName) {
+    /* Async polling operation to poll on create certificate operation status. */
+
+    private Function<PollingContext<CertificateOperation>, KeyVaultCertificateWithPolicy> fetchResultOperation(String certificateName, Context context) {
+        return (pollingContext) -> getCertificateWithResponse(certificateName, "", context).getValue();
+    }
+
+    private Function<PollingContext<CertificateOperation>, Mono<PollResponse<CertificateOperation>>> createPollOperationAsync(String certificateName) {
         return (pollingContext) -> {
             try {
                 return withContext(context ->
                     service.getCertificateOperationAsync(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
                         CONTENT_TYPE_HEADER_VALUE, context))
-                    .flatMap(this::processCertificateOperationResponse);
-            } catch (HttpResponseException e) {
-                LOGGER.logExceptionAsError(e);
-
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
+                    .map(this::processCertificateOperationResponse);
+            } catch (RuntimeException e) {
+                return monoError(LOGGER, e);
             }
         };
     }
 
-    private Mono<PollResponse<CertificateOperation>> processCertificateOperationResponse(Response<CertificateOperation> certificateOperationResponse) {
-        LongRunningOperationStatus status = null;
+    /* Sync polling operation to poll on create certificate operation status. */
+    private Function<PollingContext<CertificateOperation>, PollResponse<CertificateOperation>> createPollOperation(String certificateName, Context context) {
+        return (pollingContext) -> {
+            try {
+                Context contextToUse = context == null ? Context.NONE : context;
+                contextToUse = enableSyncRestProxy(contextToUse);
+                Response<CertificateOperation> operationResponse =
+                    service.getCertificateOperation(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
+                        CONTENT_TYPE_HEADER_VALUE, contextToUse);
+
+                return processCertificateOperationResponse(operationResponse);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        };
+    }
+
+    private PollResponse<CertificateOperation> processCertificateOperationResponse(Response<CertificateOperation> certificateOperationResponse) {
+        LongRunningOperationStatus status;
+
         switch (certificateOperationResponse.getValue().getStatus()) {
             case "inProgress":
                 status = LongRunningOperationStatus.IN_PROGRESS;
@@ -965,14 +1013,13 @@ public class CertificateClientImpl {
                 break;
         }
 
-        return Mono.just(new PollResponse<>(status, certificateOperationResponse.getValue()));
+        return new PollResponse<>(status, certificateOperationResponse.getValue());
     }
 
     public Mono<Response<CertificateOperation>> cancelCertificateOperationWithResponseAsync(String certificateName,
                                                                                             Context context) {
         CertificateOperationUpdateParameter parameter =
             new CertificateOperationUpdateParameter().cancellationRequested(true);
-        context = context == null ? Context.NONE : context;
 
         return service.updateCertificateOperationAsync(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
                 parameter, CONTENT_TYPE_HEADER_VALUE, context)
@@ -1011,19 +1058,41 @@ public class CertificateClientImpl {
             .doOnError(error -> LOGGER.warning("Failed to create the certificate - {}", certificateName, error));
     }
 
-    public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
+    private Response<CertificateOperation> createCertificateWithResponse(String certificateName,
+                                                                         CertificatePolicy certificatePolicy,
+                                                                         boolean enabled,
+                                                                         Map<String, String> tags,
+                                                                         Context context) {
+        CertificateRequestParameters certificateRequestParameters = new CertificateRequestParameters()
+            .certificatePolicy(new CertificatePolicyRequest(certificatePolicy))
+            .certificateAttributes(new CertificateRequestAttributes().enabled(enabled))
+            .tags(tags);
+        context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.createCertificate(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
+                certificateRequestParameters, CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
+    public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperationAsync(String certificateName) {
         return new PollerFlux<>(getDefaultPollingInterval(),
             (pollingContext) -> Mono.empty(),
-            createPollOperation(certificateName),
-            cancelOperation(certificateName),
-            fetchResultOperation(certificateName));
+            createPollOperationAsync(certificateName),
+            cancelOperationAsync(certificateName),
+            fetchResultOperationAsync(certificateName));
+    }
+
+    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName, Context context) {
+        return SyncPoller.createPoller(getDefaultPollingInterval(),
+            (pollingContext) -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null),
+            createPollOperation(certificateName, context),
+            cancelOperation(certificateName, context),
+            fetchResultOperation(certificateName, context));
     }
 
     public Mono<Response<KeyVaultCertificateWithPolicy>> getCertificateWithResponseAsync(String certificateName,
                                                                                          String version,
                                                                                          Context context) {
-        context = context == null ? Context.NONE : context;
-
         return service.getCertificateWithPolicyAsync(vaultUrl, certificateName, version, apiVersion, ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> LOGGER.verbose("Retrieving certificate - {}", certificateName))
@@ -1044,8 +1113,6 @@ public class CertificateClientImpl {
 
     public Mono<Response<KeyVaultCertificate>> getCertificateVersionWithResponseAsync(String certificateName,
                                                                                       String version, Context context) {
-        context = context == null ? Context.NONE : context;
-
         return service.getCertificateAsync(vaultUrl, certificateName, version, apiVersion, ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> LOGGER.verbose("Retrieving certificate - {}", certificateName))
@@ -1071,7 +1138,6 @@ public class CertificateClientImpl {
         CertificateUpdateParameters parameters = new CertificateUpdateParameters()
             .tags(properties.getTags())
             .certificateAttributes(new CertificateRequestAttributes(properties));
-        context = context == null ? Context.NONE : context;
 
         return service.updateCertificateAsync(vaultUrl, properties.getName(), properties.getVersion(), apiVersion,
                 ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
@@ -1096,25 +1162,37 @@ public class CertificateClientImpl {
     }
 
 
-    public PollerFlux<DeletedCertificate, Void> beginDeleteCertificate(String certificateName) {
+    public PollerFlux<DeletedCertificate, Void> beginDeleteCertificateAsync(String certificateName) {
         return new PollerFlux<>(getDefaultPollingInterval(),
-            activationOperation(certificateName),
-            createDeletePollOperation(certificateName),
+            activationOperationAsync(certificateName),
+            createDeletePollOperationAsync(certificateName),
             (context, firstResponse) -> Mono.empty(),
             (context) -> Mono.empty());
     }
 
-    private Function<PollingContext<DeletedCertificate>, Mono<DeletedCertificate>> activationOperation(String certificateName) {
+    public SyncPoller<DeletedCertificate, Void> beginDeleteCertificate(String certificateName, Context context) {
+        return SyncPoller.createPoller(getDefaultPollingInterval(),
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                activationOperation(certificateName, context).apply(cxt)),
+            createDeletePollOperation(certificateName, context),
+            (pollingContext, firstResponse) -> null,
+            (pollingContext) -> null);
+    }
+
+    private Function<PollingContext<DeletedCertificate>, Mono<DeletedCertificate>> activationOperationAsync(String certificateName) {
         return (pollingContext) ->
             withContext(context -> deleteCertificateWithResponseAsync(certificateName, context))
                 .flatMap(deletedCertificateResponse -> Mono.just(deletedCertificateResponse.getValue()));
     }
 
-    /*
-    Polling operation to poll on create delete certificate operation status.
-    */
-    private Function<PollingContext<DeletedCertificate>, Mono<PollResponse<DeletedCertificate>>> createDeletePollOperation(String keyName) {
-        return pollingContext ->
+    private Function<PollingContext<DeletedCertificate>, DeletedCertificate> activationOperation(String certificateName,
+                                                                                                 Context context) {
+        return (pollingContext) -> deleteCertificateWithResponse(certificateName, context).getValue();
+    }
+
+    /* Async polling operation to poll on create delete certificate operation status. */
+    private Function<PollingContext<DeletedCertificate>, Mono<PollResponse<DeletedCertificate>>> createDeletePollOperationAsync(String keyName) {
+        return (pollingContext) ->
             withContext(context -> service.getDeletedCertificatePollerAsync(vaultUrl, keyName, apiVersion,
                 ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context))
                 .flatMap(deletedCertificateResponse -> {
@@ -1141,6 +1219,38 @@ public class CertificateClientImpl {
                     pollingContext.getLatestResponse().getValue()));
     }
 
+    /* Sync polling operation to poll on create delete certificate operation status. */
+    private Function<PollingContext<DeletedCertificate>, PollResponse<DeletedCertificate>> createDeletePollOperation(String keyName, Context context) {
+        return (pollingContext) -> {
+            try {
+                Context contextToUse = context == null ? Context.NONE : context;
+                contextToUse = enableSyncRestProxy(contextToUse);
+                Response<DeletedCertificate> deletedCertificateResponse =
+                    service.getDeletedCertificatePoller(vaultUrl, keyName, apiVersion, ACCEPT_LANGUAGE,
+                        CONTENT_TYPE_HEADER_VALUE, contextToUse);
+
+                if (deletedCertificateResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                    return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                        pollingContext.getLatestResponse().getValue());
+                }
+
+                if (deletedCertificateResponse.getStatusCode() == HttpURLConnection.HTTP_FORBIDDEN) {
+                    return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                        pollingContext.getLatestResponse().getValue());
+                }
+
+                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                    deletedCertificateResponse.getValue());
+            } catch (HttpResponseException e) {
+                // This means either vault has soft-delete disabled or permission is not granted for the get deleted
+                // certificate operation. In both cases deletion operation was successful when activation operation
+                // succeeded before reaching here.
+                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                    pollingContext.getLatestResponse().getValue());
+            }
+        };
+    }
+
     private Mono<Response<DeletedCertificate>> deleteCertificateWithResponseAsync(String certificateName,
                                                                                   Context context) {
         return service.deleteCertificateAsync(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
@@ -1150,9 +1260,15 @@ public class CertificateClientImpl {
             .doOnError(error -> LOGGER.warning("Failed to delete the certificate - {}", certificateName, error));
     }
 
-    public Mono<Response<DeletedCertificate>> getDeletedCertificateWithResponseAsync(String certificateName, Context context) {
+    private Response<DeletedCertificate> deleteCertificateWithResponse(String certificateName, Context context) {
         context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
 
+        return service.deleteCertificate(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
+            CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
+    public Mono<Response<DeletedCertificate>> getDeletedCertificateWithResponseAsync(String certificateName, Context context) {
         return service.getDeletedCertificateAsync(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                 context)
             .doOnRequest(ignored -> LOGGER.verbose("Retrieving deleted certificate - {}", certificateName))
@@ -1163,14 +1279,13 @@ public class CertificateClientImpl {
     public Response<DeletedCertificate> getDeletedCertificateWithResponse(String certificateName, Context context) {
         context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
+
         return service.getDeletedCertificate(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
             CONTENT_TYPE_HEADER_VALUE, context);
     }
 
 
     public Mono<Response<Void>> purgeDeletedCertificateWithResponseAsync(String certificateName, Context context) {
-        context = context == null ? Context.NONE : context;
-
         return service.purgeDeletedCertificateAsync(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> LOGGER.verbose("Purging certificate - {}", certificateName))
@@ -1181,30 +1296,42 @@ public class CertificateClientImpl {
     public Response<Void> purgeDeletedCertificateWithResponse(String certificateName, Context context) {
         context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
+
         return service.purgeDeletedCertificate(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
             CONTENT_TYPE_HEADER_VALUE, context);
     }
 
 
-    public PollerFlux<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName) {
+    public PollerFlux<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificateAsync(String certificateName) {
         return new PollerFlux<>(getDefaultPollingInterval(),
-            recoverActivationOperation(certificateName),
-            createRecoverPollOperation(certificateName),
+            recoverActivationOperationAsync(certificateName),
+            createRecoverPollOperationAsync(certificateName),
             (context, firstResponse) -> Mono.empty(),
             context -> Mono.empty());
     }
 
-    private Function<PollingContext<KeyVaultCertificateWithPolicy>, Mono<KeyVaultCertificateWithPolicy>> recoverActivationOperation(String certificateName) {
+    public SyncPoller<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName, Context context) {
+        return SyncPoller.createPoller(getDefaultPollingInterval(),
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                recoverActivationOperation(certificateName, context).apply(cxt)),
+            createRecoverPollOperation(certificateName, context),
+            (pollingContext, firstResponse) -> null,
+            (pollingContext) -> null);
+    }
+
+    private Function<PollingContext<KeyVaultCertificateWithPolicy>, Mono<KeyVaultCertificateWithPolicy>> recoverActivationOperationAsync(String certificateName) {
         return (pollingContext) ->
             withContext(context -> recoverDeletedCertificateWithResponseAsync(certificateName, context))
                 .flatMap(certificateResponse -> Mono.just(certificateResponse.getValue()));
     }
 
-    /*
-    Polling operation to poll on create recover certificate operation status.
-    */
-    private Function<PollingContext<KeyVaultCertificateWithPolicy>, Mono<PollResponse<KeyVaultCertificateWithPolicy>>> createRecoverPollOperation(String keyName) {
-        return pollingContext ->
+    private Function<PollingContext<KeyVaultCertificateWithPolicy>, KeyVaultCertificateWithPolicy> recoverActivationOperation(String certificateName, Context context) {
+        return (pollingContext) -> recoverDeletedCertificateWithResponse(certificateName, context).getValue();
+    }
+
+    /* Async polling operation to poll on create recover certificate operation status. */
+    private Function<PollingContext<KeyVaultCertificateWithPolicy>, Mono<PollResponse<KeyVaultCertificateWithPolicy>>> createRecoverPollOperationAsync(String keyName) {
+        return (pollingContext) ->
             withContext(context -> service.getCertificatePollerAsync(vaultUrl, keyName, "", apiVersion,
                 ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context))
                 .flatMap(certificateResponse -> {
@@ -1231,6 +1358,36 @@ public class CertificateClientImpl {
                     pollingContext.getLatestResponse().getValue()));
     }
 
+    /* Sync polling operation to poll on create recover certificate operation status. */
+    private Function<PollingContext<KeyVaultCertificateWithPolicy>, PollResponse<KeyVaultCertificateWithPolicy>> createRecoverPollOperation(String keyName, Context context) {
+        return (pollingContext) -> {
+            try {
+                Response<KeyVaultCertificateWithPolicy> certificateResponse =
+                    service.getCertificatePoller(vaultUrl, keyName, "", apiVersion, ACCEPT_LANGUAGE,
+                        CONTENT_TYPE_HEADER_VALUE, context);
+
+                if (certificateResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                    return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                        pollingContext.getLatestResponse().getValue());
+                }
+
+                if (certificateResponse.getStatusCode() == HttpURLConnection.HTTP_FORBIDDEN) {
+                    return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                        pollingContext.getLatestResponse().getValue());
+                }
+
+                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                    certificateResponse.getValue());
+            } catch (HttpResponseException e) {
+                // This means permission is not granted for the get deleted key operation.
+                // In both cases deletion operation was successful when activation operation succeeded before reaching
+                // here.
+                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                    pollingContext.getLatestResponse().getValue());
+            }
+        };
+    }
+
     private Mono<Response<KeyVaultCertificateWithPolicy>> recoverDeletedCertificateWithResponseAsync(String certificateName,
                                                                                                      Context context) {
         return service.recoverDeletedCertificateAsync(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
@@ -1241,9 +1398,16 @@ public class CertificateClientImpl {
             .doOnError(error -> LOGGER.warning("Failed to recover the deleted certificate - {}", certificateName, error));
     }
 
-    public Mono<Response<byte[]>> backupCertificateWithResponseAsync(String certificateName, Context context) {
+    private Response<KeyVaultCertificateWithPolicy> recoverDeletedCertificateWithResponse(String certificateName,
+                                                                                          Context context) {
         context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
 
+        return service.recoverDeletedCertificate(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
+            CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
+    public Mono<Response<byte[]>> backupCertificateWithResponseAsync(String certificateName, Context context) {
         return service.backupCertificateAsync(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> LOGGER.verbose("Backing up certificate - {}", certificateName))
@@ -1258,7 +1422,6 @@ public class CertificateClientImpl {
     public Response<byte[]> backupCertificateWithResponse(String certificateName, Context context) {
         context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
-
         Response<CertificateBackup> certificateBackupResponse = service.backupCertificate(vaultUrl, certificateName,
             apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context);
 
@@ -1268,7 +1431,6 @@ public class CertificateClientImpl {
 
     public Mono<Response<KeyVaultCertificateWithPolicy>> restoreCertificateBackupWithResponseAsync(byte[] backup, Context context) {
         CertificateRestoreParameters parameters = new CertificateRestoreParameters().certificateBundleBackup(backup);
-        context = context == null ? Context.NONE : context;
 
         return service.restoreCertificateAsync(vaultUrl, apiVersion, ACCEPT_LANGUAGE, parameters,
                 CONTENT_TYPE_HEADER_VALUE, context)
@@ -1288,43 +1450,44 @@ public class CertificateClientImpl {
             context);
     }
 
-    public PagedFlux<CertificateProperties> listPropertiesOfCertificates() {
+    public PagedFlux<CertificateProperties> listPropertiesOfCertificatesAsync() {
         try {
             return new PagedFlux<>(
-                () -> withContext(context -> listCertificatesFirstPage(false, context)),
-                continuationToken -> withContext(context -> listCertificatesNextPage(continuationToken, context)));
+                () -> withContext(context -> listCertificatesFirstPageAsync(false, context)),
+                continuationToken -> withContext(context -> listCertificatesNextPageAsync(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
     }
 
-    public PagedFlux<CertificateProperties> listPropertiesOfCertificates(boolean includePending, Context context) {
+    public PagedFlux<CertificateProperties> listPropertiesOfCertificatesAsync(boolean includePending, Context context) {
         return new PagedFlux<>(
-            () -> listCertificatesFirstPage(includePending, context),
-            continuationToken -> listCertificatesNextPage(continuationToken, context));
+            () -> listCertificatesFirstPageAsync(includePending, context),
+            continuationToken -> listCertificatesNextPageAsync(continuationToken, context));
     }
 
-    public PagedFlux<CertificateProperties> listPropertiesOfCertificates(boolean includePending) {
+    public PagedFlux<CertificateProperties> listPropertiesOfCertificatesAsync(boolean includePending) {
         try {
             return new PagedFlux<>(
-                () -> withContext(context -> listCertificatesFirstPage(includePending, context)),
-                continuationToken -> withContext(context -> listCertificatesNextPage(continuationToken, context)));
+                () -> withContext(context -> listCertificatesFirstPageAsync(includePending, context)),
+                continuationToken -> withContext(context -> listCertificatesNextPageAsync(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
     }
 
-    /*
-     * Gets attributes of all the certificates given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link CertificateAsyncClient#listCertificates()}.
+    /**
+     * Gets attributes of all the certificates given by the {@code continuationToken} that was retrieved from a call to
+     * {@link CertificateClientImpl#listPropertiesOfCertificates(boolean, Context)}.
      *
-     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the
+     * @param continuationToken The {@link PagedResponse#getContinuationToken()} ()} from a previous, successful call to one of the
      * listCertificates operations.
      *
-     * @return A {@link Mono} of {@link PagedResponse<KeyBase>} from the next page of results.
+     * @return A {@link Mono} of {@link PagedResponse} containing {@link CertificateProperties} instances from the next
+     * page of results.
      */
-    private Mono<PagedResponse<CertificateProperties>> listCertificatesNextPage(String continuationToken,
-                                                                                Context context) {
+    private Mono<PagedResponse<CertificateProperties>> listCertificatesNextPageAsync(String continuationToken,
+                                                                                     Context context) {
         try {
             return service.getCertificatesAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                     context)
@@ -1341,8 +1504,8 @@ public class CertificateClientImpl {
      * Calls the service and retrieve first page result. It makes one call and retrieve {@code DEFAULT_MAX_PAGE_RESULTS}
      * values.
      */
-    private Mono<PagedResponse<CertificateProperties>> listCertificatesFirstPage(boolean includePending,
-                                                                                 Context context) {
+    private Mono<PagedResponse<CertificateProperties>> listCertificatesFirstPageAsync(boolean includePending,
+                                                                                      Context context) {
         try {
             return service
                 .getCertificatesAsync(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, includePending, apiVersion, ACCEPT_LANGUAGE,
@@ -1355,33 +1518,92 @@ public class CertificateClientImpl {
         }
     }
 
-    public PagedFlux<DeletedCertificate> listDeletedCertificates(boolean includePending) {
+    public PagedIterable<CertificateProperties> listPropertiesOfCertificates() {
+        return new PagedIterable<>(
+            () -> listCertificatesFirstPage(false, Context.NONE),
+            continuationToken -> listCertificatesNextPage(continuationToken, Context.NONE));
+    }
+
+    public PagedIterable<CertificateProperties> listPropertiesOfCertificates(boolean includePending) {
+        return new PagedIterable<>(
+            () -> listCertificatesFirstPage(includePending, Context.NONE),
+            continuationToken -> listCertificatesNextPage(continuationToken, Context.NONE));
+    }
+
+    public PagedIterable<CertificateProperties> listPropertiesOfCertificates(boolean includePending, Context context) {
+        return new PagedIterable<>(
+            () -> listCertificatesFirstPage(includePending, context),
+            continuationToken -> listCertificatesNextPage(continuationToken, context));
+    }
+
+    /*
+     * Calls the service and retrieve first page result. It makes one call and retrieve {@code DEFAULT_MAX_PAGE_RESULTS}
+     * values.
+     */
+    private PagedResponse<CertificateProperties> listCertificatesFirstPage(boolean includePending, Context context) {
+        context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.getCertificates(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, includePending, apiVersion, ACCEPT_LANGUAGE,
+            CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
+    /**
+     * Gets attributes of all the certificates given by the {@code continuationToken} that was retrieved from a call to
+     * {@link CertificateClientImpl#listPropertiesOfCertificates(boolean, Context)}.
+     *
+     * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
+     * of the listCertificates operations.
+     *
+     * @return A {@link PagedResponse} containing {@link CertificateProperties} instances from the next page of results.
+     */
+    private PagedResponse<CertificateProperties> listCertificatesNextPage(String continuationToken, Context context) {
+        context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.getCertificates(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
+            context);
+    }
+
+    public PagedFlux<DeletedCertificate> listDeletedCertificatesAsync() {
         try {
             return new PagedFlux<>(
-                () -> withContext(context -> listDeletedCertificatesFirstPage(includePending, context)),
+                () -> withContext(context -> listDeletedCertificatesFirstPageAsync(false, context)),
                 continuationToken ->
-                    withContext(context -> listDeletedCertificatesNextPage(continuationToken, context)));
+                    withContext(context -> listDeletedCertificatesNextPageAsync(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
     }
 
-    public PagedFlux<DeletedCertificate> listDeletedCertificates(Boolean includePending, Context context) {
-        return new PagedFlux<>(
-            () -> listDeletedCertificatesFirstPage(includePending, context),
-            continuationToken -> listDeletedCertificatesNextPage(continuationToken, context));
+    public PagedFlux<DeletedCertificate> listDeletedCertificatesAsync(boolean includePending) {
+        try {
+            return new PagedFlux<>(
+                () -> withContext(context -> listDeletedCertificatesFirstPageAsync(includePending, context)),
+                continuationToken ->
+                    withContext(context -> listDeletedCertificatesNextPageAsync(continuationToken, context)));
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(LOGGER, ex));
+        }
     }
 
-    /*
-     * Gets attributes of all the certificates given by the {@code nextPageLink}
+    public PagedFlux<DeletedCertificate> listDeletedCertificatesAsync(Boolean includePending, Context context) {
+        return new PagedFlux<>(
+            () -> listDeletedCertificatesFirstPageAsync(includePending, context),
+            continuationToken -> listDeletedCertificatesNextPageAsync(continuationToken, context));
+    }
+
+    /**
+     * Gets attributes of all the certificates given by the {@code continuationToken}.
      *
-     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the list
-     * operations.
+     * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
+     * of the list operations.
      *
-     * @return A {@link Mono} of {@link PagedResponse<DeletedCertificate>} from the next page of results.
+     * @return A {@link Mono} of {@link PagedResponse} containing {@link DeletedCertificate} instances from the next
+     * page of results.
      */
-    private Mono<PagedResponse<DeletedCertificate>> listDeletedCertificatesNextPage(String continuationToken,
-                                                                                    Context context) {
+    private Mono<PagedResponse<DeletedCertificate>> listDeletedCertificatesNextPageAsync(String continuationToken,
+                                                                                         Context context) {
         try {
             return service.getDeletedCertificatesAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE,
                     CONTENT_TYPE_HEADER_VALUE, context)
@@ -1401,8 +1623,8 @@ public class CertificateClientImpl {
      * Calls the service and retrieve first page result. It makes one call and retrieve {@code DEFAULT_MAX_PAGE_RESULTS}
      * values.
      */
-    private Mono<PagedResponse<DeletedCertificate>> listDeletedCertificatesFirstPage(boolean includePending,
-                                                                                     Context context) {
+    private Mono<PagedResponse<DeletedCertificate>> listDeletedCertificatesFirstPageAsync(boolean includePending,
+                                                                                          Context context) {
         try {
             return service.getDeletedCertificatesAsync(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, includePending, apiVersion,
                     ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
@@ -1414,37 +1636,75 @@ public class CertificateClientImpl {
         }
     }
 
-    public PagedFlux<DeletedCertificate> listDeletedCertificates() {
+    public PagedIterable<DeletedCertificate> listDeletedCertificates() {
+        return new PagedIterable<>(
+            () -> listDeletedCertificatesFirstPage(false, Context.NONE),
+            continuationToken -> listDeletedCertificatesNextPage(continuationToken, Context.NONE));
+    }
+
+    public PagedIterable<DeletedCertificate> listDeletedCertificates(boolean includePending) {
+        return new PagedIterable<>(
+            () -> listDeletedCertificatesFirstPage(includePending, Context.NONE),
+            continuationToken -> listDeletedCertificatesNextPage(continuationToken, Context.NONE));
+    }
+
+    public PagedIterable<DeletedCertificate> listDeletedCertificates(Boolean includePending, Context context) {
+        return new PagedIterable<>(
+            () -> listDeletedCertificatesFirstPage(includePending, context),
+            continuationToken -> listDeletedCertificatesNextPage(continuationToken, context));
+    }
+
+    /*
+     * Calls the service and retrieve first page result. It makes one call and retrieve {@code DEFAULT_MAX_PAGE_RESULTS}
+     * values.
+     */
+    private PagedResponse<DeletedCertificate> listDeletedCertificatesFirstPage(boolean includePending,
+                                                                               Context context) {
+        context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.getDeletedCertificates(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, includePending, apiVersion,
+            ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
+    /**
+     * Gets attributes of all the certificates given by the {@code continuationToken}.
+     *
+     * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
+     * of the list operations.
+     *
+     * @return A {@link Mono} of {@link PagedResponse} containing {@link DeletedCertificate} instances from the next
+     * page of results.
+     */
+    private PagedResponse<DeletedCertificate> listDeletedCertificatesNextPage(String continuationToken,
+                                                                              Context context) {
+        context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.getDeletedCertificates(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
+            context);
+    }
+
+    public PagedFlux<CertificateProperties> listPropertiesOfCertificateVersionsAsync(String certificateName) {
         try {
             return new PagedFlux<>(
-                () -> withContext(context -> listDeletedCertificatesFirstPage(false, context)),
+                () -> withContext(context -> listCertificateVersionsFirstPageAsync(certificateName, context)),
                 continuationToken ->
-                    withContext(context -> listDeletedCertificatesNextPage(continuationToken, context)));
+                    withContext(context -> listCertificateVersionsNextPageAsync(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
     }
 
-    public PagedFlux<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName) {
-        try {
-            return new PagedFlux<>(
-                () -> withContext(context -> listCertificateVersionsFirstPage(certificateName, context)),
-                continuationToken ->
-                    withContext(context -> listCertificateVersionsNextPage(continuationToken, context)));
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(LOGGER, ex));
-        }
-    }
-
-    public PagedFlux<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName,
-                                                                                Context context) {
+    public PagedFlux<CertificateProperties> listPropertiesOfCertificateVersionsAsync(String certificateName,
+                                                                                     Context context) {
         return new PagedFlux<>(
-            () -> listCertificateVersionsFirstPage(certificateName, context),
-            continuationToken -> listCertificateVersionsNextPage(continuationToken, context));
+            () -> listCertificateVersionsFirstPageAsync(certificateName, context),
+            continuationToken -> listCertificateVersionsNextPageAsync(continuationToken, context));
     }
 
-    private Mono<PagedResponse<CertificateProperties>> listCertificateVersionsFirstPage(String certificateName,
-                                                                                        Context context) {
+    private Mono<PagedResponse<CertificateProperties>> listCertificateVersionsFirstPageAsync(String certificateName,
+                                                                                             Context context) {
         try {
             return service.getCertificateVersionsAsync(vaultUrl, certificateName, DEFAULT_MAX_PAGE_RESULTS, apiVersion,
                     ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
@@ -1457,10 +1717,10 @@ public class CertificateClientImpl {
     }
 
     /*
-     * Gets attributes of all the certificates given by the {@code nextPageLink}
+     * Gets attributes of all the certificates given by the {@code continuationToken}.
      */
-    private Mono<PagedResponse<CertificateProperties>> listCertificateVersionsNextPage(String continuationToken,
-                                                                                       Context context) {
+    private Mono<PagedResponse<CertificateProperties>> listCertificateVersionsNextPageAsync(String continuationToken,
+                                                                                            Context context) {
         try {
             return service.getCertificatesAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                     context)
@@ -1476,18 +1736,52 @@ public class CertificateClientImpl {
         }
     }
 
+    public PagedIterable<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName) {
+        return new PagedIterable<>(
+            () -> listCertificateVersionsFirstPage(certificateName, Context.NONE),
+            continuationToken -> listCertificateVersionsNextPage(continuationToken, Context.NONE));
+    }
+
+    public PagedIterable<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName,
+                                                                                     Context context) {
+        return new PagedIterable<>(
+            () -> listCertificateVersionsFirstPage(certificateName, context),
+            continuationToken -> listCertificateVersionsNextPage(continuationToken, context));
+    }
+
+    private PagedResponse<CertificateProperties> listCertificateVersionsFirstPage(String certificateName,
+                                                                                  Context context) {
+        context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.getCertificateVersions(vaultUrl, certificateName, DEFAULT_MAX_PAGE_RESULTS, apiVersion,
+                ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
+    /*
+     * Gets attributes of all the certificates given by the {@code continuationToken}.
+     */
+    private PagedResponse<CertificateProperties> listCertificateVersionsNextPage(String continuationToken,
+                                                                                 Context context) {
+        context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.getCertificates(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
+            context);
+    }
+
     public Mono<Response<KeyVaultCertificateWithPolicy>> mergeCertificateWithResponseAsync(MergeCertificateOptions mergeCertificateOptions, Context context) {
         Objects.requireNonNull(mergeCertificateOptions, "'mergeCertificateOptions' cannot be null.");
 
         CertificateMergeParameters mergeParameters =
-            new CertificateMergeParameters().x509Certificates(mergeCertificateOptions.getX509Certificates())
+            new CertificateMergeParameters()
+                .x509Certificates(mergeCertificateOptions.getX509Certificates())
                 .tags(mergeCertificateOptions.getTags())
                 .certificateAttributes(new CertificateRequestAttributes().enabled(mergeCertificateOptions.isEnabled()));
-        context = context == null ? Context.NONE : context;
 
         return service.mergeCertificateAsync(vaultUrl, mergeCertificateOptions.getName(), apiVersion, ACCEPT_LANGUAGE,
-            mergeParameters, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> LOGGER.verbose("Merging certificate - {}",  mergeCertificateOptions.getName()))
+                mergeParameters, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> LOGGER.verbose("Merging certificate - {}", mergeCertificateOptions.getName()))
             .doOnSuccess(response ->
                 LOGGER.verbose("Merged certificate  - {}", response.getValue().getProperties().getName()))
             .doOnError(error ->
@@ -1497,10 +1791,12 @@ public class CertificateClientImpl {
     public Response<KeyVaultCertificateWithPolicy> mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateOptions,
                                                                                 Context context) {
         Objects.requireNonNull(mergeCertificateOptions, "'mergeCertificateOptions' cannot be null.");
+
         CertificateMergeParameters mergeParameters =
-            new CertificateMergeParameters().x509Certificates(mergeCertificateOptions.getX509Certificates())
-            .tags(mergeCertificateOptions.getTags())
-            .certificateAttributes(new CertificateRequestAttributes().enabled(mergeCertificateOptions.isEnabled()));
+            new CertificateMergeParameters()
+                .x509Certificates(mergeCertificateOptions.getX509Certificates())
+                .tags(mergeCertificateOptions.getTags())
+                .certificateAttributes(new CertificateRequestAttributes().enabled(mergeCertificateOptions.isEnabled()));
         context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
 
@@ -1510,11 +1806,9 @@ public class CertificateClientImpl {
 
     public Mono<Response<CertificatePolicy>> getCertificatePolicyWithResponseAsync(String certificateName,
                                                                                    Context context) {
-        context = context == null ? Context.NONE : context;
-
         return service.getCertificatePolicyAsync(vaultUrl, apiVersion, ACCEPT_LANGUAGE, certificateName,
                 CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> LOGGER.verbose("Retrieving certificate policy - {}",  certificateName))
+            .doOnRequest(ignored -> LOGGER.verbose("Retrieving certificate policy - {}", certificateName))
             .doOnSuccess(response -> LOGGER.verbose("Retrieved certificate policy - {}", certificateName))
             .doOnError(error -> LOGGER.warning("Failed to retrieve certificate policy - {}", certificateName, error));
     }
@@ -1531,7 +1825,6 @@ public class CertificateClientImpl {
                                                                                       CertificatePolicy policy,
                                                                                       Context context) {
         CertificatePolicyRequest policyRequest = new CertificatePolicyRequest(policy);
-        context = context == null ? Context.NONE : context;
 
         return service.updateCertificatePolicyAsync(vaultUrl, apiVersion, ACCEPT_LANGUAGE, certificateName,
                 policyRequest, CONTENT_TYPE_HEADER_VALUE, context)
@@ -1562,7 +1855,6 @@ public class CertificateClientImpl {
                 .accountId(issuer.getAccountId()))
             .attributes(new IssuerAttributes()
                 .enabled(issuer.isEnabled()));
-        context = context == null ? Context.NONE : context;
 
         return service.setCertificateIssuerAsync(vaultUrl, apiVersion, ACCEPT_LANGUAGE, issuer.getName(), parameters,
                 CONTENT_TYPE_HEADER_VALUE, context)
@@ -1592,8 +1884,6 @@ public class CertificateClientImpl {
     }
 
     public Mono<Response<CertificateIssuer>> getIssuerWithResponseAsync(String issuerName, Context context) {
-        context = context == null ? Context.NONE : context;
-
         return service.getCertificateIssuerAsync(vaultUrl, apiVersion, ACCEPT_LANGUAGE, issuerName,
                 CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> LOGGER.verbose("Retrieving certificate issuer - {}", issuerName))
@@ -1613,11 +1903,9 @@ public class CertificateClientImpl {
 
 
     public Mono<Response<CertificateIssuer>> deleteIssuerWithResponseAsync(String issuerName, Context context) {
-        context = context == null ? Context.NONE : context;
-
         return service.deleteCertificateIssuerAsync(vaultUrl, issuerName, apiVersion, ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> LOGGER.verbose("Deleting certificate issuer - {}",  issuerName))
+            .doOnRequest(ignored -> LOGGER.verbose("Deleting certificate issuer - {}", issuerName))
             .doOnSuccess(response ->
                 LOGGER.verbose("Deleted the certificate issuer - {}", response.getValue().getName()))
             .doOnError(error -> LOGGER.warning("Failed to delete the certificate issuer - {}", issuerName, error));
@@ -1631,24 +1919,24 @@ public class CertificateClientImpl {
             CONTENT_TYPE_HEADER_VALUE, context);
     }
 
-    public PagedFlux<IssuerProperties> listPropertiesOfIssuers() {
+    public PagedFlux<IssuerProperties> listPropertiesOfIssuersAsync() {
         try {
             return new PagedFlux<>(
-                () -> withContext(this::listPropertiesOfIssuersFirstPage),
+                () -> withContext(this::listPropertiesOfIssuersFirstPageAsync),
                 continuationToken ->
-                    withContext(context -> listPropertiesOfIssuersNextPage(continuationToken, context)));
+                    withContext(context -> listPropertiesOfIssuersNextPageAsync(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
     }
 
-    public PagedFlux<IssuerProperties> listPropertiesOfIssuers(Context context) {
+    public PagedFlux<IssuerProperties> listPropertiesOfIssuersAsync(Context context) {
         return new PagedFlux<>(
-            () -> listPropertiesOfIssuersFirstPage(context),
-            continuationToken -> listPropertiesOfIssuersNextPage(continuationToken, context));
+            () -> listPropertiesOfIssuersFirstPageAsync(context),
+            continuationToken -> listPropertiesOfIssuersNextPageAsync(continuationToken, context));
     }
 
-    private Mono<PagedResponse<IssuerProperties>> listPropertiesOfIssuersFirstPage(Context context) {
+    private Mono<PagedResponse<IssuerProperties>> listPropertiesOfIssuersFirstPageAsync(Context context) {
         try {
             return service.getCertificateIssuersAsync(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, apiVersion, ACCEPT_LANGUAGE,
                     CONTENT_TYPE_HEADER_VALUE, context)
@@ -1660,17 +1948,18 @@ public class CertificateClientImpl {
         }
     }
 
-    /*
-     * Gets attributes of all the certificates given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link KeyAsyncClient#listKeyVersions()}.
+    /**
+     * Gets attributes of all the certificates given by the {@code continuationToken} that was retrieved from a call to
+     * {@link CertificateClientImpl#listPropertiesOfIssuersAsync(Context)}}.
      *
-     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the
-     * listKeys operations.
+     * @param continuationToken The {@link PagedResponse#getContinuationToken()} ()} from a previous, successful call to
+     * one of the list issuers operations.
      *
-     * @return A {@link Mono} of {@link PagedResponse<KeyBase>} from the next page of results.
+     * @return A {@link Mono} of {@link PagedResponse} from the next page of results containing {@link IssuerProperties}
+     * instances from the next page of results.
      */
-    private Mono<PagedResponse<IssuerProperties>> listPropertiesOfIssuersNextPage(String continuationToken,
-                                                                                  Context context) {
+    private Mono<PagedResponse<IssuerProperties>> listPropertiesOfIssuersNextPageAsync(String continuationToken,
+                                                                                       Context context) {
         try {
             return service.getCertificateIssuersAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE,
                     CONTENT_TYPE_HEADER_VALUE, context)
@@ -1686,18 +1975,57 @@ public class CertificateClientImpl {
         }
     }
 
-    public Mono<Response<CertificateIssuer>> updateIssuerWithResponseAsync(CertificateIssuer issuer, Context context) {
-        CertificateIssuerUpdateParameters updateParameters = new CertificateIssuerUpdateParameters()
-            .provider(issuer.getProvider())
-            .organizationDetails(new OrganizationDetails()
-                .id(issuer.getOrganizationId())
-                .adminDetails(issuer.getAdministratorContacts()))
-            .credentials(new IssuerCredentials()
-                .password(issuer.getPassword())
-                .accountId(issuer.getAccountId()))
-            .attributes(new IssuerAttributes()
-                .enabled(issuer.isEnabled()));
+    public PagedIterable<IssuerProperties> listPropertiesOfIssuers() {
+        return new PagedIterable<>(
+            () -> listPropertiesOfIssuersFirstPage(Context.NONE),
+            continuationToken -> listPropertiesOfIssuersNextPage(continuationToken, Context.NONE));
+    }
+
+    public PagedIterable<IssuerProperties> listPropertiesOfIssuers(Context context) {
+        return new PagedIterable<>(
+            () -> listPropertiesOfIssuersFirstPage(context),
+            continuationToken -> listPropertiesOfIssuersNextPage(continuationToken, context));
+    }
+
+    private PagedResponse<IssuerProperties> listPropertiesOfIssuersFirstPage(Context context) {
         context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.getCertificateIssuers(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, apiVersion, ACCEPT_LANGUAGE,
+            CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
+    /**
+     * Gets attributes of all the certificates given by the {@code continuationToken} that was retrieved from a call to
+     * {@link CertificateClientImpl#listPropertiesOfIssuers(Context)}}.
+     *
+     * @param continuationToken The {@link PagedResponse#getContinuationToken()} ()} from a previous, successful call to
+     * one of the list issuers operations.
+     *
+     * @return A {@link PagedResponse} from the next page of results containing {@link IssuerProperties} instances from
+     * the next page of results.
+     */
+    private PagedResponse<IssuerProperties> listPropertiesOfIssuersNextPage(String continuationToken,
+                                                                            Context context) {
+        context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.getCertificateIssuers(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
+            context);
+    }
+
+    public Mono<Response<CertificateIssuer>> updateIssuerWithResponseAsync(CertificateIssuer issuer, Context context) {
+        CertificateIssuerUpdateParameters updateParameters =
+            new CertificateIssuerUpdateParameters()
+                .provider(issuer.getProvider())
+                .organizationDetails(new OrganizationDetails()
+                    .id(issuer.getOrganizationId())
+                    .adminDetails(issuer.getAdministratorContacts()))
+                .credentials(new IssuerCredentials()
+                    .password(issuer.getPassword())
+                    .accountId(issuer.getAccountId()))
+                .attributes(new IssuerAttributes()
+                    .enabled(issuer.isEnabled()));
 
         return service.updateCertificateIssuerAsync(vaultUrl, issuer.getName(), apiVersion, ACCEPT_LANGUAGE,
                 updateParameters, CONTENT_TYPE_HEADER_VALUE, context)
@@ -1709,16 +2037,17 @@ public class CertificateClientImpl {
     }
 
     public Response<CertificateIssuer> updateIssuerWithResponse(CertificateIssuer issuer, Context context) {
-        CertificateIssuerUpdateParameters updateParameters = new CertificateIssuerUpdateParameters()
-            .provider(issuer.getProvider())
-            .organizationDetails(new OrganizationDetails()
-                .id(issuer.getOrganizationId())
-                .adminDetails(issuer.getAdministratorContacts()))
-            .credentials(new IssuerCredentials()
-                .password(issuer.getPassword())
-                .accountId(issuer.getAccountId()))
-            .attributes(new IssuerAttributes()
-                .enabled(issuer.isEnabled()));
+        CertificateIssuerUpdateParameters updateParameters =
+            new CertificateIssuerUpdateParameters()
+                .provider(issuer.getProvider())
+                .organizationDetails(new OrganizationDetails()
+                    .id(issuer.getOrganizationId())
+                    .adminDetails(issuer.getAdministratorContacts()))
+                .credentials(new IssuerCredentials()
+                    .password(issuer.getPassword())
+                    .accountId(issuer.getAccountId()))
+                .attributes(new IssuerAttributes()
+                    .enabled(issuer.isEnabled()));
         context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
 
@@ -1726,19 +2055,19 @@ public class CertificateClientImpl {
             updateParameters, CONTENT_TYPE_HEADER_VALUE, context);
     }
 
-    public PagedFlux<CertificateContact> setContacts(List<CertificateContact> contacts) {
+    public PagedFlux<CertificateContact> setContactsAsync(List<CertificateContact> contacts) {
         try {
-            return new PagedFlux<>(() -> withContext(context -> setCertificateContactsWithResponse(contacts, context)));
+            return new PagedFlux<>(() -> withContext(context -> setCertificateContactsWithResponseAsync(contacts, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
     }
 
-    public PagedFlux<CertificateContact> setContacts(List<CertificateContact> contacts, Context context) {
-        return new PagedFlux<>(() -> setCertificateContactsWithResponse(contacts, context));
+    public PagedFlux<CertificateContact> setContactsAsync(List<CertificateContact> contacts, Context context) {
+        return new PagedFlux<>(() -> setCertificateContactsWithResponseAsync(contacts, context));
     }
 
-    private Mono<PagedResponse<CertificateContact>> setCertificateContactsWithResponse(List<CertificateContact> contacts, Context context) {
+    private Mono<PagedResponse<CertificateContact>> setCertificateContactsWithResponseAsync(List<CertificateContact> contacts, Context context) {
         Contacts contactsParams = new Contacts().contactList(contacts);
 
         return service.setCertificateContactsAsync(vaultUrl, apiVersion, ACCEPT_LANGUAGE, contactsParams,
@@ -1748,19 +2077,37 @@ public class CertificateClientImpl {
             .doOnError(error -> LOGGER.warning("Failed to list certificate contacts - {}", error));
     }
 
-    public PagedFlux<CertificateContact> listContacts() {
+    public PagedIterable<CertificateContact> setContacts(List<CertificateContact> contacts) {
+        return new PagedIterable<>(() -> setCertificateContactsWithResponse(contacts, Context.NONE));
+    }
+
+    public PagedIterable<CertificateContact> setContacts(List<CertificateContact> contacts, Context context) {
+        return new PagedIterable<>(() -> setCertificateContactsWithResponse(contacts, context));
+    }
+
+    private PagedResponse<CertificateContact> setCertificateContactsWithResponse(List<CertificateContact> contacts,
+                                                                                 Context context) {
+        Contacts contactsParams = new Contacts().contactList(contacts);
+        context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.setCertificateContacts(vaultUrl, apiVersion, ACCEPT_LANGUAGE, contactsParams,
+            CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
+    public PagedFlux<CertificateContact> listContactsAsync() {
         try {
-            return new PagedFlux<>(() -> withContext(this::listCertificateContactsFirstPage));
+            return new PagedFlux<>(() -> withContext(this::listCertificateContactsFirstPageAsync));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
     }
 
-    public PagedFlux<CertificateContact> listContacts(Context context) {
-        return new PagedFlux<>(() -> listCertificateContactsFirstPage(context));
+    public PagedFlux<CertificateContact> listContactsAsync(Context context) {
+        return new PagedFlux<>(() -> listCertificateContactsFirstPageAsync(context));
     }
 
-    private Mono<PagedResponse<CertificateContact>> listCertificateContactsFirstPage(Context context) {
+    private Mono<PagedResponse<CertificateContact>> listCertificateContactsFirstPageAsync(Context context) {
         try {
             return service.getCertificateContactsAsync(vaultUrl, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                     context)
@@ -1772,24 +2119,56 @@ public class CertificateClientImpl {
         }
     }
 
-    public PagedFlux<CertificateContact> deleteContacts() {
+    public PagedIterable<CertificateContact> listContacts() {
+        return new PagedIterable<>(() -> listCertificateContactsFirstPage(Context.NONE));
+    }
+
+    public PagedIterable<CertificateContact> listContacts(Context context) {
+        return new PagedIterable<>(() -> listCertificateContactsFirstPage(context));
+    }
+
+    private PagedResponse<CertificateContact> listCertificateContactsFirstPage(Context context) {
+        context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.getCertificateContacts(vaultUrl, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
+            context);
+    }
+
+    public PagedFlux<CertificateContact> deleteContactsAsync() {
         try {
-            return new PagedFlux<>(() -> withContext(this::deleteCertificateContactsWithResponse));
+            return new PagedFlux<>(() -> withContext(this::deleteCertificateContactsWithResponseAsync));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
     }
 
-    public PagedFlux<CertificateContact> deleteContacts(Context context) {
-        return new PagedFlux<>(() -> deleteCertificateContactsWithResponse(context));
+    public PagedFlux<CertificateContact> deleteContactsAsync(Context context) {
+        return new PagedFlux<>(() -> deleteCertificateContactsWithResponseAsync(context));
     }
 
-    private Mono<PagedResponse<CertificateContact>> deleteCertificateContactsWithResponse(Context context) {
+    private Mono<PagedResponse<CertificateContact>> deleteCertificateContactsWithResponseAsync(Context context) {
         return service.deleteCertificateContactsAsync(vaultUrl, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                 context)
             .doOnRequest(ignored -> LOGGER.verbose("Deleting certificate contacts - {}"))
             .doOnSuccess(response -> LOGGER.verbose("Deleted certificate contacts - {}"))
             .doOnError(error -> LOGGER.warning("Failed to delete certificate contacts - {}", error));
+    }
+
+    public PagedIterable<CertificateContact> deleteContacts() {
+        return new PagedIterable<>(() -> deleteCertificateContactsWithResponse(Context.NONE));
+    }
+
+    public PagedIterable<CertificateContact> deleteContacts(Context context) {
+        return new PagedIterable<>(() -> deleteCertificateContactsWithResponse(context));
+    }
+
+    private PagedResponse<CertificateContact> deleteCertificateContactsWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
+        context = enableSyncRestProxy(context);
+
+        return service.deleteCertificateContacts(vaultUrl, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
+            context);
     }
 
     public Mono<Response<CertificateOperation>> deleteCertificateOperationWithResponseAsync(String certificateName,
@@ -1804,6 +2183,7 @@ public class CertificateClientImpl {
 
     public Response<CertificateOperation> deleteCertificateOperationWithResponse(String certificateName,
                                                                                  Context context) {
+        context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
 
         return service.deleteCertificateOperation(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
@@ -1818,7 +2198,6 @@ public class CertificateClientImpl {
             .certificateAttributes(new CertificateRequestAttributes(importCertificateOptions))
             .password(importCertificateOptions.getPassword())
             .tags(importCertificateOptions.getTags());
-        context = context == null ? Context.NONE : context;
 
         if (importCertificateOptions.getPolicy() != null) {
             parameters.certificatePolicy(new CertificatePolicyRequest(importCertificateOptions.getPolicy()));

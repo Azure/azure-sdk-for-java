@@ -21,6 +21,12 @@ import java.util.List;
 @Fluent
 public final class BareMetalMachineProperties {
     /*
+     * The list of resource IDs for the other Microsoft.NetworkCloud resources that have attached this network.
+     */
+    @JsonProperty(value = "associatedResourceIds", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> associatedResourceIds;
+
+    /*
      * The connection string for the baseboard management controller including IP address and protocol.
      */
     @JsonProperty(value = "bmcConnectionString", required = true)
@@ -91,7 +97,8 @@ public final class BareMetalMachineProperties {
     private HardwareValidationStatus hardwareValidationStatus;
 
     /*
-     * The list of the resource IDs for the HybridAksClusters that have nodes hosted on this bare metal machine.
+     * Field Deprecated. These fields will be empty/omitted. The list of the resource IDs for the HybridAksClusters
+     * that have nodes hosted on this bare metal machine.
      */
     @JsonProperty(value = "hybridAksClustersAssociatedIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> hybridAksClustersAssociatedIds;
@@ -187,13 +194,24 @@ public final class BareMetalMachineProperties {
     private String serviceTag;
 
     /*
-     * The list of the resource IDs for the VirtualMachines that are hosted on this bare metal machine.
+     * Field Deprecated. These fields will be empty/omitted. The list of the resource IDs for the VirtualMachines that
+     * are hosted on this bare metal machine.
      */
     @JsonProperty(value = "virtualMachinesAssociatedIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> virtualMachinesAssociatedIds;
 
     /** Creates an instance of BareMetalMachineProperties class. */
     public BareMetalMachineProperties() {
+    }
+
+    /**
+     * Get the associatedResourceIds property: The list of resource IDs for the other Microsoft.NetworkCloud resources
+     * that have attached this network.
+     *
+     * @return the associatedResourceIds value.
+     */
+    public List<String> associatedResourceIds() {
+        return this.associatedResourceIds;
     }
 
     /**
@@ -347,8 +365,8 @@ public final class BareMetalMachineProperties {
     }
 
     /**
-     * Get the hybridAksClustersAssociatedIds property: The list of the resource IDs for the HybridAksClusters that have
-     * nodes hosted on this bare metal machine.
+     * Get the hybridAksClustersAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list
+     * of the resource IDs for the HybridAksClusters that have nodes hosted on this bare metal machine.
      *
      * @return the hybridAksClustersAssociatedIds value.
      */
@@ -563,8 +581,8 @@ public final class BareMetalMachineProperties {
     }
 
     /**
-     * Get the virtualMachinesAssociatedIds property: The list of the resource IDs for the VirtualMachines that are
-     * hosted on this bare metal machine.
+     * Get the virtualMachinesAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list of
+     * the resource IDs for the VirtualMachines that are hosted on this bare metal machine.
      *
      * @return the virtualMachinesAssociatedIds value.
      */

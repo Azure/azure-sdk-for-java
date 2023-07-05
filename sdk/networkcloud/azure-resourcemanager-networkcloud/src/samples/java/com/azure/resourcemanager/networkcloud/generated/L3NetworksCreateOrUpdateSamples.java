@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
-import com.azure.resourcemanager.networkcloud.models.HybridAksIpamEnabled;
-import com.azure.resourcemanager.networkcloud.models.HybridAksPluginType;
 import com.azure.resourcemanager.networkcloud.models.IpAllocationType;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +12,7 @@ import java.util.Map;
 /** Samples for L3Networks CreateOrUpdate. */
 public final class L3NetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/L3Networks_Create.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/L3Networks_Create.json
      */
     /**
      * Sample code: Create or update L3 network.
@@ -30,14 +28,12 @@ public final class L3NetworksCreateOrUpdateSamples {
             .withExtendedLocation(
                 new ExtendedLocation()
                     .withName(
-                        "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
                     .withType("CustomLocation"))
             .withL3IsolationDomainId(
-                "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName")
+                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName")
             .withVlan(12L)
             .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
-            .withHybridAksIpamEnabled(HybridAksIpamEnabled.TRUE)
-            .withHybridAksPluginType(HybridAksPluginType.DPDK)
             .withInterfaceName("eth0")
             .withIpAllocationType(IpAllocationType.DUAL_STACK)
             .withIpv4ConnectedPrefix("198.51.100.0/24")

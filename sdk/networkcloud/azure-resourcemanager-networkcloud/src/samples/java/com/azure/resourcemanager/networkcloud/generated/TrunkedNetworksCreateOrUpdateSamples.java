@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
-import com.azure.resourcemanager.networkcloud.models.HybridAksPluginType;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +12,7 @@ import java.util.Map;
 /** Samples for TrunkedNetworks CreateOrUpdate. */
 public final class TrunkedNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/TrunkedNetworks_Create.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/TrunkedNetworks_Create.json
      */
     /**
      * Sample code: Create or update trunked network.
@@ -30,16 +29,15 @@ public final class TrunkedNetworksCreateOrUpdateSamples {
             .withExtendedLocation(
                 new ExtendedLocation()
                     .withName(
-                        "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
                     .withType("CustomLocation"))
             .withIsolationDomainIds(
                 Arrays
                     .asList(
-                        "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/l2IsolationDomainName",
-                        "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName"))
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/l2IsolationDomainName",
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName"))
             .withVlans(Arrays.asList(12L, 14L))
             .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
-            .withHybridAksPluginType(HybridAksPluginType.DPDK)
             .withInterfaceName("eth0")
             .create();
     }

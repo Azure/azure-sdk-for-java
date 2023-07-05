@@ -18,7 +18,6 @@ import com.azure.resourcemanager.networkcloud.models.StorageApplianceEnableRemot
 import com.azure.resourcemanager.networkcloud.models.StorageAppliancePatchParameters;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceProvisioningState;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceRunReadCommandsParameters;
-import com.azure.resourcemanager.networkcloud.models.StorageApplianceValidateHardwareParameters;
 import java.util.Collections;
 import java.util.Map;
 
@@ -261,21 +260,6 @@ public final class StorageApplianceImpl
             .storageAppliances()
             .runReadCommands(
                 resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters, context);
-    }
-
-    public void validateHardware(
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters) {
-        serviceManager
-            .storageAppliances()
-            .validateHardware(resourceGroupName, storageApplianceName, storageApplianceValidateHardwareParameters);
-    }
-
-    public void validateHardware(
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters, Context context) {
-        serviceManager
-            .storageAppliances()
-            .validateHardware(
-                resourceGroupName, storageApplianceName, storageApplianceValidateHardwareParameters, context);
     }
 
     public StorageApplianceImpl withRegion(Region location) {

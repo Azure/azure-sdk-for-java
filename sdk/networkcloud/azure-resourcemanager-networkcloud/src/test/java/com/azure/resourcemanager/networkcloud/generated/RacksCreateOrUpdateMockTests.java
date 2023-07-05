@@ -34,7 +34,7 @@ public final class RacksCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"extendedLocation\":{\"name\":\"iihjriybmrzo\",\"type\":\"pnx\"},\"properties\":{\"availabilityZone\":\"dvwnjkgvfnmxa\",\"clusterId\":\"sqftibtyibuyvp\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"jpnqnoowsbeden\",\"provisioningState\":\"Succeeded\",\"rackLocation\":\"k\",\"rackSerialNumber\":\"bhxv\",\"rackSkuId\":\"cnulgmnhjevdy\"},\"location\":\"fajs\",\"tags\":{\"zzkivyhjr\":\"kmq\",\"solronqqlm\":\"iizjixlqfhefkwa\",\"hvuqbo\":\"nlqxsjxtele\",\"cnn\":\"oolzqocarkuzl\"},\"id\":\"t\",\"name\":\"nx\",\"type\":\"wqy\"}";
+            "{\"extendedLocation\":{\"name\":\"hez\",\"type\":\"quwusq\"},\"properties\":{\"availabilityZone\":\"utrpbr\",\"clusterId\":\"yuuatvlmbjwcolbm\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"w\",\"provisioningState\":\"Succeeded\",\"rackLocation\":\"pa\",\"rackSerialNumber\":\"pr\",\"rackSkuId\":\"rvxhmtfhocnxzcm\"},\"location\":\"ngxno\",\"tags\":{\"dwhepfwwtjfdoes\":\"tdisnjevhdlmyd\",\"dbckyo\":\"xhmw\",\"jzrbhtmeplv\":\"kxkxhnegk\"},\"id\":\"kaobrl\",\"name\":\"pgsn\",\"type\":\"agnchjhgemuowaky\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,25 +65,34 @@ public final class RacksCreateOrUpdateMockTests {
         Rack response =
             manager
                 .racks()
-                .define("d")
-                .withRegion("r")
-                .withExistingResourceGroup("juyrsrziuctixg")
-                .withExtendedLocation(new ExtendedLocation().withName("uifr").withType("vka"))
-                .withAvailabilityZone("pezkis")
-                .withRackLocation("ciuiyqvldaswv")
-                .withRackSerialNumber("pisqqzlgcndhzx")
-                .withRackSkuId("rfc")
-                .withTags(mapOf("kpphefsbzx", "gsnxuw", "clwzacnmwpfsu", "bzxomeik", "azyqbxyxoyfp", "t"))
+                .define("jrhuzgf")
+                .withRegion("ugam")
+                .withExistingResourceGroup("l")
+                .withExtendedLocation(new ExtendedLocation().withName("on").withType("tpusllywp"))
+                .withAvailabilityZone("tiotzb")
+                .withRackLocation("kqevadrmmw")
+                .withRackSerialNumber("uawvcmjzk")
+                .withRackSkuId("iidisczskoswoqiq")
+                .withTags(
+                    mapOf(
+                        "sbamnppcc",
+                        "rrcoi",
+                        "zxuizhyhnepkpe",
+                        "kuztdsbezaxyfu",
+                        "xdazv",
+                        "iarxqiubxdukec",
+                        "dblnsntrp",
+                        "hctmmkosz"))
                 .create();
 
-        Assertions.assertEquals("fajs", response.location());
-        Assertions.assertEquals("kmq", response.tags().get("zzkivyhjr"));
-        Assertions.assertEquals("iihjriybmrzo", response.extendedLocation().name());
-        Assertions.assertEquals("pnx", response.extendedLocation().type());
-        Assertions.assertEquals("dvwnjkgvfnmxa", response.availabilityZone());
-        Assertions.assertEquals("k", response.rackLocation());
-        Assertions.assertEquals("bhxv", response.rackSerialNumber());
-        Assertions.assertEquals("cnulgmnhjevdy", response.rackSkuId());
+        Assertions.assertEquals("ngxno", response.location());
+        Assertions.assertEquals("tdisnjevhdlmyd", response.tags().get("dwhepfwwtjfdoes"));
+        Assertions.assertEquals("hez", response.extendedLocation().name());
+        Assertions.assertEquals("quwusq", response.extendedLocation().type());
+        Assertions.assertEquals("utrpbr", response.availabilityZone());
+        Assertions.assertEquals("pa", response.rackLocation());
+        Assertions.assertEquals("pr", response.rackSerialNumber());
+        Assertions.assertEquals("rvxhmtfhocnxzcm", response.rackSkuId());
     }
 
     @SuppressWarnings("unchecked")

@@ -9,7 +9,7 @@ import com.azure.core.models.ResponseError;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The result of the operation if the operation succeeded. */
+/** A polling status update or final response payload for an image operation. */
 @Immutable
 public final class ImageOperationResponse {
 
@@ -46,7 +46,7 @@ public final class ImageOperationResponse {
      */
     @Generated
     @JsonProperty(value = "status")
-    private State status;
+    private AzureOpenAIOperationState status;
 
     /*
      * The error if the operation failed.
@@ -54,24 +54,6 @@ public final class ImageOperationResponse {
     @Generated
     @JsonProperty(value = "error")
     private ResponseError error;
-
-    /**
-     * Creates an instance of ImageOperationResponse class.
-     *
-     * @param id the id value to set.
-     * @param created the created value to set.
-     * @param status the status value to set.
-     */
-    @Generated
-    @JsonCreator
-    private ImageOperationResponse(
-            @JsonProperty(value = "id") String id,
-            @JsonProperty(value = "created") long created,
-            @JsonProperty(value = "status") State status) {
-        this.id = id;
-        this.created = created;
-        this.status = status;
-    }
 
     /**
      * Get the id property: The ID of the operation.
@@ -120,7 +102,7 @@ public final class ImageOperationResponse {
      * @return the status value.
      */
     @Generated
-    public State getStatus() {
+    public AzureOpenAIOperationState getStatus() {
         return this.status;
     }
 
@@ -132,5 +114,23 @@ public final class ImageOperationResponse {
     @Generated
     public ResponseError getError() {
         return this.error;
+    }
+
+    /**
+     * Creates an instance of ImageOperationResponse class.
+     *
+     * @param id the id value to set.
+     * @param created the created value to set.
+     * @param status the status value to set.
+     */
+    @Generated
+    @JsonCreator
+    private ImageOperationResponse(
+            @JsonProperty(value = "id") String id,
+            @JsonProperty(value = "created") long created,
+            @JsonProperty(value = "status") AzureOpenAIOperationState status) {
+        this.id = id;
+        this.created = created;
+        this.status = status;
     }
 }

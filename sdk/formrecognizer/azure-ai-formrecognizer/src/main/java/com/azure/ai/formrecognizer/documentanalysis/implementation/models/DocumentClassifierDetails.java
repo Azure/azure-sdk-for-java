@@ -4,14 +4,14 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Document classifier info. */
-@Fluent
+@Immutable
 public final class DocumentClassifierDetails {
     /*
      * Unique document classifier name.
@@ -58,7 +58,7 @@ public final class DocumentClassifierDetails {
      * @param docTypes the docTypes value to set.
      */
     @JsonCreator
-    public DocumentClassifierDetails(
+    private DocumentClassifierDetails(
             @JsonProperty(value = "classifierId", required = true) String classifierId,
             @JsonProperty(value = "createdDateTime", required = true) OffsetDateTime createdDateTime,
             @JsonProperty(value = "apiVersion", required = true) String apiVersion,
@@ -88,17 +88,6 @@ public final class DocumentClassifierDetails {
     }
 
     /**
-     * Set the description property: Document classifier description.
-     *
-     * @param description the description value to set.
-     * @return the DocumentClassifierDetails object itself.
-     */
-    public DocumentClassifierDetails setDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
      * Get the createdDateTime property: Date and time (UTC) when the document classifier was created.
      *
      * @return the createdDateTime value.
@@ -114,17 +103,6 @@ public final class DocumentClassifierDetails {
      */
     public OffsetDateTime getExpirationDateTime() {
         return this.expirationDateTime;
-    }
-
-    /**
-     * Set the expirationDateTime property: Date and time (UTC) when the document classifier will expire.
-     *
-     * @param expirationDateTime the expirationDateTime value to set.
-     * @return the DocumentClassifierDetails object itself.
-     */
-    public DocumentClassifierDetails setExpirationDateTime(OffsetDateTime expirationDateTime) {
-        this.expirationDateTime = expirationDateTime;
-        return this;
     }
 
     /**
