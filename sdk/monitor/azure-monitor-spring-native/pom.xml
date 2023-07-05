@@ -36,48 +36,31 @@
   <scm>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>io.opentelemetry</groupId>
-        <artifactId>opentelemetry-bom</artifactId>
-        <version>1.24.0</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>io.opentelemetry.instrumentation</groupId>
-        <artifactId>opentelemetry-instrumentation-bom-alpha</artifactId>
-        <version>1.24.0-alpha</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
+  
   <dependencies>
 
     <!-- OTel dependencies -->
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
       <artifactId>opentelemetry-spring-boot-starter</artifactId>
+      <version>1.24.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
-      <version>1.24.0-alpha</version>
+      <version>1.24.0-alpha</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
       <artifactId>opentelemetry-runtime-metrics</artifactId>
+      <version>1.24.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-runtime-metrics;external_dependency} -->
     </dependency>
     <!-- End of OTel dependencies -->
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-      <version>1.0.0-beta.8</version>
+      <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
     </dependency>
 
 
