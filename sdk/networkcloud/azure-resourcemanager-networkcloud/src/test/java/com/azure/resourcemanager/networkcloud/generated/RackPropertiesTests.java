@@ -14,26 +14,26 @@ public final class RackPropertiesTests {
         RackProperties model =
             BinaryData
                 .fromString(
-                    "{\"availabilityZone\":\"qujizdvo\",\"clusterId\":\"tiby\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"lgy\",\"provisioningState\":\"Failed\",\"rackLocation\":\"tp\",\"rackSerialNumber\":\"hjoxo\",\"rackSkuId\":\"smsks\"}")
+                    "{\"availabilityZone\":\"xmrhu\",\"clusterId\":\"wp\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"trgjupauutpwoqh\",\"provisioningState\":\"Canceled\",\"rackLocation\":\"jqgwzp\",\"rackSerialNumber\":\"fqntcyp\",\"rackSkuId\":\"xjvfoimwksl\"}")
                 .toObject(RackProperties.class);
-        Assertions.assertEquals("qujizdvo", model.availabilityZone());
-        Assertions.assertEquals("tp", model.rackLocation());
-        Assertions.assertEquals("hjoxo", model.rackSerialNumber());
-        Assertions.assertEquals("smsks", model.rackSkuId());
+        Assertions.assertEquals("xmrhu", model.availabilityZone());
+        Assertions.assertEquals("jqgwzp", model.rackLocation());
+        Assertions.assertEquals("fqntcyp", model.rackSerialNumber());
+        Assertions.assertEquals("xjvfoimwksl", model.rackSkuId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RackProperties model =
             new RackProperties()
-                .withAvailabilityZone("qujizdvo")
-                .withRackLocation("tp")
-                .withRackSerialNumber("hjoxo")
-                .withRackSkuId("smsks");
+                .withAvailabilityZone("xmrhu")
+                .withRackLocation("jqgwzp")
+                .withRackSerialNumber("fqntcyp")
+                .withRackSkuId("xjvfoimwksl");
         model = BinaryData.fromObject(model).toObject(RackProperties.class);
-        Assertions.assertEquals("qujizdvo", model.availabilityZone());
-        Assertions.assertEquals("tp", model.rackLocation());
-        Assertions.assertEquals("hjoxo", model.rackSerialNumber());
-        Assertions.assertEquals("smsks", model.rackSkuId());
+        Assertions.assertEquals("xmrhu", model.availabilityZone());
+        Assertions.assertEquals("jqgwzp", model.rackLocation());
+        Assertions.assertEquals("fqntcyp", model.rackSerialNumber());
+        Assertions.assertEquals("xjvfoimwksl", model.rackSkuId());
     }
 }

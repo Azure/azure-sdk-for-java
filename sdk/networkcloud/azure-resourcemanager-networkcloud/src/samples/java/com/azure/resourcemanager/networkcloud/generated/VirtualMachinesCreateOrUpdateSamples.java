@@ -27,7 +27,7 @@ import java.util.Map;
 /** Samples for VirtualMachines CreateOrUpdate. */
 public final class VirtualMachinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/VirtualMachines_Create.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/VirtualMachines_Create.json
      */
     /**
      * Sample code: Create or update virtual machine.
@@ -44,13 +44,13 @@ public final class VirtualMachinesCreateOrUpdateSamples {
             .withExtendedLocation(
                 new ExtendedLocation()
                     .withName(
-                        "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
                     .withType("CustomLocation"))
             .withAdminUsername("username")
             .withCloudServicesNetworkAttachment(
                 new NetworkAttachment()
                     .withAttachedNetworkId(
-                        "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName")
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName")
                     .withIpAllocationMethod(VirtualMachineIpAllocationMethod.DYNAMIC))
             .withCpuCores(2L)
             .withMemorySizeGB(8L)
@@ -64,7 +64,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                     .withVolumeAttachments(
                         Arrays
                             .asList(
-                                "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName")))
+                                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName")))
             .withVmImage("myacr.azurecr.io/foobar:latest")
             .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
             .withBootMethod(VirtualMachineBootMethod.UEFI)
@@ -73,7 +73,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                     .asList(
                         new NetworkAttachment()
                             .withAttachedNetworkId(
-                                "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName")
+                                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName")
                             .withDefaultGateway(DefaultGateway.TRUE)
                             .withIpAllocationMethod(VirtualMachineIpAllocationMethod.DYNAMIC)
                             .withIpv4Address("198.51.100.1")
@@ -86,7 +86,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                         new VirtualMachinePlacementHint()
                             .withHintType(VirtualMachinePlacementHintType.AFFINITY)
                             .withResourceId(
-                                "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName")
+                                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName")
                             .withSchedulingExecution(VirtualMachineSchedulingExecution.HARD)
                             .withScope(VirtualMachinePlacementHintPodAffinityScope.fromString(""))))
             .withSshPublicKeys(Arrays.asList(new SshPublicKey().withKeyData("fakeTokenPlaceholder")))

@@ -469,7 +469,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
-        return implClient.beginRecoverDeletedSecretAsync(name).getSyncPoller();
+        return implClient.beginRecoverDeletedSecret(name, Context.NONE);
     }
 
     /**
@@ -625,7 +625,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretProperties> listPropertiesOfSecrets() {
-        return listPropertiesOfSecrets(Context.NONE);
+        return implClient.listPropertiesOfSecrets();
     }
 
     /**
@@ -653,7 +653,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretProperties> listPropertiesOfSecrets(Context context) {
-        return new PagedIterable<>(implClient.listPropertiesOfSecrets(context));
+        return implClient.listPropertiesOfSecrets(context);
     }
 
     /**
@@ -689,7 +689,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecret> listDeletedSecrets() {
-        return listDeletedSecrets(Context.NONE);
+        return implClient.listDeletedSecrets();
     }
 
     /**
@@ -711,7 +711,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecret> listDeletedSecrets(Context context) {
-        return new PagedIterable<>(implClient.listDeletedSecrets(context));
+        return implClient.listDeletedSecrets(context);
     }
 
     /**
@@ -793,6 +793,6 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretProperties> listPropertiesOfSecretVersions(String name, Context context) {
-        return new PagedIterable<>(implClient.listPropertiesOfSecretVersions(name, context));
+        return implClient.listPropertiesOfSecretVersions(name, context);
     }
 }

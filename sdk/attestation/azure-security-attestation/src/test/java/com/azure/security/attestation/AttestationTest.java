@@ -21,6 +21,7 @@ import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.azure.security.attestation.models.AttestationType;
 import com.azure.security.attestation.models.PolicyModification;
 import com.azure.security.attestation.models.PolicyResult;
+import com.azure.security.attestation.models.TpmAttestationResult;
 import io.opentelemetry.api.trace.Span;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -368,10 +369,10 @@ public class AttestationTest extends AttestationClientTestBase {
         // containing an object with a property named "type" whose value is "aikcert".
 
         String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
-        String tpmResponse = client.attestTpm(attestInitialPayload);
+        TpmAttestationResult tpmResponse = client.attestTpm(BinaryData.fromString(attestInitialPayload));
 
-        Object deserializedResponse = assertDoesNotThrow(() ->
-            ADAPTER.deserialize(tpmResponse, Object.class, SerializerEncoding.JSON));
+        Object deserializedResponse = assertDoesNotThrow(() -> ADAPTER.deserialize(tpmResponse.getTpmResult().toBytes(),
+            Object.class, SerializerEncoding.JSON));
         assertTrue(deserializedResponse instanceof LinkedHashMap);
         @SuppressWarnings("unchecked")
         LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
@@ -417,11 +418,11 @@ public class AttestationTest extends AttestationClientTestBase {
         // containing an object with a property named "type" whose value is "aikcert".
 
         String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
-        Response<String> tpmResponse = client.attestTpmWithResponse(attestInitialPayload, Context.NONE);
+        Response<TpmAttestationResult> tpmResponse = client.attestTpmWithResponse(BinaryData.fromString(attestInitialPayload), Context.NONE);
         // END: com.azure.security.attestation.AttestationClient.attestTpmWithResponse
 
-        Object deserializedResponse = assertDoesNotThrow(() ->
-            ADAPTER.deserialize(tpmResponse.getValue(), Object.class, SerializerEncoding.JSON));
+        Object deserializedResponse = assertDoesNotThrow(() -> ADAPTER.deserialize(
+            tpmResponse.getValue().getTpmResult().toBytes(), Object.class, SerializerEncoding.JSON));
         assertTrue(deserializedResponse instanceof LinkedHashMap);
         @SuppressWarnings("unchecked")
         LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
@@ -464,10 +465,10 @@ public class AttestationTest extends AttestationClientTestBase {
         // containing an object with a property named "type" whose value is "aikcert".
 
         String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
-        StepVerifier.create(client.attestTpm(attestInitialPayload))
+        StepVerifier.create(client.attestTpm(BinaryData.fromString(attestInitialPayload)))
             .assertNext(tpmResponse -> {
-                Object deserializedResponse = assertDoesNotThrow(() ->
-                    ADAPTER.deserialize(tpmResponse, Object.class, SerializerEncoding.JSON));
+                Object deserializedResponse = assertDoesNotThrow(() -> ADAPTER.deserialize(
+                    tpmResponse.getTpmResult().toBytes(), Object.class, SerializerEncoding.JSON));
                 assertTrue(deserializedResponse instanceof LinkedHashMap);
                 @SuppressWarnings("unchecked")
                 LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
@@ -490,7 +491,8 @@ public class AttestationTest extends AttestationClientTestBase {
         AttestationOptions request2 = new AttestationOptions(decodedOpenEnclaveReport)
             .setInitTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.JSON))
             .setInitTimeData(new AttestationData(decodedOpenEnclaveReport, AttestationDataInterpretation.BINARY))
-            .setRunTimeData(new AttestationData(BinaryData.fromBytes(new byte[]{1, 2, 3, 4, 5}), AttestationDataInterpretation.BINARY));
+            .setRunTimeData(new AttestationData(BinaryData.fromBytes(new byte[]{1, 2, 3, 4, 5}),
+                AttestationDataInterpretation.BINARY));
 
         assertArrayEquals(decodedOpenEnclaveReport.toBytes(), request2.getInitTimeData().getData().toBytes());
         assertArrayEquals(new byte[]{1, 2, 3, 4, 5}, request2.getRunTimeData().getData().toBytes());
@@ -696,4 +698,3 @@ public class AttestationTest extends AttestationClientTestBase {
 
     }
 }
-
