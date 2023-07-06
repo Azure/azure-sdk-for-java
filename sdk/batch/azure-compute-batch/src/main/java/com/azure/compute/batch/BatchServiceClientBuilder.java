@@ -35,6 +35,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +98,9 @@ public final class BatchServiceClientBuilder
     @Generated
     @Override
     public BatchServiceClientBuilder pipeline(HttpPipeline pipeline) {
+        if (this.pipeline != null && pipeline == null) {
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
         this.pipeline = pipeline;
         return this;
     }
@@ -285,8 +289,7 @@ public final class BatchServiceClientBuilder
         policies.add(new CookiePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
-        }
-        else if (batchSharedKeyCred != null) {
+        } else if (batchSharedKeyCred != null) {
             policies.add(new BatchSharedKeyCredentialsPolicy(batchSharedKeyCred));
         }
         this.pipelinePolicies.stream()
@@ -503,4 +506,6 @@ public final class BatchServiceClientBuilder
         return new ComputeNodeExtensionsClient(
                 new ComputeNodeExtensionsAsyncClient(buildInnerClient().getComputeNodeExtensions()));
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BatchServiceClientBuilder.class);
 }

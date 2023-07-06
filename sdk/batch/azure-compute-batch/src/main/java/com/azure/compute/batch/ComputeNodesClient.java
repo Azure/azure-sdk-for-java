@@ -20,10 +20,13 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.DateTimeRfc1123;
+import java.time.OffsetDateTime;
 
 /** Initializes a new instance of the synchronous BatchServiceClient type. */
 @ServiceClient(builder = BatchServiceClientBuilder.class)
@@ -65,7 +68,7 @@ public final class ComputeNodesClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -125,7 +128,7 @@ public final class ComputeNodesClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -175,7 +178,7 @@ public final class ComputeNodesClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -239,7 +242,7 @@ public final class ComputeNodesClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -441,7 +444,7 @@ public final class ComputeNodesClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -496,7 +499,7 @@ public final class ComputeNodesClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -550,7 +553,7 @@ public final class ComputeNodesClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -604,7 +607,7 @@ public final class ComputeNodesClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -652,7 +655,7 @@ public final class ComputeNodesClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -710,7 +713,7 @@ public final class ComputeNodesClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -765,7 +768,7 @@ public final class ComputeNodesClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -840,7 +843,7 @@ public final class ComputeNodesClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -1028,55 +1031,6 @@ public final class ComputeNodesClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
      * @param user The user Account to be created.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addUser(
-            String poolId,
-            String nodeId,
-            ComputeNodeUser user,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate) {
-        // Generated convenience method for addUserWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        addUserWithResponse(poolId, nodeId, BinaryData.fromObject(user), requestOptions).getValue();
-    }
-
-    /**
-     * Adds a user Account to the specified Compute Node.
-     *
-     * <p>You can add a user Account to a Compute Node only when it is in the idle or running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the machine on which you want to create a user Account.
-     * @param user The user Account to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1090,55 +1044,6 @@ public final class ComputeNodesClient {
         // Generated convenience method for addUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
         addUserWithResponse(poolId, nodeId, BinaryData.fromObject(user), requestOptions).getValue();
-    }
-
-    /**
-     * Deletes a user Account from the specified Compute Node.
-     *
-     * <p>You can delete a user Account to a Compute Node only when it is in the idle or running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the machine on which you want to delete a user Account.
-     * @param userName The name of the user Account to delete.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteUser(
-            String poolId,
-            String nodeId,
-            String userName,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate) {
-        // Generated convenience method for deleteUserWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        deleteUserWithResponse(poolId, nodeId, userName, requestOptions).getValue();
     }
 
     /**
@@ -1175,60 +1080,6 @@ public final class ComputeNodesClient {
      * @param nodeId The ID of the machine on which you want to update a user Account.
      * @param userName The name of the user Account to update.
      * @param nodeUpdateUserParameter The parameters for the request.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateUser(
-            String poolId,
-            String nodeId,
-            String userName,
-            NodeUpdateUserParameters nodeUpdateUserParameter,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate) {
-        // Generated convenience method for updateUserWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        updateUserWithResponse(poolId, nodeId, userName, BinaryData.fromObject(nodeUpdateUserParameter), requestOptions)
-                .getValue();
-    }
-
-    /**
-     * Updates the password and expiration time of a user Account on the specified Compute Node.
-     *
-     * <p>This operation replaces of all the updatable properties of the Account. For example, if the expiryTime element
-     * is not specified, the current value is replaced with the default value, not left unmodified. You can update a
-     * user Account on a Compute Node only when it is in the idle or running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the machine on which you want to update a user Account.
-     * @param userName The name of the user Account to update.
-     * @param nodeUpdateUserParameter The parameters for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1251,57 +1102,6 @@ public final class ComputeNodesClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to get information about.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param select An OData $select clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Compute Node.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ComputeNode get(
-            String poolId,
-            String nodeId,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate,
-            String select) {
-        // Generated convenience method for getWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select, false);
-        }
-        return getWithResponse(poolId, nodeId, requestOptions).getValue().toObject(ComputeNode.class);
-    }
-
-    /**
-     * Gets information about the specified Compute Node.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node that you want to get information about.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1316,58 +1116,6 @@ public final class ComputeNodesClient {
         // Generated convenience method for getWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getWithResponse(poolId, nodeId, requestOptions).getValue().toObject(ComputeNode.class);
-    }
-
-    /**
-     * Restarts the specified Compute Node.
-     *
-     * <p>You can restart a Compute Node only if it is in an idle or running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node that you want to restart.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param parameters The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reboot(
-            String poolId,
-            String nodeId,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate,
-            NodeRebootParameters parameters) {
-        // Generated convenience method for rebootWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (parameters != null) {
-            requestOptions.setBody(BinaryData.fromObject(parameters));
-        }
-        rebootWithResponse(poolId, nodeId, requestOptions).getValue();
     }
 
     /**
@@ -1400,59 +1148,6 @@ public final class ComputeNodesClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param parameters The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reimage(
-            String poolId,
-            String nodeId,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate,
-            NodeReimageParameters parameters) {
-        // Generated convenience method for reimageWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (parameters != null) {
-            requestOptions.setBody(BinaryData.fromObject(parameters));
-        }
-        reimageWithResponse(poolId, nodeId, requestOptions).getValue();
-    }
-
-    /**
-     * Reinstalls the operating system on the specified Compute Node.
-     *
-     * <p>You can reinstall the operating system on a Compute Node only if it is in an idle or running state. This API
-     * can be invoked only on Pools created with the cloud service configuration property.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node that you want to restart.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1466,58 +1161,6 @@ public final class ComputeNodesClient {
         // Generated convenience method for reimageWithResponse
         RequestOptions requestOptions = new RequestOptions();
         reimageWithResponse(poolId, nodeId, requestOptions).getValue();
-    }
-
-    /**
-     * Disables Task scheduling on the specified Compute Node.
-     *
-     * <p>You can disable Task scheduling on a Compute Node only if its current scheduling state is enabled.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param parameters The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableScheduling(
-            String poolId,
-            String nodeId,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate,
-            NodeDisableSchedulingParameters parameters) {
-        // Generated convenience method for disableSchedulingWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (parameters != null) {
-            requestOptions.setBody(BinaryData.fromObject(parameters));
-        }
-        disableSchedulingWithResponse(poolId, nodeId, requestOptions).getValue();
     }
 
     /**
@@ -1549,53 +1192,6 @@ public final class ComputeNodesClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enableScheduling(
-            String poolId,
-            String nodeId,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate) {
-        // Generated convenience method for enableSchedulingWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        enableSchedulingWithResponse(poolId, nodeId, requestOptions).getValue();
-    }
-
-    /**
-     * Enables Task scheduling on the specified Compute Node.
-     *
-     * <p>You can enable Task scheduling on a Compute Node only if its current scheduling state is disabled.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1609,58 +1205,6 @@ public final class ComputeNodesClient {
         // Generated convenience method for enableSchedulingWithResponse
         RequestOptions requestOptions = new RequestOptions();
         enableSchedulingWithResponse(poolId, nodeId, requestOptions).getValue();
-    }
-
-    /**
-     * Gets the settings required for remote login to a Compute Node.
-     *
-     * <p>Before you can remotely login to a Compute Node using the remote login settings, you must create a user
-     * Account on the Compute Node. This API can be invoked only on Pools created with the virtual machine configuration
-     * property. For Pools created with a cloud service configuration, see the GetRemoteDesktop API.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remote login settings for a Compute Node.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ComputeNodeGetRemoteLoginSettingsResult getRemoteLoginSettings(
-            String poolId,
-            String nodeId,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate) {
-        // Generated convenience method for getRemoteLoginSettingsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        return getRemoteLoginSettingsWithResponse(poolId, nodeId, requestOptions)
-                .getValue()
-                .toObject(ComputeNodeGetRemoteLoginSettingsResult.class);
     }
 
     /**
@@ -1699,6 +1243,557 @@ public final class ComputeNodesClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData getRemoteDesktop(String poolId, String nodeId) {
+        // Generated convenience method for getRemoteDesktopWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getRemoteDesktopWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Upload Azure Batch service log files from the specified Compute Node to Azure Blob Storage.
+     *
+     * <p>This is for gathering Azure Batch service log files in an automated fashion from Compute Nodes if you are
+     * experiencing an error and wish to escalate to Azure support. The Azure Batch service log files should be shared
+     * with Azure support to aid in debugging issues with the Batch service.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
+     * @param uploadBatchServiceLogsConfiguration The Azure Batch service log files upload configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of uploading Batch service log files from a specific Compute Node.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UploadBatchServiceLogsResult uploadBatchServiceLogs(
+            String poolId, String nodeId, UploadBatchServiceLogsConfiguration uploadBatchServiceLogsConfiguration) {
+        // Generated convenience method for uploadBatchServiceLogsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return uploadBatchServiceLogsWithResponse(
+                        poolId, nodeId, BinaryData.fromObject(uploadBatchServiceLogsConfiguration), requestOptions)
+                .getValue()
+                .toObject(UploadBatchServiceLogsResult.class);
+    }
+
+    /**
+     * Lists the Compute Nodes in the specified Pool.
+     *
+     * @param poolId The ID of the Pool from which you want to list Compute Nodes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ComputeNode> list(String poolId) {
+        // Generated convenience method for list
+        return new PagedIterable<>(client.list(poolId));
+    }
+
+    /**
+     * Adds a user Account to the specified Compute Node.
+     *
+     * <p>You can add a user Account to a Compute Node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to create a user Account.
+     * @param user The user Account to be created.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
+     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void addUser(
+            String poolId,
+            String nodeId,
+            ComputeNodeUser user,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate) {
+        // Generated convenience method for addUserWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (clientRequestId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
+        }
+        if (returnClientRequestId != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        addUserWithResponse(poolId, nodeId, BinaryData.fromObject(user), requestOptions).getValue();
+    }
+
+    /**
+     * Deletes a user Account from the specified Compute Node.
+     *
+     * <p>You can delete a user Account to a Compute Node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to delete a user Account.
+     * @param userName The name of the user Account to delete.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
+     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteUser(
+            String poolId,
+            String nodeId,
+            String userName,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate) {
+        // Generated convenience method for deleteUserWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (clientRequestId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
+        }
+        if (returnClientRequestId != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        deleteUserWithResponse(poolId, nodeId, userName, requestOptions).getValue();
+    }
+
+    /**
+     * Updates the password and expiration time of a user Account on the specified Compute Node.
+     *
+     * <p>This operation replaces of all the updatable properties of the Account. For example, if the expiryTime element
+     * is not specified, the current value is replaced with the default value, not left unmodified. You can update a
+     * user Account on a Compute Node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to update a user Account.
+     * @param userName The name of the user Account to update.
+     * @param nodeUpdateUserParameter The parameters for the request.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
+     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateUser(
+            String poolId,
+            String nodeId,
+            String userName,
+            NodeUpdateUserParameters nodeUpdateUserParameter,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate) {
+        // Generated convenience method for updateUserWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (clientRequestId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
+        }
+        if (returnClientRequestId != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        updateUserWithResponse(poolId, nodeId, userName, BinaryData.fromObject(nodeUpdateUserParameter), requestOptions)
+                .getValue();
+    }
+
+    /**
+     * Gets information about the specified Compute Node.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to get information about.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
+     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param select An OData $select clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Compute Node.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ComputeNode get(
+            String poolId,
+            String nodeId,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate,
+            String select) {
+        // Generated convenience method for getWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (clientRequestId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
+        }
+        if (returnClientRequestId != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select", select, false);
+        }
+        return getWithResponse(poolId, nodeId, requestOptions).getValue().toObject(ComputeNode.class);
+    }
+
+    /**
+     * Restarts the specified Compute Node.
+     *
+     * <p>You can restart a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
+     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param parameters The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void reboot(
+            String poolId,
+            String nodeId,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate,
+            NodeRebootParameters parameters) {
+        // Generated convenience method for rebootWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (clientRequestId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
+        }
+        if (returnClientRequestId != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (parameters != null) {
+            requestOptions.setBody(BinaryData.fromObject(parameters));
+        }
+        rebootWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     *
+     * <p>You can reinstall the operating system on a Compute Node only if it is in an idle or running state. This API
+     * can be invoked only on Pools created with the cloud service configuration property.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
+     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param parameters The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void reimage(
+            String poolId,
+            String nodeId,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate,
+            NodeReimageParameters parameters) {
+        // Generated convenience method for reimageWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (clientRequestId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
+        }
+        if (returnClientRequestId != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (parameters != null) {
+            requestOptions.setBody(BinaryData.fromObject(parameters));
+        }
+        reimageWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Disables Task scheduling on the specified Compute Node.
+     *
+     * <p>You can disable Task scheduling on a Compute Node only if its current scheduling state is enabled.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
+     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param parameters The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void disableScheduling(
+            String poolId,
+            String nodeId,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate,
+            NodeDisableSchedulingParameters parameters) {
+        // Generated convenience method for disableSchedulingWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (clientRequestId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
+        }
+        if (returnClientRequestId != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (parameters != null) {
+            requestOptions.setBody(BinaryData.fromObject(parameters));
+        }
+        disableSchedulingWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Enables Task scheduling on the specified Compute Node.
+     *
+     * <p>You can enable Task scheduling on a Compute Node only if its current scheduling state is disabled.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
+     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void enableScheduling(
+            String poolId,
+            String nodeId,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate) {
+        // Generated convenience method for enableSchedulingWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (clientRequestId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
+        }
+        if (returnClientRequestId != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        enableSchedulingWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Gets the settings required for remote login to a Compute Node.
+     *
+     * <p>Before you can remotely login to a Compute Node using the remote login settings, you must create a user
+     * Account on the Compute Node. This API can be invoked only on Pools created with the virtual machine configuration
+     * property. For Pools created with a cloud service configuration, see the GetRemoteDesktop API.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
+     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remote login settings for a Compute Node.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ComputeNodeGetRemoteLoginSettingsResult getRemoteLoginSettings(
+            String poolId,
+            String nodeId,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate) {
+        // Generated convenience method for getRemoteLoginSettingsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (clientRequestId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
+        }
+        if (returnClientRequestId != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        return getRemoteLoginSettingsWithResponse(poolId, nodeId, requestOptions)
+                .getValue()
+                .toObject(ComputeNodeGetRemoteLoginSettingsResult.class);
+    }
+
+    /**
+     * Gets the Remote Desktop Protocol file for the specified Compute Node.
+     *
+     * <p>Before you can access a Compute Node by using the RDP file, you must create a user Account on the Compute
+     * Node. This API can only be invoked on Pools created with a cloud service configuration. For Pools created with a
+     * virtual machine configuration, see the GetRemoteLoginSettings API.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
      * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
@@ -1722,46 +1817,23 @@ public final class ComputeNodesClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate) {
+            OffsetDateTime ocpDate) {
         // Generated convenience method for getRemoteDesktopWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
-        return getRemoteDesktopWithResponse(poolId, nodeId, requestOptions).getValue();
-    }
-
-    /**
-     * Gets the Remote Desktop Protocol file for the specified Compute Node.
-     *
-     * <p>Before you can access a Compute Node by using the RDP file, you must create a user Account on the Compute
-     * Node. This API can only be invoked on Pools created with a cloud service configuration. For Pools created with a
-     * virtual machine configuration, see the GetRemoteLoginSettings API.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData getRemoteDesktop(String poolId, String nodeId) {
-        // Generated convenience method for getRemoteDesktopWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return getRemoteDesktopWithResponse(poolId, nodeId, requestOptions).getValue();
     }
 
@@ -1799,51 +1871,23 @@ public final class ComputeNodesClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate) {
+            OffsetDateTime ocpDate) {
         // Generated convenience method for uploadBatchServiceLogsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
-        return uploadBatchServiceLogsWithResponse(
-                        poolId, nodeId, BinaryData.fromObject(uploadBatchServiceLogsConfiguration), requestOptions)
-                .getValue()
-                .toObject(UploadBatchServiceLogsResult.class);
-    }
-
-    /**
-     * Upload Azure Batch service log files from the specified Compute Node to Azure Blob Storage.
-     *
-     * <p>This is for gathering Azure Batch service log files in an automated fashion from Compute Nodes if you are
-     * experiencing an error and wish to escalate to Azure support. The Azure Batch service log files should be shared
-     * with Azure support to aid in debugging issues with the Batch service.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
-     * @param uploadBatchServiceLogsConfiguration The Azure Batch service log files upload configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of uploading Batch service log files from a specific Compute Node.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadBatchServiceLogsResult uploadBatchServiceLogs(
-            String poolId, String nodeId, UploadBatchServiceLogsConfiguration uploadBatchServiceLogsConfiguration) {
-        // Generated convenience method for uploadBatchServiceLogsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return uploadBatchServiceLogsWithResponse(
                         poolId, nodeId, BinaryData.fromObject(uploadBatchServiceLogsConfiguration), requestOptions)
                 .getValue()
@@ -1879,57 +1923,15 @@ public final class ComputeNodesClient {
     public PagedIterable<ComputeNode> list(
             String poolId,
             Integer maxresults,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
             String filter,
             String select) {
         // Generated convenience method for list
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select, false);
-        }
         return new PagedIterable<>(
                 client.list(
                         poolId, maxresults, ocpDate, timeOut, clientRequestId, returnClientRequestId, filter, select));
-    }
-
-    /**
-     * Lists the Compute Nodes in the specified Pool.
-     *
-     * @param poolId The ID of the Pool from which you want to list Compute Nodes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ComputeNode> list(String poolId) {
-        // Generated convenience method for list
-        RequestOptions requestOptions = new RequestOptions();
-        return new PagedIterable<>(client.list(poolId));
     }
 }

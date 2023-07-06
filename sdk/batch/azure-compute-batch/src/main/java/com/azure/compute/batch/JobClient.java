@@ -17,10 +17,14 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.DateTimeRfc1123;
+import java.time.OffsetDateTime;
 
 /** Initializes a new instance of the synchronous BatchServiceClient type. */
 @ServiceClient(builder = BatchServiceClientBuilder.class)
@@ -64,7 +68,7 @@ public final class JobClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -134,7 +138,7 @@ public final class JobClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -143,10 +147,10 @@ public final class JobClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -191,7 +195,7 @@ public final class JobClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -200,10 +204,10 @@ public final class JobClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -406,8 +410,9 @@ public final class JobClient {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -631,7 +636,7 @@ public final class JobClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -640,10 +645,10 @@ public final class JobClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -846,8 +851,9 @@ public final class JobClient {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -1073,7 +1079,7 @@ public final class JobClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -1082,10 +1088,10 @@ public final class JobClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -1288,8 +1294,9 @@ public final class JobClient {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -1519,7 +1526,7 @@ public final class JobClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -1528,10 +1535,10 @@ public final class JobClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -1589,7 +1596,7 @@ public final class JobClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -1598,10 +1605,10 @@ public final class JobClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -1650,7 +1657,7 @@ public final class JobClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -1659,10 +1666,10 @@ public final class JobClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -1720,7 +1727,7 @@ public final class JobClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -1923,8 +1930,9 @@ public final class JobClient {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -2148,7 +2156,7 @@ public final class JobClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -2354,8 +2362,9 @@ public final class JobClient {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -2578,7 +2587,7 @@ public final class JobClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -2784,8 +2793,9 @@ public final class JobClient {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -3014,7 +3024,7 @@ public final class JobClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -3113,7 +3123,7 @@ public final class JobClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -3162,49 +3172,6 @@ public final class JobClient {
      * last update time of the statistics. The statistics may not be immediately available. The Batch service performs
      * periodic roll-up of statistics. The typical delay is about 30 minutes.
      *
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource usage statistics for a Job.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobStatistics getAllLifetimeStatistics(
-            Integer timeOut, String clientRequestId, Boolean returnClientRequestId, String ocpDate) {
-        // Generated convenience method for getAllLifetimeStatisticsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        return getAllLifetimeStatisticsWithResponse(requestOptions).getValue().toObject(JobStatistics.class);
-    }
-
-    /**
-     * Gets lifetime summary statistics for all of the Jobs in the specified Account.
-     *
-     * <p>Statistics are aggregated across all Jobs that have ever existed in the Account, from Account creation to the
-     * last update time of the statistics. The statistics may not be immediately available. The Batch service performs
-     * periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -3218,83 +3185,6 @@ public final class JobClient {
         // Generated convenience method for getAllLifetimeStatisticsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAllLifetimeStatisticsWithResponse(requestOptions).getValue().toObject(JobStatistics.class);
-    }
-
-    /**
-     * Deletes a Job.
-     *
-     * <p>Deleting a Job also deletes all Tasks that are part of that Job, and all Job statistics. This also overrides
-     * the retention period for Task data; that is, if the Job contains Tasks which are still retained on Compute Nodes,
-     * the Batch services deletes those Tasks' working directories and all their contents. When a Delete Job request is
-     * received, the Batch service sets the Job to the deleting state. All update operations on a Job that is in
-     * deleting state will fail with status code 409 (Conflict), with additional information indicating that the Job is
-     * being deleted.
-     *
-     * @param jobId The ID of the Job to delete.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifMatch An ETag value associated with the version of the resource known to the client. The operation will
-     *     be performed only if the resource's current ETag on the service exactly matches the value specified by the
-     *     client.
-     * @param ifNoneMatch An ETag value associated with the version of the resource known to the client. The operation
-     *     will be performed only if the resource's current ETag on the service does not match the value specified by
-     *     the client.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-            String jobId,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate,
-            String ifMatch,
-            String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
-        // Generated convenience method for deleteWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader("if-match", ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader("if-none-match", ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
-        }
-        deleteWithResponse(jobId, requestOptions).getValue();
     }
 
     /**
@@ -3327,87 +3217,6 @@ public final class JobClient {
      * Gets information about the specified Job.
      *
      * @param jobId The ID of the Job.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifMatch An ETag value associated with the version of the resource known to the client. The operation will
-     *     be performed only if the resource's current ETag on the service exactly matches the value specified by the
-     *     client.
-     * @param ifNoneMatch An ETag value associated with the version of the resource known to the client. The operation
-     *     will be performed only if the resource's current ETag on the service does not match the value specified by
-     *     the client.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
-     * @param select An OData $select clause.
-     * @param expand An OData $expand clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Job.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchJob get(
-            String jobId,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate,
-            String ifMatch,
-            String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince,
-            String select,
-            String expand) {
-        // Generated convenience method for getWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader("if-match", ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader("if-none-match", ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select, false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand, false);
-        }
-        return getWithResponse(jobId, requestOptions).getValue().toObject(BatchJob.class);
-    }
-
-    /**
-     * Gets information about the specified Job.
-     *
-     * @param jobId The ID of the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3432,81 +3241,6 @@ public final class JobClient {
      *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param jobPatchParameter The parameters for the request.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifMatch An ETag value associated with the version of the resource known to the client. The operation will
-     *     be performed only if the resource's current ETag on the service exactly matches the value specified by the
-     *     client.
-     * @param ifNoneMatch An ETag value associated with the version of the resource known to the client. The operation
-     *     will be performed only if the resource's current ETag on the service does not match the value specified by
-     *     the client.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void patch(
-            String jobId,
-            BatchJob jobPatchParameter,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate,
-            String ifMatch,
-            String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
-        // Generated convenience method for patchWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader("if-match", ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader("if-none-match", ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
-        }
-        patchWithResponse(jobId, BinaryData.fromObject(jobPatchParameter), requestOptions).getValue();
-    }
-
-    /**
-     * Updates the properties of the specified Job.
-     *
-     * <p>This replaces only the Job properties specified in the request. For example, if the Job has constraints, and a
-     * request does not specify the constraints element, then the Job keeps the existing constraints.
-     *
-     * @param jobId The ID of the Job whose properties you want to update.
-     * @param jobPatchParameter The parameters for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3520,82 +3254,6 @@ public final class JobClient {
         // Generated convenience method for patchWithResponse
         RequestOptions requestOptions = new RequestOptions();
         patchWithResponse(jobId, BinaryData.fromObject(jobPatchParameter), requestOptions).getValue();
-    }
-
-    /**
-     * Updates the properties of the specified Job.
-     *
-     * <p>This fully replaces all the updatable properties of the Job. For example, if the Job has constraints
-     * associated with it and if constraints is not specified with this request, then the Batch service will remove the
-     * existing constraints.
-     *
-     * @param jobId The ID of the Job whose properties you want to update.
-     * @param jobUpdateParameter The parameters for the request.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifMatch An ETag value associated with the version of the resource known to the client. The operation will
-     *     be performed only if the resource's current ETag on the service exactly matches the value specified by the
-     *     client.
-     * @param ifNoneMatch An ETag value associated with the version of the resource known to the client. The operation
-     *     will be performed only if the resource's current ETag on the service does not match the value specified by
-     *     the client.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(
-            String jobId,
-            BatchJob jobUpdateParameter,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate,
-            String ifMatch,
-            String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
-        // Generated convenience method for updateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader("if-match", ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader("if-none-match", ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
-        }
-        updateWithResponse(jobId, BinaryData.fromObject(jobUpdateParameter), requestOptions).getValue();
     }
 
     /**
@@ -3634,85 +3292,6 @@ public final class JobClient {
      *
      * @param jobId The ID of the Job to disable.
      * @param jobDisableParameter The parameters for the request.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifMatch An ETag value associated with the version of the resource known to the client. The operation will
-     *     be performed only if the resource's current ETag on the service exactly matches the value specified by the
-     *     client.
-     * @param ifNoneMatch An ETag value associated with the version of the resource known to the client. The operation
-     *     will be performed only if the resource's current ETag on the service does not match the value specified by
-     *     the client.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disable(
-            String jobId,
-            BatchJobDisableParameters jobDisableParameter,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate,
-            String ifMatch,
-            String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
-        // Generated convenience method for disableWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader("if-match", ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader("if-none-match", ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
-        }
-        disableWithResponse(jobId, BinaryData.fromObject(jobDisableParameter), requestOptions).getValue();
-    }
-
-    /**
-     * Disables the specified Job, preventing new Tasks from running.
-     *
-     * <p>The Batch Service immediately moves the Job to the disabling state. Batch then uses the disableTasks parameter
-     * to determine what to do with the currently running Tasks of the Job. The Job remains in the disabling state until
-     * the disable operation is completed and all Tasks have been dealt with according to the disableTasks option; the
-     * Job then moves to the disabled state. No new Tasks are started under the Job until it moves back to active state.
-     * If you try to disable a Job that is in any state other than active, disabling, or disabled, the request fails
-     * with status code 409.
-     *
-     * @param jobId The ID of the Job to disable.
-     * @param jobDisableParameter The parameters for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3737,81 +3316,6 @@ public final class JobClient {
      * Job containing active Tasks which were added more than 180 days ago, those Tasks will not run.
      *
      * @param jobId The ID of the Job to enable.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifMatch An ETag value associated with the version of the resource known to the client. The operation will
-     *     be performed only if the resource's current ETag on the service exactly matches the value specified by the
-     *     client.
-     * @param ifNoneMatch An ETag value associated with the version of the resource known to the client. The operation
-     *     will be performed only if the resource's current ETag on the service does not match the value specified by
-     *     the client.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enable(
-            String jobId,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate,
-            String ifMatch,
-            String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
-        // Generated convenience method for enableWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader("if-match", ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader("if-none-match", ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
-        }
-        enableWithResponse(jobId, requestOptions).getValue();
-    }
-
-    /**
-     * Enables the specified Job, allowing new Tasks to run.
-     *
-     * <p>When you call this API, the Batch service sets a disabled Job to the enabling state. After the this operation
-     * is completed, the Job moves to the active state, and scheduling of new Tasks under the Job resumes. The Batch
-     * service does not allow a Task to remain in the active state for more than 180 days. Therefore, if you enable a
-     * Job containing active Tasks which were added more than 180 days ago, those Tasks will not run.
-     *
-     * @param jobId The ID of the Job to enable.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3825,87 +3329,6 @@ public final class JobClient {
         // Generated convenience method for enableWithResponse
         RequestOptions requestOptions = new RequestOptions();
         enableWithResponse(jobId, requestOptions).getValue();
-    }
-
-    /**
-     * Terminates the specified Job, marking it as completed.
-     *
-     * <p>When a Terminate Job request is received, the Batch service sets the Job to the terminating state. The Batch
-     * service then terminates any running Tasks associated with the Job and runs any required Job release Tasks. Then
-     * the Job moves into the completed state. If there are any Tasks in the Job in the active state, they will remain
-     * in the active state. Once a Job is terminated, new Tasks cannot be added and any remaining active Tasks will not
-     * be scheduled.
-     *
-     * @param jobId The ID of the Job to terminate.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifMatch An ETag value associated with the version of the resource known to the client. The operation will
-     *     be performed only if the resource's current ETag on the service exactly matches the value specified by the
-     *     client.
-     * @param ifNoneMatch An ETag value associated with the version of the resource known to the client. The operation
-     *     will be performed only if the resource's current ETag on the service does not match the value specified by
-     *     the client.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
-     * @param parameters The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void terminate(
-            String jobId,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            String ocpDate,
-            String ifMatch,
-            String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince,
-            BatchJobTerminateParameters parameters) {
-        // Generated convenience method for terminateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader("if-match", ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader("if-none-match", ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
-        }
-        if (parameters != null) {
-            requestOptions.setBody(BinaryData.fromObject(parameters));
-        }
-        terminateWithResponse(jobId, requestOptions).getValue();
     }
 
     /**
@@ -3944,6 +3367,673 @@ public final class JobClient {
      * may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param job The Job to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void add(BatchJob job) {
+        // Generated convenience method for addWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        addWithResponse(BinaryData.fromObject(job), requestOptions).getValue();
+    }
+
+    /**
+     * Lists all of the Jobs in the specified Account.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BatchJob> list() {
+        // Generated convenience method for list
+        return new PagedIterable<>(client.list());
+    }
+
+    /**
+     * Lists the Jobs that have been created under the specified Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BatchJob> listFromJobSchedule(String jobScheduleId) {
+        // Generated convenience method for listFromJobSchedule
+        return new PagedIterable<>(client.listFromJobSchedule(jobScheduleId));
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release Task for the specified Job across the Compute
+     * Nodes where the Job has run.
+     *
+     * <p>This API returns the Job Preparation and Job Release Task status on all Compute Nodes that have run the Job
+     * Preparation or Job Release Task. This includes Compute Nodes which have since been removed from the Pool. If this
+     * API is invoked on a Job which has no Job Preparation or Job Release Task, the Batch service returns HTTP status
+     * code 409 (Conflict) with an error code of JobPreparationTaskNotSpecified.
+     *
+     * @param jobId The ID of the Job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the status of the Job Preparation and Job Release Tasks for a Job as paginated
+     *     response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<JobPreparationAndReleaseTaskExecutionInformation> listPreparationAndReleaseTaskStatus(
+            String jobId) {
+        // Generated convenience method for listPreparationAndReleaseTaskStatus
+        return new PagedIterable<>(client.listPreparationAndReleaseTaskStatus(jobId));
+    }
+
+    /**
+     * Gets the Task counts for the specified Job.
+     *
+     * <p>Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks
+     * which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned
+     * may not always be up to date. If you need exact task counts, use a list query.
+     *
+     * @param jobId The ID of the Job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Task and TaskSlot counts for a Job.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TaskCountsResult getTaskCounts(String jobId) {
+        // Generated convenience method for getTaskCountsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getTaskCountsWithResponse(jobId, requestOptions).getValue().toObject(TaskCountsResult.class);
+    }
+
+    /**
+     * Gets lifetime summary statistics for all of the Jobs in the specified Account.
+     *
+     * <p>Statistics are aggregated across all Jobs that have ever existed in the Account, from Account creation to the
+     * last update time of the statistics. The statistics may not be immediately available. The Batch service performs
+     * periodic roll-up of statistics. The typical delay is about 30 minutes.
+     *
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
+     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource usage statistics for a Job.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobStatistics getAllLifetimeStatistics(
+            Integer timeOut, String clientRequestId, Boolean returnClientRequestId, OffsetDateTime ocpDate) {
+        // Generated convenience method for getAllLifetimeStatisticsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (clientRequestId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
+        }
+        if (returnClientRequestId != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        return getAllLifetimeStatisticsWithResponse(requestOptions).getValue().toObject(JobStatistics.class);
+    }
+
+    /**
+     * Deletes a Job.
+     *
+     * <p>Deleting a Job also deletes all Tasks that are part of that Job, and all Job statistics. This also overrides
+     * the retention period for Task data; that is, if the Job contains Tasks which are still retained on Compute Nodes,
+     * the Batch services deletes those Tasks' working directories and all their contents. When a Delete Job request is
+     * received, the Batch service sets the Job to the deleting state. All update operations on a Job that is in
+     * deleting state will fail with status code 409 (Conflict), with additional information indicating that the Job is
+     * being deleted.
+     *
+     * @param jobId The ID of the Job to delete.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
+     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(
+            String jobId,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate,
+            RequestConditions requestConditions) {
+        // Generated convenience method for deleteWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (clientRequestId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
+        }
+        if (returnClientRequestId != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        deleteWithResponse(jobId, requestOptions).getValue();
+    }
+
+    /**
+     * Gets information about the specified Job.
+     *
+     * @param jobId The ID of the Job.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
+     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param select An OData $select clause.
+     * @param expand An OData $expand clause.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Job.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchJob get(
+            String jobId,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate,
+            String select,
+            String expand,
+            RequestConditions requestConditions) {
+        // Generated convenience method for getWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (clientRequestId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
+        }
+        if (returnClientRequestId != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select", select, false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam("$expand", expand, false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return getWithResponse(jobId, requestOptions).getValue().toObject(BatchJob.class);
+    }
+
+    /**
+     * Updates the properties of the specified Job.
+     *
+     * <p>This replaces only the Job properties specified in the request. For example, if the Job has constraints, and a
+     * request does not specify the constraints element, then the Job keeps the existing constraints.
+     *
+     * @param jobId The ID of the Job whose properties you want to update.
+     * @param jobPatchParameter The parameters for the request.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
+     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void patch(
+            String jobId,
+            BatchJob jobPatchParameter,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate,
+            RequestConditions requestConditions) {
+        // Generated convenience method for patchWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (clientRequestId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
+        }
+        if (returnClientRequestId != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        patchWithResponse(jobId, BinaryData.fromObject(jobPatchParameter), requestOptions).getValue();
+    }
+
+    /**
+     * Updates the properties of the specified Job.
+     *
+     * <p>This fully replaces all the updatable properties of the Job. For example, if the Job has constraints
+     * associated with it and if constraints is not specified with this request, then the Batch service will remove the
+     * existing constraints.
+     *
+     * @param jobId The ID of the Job whose properties you want to update.
+     * @param jobUpdateParameter The parameters for the request.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
+     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void update(
+            String jobId,
+            BatchJob jobUpdateParameter,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate,
+            RequestConditions requestConditions) {
+        // Generated convenience method for updateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (clientRequestId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
+        }
+        if (returnClientRequestId != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        updateWithResponse(jobId, BinaryData.fromObject(jobUpdateParameter), requestOptions).getValue();
+    }
+
+    /**
+     * Disables the specified Job, preventing new Tasks from running.
+     *
+     * <p>The Batch Service immediately moves the Job to the disabling state. Batch then uses the disableTasks parameter
+     * to determine what to do with the currently running Tasks of the Job. The Job remains in the disabling state until
+     * the disable operation is completed and all Tasks have been dealt with according to the disableTasks option; the
+     * Job then moves to the disabled state. No new Tasks are started under the Job until it moves back to active state.
+     * If you try to disable a Job that is in any state other than active, disabling, or disabled, the request fails
+     * with status code 409.
+     *
+     * @param jobId The ID of the Job to disable.
+     * @param jobDisableParameter The parameters for the request.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
+     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void disable(
+            String jobId,
+            BatchJobDisableParameters jobDisableParameter,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate,
+            RequestConditions requestConditions) {
+        // Generated convenience method for disableWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (clientRequestId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
+        }
+        if (returnClientRequestId != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        disableWithResponse(jobId, BinaryData.fromObject(jobDisableParameter), requestOptions).getValue();
+    }
+
+    /**
+     * Enables the specified Job, allowing new Tasks to run.
+     *
+     * <p>When you call this API, the Batch service sets a disabled Job to the enabling state. After the this operation
+     * is completed, the Job moves to the active state, and scheduling of new Tasks under the Job resumes. The Batch
+     * service does not allow a Task to remain in the active state for more than 180 days. Therefore, if you enable a
+     * Job containing active Tasks which were added more than 180 days ago, those Tasks will not run.
+     *
+     * @param jobId The ID of the Job to enable.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
+     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void enable(
+            String jobId,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate,
+            RequestConditions requestConditions) {
+        // Generated convenience method for enableWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (clientRequestId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
+        }
+        if (returnClientRequestId != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        enableWithResponse(jobId, requestOptions).getValue();
+    }
+
+    /**
+     * Terminates the specified Job, marking it as completed.
+     *
+     * <p>When a Terminate Job request is received, the Batch service sets the Job to the terminating state. The Batch
+     * service then terminates any running Tasks associated with the Job and runs any required Job release Tasks. Then
+     * the Job moves into the completed state. If there are any Tasks in the Job in the active state, they will remain
+     * in the active state. Once a Job is terminated, new Tasks cannot be added and any remaining active Tasks will not
+     * be scheduled.
+     *
+     * @param jobId The ID of the Job to terminate.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
+     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param parameters The parameters for the request.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void terminate(
+            String jobId,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate,
+            BatchJobTerminateParameters parameters,
+            RequestConditions requestConditions) {
+        // Generated convenience method for terminateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (clientRequestId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
+        }
+        if (returnClientRequestId != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (parameters != null) {
+            requestOptions.setBody(BinaryData.fromObject(parameters));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        terminateWithResponse(jobId, requestOptions).getValue();
+    }
+
+    /**
+     * Adds a Job to the specified Account.
+     *
+     * <p>The Batch service supports two ways to control the work done as part of a Job. In the first approach, the user
+     * specifies a Job Manager Task. The Batch service launches this Task when it is ready to start the Job. The Job
+     * Manager Task controls all other Tasks that run under this Job, by using the Task APIs. In the second approach,
+     * the user directly controls the execution of Tasks under an active Job, by using the Task APIs. Also note: when
+     * naming Jobs, avoid including sensitive information such as user names or secret project names. This information
+     * may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param job The Job to be added.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
      * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
@@ -3961,47 +4051,27 @@ public final class JobClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void add(
-            BatchJob job, Integer timeOut, String clientRequestId, Boolean returnClientRequestId, String ocpDate) {
+            BatchJob job,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate) {
         // Generated convenience method for addWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
-        addWithResponse(BinaryData.fromObject(job), requestOptions).getValue();
-    }
-
-    /**
-     * Adds a Job to the specified Account.
-     *
-     * <p>The Batch service supports two ways to control the work done as part of a Job. In the first approach, the user
-     * specifies a Job Manager Task. The Batch service launches this Task when it is ready to start the Job. The Job
-     * Manager Task controls all other Tasks that run under this Job, by using the Task APIs. In the second approach,
-     * the user directly controls the execution of Tasks under an active Job, by using the Task APIs. Also note: when
-     * naming Jobs, avoid including sensitive information such as user names or secret project names. This information
-     * may appear in telemetry logs accessible to Microsoft Support engineers.
-     *
-     * @param job The Job to be added.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void add(BatchJob job) {
-        // Generated convenience method for addWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         addWithResponse(BinaryData.fromObject(job), requestOptions).getValue();
     }
 
@@ -4033,7 +4103,7 @@ public final class JobClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchJob> list(
             Integer maxresults,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
@@ -4041,52 +4111,9 @@ public final class JobClient {
             String select,
             String expand) {
         // Generated convenience method for list
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select, false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand, false);
-        }
         return new PagedIterable<>(
                 client.list(
                         maxresults, ocpDate, timeOut, clientRequestId, returnClientRequestId, filter, select, expand));
-    }
-
-    /**
-     * Lists all of the Jobs in the specified Account.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchJob> list() {
-        // Generated convenience method for list
-        RequestOptions requestOptions = new RequestOptions();
-        return new PagedIterable<>(client.list());
     }
 
     /**
@@ -4119,7 +4146,7 @@ public final class JobClient {
     public PagedIterable<BatchJob> listFromJobSchedule(
             String jobScheduleId,
             Integer maxresults,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
@@ -4127,31 +4154,6 @@ public final class JobClient {
             String select,
             String expand) {
         // Generated convenience method for listFromJobSchedule
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select, false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand, false);
-        }
         return new PagedIterable<>(
                 client.listFromJobSchedule(
                         jobScheduleId,
@@ -4163,26 +4165,6 @@ public final class JobClient {
                         filter,
                         select,
                         expand));
-    }
-
-    /**
-     * Lists the Jobs that have been created under the specified Job Schedule.
-     *
-     * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchJob> listFromJobSchedule(String jobScheduleId) {
-        // Generated convenience method for listFromJobSchedule
-        RequestOptions requestOptions = new RequestOptions();
-        return new PagedIterable<>(client.listFromJobSchedule(jobScheduleId));
     }
 
     /**
@@ -4221,66 +4203,16 @@ public final class JobClient {
     public PagedIterable<JobPreparationAndReleaseTaskExecutionInformation> listPreparationAndReleaseTaskStatus(
             String jobId,
             Integer maxresults,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
             String filter,
             String select) {
         // Generated convenience method for listPreparationAndReleaseTaskStatus
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select, false);
-        }
         return new PagedIterable<>(
                 client.listPreparationAndReleaseTaskStatus(
                         jobId, maxresults, ocpDate, timeOut, clientRequestId, returnClientRequestId, filter, select));
-    }
-
-    /**
-     * Lists the execution status of the Job Preparation and Job Release Task for the specified Job across the Compute
-     * Nodes where the Job has run.
-     *
-     * <p>This API returns the Job Preparation and Job Release Task status on all Compute Nodes that have run the Job
-     * Preparation or Job Release Task. This includes Compute Nodes which have since been removed from the Pool. If this
-     * API is invoked on a Job which has no Job Preparation or Job Release Task, the Batch service returns HTTP status
-     * code 409 (Conflict) with an error code of JobPreparationTaskNotSpecified.
-     *
-     * @param jobId The ID of the Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the status of the Job Preparation and Job Release Tasks for a Job as paginated
-     *     response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobPreparationAndReleaseTaskExecutionInformation> listPreparationAndReleaseTaskStatus(
-            String jobId) {
-        // Generated convenience method for listPreparationAndReleaseTaskStatus
-        RequestOptions requestOptions = new RequestOptions();
-        return new PagedIterable<>(client.listPreparationAndReleaseTaskStatus(jobId));
     }
 
     /**
@@ -4309,45 +4241,27 @@ public final class JobClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TaskCountsResult getTaskCounts(
-            String jobId, Integer timeOut, String clientRequestId, Boolean returnClientRequestId, String ocpDate) {
+            String jobId,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate) {
         // Generated convenience method for getTaskCountsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
-        return getTaskCountsWithResponse(jobId, requestOptions).getValue().toObject(TaskCountsResult.class);
-    }
-
-    /**
-     * Gets the Task counts for the specified Job.
-     *
-     * <p>Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks
-     * which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned
-     * may not always be up to date. If you need exact task counts, use a list query.
-     *
-     * @param jobId The ID of the Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Task and TaskSlot counts for a Job.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TaskCountsResult getTaskCounts(String jobId) {
-        // Generated convenience method for getTaskCountsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return getTaskCountsWithResponse(jobId, requestOptions).getValue().toObject(TaskCountsResult.class);
     }
 }

@@ -21,13 +21,16 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
+import java.time.OffsetDateTime;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -72,7 +75,7 @@ public final class ComputeNodesAsyncClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -132,7 +135,7 @@ public final class ComputeNodesAsyncClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -182,7 +185,7 @@ public final class ComputeNodesAsyncClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -245,7 +248,7 @@ public final class ComputeNodesAsyncClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -448,7 +451,7 @@ public final class ComputeNodesAsyncClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -503,7 +506,7 @@ public final class ComputeNodesAsyncClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -557,7 +560,7 @@ public final class ComputeNodesAsyncClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -612,7 +615,7 @@ public final class ComputeNodesAsyncClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -661,7 +664,7 @@ public final class ComputeNodesAsyncClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -720,7 +723,7 @@ public final class ComputeNodesAsyncClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -775,7 +778,7 @@ public final class ComputeNodesAsyncClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -850,7 +853,7 @@ public final class ComputeNodesAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -1038,6 +1041,326 @@ public final class ComputeNodesAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
      * @param user The user Account to be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> addUser(String poolId, String nodeId, ComputeNodeUser user) {
+        // Generated convenience method for addUserWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return addUserWithResponse(poolId, nodeId, BinaryData.fromObject(user), requestOptions)
+                .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes a user Account from the specified Compute Node.
+     *
+     * <p>You can delete a user Account to a Compute Node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to delete a user Account.
+     * @param userName The name of the user Account to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteUser(String poolId, String nodeId, String userName) {
+        // Generated convenience method for deleteUserWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteUserWithResponse(poolId, nodeId, userName, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Updates the password and expiration time of a user Account on the specified Compute Node.
+     *
+     * <p>This operation replaces of all the updatable properties of the Account. For example, if the expiryTime element
+     * is not specified, the current value is replaced with the default value, not left unmodified. You can update a
+     * user Account on a Compute Node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to update a user Account.
+     * @param userName The name of the user Account to update.
+     * @param nodeUpdateUserParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateUser(
+            String poolId, String nodeId, String userName, NodeUpdateUserParameters nodeUpdateUserParameter) {
+        // Generated convenience method for updateUserWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return updateUserWithResponse(
+                        poolId, nodeId, userName, BinaryData.fromObject(nodeUpdateUserParameter), requestOptions)
+                .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets information about the specified Compute Node.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to get information about.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Compute Node on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ComputeNode> get(String poolId, String nodeId) {
+        // Generated convenience method for getWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getWithResponse(poolId, nodeId, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(ComputeNode.class));
+    }
+
+    /**
+     * Restarts the specified Compute Node.
+     *
+     * <p>You can restart a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> reboot(String poolId, String nodeId) {
+        // Generated convenience method for rebootWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return rebootWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     *
+     * <p>You can reinstall the operating system on a Compute Node only if it is in an idle or running state. This API
+     * can be invoked only on Pools created with the cloud service configuration property.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> reimage(String poolId, String nodeId) {
+        // Generated convenience method for reimageWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return reimageWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Disables Task scheduling on the specified Compute Node.
+     *
+     * <p>You can disable Task scheduling on a Compute Node only if its current scheduling state is enabled.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> disableScheduling(String poolId, String nodeId) {
+        // Generated convenience method for disableSchedulingWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return disableSchedulingWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Enables Task scheduling on the specified Compute Node.
+     *
+     * <p>You can enable Task scheduling on a Compute Node only if its current scheduling state is disabled.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> enableScheduling(String poolId, String nodeId) {
+        // Generated convenience method for enableSchedulingWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return enableSchedulingWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets the settings required for remote login to a Compute Node.
+     *
+     * <p>Before you can remotely login to a Compute Node using the remote login settings, you must create a user
+     * Account on the Compute Node. This API can be invoked only on Pools created with the virtual machine configuration
+     * property. For Pools created with a cloud service configuration, see the GetRemoteDesktop API.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remote login settings for a Compute Node on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ComputeNodeGetRemoteLoginSettingsResult> getRemoteLoginSettings(String poolId, String nodeId) {
+        // Generated convenience method for getRemoteLoginSettingsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getRemoteLoginSettingsWithResponse(poolId, nodeId, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(ComputeNodeGetRemoteLoginSettingsResult.class));
+    }
+
+    /**
+     * Gets the Remote Desktop Protocol file for the specified Compute Node.
+     *
+     * <p>Before you can access a Compute Node by using the RDP file, you must create a user Account on the Compute
+     * Node. This API can only be invoked on Pools created with a cloud service configuration. For Pools created with a
+     * virtual machine configuration, see the GetRemoteLoginSettings API.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getRemoteDesktop(String poolId, String nodeId) {
+        // Generated convenience method for getRemoteDesktopWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getRemoteDesktopWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Upload Azure Batch service log files from the specified Compute Node to Azure Blob Storage.
+     *
+     * <p>This is for gathering Azure Batch service log files in an automated fashion from Compute Nodes if you are
+     * experiencing an error and wish to escalate to Azure support. The Azure Batch service log files should be shared
+     * with Azure support to aid in debugging issues with the Batch service.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
+     * @param uploadBatchServiceLogsConfiguration The Azure Batch service log files upload configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of uploading Batch service log files from a specific Compute Node on successful completion of
+     *     {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UploadBatchServiceLogsResult> uploadBatchServiceLogs(
+            String poolId, String nodeId, UploadBatchServiceLogsConfiguration uploadBatchServiceLogsConfiguration) {
+        // Generated convenience method for uploadBatchServiceLogsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return uploadBatchServiceLogsWithResponse(
+                        poolId, nodeId, BinaryData.fromObject(uploadBatchServiceLogsConfiguration), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(UploadBatchServiceLogsResult.class));
+    }
+
+    /**
+     * Lists the Compute Nodes in the specified Pool.
+     *
+     * @param poolId The ID of the Pool from which you want to list Compute Nodes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ComputeNode> list(String poolId) {
+        // Generated convenience method for list
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = list(poolId, requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, ComputeNode>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(
+                                                                                    ComputeNode.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * Adds a user Account to the specified Compute Node.
+     *
+     * <p>You can add a user Account to a Compute Node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to create a user Account.
+     * @param user The user Account to be created.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
      * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
@@ -1062,46 +1385,23 @@ public final class ComputeNodesAsyncClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate) {
+            OffsetDateTime ocpDate) {
         // Generated convenience method for addUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
-        return addUserWithResponse(poolId, nodeId, BinaryData.fromObject(user), requestOptions)
-                .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Adds a user Account to the specified Compute Node.
-     *
-     * <p>You can add a user Account to a Compute Node only when it is in the idle or running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the machine on which you want to create a user Account.
-     * @param user The user Account to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addUser(String poolId, String nodeId, ComputeNodeUser user) {
-        // Generated convenience method for addUserWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return addUserWithResponse(poolId, nodeId, BinaryData.fromObject(user), requestOptions)
                 .flatMap(FluxUtil::toMono);
     }
@@ -1138,45 +1438,23 @@ public final class ComputeNodesAsyncClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate) {
+            OffsetDateTime ocpDate) {
         // Generated convenience method for deleteUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
-        return deleteUserWithResponse(poolId, nodeId, userName, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes a user Account from the specified Compute Node.
-     *
-     * <p>You can delete a user Account to a Compute Node only when it is in the idle or running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the machine on which you want to delete a user Account.
-     * @param userName The name of the user Account to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteUser(String poolId, String nodeId, String userName) {
-        // Generated convenience method for deleteUserWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return deleteUserWithResponse(poolId, nodeId, userName, requestOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -1216,51 +1494,23 @@ public final class ComputeNodesAsyncClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate) {
+            OffsetDateTime ocpDate) {
         // Generated convenience method for updateUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
-        return updateUserWithResponse(
-                        poolId, nodeId, userName, BinaryData.fromObject(nodeUpdateUserParameter), requestOptions)
-                .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Updates the password and expiration time of a user Account on the specified Compute Node.
-     *
-     * <p>This operation replaces of all the updatable properties of the Account. For example, if the expiryTime element
-     * is not specified, the current value is replaced with the default value, not left unmodified. You can update a
-     * user Account on a Compute Node only when it is in the idle or running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the machine on which you want to update a user Account.
-     * @param userName The name of the user Account to update.
-     * @param nodeUpdateUserParameter The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateUser(
-            String poolId, String nodeId, String userName, NodeUpdateUserParameters nodeUpdateUserParameter) {
-        // Generated convenience method for updateUserWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return updateUserWithResponse(
                         poolId, nodeId, userName, BinaryData.fromObject(nodeUpdateUserParameter), requestOptions)
                 .flatMap(FluxUtil::toMono);
@@ -1295,7 +1545,7 @@ public final class ComputeNodesAsyncClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             String select) {
         // Generated convenience method for getWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -1303,40 +1553,19 @@ public final class ComputeNodesAsyncClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (select != null) {
             requestOptions.addQueryParam("$select", select, false);
         }
-        return getWithResponse(poolId, nodeId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ComputeNode.class));
-    }
-
-    /**
-     * Gets information about the specified Compute Node.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node that you want to get information about.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Compute Node on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ComputeNode> get(String poolId, String nodeId) {
-        // Generated convenience method for getWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return getWithResponse(poolId, nodeId, requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(ComputeNode.class));
@@ -1373,7 +1602,7 @@ public final class ComputeNodesAsyncClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             NodeRebootParameters parameters) {
         // Generated convenience method for rebootWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -1381,40 +1610,19 @@ public final class ComputeNodesAsyncClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
         }
-        return rebootWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Restarts the specified Compute Node.
-     *
-     * <p>You can restart a Compute Node only if it is in an idle or running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node that you want to restart.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> reboot(String poolId, String nodeId) {
-        // Generated convenience method for rebootWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return rebootWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -1450,7 +1658,7 @@ public final class ComputeNodesAsyncClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             NodeReimageParameters parameters) {
         // Generated convenience method for reimageWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -1458,41 +1666,19 @@ public final class ComputeNodesAsyncClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
         }
-        return reimageWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Reinstalls the operating system on the specified Compute Node.
-     *
-     * <p>You can reinstall the operating system on a Compute Node only if it is in an idle or running state. This API
-     * can be invoked only on Pools created with the cloud service configuration property.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node that you want to restart.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> reimage(String poolId, String nodeId) {
-        // Generated convenience method for reimageWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return reimageWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -1527,7 +1713,7 @@ public final class ComputeNodesAsyncClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             NodeDisableSchedulingParameters parameters) {
         // Generated convenience method for disableSchedulingWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -1535,40 +1721,19 @@ public final class ComputeNodesAsyncClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
         }
-        return disableSchedulingWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Disables Task scheduling on the specified Compute Node.
-     *
-     * <p>You can disable Task scheduling on a Compute Node only if its current scheduling state is enabled.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disableScheduling(String poolId, String nodeId) {
-        // Generated convenience method for disableSchedulingWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return disableSchedulingWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -1602,44 +1767,23 @@ public final class ComputeNodesAsyncClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate) {
+            OffsetDateTime ocpDate) {
         // Generated convenience method for enableSchedulingWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
-        return enableSchedulingWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Enables Task scheduling on the specified Compute Node.
-     *
-     * <p>You can enable Task scheduling on a Compute Node only if its current scheduling state is disabled.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> enableScheduling(String poolId, String nodeId) {
-        // Generated convenience method for enableSchedulingWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return enableSchedulingWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -1675,48 +1819,23 @@ public final class ComputeNodesAsyncClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate) {
+            OffsetDateTime ocpDate) {
         // Generated convenience method for getRemoteLoginSettingsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
-        return getRemoteLoginSettingsWithResponse(poolId, nodeId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ComputeNodeGetRemoteLoginSettingsResult.class));
-    }
-
-    /**
-     * Gets the settings required for remote login to a Compute Node.
-     *
-     * <p>Before you can remotely login to a Compute Node using the remote login settings, you must create a user
-     * Account on the Compute Node. This API can be invoked only on Pools created with the virtual machine configuration
-     * property. For Pools created with a cloud service configuration, see the GetRemoteDesktop API.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remote login settings for a Compute Node on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ComputeNodeGetRemoteLoginSettingsResult> getRemoteLoginSettings(String poolId, String nodeId) {
-        // Generated convenience method for getRemoteLoginSettingsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return getRemoteLoginSettingsWithResponse(poolId, nodeId, requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(ComputeNodeGetRemoteLoginSettingsResult.class));
@@ -1754,46 +1873,23 @@ public final class ComputeNodesAsyncClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate) {
+            OffsetDateTime ocpDate) {
         // Generated convenience method for getRemoteDesktopWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
-        return getRemoteDesktopWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Gets the Remote Desktop Protocol file for the specified Compute Node.
-     *
-     * <p>Before you can access a Compute Node by using the RDP file, you must create a user Account on the Compute
-     * Node. This API can only be invoked on Pools created with a cloud service configuration. For Pools created with a
-     * virtual machine configuration, see the GetRemoteLoginSettings API.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getRemoteDesktop(String poolId, String nodeId) {
-        // Generated convenience method for getRemoteDesktopWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return getRemoteDesktopWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -1832,52 +1928,23 @@ public final class ComputeNodesAsyncClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate) {
+            OffsetDateTime ocpDate) {
         // Generated convenience method for uploadBatchServiceLogsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
-        return uploadBatchServiceLogsWithResponse(
-                        poolId, nodeId, BinaryData.fromObject(uploadBatchServiceLogsConfiguration), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(UploadBatchServiceLogsResult.class));
-    }
-
-    /**
-     * Upload Azure Batch service log files from the specified Compute Node to Azure Blob Storage.
-     *
-     * <p>This is for gathering Azure Batch service log files in an automated fashion from Compute Nodes if you are
-     * experiencing an error and wish to escalate to Azure support. The Azure Batch service log files should be shared
-     * with Azure support to aid in debugging issues with the Batch service.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
-     * @param uploadBatchServiceLogsConfiguration The Azure Batch service log files upload configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of uploading Batch service log files from a specific Compute Node on successful completion of
-     *     {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UploadBatchServiceLogsResult> uploadBatchServiceLogs(
-            String poolId, String nodeId, UploadBatchServiceLogsConfiguration uploadBatchServiceLogsConfiguration) {
-        // Generated convenience method for uploadBatchServiceLogsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return uploadBatchServiceLogsWithResponse(
                         poolId, nodeId, BinaryData.fromObject(uploadBatchServiceLogsConfiguration), requestOptions)
                 .flatMap(FluxUtil::toMono)
@@ -1913,7 +1980,7 @@ public final class ComputeNodesAsyncClient {
     public PagedFlux<ComputeNode> list(
             String poolId,
             Integer maxresults,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
@@ -1925,16 +1992,18 @@ public final class ComputeNodesAsyncClient {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -1942,48 +2011,6 @@ public final class ComputeNodesAsyncClient {
         if (select != null) {
             requestOptions.addQueryParam("$select", select, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = list(poolId, requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, ComputeNode>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    ComputeNode.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
-    }
-
-    /**
-     * Lists the Compute Nodes in the specified Pool.
-     *
-     * @param poolId The ID of the Pool from which you want to list Compute Nodes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ComputeNode> list(String poolId) {
-        // Generated convenience method for list
-        RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = list(poolId, requestOptions);
         return PagedFlux.create(
                 () ->

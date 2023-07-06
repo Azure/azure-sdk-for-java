@@ -13,13 +13,16 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
+import java.time.OffsetDateTime;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -66,7 +69,7 @@ public final class FileAsyncClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -112,13 +115,13 @@ public final class FileAsyncClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      *     <tr><td>ocp-range</td><td>String</td><td>No</td><td>The byte range to be retrieved. The default is to retrieve the entire file. The
@@ -172,13 +175,13 @@ public final class FileAsyncClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -229,7 +232,7 @@ public final class FileAsyncClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -275,13 +278,13 @@ public final class FileAsyncClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      *     <tr><td>ocp-range</td><td>String</td><td>No</td><td>The byte range to be retrieved. The default is to retrieve the entire file. The
@@ -335,13 +338,13 @@ public final class FileAsyncClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -392,7 +395,7 @@ public final class FileAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -459,7 +462,7 @@ public final class FileAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -508,6 +511,225 @@ public final class FileAsyncClient {
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteFromTask(String jobId, String taskId, String filePath) {
+        // Generated convenience method for deleteFromTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Returns the content of the specified Task file.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getFromTask(String jobId, String taskId, String filePath) {
+        // Generated convenience method for getFromTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets the properties of the specified Task file.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified Task file on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> getPropertiesFromTask(String jobId, String taskId, String filePath) {
+        // Generated convenience method for getPropertiesFromTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getPropertiesFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes the specified file from the Compute Node.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteFromComputeNode(String poolId, String nodeId, String filePath) {
+        // Generated convenience method for deleteFromComputeNodeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteFromComputeNodeWithResponse(poolId, nodeId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Returns the content of the specified Compute Node file.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getFromComputeNode(String poolId, String nodeId, String filePath) {
+        // Generated convenience method for getFromComputeNodeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getFromComputeNodeWithResponse(poolId, nodeId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets the properties of the specified Compute Node file.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified Compute Node file on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> getPropertiesFromComputeNode(String poolId, String nodeId, String filePath) {
+        // Generated convenience method for getPropertiesFromComputeNodeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getPropertiesFromComputeNodeWithResponse(poolId, nodeId, filePath, requestOptions)
+                .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Lists the files in a Task's directory on its Compute Node.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose files you want to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
+     *     as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<NodeFile> listFromTask(String jobId, String taskId) {
+        // Generated convenience method for listFromTask
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listFromTask(jobId, taskId, requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, NodeFile>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(NodeFile.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * Lists all of the files in Task directories on the specified Compute Node.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node whose files you want to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
+     *     as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<NodeFile> listFromComputeNode(String poolId, String nodeId) {
+        // Generated convenience method for listFromComputeNode
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listFromComputeNode(poolId, nodeId, requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, NodeFile>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(NodeFile.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * Deletes the specified Task file from the Compute Node where the Task ran.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
      * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
@@ -535,7 +757,7 @@ public final class FileAsyncClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             Boolean recursive) {
         // Generated convenience method for deleteFromTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -543,39 +765,19 @@ public final class FileAsyncClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (recursive != null) {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
         }
-        return deleteFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes the specified Task file from the Compute Node where the Task ran.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose file you want to retrieve.
-     * @param filePath The path to the Task file that you want to get the content of.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteFromTask(String jobId, String taskId, String filePath) {
-        // Generated convenience method for deleteFromTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return deleteFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -616,9 +818,9 @@ public final class FileAsyncClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
-            String ifModifiedSince,
-            String ifUnmodifiedSince,
+            OffsetDateTime ocpDate,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince,
             String ocpRange) {
         // Generated convenience method for getFromTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -626,45 +828,27 @@ public final class FileAsyncClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         if (ocpRange != null) {
-            requestOptions.setHeader("ocp-range", ocpRange);
+            requestOptions.setHeader(HttpHeaderName.fromString("ocp-range"), ocpRange);
         }
-        return getFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Returns the content of the specified Task file.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose file you want to retrieve.
-     * @param filePath The path to the Task file that you want to get the content of.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getFromTask(String jobId, String taskId, String filePath) {
-        // Generated convenience method for getFromTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return getFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -703,51 +887,33 @@ public final class FileAsyncClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
+            OffsetDateTime ocpDate,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince) {
         // Generated convenience method for getPropertiesFromTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
-        return getPropertiesFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Gets the properties of the specified Task file.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose file you want to retrieve.
-     * @param filePath The path to the Task file that you want to get the content of.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified Task file on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getPropertiesFromTask(String jobId, String taskId, String filePath) {
-        // Generated convenience method for getPropertiesFromTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return getPropertiesFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -784,7 +950,7 @@ public final class FileAsyncClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             Boolean recursive) {
         // Generated convenience method for deleteFromComputeNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -792,39 +958,19 @@ public final class FileAsyncClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (recursive != null) {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
         }
-        return deleteFromComputeNodeWithResponse(poolId, nodeId, filePath, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes the specified file from the Compute Node.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteFromComputeNode(String poolId, String nodeId, String filePath) {
-        // Generated convenience method for deleteFromComputeNodeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return deleteFromComputeNodeWithResponse(poolId, nodeId, filePath, requestOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -865,9 +1011,9 @@ public final class FileAsyncClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
-            String ifModifiedSince,
-            String ifUnmodifiedSince,
+            OffsetDateTime ocpDate,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince,
             String ocpRange) {
         // Generated convenience method for getFromComputeNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -875,45 +1021,27 @@ public final class FileAsyncClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         if (ocpRange != null) {
-            requestOptions.setHeader("ocp-range", ocpRange);
+            requestOptions.setHeader(HttpHeaderName.fromString("ocp-range"), ocpRange);
         }
-        return getFromComputeNodeWithResponse(poolId, nodeId, filePath, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Returns the content of the specified Compute Node file.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getFromComputeNode(String poolId, String nodeId, String filePath) {
-        // Generated convenience method for getFromComputeNodeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return getFromComputeNodeWithResponse(poolId, nodeId, filePath, requestOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -952,52 +1080,33 @@ public final class FileAsyncClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
+            OffsetDateTime ocpDate,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince) {
         // Generated convenience method for getPropertiesFromComputeNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
-        return getPropertiesFromComputeNodeWithResponse(poolId, nodeId, filePath, requestOptions)
-                .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Gets the properties of the specified Compute Node file.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified Compute Node file on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getPropertiesFromComputeNode(String poolId, String nodeId, String filePath) {
-        // Generated convenience method for getPropertiesFromComputeNodeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return getPropertiesFromComputeNodeWithResponse(poolId, nodeId, filePath, requestOptions)
                 .flatMap(FluxUtil::toMono);
     }
@@ -1035,7 +1144,7 @@ public final class FileAsyncClient {
             String jobId,
             String taskId,
             Integer maxresults,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
@@ -1047,16 +1156,18 @@ public final class FileAsyncClient {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -1064,49 +1175,6 @@ public final class FileAsyncClient {
         if (recursive != null) {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listFromTask(jobId, taskId, requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, NodeFile>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(NodeFile.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
-    }
-
-    /**
-     * Lists the files in a Task's directory on its Compute Node.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose files you want to list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
-     *     as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NodeFile> listFromTask(String jobId, String taskId) {
-        // Generated convenience method for listFromTask
-        RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listFromTask(jobId, taskId, requestOptions);
         return PagedFlux.create(
                 () ->
@@ -1163,7 +1231,7 @@ public final class FileAsyncClient {
             String poolId,
             String nodeId,
             Integer maxresults,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
@@ -1175,16 +1243,18 @@ public final class FileAsyncClient {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
         if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
         }
         if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -1192,49 +1262,6 @@ public final class FileAsyncClient {
         if (recursive != null) {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listFromComputeNode(poolId, nodeId, requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, NodeFile>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(NodeFile.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
-    }
-
-    /**
-     * Lists all of the files in Task directories on the specified Compute Node.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node whose files you want to list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
-     *     as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NodeFile> listFromComputeNode(String poolId, String nodeId) {
-        // Generated convenience method for listFromComputeNode
-        RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listFromComputeNode(poolId, nodeId, requestOptions);
         return PagedFlux.create(
                 () ->
