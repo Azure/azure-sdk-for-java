@@ -44,11 +44,11 @@ public class MessageReceiver extends ServiceBusScenario {
             for (ServiceBusReceivedMessage receivedMessage : receivedMessages) {
                 try {
                     client.complete(receivedMessage);
-                } catch (ServiceBusException | AmqpException err) {
+                } catch (Throwable ex) {
                     LOGGER.error("Completion error. messageId: {}, lockToken: {}",
                         receivedMessage.getMessageId(),
                         receivedMessage.getLockToken(),
-                        err);
+                        ex);
                 }
 
                 count++;

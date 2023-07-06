@@ -28,8 +28,11 @@ public class MessageReceiverAsync extends ServiceBusScenario {
             .flatMap(message -> {
                 LOGGER.verbose("message received: {}", message.getMessageId());
                 return client.complete(message)
-                    .onErrorResume(error -> {
-                        LOGGER.error("error completing", error);
+                    .onErrorResume(ex -> {
+                        LOGGER.error("Completion error. messageId: {}, lockToken: {}",
+                            message.getMessageId(),
+                            message.getLockToken(),
+                            ex);
                         return Mono.empty();
                     });
             })
