@@ -7,12 +7,12 @@
         "Accept": "application/json",
         "Content-Length": "1128",
         "Content-Type": "application/json",
-        "Date": "Wed, 05 Jul 2023 22:15:14 GMT",
+        "Date": "Thu, 06 Jul 2023 01:07:31 GMT",
         "Ocp-Apim-Subscription-Key": "REDACTED",
-        "repeatability-first-sent": "Wed, 05 Jul 2023 22:15:14 GMT",
-        "repeatability-request-id": "71155fd1-bdeb-445f-a9a5-90971153bd50",
+        "repeatability-first-sent": "Thu, 06 Jul 2023 01:07:31 GMT",
+        "repeatability-request-id": "7b79087e-85ff-4e52-a88a-db0537857292",
         "User-Agent": "azsdk-java-azure-health-insights-clinicalmatching/1.0.0-beta.2 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "b838dbd5-464f-4bca-aabd-3514b004918d"
+        "x-ms-client-request-id": "c74dd8d9-574b-432e-98b0-687752f33b72"
       },
       "RequestBody": {
         "configuration": {
@@ -66,70 +66,39 @@
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "apim-request-id": "204bfe29-ca23-4fcb-9329-d8ed6f916fa7",
+        "apim-request-id": "7ca607b8-d3b8-4f11-917c-16e7de3f3556",
         "Content-Length": "0",
-        "Date": "Wed, 05 Jul 2023 22:15:14 GMT",
-        "operation-location": "https://REDACTED/healthinsights/trialmatcher/jobs/71155fd1-bdeb-445f-a9a5-90971153bd50?api-version=2023-03-01-preview",
+        "Date": "Thu, 06 Jul 2023 01:07:31 GMT",
+        "operation-location": "https://REDACTED/healthinsights/trialmatcher/jobs/7b79087e-85ff-4e52-a88a-db0537857292?api-version=2023-03-01-preview",
         "repeatability-result": "accepted",
         "Retry-After": "1",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "394",
+        "x-envoy-upstream-service-time": "156",
         "x-ms-region": "West US 2"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/healthinsights/trialmatcher/jobs/71155fd1-bdeb-445f-a9a5-90971153bd50?api-version=2023-03-01-preview",
+      "RequestUri": "https://REDACTED/healthinsights/trialmatcher/jobs/7b79087e-85ff-4e52-a88a-db0537857292?api-version=2023-03-01-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "*/*",
-        "Date": "Wed, 05 Jul 2023 22:15:16 GMT",
+        "Date": "Thu, 06 Jul 2023 01:07:33 GMT",
         "Ocp-Apim-Subscription-Key": "REDACTED",
         "User-Agent": "azsdk-java-azure-health-insights-clinicalmatching/1.0.0-beta.2 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "7e9de112-a7b0-4c1d-9a1d-ae3e85f469a1"
+        "x-ms-client-request-id": "04af61a9-c271-4d6e-8352-5162539bf2d0"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "37070986-e6ce-4d46-bd8a-014c0a8a0479",
-        "Content-Length": "196",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 05 Jul 2023 22:15:16 GMT",
-        "Retry-After": "1",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "547",
-        "x-ms-region": "West US 2"
-      },
-      "ResponseBody": {
-        "jobId": "71155fd1-bdeb-445f-a9a5-90971153bd50",
-        "createdDateTime": "2023-07-05T22:15:14Z",
-        "expirationDateTime": "2023-07-06T22:15:14Z",
-        "lastUpdateDateTime": "2023-07-05T22:15:14Z",
-        "status": "running"
-      }
-    },
-    {
-      "RequestUri": "https://REDACTED/healthinsights/trialmatcher/jobs/71155fd1-bdeb-445f-a9a5-90971153bd50?api-version=2023-03-01-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "*/*",
-        "Date": "Wed, 05 Jul 2023 22:15:18 GMT",
-        "Ocp-Apim-Subscription-Key": "REDACTED",
-        "User-Agent": "azsdk-java-azure-health-insights-clinicalmatching/1.0.0-beta.2 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "89f3efef-5930-42a3-a588-118c12f3f219"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "8e393019-a60d-4747-927e-86a2663f4b35",
+        "apim-request-id": "f5163288-abab-4298-9f99-7214b66f2236",
         "Content-Length": "5329",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 05 Jul 2023 22:15:17 GMT",
+        "Date": "Thu, 06 Jul 2023 01:07:32 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "282",
+        "x-envoy-upstream-service-time": "285",
         "x-ms-region": "West US 2"
       },
       "ResponseBody": {
@@ -138,6 +107,63 @@
             {
               "id": "98824209",
               "inferences": [
+                {
+                  "type": "trialEligibility",
+                  "evidence": [
+                    {
+                      "eligibilityCriteriaEvidence": "Exclusion: History or current malignancy",
+                      "patientInfoEvidence": {
+                        "system": "http://www.nlm.nih.gov/research/umls",
+                        "code": "C0006826",
+                        "name": "MalignantNeoplasms",
+                        "value": "true"
+                      },
+                      "importance": 0.0
+                    }
+                  ],
+                  "id": "NCT04590872",
+                  "source": "clinicaltrials.gov",
+                  "value": "Ineligible",
+                  "confidenceScore": 0.0
+                },
+                {
+                  "type": "trialEligibility",
+                  "evidence": [
+                    {
+                      "eligibilityCriteriaEvidence": "Exclusion: Previous or current diagnosis of malignancy .",
+                      "patientInfoEvidence": {
+                        "system": "http://www.nlm.nih.gov/research/umls",
+                        "code": "C0006826",
+                        "name": "MalignantNeoplasms",
+                        "value": "true"
+                      },
+                      "importance": 0.0
+                    }
+                  ],
+                  "id": "NCT05574335",
+                  "source": "clinicaltrials.gov",
+                  "value": "Ineligible",
+                  "confidenceScore": 0.0
+                },
+                {
+                  "type": "trialEligibility",
+                  "evidence": [
+                    {
+                      "eligibilityCriteriaEvidence": "Exclusion: History of malignancy",
+                      "patientInfoEvidence": {
+                        "system": "http://www.nlm.nih.gov/research/umls",
+                        "code": "C0006826",
+                        "name": "MalignantNeoplasms",
+                        "value": "true"
+                      },
+                      "importance": 0.0
+                    }
+                  ],
+                  "id": "NCT05794581",
+                  "source": "clinicaltrials.gov",
+                  "value": "Ineligible",
+                  "confidenceScore": 0.0
+                },
                 {
                   "type": "trialEligibility",
                   "evidence": [
@@ -171,7 +197,7 @@
                   "type": "trialEligibility",
                   "evidence": [
                     {
-                      "eligibilityCriteriaEvidence": "Exclusion: Previous or current diagnosis of malignancy .",
+                      "eligibilityCriteriaEvidence": "Exclusion: Currently has or had a history of malignancy",
                       "patientInfoEvidence": {
                         "system": "http://www.nlm.nih.gov/research/umls",
                         "code": "C0006826",
@@ -181,7 +207,7 @@
                       "importance": 0.0
                     }
                   ],
-                  "id": "NCT05574335",
+                  "id": "NCT05428943",
                   "source": "clinicaltrials.gov",
                   "value": "Ineligible",
                   "confidenceScore": 0.0
@@ -207,70 +233,6 @@
                 },
                 {
                   "type": "trialEligibility",
-                  "evidence": [
-                    {
-                      "eligibilityCriteriaEvidence": "Exclusion: Currently has or had a history of malignancy",
-                      "patientInfoEvidence": {
-                        "system": "http://www.nlm.nih.gov/research/umls",
-                        "code": "C0006826",
-                        "name": "MalignantNeoplasms",
-                        "value": "true"
-                      },
-                      "importance": 0.0
-                    }
-                  ],
-                  "id": "NCT05428943",
-                  "source": "clinicaltrials.gov",
-                  "value": "Ineligible",
-                  "confidenceScore": 0.0
-                },
-                {
-                  "type": "trialEligibility",
-                  "evidence": [
-                    {
-                      "eligibilityCriteriaEvidence": "Exclusion: History or current malignancy",
-                      "patientInfoEvidence": {
-                        "system": "http://www.nlm.nih.gov/research/umls",
-                        "code": "C0006826",
-                        "name": "MalignantNeoplasms",
-                        "value": "true"
-                      },
-                      "importance": 0.0
-                    }
-                  ],
-                  "id": "NCT04590872",
-                  "source": "clinicaltrials.gov",
-                  "value": "Ineligible",
-                  "confidenceScore": 0.0
-                },
-                {
-                  "type": "trialEligibility",
-                  "evidence": [
-                    {
-                      "eligibilityCriteriaEvidence": "Exclusion: History of malignancy",
-                      "patientInfoEvidence": {
-                        "system": "http://www.nlm.nih.gov/research/umls",
-                        "code": "C0006826",
-                        "name": "MalignantNeoplasms",
-                        "value": "true"
-                      },
-                      "importance": 0.0
-                    }
-                  ],
-                  "id": "NCT05794581",
-                  "source": "clinicaltrials.gov",
-                  "value": "Ineligible",
-                  "confidenceScore": 0.0
-                },
-                {
-                  "type": "trialEligibility",
-                  "id": "NCT04684602",
-                  "source": "clinicaltrials.gov",
-                  "value": "Eligible",
-                  "confidenceScore": 0.0
-                },
-                {
-                  "type": "trialEligibility",
                   "id": "NCT05694741",
                   "source": "clinicaltrials.gov",
                   "value": "Eligible",
@@ -278,7 +240,7 @@
                 },
                 {
                   "type": "trialEligibility",
-                  "id": "NCT03746769",
+                  "id": "NCT04279613",
                   "source": "clinicaltrials.gov",
                   "value": "Eligible",
                   "confidenceScore": 0.0
@@ -292,7 +254,14 @@
                 },
                 {
                   "type": "trialEligibility",
-                  "id": "NCT04279613",
+                  "id": "NCT03746769",
+                  "source": "clinicaltrials.gov",
+                  "value": "Eligible",
+                  "confidenceScore": 0.0
+                },
+                {
+                  "type": "trialEligibility",
+                  "id": "NCT04684602",
                   "source": "clinicaltrials.gov",
                   "value": "Eligible",
                   "confidenceScore": 0.0
@@ -399,10 +368,10 @@
           "modelVersion": "2023-03-01-preview",
           "knowledgeGraphLastUpdateDate": "2023-05-22"
         },
-        "jobId": "71155fd1-bdeb-445f-a9a5-90971153bd50",
-        "createdDateTime": "2023-07-05T22:15:14Z",
-        "expirationDateTime": "2023-07-06T22:15:14Z",
-        "lastUpdateDateTime": "2023-07-05T22:15:17Z",
+        "jobId": "7b79087e-85ff-4e52-a88a-db0537857292",
+        "createdDateTime": "2023-07-06T01:07:31Z",
+        "expirationDateTime": "2023-07-07T01:07:31Z",
+        "lastUpdateDateTime": "2023-07-06T01:07:32Z",
         "status": "succeeded"
       }
     }

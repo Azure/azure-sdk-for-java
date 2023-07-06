@@ -7,12 +7,12 @@
         "Accept": "application/json",
         "Content-Length": "978",
         "Content-Type": "application/json",
-        "Date": "Wed, 05 Jul 2023 21:30:48 GMT",
+        "Date": "Thu, 06 Jul 2023 01:21:43 GMT",
         "Ocp-Apim-Subscription-Key": "REDACTED",
-        "repeatability-first-sent": "Wed, 05 Jul 2023 21:30:48 GMT",
-        "repeatability-request-id": "611b03d7-c463-4493-8f33-ca25516f5430",
+        "repeatability-first-sent": "Thu, 06 Jul 2023 01:21:43 GMT",
+        "repeatability-request-id": "b29a5b5a-73a5-4fd1-bbb5-926af4209a09",
         "User-Agent": "azsdk-java-azure-health-insights-cancerprofiling/1.0.0-beta.2 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "8ba1bbbf-709f-4cc5-886b-89aab8e97798"
+        "x-ms-client-request-id": "6f7f0f4a-4fde-4ab4-9597-77be9230ef42"
       },
       "RequestBody": {
         "configuration": {
@@ -41,39 +41,39 @@
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "apim-request-id": "ca73080c-1ff6-4b16-95ba-b3277e5c1a25",
+        "apim-request-id": "9ca4adac-bd53-4c52-84d6-637807434804",
         "Content-Length": "0",
-        "Date": "Wed, 05 Jul 2023 21:30:50 GMT",
-        "operation-location": "https://REDACTED/healthinsights/oncophenotype/jobs/611b03d7-c463-4493-8f33-ca25516f5430?api-version=2023-03-01-preview",
+        "Date": "Thu, 06 Jul 2023 01:21:44 GMT",
+        "operation-location": "https://REDACTED/healthinsights/oncophenotype/jobs/b29a5b5a-73a5-4fd1-bbb5-926af4209a09?api-version=2023-03-01-preview",
         "repeatability-result": "accepted",
         "Retry-After": "5",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "736",
+        "x-envoy-upstream-service-time": "276",
         "x-ms-region": "West US 2"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/healthinsights/oncophenotype/jobs/611b03d7-c463-4493-8f33-ca25516f5430?api-version=2023-03-01-preview",
+      "RequestUri": "https://REDACTED/healthinsights/oncophenotype/jobs/b29a5b5a-73a5-4fd1-bbb5-926af4209a09?api-version=2023-03-01-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "*/*",
-        "Date": "Wed, 05 Jul 2023 21:30:57 GMT",
+        "Date": "Thu, 06 Jul 2023 01:21:50 GMT",
         "Ocp-Apim-Subscription-Key": "REDACTED",
         "User-Agent": "azsdk-java-azure-health-insights-cancerprofiling/1.0.0-beta.2 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "52cc45e3-116d-4732-b917-fd7f8a35b0e4"
+        "x-ms-client-request-id": "59e3ffce-573e-4796-818c-fbc8399a0409"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "1fced45a-4a6c-418d-84bb-998996147c62",
+        "apim-request-id": "2982379f-5e4d-4f15-b572-383e0561b0f8",
         "Content-Length": "6742",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 05 Jul 2023 21:30:56 GMT",
+        "Date": "Thu, 06 Jul 2023 01:21:49 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "170",
+        "x-envoy-upstream-service-time": "60",
         "x-ms-region": "West US 2"
       },
       "ResponseBody": {
@@ -621,10 +621,10 @@
           ],
           "modelVersion": "2023-03-01-preview"
         },
-        "jobId": "611b03d7-c463-4493-8f33-ca25516f5430",
-        "createdDateTime": "2023-07-05T21:30:51Z",
-        "expirationDateTime": "2023-07-06T21:30:51Z",
-        "lastUpdateDateTime": "2023-07-05T21:30:54Z",
+        "jobId": "b29a5b5a-73a5-4fd1-bbb5-926af4209a09",
+        "createdDateTime": "2023-07-06T01:21:44Z",
+        "expirationDateTime": "2023-07-07T01:21:44Z",
+        "lastUpdateDateTime": "2023-07-06T01:21:47Z",
         "status": "succeeded"
       }
     }
