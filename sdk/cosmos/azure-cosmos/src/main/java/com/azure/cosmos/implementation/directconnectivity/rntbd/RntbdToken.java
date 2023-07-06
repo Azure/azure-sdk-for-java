@@ -149,6 +149,9 @@ final class RntbdToken {
     }
 
     public void encode(final ByteBuf out) {
+        encode(out, false);
+    }
+    public void encode(final ByteBuf out, Boolean print) {
 
         checkNotNull(out, "out");
 
@@ -159,6 +162,9 @@ final class RntbdToken {
             }
             return;
         }
+
+        if (print)
+            System.out.println("Encode:" + this.getName() + "\t\t"+ this.getValue());
 
         out.writeShortLE(this.getId());
         out.writeByte(this.getTokenType().id());
