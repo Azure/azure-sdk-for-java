@@ -446,7 +446,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
 
         final RecordedData recordedData;
         try (InputStream stream = SchemaRegistryApacheAvroSerializerTest.class.getResourceAsStream(resourceName)) {
-             recordedData = SERIALIZER.deserialize(stream, RecordedData.class, SerializerEncoding.JSON);
+            recordedData = SERIALIZER.deserialize(stream, RecordedData.class, SerializerEncoding.JSON);
         } catch (IOException e) {
             throw new UncheckedIOException("Unable to get resource input stream for: " + resourceName, e);
         }

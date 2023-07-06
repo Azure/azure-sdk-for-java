@@ -10,7 +10,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.models.MessageContent;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryClient;
