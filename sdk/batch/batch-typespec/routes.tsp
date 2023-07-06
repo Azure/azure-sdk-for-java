@@ -243,7 +243,7 @@ error code PoolBeingDeleted.
   @head
   Exists is RpcOperation<
     BatchClientRequestHeaders & BatchPoolHeaders,
-    PoolDoesntExistResponseHeaders | PoolDoesExistResponseHeaders,
+    PoolDoesExistResponseHeaders,
     {},
     BatchError
   >;
@@ -1351,14 +1351,10 @@ interface JobSchedule {
         @path
         jobScheduleId: string;
       },
-    (BatchResponseHeaders & {
+    BatchResponseHeaders & {
       @doc("A response containing headers related to the Job Schedule, if it exists.")
       @statusCode
       code: "200";
-    }) | {
-      @doc("The Job Schedule does not exist.")
-      @statusCode
-      code: "404";
     },
     {},
     BatchError
