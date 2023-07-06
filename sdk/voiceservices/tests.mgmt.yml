@@ -1,0 +1,16 @@
+trigger: none
+
+pr: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: voiceservices
+      Artifacts:
+        - name: azure-resourcemanager-voiceservices
+          groupId: com.azure.resourcemanager
+          safeName: azureresourcemanagervoiceservices
+      Clouds: 'Public'
+      # Only run tests on Windows to save cost.
+      MatrixFilters:
+        - pool=.*(win).*
