@@ -1,4 +1,4 @@
-# Application Insights for Spring native
+# Azure Monitor Spring native library for Java
 
 This project allows providing telemetry data to Azure Monitor for Spring Boot applications packaged as GraalVM native images.
 
