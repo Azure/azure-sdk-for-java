@@ -48,7 +48,7 @@ public class MessageSenderAsync extends ServiceBusScenario {
         final byte[] messagePayload = createMessagePayload(messageSize);
         Duration testDuration = Duration.ofMinutes(durationInMinutes);
 
-        // workaround non-retriable send
+        // workaround non-retryable send
         List<ServiceBusSenderAsyncClient> clients = new ArrayList<>();
         for (int i = 0; i < sendConcurrency; i++) {
             clients.add(TestUtils.getSenderBuilder(options, false).buildAsyncClient());

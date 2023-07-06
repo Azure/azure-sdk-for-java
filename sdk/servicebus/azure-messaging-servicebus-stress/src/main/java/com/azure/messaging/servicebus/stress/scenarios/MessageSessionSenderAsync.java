@@ -9,9 +9,11 @@ import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
+import java.time.Instant;
 
 import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.blockingWait;
 import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.createMessagePayload;
@@ -47,21 +49,31 @@ public class MessageSessionSenderAsync extends ServiceBusScenario {
         Duration testDuration = Duration.ofMinutes(durationInMinutes);
 
         RateLimiter rateLimiter = new RateLimiter(sendMessageRatePerSecond, sendConcurrency);
-        Flux<ServiceBusMessage> messages = Flux.range(0, Integer.MAX_VALUE)
-            .map(i -> new ServiceBusMessage(messagePayload).setSessionId(Integer.toString(i % sessionsToSend)));
+
+        Flux<ServiceBusMessage> messages = Mono.fromSupplier(() -> new ServiceBusMessage(messagePayload).setSessionId(randomSessionId()))
+            .repeat();
 
         messages
+            .take(testDuration)
             .flatMap(msg ->
                 rateLimiter.acquire()
                     .then(client.sendMessage(msg)
+                        .onErrorResume(t -> true, t -> {
+                            LOGGER.error("error when sending", t);
+                            return Mono.empty();
+                        })
                         .doFinally(i -> rateLimiter.release()))
             )
-            .take(testDuration)
             .parallel(sendConcurrency, sendConcurrency)
             .runOn(Schedulers.boundedElastic())
-            .subscribe(i -> { }, e -> LOGGER.error("error when sending", e), () -> LOGGER.info("done"));
+            .subscribe();
 
         blockingWait(testDuration);
+        LOGGER.info("done");
         client.close();
+    }
+
+    private String randomSessionId() {
+        return Integer.toString((int)(Instant.now().toEpochMilli() % sessionsToSend));
     }
 }

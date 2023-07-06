@@ -86,24 +86,6 @@ final class TestUtils {
             .collect(Collectors.toList());
     }
 
-    static void limitRate(int rate, long startEpochMillis) {
-        int allottedTimeMs = (int) 1000d / rate;
-        // super-naive sync rate limiting
-        long duration = Instant.now().toEpochMilli() - startEpochMillis;
-        if (allottedTimeMs < duration) {
-            LOGGER.atWarning()
-                .addKeyValue("duration", duration)
-                .addKeyValue("allottedTimeMs", allottedTimeMs)
-                .log("operation took more than allotted interval, consider decreasing operation rate");
-            return;
-        }
-        try {
-            Thread.sleep(allottedTimeMs - duration);
-        } catch (InterruptedException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
-    }
-
     static byte[] createMessagePayload(int messageSize) {
         final byte[] messagePayload = new byte[messageSize];
         RANDOM.nextBytes(messagePayload);
@@ -123,6 +105,7 @@ final class TestUtils {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
+
     private TestUtils() {
     }
 }

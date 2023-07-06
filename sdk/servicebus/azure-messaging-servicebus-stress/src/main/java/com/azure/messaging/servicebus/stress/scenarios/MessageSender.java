@@ -8,12 +8,13 @@ import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
+import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.blockingWait;
 import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.createBatch;
 import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.createMessagePayload;
-import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.limitRate;
 
 /**
  * Test ServiceBusSenderClient
@@ -28,6 +29,9 @@ public class MessageSender extends ServiceBusScenario {
     @Value("${SEND_MESSAGE_RATE:100}")
     private int sendMessageRatePerSecond;
 
+    @Value("${SEND_CONCURRENCY:5}")
+    private int sendConcurrency;
+
     @Value("${BATCH_SIZE:2}")
     private int batchSize;
 
@@ -41,14 +45,16 @@ public class MessageSender extends ServiceBusScenario {
         long endAtEpochMillis = Instant.now().plus(durationInMinutes, ChronoUnit.MINUTES).toEpochMilli();
 
         int batchRatePerSecond = sendMessageRatePerSecond / batchSize;
+        RateLimiter rateLimiter = new RateLimiter(batchRatePerSecond, sendConcurrency);
         while (Instant.now().toEpochMilli() < endAtEpochMillis) {
-            long start = Instant.now().toEpochMilli();
-
-            try {
-                client.sendMessages(createBatch(messagePayload, batchSize));
-                limitRate(batchRatePerSecond, start);
-            } catch (Exception ex) {
-                LOGGER.error("send error", ex);
+            if (rateLimiter.tryAcquire()) {
+                try {
+                    client.sendMessages(createBatch(messagePayload, batchSize));
+                } catch (Exception ex) {
+                    LOGGER.error("send error", ex);
+                }
+            } else {
+                blockingWait(Duration.ofMillis(10));
             }
         }
 
