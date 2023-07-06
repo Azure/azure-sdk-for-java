@@ -21,7 +21,7 @@ import java.util.List;
 public class TaskTests extends BatchServiceClientTestBase {
 	private static String livePoolId;
     private static String liveIaasPoolId;
-	 
+
 	@Override
     protected void beforeTest() {
 	   	super.beforeTest();
@@ -37,7 +37,35 @@ public class TaskTests extends BatchServiceClientTestBase {
             }
        }
    }
-	
+
+   @Test
+    public void testTaskUnifiedModel() throws Exception {
+        String jobId = "job_1";
+        String taskId = "task-canPut";
+        try {
+            // CREATE
+            BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(taskId, "echo hello world");
+            taskClient.create(jobId, taskCreateParameters);
+
+            // GET
+            BatchTask task = taskClient.get(jobId, taskId);
+
+            //UPDATE
+            Integer maxRetrycount = 5;
+            Duration retentionPeriod = Duration.ofDays(5);
+            task.setConstraints(new TaskConstraints().setMaxTaskRetryCount(maxRetrycount).setRetentionTime(retentionPeriod));
+            taskClient.update(jobId, taskId, task);
+
+            //GET After UPDATE
+            task = taskClient.get(jobId, taskId);
+            Assertions.assertEquals(maxRetrycount, task.getConstraints().getMaxTaskRetryCount());
+            Assertions.assertEquals(retentionPeriod, task.getConstraints().getRetentionTime());
+        }
+        finally {
+            taskClient.delete(jobId, taskId);
+        }
+    }
+
 	@Test
     public void testJobUser() throws Exception {
         String jobId = getStringIdWithUserNamePrefix("-testJobUser");
@@ -79,7 +107,7 @@ public class TaskTests extends BatchServiceClientTestBase {
             }
         }
     }
-	
+
 	@Test
     public void canCRUDTest() throws Exception {
         int TASK_COMPLETE_TIMEOUT_IN_SECONDS = 60; // 60 seconds timeout

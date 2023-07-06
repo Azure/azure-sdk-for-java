@@ -36,27 +36,37 @@ public class JobTests extends BatchServiceClientTestBase {
     * This test is POC for testing TypeSpec Shared model among CRUD operations
     * */
     @Test
-    public void testJobPut() throws Exception {
+    public void testJobUnifiedModel() throws Exception {
     	String jobId = getStringIdWithUserNamePrefix("-Job-canPut");
     	PoolInformation poolInfo = new PoolInformation();
         poolInfo.setPoolId(poolId);
         JobClient jobClient = batchClientBuilder.buildJobClient();
         BatchJobCreateParameters jobCreateParameters = new BatchJobCreateParameters(jobId, poolInfo);
-        
+
         jobClient.create(jobCreateParameters);
-        
+
         try {
-        	BatchJob getJob = jobClient.get(jobId);
-        	getJob.setPriority(500);
-        	getJob.setOnAllTasksComplete(OnAllTasksComplete.TERMINATE_JOB);
+            //GET
+        	BatchJob job = jobClient.get(jobId);
+
+            //UPDATE
+            Integer updatedPriority = 500;
+            OnAllTasksComplete updatedTasksComplete = OnAllTasksComplete.TERMINATE_JOB;
+        	job.setPriority(updatedPriority);
+        	job.setOnAllTasksComplete(updatedTasksComplete);
         	//getJob.setPoolInfo - No setter for required property Pool Info
-        	jobClient.update(jobId, getJob);
+            jobClient.update(jobId, job);
+
+            //GET After UPDATE
+            job = jobClient.get(jobId);
+            Assertions.assertEquals(updatedPriority, job.getPriority());
+            Assertions.assertEquals(updatedTasksComplete, job.getOnAllTasksComplete());
         }
         finally {
         	jobClient.delete(jobId);
         }
     }
-    
+
     @Test
     public void canCrudJob() throws Exception {
     	 // CREATE
@@ -124,7 +134,7 @@ public class JobTests extends BatchServiceClientTestBase {
             }
         }
     }
-    
+
 //    @Test
 //    public void canUpdateJobState() throws Exception {
 //        // CREATE
@@ -190,7 +200,7 @@ public class JobTests extends BatchServiceClientTestBase {
 //            }
 //        }
 //    }
-    
+
     @Test
     public void canCRUDJobWithPoolNodeCommunicationMode() throws Exception {
         // CREATE
@@ -243,5 +253,5 @@ public class JobTests extends BatchServiceClientTestBase {
         }
     }
 
-    
+
 }

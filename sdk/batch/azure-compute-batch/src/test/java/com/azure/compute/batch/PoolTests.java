@@ -41,9 +41,8 @@ public class PoolTests extends BatchServiceClientTestBase {
 
     @Test
     public void testPoolUnifiedModel() {
-	     String unifiedModelPool = null;
+	     String unifiedModelPool = getStringIdWithUserNamePrefix("-testPoolModelUnification");;
 	     try {
-             unifiedModelPool = getStringIdWithUserNamePrefix("-testPoolModelUnification");
              String POOL_VM_SIZE = "STANDARD_D1_V2";
              ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
                      .setSku("18.04-LTS").setVersion("latest");
@@ -54,7 +53,7 @@ public class PoolTests extends BatchServiceClientTestBase {
              poolCreateParameters.setTargetDedicatedNodes(3)
                      .setVirtualMachineConfiguration(configuration)
                      .setTargetNodeCommunicationMode(NodeCommunicationMode.DEFAULT)
-                     .setMetadata(new LinkedList<>(List.of(new MetadataItem("foo", "bar"))));
+                     .setMetadata(new LinkedList<>(List.of(new MetadataItem("foo", "bar"))));       //Set Metadata on pool creation
 
 
              poolClient.create(poolCreateParameters);
