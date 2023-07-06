@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Query metrics diagnostics changed to JSON format. - See [PR 35761](https://github.com/Azure/azure-sdk-for-java/pull/35761)
 
 ### 4.47.0 (2023-06-26)
 
