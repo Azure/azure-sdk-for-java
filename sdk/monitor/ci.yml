@@ -51,7 +51,7 @@ parameters:
   type: boolean
   default: true
 - name: release_azuremonitorspringnative
-  displayName: 'azure-monitor-azure-monitor-spring-native'
+  displayName: 'azure-monitor-spring-native'
   type: boolean
   default: true
 - name: release_azuremonitorquery
