@@ -17,6 +17,7 @@ import com.azure.communication.jobrouter.models.options.CreateJobOptions;
 import com.azure.communication.jobrouter.models.options.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.options.UnassignJobOptions;
 import com.azure.core.http.HttpClient;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -35,6 +36,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/35706")
     public void unassignJob(HttpClient httpClient) {
         // Setup
         routerClient = getRouterClient(httpClient);
