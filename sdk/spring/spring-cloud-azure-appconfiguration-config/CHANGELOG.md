@@ -1,6 +1,6 @@
 # Release History
 
-## 4.8.0-beta.1 (Unreleased)
+## 4.10.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,11 +8,15 @@
 
 ### Bugs Fixed
 
-- Fixes issue where credential from Azure Spring global properties was being overridden.
-- Fixes bug where Http Response wasn't checked before trying to use response.
-- Fixes Tracing info for ContainerApp
-
 ### Other Changes
+
+## 4.9.0 (2023-06-29)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#490-2023-06-29) for more details.
+
+## 4.8.0 (2023-05-25)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#480-2023-05-25) for more details.
 
 ## 4.7.0 (2023-03-23)
 

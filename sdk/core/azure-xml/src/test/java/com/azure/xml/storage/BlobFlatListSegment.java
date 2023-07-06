@@ -12,6 +12,8 @@ import javax.xml.stream.XMLStreamException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.azure.xml.AzureXmlTestUtils.getRootElementName;
+
 public class BlobFlatListSegment implements XmlSerializable<BlobFlatListSegment> {
     /*
      * The BlobItems property.
@@ -40,7 +42,12 @@ public class BlobFlatListSegment implements XmlSerializable<BlobFlatListSegment>
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("Blobs");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        xmlWriter.writeStartElement(getRootElementName(rootElementName, "Blobs"));
 
         if (blobItems != null) {
             for (BlobItemInternal blobItem : blobItems) {
@@ -52,7 +59,11 @@ public class BlobFlatListSegment implements XmlSerializable<BlobFlatListSegment>
     }
 
     public static BlobFlatListSegment fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return xmlReader.readObject("Blobs", reader -> {
+        return fromXml(xmlReader, null);
+    }
+
+    public static BlobFlatListSegment fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        return xmlReader.readObject(getRootElementName(rootElementName, "Blobs"), reader -> {
             BlobFlatListSegment deserialized = new BlobFlatListSegment();
 
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

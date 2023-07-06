@@ -22,6 +22,7 @@ parameters:
   TestOptions: $(TestOptions)
   TestParallelization: '1'
   TestVersionSupport: $(TestVersionSupport)
+  UseHttpFaultInjector: false
 
 jobs:
   - job:
@@ -53,6 +54,11 @@ jobs:
           AdditionalModules: ${{ parameters.AdditionalModules }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
+
+      # macOS has known issues running HTTP fault injector, change this once
+      # https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
+      - ${{ if and(eq(parameters.UseHttpFaultInjector, 'true'), not(contains(variables['OSVmImage'], 'mac'))) }}:
+        - template: /eng/pipelines/templates/steps/http-fault-injector.yml
 
       - template: ../steps/install-reporting-tools.yml
         parameters:
@@ -100,6 +106,11 @@ jobs:
             AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
             ${{ each var in parameters.EnvVars }}:
               ${{ var.key }}: ${{ var.value }}
+
+      # macOS has known issues running HTTP fault injector, change this once
+      # https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
+      - ${{ if and(eq(parameters.UseHttpFaultInjector, 'true'), not(contains(variables['OSVmImage'], 'mac'))) }}:
+        - template: /eng/pipelines/templates/steps/publish-http-fault-injector-logs.yml
 
       - ${{ parameters.PostSteps }}
 

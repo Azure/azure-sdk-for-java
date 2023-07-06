@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.FeedResponse;
@@ -10,7 +11,9 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -29,13 +32,15 @@ abstract class Fetcher<T> {
     private final AtomicBoolean shouldFetchMore;
     private final AtomicInteger maxItemCount;
     private final AtomicInteger top;
+    private final List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker;
 
     public Fetcher(
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
         boolean isChangeFeed,
         int top,
         int maxItemCount,
-        OperationContextAndListenerTuple operationContext) {
+        OperationContextAndListenerTuple operationContext,
+        List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
 
         checkNotNull(executeFunc, "Argument 'executeFunc' must not be null.");
 
@@ -58,6 +63,7 @@ abstract class Fetcher<T> {
             this.maxItemCount = new AtomicInteger(Math.min(maxItemCount, top));
         }
         this.shouldFetchMore = new AtomicBoolean(true);
+        this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
     }
 
     public final boolean shouldFetchMore() {
@@ -140,9 +146,32 @@ abstract class Fetcher<T> {
     protected abstract RxDocumentServiceRequest createRequest(int maxItemCount);
 
     private Mono<FeedResponse<T>> nextPage(RxDocumentServiceRequest request) {
-        return executeFunc.apply(request).map(rsp -> {
-            updateState(rsp, request);
-            return rsp;
-        });
+        AtomicBoolean completed = new AtomicBoolean(false);
+
+        return executeFunc
+            .apply(request)
+            .map(rsp -> {
+                updateState(rsp, request);
+                return rsp;
+            })
+            .doOnNext(response -> completed.set(true))
+            .doOnError(throwable -> completed.set(true))
+            .doFinally(signalType -> {
+                // If the signal type is not cancel(which means success or error), we do not need to tracking the diagnostics here
+                // as the downstream will capture it
+                //
+                // Any of the reactor operators can terminate with a cancel signal instead of error signal
+                // For example collectList, Flux.merge, takeUntil
+                // We should only record cancellation diagnostics if the signal is cancelled and the request is cancelled
+                if (signalType != SignalType.CANCEL
+                    || this.cancelledRequestDiagnosticsTracker == null
+                    || completed.get()) {
+                    return;
+                }
+
+                if (request.requestContext != null && request.requestContext.cosmosDiagnostics != null) {
+                    this.cancelledRequestDiagnosticsTracker.add(request.requestContext.cosmosDiagnostics);
+                }
+            });
     }
 }

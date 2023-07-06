@@ -58,6 +58,6 @@ public final class StorageTargetOperationsResumeMockTests {
 
         manager
             .storageTargetOperations()
-            .resume("sjabibs", "stawfsdjpvkv", "bjxbkzbzk", com.azure.core.util.Context.NONE);
+            .resume("qncygupkvi", "mdscwxqupev", "hfstotxhojujbyp", com.azure.core.util.Context.NONE);
     }
 }

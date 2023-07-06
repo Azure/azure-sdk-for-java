@@ -3,6 +3,7 @@
 
 package com.azure.core.test.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -13,15 +14,23 @@ public class RecordFilePayload {
     /**
      * The record file path
      */
-    @JsonProperty("x-recording-file")
+    @JsonProperty(value = "x-recording-file", access = JsonProperty.Access.READ_ONLY)
     private String recordingFile;
+
+    /**
+     * The asset file path
+     */
+    @JsonProperty(value = "x-recording-assets-file", access = JsonProperty.Access.READ_ONLY)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String assetFile;
 
     /**
      * Creates an instance of {@link RecordFilePayload}.
      * @param recordingFile The partial path to the recording file.
+     * @param assetFile The path to asset file.
      */
-    public RecordFilePayload(String recordingFile) {
+    public RecordFilePayload(String recordingFile, String assetFile) {
         this.recordingFile = recordingFile;
+        this.assetFile = assetFile;
     }
-
 }

@@ -4,49 +4,42 @@
 package com.azure.health.insights.clinicalmatching;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 
 /**
  * Base class for TM clients test.
  */
-public class ClinicalMatchingClientTestBase extends TestBase {
+public class ClinicalMatchingClientTestBase extends TestProxyTestBase {
     private static final String FAKE_API_KEY = "fakeKeyPlaceholder";
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
-
     void testTMWithResponse(Consumer<BinaryData> testRunner) {
         testRunner.accept(getTMRequest());
     }
 
     ClinicalMatchingClientBuilder getClientBuilder() {
-        String endpoint = getEndpoint();
-
-        HttpPipelinePolicy authPolicy = new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY,
-            new AzureKeyCredential(getKey()));
-        HttpClient httpClient;
-        if (getTestMode() == TestMode.RECORD || getTestMode() == TestMode.LIVE) {
-            httpClient = HttpClient.createDefault();
-        } else {
-            httpClient = interceptorManager.getPlaybackClient();
+        ClinicalMatchingClientBuilder builder = new ClinicalMatchingClientBuilder()
+            .endpoint(getEndpoint())
+            .addPolicy(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY,
+                new AzureKeyCredential(getKey())));
+        if (getTestMode() == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        } else if (getTestMode() == TestMode.PLAYBACK) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
+                .setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent", "repeatability-request-id"))));
         }
-        HttpPipeline httpPipeline = new HttpPipelineBuilder()
-            .httpClient(httpClient)
-            .policies(authPolicy, interceptorManager.getRecordPolicy()).build();
 
-        return new ClinicalMatchingClientBuilder()
-            .pipeline(httpPipeline)
-            .endpoint(endpoint);
+        return builder;
     }
 
     private String getKey() {

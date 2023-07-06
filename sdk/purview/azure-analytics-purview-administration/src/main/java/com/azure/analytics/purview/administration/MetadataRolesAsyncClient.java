@@ -39,41 +39,36 @@ public final class MetadataRolesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     values: [
-     *         {
-     *             id: String
-     *             name: String
-     *             type: String
-     *             properties: {
-     *                 provisioningState: String
-     *                 roleType: String
-     *                 friendlyName: String
-     *                 description: String
-     *                 cnfCondition: [
-     *                     [
-     *                         {
-     *                             attributeName: String
-     *                             attributeValueIncludes: String
-     *                             attributeValueIncludedIn: [
-     *                                 String
-     *                             ]
-     *                             attributeValueExcludes: String
-     *                             attributeValueExcludedIn: [
-     *                                 String
-     *                             ]
-     *                         }
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     type: String (Optional)
+     *     properties (Optional): {
+     *         provisioningState: String (Optional)
+     *         roleType: String (Optional)
+     *         friendlyName: String (Optional)
+     *         description: String (Optional)
+     *         cnfCondition (Optional): [
+     *              (Optional)[
+     *                  (Optional){
+     *                     attributeName: String (Optional)
+     *                     attributeValueIncludes: String (Optional)
+     *                     attributeValueIncludedIn (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                 ]
-     *                 dnfCondition: [
-     *                     [
-     *                         (recursive schema, see above)
+     *                     attributeValueExcludes: String (Optional)
+     *                     attributeValueExcludedIn (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                 ]
-     *                 version: Long
-     *             }
-     *         }
-     *     ]
-     *     nextLink: String
+     *                 }
+     *             ]
+     *         ]
+     *         dnfCondition (Optional): [
+     *              (Optional)[
+     *                 (recursive schema, see above)
+     *             ]
+     *         ]
+     *         version: Long (Optional)
+     *     }
      * }
      * }</pre>
      *

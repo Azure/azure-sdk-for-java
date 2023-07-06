@@ -6,15 +6,19 @@ package com.azure.ai.personalizer;
 import com.azure.ai.personalizer.models.PersonalizerRankOptions;
 import com.azure.ai.personalizer.models.PersonalizerRankResult;
 import com.azure.ai.personalizer.models.PersonalizerRankableAction;
+import com.azure.ai.personalizer.testmodels.ActionCategory;
+import com.azure.ai.personalizer.testmodels.ActionFeatures;
+import com.azure.ai.personalizer.testmodels.Context;
+import com.azure.ai.personalizer.testmodels.CurrentFeatures;
+import com.azure.ai.personalizer.testmodels.UserFeatures;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.azure.ai.personalizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -35,12 +39,10 @@ public class RankTests extends PersonalizerTestBase {
     }
 
     private void rankNullParameters(PersonalizerClient client) {
-        List<BinaryData> features = new ArrayList<BinaryData>() {
-            {
-                add(BinaryData.fromObject(new ActionFeatures().setVideoType("documentary").setVideoLength(35).setDirector("CarlSagan")));
-                add(BinaryData.fromObject(new ActionCategory().setMostWatchedByAge("30-35")));
-            }
-        };
+        List<BinaryData> features = Arrays.asList(
+            BinaryData.fromObject(new ActionFeatures().setVideoType("documentary").setVideoLength(35).setDirector("CarlSagan")),
+            BinaryData.fromObject(new ActionCategory().setMostWatchedByAge("30-35")));
+
         List<PersonalizerRankableAction> actions = new ArrayList<>();
         actions.add(new PersonalizerRankableAction().setId("Person").setFeatures(features));
         PersonalizerRankOptions request = new PersonalizerRankOptions().setActions(actions).setContextFeatures(null).setExcludedActions(null);
@@ -54,36 +56,25 @@ public class RankTests extends PersonalizerTestBase {
     }
 
     private void rankServerFeatures(PersonalizerClient client) {
-
-        List<BinaryData> contextFeatures = new ArrayList<BinaryData>() {
-            {
-                add(BinaryData.fromObject(new Context().setCurrentFeatures(new CurrentFeatures().setDay("Tuesday").setWeather("rainy"))));
-                add(BinaryData.fromObject(new UserFeatures().setPayingUser(true).setFavoriteGenre("rainy").setHoursOnSite(0.12).setLastWatchedType("movie")));
-            }
-        };
+        List<BinaryData> contextFeatures = Arrays.asList(
+            BinaryData.fromObject(new Context().setCurrentFeatures(new CurrentFeatures().setDay("Tuesday").setWeather("rainy"))),
+            BinaryData.fromObject(new UserFeatures().setPayingUser(true).setFavoriteGenre("rainy").setHoursOnSite(0.12).setLastWatchedType("movie")));
 
         List<PersonalizerRankableAction> actions = new ArrayList<>();
-        List<BinaryData> features1 = new ArrayList<BinaryData>() {
-            {
-                add(BinaryData.fromObject(new ActionFeatures().setVideoType("documentary").setVideoLength(35).setDirector("CarlSagan")));
-                add(BinaryData.fromObject(new ActionCategory().setMostWatchedByAge("30-35")));
-            }
-        };
+        List<BinaryData> features1 = Arrays.asList(
+            BinaryData.fromObject(new ActionFeatures().setVideoType("documentary").setVideoLength(35).setDirector("CarlSagan")),
+            BinaryData.fromObject(new ActionCategory().setMostWatchedByAge("30-35")));
+
         actions.add(new PersonalizerRankableAction().setId("Person1").setFeatures(features1));
 
-        List<BinaryData> features2 = new ArrayList<BinaryData>() {
-            {
-                add(BinaryData.fromObject(new ActionFeatures().setVideoType("documentary").setVideoLength(35).setDirector("CarlSagan")));
-                add(BinaryData.fromObject(new ActionCategory().setMostWatchedByAge("40-45")));
-            }
-        };
+        List<BinaryData> features2 = Arrays.asList(
+            BinaryData.fromObject(new ActionFeatures().setVideoType("documentary").setVideoLength(35).setDirector("CarlSagan")),
+            BinaryData.fromObject(new ActionCategory().setMostWatchedByAge("40-45")));
+
         actions.add(new PersonalizerRankableAction().setId("Person2").setFeatures(features2));
 
-        ArrayList<String> excludeActions = new ArrayList<String>() {
-            {
-                add("Person1");
-            }
-        };
+        List<String> excludeActions = Collections.singletonList("Person1");
+
         String eventId = "123456789";
         PersonalizerRankOptions request = new PersonalizerRankOptions()
             .setActions(actions)
@@ -101,26 +92,17 @@ public class RankTests extends PersonalizerTestBase {
     }
 
     private void rankWithNoExcludedFeatures(PersonalizerClient client) {
-        List<BinaryData> contextFeatures = new ArrayList<BinaryData>() {
-            {
-                add(BinaryData.fromObject(new UserFeatures().setPayingUser(true).setFavoriteGenre("documentary").setHoursOnSite(0.12).setLastWatchedType("movie")));
-                add(BinaryData.fromObject(new Context().setCurrentFeatures(new CurrentFeatures().setDay("tuesday").setWeather("rainy"))));
-            }
-        };
+        List<BinaryData> contextFeatures = Arrays.asList(
+            BinaryData.fromObject(new UserFeatures().setPayingUser(true).setFavoriteGenre("documentary").setHoursOnSite(0.12).setLastWatchedType("movie")),
+            BinaryData.fromObject(new Context().setCurrentFeatures(new CurrentFeatures().setDay("tuesday").setWeather("rainy"))));
 
-        List<BinaryData> features1 = new ArrayList<BinaryData>() {
-            {
-                add(BinaryData.fromObject(new ActionFeatures().setVideoType("documentary").setVideoLength(35).setDirector("CarlSagan")));
-                add(BinaryData.fromObject(new ActionCategory().setMostWatchedByAge("30-35")));
-            }
-        };
+        List<BinaryData> features1 = Arrays.asList(
+            BinaryData.fromObject(new ActionFeatures().setVideoType("documentary").setVideoLength(35).setDirector("CarlSagan")),
+            BinaryData.fromObject(new ActionCategory().setMostWatchedByAge("30-35")));
 
-        List<BinaryData> features2 = new ArrayList<BinaryData>() {
-            {
-                add(BinaryData.fromObject(new ActionFeatures().setVideoType("documentary").setVideoLength(35).setDirector("CarlSagan")));
-                add(BinaryData.fromObject(new ActionCategory().setMostWatchedByAge("40-45")));
-            }
-        };
+        List<BinaryData> features2 = Arrays.asList(
+            BinaryData.fromObject(new ActionFeatures().setVideoType("documentary").setVideoLength(35).setDirector("CarlSagan")),
+            BinaryData.fromObject(new ActionCategory().setMostWatchedByAge("40-45")));
 
         List<PersonalizerRankableAction> actions = new ArrayList<PersonalizerRankableAction>();
         actions.add(new PersonalizerRankableAction().setId("Person1").setFeatures(features1));
@@ -129,163 +111,4 @@ public class RankTests extends PersonalizerTestBase {
         PersonalizerRankResult response = client.rank(new PersonalizerRankOptions().setActions(actions).setContextFeatures(contextFeatures));
         assertEquals(actions.size(), response.getRanking().size());
     }
-}
-
-
-class CurrentFeatures {
-    @JsonGetter
-    public String getDay() {
-        return day;
-    }
-
-    @JsonSetter
-    public CurrentFeatures setDay(String day) {
-        this.day = day;
-        return this;
-    }
-
-    @JsonGetter
-    public String getWeather() {
-        return weather;
-    }
-
-    @JsonSetter
-    public CurrentFeatures setWeather(String weather) {
-        this.weather = weather;
-        return this;
-    }
-
-    @JsonProperty
-    private String day;
-
-    @JsonProperty
-    private String weather;
-}
-
-class Context {
-    @JsonGetter
-    public CurrentFeatures getFeatures() {
-        return currentFeatures;
-    }
-
-    @JsonSetter
-    public Context setCurrentFeatures(CurrentFeatures currentFeatures) {
-        this.currentFeatures = currentFeatures;
-        return this;
-    }
-
-    @JsonProperty
-    CurrentFeatures currentFeatures;
-}
-
-class UserFeatures {
-    @JsonGetter
-    public boolean isPayingUser() {
-        return isPayingUser;
-    }
-
-    @JsonSetter
-    public UserFeatures setPayingUser(boolean payingUser) {
-        isPayingUser = payingUser;
-        return this;
-    }
-
-    @JsonGetter
-    public String getFavoriteGenre() {
-        return favoriteGenre;
-    }
-
-    @JsonSetter
-    public UserFeatures setFavoriteGenre(String favoriteGenre) {
-        this.favoriteGenre = favoriteGenre;
-        return this;
-    }
-
-    @JsonGetter
-    public double getHoursOnSite() {
-        return hoursOnSite;
-    }
-
-    @JsonSetter
-    public UserFeatures setHoursOnSite(double hoursOnSite) {
-        this.hoursOnSite = hoursOnSite;
-        return this;
-    }
-
-    @JsonGetter
-    public String getLastWatchedType() {
-        return lastWatchedType;
-    }
-
-    @JsonSetter
-    public UserFeatures setLastWatchedType(String lastWatchedType) {
-        this.lastWatchedType = lastWatchedType;
-        return this;
-    }
-
-    @JsonProperty
-    private boolean isPayingUser;
-    @JsonProperty
-    private String favoriteGenre;
-    @JsonProperty
-    private double hoursOnSite;
-    @JsonProperty
-    private String lastWatchedType;
-}
-
-class ActionFeatures {
-    @JsonGetter
-    public String getVideoType() {
-        return videoType;
-    }
-
-    @JsonSetter
-    public ActionFeatures setVideoType(String videoType) {
-        this.videoType = videoType;
-        return this;
-    }
-
-    @JsonGetter
-    public Integer getVideoLength() {
-        return videoLength;
-    }
-
-    @JsonSetter
-    public ActionFeatures setVideoLength(Integer videoLength) {
-        this.videoLength = videoLength;
-        return this;
-    }
-
-    @JsonGetter
-    public String getDirector() {
-        return director;
-    }
-
-    @JsonSetter
-    public ActionFeatures setDirector(String director) {
-        this.director = director;
-        return this;
-    }
-
-    @JsonProperty
-    String videoType;
-    @JsonProperty
-    Integer videoLength;
-    @JsonProperty
-    String director;
-}
-class ActionCategory {
-    @JsonGetter
-    public String getMostWatchedByAge() {
-        return mostWatchedByAge;
-    }
-
-    @JsonSetter
-    public ActionCategory setMostWatchedByAge(String mostWatchedByAge) {
-        this.mostWatchedByAge = mostWatchedByAge;
-        return this;
-    }
-
-    @JsonProperty
-    String mostWatchedByAge;
 }

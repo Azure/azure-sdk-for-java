@@ -13,12 +13,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class SystemScanRulesetsListAll {
     public static void main(String[] args) {
-        SystemScanRulesetsClient client =
+        SystemScanRulesetsClient systemScanRulesetsClient =
                 new PurviewScanningClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildSystemScanRulesetsClient();
+        // BEGIN:com.azure.analytics.purview.scanning.generated.systemscanrulesetslistall.systemscanrulesetslistall
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = client.listAll(requestOptions);
+        PagedIterable<BinaryData> response = systemScanRulesetsClient.listAll(requestOptions);
+        // END:com.azure.analytics.purview.scanning.generated.systemscanrulesetslistall.systemscanrulesetslistall
     }
 }

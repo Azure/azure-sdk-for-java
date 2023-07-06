@@ -4,13 +4,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A table object consisting table cells arranged in a rectangular layout. */
-@Fluent
+@Immutable
 public final class DocumentTable {
     /*
      * Number of rows in the table.
@@ -51,7 +51,7 @@ public final class DocumentTable {
      * @param spans the spans value to set.
      */
     @JsonCreator
-    public DocumentTable(
+    private DocumentTable(
             @JsonProperty(value = "rowCount", required = true) int rowCount,
             @JsonProperty(value = "columnCount", required = true) int columnCount,
             @JsonProperty(value = "cells", required = true) List<DocumentTableCell> cells,
@@ -96,17 +96,6 @@ public final class DocumentTable {
      */
     public List<BoundingRegion> getBoundingRegions() {
         return this.boundingRegions;
-    }
-
-    /**
-     * Set the boundingRegions property: Bounding regions covering the table.
-     *
-     * @param boundingRegions the boundingRegions value to set.
-     * @return the DocumentTable object itself.
-     */
-    public DocumentTable setBoundingRegions(List<BoundingRegion> boundingRegions) {
-        this.boundingRegions = boundingRegions;
-        return this;
     }
 
     /**

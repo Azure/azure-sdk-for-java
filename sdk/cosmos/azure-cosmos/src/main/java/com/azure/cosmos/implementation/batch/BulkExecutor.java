@@ -66,6 +66,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
 
     private final CosmosAsyncContainer container;
+    private final int maxMicroBatchPayloadSizeInBytes;
     private final AsyncDocumentClient docClientWrapper;
     private final String operationContextText;
     private final OperationContextAndListenerTuple operationListener;
@@ -74,6 +75,7 @@ public final class BulkExecutor<TContext> implements Disposable {
 
     // Options for bulk execution.
     private final Long maxMicroBatchIntervalInMs;
+
     private final TContext batchContext;
     private final ConcurrentMap<String, PartitionScopeThresholds> partitionScopeThresholds;
     private final CosmosBulkExecutionOptions cosmosBulkExecutionOptions;
@@ -102,6 +104,9 @@ public final class BulkExecutor<TContext> implements Disposable {
         checkNotNull(inputOperations, "expected non-null inputOperations");
         checkNotNull(cosmosBulkOptions, "expected non-null bulkOptions");
 
+        this.maxMicroBatchPayloadSizeInBytes = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
+            .getMaxMicroBatchPayloadSizeInBytes(cosmosBulkOptions);
         this.cosmosBulkExecutionOptions = cosmosBulkOptions;
         this.container = container;
         this.bulkSpanName = "nonTransactionalBatch." + this.container.getId();
@@ -514,8 +519,7 @@ public final class BulkExecutor<TContext> implements Disposable {
                 int totalSerializedLength = this.calculateTotalSerializedLength(currentTotalSerializedLength, itemOperation);
 
                 if (batchSize >= thresholds.getTargetMicroBatchSizeSnapshot() ||
-                    age >= this.maxMicroBatchIntervalInMs ||
-                    totalSerializedLength >= BatchRequestResponseConstants.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES || (preserveOrdering && !isItemAbsent)) {
+                    age >= this.maxMicroBatchIntervalInMs || totalSerializedLength >= this.maxMicroBatchPayloadSizeInBytes || (preserveOrdering && !isItemAbsent)) {
                     if (preserveOrdering && !isItemAbsent) {
                         logger.debug(
                             "BufferUntil - Flushing PKRange {} due to isItemAlreadyPresent ({}), BatchSize ({}), payload size ({}) or age ({}) " +
@@ -601,7 +605,7 @@ public final class BulkExecutor<TContext> implements Disposable {
 
         String pkRange = thresholds.getPartitionKeyRangeId();
         ServerOperationBatchRequest serverOperationBatchRequest =
-            BulkExecutorUtil.createBatchRequest(operations, pkRange);
+            BulkExecutorUtil.createBatchRequest(operations, pkRange, this.maxMicroBatchPayloadSizeInBytes);
         if (serverOperationBatchRequest.getBatchPendingOperations().size() > 0) {
             serverOperationBatchRequest.getBatchPendingOperations().forEach(groupSink::next);
         }

@@ -25,10 +25,26 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resourcehealth.fluent.MicrosoftResourceHealth;
 import com.azure.resourcemanager.resourcehealth.implementation.AvailabilityStatusesImpl;
+import com.azure.resourcemanager.resourcehealth.implementation.ChildAvailabilityStatusesImpl;
+import com.azure.resourcemanager.resourcehealth.implementation.ChildResourcesImpl;
+import com.azure.resourcemanager.resourcehealth.implementation.EmergingIssuesImpl;
+import com.azure.resourcemanager.resourcehealth.implementation.EventOperationsImpl;
+import com.azure.resourcemanager.resourcehealth.implementation.EventsOperationsImpl;
+import com.azure.resourcemanager.resourcehealth.implementation.ImpactedResourcesImpl;
+import com.azure.resourcemanager.resourcehealth.implementation.MetadatasImpl;
 import com.azure.resourcemanager.resourcehealth.implementation.MicrosoftResourceHealthBuilder;
 import com.azure.resourcemanager.resourcehealth.implementation.OperationsImpl;
+import com.azure.resourcemanager.resourcehealth.implementation.SecurityAdvisoryImpactedResourcesImpl;
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStatuses;
+import com.azure.resourcemanager.resourcehealth.models.ChildAvailabilityStatuses;
+import com.azure.resourcemanager.resourcehealth.models.ChildResources;
+import com.azure.resourcemanager.resourcehealth.models.EmergingIssues;
+import com.azure.resourcemanager.resourcehealth.models.EventOperations;
+import com.azure.resourcemanager.resourcehealth.models.EventsOperations;
+import com.azure.resourcemanager.resourcehealth.models.ImpactedResources;
+import com.azure.resourcemanager.resourcehealth.models.Metadatas;
 import com.azure.resourcemanager.resourcehealth.models.Operations;
+import com.azure.resourcemanager.resourcehealth.models.SecurityAdvisoryImpactedResources;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -41,6 +57,22 @@ public final class ResourceHealthManager {
     private AvailabilityStatuses availabilityStatuses;
 
     private Operations operations;
+
+    private Metadatas metadatas;
+
+    private ImpactedResources impactedResources;
+
+    private SecurityAdvisoryImpactedResources securityAdvisoryImpactedResources;
+
+    private EventsOperations eventsOperations;
+
+    private EventOperations eventOperations;
+
+    private ChildAvailabilityStatuses childAvailabilityStatuses;
+
+    private ChildResources childResources;
+
+    private EmergingIssues emergingIssues;
 
     private final MicrosoftResourceHealth clientObject;
 
@@ -207,7 +239,7 @@ public final class ResourceHealthManager {
                 .append("-")
                 .append("com.azure.resourcemanager.resourcehealth")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -286,6 +318,104 @@ public final class ResourceHealthManager {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
         }
         return operations;
+    }
+
+    /**
+     * Gets the resource collection API of Metadatas.
+     *
+     * @return Resource collection API of Metadatas.
+     */
+    public Metadatas metadatas() {
+        if (this.metadatas == null) {
+            this.metadatas = new MetadatasImpl(clientObject.getMetadatas(), this);
+        }
+        return metadatas;
+    }
+
+    /**
+     * Gets the resource collection API of ImpactedResources.
+     *
+     * @return Resource collection API of ImpactedResources.
+     */
+    public ImpactedResources impactedResources() {
+        if (this.impactedResources == null) {
+            this.impactedResources = new ImpactedResourcesImpl(clientObject.getImpactedResources(), this);
+        }
+        return impactedResources;
+    }
+
+    /**
+     * Gets the resource collection API of SecurityAdvisoryImpactedResources.
+     *
+     * @return Resource collection API of SecurityAdvisoryImpactedResources.
+     */
+    public SecurityAdvisoryImpactedResources securityAdvisoryImpactedResources() {
+        if (this.securityAdvisoryImpactedResources == null) {
+            this.securityAdvisoryImpactedResources =
+                new SecurityAdvisoryImpactedResourcesImpl(clientObject.getSecurityAdvisoryImpactedResources(), this);
+        }
+        return securityAdvisoryImpactedResources;
+    }
+
+    /**
+     * Gets the resource collection API of EventsOperations.
+     *
+     * @return Resource collection API of EventsOperations.
+     */
+    public EventsOperations eventsOperations() {
+        if (this.eventsOperations == null) {
+            this.eventsOperations = new EventsOperationsImpl(clientObject.getEventsOperations(), this);
+        }
+        return eventsOperations;
+    }
+
+    /**
+     * Gets the resource collection API of EventOperations.
+     *
+     * @return Resource collection API of EventOperations.
+     */
+    public EventOperations eventOperations() {
+        if (this.eventOperations == null) {
+            this.eventOperations = new EventOperationsImpl(clientObject.getEventOperations(), this);
+        }
+        return eventOperations;
+    }
+
+    /**
+     * Gets the resource collection API of ChildAvailabilityStatuses.
+     *
+     * @return Resource collection API of ChildAvailabilityStatuses.
+     */
+    public ChildAvailabilityStatuses childAvailabilityStatuses() {
+        if (this.childAvailabilityStatuses == null) {
+            this.childAvailabilityStatuses =
+                new ChildAvailabilityStatusesImpl(clientObject.getChildAvailabilityStatuses(), this);
+        }
+        return childAvailabilityStatuses;
+    }
+
+    /**
+     * Gets the resource collection API of ChildResources.
+     *
+     * @return Resource collection API of ChildResources.
+     */
+    public ChildResources childResources() {
+        if (this.childResources == null) {
+            this.childResources = new ChildResourcesImpl(clientObject.getChildResources(), this);
+        }
+        return childResources;
+    }
+
+    /**
+     * Gets the resource collection API of EmergingIssues.
+     *
+     * @return Resource collection API of EmergingIssues.
+     */
+    public EmergingIssues emergingIssues() {
+        if (this.emergingIssues == null) {
+            this.emergingIssues = new EmergingIssuesImpl(clientObject.getEmergingIssues(), this);
+        }
+        return emergingIssues;
     }
 
     /**

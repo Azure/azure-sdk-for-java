@@ -14,7 +14,6 @@ import com.azure.resourcemanager.networkcloud.fluent.models.StorageApplianceInne
 import com.azure.resourcemanager.networkcloud.models.StorageAppliance;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceEnableRemoteVendorManagementParameters;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceRunReadCommandsParameters;
-import com.azure.resourcemanager.networkcloud.models.StorageApplianceValidateHardwareParameters;
 import com.azure.resourcemanager.networkcloud.models.StorageAppliances;
 
 public final class StorageAppliancesImpl implements StorageAppliances {
@@ -128,26 +127,6 @@ public final class StorageAppliancesImpl implements StorageAppliances {
             .serviceClient()
             .runReadCommands(
                 resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters, context);
-    }
-
-    public void validateHardware(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters) {
-        this
-            .serviceClient()
-            .validateHardware(resourceGroupName, storageApplianceName, storageApplianceValidateHardwareParameters);
-    }
-
-    public void validateHardware(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters,
-        Context context) {
-        this
-            .serviceClient()
-            .validateHardware(
-                resourceGroupName, storageApplianceName, storageApplianceValidateHardwareParameters, context);
     }
 
     public StorageAppliance getById(String id) {

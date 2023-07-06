@@ -13,12 +13,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ScansListByDataSource {
     public static void main(String[] args) {
-        ScansClient client =
+        ScansClient scansClient =
                 new PurviewScanningClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildScansClient();
+        // BEGIN:com.azure.analytics.purview.scanning.generated.scanslistbydatasource.scanslistbydatasource
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = client.listByDataSource("myDataSource", requestOptions);
+        PagedIterable<BinaryData> response = scansClient.listByDataSource("myDataSource", requestOptions);
+        // END:com.azure.analytics.purview.scanning.generated.scanslistbydatasource.scanslistbydatasource
     }
 }

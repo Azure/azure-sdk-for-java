@@ -16,11 +16,11 @@ public final class BareMetalMachineRunDataExtractsParametersTests {
         BareMetalMachineRunDataExtractsParameters model =
             BinaryData
                 .fromString(
-                    "{\"commands\":[{\"arguments\":[\"eqw\",\"gp\"],\"command\":\"bu\"},{\"arguments\":[\"yxeb\",\"ybpmzznrtffyaq\",\"tmhheioqa\"],\"command\":\"hvseufuqyrx\"},{\"arguments\":[\"cgq\",\"sismjqfrddga\",\"quhiosrsjuivf\"],\"command\":\"disyirnxz\"},{\"arguments\":[\"exrxzbujrtrhq\",\"wrevkhgnlnzon\",\"lrpiqywnc\"],\"command\":\"jtszcof\"}],\"limitTimeSeconds\":8408869954916938247}")
+                    "{\"commands\":[{\"arguments\":[\"wpgclrcivt\",\"oxfrkenxpmyyefr\",\"mpdnqqskawa\"],\"command\":\"qvmmbn\"},{\"arguments\":[\"rtql\"],\"command\":\"zmegnitgvk\"},{\"arguments\":[\"yqdrf\",\"gcealzxwh\",\"ansym\",\"yqhlwigdivbkbx\"],\"command\":\"omfaj\"}],\"limitTimeSeconds\":3204420245532219409}")
                 .toObject(BareMetalMachineRunDataExtractsParameters.class);
-        Assertions.assertEquals("eqw", model.commands().get(0).arguments().get(0));
-        Assertions.assertEquals("bu", model.commands().get(0).command());
-        Assertions.assertEquals(8408869954916938247L, model.limitTimeSeconds());
+        Assertions.assertEquals("wpgclrcivt", model.commands().get(0).arguments().get(0));
+        Assertions.assertEquals("qvmmbn", model.commands().get(0).command());
+        Assertions.assertEquals(3204420245532219409L, model.limitTimeSeconds());
     }
 
     @org.junit.jupiter.api.Test
@@ -31,21 +31,18 @@ public final class BareMetalMachineRunDataExtractsParametersTests {
                     Arrays
                         .asList(
                             new BareMetalMachineCommandSpecification()
-                                .withArguments(Arrays.asList("eqw", "gp"))
-                                .withCommand("bu"),
+                                .withArguments(Arrays.asList("wpgclrcivt", "oxfrkenxpmyyefr", "mpdnqqskawa"))
+                                .withCommand("qvmmbn"),
                             new BareMetalMachineCommandSpecification()
-                                .withArguments(Arrays.asList("yxeb", "ybpmzznrtffyaq", "tmhheioqa"))
-                                .withCommand("hvseufuqyrx"),
+                                .withArguments(Arrays.asList("rtql"))
+                                .withCommand("zmegnitgvk"),
                             new BareMetalMachineCommandSpecification()
-                                .withArguments(Arrays.asList("cgq", "sismjqfrddga", "quhiosrsjuivf"))
-                                .withCommand("disyirnxz"),
-                            new BareMetalMachineCommandSpecification()
-                                .withArguments(Arrays.asList("exrxzbujrtrhq", "wrevkhgnlnzon", "lrpiqywnc"))
-                                .withCommand("jtszcof")))
-                .withLimitTimeSeconds(8408869954916938247L);
+                                .withArguments(Arrays.asList("yqdrf", "gcealzxwh", "ansym", "yqhlwigdivbkbx"))
+                                .withCommand("omfaj")))
+                .withLimitTimeSeconds(3204420245532219409L);
         model = BinaryData.fromObject(model).toObject(BareMetalMachineRunDataExtractsParameters.class);
-        Assertions.assertEquals("eqw", model.commands().get(0).arguments().get(0));
-        Assertions.assertEquals("bu", model.commands().get(0).command());
-        Assertions.assertEquals(8408869954916938247L, model.limitTimeSeconds());
+        Assertions.assertEquals("wpgclrcivt", model.commands().get(0).arguments().get(0));
+        Assertions.assertEquals("qvmmbn", model.commands().get(0).command());
+        Assertions.assertEquals(3204420245532219409L, model.limitTimeSeconds());
     }
 }
