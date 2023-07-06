@@ -24,8 +24,8 @@
   </properties>
 
   <groupId>com.azure.spring</groupId>
-  <artifactId>applicationinsights-spring-native</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:applicationinsights-spring-native;current} -->
+  <artifactId>azure-monitor-spring-native</artifactId>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-monitor-spring-native;current} -->
 
   <distributionManagement>
     <site>

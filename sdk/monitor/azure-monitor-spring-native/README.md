@@ -19,7 +19,7 @@ For more information, please read [introduction to Application Insights][applica
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
-  <artifactId>applicationinsights-spring-native</artifactId>
+  <artifactId>azure-monitor-spring-native</artifactId>
   <version>1.0.0-beta.1</version>
 </dependency>
 ```
