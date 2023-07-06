@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import reactor.core.publisher.Mono;
@@ -65,12 +66,12 @@ public class PartitionKeyMismatchRetryPolicy extends DocumentClientRetryPolicy {
             //this.clientCollectionCache.refresh(clientException.ResourceAddress);
             if (this.options != null) {
                 this.clientCollectionCache.refresh(
-                    MetadataRequestContext.getMetadataRequestContext(this.request),
+                    BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
                     collectionLink,
                     this.options.getProperties());
             } else {
                 this.clientCollectionCache.refresh(
-                    MetadataRequestContext.getMetadataRequestContext(this.request),
+                    BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
                     collectionLink,
                     null);
             }

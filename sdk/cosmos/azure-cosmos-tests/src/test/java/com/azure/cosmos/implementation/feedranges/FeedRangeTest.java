@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.feedranges;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
@@ -506,7 +507,7 @@ public class FeedRangeTest {
             .create(
                 feedRangePartitionKeyRange.getNormalizedEffectiveRange(
                     routingMapProviderMock,
-                    MetadataRequestContext.getMetadataRequestContext(request),
+                    BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                     Mono.just(Utils.ValueHolder.initialize(collection))))
             .recordWith(ArrayList::new)
             .expectNextCount(1)
@@ -560,7 +561,7 @@ public class FeedRangeTest {
             .create(
                 feedRangePartitionKeyRange.getNormalizedEffectiveRange(
                     routingMapProviderMock,
-                    MetadataRequestContext.getMetadataRequestContext(request),
+                    BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                     Mono.just(Utils.ValueHolder.initialize(collection))))
             .recordWith(ArrayList::new)
             .expectErrorSatisfies((e) -> {
@@ -601,7 +602,7 @@ public class FeedRangeTest {
             .create(
                 feedRangePartitionKeyRange.getNormalizedEffectiveRange(
                     routingMapProviderMock,
-                    MetadataRequestContext.getMetadataRequestContext(request),
+                    BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                     Mono.just(Utils.ValueHolder.initialize(collection))))
             .recordWith(ArrayList::new)
             .expectNextCount(1)

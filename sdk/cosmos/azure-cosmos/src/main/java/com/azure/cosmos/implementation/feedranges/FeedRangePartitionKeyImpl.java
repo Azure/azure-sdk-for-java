@@ -3,12 +3,13 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.JsonSerializable;
-import com.azure.cosmos.implementation.MetadataRequestContext;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
@@ -56,7 +57,7 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
     @Override
     public Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
-        MetadataRequestContext metadataRequestContext,
+        MetadataDiagnosticsContext metadataDiagnosticsCtx,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
 
         checkNotNull(
@@ -107,6 +108,9 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
             collectionResolutionMono,
             "Argument 'collectionResolutionMono' must not be null");
 
+        MetadataDiagnosticsContext metadataDiagnosticsCtx =
+            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+
         return collectionResolutionMono
             .flatMap(documentCollectionResourceResponse -> {
 
@@ -123,7 +127,7 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
 
                 return routingMapProvider
                     .tryGetOverlappingRangesAsync(
-                        MetadataRequestContext.getMetadataRequestContext(request),
+                        metadataDiagnosticsCtx,
                         containerRid,
                         Range.getPointRange(effectivePartitionKey),
                         false,
@@ -156,8 +160,11 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
             this.partitionKey.toJson());
         request.setPartitionKeyInternal(this.partitionKey);
 
+        MetadataDiagnosticsContext metadataDiagnosticsCtx =
+            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+
         return this
-            .getNormalizedEffectiveRange(routingMapProvider, MetadataRequestContext.getMetadataRequestContext(request), collectionResolutionMono)
+            .getNormalizedEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)
             .map(effectiveRange -> {
                 request.setEffectiveRange(effectiveRange);
 

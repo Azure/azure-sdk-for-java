@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
-import com.azure.cosmos.implementation.MetadataRequestContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.HexConvert;
@@ -80,7 +79,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
 
     protected abstract Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
-        MetadataRequestContext metadataRequestContext,
+        MetadataDiagnosticsContext metadataDiagnosticsCtx,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono);
 
     public static Range<String> normalizeRange(Range<String> range) {
@@ -109,10 +108,10 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
     // Will return a normalized range with minInclusive and maxExclusive boundaries
     public Mono<Range<String>> getNormalizedEffectiveRange(
         IRoutingMapProvider routingMapProvider,
-        MetadataRequestContext metadataRequestContext,
+        MetadataDiagnosticsContext metadataDiagnosticsCtx,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono
     ) {
-        return this.getEffectiveRange(routingMapProvider, metadataRequestContext, collectionResolutionMono)
+        return this.getEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)
                    .map(FeedRangeInternal::normalizeRange);
     }
 
@@ -199,14 +198,14 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
 
     public Mono<List<FeedRangeEpkImpl>> trySplit(
         IRoutingMapProvider routingMapProvider,
-        MetadataRequestContext metadataRequestContext,
+        MetadataDiagnosticsContext metadataDiagnosticsCtx,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono,
         int targetedSplitCount) {
 
         return Mono.zip(
             this.getNormalizedEffectiveRange(
                 routingMapProvider,
-                metadataRequestContext,
+                metadataDiagnosticsCtx,
                 collectionResolutionMono),
             collectionResolutionMono)
                    .map(tuple -> {

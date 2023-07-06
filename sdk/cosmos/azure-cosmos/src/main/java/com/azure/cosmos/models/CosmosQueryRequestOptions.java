@@ -13,7 +13,6 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
-import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -63,18 +62,14 @@ public class CosmosQueryRequestOptions {
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
     private List<String> excludeRegions;
 
-    // ONLY used for fault injection to track metadata request usage
-    private FaultInjectionRequestContext faultInjectionRequestContext;
-
     /**
      * Instantiates a new query request options.
      */
     public CosmosQueryRequestOptions() {
+
         this.thresholds = null;
         this.queryMetricsEnabled = true;
         this.emptyPageDiagnosticsEnabled = Configs.isEmptyPageDiagnosticsEnabled();
-        this.faultInjectionRequestContext = null;
-
     }
 
     /**
@@ -111,7 +106,6 @@ public class CosmosQueryRequestOptions {
         this.cosmosEndToEndOperationLatencyPolicyConfig = options.cosmosEndToEndOperationLatencyPolicyConfig;
         this.excludeRegions = options.excludeRegions;
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
-        this.faultInjectionRequestContext = options.faultInjectionRequestContext;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -724,14 +718,6 @@ public class CosmosQueryRequestOptions {
         this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
     }
 
-    void setFaultInjectionRequestContext(FaultInjectionRequestContext faultInjectionRequestContext) {
-        this.faultInjectionRequestContext = faultInjectionRequestContext;
-    }
-
-    FaultInjectionRequestContext getFaultInjectionRequestContext() {
-        return this.faultInjectionRequestContext;
-    }
-
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -891,18 +877,6 @@ public class CosmosQueryRequestOptions {
                     List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
 
                     options.setCancelledRequestDiagnosticsTracker(cancelledRequestDiagnosticsTracker);
-                }
-
-                @Override
-                public void setFaultInjectionRequestContext(
-                    CosmosQueryRequestOptions options,
-                    FaultInjectionRequestContext faultInjectionRequestContext) {
-                    options.setFaultInjectionRequestContext(faultInjectionRequestContext);
-                }
-
-                @Override
-                public FaultInjectionRequestContext getFaultInjectionRequestContext(CosmosQueryRequestOptions options) {
-                    return options.getFaultInjectionRequestContext();
                 }
 
                 @Override

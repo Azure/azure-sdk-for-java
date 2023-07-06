@@ -10,7 +10,7 @@ import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.JsonSerializable;
-import com.azure.cosmos.implementation.MetadataRequestContext;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ReadFeedKeyType;
@@ -74,7 +74,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
     @Override
     public Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
-        MetadataRequestContext metadataRequestContext,
+        MetadataDiagnosticsContext metadataDiagnosticsCtx,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
 
         return Mono.just(this.range);
@@ -96,6 +96,9 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
             collectionResolutionMono,
             "Argument 'collectionResolutionMono' must not be null");
 
+        MetadataDiagnosticsContext metadataDiagnosticsCtx =
+            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+
         return collectionResolutionMono
             .flatMap(documentCollectionResourceResponse -> {
 
@@ -108,7 +111,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
 
                 return routingMapProvider
                     .tryGetOverlappingRangesAsync(
-                        MetadataRequestContext.getMetadataRequestContext(request),
+                        metadataDiagnosticsCtx,
                         containerRid,
                         this.range,
                         false,
@@ -144,6 +147,9 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
             collectionResolutionMono,
             "Argument 'collectionResolutionMono' must not be null");
 
+        MetadataDiagnosticsContext metadataDiagnosticsCtx =
+            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+
         return collectionResolutionMono
             .flatMap(documentCollectionResourceResponse -> {
 
@@ -157,7 +163,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
 
                 return routingMapProvider
                     .tryGetOverlappingRangesAsync(
-                        MetadataRequestContext.getMetadataRequestContext(request),
+                        metadataDiagnosticsCtx,
                         containerRid,
                         this.range,
                         false,

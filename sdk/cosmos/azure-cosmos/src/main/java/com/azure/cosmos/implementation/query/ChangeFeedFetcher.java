@@ -3,10 +3,11 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
-import com.azure.cosmos.implementation.MetadataRequestContext;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneRetryPolicy;
 import com.azure.cosmos.implementation.PathsHelper;
@@ -176,7 +177,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         private final RxDocumentClientImpl client;
         private final DocumentClientRetryPolicy nextRetryPolicy;
         private final Map<String, Object> requestOptionProperties;
-        private MetadataRequestContext metadataRequestContext;
+        private MetadataDiagnosticsContext diagnosticsContext;
         private final RetryContext retryContext;
         private final Supplier<String> operationContextTextProvider;
 
@@ -195,14 +196,15 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
             this.state = state;
             this.nextRetryPolicy = nextRetryPolicy;
             this.requestOptionProperties = requestOptionProperties;
-            this.metadataRequestContext = null;
+            this.diagnosticsContext = null;
             this.retryContext = retryContext;
             this.operationContextTextProvider = operationContextTextProvider;
         }
 
         @Override
         public void onBeforeSendRequest(RxDocumentServiceRequest request) {
-            this.metadataRequestContext = MetadataRequestContext.getMetadataRequestContext(request);
+            this.diagnosticsContext =
+                BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
             this.nextRetryPolicy.onBeforeSendRequest(request);
         }
 
@@ -222,9 +224,9 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                         final FeedRangeInternal feedRange = this.state.getFeedRange();
                         final Mono<Range<String>> effectiveRangeMono = feedRange.getNormalizedEffectiveRange(
                             this.client.getPartitionKeyRangeCache(),
-                            this.metadataRequestContext,
+                            this.diagnosticsContext,
                             this.client.getCollectionCache().resolveByRidAsync(
-                                this.metadataRequestContext,
+                                this.diagnosticsContext,
                                 this.state.getContainerRid(),
                                 this.requestOptionProperties)
                         );
