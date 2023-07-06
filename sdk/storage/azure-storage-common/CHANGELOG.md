@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Adding support for sas tokens with start and end times that only contain a date, no timestamp, ex: st=2021-06-21&se=2021-06-22.
 
 ### Other Changes
 

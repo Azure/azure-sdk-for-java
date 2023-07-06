@@ -13,18 +13,18 @@ public final class ManagedResourceGroupConfigurationTests {
     public void testDeserialize() throws Exception {
         ManagedResourceGroupConfiguration model =
             BinaryData
-                .fromString("{\"location\":\"rbirphxe\",\"name\":\"yva\"}")
+                .fromString("{\"location\":\"lzlfbxzpuz\",\"name\":\"ispnqzahmgkbrp\"}")
                 .toObject(ManagedResourceGroupConfiguration.class);
-        Assertions.assertEquals("rbirphxe", model.location());
-        Assertions.assertEquals("yva", model.name());
+        Assertions.assertEquals("lzlfbxzpuz", model.location());
+        Assertions.assertEquals("ispnqzahmgkbrp", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedResourceGroupConfiguration model =
-            new ManagedResourceGroupConfiguration().withLocation("rbirphxe").withName("yva");
+            new ManagedResourceGroupConfiguration().withLocation("lzlfbxzpuz").withName("ispnqzahmgkbrp");
         model = BinaryData.fromObject(model).toObject(ManagedResourceGroupConfiguration.class);
-        Assertions.assertEquals("rbirphxe", model.location());
-        Assertions.assertEquals("yva", model.name());
+        Assertions.assertEquals("lzlfbxzpuz", model.location());
+        Assertions.assertEquals("ispnqzahmgkbrp", model.name());
     }
 }

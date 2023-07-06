@@ -13,7 +13,7 @@ public final class StorageEditionCapabilityTests {
         StorageEditionCapability model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"qktapspwgcuert\",\"supportedStorageMB\":[{\"name\":\"o\",\"supportedIops\":1712101311057870325,\"storageSizeMB\":4117897998779209947,\"supportedUpgradableTierList\":[],\"status\":\"bjf\"},{\"name\":\"gmbmbexppbh\",\"supportedIops\":7863810899973495328,\"storageSizeMB\":3040729179005507255,\"supportedUpgradableTierList\":[],\"status\":\"s\"}],\"status\":\"gbquxigj\"}")
+                    "{\"name\":\"ndlik\",\"defaultStorageSizeMb\":1140250228405168,\"supportedStorageMb\":[{\"supportedIops\":1579471908,\"storageSizeMb\":5040157276386873949,\"defaultIopsTier\":\"gakeqsr\",\"supportedIopsTiers\":[],\"status\":\"Disabled\",\"reason\":\"e\"},{\"supportedIops\":792536973,\"storageSizeMb\":2124589833110260151,\"defaultIopsTier\":\"qfou\",\"supportedIopsTiers\":[],\"status\":\"Default\",\"reason\":\"zsm\"},{\"supportedIops\":269319267,\"storageSizeMb\":8123559733432006834,\"defaultIopsTier\":\"gpbkwtmut\",\"supportedIopsTiers\":[],\"status\":\"Visible\",\"reason\":\"pspwgcuertu\"}],\"status\":\"Disabled\",\"reason\":\"svqwhbmdgbbjfd\"}")
                 .toObject(StorageEditionCapability.class);
     }
 

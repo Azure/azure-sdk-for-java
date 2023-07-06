@@ -1,14 +1,8 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.2 (2023-07-13)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Enum deprecation update
 
 ## 1.0.0-beta.1 (2022-09-06)
 

@@ -20,6 +20,7 @@ import com.azure.resourcemanager.monitor.models.RetentionPolicy;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.models.Sku;
+import com.azure.resourcemanager.sql.models.SqlElasticPool;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -349,6 +350,94 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         Assertions.assertTrue(setting.logs().stream().anyMatch(ls -> "audit".equals(ls.categoryGroup())));
         // verify metric "AllMetrics"
         Assertions.assertTrue(setting.metrics().stream().anyMatch(ms -> "AllMetrics".equals(ms.category())));
+    }
+
+    @Test
+    public void canCRUDDiagnosticSettingsWithResourceIdWhiteSpace() {
+        Region region = Region.US_EAST;
+
+        StorageAccount sa = storageManager.storageAccounts()
+            .define(saName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withTag("tag1", "value1")
+            .create();
+
+        SqlElasticPool sqlElasticPool = ensureElasticPoolWithWhiteSpace(region, rgName);
+
+        // clean all diagnostic settings.
+        List<DiagnosticSetting> dsList = monitorManager.diagnosticSettings().listByResource(sqlElasticPool.id()).stream().collect(Collectors.toList());
+        for (DiagnosticSetting dsd : dsList) {
+            monitorManager.diagnosticSettings().deleteById(dsd.id());
+        }
+
+        List<DiagnosticSettingsCategory> categories = monitorManager.diagnosticSettings()
+            .listCategoriesByResource(sqlElasticPool.id());
+
+        Assertions.assertNotNull(categories);
+        Assertions.assertFalse(categories.isEmpty());
+
+        DiagnosticSetting setting = monitorManager.diagnosticSettings()
+            .define(dsName)
+            .withResource(sqlElasticPool.id())
+            .withStorageAccount(sa.id())
+            .withLogsAndMetrics(categories, Duration.ofMinutes(5), 7)
+            .create();
+
+        Assertions.assertTrue(sqlElasticPool.id().equalsIgnoreCase(setting.resourceId()));
+        Assertions.assertNotNull(setting.storageAccountId());
+        Assertions.assertNull(setting.eventHubAuthorizationRuleId());
+        Assertions.assertNull(setting.eventHubName());
+        Assertions.assertNull(setting.workspaceId());
+        Assertions.assertFalse(setting.metrics().isEmpty());
+
+        setting.update()
+            .withoutMetric("InstanceAndAppAdvanced")
+            .apply();
+
+        Assertions.assertTrue(sqlElasticPool.id().equalsIgnoreCase(setting.resourceId()));
+        Assertions.assertNotNull(setting.storageAccountId());
+        Assertions.assertNull(setting.eventHubAuthorizationRuleId());
+        Assertions.assertNull(setting.eventHubName());
+        Assertions.assertNull(setting.workspaceId());
+        Assertions.assertTrue(setting.logs().isEmpty());
+        Assertions.assertFalse(setting.metrics().isEmpty());
+
+        DiagnosticSetting ds1 = monitorManager.diagnosticSettings().get(setting.resourceId(), setting.name());
+        checkDiagnosticSettingValues(setting, ds1);
+
+        DiagnosticSetting ds2 = monitorManager.diagnosticSettings().getById(setting.id());
+        checkDiagnosticSettingValues(setting, ds2);
+
+        dsList = monitorManager.diagnosticSettings().listByResource(sqlElasticPool.id()).stream().collect(Collectors.toList());
+        Assertions.assertNotNull(dsList);
+        Assertions.assertEquals(1, dsList.size());
+        DiagnosticSetting ds3 = dsList.get(0);
+        checkDiagnosticSettingValues(setting, ds3);
+
+        monitorManager.diagnosticSettings().deleteById(setting.id());
+
+        dsList = monitorManager.diagnosticSettings().listByResource(sqlElasticPool.id()).stream().collect(Collectors.toList());
+        Assertions.assertNotNull(dsList);
+        Assertions.assertTrue(dsList.isEmpty());
+
+        // test deleteByIds
+        setting = monitorManager.diagnosticSettings()
+            .define(dsName)
+            .withResource(sqlElasticPool.id())
+            .withStorageAccount(sa.id())
+            .withLogsAndMetrics(categories, Duration.ofMinutes(5), 7)
+            .create();
+
+        dsList = monitorManager.diagnosticSettings().listByResource(sqlElasticPool.id()).stream().collect(Collectors.toList());
+        Assertions.assertNotNull(dsList);
+        Assertions.assertEquals(1, dsList.size());
+
+        monitorManager.diagnosticSettings().deleteByIds(setting.id());
+
+        dsList = monitorManager.diagnosticSettings().listByResource(sqlElasticPool.id()).stream().collect(Collectors.toList());
+        Assertions.assertNotNull(dsList);
+        Assertions.assertTrue(dsList.isEmpty());
     }
 
     private void checkDiagnosticSettingValues(DiagnosticSetting expected, DiagnosticSetting actual) {
