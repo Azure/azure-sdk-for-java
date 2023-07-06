@@ -18,7 +18,7 @@ For more information, please read [introduction to Application Insights][applica
 [//]: # ({x-version-update-start;com.azure:azure-monitor-azure-monitor-spring-native;current})
 ```xml
 <dependency>
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.spring</groupId>
   <artifactId>applicationinsights-spring-native</artifactId>
   <version>1.0.0-beta.1</version>
 </dependency>
