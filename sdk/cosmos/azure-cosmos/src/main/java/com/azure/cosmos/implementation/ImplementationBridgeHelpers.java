@@ -397,6 +397,11 @@ public class ImplementationBridgeHelpers {
 
             OperationContextAndListenerTuple getOperationContext(CosmosBulkExecutionOptions options);
 
+            void setPreserveOrdering(CosmosBulkExecutionOptions options,
+                                            boolean preserveOrdering);
+
+            boolean getPreserveOrdering(CosmosBulkExecutionOptions options);
+
             <T> T getLegacyBatchScopedContext(CosmosBulkExecutionOptions options);
 
             double getMinTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options);

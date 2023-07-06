@@ -30,6 +30,7 @@ public final class CosmosBulkExecutionOptions {
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private Map<String, String> customOptions;
     private String throughputControlGroupName;
+    private boolean preserveOrdering;
 
     /**
      * Constructor
@@ -268,6 +269,14 @@ public final class CosmosBulkExecutionOptions {
         return this;
     }
 
+    void setPreserveOrdering(boolean preserveOrdering) {
+        this.preserveOrdering = preserveOrdering;
+    }
+
+    boolean getPreserveOrdering() {
+        return this.preserveOrdering;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -279,6 +288,17 @@ public final class CosmosBulkExecutionOptions {
                 public void setOperationContext(CosmosBulkExecutionOptions options,
                                                 OperationContextAndListenerTuple operationContextAndListenerTuple) {
                     options.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
+                }
+
+                @Override
+                public void setPreserveOrdering(CosmosBulkExecutionOptions options,
+                                                boolean preserveOrdering) {
+                    options.setPreserveOrdering(preserveOrdering);
+                }
+
+                @Override
+                public boolean getPreserveOrdering(CosmosBulkExecutionOptions options) {
+                    return options.getPreserveOrdering();
                 }
 
                 @Override

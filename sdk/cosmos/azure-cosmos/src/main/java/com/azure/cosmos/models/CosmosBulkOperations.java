@@ -36,6 +36,12 @@ public final class CosmosBulkOperations {
         return getCreateItemOperation(item, partitionKey, new CosmosBulkItemRequestOptions(), null);
     }
 
+    public static <T> CosmosItemOperation getCreateItemOperation(String id, T item, PartitionKey partitionKey) {
+        checkNotNull(item, "expected non-null item");
+        checkNotNull(partitionKey, "expected non-null partitionKey");
+        return getCreateItemOperation(id, item, partitionKey, new CosmosBulkItemRequestOptions(), null);
+    }
+
     /**
      * Instantiate an operation for Creating item in Bulk execution.
      *
@@ -109,6 +115,30 @@ public final class CosmosBulkOperations {
         return new ItemBulkOperation<>(
             CosmosItemOperationType.CREATE,
             null,
+            partitionKey,
+            requestOptions.toRequestOptions(),
+            item,
+            context
+        ); // why is this null??
+    }
+
+    public static <T, TContext> CosmosItemOperation getCreateItemOperation(
+        String id,
+        T item,
+        PartitionKey partitionKey,
+        CosmosBulkItemRequestOptions requestOptions,
+        TContext context) {
+
+        checkNotNull(item, "expected non-null item");
+        checkNotNull(partitionKey, "expected non-null partitionKey");
+
+        if (requestOptions == null) {
+            requestOptions = new CosmosBulkItemRequestOptions();
+        }
+
+        return new ItemBulkOperation<>(
+            CosmosItemOperationType.CREATE,
+            id,
             partitionKey,
             requestOptions.toRequestOptions(),
             item,

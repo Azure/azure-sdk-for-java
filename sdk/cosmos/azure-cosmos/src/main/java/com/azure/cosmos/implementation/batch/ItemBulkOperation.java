@@ -30,6 +30,7 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
     private final RequestOptions requestOptions;
     private String partitionKeyJson;
     private BulkOperationRetryPolicy bulkOperationRetryPolicy;
+    private int index;
 
     public ItemBulkOperation(
         CosmosItemOperationType operationType,
@@ -103,6 +104,10 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
         }
 
         return jsonSerializable;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     TInternal getItemInternal() {

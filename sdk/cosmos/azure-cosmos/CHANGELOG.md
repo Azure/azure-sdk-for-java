@@ -1,5 +1,10 @@
 ## Release History
 
+### 4.47.0-beta.1 (Unreleased)
+
+#### Features Added
+* Added a flag for allowing customers to preserve ordering for bulk writing. See 
+
 ### 4.46.0-beta.1 (Unreleased)
 
 #### Features Added

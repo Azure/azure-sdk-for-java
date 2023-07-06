@@ -45,6 +45,8 @@ Licensed under the MIT License.
     <checkstyle.includeTestSourceDirectory>false</checkstyle.includeTestSourceDirectory>
     <cosmos.test.e2e.skip>false</cosmos.test.e2e.skip>
     <maven.test.skip>${cosmos.test.e2e.skip}</maven.test.skip>
+    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>
   </properties>
 
   <dependencies>
