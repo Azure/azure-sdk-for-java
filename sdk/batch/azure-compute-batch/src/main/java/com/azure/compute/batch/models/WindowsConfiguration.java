@@ -4,6 +4,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Windows operating system settings to apply to the virtual machine. */
@@ -13,10 +14,12 @@ public final class WindowsConfiguration {
     /*
      * If omitted, the default value is true.
      */
+    @Generated
     @JsonProperty(value = "enableAutomaticUpdates")
     private Boolean enableAutomaticUpdates;
 
     /** Creates an instance of WindowsConfiguration class. */
+    @Generated
     public WindowsConfiguration() {}
 
     /**
@@ -24,6 +27,7 @@ public final class WindowsConfiguration {
      *
      * @return the enableAutomaticUpdates value.
      */
+    @Generated
     public Boolean isEnableAutomaticUpdates() {
         return this.enableAutomaticUpdates;
     }
@@ -34,6 +38,7 @@ public final class WindowsConfiguration {
      * @param enableAutomaticUpdates the enableAutomaticUpdates value to set.
      * @return the WindowsConfiguration object itself.
      */
+    @Generated
     public WindowsConfiguration setEnableAutomaticUpdates(Boolean enableAutomaticUpdates) {
         this.enableAutomaticUpdates = enableAutomaticUpdates;
         return this;

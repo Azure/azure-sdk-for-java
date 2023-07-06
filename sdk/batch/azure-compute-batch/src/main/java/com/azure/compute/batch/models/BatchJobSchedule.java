@@ -4,6 +4,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,18 +18,21 @@ public final class BatchJobSchedule {
     /*
      * A string that uniquely identifies the schedule within the Account.
      */
+    @Generated
     @JsonProperty(value = "id")
     private String id;
 
     /*
      * The display name for the schedule.
      */
+    @Generated
     @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The URL of the Job Schedule.
      */
+    @Generated
     @JsonProperty(value = "url", access = JsonProperty.Access.WRITE_ONLY)
     private String url;
 
@@ -38,6 +42,7 @@ public final class BatchJobSchedule {
      * Update Job Schedule request to specify that your changes should take effect
      * only if nobody else has modified the schedule in the meantime.
      */
+    @Generated
     @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String eTag;
 
@@ -46,36 +51,42 @@ public final class BatchJobSchedule {
      * specification or recurrence information, changed. It does not factor in
      * job-level changes such as new Jobs being created or Jobs changing state.
      */
+    @Generated
     @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
 
     /*
      * The creation time of the Job Schedule.
      */
+    @Generated
     @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * The state of the Job Schedule.
      */
+    @Generated
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private JobScheduleState state;
 
     /*
      * The time at which the Job Schedule entered the current state.
      */
+    @Generated
     @JsonProperty(value = "stateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime stateTransitionTime;
 
     /*
      * This property is not present if the Job Schedule is in its initial active state.
      */
+    @Generated
     @JsonProperty(value = "previousState", access = JsonProperty.Access.WRITE_ONLY)
     private JobScheduleState previousState;
 
     /*
      * This property is not present if the Job Schedule is in its initial active state.
      */
+    @Generated
     @JsonProperty(value = "previousStateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime previousStateTransitionTime;
 
@@ -83,12 +94,14 @@ public final class BatchJobSchedule {
      * All times are fixed respective to UTC and are not impacted by daylight saving
      * time.
      */
+    @Generated
     @JsonProperty(value = "schedule")
     private Schedule schedule;
 
     /*
      * Specifies details of the Jobs to be created on a schedule.
      */
+    @Generated
     @JsonProperty(value = "jobSpecification")
     private JobSpecification jobSpecification;
 
@@ -96,6 +109,7 @@ public final class BatchJobSchedule {
      * Contains information about Jobs that have been and will be run under a Job
      * Schedule.
      */
+    @Generated
     @JsonProperty(value = "executionInfo", access = JsonProperty.Access.WRITE_ONLY)
     private JobScheduleExecutionInformation executionInfo;
 
@@ -103,16 +117,19 @@ public final class BatchJobSchedule {
      * The Batch service does not assign any meaning to metadata; it is solely for the
      * use of user code.
      */
+    @Generated
     @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
     /*
      * Resource usage statistics for a Job Schedule.
      */
+    @Generated
     @JsonProperty(value = "stats", access = JsonProperty.Access.WRITE_ONLY)
     private JobScheduleStatistics stats;
 
     /** Creates an instance of BatchJobSchedule class. */
+    @Generated
     public BatchJobSchedule() {}
 
     /**
@@ -120,6 +137,7 @@ public final class BatchJobSchedule {
      *
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -130,6 +148,7 @@ public final class BatchJobSchedule {
      * @param id the id value to set.
      * @return the BatchJobSchedule object itself.
      */
+    @Generated
     public BatchJobSchedule setId(String id) {
         this.id = id;
         return this;
@@ -140,6 +159,7 @@ public final class BatchJobSchedule {
      *
      * @return the displayName value.
      */
+    @Generated
     public String getDisplayName() {
         return this.displayName;
     }
@@ -150,6 +170,7 @@ public final class BatchJobSchedule {
      * @param displayName the displayName value to set.
      * @return the BatchJobSchedule object itself.
      */
+    @Generated
     public BatchJobSchedule setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
@@ -160,6 +181,7 @@ public final class BatchJobSchedule {
      *
      * @return the url value.
      */
+    @Generated
     public String getUrl() {
         return this.url;
     }
@@ -171,6 +193,7 @@ public final class BatchJobSchedule {
      *
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -182,6 +205,7 @@ public final class BatchJobSchedule {
      *
      * @return the lastModified value.
      */
+    @Generated
     public OffsetDateTime getLastModified() {
         return this.lastModified;
     }
@@ -191,6 +215,7 @@ public final class BatchJobSchedule {
      *
      * @return the creationTime value.
      */
+    @Generated
     public OffsetDateTime getCreationTime() {
         return this.creationTime;
     }
@@ -200,6 +225,7 @@ public final class BatchJobSchedule {
      *
      * @return the state value.
      */
+    @Generated
     public JobScheduleState getState() {
         return this.state;
     }
@@ -209,6 +235,7 @@ public final class BatchJobSchedule {
      *
      * @return the stateTransitionTime value.
      */
+    @Generated
     public OffsetDateTime getStateTransitionTime() {
         return this.stateTransitionTime;
     }
@@ -218,6 +245,7 @@ public final class BatchJobSchedule {
      *
      * @return the previousState value.
      */
+    @Generated
     public JobScheduleState getPreviousState() {
         return this.previousState;
     }
@@ -228,6 +256,7 @@ public final class BatchJobSchedule {
      *
      * @return the previousStateTransitionTime value.
      */
+    @Generated
     public OffsetDateTime getPreviousStateTransitionTime() {
         return this.previousStateTransitionTime;
     }
@@ -237,6 +266,7 @@ public final class BatchJobSchedule {
      *
      * @return the schedule value.
      */
+    @Generated
     public Schedule getSchedule() {
         return this.schedule;
     }
@@ -247,6 +277,7 @@ public final class BatchJobSchedule {
      * @param schedule the schedule value to set.
      * @return the BatchJobSchedule object itself.
      */
+    @Generated
     public BatchJobSchedule setSchedule(Schedule schedule) {
         this.schedule = schedule;
         return this;
@@ -257,6 +288,7 @@ public final class BatchJobSchedule {
      *
      * @return the jobSpecification value.
      */
+    @Generated
     public JobSpecification getJobSpecification() {
         return this.jobSpecification;
     }
@@ -267,6 +299,7 @@ public final class BatchJobSchedule {
      * @param jobSpecification the jobSpecification value to set.
      * @return the BatchJobSchedule object itself.
      */
+    @Generated
     public BatchJobSchedule setJobSpecification(JobSpecification jobSpecification) {
         this.jobSpecification = jobSpecification;
         return this;
@@ -278,6 +311,7 @@ public final class BatchJobSchedule {
      *
      * @return the executionInfo value.
      */
+    @Generated
     public JobScheduleExecutionInformation getExecutionInfo() {
         return this.executionInfo;
     }
@@ -288,6 +322,7 @@ public final class BatchJobSchedule {
      *
      * @return the metadata value.
      */
+    @Generated
     public List<MetadataItem> getMetadata() {
         return this.metadata;
     }
@@ -299,6 +334,7 @@ public final class BatchJobSchedule {
      * @param metadata the metadata value to set.
      * @return the BatchJobSchedule object itself.
      */
+    @Generated
     public BatchJobSchedule setMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
         return this;
@@ -309,6 +345,7 @@ public final class BatchJobSchedule {
      *
      * @return the stats value.
      */
+    @Generated
     public JobScheduleStatistics getStats() {
         return this.stats;
     }

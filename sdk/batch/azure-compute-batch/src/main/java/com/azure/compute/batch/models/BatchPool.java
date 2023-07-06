@@ -4,6 +4,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -18,6 +19,7 @@ public final class BatchPool {
      * contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two
      * IDs within an Account that differ only by case).
      */
+    @Generated
     @JsonProperty(value = "id")
     private String id;
 
@@ -25,12 +27,14 @@ public final class BatchPool {
      * The display name need not be unique and can contain any Unicode characters up
      * to a maximum length of 1024.
      */
+    @Generated
     @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The URL of the Pool.
      */
+    @Generated
     @JsonProperty(value = "url", access = JsonProperty.Access.WRITE_ONLY)
     private String url;
 
@@ -40,6 +44,7 @@ public final class BatchPool {
      * to specify that your changes should take effect only if nobody else has
      * modified the Pool in the meantime.
      */
+    @Generated
     @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String eTag;
 
@@ -48,36 +53,42 @@ public final class BatchPool {
      * targetDedicatedNodes or enableAutoscale settings, changed. It does not factor
      * in node-level changes such as a Compute Node changing state.
      */
+    @Generated
     @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
 
     /*
      * The creation time of the Pool.
      */
+    @Generated
     @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * The current state of the Pool.
      */
+    @Generated
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private PoolState state;
 
     /*
      * The time at which the Pool entered its current state.
      */
+    @Generated
     @JsonProperty(value = "stateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime stateTransitionTime;
 
     /*
      * Whether the Pool is resizing.
      */
+    @Generated
     @JsonProperty(value = "allocationState", access = JsonProperty.Access.WRITE_ONLY)
     private AllocationState allocationState;
 
     /*
      * The time at which the Pool entered its current allocation state.
      */
+    @Generated
     @JsonProperty(value = "allocationStateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime allocationStateTransitionTime;
 
@@ -86,6 +97,7 @@ public final class BatchPool {
      * a VM size for Compute Nodes in an Azure Batch Pool
      * (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
      */
+    @Generated
     @JsonProperty(value = "vmSize")
     private String vmSize;
 
@@ -94,6 +106,7 @@ public final class BatchPool {
      * specified. This property cannot be specified if the Batch Account was created with its poolAllocationMode
      * property set to 'UserSubscription'.
      */
+    @Generated
     @JsonProperty(value = "cloudServiceConfiguration")
     private CloudServiceConfiguration cloudServiceConfiguration;
 
@@ -101,6 +114,7 @@ public final class BatchPool {
      * This property and cloudServiceConfiguration are mutually exclusive and one of
      * the properties must be specified.
      */
+    @Generated
     @JsonProperty(value = "virtualMachineConfiguration")
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
@@ -108,6 +122,7 @@ public final class BatchPool {
      * This is the timeout for the most recent resize operation. (The initial sizing
      * when the Pool is created counts as a resize.) The default value is 15 minutes.
      */
+    @Generated
     @JsonProperty(value = "resizeTimeout")
     private Duration resizeTimeout;
 
@@ -115,12 +130,14 @@ public final class BatchPool {
      * This property is set only if one or more errors occurred during the last Pool
      * resize, and only when the Pool allocationState is Steady.
      */
+    @Generated
     @JsonProperty(value = "resizeErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResizeError> resizeErrors;
 
     /*
      * The number of dedicated Compute Nodes currently in the Pool.
      */
+    @Generated
     @JsonProperty(value = "currentDedicatedNodes", access = JsonProperty.Access.WRITE_ONLY)
     private Integer currentDedicatedNodes;
 
@@ -128,18 +145,21 @@ public final class BatchPool {
      * Spot/Low-priority Compute Nodes which have been preempted are included in this
      * count.
      */
+    @Generated
     @JsonProperty(value = "currentLowPriorityNodes", access = JsonProperty.Access.WRITE_ONLY)
     private Integer currentLowPriorityNodes;
 
     /*
      * The desired number of dedicated Compute Nodes in the Pool.
      */
+    @Generated
     @JsonProperty(value = "targetDedicatedNodes")
     private Integer targetDedicatedNodes;
 
     /*
      * The desired number of Spot/Low-priority Compute Nodes in the Pool.
      */
+    @Generated
     @JsonProperty(value = "targetLowPriorityNodes")
     private Integer targetLowPriorityNodes;
 
@@ -148,6 +168,7 @@ public final class BatchPool {
      * be specified. If true, the autoScaleFormula property is required and the Pool
      * automatically resizes according to the formula. The default value is false.
      */
+    @Generated
     @JsonProperty(value = "enableAutoScale")
     private Boolean enableAutoScale;
 
@@ -155,6 +176,7 @@ public final class BatchPool {
      * This property is set only if the Pool automatically scales, i.e.
      * enableAutoScale is true.
      */
+    @Generated
     @JsonProperty(value = "autoScaleFormula")
     private String autoScaleFormula;
 
@@ -162,6 +184,7 @@ public final class BatchPool {
      * This property is set only if the Pool automatically scales, i.e.
      * enableAutoScale is true.
      */
+    @Generated
     @JsonProperty(value = "autoScaleEvaluationInterval")
     private Duration autoScaleEvaluationInterval;
 
@@ -169,6 +192,7 @@ public final class BatchPool {
      * This property is set only if the Pool automatically scales, i.e.
      * enableAutoScale is true.
      */
+    @Generated
     @JsonProperty(value = "autoScaleRun", access = JsonProperty.Access.WRITE_ONLY)
     private AutoScaleRun autoScaleRun;
 
@@ -177,12 +201,14 @@ public final class BatchPool {
      * Specifying this value can reduce the chance of the requested number of Compute
      * Nodes to be allocated in the Pool.
      */
+    @Generated
     @JsonProperty(value = "enableInterNodeCommunication")
     private Boolean enableInterNodeCommunication;
 
     /*
      * The network configuration for a Pool.
      */
+    @Generated
     @JsonProperty(value = "networkConfiguration")
     private NetworkConfiguration networkConfiguration;
 
@@ -201,6 +227,7 @@ public final class BatchPool {
      * install/launch services from the StartTask working directory, as this will
      * block Batch from being able to re-run the StartTask.
      */
+    @Generated
     @JsonProperty(value = "startTask")
     private StartTask startTask;
 
@@ -213,6 +240,7 @@ public final class BatchPool {
      * is created in the user's home directory (e.g., /home/{user-name}/certs) and
      * Certificates are placed in that directory.
      */
+    @Generated
     @JsonProperty(value = "certificateReferences")
     private List<CertificateReference> certificateReferences;
 
@@ -221,6 +249,7 @@ public final class BatchPool {
      * affect Compute Nodes that are already in the Pool until they are rebooted or
      * reimaged. There is a maximum of 10 Package references on any given Pool.
      */
+    @Generated
     @JsonProperty(value = "applicationPackageReferences")
     private List<ApplicationPackageReference> applicationPackageReferences;
 
@@ -228,6 +257,7 @@ public final class BatchPool {
      * The list of application licenses must be a subset of available Batch service application licenses. If a license
      * is requested which is not supported, Pool creation will fail.
      */
+    @Generated
     @JsonProperty(value = "applicationLicenses")
     private List<String> applicationLicenses;
 
@@ -235,24 +265,28 @@ public final class BatchPool {
      * The default value is 1. The maximum value is the smaller of 4 times the number
      * of cores of the vmSize of the pool or 256.
      */
+    @Generated
     @JsonProperty(value = "taskSlotsPerNode")
     private Integer taskSlotsPerNode;
 
     /*
      * If not specified, the default is spread.
      */
+    @Generated
     @JsonProperty(value = "taskSchedulingPolicy")
     private TaskSchedulingPolicy taskSchedulingPolicy;
 
     /*
      * The list of user Accounts to be created on each Compute Node in the Pool.
      */
+    @Generated
     @JsonProperty(value = "userAccounts")
     private List<UserAccount> userAccounts;
 
     /*
      * A list of name-value pairs associated with the Pool as metadata.
      */
+    @Generated
     @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
@@ -262,12 +296,14 @@ public final class BatchPool {
      * may not be immediately available. The Batch service performs periodic roll-up
      * of statistics. The typical delay is about 30 minutes.
      */
+    @Generated
     @JsonProperty(value = "stats", access = JsonProperty.Access.WRITE_ONLY)
     private PoolStatistics stats;
 
     /*
      * This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
      */
+    @Generated
     @JsonProperty(value = "mountConfiguration")
     private List<MountConfiguration> mountConfiguration;
 
@@ -276,22 +312,26 @@ public final class BatchPool {
      * dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      */
+    @Generated
     @JsonProperty(value = "identity", access = JsonProperty.Access.WRITE_ONLY)
     private BatchPoolIdentity identity;
 
     /*
      * If omitted, the default value is Default.
      */
+    @Generated
     @JsonProperty(value = "targetNodeCommunicationMode")
     private NodeCommunicationMode targetNodeCommunicationMode;
 
     /*
      * The current state of the pool communication mode.
      */
+    @Generated
     @JsonProperty(value = "currentNodeCommunicationMode", access = JsonProperty.Access.WRITE_ONLY)
     private NodeCommunicationMode currentNodeCommunicationMode;
 
     /** Creates an instance of BatchPool class. */
+    @Generated
     public BatchPool() {}
 
     /**
@@ -301,6 +341,7 @@ public final class BatchPool {
      *
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -313,6 +354,7 @@ public final class BatchPool {
      * @param id the id value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setId(String id) {
         this.id = id;
         return this;
@@ -324,6 +366,7 @@ public final class BatchPool {
      *
      * @return the displayName value.
      */
+    @Generated
     public String getDisplayName() {
         return this.displayName;
     }
@@ -335,6 +378,7 @@ public final class BatchPool {
      * @param displayName the displayName value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
@@ -345,6 +389,7 @@ public final class BatchPool {
      *
      * @return the url value.
      */
+    @Generated
     public String getUrl() {
         return this.url;
     }
@@ -356,6 +401,7 @@ public final class BatchPool {
      *
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -367,6 +413,7 @@ public final class BatchPool {
      *
      * @return the lastModified value.
      */
+    @Generated
     public OffsetDateTime getLastModified() {
         return this.lastModified;
     }
@@ -376,6 +423,7 @@ public final class BatchPool {
      *
      * @return the creationTime value.
      */
+    @Generated
     public OffsetDateTime getCreationTime() {
         return this.creationTime;
     }
@@ -385,6 +433,7 @@ public final class BatchPool {
      *
      * @return the state value.
      */
+    @Generated
     public PoolState getState() {
         return this.state;
     }
@@ -394,6 +443,7 @@ public final class BatchPool {
      *
      * @return the stateTransitionTime value.
      */
+    @Generated
     public OffsetDateTime getStateTransitionTime() {
         return this.stateTransitionTime;
     }
@@ -403,6 +453,7 @@ public final class BatchPool {
      *
      * @return the allocationState value.
      */
+    @Generated
     public AllocationState getAllocationState() {
         return this.allocationState;
     }
@@ -412,6 +463,7 @@ public final class BatchPool {
      *
      * @return the allocationStateTransitionTime value.
      */
+    @Generated
     public OffsetDateTime getAllocationStateTransitionTime() {
         return this.allocationStateTransitionTime;
     }
@@ -422,6 +474,7 @@ public final class BatchPool {
      *
      * @return the vmSize value.
      */
+    @Generated
     public String getVmSize() {
         return this.vmSize;
     }
@@ -433,6 +486,7 @@ public final class BatchPool {
      * @param vmSize the vmSize value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setVmSize(String vmSize) {
         this.vmSize = vmSize;
         return this;
@@ -445,6 +499,7 @@ public final class BatchPool {
      *
      * @return the cloudServiceConfiguration value.
      */
+    @Generated
     public CloudServiceConfiguration getCloudServiceConfiguration() {
         return this.cloudServiceConfiguration;
     }
@@ -457,6 +512,7 @@ public final class BatchPool {
      * @param cloudServiceConfiguration the cloudServiceConfiguration value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setCloudServiceConfiguration(CloudServiceConfiguration cloudServiceConfiguration) {
         this.cloudServiceConfiguration = cloudServiceConfiguration;
         return this;
@@ -468,6 +524,7 @@ public final class BatchPool {
      *
      * @return the virtualMachineConfiguration value.
      */
+    @Generated
     public VirtualMachineConfiguration getVirtualMachineConfiguration() {
         return this.virtualMachineConfiguration;
     }
@@ -479,6 +536,7 @@ public final class BatchPool {
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
         this.virtualMachineConfiguration = virtualMachineConfiguration;
         return this;
@@ -490,6 +548,7 @@ public final class BatchPool {
      *
      * @return the resizeTimeout value.
      */
+    @Generated
     public Duration getResizeTimeout() {
         return this.resizeTimeout;
     }
@@ -501,6 +560,7 @@ public final class BatchPool {
      * @param resizeTimeout the resizeTimeout value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setResizeTimeout(Duration resizeTimeout) {
         this.resizeTimeout = resizeTimeout;
         return this;
@@ -512,6 +572,7 @@ public final class BatchPool {
      *
      * @return the resizeErrors value.
      */
+    @Generated
     public List<ResizeError> getResizeErrors() {
         return this.resizeErrors;
     }
@@ -521,6 +582,7 @@ public final class BatchPool {
      *
      * @return the currentDedicatedNodes value.
      */
+    @Generated
     public Integer getCurrentDedicatedNodes() {
         return this.currentDedicatedNodes;
     }
@@ -531,6 +593,7 @@ public final class BatchPool {
      *
      * @return the currentLowPriorityNodes value.
      */
+    @Generated
     public Integer getCurrentLowPriorityNodes() {
         return this.currentLowPriorityNodes;
     }
@@ -540,6 +603,7 @@ public final class BatchPool {
      *
      * @return the targetDedicatedNodes value.
      */
+    @Generated
     public Integer getTargetDedicatedNodes() {
         return this.targetDedicatedNodes;
     }
@@ -550,6 +614,7 @@ public final class BatchPool {
      * @param targetDedicatedNodes the targetDedicatedNodes value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setTargetDedicatedNodes(Integer targetDedicatedNodes) {
         this.targetDedicatedNodes = targetDedicatedNodes;
         return this;
@@ -560,6 +625,7 @@ public final class BatchPool {
      *
      * @return the targetLowPriorityNodes value.
      */
+    @Generated
     public Integer getTargetLowPriorityNodes() {
         return this.targetLowPriorityNodes;
     }
@@ -570,6 +636,7 @@ public final class BatchPool {
      * @param targetLowPriorityNodes the targetLowPriorityNodes value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setTargetLowPriorityNodes(Integer targetLowPriorityNodes) {
         this.targetLowPriorityNodes = targetLowPriorityNodes;
         return this;
@@ -582,6 +649,7 @@ public final class BatchPool {
      *
      * @return the enableAutoScale value.
      */
+    @Generated
     public Boolean isEnableAutoScale() {
         return this.enableAutoScale;
     }
@@ -594,6 +662,7 @@ public final class BatchPool {
      * @param enableAutoScale the enableAutoScale value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setEnableAutoScale(Boolean enableAutoScale) {
         this.enableAutoScale = enableAutoScale;
         return this;
@@ -605,6 +674,7 @@ public final class BatchPool {
      *
      * @return the autoScaleFormula value.
      */
+    @Generated
     public String getAutoScaleFormula() {
         return this.autoScaleFormula;
     }
@@ -616,6 +686,7 @@ public final class BatchPool {
      * @param autoScaleFormula the autoScaleFormula value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setAutoScaleFormula(String autoScaleFormula) {
         this.autoScaleFormula = autoScaleFormula;
         return this;
@@ -627,6 +698,7 @@ public final class BatchPool {
      *
      * @return the autoScaleEvaluationInterval value.
      */
+    @Generated
     public Duration getAutoScaleEvaluationInterval() {
         return this.autoScaleEvaluationInterval;
     }
@@ -638,6 +710,7 @@ public final class BatchPool {
      * @param autoScaleEvaluationInterval the autoScaleEvaluationInterval value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setAutoScaleEvaluationInterval(Duration autoScaleEvaluationInterval) {
         this.autoScaleEvaluationInterval = autoScaleEvaluationInterval;
         return this;
@@ -649,6 +722,7 @@ public final class BatchPool {
      *
      * @return the autoScaleRun value.
      */
+    @Generated
     public AutoScaleRun getAutoScaleRun() {
         return this.autoScaleRun;
     }
@@ -660,6 +734,7 @@ public final class BatchPool {
      *
      * @return the enableInterNodeCommunication value.
      */
+    @Generated
     public Boolean isEnableInterNodeCommunication() {
         return this.enableInterNodeCommunication;
     }
@@ -672,6 +747,7 @@ public final class BatchPool {
      * @param enableInterNodeCommunication the enableInterNodeCommunication value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setEnableInterNodeCommunication(Boolean enableInterNodeCommunication) {
         this.enableInterNodeCommunication = enableInterNodeCommunication;
         return this;
@@ -682,6 +758,7 @@ public final class BatchPool {
      *
      * @return the networkConfiguration value.
      */
+    @Generated
     public NetworkConfiguration getNetworkConfiguration() {
         return this.networkConfiguration;
     }
@@ -692,6 +769,7 @@ public final class BatchPool {
      * @param networkConfiguration the networkConfiguration value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setNetworkConfiguration(NetworkConfiguration networkConfiguration) {
         this.networkConfiguration = networkConfiguration;
         return this;
@@ -710,6 +788,7 @@ public final class BatchPool {
      *
      * @return the startTask value.
      */
+    @Generated
     public StartTask getStartTask() {
         return this.startTask;
     }
@@ -728,6 +807,7 @@ public final class BatchPool {
      * @param startTask the startTask value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setStartTask(StartTask startTask) {
         this.startTask = startTask;
         return this;
@@ -742,6 +822,7 @@ public final class BatchPool {
      *
      * @return the certificateReferences value.
      */
+    @Generated
     public List<CertificateReference> getCertificateReferences() {
         return this.certificateReferences;
     }
@@ -756,6 +837,7 @@ public final class BatchPool {
      * @param certificateReferences the certificateReferences value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setCertificateReferences(List<CertificateReference> certificateReferences) {
         this.certificateReferences = certificateReferences;
         return this;
@@ -768,6 +850,7 @@ public final class BatchPool {
      *
      * @return the applicationPackageReferences value.
      */
+    @Generated
     public List<ApplicationPackageReference> getApplicationPackageReferences() {
         return this.applicationPackageReferences;
     }
@@ -780,6 +863,7 @@ public final class BatchPool {
      * @param applicationPackageReferences the applicationPackageReferences value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setApplicationPackageReferences(List<ApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
         return this;
@@ -791,6 +875,7 @@ public final class BatchPool {
      *
      * @return the applicationLicenses value.
      */
+    @Generated
     public List<String> getApplicationLicenses() {
         return this.applicationLicenses;
     }
@@ -802,6 +887,7 @@ public final class BatchPool {
      * @param applicationLicenses the applicationLicenses value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setApplicationLicenses(List<String> applicationLicenses) {
         this.applicationLicenses = applicationLicenses;
         return this;
@@ -813,6 +899,7 @@ public final class BatchPool {
      *
      * @return the taskSlotsPerNode value.
      */
+    @Generated
     public Integer getTaskSlotsPerNode() {
         return this.taskSlotsPerNode;
     }
@@ -824,6 +911,7 @@ public final class BatchPool {
      * @param taskSlotsPerNode the taskSlotsPerNode value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setTaskSlotsPerNode(Integer taskSlotsPerNode) {
         this.taskSlotsPerNode = taskSlotsPerNode;
         return this;
@@ -834,6 +922,7 @@ public final class BatchPool {
      *
      * @return the taskSchedulingPolicy value.
      */
+    @Generated
     public TaskSchedulingPolicy getTaskSchedulingPolicy() {
         return this.taskSchedulingPolicy;
     }
@@ -844,6 +933,7 @@ public final class BatchPool {
      * @param taskSchedulingPolicy the taskSchedulingPolicy value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setTaskSchedulingPolicy(TaskSchedulingPolicy taskSchedulingPolicy) {
         this.taskSchedulingPolicy = taskSchedulingPolicy;
         return this;
@@ -854,6 +944,7 @@ public final class BatchPool {
      *
      * @return the userAccounts value.
      */
+    @Generated
     public List<UserAccount> getUserAccounts() {
         return this.userAccounts;
     }
@@ -864,6 +955,7 @@ public final class BatchPool {
      * @param userAccounts the userAccounts value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setUserAccounts(List<UserAccount> userAccounts) {
         this.userAccounts = userAccounts;
         return this;
@@ -874,6 +966,7 @@ public final class BatchPool {
      *
      * @return the metadata value.
      */
+    @Generated
     public List<MetadataItem> getMetadata() {
         return this.metadata;
     }
@@ -884,6 +977,7 @@ public final class BatchPool {
      * @param metadata the metadata value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
         return this;
@@ -896,6 +990,7 @@ public final class BatchPool {
      *
      * @return the stats value.
      */
+    @Generated
     public PoolStatistics getStats() {
         return this.stats;
     }
@@ -905,6 +1000,7 @@ public final class BatchPool {
      *
      * @return the mountConfiguration value.
      */
+    @Generated
     public List<MountConfiguration> getMountConfiguration() {
         return this.mountConfiguration;
     }
@@ -915,6 +1011,7 @@ public final class BatchPool {
      * @param mountConfiguration the mountConfiguration value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setMountConfiguration(List<MountConfiguration> mountConfiguration) {
         this.mountConfiguration = mountConfiguration;
         return this;
@@ -927,6 +1024,7 @@ public final class BatchPool {
      *
      * @return the identity value.
      */
+    @Generated
     public BatchPoolIdentity getIdentity() {
         return this.identity;
     }
@@ -936,6 +1034,7 @@ public final class BatchPool {
      *
      * @return the targetNodeCommunicationMode value.
      */
+    @Generated
     public NodeCommunicationMode getTargetNodeCommunicationMode() {
         return this.targetNodeCommunicationMode;
     }
@@ -946,6 +1045,7 @@ public final class BatchPool {
      * @param targetNodeCommunicationMode the targetNodeCommunicationMode value to set.
      * @return the BatchPool object itself.
      */
+    @Generated
     public BatchPool setTargetNodeCommunicationMode(NodeCommunicationMode targetNodeCommunicationMode) {
         this.targetNodeCommunicationMode = targetNodeCommunicationMode;
         return this;
@@ -956,6 +1056,7 @@ public final class BatchPool {
      *
      * @return the currentNodeCommunicationMode value.
      */
+    @Generated
     public NodeCommunicationMode getCurrentNodeCommunicationMode() {
         return this.currentNodeCommunicationMode;
     }

@@ -4,6 +4,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,12 +17,14 @@ public final class BatchJob {
      * The ID is case-preserving and case-insensitive (that is, you may not have two
      * IDs within an Account that differ only by case).
      */
+    @Generated
     @JsonProperty(value = "id")
     private String id;
 
     /*
      * The display name for the Job.
      */
+    @Generated
     @JsonProperty(value = "displayName")
     private String displayName;
 
@@ -29,12 +32,14 @@ public final class BatchJob {
      * Whether Tasks in the Job can define dependencies on each other. The default is
      * false.
      */
+    @Generated
     @JsonProperty(value = "usesTaskDependencies")
     private Boolean usesTaskDependencies;
 
     /*
      * The URL of the Job.
      */
+    @Generated
     @JsonProperty(value = "url", access = JsonProperty.Access.WRITE_ONLY)
     private String url;
 
@@ -44,6 +49,7 @@ public final class BatchJob {
      * to specify that your changes should take effect only if nobody else has
      * modified the Job in the meantime.
      */
+    @Generated
     @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String eTag;
 
@@ -52,36 +58,42 @@ public final class BatchJob {
      * priority, changed. It does not factor in task-level changes such as adding new
      * Tasks or Tasks changing state.
      */
+    @Generated
     @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
 
     /*
      * The creation time of the Job.
      */
+    @Generated
     @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * The state of the Job.
      */
+    @Generated
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private JobState state;
 
     /*
      * The time at which the Job entered its current state.
      */
+    @Generated
     @JsonProperty(value = "stateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime stateTransitionTime;
 
     /*
      * This property is not set if the Job is in its initial Active state.
      */
+    @Generated
     @JsonProperty(value = "previousState", access = JsonProperty.Access.WRITE_ONLY)
     private JobState previousState;
 
     /*
      * This property is not set if the Job is in its initial Active state.
      */
+    @Generated
     @JsonProperty(value = "previousStateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime previousStateTransitionTime;
 
@@ -89,6 +101,7 @@ public final class BatchJob {
      * Priority values can range from -1000 to 1000, with -1000 being the lowest
      * priority and 1000 being the highest priority. The default value is 0.
      */
+    @Generated
     @JsonProperty(value = "priority")
     private Integer priority;
 
@@ -98,6 +111,7 @@ public final class BatchJob {
      * update a job's allowTaskPreemption after it has been created using the update
      * job API.
      */
+    @Generated
     @JsonProperty(value = "allowTaskPreemption")
     private Boolean allowTaskPreemption;
 
@@ -107,12 +121,14 @@ public final class BatchJob {
      * of tasks that can be run at once. You can update a job's maxParallelTasks after
      * it has been created using the update job API.
      */
+    @Generated
     @JsonProperty(value = "maxParallelTasks")
     private Integer maxParallelTasks;
 
     /*
      * The execution constraints for a Job.
      */
+    @Generated
     @JsonProperty(value = "constraints")
     private JobConstraints constraints;
 
@@ -140,6 +156,7 @@ public final class BatchJob {
      * duplicate data. The best practice for long running Tasks is to use some form of
      * checkpointing.
      */
+    @Generated
     @JsonProperty(value = "jobManagerTask")
     private JobManagerTask jobManagerTask;
 
@@ -147,6 +164,7 @@ public final class BatchJob {
      * The Job Preparation Task is a special Task run on each Compute Node before any
      * other Task of the Job.
      */
+    @Generated
     @JsonProperty(value = "jobPreparationTask")
     private JobPreparationTask jobPreparationTask;
 
@@ -154,6 +172,7 @@ public final class BatchJob {
      * The Job Release Task is a special Task run at the end of the Job on each
      * Compute Node that has run any other Task of the Job.
      */
+    @Generated
     @JsonProperty(value = "jobReleaseTask")
     private JobReleaseTask jobReleaseTask;
 
@@ -161,18 +180,21 @@ public final class BatchJob {
      * Individual Tasks can override an environment setting specified here by
      * specifying the same setting name with a different value.
      */
+    @Generated
     @JsonProperty(value = "commonEnvironmentSettings")
     private List<EnvironmentSetting> commonEnvironmentSettings;
 
     /*
      * Specifies how a Job should be assigned to a Pool.
      */
+    @Generated
     @JsonProperty(value = "poolInfo")
     private PoolInformation poolInfo;
 
     /*
      * The default is noaction.
      */
+    @Generated
     @JsonProperty(value = "onAllTasksComplete")
     private OnAllTasksComplete onAllTasksComplete;
 
@@ -182,12 +204,14 @@ public final class BatchJob {
      * count, or if there was an error starting the Task, for example due to a
      * resource file download error. The default is noaction.
      */
+    @Generated
     @JsonProperty(value = "onTaskFailure")
     private OnTaskFailure onTaskFailure;
 
     /*
      * The network configuration for the Job.
      */
+    @Generated
     @JsonProperty(value = "networkConfiguration")
     private JobNetworkConfiguration networkConfiguration;
 
@@ -195,12 +219,14 @@ public final class BatchJob {
      * The Batch service does not assign any meaning to metadata; it is solely for the
      * use of user code.
      */
+    @Generated
     @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
     /*
      * Contains information about the execution of a Job in the Azure Batch service.
      */
+    @Generated
     @JsonProperty(value = "executionInfo", access = JsonProperty.Access.WRITE_ONLY)
     private JobExecutionInformation executionInfo;
 
@@ -210,10 +236,12 @@ public final class BatchJob {
      * may not be immediately available. The Batch service performs periodic roll-up
      * of statistics. The typical delay is about 30 minutes.
      */
+    @Generated
     @JsonProperty(value = "stats", access = JsonProperty.Access.WRITE_ONLY)
     private JobStatistics stats;
 
     /** Creates an instance of BatchJob class. */
+    @Generated
     public BatchJob() {}
 
     /**
@@ -222,6 +250,7 @@ public final class BatchJob {
      *
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -233,6 +262,7 @@ public final class BatchJob {
      * @param id the id value to set.
      * @return the BatchJob object itself.
      */
+    @Generated
     public BatchJob setId(String id) {
         this.id = id;
         return this;
@@ -243,6 +273,7 @@ public final class BatchJob {
      *
      * @return the displayName value.
      */
+    @Generated
     public String getDisplayName() {
         return this.displayName;
     }
@@ -253,6 +284,7 @@ public final class BatchJob {
      * @param displayName the displayName value to set.
      * @return the BatchJob object itself.
      */
+    @Generated
     public BatchJob setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
@@ -264,6 +296,7 @@ public final class BatchJob {
      *
      * @return the usesTaskDependencies value.
      */
+    @Generated
     public Boolean isUsesTaskDependencies() {
         return this.usesTaskDependencies;
     }
@@ -275,6 +308,7 @@ public final class BatchJob {
      * @param usesTaskDependencies the usesTaskDependencies value to set.
      * @return the BatchJob object itself.
      */
+    @Generated
     public BatchJob setUsesTaskDependencies(Boolean usesTaskDependencies) {
         this.usesTaskDependencies = usesTaskDependencies;
         return this;
@@ -285,6 +319,7 @@ public final class BatchJob {
      *
      * @return the url value.
      */
+    @Generated
     public String getUrl() {
         return this.url;
     }
@@ -296,6 +331,7 @@ public final class BatchJob {
      *
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -306,6 +342,7 @@ public final class BatchJob {
      *
      * @return the lastModified value.
      */
+    @Generated
     public OffsetDateTime getLastModified() {
         return this.lastModified;
     }
@@ -315,6 +352,7 @@ public final class BatchJob {
      *
      * @return the creationTime value.
      */
+    @Generated
     public OffsetDateTime getCreationTime() {
         return this.creationTime;
     }
@@ -324,6 +362,7 @@ public final class BatchJob {
      *
      * @return the state value.
      */
+    @Generated
     public JobState getState() {
         return this.state;
     }
@@ -333,6 +372,7 @@ public final class BatchJob {
      *
      * @return the stateTransitionTime value.
      */
+    @Generated
     public OffsetDateTime getStateTransitionTime() {
         return this.stateTransitionTime;
     }
@@ -342,6 +382,7 @@ public final class BatchJob {
      *
      * @return the previousState value.
      */
+    @Generated
     public JobState getPreviousState() {
         return this.previousState;
     }
@@ -351,6 +392,7 @@ public final class BatchJob {
      *
      * @return the previousStateTransitionTime value.
      */
+    @Generated
     public OffsetDateTime getPreviousStateTransitionTime() {
         return this.previousStateTransitionTime;
     }
@@ -361,6 +403,7 @@ public final class BatchJob {
      *
      * @return the priority value.
      */
+    @Generated
     public Integer getPriority() {
         return this.priority;
     }
@@ -372,6 +415,7 @@ public final class BatchJob {
      * @param priority the priority value to set.
      * @return the BatchJob object itself.
      */
+    @Generated
     public BatchJob setPriority(Integer priority) {
         this.priority = priority;
         return this;
@@ -384,6 +428,7 @@ public final class BatchJob {
      *
      * @return the allowTaskPreemption value.
      */
+    @Generated
     public Boolean isAllowTaskPreemption() {
         return this.allowTaskPreemption;
     }
@@ -396,6 +441,7 @@ public final class BatchJob {
      * @param allowTaskPreemption the allowTaskPreemption value to set.
      * @return the BatchJob object itself.
      */
+    @Generated
     public BatchJob setAllowTaskPreemption(Boolean allowTaskPreemption) {
         this.allowTaskPreemption = allowTaskPreemption;
         return this;
@@ -408,6 +454,7 @@ public final class BatchJob {
      *
      * @return the maxParallelTasks value.
      */
+    @Generated
     public Integer getMaxParallelTasks() {
         return this.maxParallelTasks;
     }
@@ -420,6 +467,7 @@ public final class BatchJob {
      * @param maxParallelTasks the maxParallelTasks value to set.
      * @return the BatchJob object itself.
      */
+    @Generated
     public BatchJob setMaxParallelTasks(Integer maxParallelTasks) {
         this.maxParallelTasks = maxParallelTasks;
         return this;
@@ -430,6 +478,7 @@ public final class BatchJob {
      *
      * @return the constraints value.
      */
+    @Generated
     public JobConstraints getConstraints() {
         return this.constraints;
     }
@@ -440,6 +489,7 @@ public final class BatchJob {
      * @param constraints the constraints value to set.
      * @return the BatchJob object itself.
      */
+    @Generated
     public BatchJob setConstraints(JobConstraints constraints) {
         this.constraints = constraints;
         return this;
@@ -464,6 +514,7 @@ public final class BatchJob {
      *
      * @return the jobManagerTask value.
      */
+    @Generated
     public JobManagerTask getJobManagerTask() {
         return this.jobManagerTask;
     }
@@ -488,6 +539,7 @@ public final class BatchJob {
      * @param jobManagerTask the jobManagerTask value to set.
      * @return the BatchJob object itself.
      */
+    @Generated
     public BatchJob setJobManagerTask(JobManagerTask jobManagerTask) {
         this.jobManagerTask = jobManagerTask;
         return this;
@@ -499,6 +551,7 @@ public final class BatchJob {
      *
      * @return the jobPreparationTask value.
      */
+    @Generated
     public JobPreparationTask getJobPreparationTask() {
         return this.jobPreparationTask;
     }
@@ -510,6 +563,7 @@ public final class BatchJob {
      * @param jobPreparationTask the jobPreparationTask value to set.
      * @return the BatchJob object itself.
      */
+    @Generated
     public BatchJob setJobPreparationTask(JobPreparationTask jobPreparationTask) {
         this.jobPreparationTask = jobPreparationTask;
         return this;
@@ -521,6 +575,7 @@ public final class BatchJob {
      *
      * @return the jobReleaseTask value.
      */
+    @Generated
     public JobReleaseTask getJobReleaseTask() {
         return this.jobReleaseTask;
     }
@@ -532,6 +587,7 @@ public final class BatchJob {
      * @param jobReleaseTask the jobReleaseTask value to set.
      * @return the BatchJob object itself.
      */
+    @Generated
     public BatchJob setJobReleaseTask(JobReleaseTask jobReleaseTask) {
         this.jobReleaseTask = jobReleaseTask;
         return this;
@@ -543,6 +599,7 @@ public final class BatchJob {
      *
      * @return the commonEnvironmentSettings value.
      */
+    @Generated
     public List<EnvironmentSetting> getCommonEnvironmentSettings() {
         return this.commonEnvironmentSettings;
     }
@@ -554,6 +611,7 @@ public final class BatchJob {
      * @param commonEnvironmentSettings the commonEnvironmentSettings value to set.
      * @return the BatchJob object itself.
      */
+    @Generated
     public BatchJob setCommonEnvironmentSettings(List<EnvironmentSetting> commonEnvironmentSettings) {
         this.commonEnvironmentSettings = commonEnvironmentSettings;
         return this;
@@ -564,6 +622,7 @@ public final class BatchJob {
      *
      * @return the poolInfo value.
      */
+    @Generated
     public PoolInformation getPoolInfo() {
         return this.poolInfo;
     }
@@ -574,6 +633,7 @@ public final class BatchJob {
      * @param poolInfo the poolInfo value to set.
      * @return the BatchJob object itself.
      */
+    @Generated
     public BatchJob setPoolInfo(PoolInformation poolInfo) {
         this.poolInfo = poolInfo;
         return this;
@@ -584,6 +644,7 @@ public final class BatchJob {
      *
      * @return the onAllTasksComplete value.
      */
+    @Generated
     public OnAllTasksComplete getOnAllTasksComplete() {
         return this.onAllTasksComplete;
     }
@@ -594,6 +655,7 @@ public final class BatchJob {
      * @param onAllTasksComplete the onAllTasksComplete value to set.
      * @return the BatchJob object itself.
      */
+    @Generated
     public BatchJob setOnAllTasksComplete(OnAllTasksComplete onAllTasksComplete) {
         this.onAllTasksComplete = onAllTasksComplete;
         return this;
@@ -606,6 +668,7 @@ public final class BatchJob {
      *
      * @return the onTaskFailure value.
      */
+    @Generated
     public OnTaskFailure getOnTaskFailure() {
         return this.onTaskFailure;
     }
@@ -618,6 +681,7 @@ public final class BatchJob {
      * @param onTaskFailure the onTaskFailure value to set.
      * @return the BatchJob object itself.
      */
+    @Generated
     public BatchJob setOnTaskFailure(OnTaskFailure onTaskFailure) {
         this.onTaskFailure = onTaskFailure;
         return this;
@@ -628,6 +692,7 @@ public final class BatchJob {
      *
      * @return the networkConfiguration value.
      */
+    @Generated
     public JobNetworkConfiguration getNetworkConfiguration() {
         return this.networkConfiguration;
     }
@@ -638,6 +703,7 @@ public final class BatchJob {
      * @param networkConfiguration the networkConfiguration value to set.
      * @return the BatchJob object itself.
      */
+    @Generated
     public BatchJob setNetworkConfiguration(JobNetworkConfiguration networkConfiguration) {
         this.networkConfiguration = networkConfiguration;
         return this;
@@ -649,6 +715,7 @@ public final class BatchJob {
      *
      * @return the metadata value.
      */
+    @Generated
     public List<MetadataItem> getMetadata() {
         return this.metadata;
     }
@@ -660,6 +727,7 @@ public final class BatchJob {
      * @param metadata the metadata value to set.
      * @return the BatchJob object itself.
      */
+    @Generated
     public BatchJob setMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
         return this;
@@ -670,6 +738,7 @@ public final class BatchJob {
      *
      * @return the executionInfo value.
      */
+    @Generated
     public JobExecutionInformation getExecutionInfo() {
         return this.executionInfo;
     }
@@ -681,6 +750,7 @@ public final class BatchJob {
      *
      * @return the stats value.
      */
+    @Generated
     public JobStatistics getStats() {
         return this.stats;
     }

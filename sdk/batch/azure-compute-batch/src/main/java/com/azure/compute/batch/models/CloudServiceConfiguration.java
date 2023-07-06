@@ -4,6 +4,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -24,13 +25,15 @@ public final class CloudServiceConfiguration {
      * information, see Azure Guest OS Releases
      * (https://azure.microsoft.com/documentation/articles/cloud-services-guestos-update-matrix/#releases).
      */
-    @JsonProperty(value = "osFamily", required = true)
+    @Generated
+    @JsonProperty(value = "osFamily")
     private String osFamily;
 
     /*
      * The default value is * which specifies the latest operating system version for
      * the specified OS family.
      */
+    @Generated
     @JsonProperty(value = "osVersion")
     private String osVersion;
 
@@ -39,8 +42,9 @@ public final class CloudServiceConfiguration {
      *
      * @param osFamily the osFamily value to set.
      */
+    @Generated
     @JsonCreator
-    public CloudServiceConfiguration(@JsonProperty(value = "osFamily", required = true) String osFamily) {
+    public CloudServiceConfiguration(@JsonProperty(value = "osFamily") String osFamily) {
         this.osFamily = osFamily;
     }
 
@@ -53,6 +57,7 @@ public final class CloudServiceConfiguration {
      *
      * @return the osFamily value.
      */
+    @Generated
     public String getOsFamily() {
         return this.osFamily;
     }
@@ -63,6 +68,7 @@ public final class CloudServiceConfiguration {
      *
      * @return the osVersion value.
      */
+    @Generated
     public String getOsVersion() {
         return this.osVersion;
     }
@@ -74,6 +80,7 @@ public final class CloudServiceConfiguration {
      * @param osVersion the osVersion value to set.
      * @return the CloudServiceConfiguration object itself.
      */
+    @Generated
     public CloudServiceConfiguration setOsVersion(String osVersion) {
         this.osVersion = osVersion;
         return this;

@@ -4,6 +4,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Options for reimaging a Compute Node. */
@@ -13,10 +14,12 @@ public final class NodeReimageParameters {
     /*
      * The default value is requeue.
      */
+    @Generated
     @JsonProperty(value = "nodeReimageOption")
     private ComputeNodeReimageOption nodeReimageOption;
 
     /** Creates an instance of NodeReimageParameters class. */
+    @Generated
     public NodeReimageParameters() {}
 
     /**
@@ -24,6 +27,7 @@ public final class NodeReimageParameters {
      *
      * @return the nodeReimageOption value.
      */
+    @Generated
     public ComputeNodeReimageOption getNodeReimageOption() {
         return this.nodeReimageOption;
     }
@@ -34,6 +38,7 @@ public final class NodeReimageParameters {
      * @param nodeReimageOption the nodeReimageOption value to set.
      * @return the NodeReimageParameters object itself.
      */
+    @Generated
     public NodeReimageParameters setNodeReimageOption(ComputeNodeReimageOption nodeReimageOption) {
         this.nodeReimageOption = nodeReimageOption;
         return this;

@@ -4,6 +4,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
@@ -17,6 +18,7 @@ public final class JobConstraints {
      * termination reason will be MaxWallClockTimeExpiry. If this property is not
      * specified, there is no time limit on how long the Job may run.
      */
+    @Generated
     @JsonProperty(value = "maxWallClockTime")
     private Duration maxWallClockTime;
 
@@ -29,10 +31,12 @@ public final class JobConstraints {
      * retries the Task without limit, however this is not recommended for a start
      * task or any task. The default value is 0 (no retries)
      */
+    @Generated
     @JsonProperty(value = "maxTaskRetryCount")
     private Integer maxTaskRetryCount;
 
     /** Creates an instance of JobConstraints class. */
+    @Generated
     public JobConstraints() {}
 
     /**
@@ -42,6 +46,7 @@ public final class JobConstraints {
      *
      * @return the maxWallClockTime value.
      */
+    @Generated
     public Duration getMaxWallClockTime() {
         return this.maxWallClockTime;
     }
@@ -54,6 +59,7 @@ public final class JobConstraints {
      * @param maxWallClockTime the maxWallClockTime value to set.
      * @return the JobConstraints object itself.
      */
+    @Generated
     public JobConstraints setMaxWallClockTime(Duration maxWallClockTime) {
         this.maxWallClockTime = maxWallClockTime;
         return this;
@@ -68,6 +74,7 @@ public final class JobConstraints {
      *
      * @return the maxTaskRetryCount value.
      */
+    @Generated
     public Integer getMaxTaskRetryCount() {
         return this.maxTaskRetryCount;
     }
@@ -82,6 +89,7 @@ public final class JobConstraints {
      * @param maxTaskRetryCount the maxTaskRetryCount value to set.
      * @return the JobConstraints object itself.
      */
+    @Generated
     public JobConstraints setMaxTaskRetryCount(Integer maxTaskRetryCount) {
         this.maxTaskRetryCount = maxTaskRetryCount;
         return this;

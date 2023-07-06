@@ -4,6 +4,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -19,10 +20,12 @@ public final class DiskEncryptionConfiguration {
      * Linux pool, only "TemporaryDisk" is supported; on Windows pool, "OsDisk"
      * and "TemporaryDisk" must be specified.
      */
+    @Generated
     @JsonProperty(value = "targets")
     private List<DiskEncryptionTarget> targets;
 
     /** Creates an instance of DiskEncryptionConfiguration class. */
+    @Generated
     public DiskEncryptionConfiguration() {}
 
     /**
@@ -31,6 +34,7 @@ public final class DiskEncryptionConfiguration {
      *
      * @return the targets value.
      */
+    @Generated
     public List<DiskEncryptionTarget> getTargets() {
         return this.targets;
     }
@@ -42,6 +46,7 @@ public final class DiskEncryptionConfiguration {
      * @param targets the targets value to set.
      * @return the DiskEncryptionConfiguration object itself.
      */
+    @Generated
     public DiskEncryptionConfiguration setTargets(List<DiskEncryptionTarget> targets) {
         this.targets = targets;
         return this;

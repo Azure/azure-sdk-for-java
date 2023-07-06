@@ -4,6 +4,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -18,7 +19,8 @@ public final class UploadBatchServiceLogsConfiguration {
      * SAS duration must allow enough time for the upload to finish. The start time
      * for SAS is optional and recommended to not be specified.
      */
-    @JsonProperty(value = "containerUrl", required = true)
+    @Generated
+    @JsonProperty(value = "containerUrl")
     private String containerUrl;
 
     /*
@@ -27,7 +29,8 @@ public final class UploadBatchServiceLogsConfiguration {
      * since the entire log file is always uploaded, but the operation should not
      * retrieve fewer logs than have been requested.
      */
-    @JsonProperty(value = "startTime", required = true)
+    @Generated
+    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
@@ -37,12 +40,14 @@ public final class UploadBatchServiceLogsConfiguration {
      * retrieve fewer logs than have been requested. If omitted, the default is to
      * upload all logs available after the startTime.
      */
+    @Generated
     @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * The identity must have write access to the Azure Blob Storage container.
      */
+    @Generated
     @JsonProperty(value = "identityReference")
     private ComputeNodeIdentityReference identityReference;
 
@@ -52,10 +57,11 @@ public final class UploadBatchServiceLogsConfiguration {
      * @param containerUrl the containerUrl value to set.
      * @param startTime the startTime value to set.
      */
+    @Generated
     @JsonCreator
     public UploadBatchServiceLogsConfiguration(
-            @JsonProperty(value = "containerUrl", required = true) String containerUrl,
-            @JsonProperty(value = "startTime", required = true) OffsetDateTime startTime) {
+            @JsonProperty(value = "containerUrl") String containerUrl,
+            @JsonProperty(value = "startTime") OffsetDateTime startTime) {
         this.containerUrl = containerUrl;
         this.startTime = startTime;
     }
@@ -67,6 +73,7 @@ public final class UploadBatchServiceLogsConfiguration {
      *
      * @return the containerUrl value.
      */
+    @Generated
     public String getContainerUrl() {
         return this.containerUrl;
     }
@@ -78,6 +85,7 @@ public final class UploadBatchServiceLogsConfiguration {
      *
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -90,6 +98,7 @@ public final class UploadBatchServiceLogsConfiguration {
      *
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -103,6 +112,7 @@ public final class UploadBatchServiceLogsConfiguration {
      * @param endTime the endTime value to set.
      * @return the UploadBatchServiceLogsConfiguration object itself.
      */
+    @Generated
     public UploadBatchServiceLogsConfiguration setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
@@ -113,6 +123,7 @@ public final class UploadBatchServiceLogsConfiguration {
      *
      * @return the identityReference value.
      */
+    @Generated
     public ComputeNodeIdentityReference getIdentityReference() {
         return this.identityReference;
     }
@@ -123,6 +134,7 @@ public final class UploadBatchServiceLogsConfiguration {
      * @param identityReference the identityReference value to set.
      * @return the UploadBatchServiceLogsConfiguration object itself.
      */
+    @Generated
     public UploadBatchServiceLogsConfiguration setIdentityReference(ComputeNodeIdentityReference identityReference) {
         this.identityReference = identityReference;
         return this;

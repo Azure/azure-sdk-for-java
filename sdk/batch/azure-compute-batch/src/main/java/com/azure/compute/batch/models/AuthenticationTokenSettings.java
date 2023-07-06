@@ -4,6 +4,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,10 +17,12 @@ public final class AuthenticationTokenSettings {
      * supported value for the access property is 'job', which grants access to all operations related to the Job which
      * contains the Task.
      */
+    @Generated
     @JsonProperty(value = "access")
     private List<AccessScope> access;
 
     /** Creates an instance of AuthenticationTokenSettings class. */
+    @Generated
     public AuthenticationTokenSettings() {}
 
     /**
@@ -29,6 +32,7 @@ public final class AuthenticationTokenSettings {
      *
      * @return the access value.
      */
+    @Generated
     public List<AccessScope> getAccess() {
         return this.access;
     }
@@ -41,6 +45,7 @@ public final class AuthenticationTokenSettings {
      * @param access the access value to set.
      * @return the AuthenticationTokenSettings object itself.
      */
+    @Generated
     public AuthenticationTokenSettings setAccess(List<AccessScope> access) {
         this.access = access;
         return this;

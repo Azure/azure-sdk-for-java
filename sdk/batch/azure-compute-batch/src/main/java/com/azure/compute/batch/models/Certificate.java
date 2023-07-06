@@ -4,6 +4,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -16,72 +17,84 @@ public final class Certificate {
      * The X.509 thumbprint of the Certificate. This is a sequence of up to 40 hex
      * digits.
      */
+    @Generated
     @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
     /*
      * The algorithm used to derive the thumbprint.
      */
+    @Generated
     @JsonProperty(value = "thumbprintAlgorithm")
     private String thumbprintAlgorithm;
 
     /*
      * The URL of the Certificate.
      */
+    @Generated
     @JsonProperty(value = "url", access = JsonProperty.Access.WRITE_ONLY)
     private String url;
 
     /*
      * The state of the Certificate.
      */
+    @Generated
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateState state;
 
     /*
      * The time at which the Certificate entered its current state.
      */
+    @Generated
     @JsonProperty(value = "stateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime stateTransitionTime;
 
     /*
      * This property is not set if the Certificate is in its initial active state.
      */
+    @Generated
     @JsonProperty(value = "previousState", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateState previousState;
 
     /*
      * This property is not set if the Certificate is in its initial Active state.
      */
+    @Generated
     @JsonProperty(value = "previousStateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime previousStateTransitionTime;
 
     /*
      * The public part of the Certificate as a base-64 encoded .cer file.
      */
+    @Generated
     @JsonProperty(value = "publicData", access = JsonProperty.Access.WRITE_ONLY)
     private String publicData;
 
     /*
      * This property is set only if the Certificate is in the DeleteFailed state.
      */
+    @Generated
     @JsonProperty(value = "deleteCertificateError", access = JsonProperty.Access.WRITE_ONLY)
     private DeleteCertificateError deleteCertificateError;
 
     /*
      * The base64-encoded contents of the Certificate. The maximum size is 10KB.
      */
+    @Generated
     @JsonProperty(value = "data")
     private String data;
 
     /*
      * The format of the Certificate data.
      */
+    @Generated
     @JsonProperty(value = "certificateFormat")
     private CertificateFormat certificateFormat;
 
     /*
      * This must be omitted if the Certificate format is cer.
      */
+    @Generated
     @JsonProperty(value = "password")
     private String password;
 
@@ -90,6 +103,7 @@ public final class Certificate {
      *
      * @param data the data value to set.
      */
+    @Generated
     @JsonCreator
     public Certificate(@JsonProperty(value = "data") String data) {
         this.data = data;
@@ -100,6 +114,7 @@ public final class Certificate {
      *
      * @return the thumbprint value.
      */
+    @Generated
     public String getThumbprint() {
         return this.thumbprint;
     }
@@ -110,6 +125,7 @@ public final class Certificate {
      * @param thumbprint the thumbprint value to set.
      * @return the Certificate object itself.
      */
+    @Generated
     public Certificate setThumbprint(String thumbprint) {
         this.thumbprint = thumbprint;
         return this;
@@ -120,6 +136,7 @@ public final class Certificate {
      *
      * @return the thumbprintAlgorithm value.
      */
+    @Generated
     public String getThumbprintAlgorithm() {
         return this.thumbprintAlgorithm;
     }
@@ -130,6 +147,7 @@ public final class Certificate {
      * @param thumbprintAlgorithm the thumbprintAlgorithm value to set.
      * @return the Certificate object itself.
      */
+    @Generated
     public Certificate setThumbprintAlgorithm(String thumbprintAlgorithm) {
         this.thumbprintAlgorithm = thumbprintAlgorithm;
         return this;
@@ -140,6 +158,7 @@ public final class Certificate {
      *
      * @return the url value.
      */
+    @Generated
     public String getUrl() {
         return this.url;
     }
@@ -149,6 +168,7 @@ public final class Certificate {
      *
      * @return the state value.
      */
+    @Generated
     public CertificateState getState() {
         return this.state;
     }
@@ -158,6 +178,7 @@ public final class Certificate {
      *
      * @return the stateTransitionTime value.
      */
+    @Generated
     public OffsetDateTime getStateTransitionTime() {
         return this.stateTransitionTime;
     }
@@ -167,6 +188,7 @@ public final class Certificate {
      *
      * @return the previousState value.
      */
+    @Generated
     public CertificateState getPreviousState() {
         return this.previousState;
     }
@@ -177,6 +199,7 @@ public final class Certificate {
      *
      * @return the previousStateTransitionTime value.
      */
+    @Generated
     public OffsetDateTime getPreviousStateTransitionTime() {
         return this.previousStateTransitionTime;
     }
@@ -186,6 +209,7 @@ public final class Certificate {
      *
      * @return the publicData value.
      */
+    @Generated
     public String getPublicData() {
         return this.publicData;
     }
@@ -196,6 +220,7 @@ public final class Certificate {
      *
      * @return the deleteCertificateError value.
      */
+    @Generated
     public DeleteCertificateError getDeleteCertificateError() {
         return this.deleteCertificateError;
     }
@@ -205,6 +230,7 @@ public final class Certificate {
      *
      * @return the data value.
      */
+    @Generated
     public String getData() {
         return this.data;
     }
@@ -214,6 +240,7 @@ public final class Certificate {
      *
      * @return the certificateFormat value.
      */
+    @Generated
     public CertificateFormat getCertificateFormat() {
         return this.certificateFormat;
     }
@@ -224,6 +251,7 @@ public final class Certificate {
      * @param certificateFormat the certificateFormat value to set.
      * @return the Certificate object itself.
      */
+    @Generated
     public Certificate setCertificateFormat(CertificateFormat certificateFormat) {
         this.certificateFormat = certificateFormat;
         return this;
@@ -234,6 +262,7 @@ public final class Certificate {
      *
      * @return the password value.
      */
+    @Generated
     public String getPassword() {
         return this.password;
     }
@@ -244,6 +273,7 @@ public final class Certificate {
      * @param password the password value to set.
      * @return the Certificate object itself.
      */
+    @Generated
     public Certificate setPassword(String password) {
         this.password = password;
         return this;

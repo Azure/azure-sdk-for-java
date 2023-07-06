@@ -4,6 +4,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Options for disabling scheduling on a Compute Node. */
@@ -13,10 +14,12 @@ public final class NodeDisableSchedulingParameters {
     /*
      * The default value is requeue.
      */
+    @Generated
     @JsonProperty(value = "nodeDisableSchedulingOption")
     private DisableComputeNodeSchedulingOption nodeDisableSchedulingOption;
 
     /** Creates an instance of NodeDisableSchedulingParameters class. */
+    @Generated
     public NodeDisableSchedulingParameters() {}
 
     /**
@@ -24,6 +27,7 @@ public final class NodeDisableSchedulingParameters {
      *
      * @return the nodeDisableSchedulingOption value.
      */
+    @Generated
     public DisableComputeNodeSchedulingOption getNodeDisableSchedulingOption() {
         return this.nodeDisableSchedulingOption;
     }
@@ -34,6 +38,7 @@ public final class NodeDisableSchedulingParameters {
      * @param nodeDisableSchedulingOption the nodeDisableSchedulingOption value to set.
      * @return the NodeDisableSchedulingParameters object itself.
      */
+    @Generated
     public NodeDisableSchedulingParameters setNodeDisableSchedulingOption(
             DisableComputeNodeSchedulingOption nodeDisableSchedulingOption) {
         this.nodeDisableSchedulingOption = nodeDisableSchedulingOption;

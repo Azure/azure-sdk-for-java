@@ -4,6 +4,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The destination to which a file should be uploaded. */
@@ -13,10 +14,12 @@ public final class OutputFileDestination {
     /*
      * Specifies a file upload destination within an Azure blob storage container.
      */
+    @Generated
     @JsonProperty(value = "container")
     private OutputFileBlobContainerDestination container;
 
     /** Creates an instance of OutputFileDestination class. */
+    @Generated
     public OutputFileDestination() {}
 
     /**
@@ -24,6 +27,7 @@ public final class OutputFileDestination {
      *
      * @return the container value.
      */
+    @Generated
     public OutputFileBlobContainerDestination getContainer() {
         return this.container;
     }
@@ -34,6 +38,7 @@ public final class OutputFileDestination {
      * @param container the container value to set.
      * @return the OutputFileDestination object itself.
      */
+    @Generated
     public OutputFileDestination setContainer(OutputFileBlobContainerDestination container) {
         this.container = container;
         return this;

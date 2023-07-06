@@ -4,6 +4,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the parameters for the auto user that runs a Task on the Batch service. */
@@ -17,16 +18,19 @@ public final class AutoUserSpecification {
      * tasks, or if certificates have been specified on the pool which should not be
      * accessible by normal tasks but should be accessible by StartTasks.
      */
+    @Generated
     @JsonProperty(value = "scope")
     private AutoUserScope scope;
 
     /*
      * The default value is nonAdmin.
      */
+    @Generated
     @JsonProperty(value = "elevationLevel")
     private ElevationLevel elevationLevel;
 
     /** Creates an instance of AutoUserSpecification class. */
+    @Generated
     public AutoUserSpecification() {}
 
     /**
@@ -37,6 +41,7 @@ public final class AutoUserSpecification {
      *
      * @return the scope value.
      */
+    @Generated
     public AutoUserScope getScope() {
         return this.scope;
     }
@@ -50,6 +55,7 @@ public final class AutoUserSpecification {
      * @param scope the scope value to set.
      * @return the AutoUserSpecification object itself.
      */
+    @Generated
     public AutoUserSpecification setScope(AutoUserScope scope) {
         this.scope = scope;
         return this;
@@ -60,6 +66,7 @@ public final class AutoUserSpecification {
      *
      * @return the elevationLevel value.
      */
+    @Generated
     public ElevationLevel getElevationLevel() {
         return this.elevationLevel;
     }
@@ -70,6 +77,7 @@ public final class AutoUserSpecification {
      * @param elevationLevel the elevationLevel value to set.
      * @return the AutoUserSpecification object itself.
      */
+    @Generated
     public AutoUserSpecification setElevationLevel(ElevationLevel elevationLevel) {
         this.elevationLevel = elevationLevel;
         return this;

@@ -4,6 +4,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Settings for the operating system disk of the compute node (VM). */
@@ -14,10 +15,12 @@ public final class OSDisk {
      * Specifies the ephemeral Disk Settings for the operating system disk used by the
      * compute node (VM).
      */
+    @Generated
     @JsonProperty(value = "ephemeralOSDiskSettings")
     private DiffDiskSettings ephemeralOSDiskSettings;
 
     /** Creates an instance of OSDisk class. */
+    @Generated
     public OSDisk() {}
 
     /**
@@ -26,6 +29,7 @@ public final class OSDisk {
      *
      * @return the ephemeralOSDiskSettings value.
      */
+    @Generated
     public DiffDiskSettings getEphemeralOSDiskSettings() {
         return this.ephemeralOSDiskSettings;
     }
@@ -37,6 +41,7 @@ public final class OSDisk {
      * @param ephemeralOSDiskSettings the ephemeralOSDiskSettings value to set.
      * @return the OSDisk object itself.
      */
+    @Generated
     public OSDisk setEphemeralOSDiskSettings(DiffDiskSettings ephemeralOSDiskSettings) {
         this.ephemeralOSDiskSettings = ephemeralOSDiskSettings;
         return this;

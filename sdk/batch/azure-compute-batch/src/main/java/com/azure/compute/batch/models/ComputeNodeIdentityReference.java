@@ -4,6 +4,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The reference to a user assigned identity associated with the Batch pool which a compute node will use. */
@@ -13,10 +14,12 @@ public final class ComputeNodeIdentityReference {
     /*
      * The ARM resource id of the user assigned identity.
      */
+    @Generated
     @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /** Creates an instance of ComputeNodeIdentityReference class. */
+    @Generated
     public ComputeNodeIdentityReference() {}
 
     /**
@@ -24,6 +27,7 @@ public final class ComputeNodeIdentityReference {
      *
      * @return the resourceId value.
      */
+    @Generated
     public String getResourceId() {
         return this.resourceId;
     }
@@ -34,6 +38,7 @@ public final class ComputeNodeIdentityReference {
      * @param resourceId the resourceId value to set.
      * @return the ComputeNodeIdentityReference object itself.
      */
+    @Generated
     public ComputeNodeIdentityReference setResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;

@@ -4,6 +4,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -23,6 +24,7 @@ public final class BatchTask {
      * The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot
      * contain more than 64 characters.
      */
+    @Generated
     @JsonProperty(value = "id")
     private String id;
 
@@ -30,12 +32,14 @@ public final class BatchTask {
      * The display name need not be unique and can contain any Unicode characters up
      * to a maximum length of 1024.
      */
+    @Generated
     @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The URL of the Task.
      */
+    @Generated
     @JsonProperty(value = "url", access = JsonProperty.Access.WRITE_ONLY)
     private String url;
 
@@ -45,48 +49,56 @@ public final class BatchTask {
      * to specify that your changes should take effect only if nobody else has
      * modified the Task in the meantime.
      */
+    @Generated
     @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String eTag;
 
     /*
      * The last modified time of the Task.
      */
+    @Generated
     @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
 
     /*
      * The creation time of the Task.
      */
+    @Generated
     @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * How the Batch service should respond when the Task completes.
      */
+    @Generated
     @JsonProperty(value = "exitConditions")
     private ExitConditions exitConditions;
 
     /*
      * The state of the Task.
      */
+    @Generated
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private TaskState state;
 
     /*
      * The time at which the Task entered its current state.
      */
+    @Generated
     @JsonProperty(value = "stateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime stateTransitionTime;
 
     /*
      * This property is not set if the Task is in its initial Active state.
      */
+    @Generated
     @JsonProperty(value = "previousState", access = JsonProperty.Access.WRITE_ONLY)
     private TaskState previousState;
 
     /*
      * This property is not set if the Task is in its initial Active state.
      */
+    @Generated
     @JsonProperty(value = "previousStateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime previousStateTransitionTime;
 
@@ -102,6 +114,7 @@ public final class BatchTask {
      * directory), or use the Batch provided environment variable
      * (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
      */
+    @Generated
     @JsonProperty(value = "commandLine")
     private String commandLine;
 
@@ -116,6 +129,7 @@ public final class BatchTask {
      * AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning that
      * Batch file APIs will not be able to access those files.
      */
+    @Generated
     @JsonProperty(value = "containerSettings")
     private TaskContainerSettings containerSettings;
 
@@ -127,6 +141,7 @@ public final class BatchTask {
      * the collection of ResourceFiles must be reduced in size. This can be achieved
      * using .zip files, Application Packages, or Docker Containers.
      */
+    @Generated
     @JsonProperty(value = "resourceFiles")
     private List<ResourceFile> resourceFiles;
 
@@ -134,12 +149,14 @@ public final class BatchTask {
      * For multi-instance Tasks, the files will only be uploaded from the Compute Node
      * on which the primary Task is executed.
      */
+    @Generated
     @JsonProperty(value = "outputFiles")
     private List<OutputFile> outputFiles;
 
     /*
      * A list of environment variable settings for the Task.
      */
+    @Generated
     @JsonProperty(value = "environmentSettings")
     private List<EnvironmentSetting> environmentSettings;
 
@@ -147,12 +164,14 @@ public final class BatchTask {
      * A locality hint that can be used by the Batch service to select a Compute Node
      * on which to start a Task.
      */
+    @Generated
     @JsonProperty(value = "affinityInfo")
     private AffinityInformation affinityInfo;
 
     /*
      * Execution constraints to apply to a Task.
      */
+    @Generated
     @JsonProperty(value = "constraints")
     private TaskConstraints constraints;
 
@@ -161,24 +180,28 @@ public final class BatchTask {
      * node has enough free scheduling slots available. For multi-instance Tasks, this
      * must be 1.
      */
+    @Generated
     @JsonProperty(value = "requiredSlots")
     private Integer requiredSlots;
 
     /*
      * If omitted, the Task runs as a non-administrative user unique to the Task.
      */
+    @Generated
     @JsonProperty(value = "userIdentity")
     private UserIdentity userIdentity;
 
     /*
      * Information about the execution of a Task.
      */
+    @Generated
     @JsonProperty(value = "executionInfo", access = JsonProperty.Access.WRITE_ONLY)
     private TaskExecutionInformation executionInfo;
 
     /*
      * Information about the Compute Node on which a Task ran.
      */
+    @Generated
     @JsonProperty(value = "nodeInfo", access = JsonProperty.Access.WRITE_ONLY)
     private ComputeNodeInformation nodeInfo;
 
@@ -188,12 +211,14 @@ public final class BatchTask {
      * code) the entire multi-instance Task fails. The multi-instance Task is then
      * terminated and retried, up to its retry limit.
      */
+    @Generated
     @JsonProperty(value = "multiInstanceSettings")
     private MultiInstanceSettings multiInstanceSettings;
 
     /*
      * Resource usage statistics for a Task.
      */
+    @Generated
     @JsonProperty(value = "stats", access = JsonProperty.Access.WRITE_ONLY)
     private TaskStatistics stats;
 
@@ -202,6 +227,7 @@ public final class BatchTask {
      * completed successfully. If any of those Tasks fail and exhaust their retry
      * counts, this Task will never be scheduled.
      */
+    @Generated
     @JsonProperty(value = "dependsOn")
     private TaskDependencies dependsOn;
 
@@ -213,6 +239,7 @@ public final class BatchTask {
      * because the package has been deleted or because download failed, the Task
      * fails.
      */
+    @Generated
     @JsonProperty(value = "applicationPackageReferences")
     private List<ApplicationPackageReference> applicationPackageReferences;
 
@@ -225,10 +252,12 @@ public final class BatchTask {
      * can request Job permissions in order to add other Tasks to the Job, or check
      * the status of the Job or of other Tasks under the Job.
      */
+    @Generated
     @JsonProperty(value = "authenticationTokenSettings")
     private AuthenticationTokenSettings authenticationTokenSettings;
 
     /** Creates an instance of BatchTask class. */
+    @Generated
     public BatchTask() {}
 
     /**
@@ -237,6 +266,7 @@ public final class BatchTask {
      *
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -248,6 +278,7 @@ public final class BatchTask {
      * @param id the id value to set.
      * @return the BatchTask object itself.
      */
+    @Generated
     public BatchTask setId(String id) {
         this.id = id;
         return this;
@@ -259,6 +290,7 @@ public final class BatchTask {
      *
      * @return the displayName value.
      */
+    @Generated
     public String getDisplayName() {
         return this.displayName;
     }
@@ -270,6 +302,7 @@ public final class BatchTask {
      * @param displayName the displayName value to set.
      * @return the BatchTask object itself.
      */
+    @Generated
     public BatchTask setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
@@ -280,6 +313,7 @@ public final class BatchTask {
      *
      * @return the url value.
      */
+    @Generated
     public String getUrl() {
         return this.url;
     }
@@ -291,6 +325,7 @@ public final class BatchTask {
      *
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -300,6 +335,7 @@ public final class BatchTask {
      *
      * @return the lastModified value.
      */
+    @Generated
     public OffsetDateTime getLastModified() {
         return this.lastModified;
     }
@@ -309,6 +345,7 @@ public final class BatchTask {
      *
      * @return the creationTime value.
      */
+    @Generated
     public OffsetDateTime getCreationTime() {
         return this.creationTime;
     }
@@ -318,6 +355,7 @@ public final class BatchTask {
      *
      * @return the exitConditions value.
      */
+    @Generated
     public ExitConditions getExitConditions() {
         return this.exitConditions;
     }
@@ -328,6 +366,7 @@ public final class BatchTask {
      * @param exitConditions the exitConditions value to set.
      * @return the BatchTask object itself.
      */
+    @Generated
     public BatchTask setExitConditions(ExitConditions exitConditions) {
         this.exitConditions = exitConditions;
         return this;
@@ -338,6 +377,7 @@ public final class BatchTask {
      *
      * @return the state value.
      */
+    @Generated
     public TaskState getState() {
         return this.state;
     }
@@ -347,6 +387,7 @@ public final class BatchTask {
      *
      * @return the stateTransitionTime value.
      */
+    @Generated
     public OffsetDateTime getStateTransitionTime() {
         return this.stateTransitionTime;
     }
@@ -356,6 +397,7 @@ public final class BatchTask {
      *
      * @return the previousState value.
      */
+    @Generated
     public TaskState getPreviousState() {
         return this.previousState;
     }
@@ -366,6 +408,7 @@ public final class BatchTask {
      *
      * @return the previousStateTransitionTime value.
      */
+    @Generated
     public OffsetDateTime getPreviousStateTransitionTime() {
         return this.previousStateTransitionTime;
     }
@@ -381,6 +424,7 @@ public final class BatchTask {
      *
      * @return the commandLine value.
      */
+    @Generated
     public String getCommandLine() {
         return this.commandLine;
     }
@@ -397,6 +441,7 @@ public final class BatchTask {
      * @param commandLine the commandLine value to set.
      * @return the BatchTask object itself.
      */
+    @Generated
     public BatchTask setCommandLine(String commandLine) {
         this.commandLine = commandLine;
         return this;
@@ -413,6 +458,7 @@ public final class BatchTask {
      *
      * @return the containerSettings value.
      */
+    @Generated
     public TaskContainerSettings getContainerSettings() {
         return this.containerSettings;
     }
@@ -429,6 +475,7 @@ public final class BatchTask {
      * @param containerSettings the containerSettings value to set.
      * @return the BatchTask object itself.
      */
+    @Generated
     public BatchTask setContainerSettings(TaskContainerSettings containerSettings) {
         this.containerSettings = containerSettings;
         return this;
@@ -443,6 +490,7 @@ public final class BatchTask {
      *
      * @return the resourceFiles value.
      */
+    @Generated
     public List<ResourceFile> getResourceFiles() {
         return this.resourceFiles;
     }
@@ -457,6 +505,7 @@ public final class BatchTask {
      * @param resourceFiles the resourceFiles value to set.
      * @return the BatchTask object itself.
      */
+    @Generated
     public BatchTask setResourceFiles(List<ResourceFile> resourceFiles) {
         this.resourceFiles = resourceFiles;
         return this;
@@ -468,6 +517,7 @@ public final class BatchTask {
      *
      * @return the outputFiles value.
      */
+    @Generated
     public List<OutputFile> getOutputFiles() {
         return this.outputFiles;
     }
@@ -479,6 +529,7 @@ public final class BatchTask {
      * @param outputFiles the outputFiles value to set.
      * @return the BatchTask object itself.
      */
+    @Generated
     public BatchTask setOutputFiles(List<OutputFile> outputFiles) {
         this.outputFiles = outputFiles;
         return this;
@@ -489,6 +540,7 @@ public final class BatchTask {
      *
      * @return the environmentSettings value.
      */
+    @Generated
     public List<EnvironmentSetting> getEnvironmentSettings() {
         return this.environmentSettings;
     }
@@ -499,6 +551,7 @@ public final class BatchTask {
      * @param environmentSettings the environmentSettings value to set.
      * @return the BatchTask object itself.
      */
+    @Generated
     public BatchTask setEnvironmentSettings(List<EnvironmentSetting> environmentSettings) {
         this.environmentSettings = environmentSettings;
         return this;
@@ -510,6 +563,7 @@ public final class BatchTask {
      *
      * @return the affinityInfo value.
      */
+    @Generated
     public AffinityInformation getAffinityInfo() {
         return this.affinityInfo;
     }
@@ -521,6 +575,7 @@ public final class BatchTask {
      * @param affinityInfo the affinityInfo value to set.
      * @return the BatchTask object itself.
      */
+    @Generated
     public BatchTask setAffinityInfo(AffinityInformation affinityInfo) {
         this.affinityInfo = affinityInfo;
         return this;
@@ -531,6 +586,7 @@ public final class BatchTask {
      *
      * @return the constraints value.
      */
+    @Generated
     public TaskConstraints getConstraints() {
         return this.constraints;
     }
@@ -541,6 +597,7 @@ public final class BatchTask {
      * @param constraints the constraints value to set.
      * @return the BatchTask object itself.
      */
+    @Generated
     public BatchTask setConstraints(TaskConstraints constraints) {
         this.constraints = constraints;
         return this;
@@ -552,6 +609,7 @@ public final class BatchTask {
      *
      * @return the requiredSlots value.
      */
+    @Generated
     public Integer getRequiredSlots() {
         return this.requiredSlots;
     }
@@ -563,6 +621,7 @@ public final class BatchTask {
      * @param requiredSlots the requiredSlots value to set.
      * @return the BatchTask object itself.
      */
+    @Generated
     public BatchTask setRequiredSlots(Integer requiredSlots) {
         this.requiredSlots = requiredSlots;
         return this;
@@ -573,6 +632,7 @@ public final class BatchTask {
      *
      * @return the userIdentity value.
      */
+    @Generated
     public UserIdentity getUserIdentity() {
         return this.userIdentity;
     }
@@ -583,6 +643,7 @@ public final class BatchTask {
      * @param userIdentity the userIdentity value to set.
      * @return the BatchTask object itself.
      */
+    @Generated
     public BatchTask setUserIdentity(UserIdentity userIdentity) {
         this.userIdentity = userIdentity;
         return this;
@@ -593,6 +654,7 @@ public final class BatchTask {
      *
      * @return the executionInfo value.
      */
+    @Generated
     public TaskExecutionInformation getExecutionInfo() {
         return this.executionInfo;
     }
@@ -602,6 +664,7 @@ public final class BatchTask {
      *
      * @return the nodeInfo value.
      */
+    @Generated
     public ComputeNodeInformation getNodeInfo() {
         return this.nodeInfo;
     }
@@ -613,6 +676,7 @@ public final class BatchTask {
      *
      * @return the multiInstanceSettings value.
      */
+    @Generated
     public MultiInstanceSettings getMultiInstanceSettings() {
         return this.multiInstanceSettings;
     }
@@ -625,6 +689,7 @@ public final class BatchTask {
      * @param multiInstanceSettings the multiInstanceSettings value to set.
      * @return the BatchTask object itself.
      */
+    @Generated
     public BatchTask setMultiInstanceSettings(MultiInstanceSettings multiInstanceSettings) {
         this.multiInstanceSettings = multiInstanceSettings;
         return this;
@@ -635,6 +700,7 @@ public final class BatchTask {
      *
      * @return the stats value.
      */
+    @Generated
     public TaskStatistics getStats() {
         return this.stats;
     }
@@ -645,6 +711,7 @@ public final class BatchTask {
      *
      * @return the dependsOn value.
      */
+    @Generated
     public TaskDependencies getDependsOn() {
         return this.dependsOn;
     }
@@ -656,6 +723,7 @@ public final class BatchTask {
      * @param dependsOn the dependsOn value to set.
      * @return the BatchTask object itself.
      */
+    @Generated
     public BatchTask setDependsOn(TaskDependencies dependsOn) {
         this.dependsOn = dependsOn;
         return this;
@@ -669,6 +737,7 @@ public final class BatchTask {
      *
      * @return the applicationPackageReferences value.
      */
+    @Generated
     public List<ApplicationPackageReference> getApplicationPackageReferences() {
         return this.applicationPackageReferences;
     }
@@ -682,6 +751,7 @@ public final class BatchTask {
      * @param applicationPackageReferences the applicationPackageReferences value to set.
      * @return the BatchTask object itself.
      */
+    @Generated
     public BatchTask setApplicationPackageReferences(List<ApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
         return this;
@@ -696,6 +766,7 @@ public final class BatchTask {
      *
      * @return the authenticationTokenSettings value.
      */
+    @Generated
     public AuthenticationTokenSettings getAuthenticationTokenSettings() {
         return this.authenticationTokenSettings;
     }
@@ -710,6 +781,7 @@ public final class BatchTask {
      * @param authenticationTokenSettings the authenticationTokenSettings value to set.
      * @return the BatchTask object itself.
      */
+    @Generated
     public BatchTask setAuthenticationTokenSettings(AuthenticationTokenSettings authenticationTokenSettings) {
         this.authenticationTokenSettings = authenticationTokenSettings;
         return this;

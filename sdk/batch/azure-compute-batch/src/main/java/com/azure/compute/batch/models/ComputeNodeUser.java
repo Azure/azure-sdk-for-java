@@ -4,6 +4,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -15,12 +16,14 @@ public final class ComputeNodeUser {
     /*
      * The user name of the Account.
      */
-    @JsonProperty(value = "name", required = true)
+    @Generated
+    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The default value is false.
      */
+    @Generated
     @JsonProperty(value = "isAdmin")
     private Boolean isAdmin;
 
@@ -28,6 +31,7 @@ public final class ComputeNodeUser {
      * If omitted, the default is 1 day from the current time. For Linux Compute
      * Nodes, the expiryTime has a precision up to a day.
      */
+    @Generated
     @JsonProperty(value = "expiryTime")
     private OffsetDateTime expiryTime;
 
@@ -36,6 +40,7 @@ public final class ComputeNodeUser {
      * with 'virtualMachineConfiguration' using a Windows Image reference). For Linux Compute Nodes, the password can
      * optionally be specified along with the sshPublicKey property.
      */
+    @Generated
     @JsonProperty(value = "password")
     private String password;
 
@@ -46,6 +51,7 @@ public final class ComputeNodeUser {
      * request; if you are calling the REST API directly, the HTTP status code is 400
      * (Bad Request).
      */
+    @Generated
     @JsonProperty(value = "sshPublicKey")
     private String sshPublicKey;
 
@@ -54,8 +60,9 @@ public final class ComputeNodeUser {
      *
      * @param name the name value to set.
      */
+    @Generated
     @JsonCreator
-    public ComputeNodeUser(@JsonProperty(value = "name", required = true) String name) {
+    public ComputeNodeUser(@JsonProperty(value = "name") String name) {
         this.name = name;
     }
 
@@ -64,6 +71,7 @@ public final class ComputeNodeUser {
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -73,6 +81,7 @@ public final class ComputeNodeUser {
      *
      * @return the isAdmin value.
      */
+    @Generated
     public Boolean isAdmin() {
         return this.isAdmin;
     }
@@ -83,6 +92,7 @@ public final class ComputeNodeUser {
      * @param isAdmin the isAdmin value to set.
      * @return the ComputeNodeUser object itself.
      */
+    @Generated
     public ComputeNodeUser setIsAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
         return this;
@@ -94,6 +104,7 @@ public final class ComputeNodeUser {
      *
      * @return the expiryTime value.
      */
+    @Generated
     public OffsetDateTime getExpiryTime() {
         return this.expiryTime;
     }
@@ -105,6 +116,7 @@ public final class ComputeNodeUser {
      * @param expiryTime the expiryTime value to set.
      * @return the ComputeNodeUser object itself.
      */
+    @Generated
     public ComputeNodeUser setExpiryTime(OffsetDateTime expiryTime) {
         this.expiryTime = expiryTime;
         return this;
@@ -117,6 +129,7 @@ public final class ComputeNodeUser {
      *
      * @return the password value.
      */
+    @Generated
     public String getPassword() {
         return this.password;
     }
@@ -129,6 +142,7 @@ public final class ComputeNodeUser {
      * @param password the password value to set.
      * @return the ComputeNodeUser object itself.
      */
+    @Generated
     public ComputeNodeUser setPassword(String password) {
         this.password = password;
         return this;
@@ -142,6 +156,7 @@ public final class ComputeNodeUser {
      *
      * @return the sshPublicKey value.
      */
+    @Generated
     public String getSshPublicKey() {
         return this.sshPublicKey;
     }
@@ -155,6 +170,7 @@ public final class ComputeNodeUser {
      * @param sshPublicKey the sshPublicKey value to set.
      * @return the ComputeNodeUser object itself.
      */
+    @Generated
     public ComputeNodeUser setSshPublicKey(String sshPublicKey) {
         this.sshPublicKey = sshPublicKey;
         return this;

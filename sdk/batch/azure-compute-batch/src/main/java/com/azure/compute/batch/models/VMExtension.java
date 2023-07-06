@@ -4,6 +4,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,24 +16,28 @@ public final class VMExtension {
     /*
      * The name of the virtual machine extension.
      */
-    @JsonProperty(value = "name", required = true)
+    @Generated
+    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The name of the extension handler publisher.
      */
-    @JsonProperty(value = "publisher", required = true)
+    @Generated
+    @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
      * The type of the extension.
      */
-    @JsonProperty(value = "type", required = true)
+    @Generated
+    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The version of script handler.
      */
+    @Generated
     @JsonProperty(value = "typeHandlerVersion")
     private String typeHandlerVersion;
 
@@ -41,26 +46,30 @@ public final class VMExtension {
      * available at deployment time. Once deployed, however, the extension will not
      * upgrade minor versions unless redeployed, even with this property set to true.
      */
+    @Generated
     @JsonProperty(value = "autoUpgradeMinorVersion")
     private Boolean autoUpgradeMinorVersion;
 
     /*
      * JSON formatted public settings for the extension.
      */
+    @Generated
     @JsonProperty(value = "settings")
-    private Object settings;
+    private ObjectModel settings;
 
     /*
      * The extension can contain either protectedSettings or
      * protectedSettingsFromKeyVault or no protected settings at all.
      */
+    @Generated
     @JsonProperty(value = "protectedSettings")
-    private Object protectedSettings;
+    private ObjectModel protectedSettings;
 
     /*
      * Collection of extension names after which this extension needs to be
      * provisioned.
      */
+    @Generated
     @JsonProperty(value = "provisionAfterExtensions")
     private List<String> provisionAfterExtensions;
 
@@ -71,11 +80,12 @@ public final class VMExtension {
      * @param publisher the publisher value to set.
      * @param type the type value to set.
      */
+    @Generated
     @JsonCreator
     public VMExtension(
-            @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "publisher", required = true) String publisher,
-            @JsonProperty(value = "type", required = true) String type) {
+            @JsonProperty(value = "name") String name,
+            @JsonProperty(value = "publisher") String publisher,
+            @JsonProperty(value = "type") String type) {
         this.name = name;
         this.publisher = publisher;
         this.type = type;
@@ -86,6 +96,7 @@ public final class VMExtension {
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -95,6 +106,7 @@ public final class VMExtension {
      *
      * @return the publisher value.
      */
+    @Generated
     public String getPublisher() {
         return this.publisher;
     }
@@ -104,6 +116,7 @@ public final class VMExtension {
      *
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -113,6 +126,7 @@ public final class VMExtension {
      *
      * @return the typeHandlerVersion value.
      */
+    @Generated
     public String getTypeHandlerVersion() {
         return this.typeHandlerVersion;
     }
@@ -123,6 +137,7 @@ public final class VMExtension {
      * @param typeHandlerVersion the typeHandlerVersion value to set.
      * @return the VMExtension object itself.
      */
+    @Generated
     public VMExtension setTypeHandlerVersion(String typeHandlerVersion) {
         this.typeHandlerVersion = typeHandlerVersion;
         return this;
@@ -135,6 +150,7 @@ public final class VMExtension {
      *
      * @return the autoUpgradeMinorVersion value.
      */
+    @Generated
     public Boolean isAutoUpgradeMinorVersion() {
         return this.autoUpgradeMinorVersion;
     }
@@ -147,6 +163,7 @@ public final class VMExtension {
      * @param autoUpgradeMinorVersion the autoUpgradeMinorVersion value to set.
      * @return the VMExtension object itself.
      */
+    @Generated
     public VMExtension setAutoUpgradeMinorVersion(Boolean autoUpgradeMinorVersion) {
         this.autoUpgradeMinorVersion = autoUpgradeMinorVersion;
         return this;
@@ -157,7 +174,8 @@ public final class VMExtension {
      *
      * @return the settings value.
      */
-    public Object getSettings() {
+    @Generated
+    public ObjectModel getSettings() {
         return this.settings;
     }
 
@@ -167,7 +185,8 @@ public final class VMExtension {
      * @param settings the settings value to set.
      * @return the VMExtension object itself.
      */
-    public VMExtension setSettings(Object settings) {
+    @Generated
+    public VMExtension setSettings(ObjectModel settings) {
         this.settings = settings;
         return this;
     }
@@ -178,7 +197,8 @@ public final class VMExtension {
      *
      * @return the protectedSettings value.
      */
-    public Object getProtectedSettings() {
+    @Generated
+    public ObjectModel getProtectedSettings() {
         return this.protectedSettings;
     }
 
@@ -189,7 +209,8 @@ public final class VMExtension {
      * @param protectedSettings the protectedSettings value to set.
      * @return the VMExtension object itself.
      */
-    public VMExtension setProtectedSettings(Object protectedSettings) {
+    @Generated
+    public VMExtension setProtectedSettings(ObjectModel protectedSettings) {
         this.protectedSettings = protectedSettings;
         return this;
     }
@@ -200,6 +221,7 @@ public final class VMExtension {
      *
      * @return the provisionAfterExtensions value.
      */
+    @Generated
     public List<String> getProvisionAfterExtensions() {
         return this.provisionAfterExtensions;
     }
@@ -211,6 +233,7 @@ public final class VMExtension {
      * @param provisionAfterExtensions the provisionAfterExtensions value to set.
      * @return the VMExtension object itself.
      */
+    @Generated
     public VMExtension setProvisionAfterExtensions(List<String> provisionAfterExtensions) {
         this.provisionAfterExtensions = provisionAfterExtensions;
         return this;
