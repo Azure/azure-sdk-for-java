@@ -278,11 +278,10 @@ public final class CallMediaAsync {
 
     private PlaySourceInternal getPlaySourceInternalFromFileSource(FileSource playSource) {
         FileSourceInternal fileSourceInternal = new FileSourceInternal().setUri(playSource.getUrl());
-        PlaySourceInternal playSourceInternal = new PlaySourceInternal()
+        return new PlaySourceInternal()
             .setSourceType(PlaySourceTypeInternal.FILE)
             .setFileSource(fileSourceInternal)
             .setPlaySourceId(playSource.getPlaySourceId());
-        return playSourceInternal;
     }
 
     private PlaySourceInternal getPlaySourceInternalFromTextSource(TextSource playSource) {
@@ -296,21 +295,27 @@ public final class CallMediaAsync {
         if (playSource.getVoiceName() != null) {
             textSourceInternal.setVoiceName(playSource.getVoiceName());
         }
+        if (playSource.getCustomVoiceEndpointId() != null) {
+            textSourceInternal.setCustomVoiceEndpointId(playSource.getCustomVoiceEndpointId());
+        }
 
-        PlaySourceInternal playSourceInternal = new PlaySourceInternal()
+        return new PlaySourceInternal()
             .setSourceType(PlaySourceTypeInternal.TEXT)
             .setTextSource(textSourceInternal)
             .setPlaySourceId(playSource.getPlaySourceId());
-        return playSourceInternal;
     }
 
     private PlaySourceInternal getPlaySourceInternalFromSsmlSource(SsmlSource playSource) {
         SsmlSourceInternal ssmlSourceInternal = new SsmlSourceInternal().setSsmlText(playSource.getSsmlText());
-        PlaySourceInternal playSourceInternal = new PlaySourceInternal()
+
+        if (playSource.getCustomVoiceEndpointId() != null) {
+            ssmlSourceInternal.setCustomVoiceEndpointId(playSource.getCustomVoiceEndpointId());
+        }
+
+        return new PlaySourceInternal()
             .setSourceType(PlaySourceTypeInternal.SSML)
             .setSsmlSource(ssmlSourceInternal)
             .setPlaySourceId(playSource.getPlaySourceId());
-        return playSourceInternal;
     }
 
     private PlaySourceInternal convertPlaySourceToPlaySourceInternal(PlaySource playSource) {
@@ -319,6 +324,8 @@ public final class CallMediaAsync {
             playSourceInternal = getPlaySourceInternalFromFileSource((FileSource) playSource);
         } else if (playSource instanceof TextSource) {
             playSourceInternal = getPlaySourceInternalFromTextSource((TextSource) playSource);
+        } else if (playSource instanceof SsmlSource) {
+            playSourceInternal = getPlaySourceInternalFromSsmlSource((SsmlSource) playSource);
         }
         return playSourceInternal;
     }
@@ -398,6 +405,12 @@ public final class CallMediaAsync {
             }
         }
 
+        if (choiceRecognizeOptions.getSpeechModelEndpointId() != null) {
+            if (!choiceRecognizeOptions.getSpeechModelEndpointId().isEmpty()) {
+                recognizeOptionsInternal.setSpeechRecognitionModelEndpointId(choiceRecognizeOptions.getSpeechModelEndpointId());
+            }
+        }
+
         PlaySourceInternal playSourceInternal = getPlaySourceInternalFromRecognizeOptions(recognizeOptions);
 
         RecognizeRequest recognizeRequest = new RecognizeRequest()
@@ -421,6 +434,12 @@ public final class CallMediaAsync {
             .setTargetParticipant(CommunicationIdentifierConverter.convert(speechRecognizeOptions.getTargetParticipant()));
 
         recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) speechRecognizeOptions.getInitialSilenceTimeout().getSeconds());
+
+        if (speechRecognizeOptions.getSpeechModelEndpointId() != null) {
+            if (!speechRecognizeOptions.getSpeechModelEndpointId().isEmpty()) {
+                recognizeOptionsInternal.setSpeechRecognitionModelEndpointId(speechRecognizeOptions.getSpeechModelEndpointId());
+            }
+        }
 
         PlaySourceInternal playSourceInternal = getPlaySourceInternalFromRecognizeOptions(recognizeOptions);
 
@@ -459,6 +478,11 @@ public final class CallMediaAsync {
             .setInterruptPrompt(speechOrDtmfRecognizeOptions.isInterruptPrompt())
             .setTargetParticipant(CommunicationIdentifierConverter.convert(speechOrDtmfRecognizeOptions.getTargetParticipant()));
 
+        if (speechOrDtmfRecognizeOptions.getSpeechModelEndpointId() != null) {
+            if (!speechOrDtmfRecognizeOptions.getSpeechModelEndpointId().isEmpty()) {
+                recognizeOptionsInternal.setSpeechRecognitionModelEndpointId(speechOrDtmfRecognizeOptions.getSpeechModelEndpointId());
+            }
+        }
         recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) speechOrDtmfRecognizeOptions.getInitialSilenceTimeout().getSeconds());
 
         PlaySourceInternal playSourceInternal = getPlaySourceInternalFromRecognizeOptions(recognizeOptions);
