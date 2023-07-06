@@ -8,7 +8,6 @@ GitHub repository, and documentation of how to set up and use the proxy can be f
 
 ## Table of contents
 - [Re-record existing test recordings](#re-record-existing-test-recordings)
-- [Run tests](#run-tests)
     - [Perform one-time setup](#perform-one-time-setup)
     - [Start the proxy server](#start-the-proxy-server)
     - [Record or play back tests](#record-or-play-back-tests)
@@ -24,13 +23,9 @@ Each SDK needs to re-record its test recordings using the test-proxy integration
 #### Steps:
 1) Run & update test recordings using the [test-proxy integration][test_proxy_integration].
    1.1) To use the proxy, test classes should extend from `[TestProxyTestBase]`[test_proxy_base]
-        ```java public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {}```
-2) Run the tests in record mode and get the updated recordings.
-3) Add [custom sanitizers][custom_sanitizer_example] if needed to address service-specific redactions.
-[Default redaction][default_sanitizers] is already set up in Test Proxy for primary sanitization.
-
-## Run tests
-Test-Proxy maintains a _separate clone_ for each assets.json. The recording files will be located under your repo root under the `.assets` folder.
+        ```java 
+           public abstract class <ServiceName>ClientTestBase extends TestProxyTestBase {}
+        ```
 ```text
 +-------------------------------+
 |  azure-sdk-for-java/        |
@@ -107,20 +102,35 @@ Instead, sanitizers (as well as matchers) can be registered on the proxy as deta
 [`Default sanitizers`][default_sanitizers], similar to use of the `RecordingRedactor` are registered in the `TestProxyUtils`. 
 
 For example, registering a custom sanitizer for redacting the value of json key `modelId` from response body looks like following: 
-```java
-private static List<TestProxySanitizer> customSanitizer = new ArrayList<>();
+```java readme-sample-add-sanitizer-matcher
+    HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder();
 
-public static final String REDACTED = "REDACTED";
+    List<TestProxySanitizer> customSanitizer = new ArrayList<>();
+    // sanitize value for key: "modelId" in response json body
+    customSanitizer.add(
+        new TestProxySanitizer("$..modelId", "REPLACEMENT_TEXT", TestProxySanitizerType.BODY_KEY));
 
-static {
-    // testing different sanitizer options
-    customSanitizer.add(new TestProxySanitizer("$..modelId", REDACTED, TestProxySanitizerType.BODY_KEY));
-}
+    if (interceptorManager.isRecordMode()) {
+        // Add a policy to record network calls.
+        pipelineBuilder.policies(interceptorManager.getRecordPolicy());
+    }
+    if (interceptorManager.isPlaybackMode()) {
+        // Use a playback client when running in playback mode
+        pipelineBuilder.httpClient(interceptorManager.getPlaybackClient());
+        // Add matchers only in playback mode
+        interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
+            .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-client-request-id"))));
+    }
+    if (!interceptorManager.isLiveMode()) {
+        // Add sanitizers when running in playback or record mode
+        interceptorManager.addSanitizers(customSanitizer);
+    }
 
-@Override
-protected void beforeTest() {
-    // add sanitizer to Test Proxy Policy
-    interceptorManager.addSanitizers(customSanitizer);
+    Mono<HttpResponse> response =
+        pipelineBuilder.build().send(new HttpRequest(HttpMethod.GET, "http://bing.com"));
+
+    // Validate test results.
+    assertEquals(200, response.block().getStatusCode());
 }
 ```
 
@@ -169,45 +179,18 @@ After recordings are moved, you can refer to the instructions in [`TestProxyMigr
 The basic idea is to have a test server that sits between the client being tested and the live endpoint. 
 Instead of mocking out the communication with the server, the communication can be redirected to a test server.
 
-For example, if an operation would typically make a GET request to
-`https://fakeazsdktestaccount.table.core.windows.net/Tables`, that operation should now be sent to
-`https://localhost:5001/Tables` instead. The original endpoint should be stored in an `x-recording-upstream-base-uri` --
-the proxy will send the original request and record the result.
-
 The [`TestProxyManager`][test_proxy_manager] does this for you.
 
 ### How does the test proxy know when and what to record or play back?
 
+[TestProxyTestBase][test_proxy_base] provides a way to start and stop recording and playback for tests.
 This is achieved by making POST requests to the proxy server that say whether to start or stop recording or playing
 back, as well as what test is being run.
 
-To start recording a test, the server should be primed with a POST request:
-
-```
-URL: https://localhost:5001/record/start
-headers {
-    "x-recording-file": "<path-to-test>/recordings/<testfile>.<testname>"
-}
-```
-
-This will return a recording ID in an `x-recording-id` header. This ID should be sent as an `x-recording-id` header in
-all further requests during the test.
-
-After the test has finished, a POST request should be sent to indicate that recording is complete:
-
-```
-URL: https://localhost:5001/record/stop
-headers {
-    "x-recording-id": "<x-recording-id>"
-}
-```
-
-Running tests in playback follows the same pattern, except that requests will be sent to `/playback/start` and
-`/playback/stop` instead. A header, `x-recording-mode`, should be set to `record` for all requests when recording and
-`playback` when playing recordings back. More details can be found [here][detailed_docs].
-
 The [`TestProxyRecordPolicy`][test_proxy_record_policy] and [`TestProxyPlaybackClient`][test_proxy_playback_client] send 
 the appropriate requests at the start and end of each test case.
+
+More details can be found [here][detailed_docs].
 
 [asset_sync_push]: https://github.com/Azure/azure-sdk-tools/tree/main/tools/test-proxy/documentation/asset-sync#pushing-new-recordings
 [custom_sanitizer_example]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/test/java/com/azure/ai/formrecognizer/documentanalysis/TestUtils.java#L293

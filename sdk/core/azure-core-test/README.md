@@ -19,6 +19,7 @@ refer to the [test proxy migration guide][test-proxy-migration-guide].
     - [Run and record tests](#run-and-record-tests)
     - [Run tests with out-of-repo recordings](#run-tests-with-out-of-repo-recordings)
     - [Sanitize secrets](#sanitize-secrets)
+      - [Customizing what gets recorded](#customizing-what-gets-recorded)
 - [Troubleshooting](#troubleshooting)
 - [Next steps](#next-steps)
 - [Contributing](#contributing)
@@ -65,10 +66,6 @@ To use this package, add the following to your _pom.xml_.
   of session-record using test proxy.
 
 ## Write or run tests
-
-Newer SDK tests utilize the [Azure SDK Tools Test Proxy][test-proxy-readme] to record and playback HTTP interactions.
-To migrate from existing [TestBase][TestBase.java] to use the test proxy, or to learn more about using the test proxy,
-refer to the [test proxy migration guide][test-proxy-migration-guide].
 
 ### Set up test resources
 
@@ -149,32 +146,34 @@ which then extends the `TestProxyTestBase` class.
 The `{ServiceName}ClientTestBase` will be responsible for initializing the clients, preparing test data, registering
 sanitizers/matchers etc. (in this example we use Tables SDK for the sake of demonstration):
 
-```java
-public abstract class TableServiceClientTestBase extends TestProxyTestBase {
-    protected static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
+```java readme-sample-createATestClass
 
-    protected HttpPipelinePolicy recordPolicy;
-    protected HttpClient playbackClient;
+/**
+ * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
+ * record. By default, tests are run in playback mode.
+ */
+public static class ClientTests extends TestProxyTestBase {
 
-    private TableServiceClientBuilder configureTestClientBuilder(TableServiceClientBuilder tableServiceClientBuilder) {
-        tableServiceClientBuilder
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-
+    /**
+     * Use JUnit annotation here for your testcase
+     */
+    public void testMethodName() {
+        HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder();
+        if (interceptorManager.isRecordMode()) {
+            // Add a policy to record network calls.
+            pipelineBuilder.policies(interceptorManager.getRecordPolicy());
+        }
         if (interceptorManager.isPlaybackMode()) {
-            playbackClient = interceptorManager.getPlaybackClient();
-            tableServiceClientBuilder.httpClient(buildAssertingClient(playbackClient));
-        } else {
-            tableServiceClientBuilder.httpClient(buildAssertingClient(DEFAULT_HTTP_CLIENT));
-            if (interceptorManager.isRecordMode()) {
-                tableServiceClientBuilder.addPolicy(recordPolicy);
-            }
+            // Use a playback client when running in playback mode
+            pipelineBuilder.httpClient(interceptorManager.getPlaybackClient());
         }
-        if (!interceptorManager.isLiveMode()) {
-            TestUtils.addTestProxyTestSanitizersAndMatchers(interceptorManager);
-        }
-        return tableServiceClientBuilder;
+
+        Mono<HttpResponse> response =
+            pipelineBuilder.build().send(new HttpRequest(HttpMethod.GET, "http://bing.com"));
+
+        // Validate test results.
+        assertEquals(200, response.block().getStatusCode());
     }
-}
 ```
 
 ## Configure live or playback testing mode
@@ -202,10 +201,9 @@ the recorded data from json recording file).
 
 If the package being tested stores its recordings outside the `azure-sdk-for-java` repository -- i.e. the
 [recording migration guide][recording-migration] has been followed and the package contains an `assets.json` file --
-there
-won't be a `src/test/resources/session-records` folder in the `tests` directory. Instead, the package's `assets.json`
-file will point to a tag
-in the `azure-sdk-assets` repository that contains the recordings. This is the preferred recording configuration.
+there won't be a `src/test/resources/session-records` folder in the `tests` directory. Instead, 
+the package's `assets.json` file will point to a tag in the `azure-sdk-assets` repository that contains the recordings. 
+This is the preferred recording configuration.
 
 Running live or playback tests is the same in this configuration as it was in the previous section. The only changes are
 to the process of updating recordings.
@@ -272,16 +270,47 @@ There are two primary ways to keep secrets from being written into recordings:
    specific service sanitization needs.
    For example, registering a custom sanitizer for redacting the value of json key modelId from the response body looks
    like the following:.
-   ```java
-    List<TestProxySanitizer> customSanitizer = new ArrayList<>();
-    // sanitize value for key: "modelId" in response json body
-    customSanitizer.add(new TestProxySanitizer("$..modelId", "REPLACEMENT_TEXT", TestProxySanitizerType.BODY_KEY));
-    // add sanitizer to Test Proxy Policy
-    interceptorManager.addSanitizers(customSanitizer);
+   ```java readme-sample-add-sanitizer-matcher
+       HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder();
+
+       List<TestProxySanitizer> customSanitizer = new ArrayList<>();
+       // sanitize value for key: "modelId" in response json body
+       customSanitizer.add(
+           new TestProxySanitizer("$..modelId", "REPLACEMENT_TEXT", TestProxySanitizerType.BODY_KEY));
+
+       if (interceptorManager.isRecordMode()) {
+           // Add a policy to record network calls.
+           pipelineBuilder.policies(interceptorManager.getRecordPolicy());
+       }
+       if (interceptorManager.isPlaybackMode()) {
+           // Use a playback client when running in playback mode
+           pipelineBuilder.httpClient(interceptorManager.getPlaybackClient());
+           // Add matchers only in playback mode
+           interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
+               .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-client-request-id"))));
+       }
+       if (!interceptorManager.isLiveMode()) {
+           // Add sanitizers when running in playback or record mode
+           interceptorManager.addSanitizers(customSanitizer);
+       }
+
+       Mono<HttpResponse> response =
+           pipelineBuilder.build().send(new HttpRequest(HttpMethod.GET, "http://bing.com"));
+
+       // Validate test results.
+       assertEquals(200, response.block().getStatusCode());
+   }
    ```
 
 Note: Sanitizers must only be added once the playback client or record policy is registered.
 Look at the [TableClientTestBase][TableClientTestBase] class for example.
+
+Detailed information about the sanitizers supported by Test Proxy can be found [here][sanitize-secrets].
+
+#### Customizing what gets recorded
+Some tests send large request bodies that are not meaningful and should not be stored in the session records. 
+In order to disable storing the request body for a specific request, add the `RecordWithoutRequestBody` annotation to 
+the test method.
 
 ## Examples
 
@@ -315,6 +344,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [git_token]: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
 [powershell]: https://learn.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-latest
 [recording-migration]: https://github.com/Azure/azure-sdk-for-java/blob/64de460d8080127a1e0c58fbfc7ab9e95f70a2c7/sdk/core/azure-core-test/RecordingMigrationGuide.md
+[sanitize-secrets]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#session-and-test-level-transforms-sanitizers-and-matchers
 [test-proxy-readme]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md
 [test-proxy-migration-guide]: https://github.com/Azure/azure-sdk-for-java/blob/64de460d8080127a1e0c58fbfc7ab9e95f70a2c7/sdk/core/azure-core-test/TestProxyMigrationGuide.md
 [InterceptorManager.java]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/InterceptorManager.java
