@@ -3,19 +3,13 @@
 
 package com.azure.messaging.servicebus.stress.scenarios;
 
-import com.azure.core.util.Context;
-import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.metrics.LongCounter;
-import com.azure.core.util.metrics.Meter;
-import com.azure.core.util.metrics.MeterProvider;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.blockingWait;
@@ -41,14 +35,8 @@ public class MessageProcessor extends ServiceBusScenario {
     @Value("${PREFETCH_COUNT:0}")
     private int prefetchCount;
 
-    private final Meter meter = MeterProvider.getDefaultProvider().createMeter("test", null, null);
-    private final TelemetryAttributes attributes = meter.createAttributes(Collections.emptyMap());
-    private final LongCounter uniqueMessageCounter = meter.createLongCounter("unique.messages", "number of unique received messages", null);
-
     @Override
     public void run() {
-        //com.azure.messaging.servicebus.nonSession.asyncReceive.v2
-
         ServiceBusProcessorClient processor = getProcessorBuilder(options)
             .maxAutoLockRenewDuration(Duration.ofSeconds(processMessageDurationMaxInSeconds + 1))
             .maxConcurrentCalls(maxConcurrentCalls)
@@ -65,11 +53,6 @@ public class MessageProcessor extends ServiceBusScenario {
     }
 
     private void process(ServiceBusReceivedMessageContext messageContext) {
-        LOGGER.info("in process");
-        if (messageContext.getMessage().getDeliveryCount() == 0) {
-            uniqueMessageCounter.add(1, attributes, Context.NONE);
-        }
-
         try {
             if (processMessageDurationMaxInSeconds != 0) {
                 int processTimeMs = ThreadLocalRandom.current().nextInt(processMessageDurationMaxInSeconds * 1000);
