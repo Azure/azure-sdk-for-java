@@ -74,7 +74,7 @@ extends:
         safeName: azuremonitoropentelemetryexporter
         releaseInBatch: ${{ parameters.release_azuremonitoropentelemetryexporter }}
       - name: azure-monitor-spring-native
-        groupId: com.azure
+        groupId: com.azure.spring
         safeName: azuremonitorspringnative
         releaseInBatch: ${{ parameters.release_azuremonitorspringnative }}
       - name: azure-monitor-query
@@ -83,7 +83,7 @@ extends:
         releaseInBatch: ${{ parameters.release_azuremonitorquery }}
     AdditionalModules:
       - name: azure-monitor-spring-native-test
-        groupId: com.azure
+        groupId: com.azure.spring
       - name: azure-monitor-query-perf
         groupId: com.azure
       - name: azure-monitor-ingestion-perf
