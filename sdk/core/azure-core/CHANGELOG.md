@@ -1,17 +1,15 @@
 # Release History
 
-## 1.41.0-beta.1 (Unreleased)
+## 1.41.0 (2023-07-06)
 
 ### Features Added
 
 - Added a `KeyCredential` to support key-based auth.
-- `AzureKeyCredential` is updated to extend from `KeyCredential`.
-
-### Breaking Changes
+- `AzureKeyCredential` now to extends from `KeyCredential`.
 
 ### Bugs Fixed
 
-### Other Changes
+- Fixed a bug where `PagedIterable.mapPage` would result in a `NullPointerException`. ([#35123](https://github.com/Azure/azure-sdk-for-java/pull/35123))
 
 ## 1.40.0 (2023-06-02)
 
