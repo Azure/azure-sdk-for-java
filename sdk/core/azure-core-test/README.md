@@ -46,7 +46,7 @@ To use this package, add the following to your _pom.xml_.
   To record means to intercept any HTTP request, store it in a file, then store the response received from the live
   resource that was originally targeted.
 * Run tests in `Playback` mode:
-  To playback means to intercept any HTTP request and to respond it with the stored response of a previously recorded
+  To playback means to intercept any HTTP request and to respond  to it with the stored response of a previously recorded
   matching request.
 * Run tests in `Live` mode:
   To run live means to not intercept any HTTP request and to send them to the live resource.
