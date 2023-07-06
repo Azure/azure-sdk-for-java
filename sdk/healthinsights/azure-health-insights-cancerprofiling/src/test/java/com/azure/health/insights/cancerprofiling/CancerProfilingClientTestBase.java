@@ -31,7 +31,7 @@ public class CancerProfilingClientTestBase extends TestProxyTestBase {
         CancerProfilingClientBuilder builder = new CancerProfilingClientBuilder()
             .endpoint(getEndpoint())
             .addPolicy(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY,
-            new AzureKeyCredential(getKey())));
+                new AzureKeyCredential(getKey())));
 
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
