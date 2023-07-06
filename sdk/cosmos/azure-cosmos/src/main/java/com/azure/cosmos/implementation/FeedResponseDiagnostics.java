@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.metrics.QueryMetricsTextWriter;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -66,49 +67,7 @@ public class FeedResponseDiagnostics {
      */
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        if (diagnosticsContext != null) {
-            stringBuilder.append(QUERY_PLAN + SPACE + QueryMetricsTextWriter.START_TIME_HEADER)
-                .append(EQUALS)
-                .append(QueryMetricsTextWriter.DATE_TIME_FORMATTER.format(diagnosticsContext.getStartTimeUTC()))
-                .append(System.lineSeparator());
-            stringBuilder.append(QUERY_PLAN + SPACE + QueryMetricsTextWriter.END_TIME_HEADER)
-                .append(EQUALS)
-                .append(QueryMetricsTextWriter.DATE_TIME_FORMATTER.format(diagnosticsContext.getEndTimeUTC()))
-                .append(System.lineSeparator());
-            if (diagnosticsContext.getStartTimeUTC() != null && diagnosticsContext.getEndTimeUTC() != null) {
-                stringBuilder.append(QUERY_PLAN + SPACE + QueryMetricsTextWriter.DURATION_HEADER)
-                    .append(EQUALS)
-                    .append(Duration.between(diagnosticsContext.getStartTimeUTC(),
-                        diagnosticsContext.getEndTimeUTC()).toMillis()).append(System.lineSeparator());
-                if (diagnosticsContext.getRequestTimeline() != null) {
-                    try {
-                        stringBuilder.append(QUERY_PLAN + SPACE + "RequestTimeline ")
-                            .append(EQUALS)
-                            .append(mapper.writeValueAsString(diagnosticsContext.getRequestTimeline()))
-                            .append(System.lineSeparator())
-                            .append(System.lineSeparator());
-                    } catch (JsonProcessingException e) {
-                        LOGGER.error("Error while parsing diagnostics ", e);
-                    }
-                }
-            }
-        }
-
-        if (queryMetricsMap != null && !queryMetricsMap.isEmpty()) {
-            queryMetricsMap.forEach((key, value) -> stringBuilder.append(key)
-                .append(EQUALS)
-                .append(value.toString())
-                .append(System.lineSeparator()));
-        }
-        try {
-            stringBuilder
-                .append(mapper.writeValueAsString(clientSideRequestStatistics));
-        } catch (JsonProcessingException e) {
-            LOGGER.error("Error while parsing diagnostics ", e);
-        }
-
-        return stringBuilder.toString();
+        return RntbdObjectMapper.toString(this);
     }
 
     public void setDiagnosticsContext(QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext) {

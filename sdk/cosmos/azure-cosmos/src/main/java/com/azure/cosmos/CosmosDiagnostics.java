@@ -281,7 +281,6 @@ public final class CosmosDiagnostics {
             }
 
             if (stringBuilder != null) {
-                stringBuilder.append(USER_AGENT_KEY + "=").append(this.feedResponseDiagnostics.getUserAgent()).append(System.lineSeparator());
                 stringBuilder.append(feedResponseDiagnostics);
             }
         } else {

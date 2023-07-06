@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.query.metrics.FetchExecutionRange;
 import com.azure.cosmos.implementation.query.metrics.QueryMetricsTextWriter;
@@ -295,6 +296,6 @@ public final class QueryMetrics {
 
     @Override
     public String toString() {
-        return toTextString(0);
+        return RntbdObjectMapper.toString(this);
     }
 }
