@@ -152,7 +152,7 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
     }
 
     @JsonIgnore
-    public Instant getRequestStartTime() {
+    public Instant getRequestStartTimeUTC() {
         Event firstEvent = this.events.stream().findFirst().orElse(null);
         return firstEvent != null ? firstEvent.getStartTime() : null;
     }

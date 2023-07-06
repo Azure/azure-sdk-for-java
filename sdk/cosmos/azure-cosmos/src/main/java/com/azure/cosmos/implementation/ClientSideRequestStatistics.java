@@ -407,8 +407,14 @@ public class ClientSideRequestStatistics {
     }
 
     private Instant extractRequestStartTime(StoreResultDiagnostics storeResultDiagnostics){
-        RequestTimeline requestTimeline = storeResultDiagnostics.getStoreResponseDiagnostics().getRequestTimeline();
-        return requestTimeline.getRequestStartTime();
+        StoreResponseDiagnostics storeResponseDiagnostics = storeResultDiagnostics.getStoreResponseDiagnostics();
+        if(storeResponseDiagnostics == null) {
+            return null;
+        }
+
+        RequestTimeline requestTimeline = storeResponseDiagnostics.getRequestTimeline();
+
+        return requestTimeline != null ? requestTimeline.getRequestStartTimeUTC() : null;
     }
 
     public void recordContributingPointOperation(ClientSideRequestStatistics other) {
@@ -574,6 +580,10 @@ public class ClientSideRequestStatistics {
 
         public Instant getRequestResponseTimeUTC() {
             return requestResponseTimeUTC;
+        }
+
+        public Instant getRequestStartTimeUTC() {
+            return requestStartTimeUTC;
         }
 
         public ResourceType getRequestResourceType() {
