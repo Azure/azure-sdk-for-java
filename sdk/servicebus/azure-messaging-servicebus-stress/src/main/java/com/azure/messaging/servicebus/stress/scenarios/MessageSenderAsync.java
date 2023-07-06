@@ -36,7 +36,7 @@ public class MessageSenderAsync extends ServiceBusScenario {
     @Value("${BATCH_SIZE:2}")
     private int batchSize;
 
-    @Value("${MESSAGE_SIZE_IN_BYTES:8}")
+    @Value("${MESSAGE_SIZE_IN_BYTES:128}")
     private int messageSize;
 
     @Value("${SEND_CONCURRENCY:5}")

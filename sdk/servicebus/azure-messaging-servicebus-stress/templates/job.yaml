@@ -60,29 +60,96 @@ spec:
 
 {{- include "stress-test-addons.chaos-wrapper.tpl" (list . "stress.network-chaos") -}}
 {{- define "stress.network-chaos" -}}
-kind: NetworkChaos
 apiVersion: chaos-mesh.org/v1alpha1
+kind: Workflow
+metadata:
+  name: servicebus-killer-workflow
 spec:
-  selector:
-    namespaces:
-      - "{{ .Release.Namespace }}"
-    labelSelectors:
-      testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
-      chaos: "true"
-  mode: all
-  action: loss
-  loss:
-    loss: '0'
-    correlation: '95'
-  direction: to
-  target:
-    selector:
-      namespaces:
-        - {{ .Release.Namespace }}
-      labelSelectors:
-        testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
-        chaos: "true"
-    mode: all
-  externalTargets:
-    - {{ .Stress.BaseName }}.servicebus.windows.net
+  entry: parallel-profile
+  templates:
+    - name: parallel-profile
+      templateType: Parallel
+      deadline: 1h
+      children:
+        - loss
+        - delay
+        - bandwidth
+    - name: loss
+      templateType: NetworkChaos
+      networkChaos:
+        direction: to
+        externalTargets:
+          - {{ .Stress.BaseName }}.servicebus.windows.net
+        mode: all
+        selector:
+          namespaces:
+            - {{ .Release.Namespace }}
+          labelSelectors:
+            testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+            chaos: "true"
+        action: loss
+        loss:
+          loss: '20'
+          correlation: '60'
+        target:
+          selector:
+            namespaces:
+              - {{ .Release.Namespace }}
+            labelSelectors:
+              testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+              chaos: "true"
+          mode: all
+    - name: delay
+      templateType: NetworkChaos
+      networkChaos:
+        deadline: 1h
+        direction: to
+        externalTargets:
+          - {{ .Stress.BaseName }}.servicebus.windows.net
+        mode: all
+        selector:
+          namespaces:
+            - {{ .Release.Namespace }}
+          labelSelectors:
+            testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+            chaos: "true"
+        action: delay
+        delay:
+          latency: '200ms'
+          correlation: '60'
+          jitter: '2000ms'
+        target:
+          selector:
+            namespaces:
+              - {{ .Release.Namespace }}
+            labelSelectors:
+              testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+              chaos: "true"
+          mode: all
+    - name: bandwidth
+      templateType: NetworkChaos
+      networkChaos:
+        direction: to
+        externalTargets:
+          - {{ .Stress.BaseName }}.servicebus.windows.net
+        mode: all
+        selector:
+          namespaces:
+            - {{ .Release.Namespace }}
+          labelSelectors:
+            testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+            chaos: "true"
+        action: bandwidth
+        bandwidth:
+          rate: '10kbps'
+          limit: 50000  #recommended to set to at least 2 * rate * latency (2 * 10kbps * 2sec at max = 40kb at max)
+          buffer: 100000 #100kb
+        target:
+          selector:
+            namespaces:
+              - {{ .Release.Namespace }}
+            labelSelectors:
+              testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+              chaos: "true"
+          mode: all
 {{- end -}}
