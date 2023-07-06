@@ -190,7 +190,7 @@ To run tests in playback, set `AZURE_TEST_MODE` to `PLAYBACK` or leave it unset.
 
 Set the environment variable `AZURE_TEST_MODE` to `RECORD` to run your test(s) in record mode.
 
-After tests finish running, there should folder called `src/test/resources/session-records` in your package
+After tests finish running, there should be a folder called `src/test/resources/session-records` in your package
 directory.
 Each recording in this folder will be a `.json` file that captures the HTTP traffic that was
 generated while running the test matching the file's name. If you set the `AZURE_TEST_MODE` environment variable to "
