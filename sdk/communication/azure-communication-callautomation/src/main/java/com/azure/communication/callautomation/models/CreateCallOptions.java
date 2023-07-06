@@ -20,6 +20,11 @@ public final class CreateCallOptions {
      */
     private final String callbackUrl;
 
+    /*
+     * The endpoint URL of the Azure Cognitive Services resource attached
+     */
+    private String azureCognitiveServicesEndpointUrl;
+
     /**
      * A customer set value used to track the answering of a call.
      */
@@ -70,5 +75,27 @@ public final class CreateCallOptions {
      */
     public String getCallbackUrl() {
         return callbackUrl;
+    }
+
+    /**
+     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * attached.
+     *
+     * @return the azureCognitiveServicesEndpointUrl value.
+     */
+    public String getAzureCognitiveServicesEndpointUrl() {
+        return this.azureCognitiveServicesEndpointUrl;
+    }
+
+    /**
+     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * attached.
+     *
+     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @return the CreateCallOptions object itself.
+     */
+    public CreateCallOptions setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
+        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
+        return this;
     }
 }

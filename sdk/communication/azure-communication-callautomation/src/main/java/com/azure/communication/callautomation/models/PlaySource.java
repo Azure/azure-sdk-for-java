@@ -12,7 +12,7 @@ public abstract class PlaySource {
     /*
      * Defines the identifier to be used for caching related media
      */
-    @JsonProperty(value = "playSourceId")
+    @JsonProperty(value = "playSourceCacheId")
     private String playSourceCacheId;
 
     /**

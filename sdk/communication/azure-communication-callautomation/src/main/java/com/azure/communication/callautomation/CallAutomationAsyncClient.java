@@ -77,9 +77,9 @@ public final class CallAutomationAsyncClient {
         this.callRecordingsInternal = callServiceClient.getCallRecordings();
         this.callMediasInternal = callServiceClient.getCallMedias();
         this.logger = new ClientLogger(CallAutomationAsyncClient.class);
-        this.contentDownloader = new ContentDownloader(callServiceClient.getEndpoint(), callServiceClient.getHttpPipeline());
+        this.contentDownloader = new ContentDownloader(callServiceClient.getEndpoint().toString(), callServiceClient.getHttpPipeline());
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
-        this.resourceUrl = callServiceClient.getEndpoint();
+        this.resourceUrl = callServiceClient.getEndpoint().toString();
         this.sourceIdentity = sourceIdentity == null ? null : CommunicationUserIdentifierConverter.convert(sourceIdentity);
     }
 
@@ -151,36 +151,18 @@ public final class CallAutomationAsyncClient {
     }
 
     Mono<Response<CreateCallResult>> createCallWithResponseInternal(CreateCallOptions createCallOptions, Context context) {
-        try {
-            context = context == null ? Context.NONE : context;
-            CreateCallRequestInternal request = getCreateCallRequestInternal(createCallOptions);
-            return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(
-                    request,
-                    UUID.randomUUID(),
-                    OffsetDateTime.now(),
-                    context)
-                .map(response -> {
-                    try {
-                        CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
-
-                        return new SimpleResponse<>(response,
-                            new CreateCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
-                                new CallConnection(callConnectionAsync), callConnectionAsync));
-                    } catch (URISyntaxException e) {
-                        throw logger.logExceptionAsError(new RuntimeException(e));
-                    }
-                });
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getCreateCallResponseMono(context, getCreateCallRequestInternal(createCallOptions));
     }
 
     Mono<Response<CreateCallResult>> createGroupCallWithResponseInternal(CreateGroupCallOptions createGroupCallOptions, Context context) {
+        return getCreateCallResponseMono(context, getCreateCallRequestInternal(createGroupCallOptions));
+    }
+
+    private Mono<Response<CreateCallResult>> getCreateCallResponseMono(Context context, CreateCallRequestInternal createCallRequestInternal) {
         try {
             context = context == null ? Context.NONE : context;
-            CreateCallRequestInternal request = getCreateCallRequestInternal(createGroupCallOptions);
             return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(
-                    request,
+                    createCallRequestInternal,
                     UUID.randomUUID(),
                     OffsetDateTime.now(),
                     context)
@@ -201,33 +183,31 @@ public final class CallAutomationAsyncClient {
     }
 
     private CreateCallRequestInternal getCreateCallRequestInternal(CreateCallOptions createCallOptions) {
-        List<CommunicationIdentifierModel> targetsModel = new LinkedList<CommunicationIdentifierModel>();
+        List<CommunicationIdentifierModel> targetsModel = new LinkedList<>();
         targetsModel.add(CommunicationIdentifierConverter.convert(createCallOptions.getCallInvite().getTargetParticipant()));
 
-        CreateCallRequestInternal request = new CreateCallRequestInternal()
+        return new CreateCallRequestInternal()
             .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(createCallOptions.getCallInvite().getSourceCallerIdNumber()))
             .setSourceDisplayName(createCallOptions.getCallInvite().getSourceDisplayName())
             .setSource(sourceIdentity)
             .setTargets(targetsModel)
             .setCallbackUri(createCallOptions.getCallbackUrl())
+            .setAzureCognitiveServicesEndpointUrl(createCallOptions.getAzureCognitiveServicesEndpointUrl())
             .setOperationContext(createCallOptions.getOperationContext());
-
-        return request;
     }
 
     private CreateCallRequestInternal getCreateCallRequestInternal(CreateGroupCallOptions createCallGroupOptions) {
         List<CommunicationIdentifierModel> targetsModel = createCallGroupOptions.getTargetParticipants()
             .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
 
-        CreateCallRequestInternal request = new CreateCallRequestInternal()
+        return new CreateCallRequestInternal()
             .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(createCallGroupOptions.getSourceCallIdNumber()))
             .setSourceDisplayName(createCallGroupOptions.getSourceDisplayName())
             .setSource(sourceIdentity)
             .setTargets(targetsModel)
             .setCallbackUri(createCallGroupOptions.getCallbackUrl())
+            .setAzureCognitiveServicesEndpointUrl(createCallGroupOptions.getAzureCognitiveServicesEndpointUrl())
             .setOperationContext(createCallGroupOptions.getOperationContext());
-
-        return request;
     }
 
     /**
@@ -268,6 +248,10 @@ public final class CallAutomationAsyncClient {
                 .setCallbackUri(answerCallOptions.getCallbackUrl())
                 .setAnsweredBy(sourceIdentity)
                 .setOperationContext(answerCallOptions.getOperationContext());
+
+            if (answerCallOptions.getAzureCognitiveServicesEndpointUrl() != null && !answerCallOptions.getAzureCognitiveServicesEndpointUrl().isEmpty()) {
+                request.setAzureCognitiveServicesEndpointUrl(answerCallOptions.getAzureCognitiveServicesEndpointUrl());
+            }
 
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(
                     request,
@@ -326,10 +310,10 @@ public final class CallAutomationAsyncClient {
                 .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTargetParticipant().getTargetParticipant()));
 
             return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(
-                    request,
-                    UUID.randomUUID(),
-                    OffsetDateTime.now(),
-                    context);
+                request,
+                UUID.randomUUID(),
+                OffsetDateTime.now(),
+                context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

@@ -3,6 +3,8 @@
 
 package com.azure.communication.callautomation.models.events;
 
+import com.azure.communication.callautomation.models.ChoiceResult;
+import com.azure.communication.callautomation.models.SpeechResult;
 import com.azure.communication.callautomation.models.CallMediaRecognitionType;
 import com.azure.communication.callautomation.models.DtmfResult;
 import com.azure.communication.callautomation.models.RecognizeResult;
@@ -29,6 +31,18 @@ public final class RecognizeCompleted extends CallAutomationEventBaseWithReasonC
     @JsonProperty(value = "dtmfResult", access = JsonProperty.Access.WRITE_ONLY)
     private DtmfResult dtmfResult;
 
+    /*
+     * Defines the result for CallMediaRecognitionType = Speech or SpeechOrDtmf
+     */
+    @JsonProperty(value = "speechResult", access = JsonProperty.Access.WRITE_ONLY)
+    private SpeechResult speechResult;
+
+    /*
+     * Defines the result for RecognizeChoice
+     */
+    @JsonProperty(value = "choiceResult", access = JsonProperty.Access.WRITE_ONLY)
+    private ChoiceResult collectChoiceResult;
+
     /**
      * Get the collectToneResult or choiceResult property.
      *
@@ -38,6 +52,10 @@ public final class RecognizeCompleted extends CallAutomationEventBaseWithReasonC
         if (this.recognitionType == CallMediaRecognitionType.DTMF) {
             return Optional.ofNullable(this.dtmfResult);
 
+        } else if (this.recognitionType == CallMediaRecognitionType.CHOICES) {
+            return Optional.ofNullable(this.collectChoiceResult);
+        } else if (this.recognitionType == CallMediaRecognitionType.SPEECH) {
+            return Optional.ofNullable(this.speechResult);
         }
 
         return Optional.empty();

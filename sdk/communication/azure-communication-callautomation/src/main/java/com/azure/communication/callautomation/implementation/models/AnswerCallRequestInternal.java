@@ -29,6 +29,12 @@ public final class AnswerCallRequestInternal {
     private String operationContext;
 
     /*
+     * The endpoint URL of the Azure Cognitive Services resource attached
+     */
+    @JsonProperty(value = "azureCognitiveServicesEndpointUrl")
+    private String azureCognitiveServicesEndpointUrl;
+
+    /*
      * The identifier of the call automation entity which answers the call
      */
     @JsonProperty(value = "answeredBy")
@@ -91,6 +97,28 @@ public final class AnswerCallRequestInternal {
      */
     public AnswerCallRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * attached.
+     *
+     * @return the azureCognitiveServicesEndpointUrl value.
+     */
+    public String getAzureCognitiveServicesEndpointUrl() {
+        return this.azureCognitiveServicesEndpointUrl;
+    }
+
+    /**
+     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * attached.
+     *
+     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public AnswerCallRequestInternal setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
+        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
         return this;
     }
 

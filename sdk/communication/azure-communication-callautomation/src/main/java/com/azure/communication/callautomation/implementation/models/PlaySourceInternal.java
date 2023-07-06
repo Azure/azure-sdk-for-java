@@ -28,6 +28,19 @@ public final class PlaySourceInternal {
     @JsonProperty(value = "file")
     private FileSourceInternal file;
 
+    /*
+     * Defines the text source info to be used for play
+     */
+    @JsonProperty(value = "textSource")
+    private TextSourceInternal textSource;
+
+    /*
+     * Defines the ssml(Speech Synthesis Markup Language) source info to be
+     * used for play
+     */
+    @JsonProperty(value = "ssmlSource")
+    private SsmlSourceInternal ssmlSource;
+
     /**
      * Get the kind property: Defines the type of the play source.
      *
@@ -85,6 +98,46 @@ public final class PlaySourceInternal {
      */
     public PlaySourceInternal setFile(FileSourceInternal file) {
         this.file = file;
+        return this;
+    }
+
+    /**
+     * Get the textSource property: Defines the text source info to be used for play.
+     *
+     * @return the textSource value.
+     */
+    public TextSourceInternal getTextSource() {
+        return this.textSource;
+    }
+
+    /**
+     * Set the textSource property: Defines the text source info to be used for play.
+     *
+     * @param textSource the textSource value to set.
+     * @return the PlaySourceInternal object itself.
+     */
+    public PlaySourceInternal setTextSource(TextSourceInternal textSource) {
+        this.textSource = textSource;
+        return this;
+    }
+
+    /**
+     * Get the ssmlSource property: Defines the ssml(Speech Synthesis Markup Language) source info to be used for play.
+     *
+     * @return the ssmlSource value.
+     */
+    public SsmlSourceInternal getSsmlSource() {
+        return this.ssmlSource;
+    }
+
+    /**
+     * Set the ssmlSource property: Defines the ssml(Speech Synthesis Markup Language) source info to be used for play.
+     *
+     * @param ssmlSource the ssmlSource value to set.
+     * @return the PlaySourceInternal object itself.
+     */
+    public PlaySourceInternal setSsmlSource(SsmlSourceInternal ssmlSource) {
+        this.ssmlSource = ssmlSource;
         return this;
     }
 }

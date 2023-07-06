@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.implementation.models.MuteParticipantsResponseInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantResponseInternal;
 import com.azure.communication.callautomation.implementation.models.TransferCallResponseInternal;
 import com.azure.communication.callautomation.models.AddParticipantOptions;
@@ -10,21 +11,28 @@ import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallParticipant;
+import com.azure.communication.callautomation.models.MuteParticipantsOptions;
+import com.azure.communication.callautomation.models.MuteParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferCallToParticipantOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.Test;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     @Test
@@ -243,5 +251,84 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(removeParticipantsResultResponse);
         assertEquals(202, removeParticipantsResultResponse.getStatusCode());
         assertNotNull(removeParticipantsResultResponse.getValue());
+    }
+
+    @Test
+    public void muteParticipants() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new SimpleEntry<>(serializeObject(new MuteParticipantsResponseInternal()), 202)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        MuteParticipantsResult muteParticipantsResult = callConnectionAsync.muteParticipantsAsync(
+            new CommunicationUserIdentifier(CALL_TARGET_ID)).block();
+
+        assertNotNull(muteParticipantsResult);
+        assertNull(muteParticipantsResult.getOperationContext());
+    }
+
+    @Test
+    public void muteParticipantsWithResponse() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new SimpleEntry<>(serializeObject(new MuteParticipantsResponseInternal()
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        MuteParticipantsOptions muteParticipantsOptions = new MuteParticipantsOptions(
+            Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)))
+            .setOperationContext(CALL_OPERATION_CONTEXT);
+
+        Response<MuteParticipantsResult> muteParticipantsResultResponse =
+            callConnectionAsync.muteParticipantsWithResponse(muteParticipantsOptions).block();
+
+        assertNotNull(muteParticipantsResultResponse);
+        assertEquals(202, muteParticipantsResultResponse.getStatusCode());
+        assertNotNull(muteParticipantsResultResponse.getValue());
+    }
+
+    @Test
+    public void muteParticipantNotFound() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new SimpleEntry<>("", 404)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        assertThrows(HttpResponseException.class, () ->  callConnectionAsync.muteParticipantsAsync(
+            new CommunicationUserIdentifier(CALL_TARGET_ID)).block());
+    }
+
+    @Test
+    public void muteNotAcsParticipant() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new SimpleEntry<>("", 400)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        assertThrows(HttpResponseException.class, () ->  callConnectionAsync.muteParticipantsAsync(
+            new PhoneNumberIdentifier("+11234567890")).block());
+    }
+
+    @Test
+    public void muteMoreThanOneParticipantWithResponse() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new SimpleEntry<>("", 400)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        MuteParticipantsOptions muteParticipantOptions = new MuteParticipantsOptions(
+            Arrays.asList(
+                new CommunicationUserIdentifier(CALL_TARGET_ID),
+                new CommunicationUserIdentifier(CALL_TARGET_ID)
+            ))
+            .setOperationContext(CALL_OPERATION_CONTEXT);
+
+        assertThrows(HttpResponseException.class,
+            () ->  callConnectionAsync.muteParticipantsWithResponse(muteParticipantOptions).block());
     }
 }

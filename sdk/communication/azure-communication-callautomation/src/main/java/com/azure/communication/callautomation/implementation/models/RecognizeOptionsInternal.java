@@ -6,6 +6,7 @@ package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The RecognizeOptionsInternal model. */
 @Fluent
@@ -29,10 +30,34 @@ public final class RecognizeOptionsInternal {
     private CommunicationIdentifierModel targetParticipant;
 
     /*
+     * Speech language to be recognized, If not set default is en-US
+     */
+    @JsonProperty(value = "speechLanguage")
+    private String speechLanguage;
+
+    /*
+     * Endpoint where the custom model was deployed.
+     */
+    @JsonProperty(value = "speechRecognitionModelEndpointId")
+    private String speechRecognitionModelEndpointId;
+
+    /*
      * Defines configurations for DTMF.
      */
     @JsonProperty(value = "dtmfOptions")
     private DtmfOptionsInternal dtmfOptions;
+
+    /*
+     * Defines Ivr choices for recognize.
+     */
+    @JsonProperty(value = "choices")
+    private List<RecognizeChoiceInternal> choices;
+
+    /*
+     * Defines continuous speech recognition option.
+     */
+    @JsonProperty(value = "speechOptions")
+    private SpeechOptionsInternal speechOptions;
 
     /**
      * Get the interruptPrompt property: Determines if we interrupt the prompt and start recognizing.
@@ -95,6 +120,46 @@ public final class RecognizeOptionsInternal {
     }
 
     /**
+     * Get the speechLanguage property: Speech language to be recognized, If not set default is en-US.
+     *
+     * @return the speechLanguage value.
+     */
+    public String getSpeechLanguage() {
+        return this.speechLanguage;
+    }
+
+    /**
+     * Set the speechLanguage property: Speech language to be recognized, If not set default is en-US.
+     *
+     * @param speechLanguage the speechLanguage value to set.
+     * @return the RecognizeOptionsInternal object itself.
+     */
+    public RecognizeOptionsInternal setSpeechLanguage(String speechLanguage) {
+        this.speechLanguage = speechLanguage;
+        return this;
+    }
+
+    /**
+     * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     *
+     * @return the speechRecognitionModelEndpointId value.
+     */
+    public String getSpeechRecognitionModelEndpointId() {
+        return this.speechRecognitionModelEndpointId;
+    }
+
+    /**
+     * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     *
+     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
+     * @return the RecognizeOptionsInternal object itself.
+     */
+    public RecognizeOptionsInternal setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
+        this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
+        return this;
+    }
+
+    /**
      * Get the dtmfOptions property: Defines configurations for DTMF.
      *
      * @return the dtmfOptions value.
@@ -111,6 +176,46 @@ public final class RecognizeOptionsInternal {
      */
     public RecognizeOptionsInternal setDtmfOptions(DtmfOptionsInternal dtmfOptions) {
         this.dtmfOptions = dtmfOptions;
+        return this;
+    }
+
+    /**
+     * Get the choices property: Defines Ivr choices for recognize.
+     *
+     * @return the choices value.
+     */
+    public List<RecognizeChoiceInternal> getChoices() {
+        return this.choices;
+    }
+
+    /**
+     * Set the choices property: Defines Ivr choices for recognize.
+     *
+     * @param choices the choices value to set.
+     * @return the RecognizeOptionsInternal object itself.
+     */
+    public RecognizeOptionsInternal setChoices(List<RecognizeChoiceInternal> choices) {
+        this.choices = choices;
+        return this;
+    }
+
+    /**
+     * Get the speechOptions property: Defines continuous speech recognition option.
+     *
+     * @return the speechOptions value.
+     */
+    public SpeechOptionsInternal getSpeechOptions() {
+        return this.speechOptions;
+    }
+
+    /**
+     * Set the speechOptions property: Defines continuous speech recognition option.
+     *
+     * @param speechOptions the speechOptions value to set.
+     * @return the RecognizeOptionsInternal object itself.
+     */
+    public RecognizeOptionsInternal setSpeechOptions(SpeechOptionsInternal speechOptions) {
+        this.speechOptions = speechOptions;
         return this;
     }
 }

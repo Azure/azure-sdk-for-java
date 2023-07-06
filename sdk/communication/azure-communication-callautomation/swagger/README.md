@@ -21,14 +21,14 @@ There is one swagger for Calling management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
+autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.26.0
 ```
 
 ### Code generation settings
 ``` yaml
-tag: package-2023-03-06
+tag: package-2023-06-15-preview
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/7f115517cc6d5c57ee8a89b9ba4187f937bfe6dc/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/7e1589a49816226d7798922757bff4357286219d/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -110,23 +110,83 @@ directive:
     from: FileSource
     to: FileSourceInternal
 - rename-model:
+    from: TextSource
+    to: TextSourceInternal
+- rename-model:
+    from: SsmlSource
+    to: SsmlSourceInternal
+- rename-model:
     from: PlayOptions
     to: PlayOptionsInternal
 - rename-model:
     from: StartCallRecordingRequest
     to: StartCallRecordingRequestInternal
 - rename-model:
+    from: ContinuousDtmfRecognitionOptions
+    to: ContinuousDtmfRecognitionOptionsInternal
+- rename-model:
+    from: SendDtmfOptions
+    to: SendDtmfOptionsInternal
+- rename-model:
+    from: SendDtmfRequest
+    to: SendDtmfRequestInternal
+- rename-model:
     from: ChannelAffinity
     to: ChannelAffinityInternal
+- rename-model:
+    from: DtmfConfigurations
+    to: DtmfConfigurationsInternal
 - rename-model:
     from: RecognizeConfigurations
     to: RecognizeConfigurationsInternal
 - rename-model:
+    from: MediaStreamingConfiguration
+    to: MediaStreamingConfigurationInternal
+- rename-model:
     from: DtmfOptions
     to: DtmfOptionsInternal
 - rename-model:
+    from: SpeechOptions
+    to: SpeechOptionsInternal
+- rename-model:
     from: RecognizeOptions
     to: RecognizeOptionsInternal
+- rename-model:
+    from: Choice
+    to: RecognizeChoiceInternal
+- rename-model:
+    from: MuteParticipantsRequest
+    to: MuteParticipantsRequestInternal
+- rename-model:
+    from: MuteParticipantsResponse
+    to: MuteParticipantsResponseInternal
+- rename-model:
+    from: UnmuteParticipantsRequest
+    to: UnmuteParticipantsRequestInternal
+- rename-model:
+    from: UnmuteParticipantsResponse
+    to: UnmuteParticipantsResponseInternal
+- rename-model:
+    from: CollectTonesResult
+    to: CollectTonesResultInternal
+- rename-model:
+    from: ChoiceResult
+    to: ChoiceResultInternal
+- rename-model:
+    from: SpeechResult
+    to: SpeechResultInternal
+- rename-model:
+    from: ExternalStorage
+    to: ExternalStorageInternal
+- rename-model:
+    from: BlobStorage
+    to: BlobStorageInternal
+- rename-model:
+    from: ContinuousDtmfRecognitionRequest
+    to: ContinuousDtmfRecognitionRequestInternal
+- rename-model:
+    from: SendDtmfResponse
+    to: SendDtmfResponseInternal
 
 # Remove models
 - remove-model: AddParticipantFailed
@@ -144,6 +204,14 @@ directive:
 - remove-model: RecognizeCompleted
 - remove-model: RecognizeFailed
 - remove-model: RecognizeCanceled
+- remove-model: ContinuousDtmfRecognitionToneReceived
+- remove-model: ToneInfo
+- remove-model: ContinuousDtmfRecognitionToneFailed
+- remove-model: ContinuousDtmfRecognitionStopped
+- remove-model: SendDtmfCompleted
+- remove-model: SendDtmfFailed
+- remove-model: ChoiceResult
+- remove-model: SpeechResult
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal
@@ -246,6 +314,33 @@ directive:
     $.name = "RecognizeInputTypeInternal";
 ```
 
+### Rename MediaStreamingAudioChannelType to MediaStreamingAudioChannelTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.MediaStreamingAudioChannelType["x-ms-enum"]
+  transform: >
+    $.name = "MediaStreamingAudioChannelTypeInternal";
+```
+
+### Rename MediaStreamingContentType to MediaStreamingContentTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.MediaStreamingContentType["x-ms-enum"]
+  transform: >
+    $.name = "MediaStreamingContentTypeInternal";
+```
+
+### Rename MediaStreamingTransportType to MediaStreamingTransportType
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.MediaStreamingTransportType["x-ms-enum"]
+  transform: >
+    $.name = "MediaStreamingTransportTypeInternal";
+```
+
 ### Rename RecognitionType to RecognitionTypeInternal
 ``` yaml
 directive:
@@ -272,4 +367,21 @@ directive:
   transform: >
     $.name = "DtmfOptionsInternal";
 ```
+
+### Rename GenderType to GenderTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.Gender["x-ms-enum"]
+  transform: >
+    $.name = "GenderTypeInternal";
+```
+
+### Rename RecordingStorageType to RecordingStorageTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RecordingStorageType["x-ms-enum"]
+  transform: >
+    $.name = "RecordingStorageTypeInternal";
 ```
