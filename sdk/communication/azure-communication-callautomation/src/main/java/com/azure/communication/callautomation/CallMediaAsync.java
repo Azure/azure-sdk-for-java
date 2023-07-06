@@ -69,6 +69,21 @@ public final class CallMediaAsync {
     /**
      * Play
      *
+     * @param playSources A List of {@link PlaySource} representing the sources to play.
+     * @param playTo the targets to play to
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Void for successful play request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> play(List<PlaySource> playSources, List<CommunicationIdentifier> playTo) {
+        PlayOptions options = new PlayOptions(playSources.get(0), playTo);
+        return playWithResponse(options).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Play
+     *
      * @param playSource A {@link PlaySource} representing the source to play.
      * @param playTo the targets to play to
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -81,6 +96,19 @@ public final class CallMediaAsync {
         return playWithResponse(options).flatMap(FluxUtil::toMono);
     }
 
+    /**
+     * Play to all participants
+     *
+     * @param playSources A List of {@link PlaySource} representing the sources to play.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Void for successful playAll request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> playToAll(List<PlaySource> playSources) {
+        PlayToAllOptions options = new PlayToAllOptions(playSources.get(0));
+        return playToAllWithResponse(options).flatMap(FluxUtil::toMono);
+    }
     /**
      * Play to all participants
      *
