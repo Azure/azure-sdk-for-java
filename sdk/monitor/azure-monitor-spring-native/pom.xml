@@ -19,8 +19,6 @@
     <maven.compiler.target>${jdk.version}</maven.compiler.target>
     <maven.compiler.testSource>${jdk-test.version}</maven.compiler.testSource>
     <maven.compiler.testTarget>${jdk-test.version}</maven.compiler.testTarget>
-    <maven.javadoc.skip>true
-    </maven.javadoc.skip>   <!-- For the Application Insights Spring Boot starter for Spring native, users have only to declare the starter dependency. Users won't manipulate the Java classes of this Spring Boot starter. -->
   </properties>
 
   <groupId>com.azure.spring</groupId>
