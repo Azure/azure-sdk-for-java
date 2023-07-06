@@ -15,7 +15,6 @@ import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.JsonSerializable;
-import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.RequestTimeline;
@@ -538,15 +537,6 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void recordRetryContextEndTime(CosmosDiagnostics cosmosDiagnostics) {
         cosmosDiagnostics.clientSideRequestStatistics().recordRetryContextEndTime();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static MetadataDiagnosticsContext getMetaDataDiagnosticContext(CosmosDiagnostics cosmosDiagnostics){
-        if(cosmosDiagnostics == null) {
-            return null;
-        }
-
-        return cosmosDiagnostics.clientSideRequestStatistics().getMetadataDiagnosticsContext();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

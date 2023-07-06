@@ -431,7 +431,10 @@ public class GatewayAddressCache implements IAddressCache {
         return dsrObs.map(
             dsr -> {
                 MetadataDiagnosticsContext metadataDiagnosticsContext =
-                    BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+                    ImplementationBridgeHelpers
+                        .CosmosDiagnosticsHelper
+                        .getCosmosDiagnosticsAccessor()
+                        .getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
                 if (metadataDiagnosticsContext != null) {
                     Instant addressCallEndTime = Instant.now();
                     MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
@@ -800,7 +803,10 @@ public class GatewayAddressCache implements IAddressCache {
         return dsrObs.map(
             dsr -> {
                 MetadataDiagnosticsContext metadataDiagnosticsContext =
-                    BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+                    ImplementationBridgeHelpers
+                        .CosmosDiagnosticsHelper
+                        .getCosmosDiagnosticsAccessor()
+                        .getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
                 if (metadataDiagnosticsContext != null) {
                     Instant addressCallEndTime = Instant.now();
                     MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,

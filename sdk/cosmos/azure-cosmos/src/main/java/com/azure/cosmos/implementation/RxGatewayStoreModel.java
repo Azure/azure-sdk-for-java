@@ -612,7 +612,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
             StringUtils.isNotEmpty(request.requestContext.resolvedCollectionRid) &&
             StringUtils.isNotEmpty(responseHeaders.get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID)) &&
             !responseHeaders.get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID).equals(request.requestContext.resolvedPartitionKeyRange.getId())) {
-            return this.partitionKeyRangeCache.refreshAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request.requestContext.resolvedCollectionRid)
+            return this.partitionKeyRangeCache.refreshAsync(MetadataRequestContext.getMetadataRequestContext(request), request.requestContext.resolvedCollectionRid)
                 .flatMap(collectionRoutingMapValueHolder -> Mono.empty());
         }
         return Mono.empty();
@@ -624,7 +624,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
     private Mono<Void> addIntendedCollectionRid(RxDocumentServiceRequest request) {
         if (this.collectionCache != null && request.getResourceType().equals(ResourceType.Document)) {
-            return this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request).flatMap(documentCollectionValueHolder -> {
+            return this.collectionCache.resolveCollectionAsync(MetadataRequestContext.getMetadataRequestContext(request), request).flatMap(documentCollectionValueHolder -> {
                 if (StringUtils.isEmpty(request.getHeaders().get(INTENDED_COLLECTION_RID_HEADER))) {
                     request.getHeaders().put(INTENDED_COLLECTION_RID_HEADER,
                         request.requestContext.resolvedCollectionRid);
@@ -668,7 +668,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
         }
 
         if (this.collectionCache != null && this.partitionKeyRangeCache != null) {
-            return this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request).
+            return this.collectionCache.resolveCollectionAsync(MetadataRequestContext.getMetadataRequestContext(request), request).
                 flatMap(collectionValueHolder -> {
 
                     if (collectionValueHolder == null || collectionValueHolder.v == null) {
@@ -680,7 +680,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
                         }
                         return Mono.empty();
                     }
-                    return partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                    return partitionKeyRangeCache.tryLookupAsync(MetadataRequestContext.getMetadataRequestContext(request),
                         collectionValueHolder.v.getResourceId(),
                         null,
                         null).flatMap(collectionRoutingMapValueHolder -> {

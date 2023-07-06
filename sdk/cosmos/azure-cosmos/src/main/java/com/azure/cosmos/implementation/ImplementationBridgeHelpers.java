@@ -33,6 +33,7 @@ import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnectionMetadata;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
+import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -278,6 +279,9 @@ public class ImplementationBridgeHelpers {
             void setCancelledRequestDiagnosticsTracker(
                 CosmosQueryRequestOptions options,
                 List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker);
+
+            void setFaultInjectionRequestContext(CosmosQueryRequestOptions options, FaultInjectionRequestContext faultInjectionRequestContext);
+            FaultInjectionRequestContext getFaultInjectionRequestContext(CosmosQueryRequestOptions options);
         }
     }
 
@@ -739,6 +743,8 @@ public class ImplementationBridgeHelpers {
                 String identifier,
                 String errorMessage,
                 long transportRequestId);
+
+            MetadataDiagnosticsContext getMetaDataDiagnosticContext(CosmosDiagnostics cosmosDiagnostics);
         }
     }
 

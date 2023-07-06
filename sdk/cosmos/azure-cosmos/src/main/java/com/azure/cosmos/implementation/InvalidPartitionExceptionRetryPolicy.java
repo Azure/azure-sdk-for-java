@@ -2,9 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -65,7 +64,7 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
                 //this.clientCollectionCache.Refresh(clientException.ResourceAddress);
                 // TODO: this is blocking. is that fine?
                 this.clientCollectionCache.refresh(
-                    this.request != null ? BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics) : null,
+                    MetadataRequestContext.getMetadataRequestContext(this.request),
                     collectionLink,
                     requestOptionProperties);
 

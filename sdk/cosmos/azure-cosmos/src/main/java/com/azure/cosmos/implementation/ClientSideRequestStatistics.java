@@ -12,7 +12,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import io.micrometer.core.lang.NonNull;
 
 import java.io.IOException;
 import java.net.URI;
@@ -46,7 +45,7 @@ public class ClientSideRequestStatistics {
     private Set<URI> locationEndpointsContacted;
     private RetryContext retryContext;
     private FaultInjectionRequestContext requestContext;
-    private GatewayStatistics gatewayStatistics;
+    private List<GatewayStatistics> gatewayStatisticsList;
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
     private int requestPayloadSizeInBytes = 0;
@@ -60,6 +59,7 @@ public class ClientSideRequestStatistics {
         this.requestEndTimeUTC = Instant.now();
         this.responseStatisticsList = new ArrayList<>();
         this.supplementalResponseStatisticsList = new ArrayList<>();
+        this.gatewayStatisticsList = new ArrayList<>();
         this.addressResolutionStatistics = new HashMap<>();
         this.contactedReplicas = Collections.synchronizedList(new ArrayList<>());
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>());
@@ -79,6 +79,7 @@ public class ClientSideRequestStatistics {
         this.requestEndTimeUTC = toBeCloned.requestEndTimeUTC;
         this.responseStatisticsList = new ArrayList<>(toBeCloned.responseStatisticsList);
         this.supplementalResponseStatisticsList = new ArrayList<>(toBeCloned.supplementalResponseStatisticsList);
+        this.gatewayStatisticsList = new ArrayList<>(toBeCloned.gatewayStatisticsList);
         this.addressResolutionStatistics = new HashMap<>(toBeCloned.addressResolutionStatistics);
         this.contactedReplicas = Collections.synchronizedList(new ArrayList<>(toBeCloned.contactedReplicas));
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>(toBeCloned.failedReplicas));
@@ -165,7 +166,10 @@ public class ClientSideRequestStatistics {
     }
 
     public void recordGatewayResponse(
-        RxDocumentServiceRequest rxDocumentServiceRequest, StoreResponseDiagnostics storeResponseDiagnostics, GlobalEndpointManager globalEndpointManager) {
+        RxDocumentServiceRequest rxDocumentServiceRequest,
+        StoreResponseDiagnostics storeResponseDiagnostics,
+        GlobalEndpointManager globalEndpointManager) {
+
         Instant responseTime = Instant.now();
 
         synchronized (this) {
@@ -184,22 +188,27 @@ public class ClientSideRequestStatistics {
                 this.locationEndpointsContacted.add(locationEndPoint);
             }
 
-            this.gatewayStatistics = new GatewayStatistics();
+            GatewayStatistics gatewayStatistics = new GatewayStatistics();
             if (rxDocumentServiceRequest != null) {
-                this.gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
-                this.gatewayStatistics.resourceType = rxDocumentServiceRequest.getResourceType();
+                gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
+                gatewayStatistics.resourceType = rxDocumentServiceRequest.getResourceType();
                 this.requestPayloadSizeInBytes = rxDocumentServiceRequest.getContentLength();
             }
-            this.gatewayStatistics.statusCode = storeResponseDiagnostics.getStatusCode();
-            this.gatewayStatistics.subStatusCode = storeResponseDiagnostics.getSubStatusCode();
-            this.gatewayStatistics.sessionToken = storeResponseDiagnostics.getSessionTokenAsString();
-            this.gatewayStatistics.requestCharge = storeResponseDiagnostics.getRequestCharge();
-            this.gatewayStatistics.requestTimeline = storeResponseDiagnostics.getRequestTimeline();
-            this.gatewayStatistics.partitionKeyRangeId = storeResponseDiagnostics.getPartitionKeyRangeId();
-            this.gatewayStatistics.exceptionMessage = storeResponseDiagnostics.getExceptionMessage();
-            this.gatewayStatistics.exceptionResponseHeaders = storeResponseDiagnostics.getExceptionResponseHeaders();
-            this.gatewayStatistics.responsePayloadSizeInBytes = storeResponseDiagnostics.getResponsePayloadLength();
+            gatewayStatistics.statusCode = storeResponseDiagnostics.getStatusCode();
+            gatewayStatistics.subStatusCode = storeResponseDiagnostics.getSubStatusCode();
+            gatewayStatistics.sessionToken = storeResponseDiagnostics.getSessionTokenAsString();
+            gatewayStatistics.requestCharge = storeResponseDiagnostics.getRequestCharge();
+            gatewayStatistics.requestTimeline = storeResponseDiagnostics.getRequestTimeline();
+            gatewayStatistics.partitionKeyRangeId = storeResponseDiagnostics.getPartitionKeyRangeId();
+            gatewayStatistics.exceptionMessage = storeResponseDiagnostics.getExceptionMessage();
+            gatewayStatistics.exceptionResponseHeaders = storeResponseDiagnostics.getExceptionResponseHeaders();
+            gatewayStatistics.responsePayloadSizeInBytes = storeResponseDiagnostics.getResponsePayloadLength();
+            gatewayStatistics.faultInjectionRuleId = storeResponseDiagnostics.getFaultInjectionRuleId();
+            gatewayStatistics.faultInjectionEvaluationResults = storeResponseDiagnostics.getFaultInjectionEvaluationResults();
+
             this.activityId = storeResponseDiagnostics.getActivityId();
+
+            this.gatewayStatisticsList.add(gatewayStatistics);
         }
     }
 
@@ -482,11 +491,7 @@ public class ClientSideRequestStatistics {
 
     public int getMaxResponsePayloadSizeInBytes() {
         if (responseStatisticsList == null || responseStatisticsList.isEmpty()) {
-            if (this.gatewayStatistics != null) {
-                return this.gatewayStatistics.responsePayloadSizeInBytes;
-            }
-
-            return 0;
+            return this.getMaxResponsePayloadSizeInBytesFromGateway();
         }
 
         int maxResponsePayloadSizeInBytes = 0;
@@ -505,6 +510,19 @@ public class ClientSideRequestStatistics {
         return maxResponsePayloadSizeInBytes;
     }
 
+    private int getMaxResponsePayloadSizeInBytesFromGateway() {
+        if (this.gatewayStatisticsList == null || this.gatewayStatisticsList.size() == 0) {
+            return 0;
+        }
+
+        int maxResponsePayloadSizeInBytes = 0;
+        for (GatewayStatistics gatewayStatistics : this.gatewayStatisticsList) {
+            maxResponsePayloadSizeInBytes = Math.max(maxResponsePayloadSizeInBytes, gatewayStatistics.responsePayloadSizeInBytes);
+        }
+
+        return maxResponsePayloadSizeInBytes;
+    }
+
     public List<StoreResponseStatistics> getSupplementalResponseStatisticsList() {
         return supplementalResponseStatisticsList;
     }
@@ -517,8 +535,8 @@ public class ClientSideRequestStatistics {
         return addressResolutionStatistics;
     }
 
-    public GatewayStatistics getGatewayStatistics() {
-        return gatewayStatistics;
+    public List<GatewayStatistics> getGatewayStatisticsList() {
+        return this.gatewayStatisticsList;
     }
 
     public ClientSideRequestStatistics setSamplingRateSnapshot(double samplingRateSnapshot) {
@@ -609,7 +627,7 @@ public class ClientSideRequestStatistics {
             generator.writeObjectField("retryContext", statistics.retryContext);
             generator.writeObjectField("metadataDiagnosticsContext", statistics.getMetadataDiagnosticsContext());
             generator.writeObjectField("serializationDiagnosticsContext", statistics.getSerializationDiagnosticsContext());
-            generator.writeObjectField("gatewayStatistics", statistics.gatewayStatistics);
+            generator.writeObjectField("gatewayStatisticsList", statistics.gatewayStatisticsList);
             generator.writeObjectField("samplingRateSnapshot", statistics.samplingRateSnapshot);
 
             try {
@@ -698,6 +716,7 @@ public class ClientSideRequestStatistics {
         }
     }
 
+    @JsonSerialize(using = GatewayStatistics.GatewayStatisticsSerializer.class)
     public static class GatewayStatistics {
         private String sessionToken;
         private OperationType operationType;
@@ -711,6 +730,8 @@ public class ClientSideRequestStatistics {
         private String exceptionResponseHeaders;
 
         private int responsePayloadSizeInBytes;
+        private String faultInjectionRuleId;
+        private List<String> faultInjectionEvaluationResults;
 
         public String getSessionToken() {
             return sessionToken;
@@ -752,7 +773,69 @@ public class ClientSideRequestStatistics {
             return exceptionResponseHeaders;
         }
 
-        public int getResponsePayloadSizeInBytes() { return this.responsePayloadSizeInBytes; }
+        public int getResponsePayloadSizeInBytes() {
+            return this.responsePayloadSizeInBytes;
+        }
+
+        public String getFaultInjectionRuleId() {
+            return faultInjectionRuleId;
+        }
+
+        public List<String> getFaultInjectionEvaluationResults() {
+            return faultInjectionEvaluationResults;
+        }
+
+        public static class GatewayStatisticsSerializer extends StdSerializer<GatewayStatistics> {
+            private static final long serialVersionUID = 5315472126043077905L;
+
+            public GatewayStatisticsSerializer(){
+                super(GatewayStatistics.class);
+            }
+
+            @Override
+            public void serialize(GatewayStatistics gatewayStatistics,
+                                  JsonGenerator jsonGenerator,
+                                  SerializerProvider serializerProvider) throws IOException {
+                jsonGenerator.writeStartObject();
+                jsonGenerator.writeStringField("sessionToken", gatewayStatistics.getSessionToken());
+                jsonGenerator.writeStringField("operationType", gatewayStatistics.getOperationType().toString());
+                jsonGenerator.writeStringField("resourceType", gatewayStatistics.getResourceType().toString());
+                jsonGenerator.writeNumberField("statusCode", gatewayStatistics.getStatusCode());
+                jsonGenerator.writeNumberField("subStatusCode", gatewayStatistics.getSubStatusCode());
+                jsonGenerator.writeNumberField("requestCharge", gatewayStatistics.getRequestCharge());
+                jsonGenerator.writeObjectField("requestTimeline", gatewayStatistics.getRequestTimeline());
+                jsonGenerator.writeStringField("partitionKeyRangeId", gatewayStatistics.getPartitionKeyRangeId());
+                jsonGenerator.writeNumberField("responsePayloadSizeInBytes", gatewayStatistics.getResponsePayloadSizeInBytes());
+                this.writeNonNullStringField(jsonGenerator, "exceptionMessage", gatewayStatistics.getExceptionMessage());
+                this.writeNonNullStringField(jsonGenerator, "exceptionResponseHeaders", gatewayStatistics.getExceptionResponseHeaders());
+                this.writeNonNullStringField(jsonGenerator, "faultInjectionRuleId", gatewayStatistics.getFaultInjectionRuleId());
+
+                if (StringUtils.isEmpty(gatewayStatistics.getFaultInjectionRuleId())) {
+                    this.writeNonEmptyStringArrayField(
+                        jsonGenerator,
+                        "faultInjectionEvaluationResults",
+                        gatewayStatistics.getFaultInjectionEvaluationResults());
+                }
+
+                jsonGenerator.writeEndObject();
+            }
+
+            private void writeNonNullStringField(JsonGenerator jsonGenerator, String fieldName, String value) throws IOException {
+                if (value == null) {
+                    return;
+                }
+
+                jsonGenerator.writeStringField(fieldName, value);
+            }
+
+            private void writeNonEmptyStringArrayField(JsonGenerator jsonGenerator, String fieldName, List<String> values) throws IOException {
+                if (values == null || values.isEmpty()) {
+                    return;
+                }
+
+                jsonGenerator.writeObjectField(fieldName, values);
+            }
+        }
     }
 
     public static CosmosDiagnosticsSystemUsageSnapshot fetchSystemInformation() {

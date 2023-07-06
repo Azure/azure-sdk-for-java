@@ -3,12 +3,11 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.JsonSerializable;
-import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
+import com.azure.cosmos.implementation.MetadataRequestContext;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
@@ -62,7 +61,7 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
     @Override
     public Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
-        MetadataDiagnosticsContext metadataDiagnosticsCtx,
+        MetadataRequestContext metadataRequestContext,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
 
         checkNotNull(
@@ -82,7 +81,7 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
 
                 return routingMapProvider
                     .tryGetPartitionKeyRangeByIdAsync(
-                        metadataDiagnosticsCtx,
+                        metadataRequestContext,
                         collection.getResourceId(),
                         this.partitionKeyRangeId,
                         false,
@@ -142,11 +141,8 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
 
         request.routeTo(this.partitionKeyRangeIdentity);
 
-        MetadataDiagnosticsContext metadataDiagnosticsCtx =
-            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
-
         return this
-            .getNormalizedEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)
+            .getNormalizedEffectiveRange(routingMapProvider, MetadataRequestContext.getMetadataRequestContext(request), collectionResolutionMono)
             .map(effectiveRange -> {
                 request.setEffectiveRange(effectiveRange);
 

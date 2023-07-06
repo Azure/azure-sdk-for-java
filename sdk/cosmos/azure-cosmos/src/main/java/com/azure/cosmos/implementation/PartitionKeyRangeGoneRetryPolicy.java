@@ -2,13 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
-import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -73,13 +70,13 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
                 request.properties = this.requestOptionProperties;
             }
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(
-                BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
+                MetadataRequestContext.getMetadataRequestContext(this.request),
                 request);
 
             return collectionObs.flatMap(collectionValueHolder -> {
 
                 Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = this.partitionKeyRangeCache.tryLookupAsync(
-                    BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
+                    MetadataRequestContext.getMetadataRequestContext(this.request),
                     collectionValueHolder.v.getResourceId(),
                     null,
                     request.properties);

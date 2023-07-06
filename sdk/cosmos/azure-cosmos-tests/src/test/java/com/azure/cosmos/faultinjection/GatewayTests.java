@@ -10,12 +10,10 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
-import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
@@ -36,22 +34,21 @@ public class GatewayTests {
             .key(TestConfigurations.MASTER_KEY)
             .endpoint(TestConfigurations.HOST)
             .preferredRegions(Arrays.asList("EAST US 2"))
-            .gatewayMode()
             .buildAsyncClient();
 
-        CosmosAsyncContainer container = client.getDatabase("TestDatabase").getContainer("TestContainer");
+        CosmosAsyncContainer container = client.getDatabase("SampleDatabase").getContainer("SampleContainer");
         FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("addressRefreshDelay")
             .condition(
                 new FaultInjectionConditionBuilder()
                     .region("EAST US 2")
                     .connectionType(FaultInjectionConnectionType.GATEWAY)
-                    .operationType(FaultInjectionOperationType.READ_ITEM)
-                    .endpoints(
-                        new FaultInjectionEndpointBuilder(FeedRange.forLogicalPartition(new PartitionKey("Test"))).build()
-                    )
+                    .operationType(FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH)
+//                    .endpoints(
+//                        new FaultInjectionEndpointBuilder(FeedRange.forLogicalPartition(new PartitionKey("Test"))).build()
+//                    )
                     .build())
             .result(
-                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
+                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST)
                     .delay(Duration.ofSeconds(60))
                     .times(1)
                     .build()
