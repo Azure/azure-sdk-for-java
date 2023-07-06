@@ -49,13 +49,12 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
 
             VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, nodeAgentSkuId);
 
-            BatchPool poolToAdd = new BatchPool();
-            poolToAdd.setId(sharedKeyPoolId).setTargetDedicatedNodes(2)
-                    .setVmSize(vmSize)
-                    .setVirtualMachineConfiguration(configuration)
-                    .setTargetNodeCommunicationMode(NodeCommunicationMode.DEFAULT);
+            BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(sharedKeyPoolId, vmSize);
+            poolCreateParameters.setTargetDedicatedNodes(2)
+                                .setVirtualMachineConfiguration(configuration)
+                                .setTargetNodeCommunicationMode(NodeCommunicationMode.DEFAULT);
 
-            poolClientWithSharedKey.add(poolToAdd);
+            poolClientWithSharedKey.create(poolCreateParameters);
 
             /*
              * Getting Pool
@@ -69,10 +68,9 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
             /*
              * Updating Pool
              */
-            BatchPool poolToUpdate = new BatchPool().setMetadata(new LinkedList<>(List.of(new MetadataItem("foo", "bar"))))
-                                                    .setTargetNodeCommunicationMode(NodeCommunicationMode.SIMPLIFIED)
-                                                    .setCertificateReferences(new LinkedList<CertificateReference>())
-                                                    .setApplicationPackageReferences(new LinkedList<ApplicationPackageReference>());
+            BatchPool poolToUpdate = new BatchPool(new LinkedList<CertificateReference>(),
+                                                   new LinkedList<ApplicationPackageReference>(),
+                                                   new LinkedList<>(List.of(new MetadataItem("foo", "bar"))));
 
             poolClientWithSharedKey.updateProperties(sharedKeyPoolId, poolToUpdate);
 
@@ -84,8 +82,8 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
             /*
              * Patch Pool
              */
-            BatchPool poolToPatch = new BatchPool().setMetadata(new ArrayList<MetadataItem>(List.of(new MetadataItem("key1", "value1")))).setTargetNodeCommunicationMode(NodeCommunicationMode.CLASSIC);
-            Response patchPoolResponse = poolClientWithSharedKey.patchWithResponse(sharedKeyPoolId, BinaryData.fromObject(poolToPatch), null);
+            BatchPoolUpdateParameters poolUpdateParameters = new BatchPoolUpdateParameters().setMetadata(new ArrayList<MetadataItem>(List.of(new MetadataItem("key1", "value1")))).setTargetNodeCommunicationMode(NodeCommunicationMode.CLASSIC);
+            Response patchPoolResponse = poolClientWithSharedKey.patchWithResponse(sharedKeyPoolId, BinaryData.fromObject(poolUpdateParameters), null);
             HttpRequest patchPoolRequest = patchPoolResponse.getRequest();
             HttpHeader ocpDateHeader = patchPoolRequest.getHeaders().get("ocp-date");
             Assertions.assertNull(ocpDateHeader);

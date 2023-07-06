@@ -4,6 +4,7 @@
 
 package com.azure.compute.batch.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,18 +15,21 @@ public final class PoolNodeCounts {
     /*
      * The ID of the Pool.
      */
-    @JsonProperty(value = "poolId", required = true)
+    @Generated
+    @JsonProperty(value = "poolId")
     private String poolId;
 
     /*
      * The number of Compute Nodes in each Compute Node state.
      */
+    @Generated
     @JsonProperty(value = "dedicated")
     private NodeCounts dedicated;
 
     /*
      * The number of Compute Nodes in each Compute Node state.
      */
+    @Generated
     @JsonProperty(value = "lowPriority")
     private NodeCounts lowPriority;
 
@@ -34,8 +38,9 @@ public final class PoolNodeCounts {
      *
      * @param poolId the poolId value to set.
      */
+    @Generated
     @JsonCreator
-    private PoolNodeCounts(@JsonProperty(value = "poolId", required = true) String poolId) {
+    private PoolNodeCounts(@JsonProperty(value = "poolId") String poolId) {
         this.poolId = poolId;
     }
 
@@ -44,6 +49,7 @@ public final class PoolNodeCounts {
      *
      * @return the poolId value.
      */
+    @Generated
     public String getPoolId() {
         return this.poolId;
     }
@@ -53,6 +59,7 @@ public final class PoolNodeCounts {
      *
      * @return the dedicated value.
      */
+    @Generated
     public NodeCounts getDedicated() {
         return this.dedicated;
     }
@@ -62,6 +69,7 @@ public final class PoolNodeCounts {
      *
      * @return the lowPriority value.
      */
+    @Generated
     public NodeCounts getLowPriority() {
         return this.lowPriority;
     }

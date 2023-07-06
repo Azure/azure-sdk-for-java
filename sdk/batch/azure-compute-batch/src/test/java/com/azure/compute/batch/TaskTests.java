@@ -45,20 +45,19 @@ public class TaskTests extends BatchServiceClientTestBase {
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setPoolId(livePoolId);
-        BatchJob jobToAdd = new BatchJob().setId(jobId).setPoolInfo(poolInfo);
-        
-        jobClient.add(jobToAdd);
+        BatchJobCreateParameters jobCreateParameters = new BatchJobCreateParameters(jobId, poolInfo);
+
+        jobClient.create(jobCreateParameters);
 
         try {
             // CREATE
             List<ApplicationPackageReference> apps = new ArrayList<>();
             apps.add(new ApplicationPackageReference("MSMPI"));
-            BatchTask taskToAdd = new BatchTask();
-            taskToAdd.setId(taskId).setCommandLine("cmd /c echo hello")
-            		 .setUserIdentity(new UserIdentity().setUsername("test-user"))
+            BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(taskId, "cmd /c echo hello\"")
+                     .setUserIdentity(new UserIdentity().setUsername("test-user"))
             		 .setApplicationPackageReferences(apps);
 
-            taskClient.add(jobId, taskToAdd);
+            taskClient.create(jobId, taskCreateParameters);
 
             // GET
             BatchTask task = taskClient.get(jobId, taskId);
@@ -96,7 +95,7 @@ public class TaskTests extends BatchServiceClientTestBase {
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setPoolId(liveIaasPoolId);
-        jobClient.add(new BatchJob().setId(jobId).setPoolInfo(poolInfo));
+        jobClient.create(new BatchJobCreateParameters(jobId, poolInfo));
 
         String storageAccountName = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_NAME");
         String storageAccountKey = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_KEY");
@@ -124,9 +123,8 @@ public class TaskTests extends BatchServiceClientTestBase {
             files.add(file);
 
             // CREATE
-            BatchTask taskToAdd = new BatchTask().setId(taskId).setCommandLine(String.format("/bin/bash -c 'set -e; set -o pipefail; cat %s'", BLOB_FILE_NAME)).setResourceFiles(files);
-
-            taskClient.add(jobId, taskToAdd);
+            BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(taskId, String.format("/bin/bash -c 'set -e; set -o pipefail; cat %s'", BLOB_FILE_NAME)).setResourceFiles(files);
+            taskClient.create(jobId, taskCreateParameters);
 
             // GET
             BatchTask task = taskClient.get(jobId, taskId);
@@ -180,7 +178,7 @@ public class TaskTests extends BatchServiceClientTestBase {
                 }
                 // UPLOAD LOG
                 UploadBatchServiceLogsConfiguration logsConfiguration = new UploadBatchServiceLogsConfiguration(outputSas, OffsetDateTime.now().minusMinutes(-10));
-                UploadBatchServiceLogsResult uploadBatchServiceLogsResult = batchClientBuilder.buildComputeNodesClient().uploadBatchServiceLogs(liveIaasPoolId, task.getNodeInfo().getNodeId(), logsConfiguration);
+                UploadBatchServiceLogsResult uploadBatchServiceLogsResult = batchClientBuilder.buildBatchNodesClient().uploadBatchServiceLogs(liveIaasPoolId, task.getNodeInfo().getNodeId(), logsConfiguration);
 
                 Assertions.assertNotNull(uploadBatchServiceLogsResult);
                 Assertions.assertTrue(uploadBatchServiceLogsResult.getNumberOfFilesUploaded() > 0);

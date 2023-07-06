@@ -75,7 +75,7 @@ public final class TasksImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> add(
+        Mono<Response<Void>> create(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("content-type") String contentType,
@@ -123,7 +123,7 @@ public final class TasksImpl {
                 @HeaderParam("content-type") String contentType,
                 @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData taskCollection,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData collection,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -188,7 +188,7 @@ public final class TasksImpl {
                 @PathParam("jobId") String jobId,
                 @PathParam("taskId") String taskId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData taskUpdateParameter,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -204,7 +204,7 @@ public final class TasksImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listSubtasks(
+        Mono<Response<BinaryData>> getSubtasks(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("jobId") String jobId,
@@ -276,7 +276,7 @@ public final class TasksImpl {
     }
 
     /**
-     * Adds a Task to the specified Job.
+     * Creates a Task to the specified Job.
      *
      * <p>The maximum lifetime of a Task from addition to completion is 180 days. If a Task has not completed within 180
      * days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
@@ -300,7 +300,7 @@ public final class TasksImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -311,12 +311,8 @@ public final class TasksImpl {
      *
      * <pre>{@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
      *     exitConditions (Optional): {
      *         exitCodes (Optional): [
      *              (Optional){
@@ -338,11 +334,7 @@ public final class TasksImpl {
      *         fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *         default (Optional): (recursive schema, see default above)
      *     }
-     *     state: String(active/preparing/running/completed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/preparing/running/completed) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     commandLine: String (Optional)
+     *     commandLine: String (Required)
      *     containerSettings (Optional): {
      *         containerRunOptions: String (Optional)
      *         imageName: String (Required)
@@ -410,59 +402,12 @@ public final class TasksImpl {
      *             elevationLevel: String(nonadmin/admin) (Optional)
      *         }
      *     }
-     *     executionInfo (Optional): {
-     *         startTime: OffsetDateTime (Optional)
-     *         endTime: OffsetDateTime (Optional)
-     *         exitCode: Integer (Optional)
-     *         containerInfo (Optional): {
-     *             containerId: String (Optional)
-     *             state: String (Optional)
-     *             error: String (Optional)
-     *         }
-     *         failureInfo (Optional): {
-     *             category: String(usererror/servererror) (Required)
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             details (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     value: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         retryCount: int (Required)
-     *         lastRetryTime: OffsetDateTime (Optional)
-     *         requeueCount: int (Required)
-     *         lastRequeueTime: OffsetDateTime (Optional)
-     *         result: String(success/failure) (Optional)
-     *     }
-     *     nodeInfo (Optional): {
-     *         affinityId: String (Optional)
-     *         nodeUrl: String (Optional)
-     *         poolId: String (Optional)
-     *         nodeId: String (Optional)
-     *         taskRootDirectory: String (Optional)
-     *         taskRootDirectoryUrl: String (Optional)
-     *     }
      *     multiInstanceSettings (Optional): {
      *         numberOfInstances: Integer (Optional)
      *         coordinationCommandLine: String (Required)
      *         commonResourceFiles (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *     }
-     *     stats (Optional): {
-     *         url: String (Required)
-     *         startTime: OffsetDateTime (Required)
-     *         lastUpdateTime: OffsetDateTime (Required)
-     *         userCPUTime: Duration (Required)
-     *         kernelCPUTime: Duration (Required)
-     *         wallClockTime: Duration (Required)
-     *         readIOps: int (Required)
-     *         writeIOps: int (Required)
-     *         readIOGiB: double (Required)
-     *         writeIOGiB: double (Required)
-     *         waitTime: Duration (Required)
      *     }
      *     dependsOn (Optional): {
      *         taskIds (Optional): [
@@ -489,8 +434,8 @@ public final class TasksImpl {
      * }
      * }</pre>
      *
-     * @param jobId The ID of the Job to which the Task is to be added.
-     * @param task The Task to be added.
+     * @param jobId The ID of the Job to which the Task is to be created.
+     * @param task The Task to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -499,12 +444,12 @@ public final class TasksImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addWithResponseAsync(String jobId, BinaryData task, RequestOptions requestOptions) {
+    public Mono<Response<Void>> createWithResponseAsync(String jobId, BinaryData task, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.add(
+                        service.create(
                                 this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 contentType,
@@ -516,7 +461,7 @@ public final class TasksImpl {
     }
 
     /**
-     * Adds a Task to the specified Job.
+     * Creates a Task to the specified Job.
      *
      * <p>The maximum lifetime of a Task from addition to completion is 180 days. If a Task has not completed within 180
      * days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
@@ -540,7 +485,7 @@ public final class TasksImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -551,12 +496,8 @@ public final class TasksImpl {
      *
      * <pre>{@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
      *     exitConditions (Optional): {
      *         exitCodes (Optional): [
      *              (Optional){
@@ -578,11 +519,7 @@ public final class TasksImpl {
      *         fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *         default (Optional): (recursive schema, see default above)
      *     }
-     *     state: String(active/preparing/running/completed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/preparing/running/completed) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     commandLine: String (Optional)
+     *     commandLine: String (Required)
      *     containerSettings (Optional): {
      *         containerRunOptions: String (Optional)
      *         imageName: String (Required)
@@ -650,59 +587,12 @@ public final class TasksImpl {
      *             elevationLevel: String(nonadmin/admin) (Optional)
      *         }
      *     }
-     *     executionInfo (Optional): {
-     *         startTime: OffsetDateTime (Optional)
-     *         endTime: OffsetDateTime (Optional)
-     *         exitCode: Integer (Optional)
-     *         containerInfo (Optional): {
-     *             containerId: String (Optional)
-     *             state: String (Optional)
-     *             error: String (Optional)
-     *         }
-     *         failureInfo (Optional): {
-     *             category: String(usererror/servererror) (Required)
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             details (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     value: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         retryCount: int (Required)
-     *         lastRetryTime: OffsetDateTime (Optional)
-     *         requeueCount: int (Required)
-     *         lastRequeueTime: OffsetDateTime (Optional)
-     *         result: String(success/failure) (Optional)
-     *     }
-     *     nodeInfo (Optional): {
-     *         affinityId: String (Optional)
-     *         nodeUrl: String (Optional)
-     *         poolId: String (Optional)
-     *         nodeId: String (Optional)
-     *         taskRootDirectory: String (Optional)
-     *         taskRootDirectoryUrl: String (Optional)
-     *     }
      *     multiInstanceSettings (Optional): {
      *         numberOfInstances: Integer (Optional)
      *         coordinationCommandLine: String (Required)
      *         commonResourceFiles (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *     }
-     *     stats (Optional): {
-     *         url: String (Required)
-     *         startTime: OffsetDateTime (Required)
-     *         lastUpdateTime: OffsetDateTime (Required)
-     *         userCPUTime: Duration (Required)
-     *         kernelCPUTime: Duration (Required)
-     *         wallClockTime: Duration (Required)
-     *         readIOps: int (Required)
-     *         writeIOps: int (Required)
-     *         readIOGiB: double (Required)
-     *         writeIOGiB: double (Required)
-     *         waitTime: Duration (Required)
      *     }
      *     dependsOn (Optional): {
      *         taskIds (Optional): [
@@ -729,8 +619,8 @@ public final class TasksImpl {
      * }
      * }</pre>
      *
-     * @param jobId The ID of the Job to which the Task is to be added.
-     * @param task The Task to be added.
+     * @param jobId The ID of the Job to which the Task is to be created.
+     * @param task The Task to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -739,8 +629,8 @@ public final class TasksImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addWithResponse(String jobId, BinaryData task, RequestOptions requestOptions) {
-        return addWithResponseAsync(jobId, task, requestOptions).block();
+    public Response<Void> createWithResponse(String jobId, BinaryData task, RequestOptions requestOptions) {
+        return createWithResponseAsync(jobId, task, requestOptions).block();
     }
 
     /**
@@ -771,7 +661,7 @@ public final class TasksImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -1023,7 +913,7 @@ public final class TasksImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -1263,7 +1153,7 @@ public final class TasksImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -1501,7 +1391,7 @@ public final class TasksImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -1724,7 +1614,7 @@ public final class TasksImpl {
      * }</pre>
      *
      * @param jobId The ID of the Job to which the Task collection is to be added.
-     * @param taskCollection The Tasks to be added.
+     * @param collection The Tasks to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1735,7 +1625,7 @@ public final class TasksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> addCollectionWithResponseAsync(
-            String jobId, BinaryData taskCollection, RequestOptions requestOptions) {
+            String jobId, BinaryData collection, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1746,7 +1636,7 @@ public final class TasksImpl {
                                 contentType,
                                 jobId,
                                 accept,
-                                taskCollection,
+                                collection,
                                 requestOptions,
                                 context));
     }
@@ -1784,7 +1674,7 @@ public final class TasksImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -2007,7 +1897,7 @@ public final class TasksImpl {
      * }</pre>
      *
      * @param jobId The ID of the Job to which the Task collection is to be added.
-     * @param taskCollection The Tasks to be added.
+     * @param collection The Tasks to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2017,8 +1907,8 @@ public final class TasksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> addCollectionWithResponse(
-            String jobId, BinaryData taskCollection, RequestOptions requestOptions) {
-        return addCollectionWithResponseAsync(jobId, taskCollection, requestOptions).block();
+            String jobId, BinaryData collection, RequestOptions requestOptions) {
+        return addCollectionWithResponseAsync(jobId, collection, requestOptions).block();
     }
 
     /**
@@ -2047,7 +1937,7 @@ public final class TasksImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -2056,10 +1946,10 @@ public final class TasksImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -2116,7 +2006,7 @@ public final class TasksImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -2125,10 +2015,10 @@ public final class TasksImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -2176,7 +2066,7 @@ public final class TasksImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -2185,10 +2075,10 @@ public final class TasksImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -2431,7 +2321,7 @@ public final class TasksImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -2440,10 +2330,10 @@ public final class TasksImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -2671,7 +2561,7 @@ public final class TasksImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -2680,10 +2570,10 @@ public final class TasksImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -2874,7 +2764,7 @@ public final class TasksImpl {
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
-     * @param taskUpdateParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2884,7 +2774,7 @@ public final class TasksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateWithResponseAsync(
-            String jobId, String taskId, BinaryData taskUpdateParameter, RequestOptions requestOptions) {
+            String jobId, String taskId, BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2896,7 +2786,7 @@ public final class TasksImpl {
                                 jobId,
                                 taskId,
                                 accept,
-                                taskUpdateParameter,
+                                parameters,
                                 requestOptions,
                                 context));
     }
@@ -2923,7 +2813,7 @@ public final class TasksImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -2932,10 +2822,10 @@ public final class TasksImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3126,7 +3016,7 @@ public final class TasksImpl {
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
-     * @param taskUpdateParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3136,8 +3026,8 @@ public final class TasksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateWithResponse(
-            String jobId, String taskId, BinaryData taskUpdateParameter, RequestOptions requestOptions) {
-        return updateWithResponseAsync(jobId, taskId, taskUpdateParameter, requestOptions).block();
+            String jobId, String taskId, BinaryData parameters, RequestOptions requestOptions) {
+        return updateWithResponseAsync(jobId, taskId, parameters, requestOptions).block();
     }
 
     /**
@@ -3165,7 +3055,7 @@ public final class TasksImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -3227,12 +3117,12 @@ public final class TasksImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listSubtasksWithResponseAsync(
+    public Mono<Response<BinaryData>> getSubtasksWithResponseAsync(
             String jobId, String taskId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.listSubtasks(
+                        service.getSubtasks(
                                 this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 jobId,
@@ -3267,7 +3157,7 @@ public final class TasksImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -3328,8 +3218,8 @@ public final class TasksImpl {
      * @return the result of listing the subtasks of a Task along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listSubtasksWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
-        return listSubtasksWithResponseAsync(jobId, taskId, requestOptions).block();
+    public Response<BinaryData> getSubtasksWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
+        return getSubtasksWithResponseAsync(jobId, taskId, requestOptions).block();
     }
 
     /**
@@ -3358,7 +3248,7 @@ public final class TasksImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -3367,10 +3257,10 @@ public final class TasksImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3427,7 +3317,7 @@ public final class TasksImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -3436,10 +3326,10 @@ public final class TasksImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3488,7 +3378,7 @@ public final class TasksImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -3497,10 +3387,10 @@ public final class TasksImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3560,7 +3450,7 @@ public final class TasksImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -3569,10 +3459,10 @@ public final class TasksImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3603,7 +3493,7 @@ public final class TasksImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration

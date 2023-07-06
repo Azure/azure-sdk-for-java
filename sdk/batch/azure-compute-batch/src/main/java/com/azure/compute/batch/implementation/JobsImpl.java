@@ -24,6 +24,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
@@ -141,7 +142,7 @@ public final class JobsImpl {
                 @HeaderParam("content-type") String contentType,
                 @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData jobPatchParameter,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -163,7 +164,7 @@ public final class JobsImpl {
                 @HeaderParam("content-type") String contentType,
                 @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData jobUpdateParameter,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -185,7 +186,7 @@ public final class JobsImpl {
                 @HeaderParam("content-type") String contentType,
                 @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData jobDisableParameter,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -241,12 +242,12 @@ public final class JobsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> add(
+        Mono<Response<Void>> create(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("content-type") String contentType,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -413,7 +414,7 @@ public final class JobsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -487,7 +488,7 @@ public final class JobsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -556,7 +557,7 @@ public final class JobsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -565,10 +566,10 @@ public final class JobsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -626,7 +627,7 @@ public final class JobsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -635,10 +636,10 @@ public final class JobsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -682,7 +683,7 @@ public final class JobsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -691,10 +692,10 @@ public final class JobsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -838,7 +839,7 @@ public final class JobsImpl {
      *     commonEnvironmentSettings (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     poolInfo (Optional): {
+     *     poolInfo (Required): {
      *         poolId: String (Optional)
      *         autoPoolSpecification (Optional): {
      *             autoPoolIdPrefix: String (Optional)
@@ -897,8 +898,9 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -1129,7 +1131,7 @@ public final class JobsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -1138,10 +1140,10 @@ public final class JobsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -1285,7 +1287,7 @@ public final class JobsImpl {
      *     commonEnvironmentSettings (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     poolInfo (Optional): {
+     *     poolInfo (Required): {
      *         poolId: String (Optional)
      *         autoPoolSpecification (Optional): {
      *             autoPoolIdPrefix: String (Optional)
@@ -1344,8 +1346,9 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -1568,7 +1571,7 @@ public final class JobsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -1577,10 +1580,10 @@ public final class JobsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -1591,17 +1594,6 @@ public final class JobsImpl {
      *
      * <pre>{@code
      * {
-     *     id: String (Optional)
-     *     displayName: String (Optional)
-     *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
      *     allowTaskPreemption: Boolean (Optional)
      *     maxParallelTasks: Integer (Optional)
@@ -1609,122 +1601,7 @@ public final class JobsImpl {
      *         maxWallClockTime: Duration (Optional)
      *         maxTaskRetryCount: Integer (Optional)
      *     }
-     *     jobManagerTask (Optional): {
-     *         id: String (Required)
-     *         displayName: String (Optional)
-     *         commandLine: String (Required)
-     *         containerSettings (Optional): {
-     *             containerRunOptions: String (Optional)
-     *             imageName: String (Required)
-     *             registry (Optional): {
-     *                 username: String (Optional)
-     *                 password: String (Optional)
-     *                 registryServer: String (Optional)
-     *                 identityReference (Optional): {
-     *                     resourceId: String (Optional)
-     *                 }
-     *             }
-     *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
-     *         }
-     *         resourceFiles (Optional): [
-     *              (Optional){
-     *                 autoStorageContainerName: String (Optional)
-     *                 storageContainerUrl: String (Optional)
-     *                 httpUrl: String (Optional)
-     *                 blobPrefix: String (Optional)
-     *                 filePath: String (Optional)
-     *                 fileMode: String (Optional)
-     *                 identityReference (Optional): (recursive schema, see identityReference above)
-     *             }
-     *         ]
-     *         outputFiles (Optional): [
-     *              (Optional){
-     *                 filePattern: String (Required)
-     *                 destination (Required): {
-     *                     container (Optional): {
-     *                         path: String (Optional)
-     *                         containerUrl: String (Required)
-     *                         identityReference (Optional): (recursive schema, see identityReference above)
-     *                         uploadHeaders (Optional): [
-     *                              (Optional){
-     *                                 name: String (Required)
-     *                                 value: String (Optional)
-     *                             }
-     *                         ]
-     *                     }
-     *                 }
-     *                 uploadOptions (Required): {
-     *                     uploadCondition: String(tasksuccess/taskfailure/taskcompletion) (Required)
-     *                 }
-     *             }
-     *         ]
-     *         environmentSettings (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 value: String (Optional)
-     *             }
-     *         ]
-     *         constraints (Optional): {
-     *             maxWallClockTime: Duration (Optional)
-     *             retentionTime: Duration (Optional)
-     *             maxTaskRetryCount: Integer (Optional)
-     *         }
-     *         requiredSlots: Integer (Optional)
-     *         killJobOnCompletion: Boolean (Optional)
-     *         userIdentity (Optional): {
-     *             username: String (Optional)
-     *             autoUser (Optional): {
-     *                 scope: String(task/pool) (Optional)
-     *                 elevationLevel: String(nonadmin/admin) (Optional)
-     *             }
-     *         }
-     *         runExclusive: Boolean (Optional)
-     *         applicationPackageReferences (Optional): [
-     *              (Optional){
-     *                 applicationId: String (Required)
-     *                 version: String (Optional)
-     *             }
-     *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
-     *         allowLowPriorityNode: Boolean (Optional)
-     *     }
-     *     jobPreparationTask (Optional): {
-     *         id: String (Optional)
-     *         commandLine: String (Required)
-     *         containerSettings (Optional): (recursive schema, see containerSettings above)
-     *         resourceFiles (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         environmentSettings (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         constraints (Optional): (recursive schema, see constraints above)
-     *         waitForSuccess: Boolean (Optional)
-     *         userIdentity (Optional): (recursive schema, see userIdentity above)
-     *         rerunOnNodeRebootAfterSuccess: Boolean (Optional)
-     *     }
-     *     jobReleaseTask (Optional): {
-     *         id: String (Optional)
-     *         commandLine: String (Required)
-     *         containerSettings (Optional): (recursive schema, see containerSettings above)
-     *         resourceFiles (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         environmentSettings (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         maxWallClockTime: Duration (Optional)
-     *         retentionTime: Duration (Optional)
-     *         userIdentity (Optional): (recursive schema, see userIdentity above)
-     *     }
-     *     commonEnvironmentSettings (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     poolInfo (Optional): {
+     *     poolInfo (Required): {
      *         poolId: String (Optional)
      *         autoPoolSpecification (Optional): {
      *             autoPoolIdPrefix: String (Optional)
@@ -1765,7 +1642,14 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                         containerRegistries (Optional): [
-     *                             (recursive schema, see above)
+     *                              (Optional){
+     *                                 username: String (Optional)
+     *                                 password: String (Optional)
+     *                                 registryServer: String (Optional)
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                             }
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
@@ -1783,8 +1667,9 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -1840,14 +1725,36 @@ public final class JobsImpl {
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
-     *                     containerSettings (Optional): (recursive schema, see containerSettings above)
+     *                     containerSettings (Optional): {
+     *                         containerRunOptions: String (Optional)
+     *                         imageName: String (Required)
+     *                         registry (Optional): (recursive schema, see registry above)
+     *                         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                     }
      *                     resourceFiles (Optional): [
-     *                         (recursive schema, see above)
+     *                          (Optional){
+     *                             autoStorageContainerName: String (Optional)
+     *                             storageContainerUrl: String (Optional)
+     *                             httpUrl: String (Optional)
+     *                             blobPrefix: String (Optional)
+     *                             filePath: String (Optional)
+     *                             fileMode: String (Optional)
+     *                             identityReference (Optional): (recursive schema, see identityReference above)
+     *                         }
      *                     ]
      *                     environmentSettings (Optional): [
-     *                         (recursive schema, see above)
+     *                          (Optional){
+     *                             name: String (Required)
+     *                             value: String (Optional)
+     *                         }
      *                     ]
-     *                     userIdentity (Optional): (recursive schema, see userIdentity above)
+     *                     userIdentity (Optional): {
+     *                         username: String (Optional)
+     *                         autoUser (Optional): {
+     *                             scope: String(task/pool) (Optional)
+     *                             elevationLevel: String(nonadmin/admin) (Optional)
+     *                         }
+     *                     }
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
@@ -1863,7 +1770,10 @@ public final class JobsImpl {
      *                     }
      *                 ]
      *                 applicationPackageReferences (Optional): [
-     *                     (recursive schema, see above)
+     *                      (Optional){
+     *                         applicationId: String (Required)
+     *                         version: String (Optional)
+     *                     }
      *                 ]
      *                 applicationLicenses (Optional): [
      *                     String (Optional)
@@ -1926,51 +1836,14 @@ public final class JobsImpl {
      *         }
      *     }
      *     onAllTasksComplete: String(noaction/terminatejob) (Optional)
-     *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
-     *     networkConfiguration (Optional): {
-     *         subnetId: String (Required)
-     *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     executionInfo (Optional): {
-     *         startTime: OffsetDateTime (Required)
-     *         endTime: OffsetDateTime (Optional)
-     *         poolId: String (Optional)
-     *         schedulingError (Optional): {
-     *             category: String(usererror/servererror) (Required)
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             details (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     value: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         terminateReason: String (Optional)
-     *     }
-     *     stats (Optional): {
-     *         url: String (Required)
-     *         startTime: OffsetDateTime (Required)
-     *         lastUpdateTime: OffsetDateTime (Required)
-     *         userCPUTime: Duration (Required)
-     *         kernelCPUTime: Duration (Required)
-     *         wallClockTime: Duration (Required)
-     *         readIOps: int (Required)
-     *         writeIOps: int (Required)
-     *         readIOGiB: double (Required)
-     *         writeIOGiB: double (Required)
-     *         numSucceededTasks: int (Required)
-     *         numFailedTasks: int (Required)
-     *         numTaskRetries: int (Required)
-     *         waitTime: Duration (Required)
-     *     }
      * }
      * }</pre>
      *
      * @param jobId The ID of the Job whose properties you want to update.
-     * @param jobPatchParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1980,7 +1853,7 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> patchWithResponseAsync(
-            String jobId, BinaryData jobPatchParameter, RequestOptions requestOptions) {
+            String jobId, BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1991,7 +1864,7 @@ public final class JobsImpl {
                                 contentType,
                                 jobId,
                                 accept,
-                                jobPatchParameter,
+                                parameters,
                                 requestOptions,
                                 context));
     }
@@ -2021,7 +1894,7 @@ public final class JobsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -2030,10 +1903,10 @@ public final class JobsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -2044,17 +1917,6 @@ public final class JobsImpl {
      *
      * <pre>{@code
      * {
-     *     id: String (Optional)
-     *     displayName: String (Optional)
-     *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
      *     allowTaskPreemption: Boolean (Optional)
      *     maxParallelTasks: Integer (Optional)
@@ -2062,122 +1924,7 @@ public final class JobsImpl {
      *         maxWallClockTime: Duration (Optional)
      *         maxTaskRetryCount: Integer (Optional)
      *     }
-     *     jobManagerTask (Optional): {
-     *         id: String (Required)
-     *         displayName: String (Optional)
-     *         commandLine: String (Required)
-     *         containerSettings (Optional): {
-     *             containerRunOptions: String (Optional)
-     *             imageName: String (Required)
-     *             registry (Optional): {
-     *                 username: String (Optional)
-     *                 password: String (Optional)
-     *                 registryServer: String (Optional)
-     *                 identityReference (Optional): {
-     *                     resourceId: String (Optional)
-     *                 }
-     *             }
-     *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
-     *         }
-     *         resourceFiles (Optional): [
-     *              (Optional){
-     *                 autoStorageContainerName: String (Optional)
-     *                 storageContainerUrl: String (Optional)
-     *                 httpUrl: String (Optional)
-     *                 blobPrefix: String (Optional)
-     *                 filePath: String (Optional)
-     *                 fileMode: String (Optional)
-     *                 identityReference (Optional): (recursive schema, see identityReference above)
-     *             }
-     *         ]
-     *         outputFiles (Optional): [
-     *              (Optional){
-     *                 filePattern: String (Required)
-     *                 destination (Required): {
-     *                     container (Optional): {
-     *                         path: String (Optional)
-     *                         containerUrl: String (Required)
-     *                         identityReference (Optional): (recursive schema, see identityReference above)
-     *                         uploadHeaders (Optional): [
-     *                              (Optional){
-     *                                 name: String (Required)
-     *                                 value: String (Optional)
-     *                             }
-     *                         ]
-     *                     }
-     *                 }
-     *                 uploadOptions (Required): {
-     *                     uploadCondition: String(tasksuccess/taskfailure/taskcompletion) (Required)
-     *                 }
-     *             }
-     *         ]
-     *         environmentSettings (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 value: String (Optional)
-     *             }
-     *         ]
-     *         constraints (Optional): {
-     *             maxWallClockTime: Duration (Optional)
-     *             retentionTime: Duration (Optional)
-     *             maxTaskRetryCount: Integer (Optional)
-     *         }
-     *         requiredSlots: Integer (Optional)
-     *         killJobOnCompletion: Boolean (Optional)
-     *         userIdentity (Optional): {
-     *             username: String (Optional)
-     *             autoUser (Optional): {
-     *                 scope: String(task/pool) (Optional)
-     *                 elevationLevel: String(nonadmin/admin) (Optional)
-     *             }
-     *         }
-     *         runExclusive: Boolean (Optional)
-     *         applicationPackageReferences (Optional): [
-     *              (Optional){
-     *                 applicationId: String (Required)
-     *                 version: String (Optional)
-     *             }
-     *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
-     *         allowLowPriorityNode: Boolean (Optional)
-     *     }
-     *     jobPreparationTask (Optional): {
-     *         id: String (Optional)
-     *         commandLine: String (Required)
-     *         containerSettings (Optional): (recursive schema, see containerSettings above)
-     *         resourceFiles (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         environmentSettings (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         constraints (Optional): (recursive schema, see constraints above)
-     *         waitForSuccess: Boolean (Optional)
-     *         userIdentity (Optional): (recursive schema, see userIdentity above)
-     *         rerunOnNodeRebootAfterSuccess: Boolean (Optional)
-     *     }
-     *     jobReleaseTask (Optional): {
-     *         id: String (Optional)
-     *         commandLine: String (Required)
-     *         containerSettings (Optional): (recursive schema, see containerSettings above)
-     *         resourceFiles (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         environmentSettings (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         maxWallClockTime: Duration (Optional)
-     *         retentionTime: Duration (Optional)
-     *         userIdentity (Optional): (recursive schema, see userIdentity above)
-     *     }
-     *     commonEnvironmentSettings (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     poolInfo (Optional): {
+     *     poolInfo (Required): {
      *         poolId: String (Optional)
      *         autoPoolSpecification (Optional): {
      *             autoPoolIdPrefix: String (Optional)
@@ -2218,7 +1965,14 @@ public final class JobsImpl {
      *                             String (Optional)
      *                         ]
      *                         containerRegistries (Optional): [
-     *                             (recursive schema, see above)
+     *                              (Optional){
+     *                                 username: String (Optional)
+     *                                 password: String (Optional)
+     *                                 registryServer: String (Optional)
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                             }
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
@@ -2236,8 +1990,9 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -2293,14 +2048,36 @@ public final class JobsImpl {
      *                 }
      *                 startTask (Optional): {
      *                     commandLine: String (Required)
-     *                     containerSettings (Optional): (recursive schema, see containerSettings above)
+     *                     containerSettings (Optional): {
+     *                         containerRunOptions: String (Optional)
+     *                         imageName: String (Required)
+     *                         registry (Optional): (recursive schema, see registry above)
+     *                         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                     }
      *                     resourceFiles (Optional): [
-     *                         (recursive schema, see above)
+     *                          (Optional){
+     *                             autoStorageContainerName: String (Optional)
+     *                             storageContainerUrl: String (Optional)
+     *                             httpUrl: String (Optional)
+     *                             blobPrefix: String (Optional)
+     *                             filePath: String (Optional)
+     *                             fileMode: String (Optional)
+     *                             identityReference (Optional): (recursive schema, see identityReference above)
+     *                         }
      *                     ]
      *                     environmentSettings (Optional): [
-     *                         (recursive schema, see above)
+     *                          (Optional){
+     *                             name: String (Required)
+     *                             value: String (Optional)
+     *                         }
      *                     ]
-     *                     userIdentity (Optional): (recursive schema, see userIdentity above)
+     *                     userIdentity (Optional): {
+     *                         username: String (Optional)
+     *                         autoUser (Optional): {
+     *                             scope: String(task/pool) (Optional)
+     *                             elevationLevel: String(nonadmin/admin) (Optional)
+     *                         }
+     *                     }
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
@@ -2316,7 +2093,10 @@ public final class JobsImpl {
      *                     }
      *                 ]
      *                 applicationPackageReferences (Optional): [
-     *                     (recursive schema, see above)
+     *                      (Optional){
+     *                         applicationId: String (Required)
+     *                         version: String (Optional)
+     *                     }
      *                 ]
      *                 applicationLicenses (Optional): [
      *                     String (Optional)
@@ -2379,51 +2159,14 @@ public final class JobsImpl {
      *         }
      *     }
      *     onAllTasksComplete: String(noaction/terminatejob) (Optional)
-     *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
-     *     networkConfiguration (Optional): {
-     *         subnetId: String (Required)
-     *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     executionInfo (Optional): {
-     *         startTime: OffsetDateTime (Required)
-     *         endTime: OffsetDateTime (Optional)
-     *         poolId: String (Optional)
-     *         schedulingError (Optional): {
-     *             category: String(usererror/servererror) (Required)
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             details (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     value: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         terminateReason: String (Optional)
-     *     }
-     *     stats (Optional): {
-     *         url: String (Required)
-     *         startTime: OffsetDateTime (Required)
-     *         lastUpdateTime: OffsetDateTime (Required)
-     *         userCPUTime: Duration (Required)
-     *         kernelCPUTime: Duration (Required)
-     *         wallClockTime: Duration (Required)
-     *         readIOps: int (Required)
-     *         writeIOps: int (Required)
-     *         readIOGiB: double (Required)
-     *         writeIOGiB: double (Required)
-     *         numSucceededTasks: int (Required)
-     *         numFailedTasks: int (Required)
-     *         numTaskRetries: int (Required)
-     *         waitTime: Duration (Required)
-     *     }
      * }
      * }</pre>
      *
      * @param jobId The ID of the Job whose properties you want to update.
-     * @param jobPatchParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2432,8 +2175,8 @@ public final class JobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> patchWithResponse(String jobId, BinaryData jobPatchParameter, RequestOptions requestOptions) {
-        return patchWithResponseAsync(jobId, jobPatchParameter, requestOptions).block();
+    public Response<Void> patchWithResponse(String jobId, BinaryData parameters, RequestOptions requestOptions) {
+        return patchWithResponseAsync(jobId, parameters, requestOptions).block();
     }
 
     /**
@@ -2462,7 +2205,7 @@ public final class JobsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -2471,10 +2214,10 @@ public final class JobsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -2618,7 +2361,7 @@ public final class JobsImpl {
      *     commonEnvironmentSettings (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     poolInfo (Optional): {
+     *     poolInfo (Required): {
      *         poolId: String (Optional)
      *         autoPoolSpecification (Optional): {
      *             autoPoolIdPrefix: String (Optional)
@@ -2677,8 +2420,9 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -2864,7 +2608,7 @@ public final class JobsImpl {
      * }</pre>
      *
      * @param jobId The ID of the Job whose properties you want to update.
-     * @param jobUpdateParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2874,7 +2618,7 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateWithResponseAsync(
-            String jobId, BinaryData jobUpdateParameter, RequestOptions requestOptions) {
+            String jobId, BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2885,7 +2629,7 @@ public final class JobsImpl {
                                 contentType,
                                 jobId,
                                 accept,
-                                jobUpdateParameter,
+                                parameters,
                                 requestOptions,
                                 context));
     }
@@ -2916,7 +2660,7 @@ public final class JobsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -2925,10 +2669,10 @@ public final class JobsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3072,7 +2816,7 @@ public final class JobsImpl {
      *     commonEnvironmentSettings (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     poolInfo (Optional): {
+     *     poolInfo (Required): {
      *         poolId: String (Optional)
      *         autoPoolSpecification (Optional): {
      *             autoPoolIdPrefix: String (Optional)
@@ -3131,8 +2875,9 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -3318,7 +3063,7 @@ public final class JobsImpl {
      * }</pre>
      *
      * @param jobId The ID of the Job whose properties you want to update.
-     * @param jobUpdateParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3327,9 +3072,8 @@ public final class JobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateWithResponse(
-            String jobId, BinaryData jobUpdateParameter, RequestOptions requestOptions) {
-        return updateWithResponseAsync(jobId, jobUpdateParameter, requestOptions).block();
+    public Response<Void> updateWithResponse(String jobId, BinaryData parameters, RequestOptions requestOptions) {
+        return updateWithResponseAsync(jobId, parameters, requestOptions).block();
     }
 
     /**
@@ -3361,7 +3105,7 @@ public final class JobsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -3370,10 +3114,10 @@ public final class JobsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3389,7 +3133,7 @@ public final class JobsImpl {
      * }</pre>
      *
      * @param jobId The ID of the Job to disable.
-     * @param jobDisableParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3399,7 +3143,7 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableWithResponseAsync(
-            String jobId, BinaryData jobDisableParameter, RequestOptions requestOptions) {
+            String jobId, BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -3410,7 +3154,7 @@ public final class JobsImpl {
                                 contentType,
                                 jobId,
                                 accept,
-                                jobDisableParameter,
+                                parameters,
                                 requestOptions,
                                 context));
     }
@@ -3444,7 +3188,7 @@ public final class JobsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -3453,10 +3197,10 @@ public final class JobsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3472,7 +3216,7 @@ public final class JobsImpl {
      * }</pre>
      *
      * @param jobId The ID of the Job to disable.
-     * @param jobDisableParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3481,9 +3225,8 @@ public final class JobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> disableWithResponse(
-            String jobId, BinaryData jobDisableParameter, RequestOptions requestOptions) {
-        return disableWithResponseAsync(jobId, jobDisableParameter, requestOptions).block();
+    public Response<Void> disableWithResponse(String jobId, BinaryData parameters, RequestOptions requestOptions) {
+        return disableWithResponseAsync(jobId, parameters, requestOptions).block();
     }
 
     /**
@@ -3513,7 +3256,7 @@ public final class JobsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -3522,10 +3265,10 @@ public final class JobsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3581,7 +3324,7 @@ public final class JobsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -3590,10 +3333,10 @@ public final class JobsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3641,7 +3384,7 @@ public final class JobsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -3650,10 +3393,10 @@ public final class JobsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3679,6 +3422,14 @@ public final class JobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> terminateWithResponseAsync(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
+        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+        requestOptionsLocal.addRequestCallback(
+                requestLocal -> {
+                    if (requestLocal.getBody() != null
+                            && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
+                        requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+                    }
+                });
         return FluxUtil.withContext(
                 context ->
                         service.terminate(
@@ -3686,7 +3437,7 @@ public final class JobsImpl {
                                 this.client.getServiceVersion().getVersion(),
                                 jobId,
                                 accept,
-                                requestOptions,
+                                requestOptionsLocal,
                                 context));
     }
 
@@ -3718,7 +3469,7 @@ public final class JobsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -3727,10 +3478,10 @@ public final class JobsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3759,7 +3510,7 @@ public final class JobsImpl {
     }
 
     /**
-     * Adds a Job to the specified Account.
+     * Creates a Job to the specified Account.
      *
      * <p>The Batch service supports two ways to control the work done as part of a Job. In the first approach, the user
      * specifies a Job Manager Task. The Batch service launches this Task when it is ready to start the Job. The Job
@@ -3787,7 +3538,7 @@ public final class JobsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -3798,17 +3549,9 @@ public final class JobsImpl {
      *
      * <pre>{@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
      *     allowTaskPreemption: Boolean (Optional)
      *     maxParallelTasks: Integer (Optional)
@@ -3931,7 +3674,7 @@ public final class JobsImpl {
      *     commonEnvironmentSettings (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     poolInfo (Optional): {
+     *     poolInfo (Required): {
      *         poolId: String (Optional)
      *         autoPoolSpecification (Optional): {
      *             autoPoolIdPrefix: String (Optional)
@@ -3990,8 +3733,9 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -4140,23 +3884,6 @@ public final class JobsImpl {
      *     metadata (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     executionInfo (Optional): {
-     *         startTime: OffsetDateTime (Required)
-     *         endTime: OffsetDateTime (Optional)
-     *         poolId: String (Optional)
-     *         schedulingError (Optional): {
-     *             category: String(usererror/servererror) (Required)
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             details (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     value: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         terminateReason: String (Optional)
-     *     }
      *     stats (Optional): {
      *         url: String (Required)
      *         startTime: OffsetDateTime (Required)
@@ -4176,7 +3903,7 @@ public final class JobsImpl {
      * }
      * }</pre>
      *
-     * @param job The Job to be added.
+     * @param parameters The Job to be crated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4185,23 +3912,23 @@ public final class JobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addWithResponseAsync(BinaryData job, RequestOptions requestOptions) {
+    public Mono<Response<Void>> createWithResponseAsync(BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.add(
+                        service.create(
                                 this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 contentType,
                                 accept,
-                                job,
+                                parameters,
                                 requestOptions,
                                 context));
     }
 
     /**
-     * Adds a Job to the specified Account.
+     * Creates a Job to the specified Account.
      *
      * <p>The Batch service supports two ways to control the work done as part of a Job. In the first approach, the user
      * specifies a Job Manager Task. The Batch service launches this Task when it is ready to start the Job. The Job
@@ -4229,7 +3956,7 @@ public final class JobsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -4240,17 +3967,9 @@ public final class JobsImpl {
      *
      * <pre>{@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
      *     allowTaskPreemption: Boolean (Optional)
      *     maxParallelTasks: Integer (Optional)
@@ -4373,7 +4092,7 @@ public final class JobsImpl {
      *     commonEnvironmentSettings (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     poolInfo (Optional): {
+     *     poolInfo (Required): {
      *         poolId: String (Optional)
      *         autoPoolSpecification (Optional): {
      *             autoPoolIdPrefix: String (Optional)
@@ -4432,8 +4151,9 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -4582,23 +4302,6 @@ public final class JobsImpl {
      *     metadata (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     executionInfo (Optional): {
-     *         startTime: OffsetDateTime (Required)
-     *         endTime: OffsetDateTime (Optional)
-     *         poolId: String (Optional)
-     *         schedulingError (Optional): {
-     *             category: String(usererror/servererror) (Required)
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             details (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     value: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         terminateReason: String (Optional)
-     *     }
      *     stats (Optional): {
      *         url: String (Required)
      *         startTime: OffsetDateTime (Required)
@@ -4618,7 +4321,7 @@ public final class JobsImpl {
      * }
      * }</pre>
      *
-     * @param job The Job to be added.
+     * @param parameters The Job to be crated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4627,8 +4330,8 @@ public final class JobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addWithResponse(BinaryData job, RequestOptions requestOptions) {
-        return addWithResponseAsync(job, requestOptions).block();
+    public Response<Void> createWithResponse(BinaryData parameters, RequestOptions requestOptions) {
+        return createWithResponseAsync(parameters, requestOptions).block();
     }
 
     /**
@@ -4656,7 +4359,7 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -4803,7 +4506,7 @@ public final class JobsImpl {
      *     commonEnvironmentSettings (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     poolInfo (Optional): {
+     *     poolInfo (Required): {
      *         poolId: String (Optional)
      *         autoPoolSpecification (Optional): {
      *             autoPoolIdPrefix: String (Optional)
@@ -4862,8 +4565,9 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -5103,7 +4807,7 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -5250,7 +4954,7 @@ public final class JobsImpl {
      *     commonEnvironmentSettings (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     poolInfo (Optional): {
+     *     poolInfo (Required): {
      *         poolId: String (Optional)
      *         autoPoolSpecification (Optional): {
      *             autoPoolIdPrefix: String (Optional)
@@ -5309,8 +5013,9 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -5539,7 +5244,7 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -5686,7 +5391,7 @@ public final class JobsImpl {
      *     commonEnvironmentSettings (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     poolInfo (Optional): {
+     *     poolInfo (Required): {
      *         poolId: String (Optional)
      *         autoPoolSpecification (Optional): {
      *             autoPoolIdPrefix: String (Optional)
@@ -5745,8 +5450,9 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -5968,7 +5674,7 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -6115,7 +5821,7 @@ public final class JobsImpl {
      *     commonEnvironmentSettings (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     poolInfo (Optional): {
+     *     poolInfo (Required): {
      *         poolId: String (Optional)
      *         autoPoolSpecification (Optional): {
      *             autoPoolIdPrefix: String (Optional)
@@ -6174,8 +5880,9 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -6418,7 +6125,7 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -6565,7 +6272,7 @@ public final class JobsImpl {
      *     commonEnvironmentSettings (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     poolInfo (Optional): {
+     *     poolInfo (Required): {
      *         poolId: String (Optional)
      *         autoPoolSpecification (Optional): {
      *             autoPoolIdPrefix: String (Optional)
@@ -6624,8 +6331,9 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -6855,7 +6563,7 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -7002,7 +6710,7 @@ public final class JobsImpl {
      *     commonEnvironmentSettings (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     poolInfo (Optional): {
+     *     poolInfo (Required): {
      *         poolId: String (Optional)
      *         autoPoolSpecification (Optional): {
      *             autoPoolIdPrefix: String (Optional)
@@ -7061,8 +6769,9 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -7290,7 +6999,7 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -7411,7 +7120,7 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -7521,7 +7230,7 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -7619,7 +7328,7 @@ public final class JobsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -7696,7 +7405,7 @@ public final class JobsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -7747,7 +7456,7 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -7894,7 +7603,7 @@ public final class JobsImpl {
      *     commonEnvironmentSettings (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     poolInfo (Optional): {
+     *     poolInfo (Required): {
      *         poolId: String (Optional)
      *         autoPoolSpecification (Optional): {
      *             autoPoolIdPrefix: String (Optional)
@@ -7953,8 +7662,9 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -8176,7 +7886,7 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -8323,7 +8033,7 @@ public final class JobsImpl {
      *     commonEnvironmentSettings (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     poolInfo (Optional): {
+     *     poolInfo (Required): {
      *         poolId: String (Optional)
      *         autoPoolSpecification (Optional): {
      *             autoPoolIdPrefix: String (Optional)
@@ -8382,8 +8092,9 @@ public final class JobsImpl {
      *                             type: String (Required)
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             settings: Object (Optional)
-     *                             protectedSettings: Object (Optional)
+     *                             settings (Optional): {
+     *                             }
+     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -8608,7 +8319,7 @@ public final class JobsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration

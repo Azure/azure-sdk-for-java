@@ -4,6 +4,7 @@
 
 package com.azure.compute.batch.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,14 +21,16 @@ public final class NodeAgentInformation {
      * located at
      * https://github.com/Azure/Batch/blob/master/changelogs/nodeagent/CHANGELOG.md.
      */
-    @JsonProperty(value = "version", required = true)
+    @Generated
+    @JsonProperty(value = "version")
     private String version;
 
     /*
      * This is the most recent time that the Compute Node agent was updated to a new
      * version.
      */
-    @JsonProperty(value = "lastUpdateTime", required = true)
+    @Generated
+    @JsonProperty(value = "lastUpdateTime")
     private OffsetDateTime lastUpdateTime;
 
     /**
@@ -36,10 +39,11 @@ public final class NodeAgentInformation {
      * @param version the version value to set.
      * @param lastUpdateTime the lastUpdateTime value to set.
      */
+    @Generated
     @JsonCreator
     private NodeAgentInformation(
-            @JsonProperty(value = "version", required = true) String version,
-            @JsonProperty(value = "lastUpdateTime", required = true) OffsetDateTime lastUpdateTime) {
+            @JsonProperty(value = "version") String version,
+            @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime) {
         this.version = version;
         this.lastUpdateTime = lastUpdateTime;
     }
@@ -50,6 +54,7 @@ public final class NodeAgentInformation {
      *
      * @return the version value.
      */
+    @Generated
     public String getVersion() {
         return this.version;
     }
@@ -60,6 +65,7 @@ public final class NodeAgentInformation {
      *
      * @return the lastUpdateTime value.
      */
+    @Generated
     public OffsetDateTime getLastUpdateTime() {
         return this.lastUpdateTime;
     }

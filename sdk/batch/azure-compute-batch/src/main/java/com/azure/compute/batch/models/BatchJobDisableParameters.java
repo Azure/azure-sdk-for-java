@@ -4,6 +4,7 @@
 
 package com.azure.compute.batch.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,7 +15,8 @@ public final class BatchJobDisableParameters {
     /*
      * What to do with active Tasks associated with the Job.
      */
-    @JsonProperty(value = "disableTasks", required = true)
+    @Generated
+    @JsonProperty(value = "disableTasks")
     private DisableJobOption disableTasks;
 
     /**
@@ -22,9 +24,9 @@ public final class BatchJobDisableParameters {
      *
      * @param disableTasks the disableTasks value to set.
      */
+    @Generated
     @JsonCreator
-    public BatchJobDisableParameters(
-            @JsonProperty(value = "disableTasks", required = true) DisableJobOption disableTasks) {
+    public BatchJobDisableParameters(@JsonProperty(value = "disableTasks") DisableJobOption disableTasks) {
         this.disableTasks = disableTasks;
     }
 
@@ -33,6 +35,7 @@ public final class BatchJobDisableParameters {
      *
      * @return the disableTasks value.
      */
+    @Generated
     public DisableJobOption getDisableTasks() {
         return this.disableTasks;
     }

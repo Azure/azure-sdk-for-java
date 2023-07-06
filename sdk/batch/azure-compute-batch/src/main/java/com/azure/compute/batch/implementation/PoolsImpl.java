@@ -114,12 +114,12 @@ public final class PoolsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> add(
+        Mono<Response<Void>> create(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("content-type") String contentType,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -163,18 +163,15 @@ public final class PoolsImpl {
                 Context context);
 
         @Head("/pools/{poolId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
                 code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> exists(
+        Mono<Response<Boolean>> exists(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("poolId") String poolId,
@@ -220,7 +217,7 @@ public final class PoolsImpl {
                 @PathParam("poolId") String poolId,
                 @HeaderParam("content-type") String contentType,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData poolPatchParameter,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -262,7 +259,7 @@ public final class PoolsImpl {
                 @PathParam("poolId") String poolId,
                 @HeaderParam("content-type") String contentType,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData poolEnableAutoScaleParameter,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -284,7 +281,7 @@ public final class PoolsImpl {
                 @HeaderParam("content-type") String contentType,
                 @PathParam("poolId") String poolId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData poolEvaluateAutoScaleParameter,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -306,7 +303,7 @@ public final class PoolsImpl {
                 @PathParam("poolId") String poolId,
                 @HeaderParam("content-type") String contentType,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData poolResizeParameter,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -348,7 +345,7 @@ public final class PoolsImpl {
                 @HeaderParam("content-type") String contentType,
                 @PathParam("poolId") String poolId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData poolUpdatePropertiesParameter,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -370,7 +367,7 @@ public final class PoolsImpl {
                 @PathParam("poolId") String poolId,
                 @HeaderParam("content-type") String contentType,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData nodeRemoveParameter,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -447,7 +444,7 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -533,7 +530,7 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -608,7 +605,7 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -669,7 +666,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -753,7 +750,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -804,7 +801,7 @@ public final class PoolsImpl {
     }
 
     /**
-     * Adds a Pool to the specified Account.
+     * Creates a Pool to the specified Account.
      *
      * <p>When naming Pools, avoid including sensitive information such as user names or secret project names. This
      * information may appear in telemetry logs accessible to Microsoft Support engineers.
@@ -828,7 +825,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -839,17 +836,9 @@ public final class PoolsImpl {
      *
      * <pre>{@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     allocationState: String(steady/resizing/stopping) (Optional)
-     *     allocationStateTransitionTime: OffsetDateTime (Optional)
-     *     vmSize: String (Optional)
+     *     vmSize: String (Required)
      *     cloudServiceConfiguration (Optional): {
      *         osFamily: String (Required)
      *         osVersion: String (Optional)
@@ -907,8 +896,9 @@ public final class PoolsImpl {
      *                 type: String (Required)
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                 settings: Object (Optional)
-     *                 protectedSettings: Object (Optional)
+     *                 settings (Optional): {
+     *                 }
+     *                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
      *                 ]
@@ -921,36 +911,11 @@ public final class PoolsImpl {
      *         }
      *     }
      *     resizeTimeout: Duration (Optional)
-     *     resizeErrors (Optional): [
-     *          (Optional){
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             values (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     value: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     currentDedicatedNodes: Integer (Optional)
-     *     currentLowPriorityNodes: Integer (Optional)
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     enableAutoScale: Boolean (Optional)
      *     autoScaleFormula: String (Optional)
      *     autoScaleEvaluationInterval: Duration (Optional)
-     *     autoScaleRun (Optional): {
-     *         timestamp: OffsetDateTime (Required)
-     *         results: String (Optional)
-     *         error (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             values (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *     }
      *     enableInterNodeCommunication: Boolean (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Optional)
@@ -1063,31 +1028,6 @@ public final class PoolsImpl {
      *             value: String (Required)
      *         }
      *     ]
-     *     stats (Optional): {
-     *         url: String (Required)
-     *         startTime: OffsetDateTime (Required)
-     *         lastUpdateTime: OffsetDateTime (Required)
-     *         usageStats (Optional): {
-     *             startTime: OffsetDateTime (Required)
-     *             lastUpdateTime: OffsetDateTime (Required)
-     *             dedicatedCoreTime: Duration (Required)
-     *         }
-     *         resourceStats (Optional): {
-     *             startTime: OffsetDateTime (Required)
-     *             lastUpdateTime: OffsetDateTime (Required)
-     *             avgCPUPercentage: double (Required)
-     *             avgMemoryGiB: double (Required)
-     *             peakMemoryGiB: double (Required)
-     *             avgDiskGiB: double (Required)
-     *             peakDiskGiB: double (Required)
-     *             diskReadIOps: int (Required)
-     *             diskWriteIOps: int (Required)
-     *             diskReadGiB: double (Required)
-     *             diskWriteGiB: double (Required)
-     *             networkReadGiB: double (Required)
-     *             networkWriteGiB: double (Required)
-     *         }
-     *     }
      *     mountConfiguration (Optional): [
      *          (Optional){
      *             azureBlobFileSystemConfiguration (Optional): {
@@ -1120,22 +1060,11 @@ public final class PoolsImpl {
      *             }
      *         }
      *     ]
-     *     identity (Optional): {
-     *         type: String(UserAssigned/None) (Required)
-     *         userAssignedIdentities (Optional): [
-     *              (Optional){
-     *                 resourceId: String (Required)
-     *                 clientId: String (Optional)
-     *                 principalId: String (Optional)
-     *             }
-     *         ]
-     *     }
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
      * }</pre>
      *
-     * @param pool The Pool to be added.
+     * @param parameters The Pool to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1144,23 +1073,23 @@ public final class PoolsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addWithResponseAsync(BinaryData pool, RequestOptions requestOptions) {
+    public Mono<Response<Void>> createWithResponseAsync(BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.add(
+                        service.create(
                                 this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 contentType,
                                 accept,
-                                pool,
+                                parameters,
                                 requestOptions,
                                 context));
     }
 
     /**
-     * Adds a Pool to the specified Account.
+     * Creates a Pool to the specified Account.
      *
      * <p>When naming Pools, avoid including sensitive information such as user names or secret project names. This
      * information may appear in telemetry logs accessible to Microsoft Support engineers.
@@ -1184,7 +1113,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -1195,17 +1124,9 @@ public final class PoolsImpl {
      *
      * <pre>{@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     allocationState: String(steady/resizing/stopping) (Optional)
-     *     allocationStateTransitionTime: OffsetDateTime (Optional)
-     *     vmSize: String (Optional)
+     *     vmSize: String (Required)
      *     cloudServiceConfiguration (Optional): {
      *         osFamily: String (Required)
      *         osVersion: String (Optional)
@@ -1263,8 +1184,9 @@ public final class PoolsImpl {
      *                 type: String (Required)
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                 settings: Object (Optional)
-     *                 protectedSettings: Object (Optional)
+     *                 settings (Optional): {
+     *                 }
+     *                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
      *                 ]
@@ -1277,36 +1199,11 @@ public final class PoolsImpl {
      *         }
      *     }
      *     resizeTimeout: Duration (Optional)
-     *     resizeErrors (Optional): [
-     *          (Optional){
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             values (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     value: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     currentDedicatedNodes: Integer (Optional)
-     *     currentLowPriorityNodes: Integer (Optional)
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     enableAutoScale: Boolean (Optional)
      *     autoScaleFormula: String (Optional)
      *     autoScaleEvaluationInterval: Duration (Optional)
-     *     autoScaleRun (Optional): {
-     *         timestamp: OffsetDateTime (Required)
-     *         results: String (Optional)
-     *         error (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             values (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *     }
      *     enableInterNodeCommunication: Boolean (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Optional)
@@ -1419,31 +1316,6 @@ public final class PoolsImpl {
      *             value: String (Required)
      *         }
      *     ]
-     *     stats (Optional): {
-     *         url: String (Required)
-     *         startTime: OffsetDateTime (Required)
-     *         lastUpdateTime: OffsetDateTime (Required)
-     *         usageStats (Optional): {
-     *             startTime: OffsetDateTime (Required)
-     *             lastUpdateTime: OffsetDateTime (Required)
-     *             dedicatedCoreTime: Duration (Required)
-     *         }
-     *         resourceStats (Optional): {
-     *             startTime: OffsetDateTime (Required)
-     *             lastUpdateTime: OffsetDateTime (Required)
-     *             avgCPUPercentage: double (Required)
-     *             avgMemoryGiB: double (Required)
-     *             peakMemoryGiB: double (Required)
-     *             avgDiskGiB: double (Required)
-     *             peakDiskGiB: double (Required)
-     *             diskReadIOps: int (Required)
-     *             diskWriteIOps: int (Required)
-     *             diskReadGiB: double (Required)
-     *             diskWriteGiB: double (Required)
-     *             networkReadGiB: double (Required)
-     *             networkWriteGiB: double (Required)
-     *         }
-     *     }
      *     mountConfiguration (Optional): [
      *          (Optional){
      *             azureBlobFileSystemConfiguration (Optional): {
@@ -1476,22 +1348,11 @@ public final class PoolsImpl {
      *             }
      *         }
      *     ]
-     *     identity (Optional): {
-     *         type: String(UserAssigned/None) (Required)
-     *         userAssignedIdentities (Optional): [
-     *              (Optional){
-     *                 resourceId: String (Required)
-     *                 clientId: String (Optional)
-     *                 principalId: String (Optional)
-     *             }
-     *         ]
-     *     }
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
      * }</pre>
      *
-     * @param pool The Pool to be added.
+     * @param parameters The Pool to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1500,8 +1361,8 @@ public final class PoolsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addWithResponse(BinaryData pool, RequestOptions requestOptions) {
-        return addWithResponseAsync(pool, requestOptions).block();
+    public Response<Void> createWithResponse(BinaryData parameters, RequestOptions requestOptions) {
+        return createWithResponseAsync(parameters, requestOptions).block();
     }
 
     /**
@@ -1529,7 +1390,7 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -1611,8 +1472,9 @@ public final class PoolsImpl {
      *                 type: String (Required)
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                 settings: Object (Optional)
-     *                 protectedSettings: Object (Optional)
+     *                 settings (Optional): {
+     *                 }
+     *                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
      *                 ]
@@ -1722,8 +1584,8 @@ public final class PoolsImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
+     *     certificateReferences (Required): [
+     *          (Required){
      *             thumbprint: String (Required)
      *             thumbprintAlgorithm: String (Required)
      *             storeLocation: String(currentuser/localmachine) (Optional)
@@ -1733,8 +1595,8 @@ public final class PoolsImpl {
      *             ]
      *         }
      *     ]
-     *     applicationPackageReferences (Optional): [
-     *          (Optional){
+     *     applicationPackageReferences (Required): [
+     *          (Required){
      *             applicationId: String (Required)
      *             version: String (Optional)
      *         }
@@ -1761,8 +1623,8 @@ public final class PoolsImpl {
      *             }
      *         }
      *     ]
-     *     metadata (Optional): [
-     *          (Optional){
+     *     metadata (Required): [
+     *          (Required){
      *             name: String (Required)
      *             value: String (Required)
      *         }
@@ -1894,7 +1756,7 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -1976,8 +1838,9 @@ public final class PoolsImpl {
      *                 type: String (Required)
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                 settings: Object (Optional)
-     *                 protectedSettings: Object (Optional)
+     *                 settings (Optional): {
+     *                 }
+     *                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
      *                 ]
@@ -2087,8 +1950,8 @@ public final class PoolsImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
+     *     certificateReferences (Required): [
+     *          (Required){
      *             thumbprint: String (Required)
      *             thumbprintAlgorithm: String (Required)
      *             storeLocation: String(currentuser/localmachine) (Optional)
@@ -2098,8 +1961,8 @@ public final class PoolsImpl {
      *             ]
      *         }
      *     ]
-     *     applicationPackageReferences (Optional): [
-     *          (Optional){
+     *     applicationPackageReferences (Required): [
+     *          (Required){
      *             applicationId: String (Required)
      *             version: String (Optional)
      *         }
@@ -2126,8 +1989,8 @@ public final class PoolsImpl {
      *             }
      *         }
      *     ]
-     *     metadata (Optional): [
-     *          (Optional){
+     *     metadata (Required): [
+     *          (Required){
      *             name: String (Required)
      *             value: String (Required)
      *         }
@@ -2248,7 +2111,7 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -2330,8 +2193,9 @@ public final class PoolsImpl {
      *                 type: String (Required)
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                 settings: Object (Optional)
-     *                 protectedSettings: Object (Optional)
+     *                 settings (Optional): {
+     *                 }
+     *                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
      *                 ]
@@ -2441,8 +2305,8 @@ public final class PoolsImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
+     *     certificateReferences (Required): [
+     *          (Required){
      *             thumbprint: String (Required)
      *             thumbprintAlgorithm: String (Required)
      *             storeLocation: String(currentuser/localmachine) (Optional)
@@ -2452,8 +2316,8 @@ public final class PoolsImpl {
      *             ]
      *         }
      *     ]
-     *     applicationPackageReferences (Optional): [
-     *          (Optional){
+     *     applicationPackageReferences (Required): [
+     *          (Required){
      *             applicationId: String (Required)
      *             version: String (Optional)
      *         }
@@ -2480,8 +2344,8 @@ public final class PoolsImpl {
      *             }
      *         }
      *     ]
-     *     metadata (Optional): [
-     *          (Optional){
+     *     metadata (Required): [
+     *          (Required){
      *             name: String (Required)
      *             value: String (Required)
      *         }
@@ -2601,7 +2465,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -2610,10 +2474,10 @@ public final class PoolsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -2673,7 +2537,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -2682,10 +2546,10 @@ public final class PoolsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -2727,7 +2591,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -2736,26 +2600,31 @@ public final class PoolsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * boolean
+     * }</pre>
+     *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return basic properties of a Pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> existsWithResponseAsync(String poolId, RequestOptions requestOptions) {
+    public Mono<Response<Boolean>> existsWithResponseAsync(String poolId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -2790,7 +2659,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -2799,26 +2668,31 @@ public final class PoolsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * boolean
+     * }</pre>
+     *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return basic properties of a Pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> existsWithResponse(String poolId, RequestOptions requestOptions) {
+    public Response<Boolean> existsWithResponse(String poolId, RequestOptions requestOptions) {
         return existsWithResponseAsync(poolId, requestOptions).block();
     }
 
@@ -2846,7 +2720,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -2855,10 +2729,10 @@ public final class PoolsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -2937,8 +2811,9 @@ public final class PoolsImpl {
      *                 type: String (Required)
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                 settings: Object (Optional)
-     *                 protectedSettings: Object (Optional)
+     *                 settings (Optional): {
+     *                 }
+     *                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
      *                 ]
@@ -3048,8 +2923,8 @@ public final class PoolsImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
+     *     certificateReferences (Required): [
+     *          (Required){
      *             thumbprint: String (Required)
      *             thumbprintAlgorithm: String (Required)
      *             storeLocation: String(currentuser/localmachine) (Optional)
@@ -3059,8 +2934,8 @@ public final class PoolsImpl {
      *             ]
      *         }
      *     ]
-     *     applicationPackageReferences (Optional): [
-     *          (Optional){
+     *     applicationPackageReferences (Required): [
+     *          (Required){
      *             applicationId: String (Required)
      *             version: String (Optional)
      *         }
@@ -3087,8 +2962,8 @@ public final class PoolsImpl {
      *             }
      *         }
      *     ]
-     *     metadata (Optional): [
-     *          (Optional){
+     *     metadata (Required): [
+     *          (Required){
      *             name: String (Required)
      *             value: String (Required)
      *         }
@@ -3212,7 +3087,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -3221,10 +3096,10 @@ public final class PoolsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3303,8 +3178,9 @@ public final class PoolsImpl {
      *                 type: String (Required)
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                 settings: Object (Optional)
-     *                 protectedSettings: Object (Optional)
+     *                 settings (Optional): {
+     *                 }
+     *                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
      *                 ]
@@ -3414,8 +3290,8 @@ public final class PoolsImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
+     *     certificateReferences (Required): [
+     *          (Required){
      *             thumbprint: String (Required)
      *             thumbprintAlgorithm: String (Required)
      *             storeLocation: String(currentuser/localmachine) (Optional)
@@ -3425,8 +3301,8 @@ public final class PoolsImpl {
      *             ]
      *         }
      *     ]
-     *     applicationPackageReferences (Optional): [
-     *          (Optional){
+     *     applicationPackageReferences (Required): [
+     *          (Required){
      *             applicationId: String (Required)
      *             version: String (Optional)
      *         }
@@ -3453,8 +3329,8 @@ public final class PoolsImpl {
      *             }
      *         }
      *     ]
-     *     metadata (Optional): [
-     *          (Optional){
+     *     metadata (Required): [
+     *          (Required){
      *             name: String (Required)
      *             value: String (Required)
      *         }
@@ -3570,7 +3446,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -3579,10 +3455,10 @@ public final class PoolsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3593,156 +3469,19 @@ public final class PoolsImpl {
      *
      * <pre>{@code
      * {
-     *     id: String (Optional)
-     *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     allocationState: String(steady/resizing/stopping) (Optional)
-     *     allocationStateTransitionTime: OffsetDateTime (Optional)
-     *     vmSize: String (Optional)
-     *     cloudServiceConfiguration (Optional): {
-     *         osFamily: String (Required)
-     *         osVersion: String (Optional)
-     *     }
-     *     virtualMachineConfiguration (Optional): {
-     *         imageReference (Required): {
-     *             publisher: String (Optional)
-     *             offer: String (Optional)
-     *             sku: String (Optional)
-     *             version: String (Optional)
-     *             virtualMachineImageId: String (Optional)
-     *             exactVersion: String (Optional)
-     *         }
-     *         nodeAgentSKUId: String (Required)
-     *         windowsConfiguration (Optional): {
-     *             enableAutomaticUpdates: Boolean (Optional)
-     *         }
-     *         dataDisks (Optional): [
-     *              (Optional){
-     *                 lun: int (Required)
-     *                 caching: String(none/readonly/readwrite) (Optional)
-     *                 diskSizeGB: int (Required)
-     *                 storageAccountType: String(standard_lrs/premium_lrs) (Optional)
-     *             }
-     *         ]
-     *         licenseType: String (Optional)
-     *         containerConfiguration (Optional): {
-     *             type: String(dockerCompatible) (Required)
-     *             containerImageNames (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             containerRegistries (Optional): [
-     *                  (Optional){
-     *                     username: String (Optional)
-     *                     password: String (Optional)
-     *                     registryServer: String (Optional)
-     *                     identityReference (Optional): {
-     *                         resourceId: String (Optional)
-     *                     }
-     *                 }
-     *             ]
-     *         }
-     *         diskEncryptionConfiguration (Optional): {
-     *             targets (Optional): [
-     *                 String(osdisk/temporarydisk) (Optional)
-     *             ]
-     *         }
-     *         nodePlacementConfiguration (Optional): {
-     *             policy: String(regional/zonal) (Optional)
-     *         }
-     *         extensions (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 publisher: String (Required)
-     *                 type: String (Required)
-     *                 typeHandlerVersion: String (Optional)
-     *                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                 settings: Object (Optional)
-     *                 protectedSettings: Object (Optional)
-     *                 provisionAfterExtensions (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *         osDisk (Optional): {
-     *             ephemeralOSDiskSettings (Optional): {
-     *                 placement: String(cachedisk) (Optional)
-     *             }
-     *         }
-     *     }
-     *     resizeTimeout: Duration (Optional)
-     *     resizeErrors (Optional): [
-     *          (Optional){
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             values (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     value: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     currentDedicatedNodes: Integer (Optional)
-     *     currentLowPriorityNodes: Integer (Optional)
-     *     targetDedicatedNodes: Integer (Optional)
-     *     targetLowPriorityNodes: Integer (Optional)
-     *     enableAutoScale: Boolean (Optional)
-     *     autoScaleFormula: String (Optional)
-     *     autoScaleEvaluationInterval: Duration (Optional)
-     *     autoScaleRun (Optional): {
-     *         timestamp: OffsetDateTime (Required)
-     *         results: String (Optional)
-     *         error (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             values (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *     }
-     *     enableInterNodeCommunication: Boolean (Optional)
-     *     networkConfiguration (Optional): {
-     *         subnetId: String (Optional)
-     *         dynamicVNetAssignmentScope: String(none/job) (Optional)
-     *         endpointConfiguration (Optional): {
-     *             inboundNATPools (Required): [
-     *                  (Required){
-     *                     name: String (Required)
-     *                     protocol: String(tcp/udp) (Required)
-     *                     backendPort: int (Required)
-     *                     frontendPortRangeStart: int (Required)
-     *                     frontendPortRangeEnd: int (Required)
-     *                     networkSecurityGroupRules (Optional): [
-     *                          (Optional){
-     *                             priority: int (Required)
-     *                             access: String(allow/deny) (Required)
-     *                             sourceAddressPrefix: String (Required)
-     *                             sourcePortRanges (Optional): [
-     *                                 String (Optional)
-     *                             ]
-     *                         }
-     *                     ]
-     *                 }
-     *             ]
-     *         }
-     *         publicIPAddressConfiguration (Optional): {
-     *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
-     *             ipAddressIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *         }
-     *     }
      *     startTask (Optional): {
      *         commandLine: String (Required)
      *         containerSettings (Optional): {
      *             containerRunOptions: String (Optional)
      *             imageName: String (Required)
-     *             registry (Optional): (recursive schema, see registry above)
+     *             registry (Optional): {
+     *                 username: String (Optional)
+     *                 password: String (Optional)
+     *                 registryServer: String (Optional)
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
      *         }
      *         resourceFiles (Optional): [
@@ -3789,108 +3528,18 @@ public final class PoolsImpl {
      *             version: String (Optional)
      *         }
      *     ]
-     *     applicationLicenses (Optional): [
-     *         String (Optional)
-     *     ]
-     *     taskSlotsPerNode: Integer (Optional)
-     *     taskSchedulingPolicy (Optional): {
-     *         nodeFillType: String(spread/pack) (Required)
-     *     }
-     *     userAccounts (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *             password: String (Required)
-     *             elevationLevel: String(nonadmin/admin) (Optional)
-     *             linuxUserConfiguration (Optional): {
-     *                 uid: Integer (Optional)
-     *                 gid: Integer (Optional)
-     *                 sshPrivateKey: String (Optional)
-     *             }
-     *             windowsUserConfiguration (Optional): {
-     *                 loginMode: String(batch/interactive) (Optional)
-     *             }
-     *         }
-     *     ]
      *     metadata (Optional): [
      *          (Optional){
      *             name: String (Required)
      *             value: String (Required)
      *         }
      *     ]
-     *     stats (Optional): {
-     *         url: String (Required)
-     *         startTime: OffsetDateTime (Required)
-     *         lastUpdateTime: OffsetDateTime (Required)
-     *         usageStats (Optional): {
-     *             startTime: OffsetDateTime (Required)
-     *             lastUpdateTime: OffsetDateTime (Required)
-     *             dedicatedCoreTime: Duration (Required)
-     *         }
-     *         resourceStats (Optional): {
-     *             startTime: OffsetDateTime (Required)
-     *             lastUpdateTime: OffsetDateTime (Required)
-     *             avgCPUPercentage: double (Required)
-     *             avgMemoryGiB: double (Required)
-     *             peakMemoryGiB: double (Required)
-     *             avgDiskGiB: double (Required)
-     *             peakDiskGiB: double (Required)
-     *             diskReadIOps: int (Required)
-     *             diskWriteIOps: int (Required)
-     *             diskReadGiB: double (Required)
-     *             diskWriteGiB: double (Required)
-     *             networkReadGiB: double (Required)
-     *             networkWriteGiB: double (Required)
-     *         }
-     *     }
-     *     mountConfiguration (Optional): [
-     *          (Optional){
-     *             azureBlobFileSystemConfiguration (Optional): {
-     *                 accountName: String (Required)
-     *                 containerName: String (Required)
-     *                 accountKey: String (Optional)
-     *                 sasKey: String (Optional)
-     *                 blobfuseOptions: String (Optional)
-     *                 relativeMountPath: String (Required)
-     *                 identityReference (Optional): (recursive schema, see identityReference above)
-     *             }
-     *             nfsMountConfiguration (Optional): {
-     *                 source: String (Required)
-     *                 relativeMountPath: String (Required)
-     *                 mountOptions: String (Optional)
-     *             }
-     *             cifsMountConfiguration (Optional): {
-     *                 username: String (Required)
-     *                 source: String (Required)
-     *                 relativeMountPath: String (Required)
-     *                 mountOptions: String (Optional)
-     *                 password: String (Required)
-     *             }
-     *             azureFileShareConfiguration (Optional): {
-     *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
-     *                 accountKey: String (Required)
-     *                 relativeMountPath: String (Required)
-     *                 mountOptions: String (Optional)
-     *             }
-     *         }
-     *     ]
-     *     identity (Optional): {
-     *         type: String(UserAssigned/None) (Required)
-     *         userAssignedIdentities (Optional): [
-     *              (Optional){
-     *                 resourceId: String (Required)
-     *                 clientId: String (Optional)
-     *                 principalId: String (Optional)
-     *             }
-     *         ]
-     *     }
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
      * }</pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param poolPatchParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3900,7 +3549,7 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> patchWithResponseAsync(
-            String poolId, BinaryData poolPatchParameter, RequestOptions requestOptions) {
+            String poolId, BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -3911,7 +3560,7 @@ public final class PoolsImpl {
                                 poolId,
                                 contentType,
                                 accept,
-                                poolPatchParameter,
+                                parameters,
                                 requestOptions,
                                 context));
     }
@@ -3942,7 +3591,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -3951,10 +3600,10 @@ public final class PoolsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3965,156 +3614,19 @@ public final class PoolsImpl {
      *
      * <pre>{@code
      * {
-     *     id: String (Optional)
-     *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     allocationState: String(steady/resizing/stopping) (Optional)
-     *     allocationStateTransitionTime: OffsetDateTime (Optional)
-     *     vmSize: String (Optional)
-     *     cloudServiceConfiguration (Optional): {
-     *         osFamily: String (Required)
-     *         osVersion: String (Optional)
-     *     }
-     *     virtualMachineConfiguration (Optional): {
-     *         imageReference (Required): {
-     *             publisher: String (Optional)
-     *             offer: String (Optional)
-     *             sku: String (Optional)
-     *             version: String (Optional)
-     *             virtualMachineImageId: String (Optional)
-     *             exactVersion: String (Optional)
-     *         }
-     *         nodeAgentSKUId: String (Required)
-     *         windowsConfiguration (Optional): {
-     *             enableAutomaticUpdates: Boolean (Optional)
-     *         }
-     *         dataDisks (Optional): [
-     *              (Optional){
-     *                 lun: int (Required)
-     *                 caching: String(none/readonly/readwrite) (Optional)
-     *                 diskSizeGB: int (Required)
-     *                 storageAccountType: String(standard_lrs/premium_lrs) (Optional)
-     *             }
-     *         ]
-     *         licenseType: String (Optional)
-     *         containerConfiguration (Optional): {
-     *             type: String(dockerCompatible) (Required)
-     *             containerImageNames (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             containerRegistries (Optional): [
-     *                  (Optional){
-     *                     username: String (Optional)
-     *                     password: String (Optional)
-     *                     registryServer: String (Optional)
-     *                     identityReference (Optional): {
-     *                         resourceId: String (Optional)
-     *                     }
-     *                 }
-     *             ]
-     *         }
-     *         diskEncryptionConfiguration (Optional): {
-     *             targets (Optional): [
-     *                 String(osdisk/temporarydisk) (Optional)
-     *             ]
-     *         }
-     *         nodePlacementConfiguration (Optional): {
-     *             policy: String(regional/zonal) (Optional)
-     *         }
-     *         extensions (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 publisher: String (Required)
-     *                 type: String (Required)
-     *                 typeHandlerVersion: String (Optional)
-     *                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                 settings: Object (Optional)
-     *                 protectedSettings: Object (Optional)
-     *                 provisionAfterExtensions (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *         osDisk (Optional): {
-     *             ephemeralOSDiskSettings (Optional): {
-     *                 placement: String(cachedisk) (Optional)
-     *             }
-     *         }
-     *     }
-     *     resizeTimeout: Duration (Optional)
-     *     resizeErrors (Optional): [
-     *          (Optional){
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             values (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     value: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     currentDedicatedNodes: Integer (Optional)
-     *     currentLowPriorityNodes: Integer (Optional)
-     *     targetDedicatedNodes: Integer (Optional)
-     *     targetLowPriorityNodes: Integer (Optional)
-     *     enableAutoScale: Boolean (Optional)
-     *     autoScaleFormula: String (Optional)
-     *     autoScaleEvaluationInterval: Duration (Optional)
-     *     autoScaleRun (Optional): {
-     *         timestamp: OffsetDateTime (Required)
-     *         results: String (Optional)
-     *         error (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             values (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *     }
-     *     enableInterNodeCommunication: Boolean (Optional)
-     *     networkConfiguration (Optional): {
-     *         subnetId: String (Optional)
-     *         dynamicVNetAssignmentScope: String(none/job) (Optional)
-     *         endpointConfiguration (Optional): {
-     *             inboundNATPools (Required): [
-     *                  (Required){
-     *                     name: String (Required)
-     *                     protocol: String(tcp/udp) (Required)
-     *                     backendPort: int (Required)
-     *                     frontendPortRangeStart: int (Required)
-     *                     frontendPortRangeEnd: int (Required)
-     *                     networkSecurityGroupRules (Optional): [
-     *                          (Optional){
-     *                             priority: int (Required)
-     *                             access: String(allow/deny) (Required)
-     *                             sourceAddressPrefix: String (Required)
-     *                             sourcePortRanges (Optional): [
-     *                                 String (Optional)
-     *                             ]
-     *                         }
-     *                     ]
-     *                 }
-     *             ]
-     *         }
-     *         publicIPAddressConfiguration (Optional): {
-     *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
-     *             ipAddressIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *         }
-     *     }
      *     startTask (Optional): {
      *         commandLine: String (Required)
      *         containerSettings (Optional): {
      *             containerRunOptions: String (Optional)
      *             imageName: String (Required)
-     *             registry (Optional): (recursive schema, see registry above)
+     *             registry (Optional): {
+     *                 username: String (Optional)
+     *                 password: String (Optional)
+     *                 registryServer: String (Optional)
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
      *         }
      *         resourceFiles (Optional): [
@@ -4161,108 +3673,18 @@ public final class PoolsImpl {
      *             version: String (Optional)
      *         }
      *     ]
-     *     applicationLicenses (Optional): [
-     *         String (Optional)
-     *     ]
-     *     taskSlotsPerNode: Integer (Optional)
-     *     taskSchedulingPolicy (Optional): {
-     *         nodeFillType: String(spread/pack) (Required)
-     *     }
-     *     userAccounts (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *             password: String (Required)
-     *             elevationLevel: String(nonadmin/admin) (Optional)
-     *             linuxUserConfiguration (Optional): {
-     *                 uid: Integer (Optional)
-     *                 gid: Integer (Optional)
-     *                 sshPrivateKey: String (Optional)
-     *             }
-     *             windowsUserConfiguration (Optional): {
-     *                 loginMode: String(batch/interactive) (Optional)
-     *             }
-     *         }
-     *     ]
      *     metadata (Optional): [
      *          (Optional){
      *             name: String (Required)
      *             value: String (Required)
      *         }
      *     ]
-     *     stats (Optional): {
-     *         url: String (Required)
-     *         startTime: OffsetDateTime (Required)
-     *         lastUpdateTime: OffsetDateTime (Required)
-     *         usageStats (Optional): {
-     *             startTime: OffsetDateTime (Required)
-     *             lastUpdateTime: OffsetDateTime (Required)
-     *             dedicatedCoreTime: Duration (Required)
-     *         }
-     *         resourceStats (Optional): {
-     *             startTime: OffsetDateTime (Required)
-     *             lastUpdateTime: OffsetDateTime (Required)
-     *             avgCPUPercentage: double (Required)
-     *             avgMemoryGiB: double (Required)
-     *             peakMemoryGiB: double (Required)
-     *             avgDiskGiB: double (Required)
-     *             peakDiskGiB: double (Required)
-     *             diskReadIOps: int (Required)
-     *             diskWriteIOps: int (Required)
-     *             diskReadGiB: double (Required)
-     *             diskWriteGiB: double (Required)
-     *             networkReadGiB: double (Required)
-     *             networkWriteGiB: double (Required)
-     *         }
-     *     }
-     *     mountConfiguration (Optional): [
-     *          (Optional){
-     *             azureBlobFileSystemConfiguration (Optional): {
-     *                 accountName: String (Required)
-     *                 containerName: String (Required)
-     *                 accountKey: String (Optional)
-     *                 sasKey: String (Optional)
-     *                 blobfuseOptions: String (Optional)
-     *                 relativeMountPath: String (Required)
-     *                 identityReference (Optional): (recursive schema, see identityReference above)
-     *             }
-     *             nfsMountConfiguration (Optional): {
-     *                 source: String (Required)
-     *                 relativeMountPath: String (Required)
-     *                 mountOptions: String (Optional)
-     *             }
-     *             cifsMountConfiguration (Optional): {
-     *                 username: String (Required)
-     *                 source: String (Required)
-     *                 relativeMountPath: String (Required)
-     *                 mountOptions: String (Optional)
-     *                 password: String (Required)
-     *             }
-     *             azureFileShareConfiguration (Optional): {
-     *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
-     *                 accountKey: String (Required)
-     *                 relativeMountPath: String (Required)
-     *                 mountOptions: String (Optional)
-     *             }
-     *         }
-     *     ]
-     *     identity (Optional): {
-     *         type: String(UserAssigned/None) (Required)
-     *         userAssignedIdentities (Optional): [
-     *              (Optional){
-     *                 resourceId: String (Required)
-     *                 clientId: String (Optional)
-     *                 principalId: String (Optional)
-     *             }
-     *         ]
-     *     }
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
      * }</pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param poolPatchParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4271,9 +3693,8 @@ public final class PoolsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> patchWithResponse(
-            String poolId, BinaryData poolPatchParameter, RequestOptions requestOptions) {
-        return patchWithResponseAsync(poolId, poolPatchParameter, requestOptions).block();
+    public Response<Void> patchWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
+        return patchWithResponseAsync(poolId, parameters, requestOptions).block();
     }
 
     /**
@@ -4298,7 +3719,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -4349,7 +3770,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -4396,7 +3817,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -4405,10 +3826,10 @@ public final class PoolsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -4425,7 +3846,7 @@ public final class PoolsImpl {
      * }</pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param poolEnableAutoScaleParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4435,7 +3856,7 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> enableAutoScaleWithResponseAsync(
-            String poolId, BinaryData poolEnableAutoScaleParameter, RequestOptions requestOptions) {
+            String poolId, BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -4446,7 +3867,7 @@ public final class PoolsImpl {
                                 poolId,
                                 contentType,
                                 accept,
-                                poolEnableAutoScaleParameter,
+                                parameters,
                                 requestOptions,
                                 context));
     }
@@ -4478,7 +3899,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -4487,10 +3908,10 @@ public final class PoolsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -4507,7 +3928,7 @@ public final class PoolsImpl {
      * }</pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param poolEnableAutoScaleParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4517,8 +3938,8 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableAutoScaleWithResponse(
-            String poolId, BinaryData poolEnableAutoScaleParameter, RequestOptions requestOptions) {
-        return enableAutoScaleWithResponseAsync(poolId, poolEnableAutoScaleParameter, requestOptions).block();
+            String poolId, BinaryData parameters, RequestOptions requestOptions) {
+        return enableAutoScaleWithResponseAsync(poolId, parameters, requestOptions).block();
     }
 
     /**
@@ -4546,7 +3967,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -4581,7 +4002,7 @@ public final class PoolsImpl {
      * }</pre>
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param poolEvaluateAutoScaleParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4592,7 +4013,7 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> evaluateAutoScaleWithResponseAsync(
-            String poolId, BinaryData poolEvaluateAutoScaleParameter, RequestOptions requestOptions) {
+            String poolId, BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -4603,7 +4024,7 @@ public final class PoolsImpl {
                                 contentType,
                                 poolId,
                                 accept,
-                                poolEvaluateAutoScaleParameter,
+                                parameters,
                                 requestOptions,
                                 context));
     }
@@ -4633,7 +4054,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -4668,7 +4089,7 @@ public final class PoolsImpl {
      * }</pre>
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param poolEvaluateAutoScaleParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4678,8 +4099,8 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> evaluateAutoScaleWithResponse(
-            String poolId, BinaryData poolEvaluateAutoScaleParameter, RequestOptions requestOptions) {
-        return evaluateAutoScaleWithResponseAsync(poolId, poolEvaluateAutoScaleParameter, requestOptions).block();
+            String poolId, BinaryData parameters, RequestOptions requestOptions) {
+        return evaluateAutoScaleWithResponseAsync(poolId, parameters, requestOptions).block();
     }
 
     /**
@@ -4710,7 +4131,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -4719,10 +4140,10 @@ public final class PoolsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -4741,7 +4162,7 @@ public final class PoolsImpl {
      * }</pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param poolResizeParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4751,7 +4172,7 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resizeWithResponseAsync(
-            String poolId, BinaryData poolResizeParameter, RequestOptions requestOptions) {
+            String poolId, BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -4762,7 +4183,7 @@ public final class PoolsImpl {
                                 poolId,
                                 contentType,
                                 accept,
-                                poolResizeParameter,
+                                parameters,
                                 requestOptions,
                                 context));
     }
@@ -4795,7 +4216,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -4804,10 +4225,10 @@ public final class PoolsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -4826,7 +4247,7 @@ public final class PoolsImpl {
      * }</pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param poolResizeParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4835,9 +4256,8 @@ public final class PoolsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resizeWithResponse(
-            String poolId, BinaryData poolResizeParameter, RequestOptions requestOptions) {
-        return resizeWithResponseAsync(poolId, poolResizeParameter, requestOptions).block();
+    public Response<Void> resizeWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
+        return resizeWithResponseAsync(poolId, parameters, requestOptions).block();
     }
 
     /**
@@ -4868,7 +4288,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -4877,10 +4297,10 @@ public final class PoolsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -4937,7 +4357,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -4946,10 +4366,10 @@ public final class PoolsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -4995,7 +4415,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -5074,8 +4494,9 @@ public final class PoolsImpl {
      *                 type: String (Required)
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                 settings: Object (Optional)
-     *                 protectedSettings: Object (Optional)
+     *                 settings (Optional): {
+     *                 }
+     *                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
      *                 ]
@@ -5185,8 +4606,8 @@ public final class PoolsImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
+     *     certificateReferences (Required): [
+     *          (Required){
      *             thumbprint: String (Required)
      *             thumbprintAlgorithm: String (Required)
      *             storeLocation: String(currentuser/localmachine) (Optional)
@@ -5196,8 +4617,8 @@ public final class PoolsImpl {
      *             ]
      *         }
      *     ]
-     *     applicationPackageReferences (Optional): [
-     *          (Optional){
+     *     applicationPackageReferences (Required): [
+     *          (Required){
      *             applicationId: String (Required)
      *             version: String (Optional)
      *         }
@@ -5224,8 +4645,8 @@ public final class PoolsImpl {
      *             }
      *         }
      *     ]
-     *     metadata (Optional): [
-     *          (Optional){
+     *     metadata (Required): [
+     *          (Required){
      *             name: String (Required)
      *             value: String (Required)
      *         }
@@ -5303,7 +4724,7 @@ public final class PoolsImpl {
      * }</pre>
      *
      * @param poolId The ID of the Pool to update.
-     * @param poolUpdatePropertiesParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5313,7 +4734,7 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updatePropertiesWithResponseAsync(
-            String poolId, BinaryData poolUpdatePropertiesParameter, RequestOptions requestOptions) {
+            String poolId, BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -5324,7 +4745,7 @@ public final class PoolsImpl {
                                 contentType,
                                 poolId,
                                 accept,
-                                poolUpdatePropertiesParameter,
+                                parameters,
                                 requestOptions,
                                 context));
     }
@@ -5355,7 +4776,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -5434,8 +4855,9 @@ public final class PoolsImpl {
      *                 type: String (Required)
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                 settings: Object (Optional)
-     *                 protectedSettings: Object (Optional)
+     *                 settings (Optional): {
+     *                 }
+     *                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
      *                 ]
@@ -5545,8 +4967,8 @@ public final class PoolsImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
+     *     certificateReferences (Required): [
+     *          (Required){
      *             thumbprint: String (Required)
      *             thumbprintAlgorithm: String (Required)
      *             storeLocation: String(currentuser/localmachine) (Optional)
@@ -5556,8 +4978,8 @@ public final class PoolsImpl {
      *             ]
      *         }
      *     ]
-     *     applicationPackageReferences (Optional): [
-     *          (Optional){
+     *     applicationPackageReferences (Required): [
+     *          (Required){
      *             applicationId: String (Required)
      *             version: String (Optional)
      *         }
@@ -5584,8 +5006,8 @@ public final class PoolsImpl {
      *             }
      *         }
      *     ]
-     *     metadata (Optional): [
-     *          (Optional){
+     *     metadata (Required): [
+     *          (Required){
      *             name: String (Required)
      *             value: String (Required)
      *         }
@@ -5663,7 +5085,7 @@ public final class PoolsImpl {
      * }</pre>
      *
      * @param poolId The ID of the Pool to update.
-     * @param poolUpdatePropertiesParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5673,8 +5095,8 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updatePropertiesWithResponse(
-            String poolId, BinaryData poolUpdatePropertiesParameter, RequestOptions requestOptions) {
-        return updatePropertiesWithResponseAsync(poolId, poolUpdatePropertiesParameter, requestOptions).block();
+            String poolId, BinaryData parameters, RequestOptions requestOptions) {
+        return updatePropertiesWithResponseAsync(poolId, parameters, requestOptions).block();
     }
 
     /**
@@ -5702,7 +5124,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -5711,10 +5133,10 @@ public final class PoolsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -5734,7 +5156,7 @@ public final class PoolsImpl {
      * }</pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param nodeRemoveParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5744,7 +5166,7 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeNodesWithResponseAsync(
-            String poolId, BinaryData nodeRemoveParameter, RequestOptions requestOptions) {
+            String poolId, BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -5755,7 +5177,7 @@ public final class PoolsImpl {
                                 poolId,
                                 contentType,
                                 accept,
-                                nodeRemoveParameter,
+                                parameters,
                                 requestOptions,
                                 context));
     }
@@ -5785,7 +5207,7 @@ public final class PoolsImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -5794,10 +5216,10 @@ public final class PoolsImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -5817,7 +5239,7 @@ public final class PoolsImpl {
      * }</pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param nodeRemoveParameter The parameters for the request.
+     * @param parameters The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5826,9 +5248,8 @@ public final class PoolsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeNodesWithResponse(
-            String poolId, BinaryData nodeRemoveParameter, RequestOptions requestOptions) {
-        return removeNodesWithResponseAsync(poolId, nodeRemoveParameter, requestOptions).block();
+    public Response<Void> removeNodesWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
+        return removeNodesWithResponseAsync(poolId, parameters, requestOptions).block();
     }
 
     /**
@@ -5841,7 +5262,7 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -5902,7 +5323,7 @@ public final class PoolsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -5984,8 +5405,9 @@ public final class PoolsImpl {
      *                 type: String (Required)
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                 settings: Object (Optional)
-     *                 protectedSettings: Object (Optional)
+     *                 settings (Optional): {
+     *                 }
+     *                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
      *                 ]
@@ -6095,8 +5517,8 @@ public final class PoolsImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
+     *     certificateReferences (Required): [
+     *          (Required){
      *             thumbprint: String (Required)
      *             thumbprintAlgorithm: String (Required)
      *             storeLocation: String(currentuser/localmachine) (Optional)
@@ -6106,8 +5528,8 @@ public final class PoolsImpl {
      *             ]
      *         }
      *     ]
-     *     applicationPackageReferences (Optional): [
-     *          (Optional){
+     *     applicationPackageReferences (Required): [
+     *          (Required){
      *             applicationId: String (Required)
      *             version: String (Optional)
      *         }
@@ -6134,8 +5556,8 @@ public final class PoolsImpl {
      *             }
      *         }
      *     ]
-     *     metadata (Optional): [
-     *          (Optional){
+     *     metadata (Required): [
+     *          (Required){
      *             name: String (Required)
      *             value: String (Required)
      *         }

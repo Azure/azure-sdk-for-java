@@ -1,29 +1,15 @@
 package com.azure.compute.batch;
 
+import com.azure.compute.batch.models.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.azure.compute.batch.models.AllocationState;
-import com.azure.compute.batch.models.BatchPool;
-import com.azure.compute.batch.models.BatchPoolResizeParameters;
-import com.azure.compute.batch.models.CertificateReference;
-import com.azure.compute.batch.models.ComputeNode;
-import com.azure.compute.batch.models.NetworkConfiguration;
-import com.azure.compute.batch.models.NodeCommunicationMode;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestMode;
-import com.azure.compute.batch.models.DataDisk;
-import com.azure.compute.batch.models.ImageReference;
-import com.azure.compute.batch.models.InboundEndpoint;
-import com.azure.compute.batch.models.InboundEndpointProtocol;
-import com.azure.compute.batch.models.VirtualMachineConfiguration;
-import com.azure.compute.batch.models.PoolEndpointConfiguration;
-import com.azure.compute.batch.models.PoolNodeCounts;
-import com.azure.compute.batch.models.InboundNATPool;
-import com.azure.compute.batch.models.MetadataItem;
-import com.azure.compute.batch.models.ApplicationPackageReference;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -50,6 +36,40 @@ public class PoolTests extends BatchServiceClientTestBase {
 
          // Need VNet to allow security to inject NSGs
         networkConfiguration = createNetworkConfiguration();
+    }
+
+
+    @Test
+    public void testPoolUnifiedModel() {
+	     String unifiedModelPool = null;
+	     try {
+             unifiedModelPool = getStringIdWithUserNamePrefix("-testPoolModelUnification");
+             String POOL_VM_SIZE = "STANDARD_D1_V2";
+             ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
+                     .setSku("18.04-LTS").setVersion("latest");
+
+             VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
+
+             BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(unifiedModelPool, POOL_VM_SIZE);
+             poolCreateParameters.setTargetDedicatedNodes(3)
+                     .setVirtualMachineConfiguration(configuration)
+                     .setTargetNodeCommunicationMode(NodeCommunicationMode.DEFAULT)
+                     .setMetadata(new LinkedList<>(List.of(new MetadataItem("foo", "bar"))));
+
+
+             poolClient.create(poolCreateParameters);
+
+             BatchPool pool = poolClient.get(unifiedModelPool);
+             System.out.println(pool.getMetadata());
+             System.out.println(pool.getCertificateReferences());
+             System.out.println(pool.getApplicationPackageReferences());
+
+             pool.setStartTask(new StartTask("echo 'hello world'"));
+             poolClient.updateProperties(unifiedModelPool, pool);       //WILL FAIL as certificateReferences and applicationPackageReferences are null from previous GET - Cannot SET IT on pool object
+         }
+	     finally {
+             poolClient.delete(unifiedModelPool);
+         }
     }
 
 	 @Test
@@ -106,15 +126,12 @@ public class PoolTests extends BatchServiceClientTestBase {
 	    VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
 	    configuration.setDataDisks(dataDisks);
 
-	    BatchPool poolToAdd = new BatchPool();
-	    poolToAdd.setId(poolId);
-	    poolToAdd.setNetworkConfiguration(networkConfiguration);
-	    poolToAdd.setTargetDedicatedNodes(POOL_VM_COUNT);
-	    poolToAdd.setVmSize(POOL_VM_SIZE);
-	    poolToAdd.setVirtualMachineConfiguration(configuration);
+	    BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(poolId, POOL_VM_SIZE);
+	    poolCreateParameters.setNetworkConfiguration(networkConfiguration).setTargetDedicatedNodes(POOL_VM_COUNT)
+	                        .setVirtualMachineConfiguration(configuration);
 
 	    try {
-	    	poolClient.add(poolToAdd);
+	    	poolClient.create(poolCreateParameters);
 
 	    	BatchPool pool = poolClient.get(poolId);
 	        Assertions.assertEquals(lun, pool.getVirtualMachineConfiguration().getDataDisks().get(0).getLun());
@@ -158,14 +175,14 @@ public class PoolTests extends BatchServiceClientTestBase {
             PoolEndpointConfiguration endpointConfig = new PoolEndpointConfiguration(inbounds);
             netConfig.setEndpointConfiguration(endpointConfig);
 
-            BatchPool poolToAdd = new BatchPool();
-            poolToAdd.setId(poolId).setTargetDedicatedNodes(POOL_VM_COUNT)
-            		 .setTargetLowPriorityNodes(POOL_LOW_PRI_VM_COUNT).setVmSize(POOL_VM_SIZE)
+            BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(poolId, POOL_VM_SIZE);
+            poolCreateParameters.setTargetDedicatedNodes(POOL_VM_COUNT)
+            		 .setTargetLowPriorityNodes(POOL_LOW_PRI_VM_COUNT)
             		 .setVirtualMachineConfiguration(configuration).setNetworkConfiguration(netConfig)
             		 .setTargetNodeCommunicationMode(NodeCommunicationMode.DEFAULT);
 
 
-            poolClient.add(poolToAdd);
+            poolClient.create(poolCreateParameters);
         }
 
         try {
@@ -183,12 +200,12 @@ public class PoolTests extends BatchServiceClientTestBase {
             Assertions.assertNotNull(pool.getCurrentNodeCommunicationMode(), "CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node");
             Assertions.assertEquals(NodeCommunicationMode.DEFAULT, pool.getTargetNodeCommunicationMode());
 
-            ComputeNodesClient nodeClient = batchClientBuilder.buildComputeNodesClient();
+            BatchNodesClient nodeClient = batchClientBuilder.buildBatchNodesClient();
 
-            PagedIterable<ComputeNode> nodeListIterator = nodeClient.list(poolId);
-            List<ComputeNode> computeNodes = new ArrayList<ComputeNode>();
+            PagedIterable<BatchNode> nodeListIterator = nodeClient.list(poolId);
+            List<BatchNode> computeNodes = new ArrayList<BatchNode>();
 
-            for (ComputeNode node: nodeListIterator) {
+            for (BatchNode node: nodeListIterator) {
             	computeNodes.add(node);
             }
 
@@ -225,12 +242,7 @@ public class PoolTests extends BatchServiceClientTestBase {
 //    			.setMetadata(new ArrayList<MetadataItem>())
 //    			.setCertificateReferences(new ArrayList<CertificateReference>());
 
-            BatchPool poolToUpdate = new BatchPool();
-            poolToUpdate.setTargetNodeCommunicationMode(NodeCommunicationMode.SIMPLIFIED)
-            			.setApplicationPackageReferences(new ArrayList<ApplicationPackageReference>())
-            			.setMetadata(new ArrayList<MetadataItem>())
-            			.setCertificateReferences(new ArrayList<CertificateReference>());
-
+            BatchPool poolToUpdate = new BatchPool(new ArrayList<CertificateReference>(), new ArrayList<ApplicationPackageReference>(), new ArrayList<MetadataItem>());
             poolClient.updateProperties(poolId, poolToUpdate);
 
             pool = poolClient.get(poolId);
@@ -243,9 +255,9 @@ public class PoolTests extends BatchServiceClientTestBase {
 //	            pool.setTargetNodeCommunicationMode(NodeCommunicationMode.CLASSIC);
 //	            poolClient.patch(poolId, pool);
 
-            BatchPool poolToPatch = new BatchPool();
-            poolToPatch.setTargetNodeCommunicationMode(NodeCommunicationMode.CLASSIC);
-            poolClient.patch(poolId, poolToPatch);
+            BatchPoolUpdateParameters poolPatchParameters = new BatchPoolUpdateParameters();
+            poolPatchParameters.setTargetNodeCommunicationMode(NodeCommunicationMode.CLASSIC);
+            poolClient.patch(poolId, poolPatchParameters);
 
             pool = poolClient.get(poolId);
             Assertions.assertNotNull(pool.getCurrentNodeCommunicationMode(), "CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node");

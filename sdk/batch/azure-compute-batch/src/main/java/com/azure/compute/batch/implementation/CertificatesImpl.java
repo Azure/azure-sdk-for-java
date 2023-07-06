@@ -75,12 +75,12 @@ public final class CertificatesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> add(
+        Mono<Response<Void>> create(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("content-type") String contentType,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData certificate,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -187,7 +187,7 @@ public final class CertificatesImpl {
     }
 
     /**
-     * Adds a Certificate to the specified Account.
+     * Creates a Certificate to the specified Account.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -208,7 +208,7 @@ public final class CertificatesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -219,8 +219,8 @@ public final class CertificatesImpl {
      *
      * <pre>{@code
      * {
-     *     thumbprint: String (Optional)
-     *     thumbprintAlgorithm: String (Optional)
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
      *     url: String (Optional)
      *     state: String(active/deleting/deletefailed) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
@@ -243,7 +243,7 @@ public final class CertificatesImpl {
      * }
      * }</pre>
      *
-     * @param certificate The Certificate to be added.
+     * @param parameters The Certificate to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -252,23 +252,23 @@ public final class CertificatesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addWithResponseAsync(BinaryData certificate, RequestOptions requestOptions) {
+    public Mono<Response<Void>> createWithResponseAsync(BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.add(
+                        service.create(
                                 this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 contentType,
                                 accept,
-                                certificate,
+                                parameters,
                                 requestOptions,
                                 context));
     }
 
     /**
-     * Adds a Certificate to the specified Account.
+     * Creates a Certificate to the specified Account.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -289,7 +289,7 @@ public final class CertificatesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -300,8 +300,8 @@ public final class CertificatesImpl {
      *
      * <pre>{@code
      * {
-     *     thumbprint: String (Optional)
-     *     thumbprintAlgorithm: String (Optional)
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
      *     url: String (Optional)
      *     state: String(active/deleting/deletefailed) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
@@ -324,7 +324,7 @@ public final class CertificatesImpl {
      * }
      * }</pre>
      *
-     * @param certificate The Certificate to be added.
+     * @param parameters The Certificate to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -333,8 +333,8 @@ public final class CertificatesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addWithResponse(BinaryData certificate, RequestOptions requestOptions) {
-        return addWithResponseAsync(certificate, requestOptions).block();
+    public Response<Void> createWithResponse(BinaryData parameters, RequestOptions requestOptions) {
+        return createWithResponseAsync(parameters, requestOptions).block();
     }
 
     /**
@@ -361,7 +361,7 @@ public final class CertificatesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -375,8 +375,8 @@ public final class CertificatesImpl {
      *
      * <pre>{@code
      * {
-     *     thumbprint: String (Optional)
-     *     thumbprintAlgorithm: String (Optional)
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
      *     url: String (Optional)
      *     state: String(active/deleting/deletefailed) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
@@ -453,7 +453,7 @@ public final class CertificatesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -467,8 +467,8 @@ public final class CertificatesImpl {
      *
      * <pre>{@code
      * {
-     *     thumbprint: String (Optional)
-     *     thumbprintAlgorithm: String (Optional)
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
      *     url: String (Optional)
      *     state: String(active/deleting/deletefailed) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
@@ -534,7 +534,7 @@ public final class CertificatesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -548,8 +548,8 @@ public final class CertificatesImpl {
      *
      * <pre>{@code
      * {
-     *     thumbprint: String (Optional)
-     *     thumbprintAlgorithm: String (Optional)
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
      *     url: String (Optional)
      *     state: String(active/deleting/deletefailed) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
@@ -612,7 +612,7 @@ public final class CertificatesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -672,7 +672,7 @@ public final class CertificatesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -724,7 +724,7 @@ public final class CertificatesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -786,7 +786,7 @@ public final class CertificatesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -831,7 +831,7 @@ public final class CertificatesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -842,8 +842,8 @@ public final class CertificatesImpl {
      *
      * <pre>{@code
      * {
-     *     thumbprint: String (Optional)
-     *     thumbprintAlgorithm: String (Optional)
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
      *     url: String (Optional)
      *     state: String(active/deleting/deletefailed) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
@@ -915,7 +915,7 @@ public final class CertificatesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -926,8 +926,8 @@ public final class CertificatesImpl {
      *
      * <pre>{@code
      * {
-     *     thumbprint: String (Optional)
-     *     thumbprintAlgorithm: String (Optional)
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
      *     url: String (Optional)
      *     state: String(active/deleting/deletefailed) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
@@ -975,7 +975,7 @@ public final class CertificatesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -989,8 +989,8 @@ public final class CertificatesImpl {
      *
      * <pre>{@code
      * {
-     *     thumbprint: String (Optional)
-     *     thumbprintAlgorithm: String (Optional)
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
      *     url: String (Optional)
      *     state: String(active/deleting/deletefailed) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)

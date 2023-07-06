@@ -4,6 +4,7 @@
 
 package com.azure.compute.batch.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
@@ -11,19 +12,20 @@ import java.util.Collection;
 /** Defines values for SchedulingState. */
 public final class SchedulingState extends ExpandableStringEnum<SchedulingState> {
     /** Tasks can be scheduled on the Compute Node. */
-    public static final SchedulingState ENABLED = fromString("enabled");
+    @Generated public static final SchedulingState ENABLED = fromString("enabled");
 
     /**
      * No new Tasks will be scheduled on the Compute Node. Tasks already running on the Compute Node may still run to
      * completion. All Compute Nodes start with scheduling enabled.
      */
-    public static final SchedulingState DISABLED = fromString("disabled");
+    @Generated public static final SchedulingState DISABLED = fromString("disabled");
 
     /**
      * Creates a new instance of SchedulingState value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SchedulingState() {}
 
@@ -33,6 +35,7 @@ public final class SchedulingState extends ExpandableStringEnum<SchedulingState>
      * @param name a name to look for.
      * @return the corresponding SchedulingState.
      */
+    @Generated
     @JsonCreator
     public static SchedulingState fromString(String name) {
         return fromString(name, SchedulingState.class);
@@ -43,6 +46,7 @@ public final class SchedulingState extends ExpandableStringEnum<SchedulingState>
      *
      * @return known SchedulingState values.
      */
+    @Generated
     public static Collection<SchedulingState> values() {
         return values(SchedulingState.class);
     }

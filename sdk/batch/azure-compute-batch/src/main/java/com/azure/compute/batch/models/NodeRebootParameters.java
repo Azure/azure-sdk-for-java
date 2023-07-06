@@ -5,6 +5,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Options for rebooting a Compute Node. */
@@ -13,10 +14,12 @@ public final class NodeRebootParameters {
     /*
      * The default value is requeue.
      */
+    @Generated
     @JsonProperty(value = "nodeRebootOption")
-    private ComputeNodeRebootOption nodeRebootOption;
+    private BatchNodeRebootOption nodeRebootOption;
 
     /** Creates an instance of NodeRebootParameters class. */
+    @Generated
     public NodeRebootParameters() {}
 
     /**
@@ -24,7 +27,8 @@ public final class NodeRebootParameters {
      *
      * @return the nodeRebootOption value.
      */
-    public ComputeNodeRebootOption getNodeRebootOption() {
+    @Generated
+    public BatchNodeRebootOption getNodeRebootOption() {
         return this.nodeRebootOption;
     }
 
@@ -34,7 +38,8 @@ public final class NodeRebootParameters {
      * @param nodeRebootOption the nodeRebootOption value to set.
      * @return the NodeRebootParameters object itself.
      */
-    public NodeRebootParameters setNodeRebootOption(ComputeNodeRebootOption nodeRebootOption) {
+    @Generated
+    public NodeRebootParameters setNodeRebootOption(BatchNodeRebootOption nodeRebootOption) {
         this.nodeRebootOption = nodeRebootOption;
         return this;
     }

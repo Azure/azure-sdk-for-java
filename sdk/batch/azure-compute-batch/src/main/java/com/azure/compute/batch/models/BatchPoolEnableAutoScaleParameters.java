@@ -5,6 +5,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
@@ -18,6 +19,7 @@ public final class BatchPoolEnableAutoScaleParameters {
      * Automatically scale Compute Nodes in an Azure Batch Pool
      * (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
      */
+    @Generated
     @JsonProperty(value = "autoScaleFormula")
     private String autoScaleFormula;
 
@@ -31,10 +33,12 @@ public final class BatchPoolEnableAutoScaleParameters {
      * schedule will be started, with its starting time being the time when this
      * request was issued.
      */
+    @Generated
     @JsonProperty(value = "autoScaleEvaluationInterval")
     private Duration autoScaleEvaluationInterval;
 
     /** Creates an instance of BatchPoolEnableAutoScaleParameters class. */
+    @Generated
     public BatchPoolEnableAutoScaleParameters() {}
 
     /**
@@ -45,6 +49,7 @@ public final class BatchPoolEnableAutoScaleParameters {
      *
      * @return the autoScaleFormula value.
      */
+    @Generated
     public String getAutoScaleFormula() {
         return this.autoScaleFormula;
     }
@@ -58,6 +63,7 @@ public final class BatchPoolEnableAutoScaleParameters {
      * @param autoScaleFormula the autoScaleFormula value to set.
      * @return the BatchPoolEnableAutoScaleParameters object itself.
      */
+    @Generated
     public BatchPoolEnableAutoScaleParameters setAutoScaleFormula(String autoScaleFormula) {
         this.autoScaleFormula = autoScaleFormula;
         return this;
@@ -73,6 +79,7 @@ public final class BatchPoolEnableAutoScaleParameters {
      *
      * @return the autoScaleEvaluationInterval value.
      */
+    @Generated
     public Duration getAutoScaleEvaluationInterval() {
         return this.autoScaleEvaluationInterval;
     }
@@ -88,6 +95,7 @@ public final class BatchPoolEnableAutoScaleParameters {
      * @param autoScaleEvaluationInterval the autoScaleEvaluationInterval value to set.
      * @return the BatchPoolEnableAutoScaleParameters object itself.
      */
+    @Generated
     public BatchPoolEnableAutoScaleParameters setAutoScaleEvaluationInterval(Duration autoScaleEvaluationInterval) {
         this.autoScaleEvaluationInterval = autoScaleEvaluationInterval;
         return this;

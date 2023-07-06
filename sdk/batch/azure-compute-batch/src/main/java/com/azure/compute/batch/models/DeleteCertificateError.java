@@ -4,6 +4,7 @@
 
 package com.azure.compute.batch.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,6 +16,7 @@ public final class DeleteCertificateError {
      * An identifier for the Certificate deletion error. Codes are invariant and are
      * intended to be consumed programmatically.
      */
+    @Generated
     @JsonProperty(value = "code")
     private String code;
 
@@ -22,6 +24,7 @@ public final class DeleteCertificateError {
      * A message describing the Certificate deletion error, intended to be suitable
      * for display in a user interface.
      */
+    @Generated
     @JsonProperty(value = "message")
     private String message;
 
@@ -30,10 +33,12 @@ public final class DeleteCertificateError {
      * referencing this Certificate. However, if a large number of resources reference
      * the Certificate, the list contains only about the first hundred.
      */
+    @Generated
     @JsonProperty(value = "values")
     private List<NameValuePair> values;
 
     /** Creates an instance of DeleteCertificateError class. */
+    @Generated
     private DeleteCertificateError() {}
 
     /**
@@ -42,6 +47,7 @@ public final class DeleteCertificateError {
      *
      * @return the code value.
      */
+    @Generated
     public String getCode() {
         return this.code;
     }
@@ -52,6 +58,7 @@ public final class DeleteCertificateError {
      *
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -63,6 +70,7 @@ public final class DeleteCertificateError {
      *
      * @return the values value.
      */
+    @Generated
     public List<NameValuePair> getValues() {
         return this.values;
     }

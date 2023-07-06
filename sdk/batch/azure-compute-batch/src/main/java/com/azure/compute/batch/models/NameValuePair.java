@@ -4,6 +4,7 @@
 
 package com.azure.compute.batch.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -13,16 +14,19 @@ public final class NameValuePair {
     /*
      * The name in the name-value pair.
      */
+    @Generated
     @JsonProperty(value = "name")
     private String name;
 
     /*
      * The value in the name-value pair.
      */
+    @Generated
     @JsonProperty(value = "value")
     private String value;
 
     /** Creates an instance of NameValuePair class. */
+    @Generated
     private NameValuePair() {}
 
     /**
@@ -30,6 +34,7 @@ public final class NameValuePair {
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -39,6 +44,7 @@ public final class NameValuePair {
      *
      * @return the value value.
      */
+    @Generated
     public String getValue() {
         return this.value;
     }

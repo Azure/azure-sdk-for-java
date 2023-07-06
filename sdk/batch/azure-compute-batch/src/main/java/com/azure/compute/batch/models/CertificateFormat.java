@@ -4,6 +4,7 @@
 
 package com.azure.compute.batch.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
@@ -11,16 +12,17 @@ import java.util.Collection;
 /** Defines values for CertificateFormat. */
 public final class CertificateFormat extends ExpandableStringEnum<CertificateFormat> {
     /** The Certificate is a PFX (PKCS#12) formatted Certificate or Certificate chain. */
-    public static final CertificateFormat PFX = fromString("pfx");
+    @Generated public static final CertificateFormat PFX = fromString("pfx");
 
     /** The Certificate is a base64-encoded X.509 Certificate. */
-    public static final CertificateFormat CER = fromString("cer");
+    @Generated public static final CertificateFormat CER = fromString("cer");
 
     /**
      * Creates a new instance of CertificateFormat value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CertificateFormat() {}
 
@@ -30,6 +32,7 @@ public final class CertificateFormat extends ExpandableStringEnum<CertificateFor
      * @param name a name to look for.
      * @return the corresponding CertificateFormat.
      */
+    @Generated
     @JsonCreator
     public static CertificateFormat fromString(String name) {
         return fromString(name, CertificateFormat.class);
@@ -40,6 +43,7 @@ public final class CertificateFormat extends ExpandableStringEnum<CertificateFor
      *
      * @return known CertificateFormat values.
      */
+    @Generated
     public static Collection<CertificateFormat> values() {
         return values(CertificateFormat.class);
     }

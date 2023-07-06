@@ -4,6 +4,7 @@
 
 package com.azure.compute.batch.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
@@ -11,16 +12,17 @@ import java.util.Collection;
 /** Defines values for OnAllTasksComplete. */
 public final class OnAllTasksComplete extends ExpandableStringEnum<OnAllTasksComplete> {
     /** Do nothing. The Job remains active unless terminated or disabled by some other means. */
-    public static final OnAllTasksComplete NO_ACTION = fromString("noaction");
+    @Generated public static final OnAllTasksComplete NO_ACTION = fromString("noaction");
 
     /** Static value terminatejob for OnAllTasksComplete. */
-    public static final OnAllTasksComplete TERMINATE_JOB = fromString("terminatejob");
+    @Generated public static final OnAllTasksComplete TERMINATE_JOB = fromString("terminatejob");
 
     /**
      * Creates a new instance of OnAllTasksComplete value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public OnAllTasksComplete() {}
 
@@ -30,6 +32,7 @@ public final class OnAllTasksComplete extends ExpandableStringEnum<OnAllTasksCom
      * @param name a name to look for.
      * @return the corresponding OnAllTasksComplete.
      */
+    @Generated
     @JsonCreator
     public static OnAllTasksComplete fromString(String name) {
         return fromString(name, OnAllTasksComplete.class);
@@ -40,6 +43,7 @@ public final class OnAllTasksComplete extends ExpandableStringEnum<OnAllTasksCom
      *
      * @return known OnAllTasksComplete values.
      */
+    @Generated
     public static Collection<OnAllTasksComplete> values() {
         return values(OnAllTasksComplete.class);
     }

@@ -4,6 +4,7 @@
 
 package com.azure.compute.batch.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,17 +15,18 @@ public final class TaskSchedulingPolicy {
     /*
      * If not specified, the default is spread.
      */
-    @JsonProperty(value = "nodeFillType", required = true)
-    private ComputeNodeFillType nodeFillType;
+    @Generated
+    @JsonProperty(value = "nodeFillType")
+    private BatchNodeFillType nodeFillType;
 
     /**
      * Creates an instance of TaskSchedulingPolicy class.
      *
      * @param nodeFillType the nodeFillType value to set.
      */
+    @Generated
     @JsonCreator
-    public TaskSchedulingPolicy(
-            @JsonProperty(value = "nodeFillType", required = true) ComputeNodeFillType nodeFillType) {
+    public TaskSchedulingPolicy(@JsonProperty(value = "nodeFillType") BatchNodeFillType nodeFillType) {
         this.nodeFillType = nodeFillType;
     }
 
@@ -33,7 +35,8 @@ public final class TaskSchedulingPolicy {
      *
      * @return the nodeFillType value.
      */
-    public ComputeNodeFillType getNodeFillType() {
+    @Generated
+    public BatchNodeFillType getNodeFillType() {
         return this.nodeFillType;
     }
 }

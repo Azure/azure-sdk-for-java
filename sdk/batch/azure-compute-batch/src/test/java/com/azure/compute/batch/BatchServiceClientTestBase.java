@@ -66,10 +66,6 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
 
     protected TaskClient taskClient;
 
-    protected ComputeNodesClient computeNodesClient;
-
-    protected ComputeNodeExtensionsClient computeNodeExtensionsClient;
-
 	static final int MAX_LEN_ID = 64;
 
     static String REDACTED = "REDACTED";
@@ -107,8 +103,6 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
         fileClient = batchClientBuilder.buildFileClient();
         jobScheduleClient = batchClientBuilder.buildJobScheduleClient();
         taskClient = batchClientBuilder.buildTaskClient();
-        computeNodesClient = batchClientBuilder.buildComputeNodesClient();
-        computeNodeExtensionsClient = batchClientBuilder.buildComputeNodeExtensionsClient();
     }
 
     public void addTestRulesOnPlayback(InterceptorManager interceptorManager) {
@@ -190,13 +184,13 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
          // Need VNet to allow security to inject NSGs
             NetworkConfiguration networkConfiguration = createNetworkConfiguration();
 
-            BatchPool poolToAdd = new BatchPool();
-            poolToAdd.setId(poolId).setTargetDedicatedNodes(poolVmCount).setVmSize(poolVmSize)
-            		 .setVirtualMachineConfiguration(configuration)
-            		 .setUserAccounts(userList)
-            		 .setNetworkConfiguration(networkConfiguration);
+            BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(poolId, poolVmSize);
+            poolCreateParameters.setTargetDedicatedNodes(poolVmCount)
+                    .setVirtualMachineConfiguration(configuration)
+                    .setUserAccounts(userList)
+                    .setNetworkConfiguration(networkConfiguration);
 
-            poolClient.add(poolToAdd);
+            poolClient.create(poolCreateParameters);
         }
         else {
         	System.out.println(String.format("The %s already exists.", poolId));
@@ -279,16 +273,7 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
     }
 
     static boolean poolExists(PoolClient poolClient, String poolId) {
-    	try {
-            poolClient.exists(poolId);
-        	return true;
-        }
-        catch (Exception e) {
-        	if (!e.getMessage().contains("Status code 404")) {
-    			throw e;
-    		}
-        	return false;
-        }
+        return poolClient.exists(poolId);
     }
 
     static BlobContainerClient createBlobContainer(String storageAccountName, String storageAccountKey,

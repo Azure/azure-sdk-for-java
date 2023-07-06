@@ -4,6 +4,7 @@
 
 package com.azure.compute.batch.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
@@ -14,19 +15,20 @@ public final class IPAddressProvisioningType extends ExpandableStringEnum<IPAddr
      * A public IP will be created and managed by Batch. There may be multiple public IPs depending on the size of the
      * Pool.
      */
-    public static final IPAddressProvisioningType BATCH_MANAGED = fromString("batchmanaged");
+    @Generated public static final IPAddressProvisioningType BATCH_MANAGED = fromString("batchmanaged");
 
     /** Public IPs are provided by the user and will be used to provision the Compute Nodes. */
-    public static final IPAddressProvisioningType USER_MANAGED = fromString("usermanaged");
+    @Generated public static final IPAddressProvisioningType USER_MANAGED = fromString("usermanaged");
 
     /** No public IP Address will be created. */
-    public static final IPAddressProvisioningType NO_PUBLIC_IPADDRESSES = fromString("nopublicipaddresses");
+    @Generated public static final IPAddressProvisioningType NO_PUBLIC_IPADDRESSES = fromString("nopublicipaddresses");
 
     /**
      * Creates a new instance of IPAddressProvisioningType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public IPAddressProvisioningType() {}
 
@@ -36,6 +38,7 @@ public final class IPAddressProvisioningType extends ExpandableStringEnum<IPAddr
      * @param name a name to look for.
      * @return the corresponding IPAddressProvisioningType.
      */
+    @Generated
     @JsonCreator
     public static IPAddressProvisioningType fromString(String name) {
         return fromString(name, IPAddressProvisioningType.class);
@@ -46,6 +49,7 @@ public final class IPAddressProvisioningType extends ExpandableStringEnum<IPAddr
      *
      * @return known IPAddressProvisioningType values.
      */
+    @Generated
     public static Collection<IPAddressProvisioningType> values() {
         return values(IPAddressProvisioningType.class);
     }

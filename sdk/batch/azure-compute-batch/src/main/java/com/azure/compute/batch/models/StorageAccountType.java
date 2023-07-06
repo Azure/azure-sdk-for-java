@@ -4,6 +4,7 @@
 
 package com.azure.compute.batch.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
@@ -11,16 +12,17 @@ import java.util.Collection;
 /** Defines values for StorageAccountType. */
 public final class StorageAccountType extends ExpandableStringEnum<StorageAccountType> {
     /** The data disk should use standard locally redundant storage. */
-    public static final StorageAccountType STANDARD_LRS = fromString("standard_lrs");
+    @Generated public static final StorageAccountType STANDARD_LRS = fromString("standard_lrs");
 
     /** The data disk should use premium locally redundant storage. */
-    public static final StorageAccountType PREMIUM_LRS = fromString("premium_lrs");
+    @Generated public static final StorageAccountType PREMIUM_LRS = fromString("premium_lrs");
 
     /**
      * Creates a new instance of StorageAccountType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public StorageAccountType() {}
 
@@ -30,6 +32,7 @@ public final class StorageAccountType extends ExpandableStringEnum<StorageAccoun
      * @param name a name to look for.
      * @return the corresponding StorageAccountType.
      */
+    @Generated
     @JsonCreator
     public static StorageAccountType fromString(String name) {
         return fromString(name, StorageAccountType.class);
@@ -40,6 +43,7 @@ public final class StorageAccountType extends ExpandableStringEnum<StorageAccoun
      *
      * @return known StorageAccountType values.
      */
+    @Generated
     public static Collection<StorageAccountType> values() {
         return values(StorageAccountType.class);
     }

@@ -5,6 +5,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the ephemeral Disk Settings for the operating system disk used by the compute node (VM). */
@@ -18,10 +19,12 @@ public final class DiffDiskSettings {
      * VMs at
      * https://docs.microsoft.com/en-us/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements.
      */
+    @Generated
     @JsonProperty(value = "placement")
     private DiffDiskPlacement placement;
 
     /** Creates an instance of DiffDiskSettings class. */
+    @Generated
     public DiffDiskSettings() {}
 
     /**
@@ -33,6 +36,7 @@ public final class DiffDiskSettings {
      *
      * @return the placement value.
      */
+    @Generated
     public DiffDiskPlacement getPlacement() {
         return this.placement;
     }
@@ -47,6 +51,7 @@ public final class DiffDiskSettings {
      * @param placement the placement value to set.
      * @return the DiffDiskSettings object itself.
      */
+    @Generated
     public DiffDiskSettings setPlacement(DiffDiskPlacement placement) {
         this.placement = placement;
         return this;

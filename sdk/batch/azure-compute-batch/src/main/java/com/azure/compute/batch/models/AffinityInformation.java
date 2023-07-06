@@ -4,6 +4,7 @@
 
 package com.azure.compute.batch.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,7 +18,8 @@ public final class AffinityInformation {
      * Compute Node is busy or unavailable at the time the Task is scheduled, then the
      * Task will be scheduled elsewhere.
      */
-    @JsonProperty(value = "affinityId", required = true)
+    @Generated
+    @JsonProperty(value = "affinityId")
     private String affinityId;
 
     /**
@@ -25,8 +27,9 @@ public final class AffinityInformation {
      *
      * @param affinityId the affinityId value to set.
      */
+    @Generated
     @JsonCreator
-    public AffinityInformation(@JsonProperty(value = "affinityId", required = true) String affinityId) {
+    public AffinityInformation(@JsonProperty(value = "affinityId") String affinityId) {
         this.affinityId = affinityId;
     }
 
@@ -37,6 +40,7 @@ public final class AffinityInformation {
      *
      * @return the affinityId value.
      */
+    @Generated
     public String getAffinityId() {
         return this.affinityId;
     }

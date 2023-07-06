@@ -4,6 +4,7 @@
 
 package com.azure.compute.batch.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
@@ -11,13 +12,14 @@ import java.util.Collection;
 /** Defines values for ContainerType. */
 public final class ContainerType extends ExpandableStringEnum<ContainerType> {
     /** A Docker compatible container technology will be used to launch the containers. */
-    public static final ContainerType DOCKER_COMPATIBLE = fromString("dockerCompatible");
+    @Generated public static final ContainerType DOCKER_COMPATIBLE = fromString("dockerCompatible");
 
     /**
      * Creates a new instance of ContainerType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ContainerType() {}
 
@@ -27,6 +29,7 @@ public final class ContainerType extends ExpandableStringEnum<ContainerType> {
      * @param name a name to look for.
      * @return the corresponding ContainerType.
      */
+    @Generated
     @JsonCreator
     public static ContainerType fromString(String name) {
         return fromString(name, ContainerType.class);
@@ -37,6 +40,7 @@ public final class ContainerType extends ExpandableStringEnum<ContainerType> {
      *
      * @return known ContainerType values.
      */
+    @Generated
     public static Collection<ContainerType> values() {
         return values(ContainerType.class);
     }

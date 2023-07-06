@@ -4,6 +4,7 @@
 
 package com.azure.compute.batch.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -14,10 +15,12 @@ public final class BatchTaskListSubtasksResult {
     /*
      * The list of subtasks.
      */
+    @Generated
     @JsonProperty(value = "value")
     private List<SubtaskInformation> value;
 
     /** Creates an instance of BatchTaskListSubtasksResult class. */
+    @Generated
     private BatchTaskListSubtasksResult() {}
 
     /**
@@ -25,6 +28,7 @@ public final class BatchTaskListSubtasksResult {
      *
      * @return the value value.
      */
+    @Generated
     public List<SubtaskInformation> getValue() {
         return this.value;
     }

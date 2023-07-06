@@ -5,6 +5,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -20,6 +21,7 @@ public final class OutputFileBlobContainerDestination {
      * name) to which to upload the file(s). If omitted, file(s) are uploaded to the
      * root of the container with a blob name matching their file name.
      */
+    @Generated
     @JsonProperty(value = "path")
     private String path;
 
@@ -27,20 +29,23 @@ public final class OutputFileBlobContainerDestination {
      * If not using a managed identity, the URL must include a Shared Access Signature
      * (SAS) granting write permissions to the container.
      */
-    @JsonProperty(value = "containerUrl", required = true)
+    @Generated
+    @JsonProperty(value = "containerUrl")
     private String containerUrl;
 
     /*
      * The identity must have write access to the Azure Blob Storage container
      */
+    @Generated
     @JsonProperty(value = "identityReference")
-    private ComputeNodeIdentityReference identityReference;
+    private BatchNodeIdentityReference identityReference;
 
     /*
      * These headers will be specified when uploading files to Azure Storage. Official
      * document on allowed headers when uploading blobs:
      * https://docs.microsoft.com/en-us/rest/api/storageservices/put-blob#request-headers-all-blob-types
      */
+    @Generated
     @JsonProperty(value = "uploadHeaders")
     private List<HttpHeader> uploadHeaders;
 
@@ -49,9 +54,9 @@ public final class OutputFileBlobContainerDestination {
      *
      * @param containerUrl the containerUrl value to set.
      */
+    @Generated
     @JsonCreator
-    public OutputFileBlobContainerDestination(
-            @JsonProperty(value = "containerUrl", required = true) String containerUrl) {
+    public OutputFileBlobContainerDestination(@JsonProperty(value = "containerUrl") String containerUrl) {
         this.containerUrl = containerUrl;
     }
 
@@ -64,6 +69,7 @@ public final class OutputFileBlobContainerDestination {
      *
      * @return the path value.
      */
+    @Generated
     public String getPath() {
         return this.path;
     }
@@ -78,6 +84,7 @@ public final class OutputFileBlobContainerDestination {
      * @param path the path value to set.
      * @return the OutputFileBlobContainerDestination object itself.
      */
+    @Generated
     public OutputFileBlobContainerDestination setPath(String path) {
         this.path = path;
         return this;
@@ -89,6 +96,7 @@ public final class OutputFileBlobContainerDestination {
      *
      * @return the containerUrl value.
      */
+    @Generated
     public String getContainerUrl() {
         return this.containerUrl;
     }
@@ -98,7 +106,8 @@ public final class OutputFileBlobContainerDestination {
      *
      * @return the identityReference value.
      */
-    public ComputeNodeIdentityReference getIdentityReference() {
+    @Generated
+    public BatchNodeIdentityReference getIdentityReference() {
         return this.identityReference;
     }
 
@@ -108,7 +117,8 @@ public final class OutputFileBlobContainerDestination {
      * @param identityReference the identityReference value to set.
      * @return the OutputFileBlobContainerDestination object itself.
      */
-    public OutputFileBlobContainerDestination setIdentityReference(ComputeNodeIdentityReference identityReference) {
+    @Generated
+    public OutputFileBlobContainerDestination setIdentityReference(BatchNodeIdentityReference identityReference) {
         this.identityReference = identityReference;
         return this;
     }
@@ -120,6 +130,7 @@ public final class OutputFileBlobContainerDestination {
      *
      * @return the uploadHeaders value.
      */
+    @Generated
     public List<HttpHeader> getUploadHeaders() {
         return this.uploadHeaders;
     }
@@ -132,6 +143,7 @@ public final class OutputFileBlobContainerDestination {
      * @param uploadHeaders the uploadHeaders value to set.
      * @return the OutputFileBlobContainerDestination object itself.
      */
+    @Generated
     public OutputFileBlobContainerDestination setUploadHeaders(List<HttpHeader> uploadHeaders) {
         this.uploadHeaders = uploadHeaders;
         return this;

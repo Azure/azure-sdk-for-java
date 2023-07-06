@@ -4,6 +4,7 @@
 
 package com.azure.compute.batch.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
@@ -11,22 +12,23 @@ import java.util.Collection;
 /** Defines values for DisableJobOption. */
 public final class DisableJobOption extends ExpandableStringEnum<DisableJobOption> {
     /** Terminate running Tasks and requeue them. The Tasks will run again when the Job is enabled. */
-    public static final DisableJobOption REQUEUE = fromString("requeue");
+    @Generated public static final DisableJobOption REQUEUE = fromString("requeue");
 
     /**
      * Terminate running Tasks. The Tasks will be completed with failureInfo indicating that they were terminated, and
      * will not run again.
      */
-    public static final DisableJobOption TERMINATE = fromString("terminate");
+    @Generated public static final DisableJobOption TERMINATE = fromString("terminate");
 
     /** Allow currently running Tasks to complete. */
-    public static final DisableJobOption WAIT = fromString("wait");
+    @Generated public static final DisableJobOption WAIT = fromString("wait");
 
     /**
      * Creates a new instance of DisableJobOption value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DisableJobOption() {}
 
@@ -36,6 +38,7 @@ public final class DisableJobOption extends ExpandableStringEnum<DisableJobOptio
      * @param name a name to look for.
      * @return the corresponding DisableJobOption.
      */
+    @Generated
     @JsonCreator
     public static DisableJobOption fromString(String name) {
         return fromString(name, DisableJobOption.class);
@@ -46,6 +49,7 @@ public final class DisableJobOption extends ExpandableStringEnum<DisableJobOptio
      *
      * @return known DisableJobOption values.
      */
+    @Generated
     public static Collection<DisableJobOption> values() {
         return values(DisableJobOption.class);
     }

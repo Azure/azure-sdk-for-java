@@ -5,6 +5,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Options when terminating a Job. */
@@ -13,10 +14,12 @@ public final class BatchJobTerminateParameters {
     /*
      * The text you want to appear as the Job's TerminateReason. The default is 'UserTerminate'.
      */
+    @Generated
     @JsonProperty(value = "terminateReason")
     private String terminateReason;
 
     /** Creates an instance of BatchJobTerminateParameters class. */
+    @Generated
     public BatchJobTerminateParameters() {}
 
     /**
@@ -25,6 +28,7 @@ public final class BatchJobTerminateParameters {
      *
      * @return the terminateReason value.
      */
+    @Generated
     public String getTerminateReason() {
         return this.terminateReason;
     }
@@ -36,6 +40,7 @@ public final class BatchJobTerminateParameters {
      * @param terminateReason the terminateReason value to set.
      * @return the BatchJobTerminateParameters object itself.
      */
+    @Generated
     public BatchJobTerminateParameters setTerminateReason(String terminateReason) {
         this.terminateReason = terminateReason;
         return this;

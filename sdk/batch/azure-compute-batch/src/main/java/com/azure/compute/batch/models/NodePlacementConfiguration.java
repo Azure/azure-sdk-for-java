@@ -5,6 +5,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -17,10 +18,12 @@ public final class NodePlacementConfiguration {
      * Allocation policy used by Batch Service to provision the nodes. If not
      * specified, Batch will use the regional policy.
      */
+    @Generated
     @JsonProperty(value = "policy")
     private NodePlacementPolicyType policy;
 
     /** Creates an instance of NodePlacementConfiguration class. */
+    @Generated
     public NodePlacementConfiguration() {}
 
     /**
@@ -29,6 +32,7 @@ public final class NodePlacementConfiguration {
      *
      * @return the policy value.
      */
+    @Generated
     public NodePlacementPolicyType getPolicy() {
         return this.policy;
     }
@@ -40,6 +44,7 @@ public final class NodePlacementConfiguration {
      * @param policy the policy value to set.
      * @return the NodePlacementConfiguration object itself.
      */
+    @Generated
     public NodePlacementConfiguration setPolicy(NodePlacementPolicyType policy) {
         this.policy = policy;
         return this;

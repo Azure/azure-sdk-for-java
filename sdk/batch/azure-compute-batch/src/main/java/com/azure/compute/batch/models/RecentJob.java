@@ -4,6 +4,7 @@
 
 package com.azure.compute.batch.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -13,16 +14,19 @@ public final class RecentJob {
     /*
      * The ID of the Job.
      */
+    @Generated
     @JsonProperty(value = "id")
     private String id;
 
     /*
      * The URL of the Job.
      */
+    @Generated
     @JsonProperty(value = "url")
     private String url;
 
     /** Creates an instance of RecentJob class. */
+    @Generated
     private RecentJob() {}
 
     /**
@@ -30,6 +34,7 @@ public final class RecentJob {
      *
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -39,6 +44,7 @@ public final class RecentJob {
      *
      * @return the url value.
      */
+    @Generated
     public String getUrl() {
         return this.url;
     }

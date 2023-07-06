@@ -4,6 +4,7 @@
 
 package com.azure.compute.batch.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
@@ -11,16 +12,17 @@ import java.util.Collection;
 /** Defines values for DependencyAction. */
 public final class DependencyAction extends ExpandableStringEnum<DependencyAction> {
     /** Satisfy tasks waiting on this task; once all dependencies are satisfied, the task will be scheduled to run. */
-    public static final DependencyAction SATISFY = fromString("satisfy");
+    @Generated public static final DependencyAction SATISFY = fromString("satisfy");
 
     /** Blocks tasks waiting on this task, preventing them from being scheduled. */
-    public static final DependencyAction BLOCK = fromString("block");
+    @Generated public static final DependencyAction BLOCK = fromString("block");
 
     /**
      * Creates a new instance of DependencyAction value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DependencyAction() {}
 
@@ -30,6 +32,7 @@ public final class DependencyAction extends ExpandableStringEnum<DependencyActio
      * @param name a name to look for.
      * @return the corresponding DependencyAction.
      */
+    @Generated
     @JsonCreator
     public static DependencyAction fromString(String name) {
         return fromString(name, DependencyAction.class);
@@ -40,6 +43,7 @@ public final class DependencyAction extends ExpandableStringEnum<DependencyActio
      *
      * @return known DependencyAction values.
      */
+    @Generated
     public static Collection<DependencyAction> values() {
         return values(DependencyAction.class);
     }

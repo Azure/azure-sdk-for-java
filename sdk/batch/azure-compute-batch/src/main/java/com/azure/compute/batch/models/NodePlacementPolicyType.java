@@ -4,6 +4,7 @@
 
 package com.azure.compute.batch.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
@@ -11,16 +12,17 @@ import java.util.Collection;
 /** Defines values for NodePlacementPolicyType. */
 public final class NodePlacementPolicyType extends ExpandableStringEnum<NodePlacementPolicyType> {
     /** All nodes in the pool will be allocated in the same region. */
-    public static final NodePlacementPolicyType REGIONAL = fromString("regional");
+    @Generated public static final NodePlacementPolicyType REGIONAL = fromString("regional");
 
     /** Nodes in the pool will be spread across different availability zones with best effort balancing. */
-    public static final NodePlacementPolicyType ZONAL = fromString("zonal");
+    @Generated public static final NodePlacementPolicyType ZONAL = fromString("zonal");
 
     /**
      * Creates a new instance of NodePlacementPolicyType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public NodePlacementPolicyType() {}
 
@@ -30,6 +32,7 @@ public final class NodePlacementPolicyType extends ExpandableStringEnum<NodePlac
      * @param name a name to look for.
      * @return the corresponding NodePlacementPolicyType.
      */
+    @Generated
     @JsonCreator
     public static NodePlacementPolicyType fromString(String name) {
         return fromString(name, NodePlacementPolicyType.class);
@@ -40,6 +43,7 @@ public final class NodePlacementPolicyType extends ExpandableStringEnum<NodePlac
      *
      * @return known NodePlacementPolicyType values.
      */
+    @Generated
     public static Collection<NodePlacementPolicyType> values() {
         return values(NodePlacementPolicyType.class);
     }
