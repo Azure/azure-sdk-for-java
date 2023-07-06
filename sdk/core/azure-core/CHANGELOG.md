@@ -7,6 +7,10 @@
 - Added a `KeyCredential` to support key-based auth.
 - `AzureKeyCredential` now to extends from `KeyCredential`.
 
+### Bugs Fixed
+
+- Fixed a bug where `PagedIterable.mapPage` would result in a `NullPointerException`. ([#35123](https://github.com/Azure/azure-sdk-for-java/pull/35123))
+
 ## 1.40.0 (2023-06-02)
 
 ### Features Added
