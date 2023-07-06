@@ -12,10 +12,12 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 
@@ -38,6 +40,8 @@ public class ClinicalMatchingClientTestBase extends TestProxyTestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.PLAYBACK) {
             builder.httpClient(interceptorManager.getPlaybackClient());
+            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
+                .setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent", "repeatability-request-id"))));
         }
 
         return builder;
