@@ -15,8 +15,8 @@ import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageResponse;
-import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -72,14 +72,14 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder
-                .credential(new NonAzureOpenAIKeyCredential(FAKE_API_KEY));
+                .credential(new KeyCredential(FAKE_API_KEY));
         } else if (getTestMode() == TestMode.RECORD) {
             builder
                 .addPolicy(interceptorManager.getRecordPolicy())
-                .credential(new NonAzureOpenAIKeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
+                .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
         } else {
             builder
-                .credential(new NonAzureOpenAIKeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
+                .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
         }
         return builder;
     }

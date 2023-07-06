@@ -4,9 +4,7 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
-import com.azure.ai.openai.implementation.NonAzureOpenAIKeyCredentialPolicy;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
-import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
@@ -15,6 +13,7 @@ import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -31,6 +30,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.KeyCredentialPolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -189,7 +189,7 @@ public final class OpenAIClientBuilder
         return this;
     }
 
-    private NonAzureOpenAIKeyCredential nonAzureOpenAIKeyCredential;
+    private KeyCredential nonAzureOpenAIKeyCredential;
 
     /**
      * The NonAzureOpenAiKeyCredential used for public OpenAi authentication.
@@ -197,7 +197,7 @@ public final class OpenAIClientBuilder
      * @param nonAzureOpenAIKeyCredential The credential for non-azure public OpenAI authenticaton.
      * @return the object itself.
      */
-    public OpenAIClientBuilder credential(NonAzureOpenAIKeyCredential nonAzureOpenAIKeyCredential) {
+    public OpenAIClientBuilder credential(KeyCredential nonAzureOpenAIKeyCredential) {
         this.nonAzureOpenAIKeyCredential = nonAzureOpenAIKeyCredential;
         return this;
     }
@@ -342,7 +342,7 @@ public final class OpenAIClientBuilder
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
         if (nonAzureOpenAIKeyCredential != null) {
-            policies.add(new NonAzureOpenAIKeyCredentialPolicy("Authorization", nonAzureOpenAIKeyCredential, "Bearer"));
+            policies.add(new KeyCredentialPolicy("Authorization", nonAzureOpenAIKeyCredential, "Bearer"));
         }
         this.pipelinePolicies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
