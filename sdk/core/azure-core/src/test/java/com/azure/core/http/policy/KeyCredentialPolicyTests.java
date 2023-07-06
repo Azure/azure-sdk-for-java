@@ -3,7 +3,7 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,23 +14,24 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AzureKeyCredentialPolicyTests {
+public class KeyCredentialPolicyTests {
     @ParameterizedTest
     @MethodSource("setCredentialSupplier")
-    public void setCredential(AzureKeyCredentialPolicy policy, String expectedHeader) {
+    public void setCredential(KeyCredentialPolicy policy, String expectedHeader) {
         HttpHeaders headers = new HttpHeaders();
         policy.setCredential(headers);
         assertEquals(expectedHeader, headers.getValue(HttpHeaderName.AUTHORIZATION));
     }
 
     private static Stream<Arguments> setCredentialSupplier() {
-        AzureKeyCredential credential = new AzureKeyCredential("asecret");
+        String fakeKey = "fakeKeyPlaceholder";
+        KeyCredential credential = new KeyCredential(fakeKey);
         return Stream.of(
-            Arguments.of(new AzureKeyCredentialPolicy(HttpHeaderName.AUTHORIZATION.toString(), credential, null), "asecret"),
-            Arguments.of(new AzureKeyCredentialPolicy(HttpHeaderName.AUTHORIZATION.toString(), credential, "SharedKeyCredential"),
-                "SharedKeyCredential asecret"),
-            Arguments.of(new AzureKeyCredentialPolicy(HttpHeaderName.AUTHORIZATION.toString(), credential, "SharedKeyCredential "),
-                "SharedKeyCredential asecret")
+            Arguments.of(new KeyCredentialPolicy(HttpHeaderName.AUTHORIZATION.toString(), credential, null), fakeKey),
+            Arguments.of(new KeyCredentialPolicy(HttpHeaderName.AUTHORIZATION.toString(), credential, "Bearer"),
+                "Bearer " + fakeKey),
+            Arguments.of(new KeyCredentialPolicy(HttpHeaderName.AUTHORIZATION.toString(), credential, "Bearer "),
+                "Bearer " + fakeKey)
         );
     }
 }
