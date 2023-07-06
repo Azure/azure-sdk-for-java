@@ -49,7 +49,7 @@ To use this package, add the following to your _pom.xml_.
   To playback means to intercept any HTTP request and to respond  to it with the stored response of a previously recorded
   matching request.
 * Run tests in `Live` mode:
-  To run live means to not intercept any HTTP request and to send them to the live resource.
+  To run live means to not intercept any HTTP request and to send them to the Azure service directly.
 * Sanitize sensitive information:
   Sensitive information means content like passwords, unique identifiers or personal information should be cleaned up
   from the recordings.
