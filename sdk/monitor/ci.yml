@@ -8,19 +8,15 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/monitor/ci.yml
-      - sdk/monitor/azure-monitor-ingestion/
-      - sdk/monitor/azure-monitor-opentelemetry-exporter/
-      - sdk/monitor/azure-monitor-spring-native/
-      - sdk/monitor/azure-monitor-query/
+      - sdk/monitor/
     exclude:
-      - sdk/monitor/pom.xml
       - sdk/monitor/azure-monitor-ingestion/pom.xml
       - sdk/monitor/azure-monitor-ingestion-perf/pom.xml
       - sdk/monitor/azure-monitor-opentelemetry-exporter/pom.xml
-      - sdk/monitor/azure-monitor-spring-native/pom.xml
       - sdk/monitor/azure-monitor-query/pom.xml
       - sdk/monitor/azure-monitor-query-perf/pom.xml
+      - sdk/monitor/azure-monitor-spring-native/pom.xml
+      - sdk/monitor/azure-monitor-spring-native-test/pom.xml
 
 pr:
   branches:
@@ -31,16 +27,15 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/monitor/ci.yml
-      - sdk/monitor/azure-monitor-ingestion/
-      - sdk/monitor/azure-monitor-opentelemetry-exporter/
-      - sdk/monitor/azure-monitor-spring-native/
-      - sdk/monitor/azure-monitor-query/
+      - sdk/monitor/
     exclude:
-      - sdk/monitor/pom.xml
+      - sdk/monitor/azure-monitor-ingestion/pom.xml
+      - sdk/monitor/azure-monitor-ingestion-perf/pom.xml
       - sdk/monitor/azure-monitor-opentelemetry-exporter/pom.xml
-      - sdk/monitor/azure-monitor-spring-native/pom.xml
       - sdk/monitor/azure-monitor-query/pom.xml
+      - sdk/monitor/azure-monitor-query-perf/pom.xml
+      - sdk/monitor/azure-monitor-spring-native/pom.xml
+      - sdk/monitor/azure-monitor-spring-native-test/pom.xml
 
 parameters:
 - name: release_dependsonlivetests
