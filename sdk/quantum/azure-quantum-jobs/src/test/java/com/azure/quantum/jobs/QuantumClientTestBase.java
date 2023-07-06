@@ -6,12 +6,13 @@ package com.azure.quantum.jobs;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.AzureCliCredentialBuilder;
 
 import java.nio.file.Files;
 
-public class QuantumClientTestBase extends TestBase {
+public class QuantumClientTestBase extends TestProxyTestBase {
     private final String endpoint = Configuration.getGlobalConfiguration().get("QUANTUM_ENDPOINT");
     private final String subscriptionId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
     private final String resourceGroup = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_RESOURCE_GROUP);
@@ -21,11 +22,11 @@ public class QuantumClientTestBase extends TestBase {
 
         QuantumClientBuilder builder = new QuantumClientBuilder();
 
-        if (getTestMode() == TestMode.RECORD) {
+        if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
-        if (getTestMode() == TestMode.PLAYBACK) {
+        if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else {
             builder.httpClient(httpClient)
