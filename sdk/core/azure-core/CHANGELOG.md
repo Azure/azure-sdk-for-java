@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added a `KeyCredential` to support key-based auth.
+- `AzureKeyCredential` is updated to extend from `KeyCredential`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

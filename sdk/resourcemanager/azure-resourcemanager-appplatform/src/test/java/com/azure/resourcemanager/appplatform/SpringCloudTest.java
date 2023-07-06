@@ -3,11 +3,13 @@
 
 package com.azure.resourcemanager.appplatform;
 
+import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
+import com.azure.resourcemanager.appplatform.models.SpringAppDeployment;
 import com.azure.resourcemanager.appplatform.models.SpringService;
-import com.azure.core.management.Region;
+import com.azure.resourcemanager.appplatform.models.UserSourceType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -105,5 +107,54 @@ public class SpringCloudTest extends AppPlatformTest {
                 .onErrorResume(
                     e -> Mono.just((e instanceof ManagementException) ? ((ManagementException) e).getResponse().getStatusCode() : 400)
                 ).block());
+    }
+
+    @Test
+    public void canSetActiveDeployment() {
+        String serviceName = generateRandomResourceName("springsvc", 15);
+        String appName = "gateway";
+        String deploymentName = generateRandomResourceName("dp", 15);
+        Region region = Region.US_EAST;
+
+        SpringService service = appPlatformManager.springServices().define(serviceName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .create();
+
+        // --------------------------------
+        // create app with default active deployment
+        SpringApp app = service.apps().define(appName)
+            .withDefaultActiveDeployment()
+            .withDefaultPublicEndpoint()
+            .withHttpsOnly()
+            .create();
+
+        Assertions.assertEquals(1, app.deployments().list().stream().filter(SpringAppDeployment::isActive).count());
+
+        SpringAppDeployment deployment = app.getActiveDeployment();
+        Assertions.assertEquals("default", deployment.name());
+
+        // --------------------------------
+        // create a new active deployment
+        app.deployments()
+            .define(deploymentName)
+            .withExistingSource(UserSourceType.JAR, "<default>")
+            .withActivation()
+            .create();
+
+        // current active deployment should be the new deployment
+        Assertions.assertEquals(1, app.deployments().list().stream().filter(SpringAppDeployment::isActive).count());
+        deployment = app.getActiveDeployment();
+        Assertions.assertEquals(deploymentName, deployment.name());
+
+        // --------------------------------
+        // set active deployment back to the default one
+        app.update()
+            .withActiveDeployment("default")
+            .apply();
+
+        Assertions.assertEquals(1, app.deployments().list().stream().filter(SpringAppDeployment::isActive).count());
+        deployment = app.getActiveDeployment();
+        Assertions.assertEquals("default", deployment.name());
     }
 }

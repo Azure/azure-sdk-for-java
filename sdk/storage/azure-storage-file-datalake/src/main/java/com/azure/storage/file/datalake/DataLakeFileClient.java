@@ -1165,8 +1165,24 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @throws DataLakeStorageException If a storage service error occurred.
      */
     public OutputStream getOutputStream(DataLakeFileOutputStreamOptions options) {
+        return getOutputStream(options, null);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the file. If the file already exists on the service, it
+     * will be overwritten.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link DataLakeRequestConditions#setIfNoneMatch(String)}.
+     * </p>
+     *
+     * @param options {@link DataLakeFileOutputStreamOptions}
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The {@link OutputStream} that can be used to write to the file.
+     * @throws DataLakeStorageException If a storage service error occurred.
+     */
+    public OutputStream getOutputStream(DataLakeFileOutputStreamOptions options, Context context) {
         BlockBlobOutputStreamOptions convertedOptions = Transforms.toBlockBlobOutputStreamOptions(options);
-        return blockBlobClient.getBlobOutputStream(convertedOptions);
+        return blockBlobClient.getBlobOutputStream(convertedOptions, context);
     }
 
     /**
