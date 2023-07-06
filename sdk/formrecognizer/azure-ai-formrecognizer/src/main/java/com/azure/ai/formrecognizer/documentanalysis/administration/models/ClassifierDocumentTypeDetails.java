@@ -12,10 +12,12 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class ClassifierDocumentTypeDetails {
-    private TrainingDataContentSource trainingDataContentSource;
+    private final TrainingDataContentSource trainingDataContentSource;
 
     /** Creates an instance of ClassifierDocumentTypeDetails class. */
-    public ClassifierDocumentTypeDetails() {}
+    public ClassifierDocumentTypeDetails(TrainingDataContentSource source) {
+        this.trainingDataContentSource = source;
+    }
 
     /**
      * Get the trainingDataContentSource property: The source of the training data.
@@ -24,17 +26,5 @@ public final class ClassifierDocumentTypeDetails {
      */
     public TrainingDataContentSource getTrainingDataContentSource() {
         return trainingDataContentSource;
-    }
-
-    /**
-     * Set the trainingDataContentSource property: The source of the training data.
-     * It can either be {@link AzureBlobContentSource} or {@link AzureBlobFileListContentSource}
-     * @param trainingDataContentSource the trainingDataContentSource value to set.
-     * @return the ClassifierDocumentTypeDetails object itself.
-     */
-    public ClassifierDocumentTypeDetails setTrainingDataContentSource(
-        TrainingDataContentSource trainingDataContentSource) {
-        this.trainingDataContentSource = trainingDataContentSource;
-        return this;
     }
 }

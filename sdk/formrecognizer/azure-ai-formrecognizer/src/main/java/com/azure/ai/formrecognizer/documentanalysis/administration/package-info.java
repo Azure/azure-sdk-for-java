@@ -138,7 +138,8 @@
  *     documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;name, documentFieldSchema&#41; -&gt; &#123;
  *         System.out.printf&#40;&quot;Document field: %s%n&quot;, name&#41;;
  *         System.out.printf&#40;&quot;Document field type: %s%n&quot;, documentFieldSchema.getType&#40;&#41;.toString&#40;&#41;&#41;;
- *         System.out.printf&#40;&quot;Document field confidence: %.2f%n&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;name&#41;&#41;;
+ *         System.out.printf&#40;&quot;Document field confidence: %.2f%n&quot;,
+ *             documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;name&#41;&#41;;
  *     &#125;&#41;;
  * &#125;&#41;;
  * </pre>
@@ -183,7 +184,8 @@
  *     modelId.set&#40;documentModelSummary.getModelId&#40;&#41;&#41;;
  *
  *     &#47;&#47; get custom document analysis model info
- *     DocumentModelDetails documentModel = documentModelAdminClient.getDocumentModel&#40;documentModelSummary.getModelId&#40;&#41;&#41;;
+ *     DocumentModelDetails documentModel =
+ *         documentModelAdminClient.getDocumentModel&#40;documentModelSummary.getModelId&#40;&#41;&#41;;
  *     System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModel.getModelId&#40;&#41;&#41;;
  *     System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModel.getDescription&#40;&#41;&#41;;
  *     System.out.printf&#40;&quot;Model created on: %s%n&quot;, documentModel.getCreatedOn&#40;&#41;&#41;;
