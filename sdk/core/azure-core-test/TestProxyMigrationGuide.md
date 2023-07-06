@@ -4,28 +4,37 @@ This guide describes the changes that service SDKs should make to their test fra
 the Azure SDK test proxy.
 
 Documentation of the motivations and goals of the test proxy can be found [here][general_docs] in the azure-sdk-tools
-GitHub repository, and documentation of how to set up and use the proxy can be found [here][detailed_docs].
+GitHub repository and documentation of how to set up and use the proxy can be found [here][detailed_docs].
 
 ## Table of contents
 - [Re-record existing test recordings](#re-record-existing-test-recordings)
-    - [Perform one-time setup](#perform-one-time-setup)
+    - [Perform a one-time setup](#perform-a-one-time-setup)
     - [Start the proxy server](#start-the-proxy-server)
-    - [Record or play back tests](#record-or-play-back-tests)
+    - [Record or playback tests](#record-or-playback-tests)
     - [Adding sanitizers](#adding-sanitizers)
 - [Migrate management-plane tests](#migrate-management-plane-tests)
 - [Next steps](#next-steps)
 - [Advanced details](#advanced-details)
     - [What does the test proxy do?](#what-does-the-test-proxy-do)
-    - [How does the test proxy know when and what to record or play back?](#how-does-the-test-proxy-know-when-and-what-to-record-or-play-back)
+    - [How does the test proxy know when and what to record or playback?](#how-does-the-test-proxy-know-when-and-what-to-record-or-playback)
 
 ## Re-record existing test recordings
 Each SDK needs to re-record its test recordings using the test-proxy integration to ensure a consolidated recording format with serialized/sanitized requests and their matching responses.
 #### Steps:
 1) Run & update test recordings using the [test-proxy integration][test_proxy_integration].
-   1.1) To use the proxy, test classes should extend from `[TestProxyTestBase]`[test_proxy_base]
-        ```java 
-           public abstract class <ServiceName>ClientTestBase extends TestProxyTestBase {}
-        ```
+   
+   1.1) To use the proxy, test classes should extend from [`TestProxyTestBase`][test_proxy_base]
+
+   ```java
+   public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {}
+   ```
+2) Run the tests in record mode and get the updated recordings.
+3) Add [custom sanitizers][custom_sanitizer_example] if needed to address service-specific redactions.
+[Default redaction][default_sanitizers] is already set up in Test Proxy for primary sanitization.
+
+## Run tests
+Test-Proxy maintains a _separate clone_ for each assets.json. The recording files will be located under your repo root under the `.assets` folder.
+>>>>>>> cb044996f9bb89dd31aa8000cdd00500ce851530
 ```text
 +-------------------------------+
 |  azure-sdk-for-java/        |
@@ -52,7 +61,7 @@ Each SDK needs to re-record its test recordings using the test-proxy integration
 +-------------------------------+
 ```
 
-### Perform one-time setup
+### Perform a one-time setup
 
 Test-proxy needs to be on the machine and in the path. Instructions for that are [here][test_proxy_installation]. 
 For more details on proxy startup, please refer to the [proxy documentation][detailed_docs].
@@ -62,7 +71,7 @@ For more details on proxy startup, please refer to the [proxy documentation][det
 The test proxy has to be available in order for tests to work; this is done automatically when the test is extended from
 `[TestProxyTestBase]`[test_proxy_base].
 
-The `com.azure.core.test.TestProxyTestBase#setupTestProxy()` method is responsible for starting test proxy and
+The `com.azure.core.test.TestProxyTestBase#setupTestProxy()` method is responsible for starting the test proxy and
 downloading if not present already.
 
 ```java
@@ -78,7 +87,7 @@ public class MyTest extends TestProxyTestBase {
 
 The `testProxyManager.startProxy()` method will fetch the test proxy and start the test proxy.
 
-### Record or play back tests
+### Record or playback tests
 
 #### Running tests in `Playback` mode
 When running tests in Playback mode, the `test-proxy` automatically checks out the appropriate tag in each local assets repo and performs testing.
@@ -92,6 +101,7 @@ When running tests in Playback mode, the `test-proxy` automatically checks out t
     ```ps
         C:/repo/sdk-for-java/>test-proxy push -a <path-to-assets-json-file>
     ```
+    
 3) The above command will push the updated recordings to the `azure-sdk-assets` repo.
 How to set up and use the proxy can be found [here](https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#installation).
 
@@ -99,38 +109,30 @@ How to set up and use the proxy can be found [here](https://github.com/Azure/azu
 Since the test proxy doesn't use [`RecordNetworkCallPolicy`][RecordNetworkCallPolicy], tests don't use the `RecordingRedactor` to sanitize values in recordings.
 Instead, sanitizers (as well as matchers) can be registered on the proxy as detailed in
 [this][sanitizers] section of the proxy documentation. Custom sanitizers can be registered using [`TestProxySanitizer`][test_proxy_sanitizer] respective SDK test classes.
-[`Default sanitizers`][default_sanitizers], similar to use of the `RecordingRedactor` are registered in the `TestProxyUtils`. 
+[`Default sanitizers`][default_sanitizers], similar to the use of the `RecordingRedactor` are registered in the `TestProxyUtils`. 
 
-For example, registering a custom sanitizer for redacting the value of json key `modelId` from response body looks like following: 
+For example, registering a custom sanitizer for redacting the value of JSON key `modelId` from the response body looks like the following:
 ```java readme-sample-add-sanitizer-matcher
-    HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder();
 
-    List<TestProxySanitizer> customSanitizer = new ArrayList<>();
-    // sanitize value for key: "modelId" in response json body
-    customSanitizer.add(
-        new TestProxySanitizer("$..modelId", "REPLACEMENT_TEXT", TestProxySanitizerType.BODY_KEY));
+List<TestProxySanitizer> customSanitizer = new ArrayList<>();
+// sanitize value for key: "modelId" in response json body
+customSanitizer.add(
+    new TestProxySanitizer("$..modelId", "REPLACEMENT_TEXT", TestProxySanitizerType.BODY_KEY));
 
-    if (interceptorManager.isRecordMode()) {
-        // Add a policy to record network calls.
-        pipelineBuilder.policies(interceptorManager.getRecordPolicy());
-    }
-    if (interceptorManager.isPlaybackMode()) {
-        // Use a playback client when running in playback mode
-        pipelineBuilder.httpClient(interceptorManager.getPlaybackClient());
-        // Add matchers only in playback mode
-        interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
-            .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-client-request-id"))));
-    }
-    if (!interceptorManager.isLiveMode()) {
-        // Add sanitizers when running in playback or record mode
-        interceptorManager.addSanitizers(customSanitizer);
-    }
-
-    Mono<HttpResponse> response =
-        pipelineBuilder.build().send(new HttpRequest(HttpMethod.GET, "http://bing.com"));
-
-    // Validate test results.
-    assertEquals(200, response.block().getStatusCode());
+if (interceptorManager.isRecordMode()) {
+    // Add a policy to record network calls.
+    pipelineBuilder.policies(interceptorManager.getRecordPolicy());
+}
+if (interceptorManager.isPlaybackMode()) {
+    // Use a playback client when running in playback mode
+    pipelineBuilder.httpClient(interceptorManager.getPlaybackClient());
+    // Add matchers only in playback mode
+    interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
+        .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-client-request-id"))));
+}
+if (!interceptorManager.isLiveMode()) {
+    // Add sanitizers when running in playback or record mode
+    interceptorManager.addSanitizers(customSanitizer);
 }
 ```
 
@@ -140,8 +142,7 @@ could instead use the `BODY_REGEX` sanitizer type:
 ```java
 customSanitizer.add(new TestProxySanitizer("(?<=\\/\\/)[a-z]+(?=(?:|-secondary)\\.table\\.core\\.windows\\.net)", "REDACTED", TestProxySanitizerType.URI));
 ```
-In the
-snippet above, any storage endpoint URIs that match the specified URL regex will have their account name replaced with
+In the snippet above, any storage endpoint URIs that match the specified URL regex will have their account name replaced with
 "REDACTED". A request made to `https://tableaccount-secondary.table.core.windows.net` will be recorded as being
 made to `https://REDACTED-secondary.table.core.windows.net`, and URLs will also be sanitized in bodies and headers.
 
@@ -181,7 +182,7 @@ Instead of mocking out the communication with the server, the communication can 
 
 The [`TestProxyManager`][test_proxy_manager] does this for you.
 
-### How does the test proxy know when and what to record or play back?
+### How does the test proxy know when and what to record or playback?
 
 [TestProxyTestBase][test_proxy_base] provides a way to start and stop recording and playback for tests.
 This is achieved by making POST requests to the proxy server that say whether to start or stop recording or playing

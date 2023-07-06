@@ -61,8 +61,8 @@ public class ReadmeSamples {
          * Sample code for adding sanitizer and matcher to the interceptor manager.
          */
         public void testAddSanitizersAndMatchers() {
-            // BEGIN: readme-sample-add-sanitizer-matcher
             HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder();
+            // BEGIN: readme-sample-add-sanitizer-matcher
 
             List<TestProxySanitizer> customSanitizer = new ArrayList<>();
             // sanitize value for key: "modelId" in response json body
@@ -84,6 +84,7 @@ public class ReadmeSamples {
                 // Add sanitizers when running in playback or record mode
                 interceptorManager.addSanitizers(customSanitizer);
             }
+            // END: readme-sample-add-sanitizer-matcher
 
             Mono<HttpResponse> response =
                 pipelineBuilder.build().send(new HttpRequest(HttpMethod.GET, "http://bing.com"));
@@ -91,6 +92,5 @@ public class ReadmeSamples {
             // Validate test results.
             assertEquals(200, response.block().getStatusCode());
         }
-        // END: readme-sample-add-sanitizer-matcher
     }
 }

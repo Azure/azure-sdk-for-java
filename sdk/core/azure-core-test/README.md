@@ -47,10 +47,10 @@ To use this package, add the following to your _pom.xml_.
   To record means to intercept any HTTP request, store it in a file, then store the response received from the live
   resource that was originally targeted.
 * Run tests in `Playback` mode:
-  To playback means to intercept any HTTP request and to respond it with the stored response of a previously recorded
+  To playback means to intercept any HTTP request and to respond  to it with the stored response of a previously recorded
   matching request.
 * Run tests in `Live` mode:
-  To run live means to not intercept any HTTP request and to send them to the live resource.
+  To run live means to not intercept any HTTP request and to send them to the Azure service directly.
 * Sanitize sensitive information:
   Sensitive information means content like passwords, unique identifiers or personal information should be cleaned up
   from the recordings.
@@ -189,7 +189,7 @@ To run tests in playback, set `AZURE_TEST_MODE` to `PLAYBACK` or leave it unset.
 
 Set the environment variable `AZURE_TEST_MODE` to `RECORD` to run your test(s) in record mode.
 
-After tests finish running, there should folder called `src/test/resources/session-records` in your package
+After tests finish running, there should be a folder called `src/test/resources/session-records` in your package
 directory.
 Each recording in this folder will be a `.json` file that captures the HTTP traffic that was
 generated while running the test matching the file's name. If you set the `AZURE_TEST_MODE` environment variable to "
@@ -271,34 +271,26 @@ There are two primary ways to keep secrets from being written into recordings:
    For example, registering a custom sanitizer for redacting the value of json key modelId from the response body looks
    like the following:.
    ```java readme-sample-add-sanitizer-matcher
-       HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder();
 
-       List<TestProxySanitizer> customSanitizer = new ArrayList<>();
-       // sanitize value for key: "modelId" in response json body
-       customSanitizer.add(
-           new TestProxySanitizer("$..modelId", "REPLACEMENT_TEXT", TestProxySanitizerType.BODY_KEY));
+   List<TestProxySanitizer> customSanitizer = new ArrayList<>();
+   // sanitize value for key: "modelId" in response json body
+   customSanitizer.add(
+       new TestProxySanitizer("$..modelId", "REPLACEMENT_TEXT", TestProxySanitizerType.BODY_KEY));
 
-       if (interceptorManager.isRecordMode()) {
-           // Add a policy to record network calls.
-           pipelineBuilder.policies(interceptorManager.getRecordPolicy());
-       }
-       if (interceptorManager.isPlaybackMode()) {
-           // Use a playback client when running in playback mode
-           pipelineBuilder.httpClient(interceptorManager.getPlaybackClient());
-           // Add matchers only in playback mode
-           interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
-               .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-client-request-id"))));
-       }
-       if (!interceptorManager.isLiveMode()) {
-           // Add sanitizers when running in playback or record mode
-           interceptorManager.addSanitizers(customSanitizer);
-       }
-
-       Mono<HttpResponse> response =
-           pipelineBuilder.build().send(new HttpRequest(HttpMethod.GET, "http://bing.com"));
-
-       // Validate test results.
-       assertEquals(200, response.block().getStatusCode());
+   if (interceptorManager.isRecordMode()) {
+       // Add a policy to record network calls.
+       pipelineBuilder.policies(interceptorManager.getRecordPolicy());
+   }
+   if (interceptorManager.isPlaybackMode()) {
+       // Use a playback client when running in playback mode
+       pipelineBuilder.httpClient(interceptorManager.getPlaybackClient());
+       // Add matchers only in playback mode
+       interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
+           .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-client-request-id"))));
+   }
+   if (!interceptorManager.isLiveMode()) {
+       // Add sanitizers when running in playback or record mode
+       interceptorManager.addSanitizers(customSanitizer);
    }
    ```
 
