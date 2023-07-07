@@ -424,7 +424,8 @@ public class GatewayAddressCache implements IAddressCache {
                     responseTimeout,
                     httpRequest,
                     request,
-                    httpResponseMono);
+                    httpResponseMono,
+                    partitionKeyRangeIds);
         }
 
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(request, clientContext, httpResponseMono, httpRequest);

@@ -148,7 +148,7 @@ public class FaultInjectionConditionInternal {
         @Override
         public boolean isApplicable(String ruleId, FaultInjectionRequestArgs requestArgs) {
             boolean isApplicable =
-                StringUtils.equals(this.containerResourceId, requestArgs.getServiceRequest().requestContext.resolvedCollectionRid);
+                StringUtils.equals(this.containerResourceId, requestArgs.getCollectionRid());
             if (!isApplicable) {
                 requestArgs.getServiceRequest().faultInjectionRequestContext
                     .recordFaultInjectionRuleEvaluation(requestArgs.getTransportRequestId(),
@@ -156,7 +156,7 @@ public class FaultInjectionConditionInternal {
                             "%s [ContainerRid mismatch: Expected [%s], Actual [%s]]",
                             ruleId,
                             containerResourceId,
-                            requestArgs.getServiceRequest().requestContext.resolvedCollectionRid));
+                            requestArgs.getCollectionRid()));
             }
 
             return isApplicable;        }
@@ -244,9 +244,9 @@ public class FaultInjectionConditionInternal {
 
         @Override
         public boolean isApplicable(String ruleId, FaultInjectionRequestArgs requestArgs) {
-            PartitionKeyRange resolvedPartitionKeyRange = requestArgs.getServiceRequest().requestContext.resolvedPartitionKeyRange;
-            boolean isApplicable = resolvedPartitionKeyRange != null
-                && this.partitionKeyRangeIdList.contains(resolvedPartitionKeyRange.getId());
+            boolean isApplicable = requestArgs.getPartitionKeyRangeIds() != null
+                && !requestArgs.getPartitionKeyRangeIds().isEmpty()
+                && this.partitionKeyRangeIdList.containsAll(requestArgs.getPartitionKeyRangeIds());
 
             if (!isApplicable) {
                 requestArgs.getServiceRequest().faultInjectionRequestContext
@@ -255,7 +255,7 @@ public class FaultInjectionConditionInternal {
                             "%s [PartitionKeyRangeId mismatch: Expected [%s], Actual [%s]]",
                             ruleId,
                             partitionKeyRangeIdList,
-                            resolvedPartitionKeyRange.getId()));
+                            requestArgs.getPartitionKeyRangeIds()));
             }
 
             return isApplicable;

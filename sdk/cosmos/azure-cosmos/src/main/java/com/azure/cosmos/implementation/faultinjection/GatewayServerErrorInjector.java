@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -42,6 +43,21 @@ public class GatewayServerErrorInjector {
         HttpRequest httpRequest,
         RxDocumentServiceRequest serviceRequest,
         Mono<HttpResponse> originalResponseMono) {
+        return injectGatewayErrors(
+            responseTimeout,
+            httpRequest,
+            serviceRequest,
+            originalResponseMono,
+            serviceRequest.requestContext.resolvedPartitionKeyRange != null
+                ? Arrays.asList(serviceRequest.requestContext.resolvedPartitionKeyRange.getId()) : null);
+    }
+
+    public Mono<HttpResponse> injectGatewayErrors(
+        Duration responseTimeout,
+        HttpRequest httpRequest,
+        RxDocumentServiceRequest serviceRequest,
+        Mono<HttpResponse> originalResponseMono,
+        List<String> partitionKeyRangeIds) {
 
         return Mono.just(responseTimeout)
             .flatMap(effectiveResponseTimeout -> {
@@ -51,7 +67,8 @@ public class GatewayServerErrorInjector {
                     this.createFaultInjectionRequestArgs(
                         httpRequest.reactorNettyRequestRecord(),
                         httpRequest.uri(),
-                        serviceRequest);
+                        serviceRequest,
+                        partitionKeyRangeIds);
 
                 if (this.injectGatewayServerResponseError(faultInjectionRequestArgs, exceptionToBeInjected)) {
                     return Mono.error(exceptionToBeInjected.v);
@@ -98,7 +115,7 @@ public class GatewayServerErrorInjector {
         Utils.ValueHolder<Duration> delayToBeInjected) {
 
         for (IServerErrorInjector serverErrorInjector : faultInjectors) {
-            if(serverErrorInjector.injectServerResponseDelayAfterProcessing(faultInjectionRequestArgs, delayToBeInjected)) {
+            if(serverErrorInjector.injectServerResponseDelayBeforeProcessing(faultInjectionRequestArgs, delayToBeInjected)) {
                 return true;
             }
         }
@@ -142,10 +159,12 @@ public class GatewayServerErrorInjector {
     private GatewayFaultInjectionRequestArgs createFaultInjectionRequestArgs(
         ReactorNettyRequestRecord requestRecord,
         URI requestUri,
-        RxDocumentServiceRequest serviceRequest) {
+        RxDocumentServiceRequest serviceRequest,
+        List<String> partitionKeyRangeIds) {
         return new GatewayFaultInjectionRequestArgs(
             requestRecord.getTransportRequestId(),
             requestUri,
-            serviceRequest);
+            serviceRequest,
+            partitionKeyRangeIds);
     }
 }

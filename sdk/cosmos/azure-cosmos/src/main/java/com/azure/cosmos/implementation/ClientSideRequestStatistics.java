@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnosti
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -668,9 +669,9 @@ public class ClientSideRequestStatistics {
         private boolean forceRefresh;
         @JsonSerialize
         private boolean forceCollectionRoutingMapRefresh;
-        @JsonSerialize
+        @JsonInclude(JsonInclude.Include.NON_NULL)
         private String faultInjectionRuleId;
-        @JsonSerialize
+        @JsonInclude(JsonInclude.Include.NON_NULL)
         private List<String> faultInjectionEvaluationResults;
 
         // If one replica return error we start address call in parallel,

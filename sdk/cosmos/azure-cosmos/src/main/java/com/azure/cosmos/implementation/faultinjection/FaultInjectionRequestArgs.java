@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.faultinjection;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 
 import java.net.URI;
+import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -45,4 +46,7 @@ public abstract class FaultInjectionRequestArgs {
     public boolean isPrimary() {
         return this.isPrimary;
     }
+
+    public abstract List<String> getPartitionKeyRangeIds();
+    public abstract String getCollectionRid();
 }

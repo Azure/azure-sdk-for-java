@@ -59,7 +59,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.testng.AssertJUnit.fail;
 
-public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
+public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
     private static final int TIMEOUT = 60000;
     private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_ADDRESS = "Addresses mismatch";
     private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_OPERATION_TYPE = "OperationType mismatch";
@@ -74,7 +74,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
     private Map<String, String> writeRegionMap;
 
     @Factory(dataProvider = "simpleClientBuildersWithJustDirectTcp")
-    public FaultInjectionServerErrorRuleTests(CosmosClientBuilder clientBuilder) {
+    public FaultInjectionServerErrorRuleOnDirectTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;
     }
@@ -981,6 +981,46 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         }
     }
 
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void faultInjectionServerErrorRuleTests_StaledAddressesServerGone() throws JsonProcessingException {
+        // Test gone error being injected and forceRefresh address refresh happens
+        String staledAddressesServerGoneRuleId = "staledAddressesServerGone-" + UUID.randomUUID();
+        FaultInjectionRule staledAddressesServerGoneRule =
+            new FaultInjectionRuleBuilder(staledAddressesServerGoneRuleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.CREATE_ITEM)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.STALED_ADDRESSES_SERVER_GONE)
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
+
+        try {
+            TestItem testItem = this.cosmosAsyncContainer.createItem(TestItem.createNewItem()).block().getItem();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(this.cosmosAsyncContainer, Arrays.asList(staledAddressesServerGoneRule)).block();
+
+            // test for create item operation, the rule will be applied
+            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(this.cosmosAsyncContainer, OperationType.Create, testItem);
+            this.validateFaultInjectionRuleApplied(
+                cosmosDiagnostics,
+                OperationType.Create,
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
+                staledAddressesServerGoneRuleId,
+                true);
+
+            this.validateAddressRefreshWithForceRefresh(cosmosDiagnostics);
+        } finally {
+            staledAddressesServerGoneRule.disable();
+        }
+    }
+
     private void validateFaultInjectionRuleApplied(
         CosmosDiagnostics cosmosDiagnostics,
         OperationType operationType,
@@ -1076,5 +1116,20 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             assertThat(rule.getHitCountDetails().size()).isEqualTo(1);
             assertThat(rule.getHitCountDetails().get(operationType.toString() + "-" + resourceType.toString())).isEqualTo(totalHitCount);
         }
+    }
+
+    private void validateAddressRefreshWithForceRefresh(CosmosDiagnostics cosmosDiagnostics) throws JsonProcessingException {
+        ObjectNode diagnosticsNode = (ObjectNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString());
+        JsonNode addressResolutionStatistics = diagnosticsNode.get("addressResolutionStatistics");
+        Iterator<Map.Entry<String, JsonNode>> addressResolutionIterator = addressResolutionStatistics.fields();
+        int addressRefreshWithForceRefreshCount = 0;
+        while (addressResolutionIterator.hasNext()) {
+            JsonNode addressResolutionSingleRequest = addressResolutionIterator.next().getValue();
+            if (addressResolutionSingleRequest.get("forceRefresh").asBoolean()) {
+                addressRefreshWithForceRefreshCount++;
+            }
+        }
+
+        assertThat(addressRefreshWithForceRefreshCount).isGreaterThanOrEqualTo(1);
     }
 }

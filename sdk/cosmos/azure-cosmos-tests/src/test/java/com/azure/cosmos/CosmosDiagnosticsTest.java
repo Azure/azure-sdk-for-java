@@ -717,7 +717,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         String diagnostics = cosmosDiagnostics.toString();
         assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
         assertThat(diagnostics).contains("supplementalResponseStatisticsList");
-        assertThat(diagnostics).contains("\"gatewayStatistics\":null");
+        assertThat(diagnostics).contains("gatewayStatisticsList");
         assertThat(diagnostics).contains("addressResolutionStatistics");
         assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
         assertThat(diagnostics).contains("\"metaDataName\":\"PARTITION_KEY_RANGE_LOOK_UP\"");
@@ -1324,7 +1324,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(readResourceResponse.getDiagnostics().toString()).contains("\"inflightRequest\":false");
             assertThat(readResourceResponse.getDiagnostics().toString()).doesNotContain("endTime=\"null\"");
             assertThat(readResourceResponse.getDiagnostics().toString()).contains("\"exceptionMessage\":\"io.netty" +
-                ".channel.AbstractChannel$AnnotatedConnectException: Connection refused");
+                ".channel.AbstractChannel$AnnotatedConnectException: finishConnect(..) failed: Connection refused");
         } catch (Exception ex) {
             logger.error("Error in test addressResolutionStatistics", ex);
             fail("This test should not throw exception " + ex);

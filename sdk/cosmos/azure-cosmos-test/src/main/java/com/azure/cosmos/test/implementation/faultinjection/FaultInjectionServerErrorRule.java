@@ -105,7 +105,7 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
         if (!withinHitLimit) {
             requestArgs.getServiceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
                 requestArgs.getTransportRequestId(),
-                this.id + "[Hit Limit reached]"
+                String.format("%s [Hit Limit reached. Configured hitLimit %d, evaluationCount %d]", this.id, this.hitLimit, evaluationCount)
             );
             return false;
         } else {
