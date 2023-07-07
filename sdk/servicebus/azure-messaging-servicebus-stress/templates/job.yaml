@@ -3,7 +3,7 @@
 metadata:
   labels:
     testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
-    testName: servicebus-stress-test
+    testName: java-sb-stress
     chaos: "{{ default false .Stress.chaos }}"
 spec:
   containers:
