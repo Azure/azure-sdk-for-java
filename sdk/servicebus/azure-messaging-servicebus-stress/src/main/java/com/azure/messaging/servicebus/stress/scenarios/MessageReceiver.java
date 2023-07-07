@@ -3,10 +3,8 @@
 
 package com.azure.messaging.servicebus.stress.scenarios;
 
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.ServiceBusException;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import org.springframework.beans.factory.annotation.Value;

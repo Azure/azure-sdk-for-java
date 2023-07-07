@@ -74,6 +74,6 @@ public class MessageSessionSenderAsync extends ServiceBusScenario {
     }
 
     private String randomSessionId() {
-        return Integer.toString((int)(Instant.now().toEpochMilli() % sessionsToSend));
+        return Integer.toString((int) (Instant.now().toEpochMilli() % sessionsToSend));
     }
 }
