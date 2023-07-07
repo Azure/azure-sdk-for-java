@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.models.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -186,5 +187,42 @@ public class AsyncContainerCodeSnippets {
                 throwable.printStackTrace();
             });
         // END: com.azure.cosmos.CosmosAsyncContainer.replaceItem
+    }
+
+    public void readAllItemsAsyncSample() {
+        String partitionKey = "partitionKey";
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.readAllItems
+        cosmosAsyncContainer
+            .readAllItems(new PartitionKey(partitionKey), Passenger.class)
+            .byPage(100)
+            .flatMap(passengerFeedResponse -> {
+                for (Passenger passenger : passengerFeedResponse.getResults()) {
+                    System.out.println(passenger);
+                }
+                return Flux.empty();
+            })
+            .subscribe();
+        // END: com.azure.cosmos.CosmosAsyncContainer.readAllItems
+    }
+
+    public void readManyAsyncSample() {
+        String passenger1Id = "item1";
+        String passenger2Id = "item1";
+
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.readMany
+        List<CosmosItemIdentity> itemIdentityList = List.of(
+            new CosmosItemIdentity(new PartitionKey(passenger1Id), passenger1Id),
+            new CosmosItemIdentity(new PartitionKey(passenger2Id), passenger2Id)
+        );
+
+        cosmosAsyncContainer.readMany(itemIdentityList, Passenger.class)
+            .flatMap(passengerFeedResponse -> {
+                for (Passenger passenger : passengerFeedResponse.getResults()) {
+                    System.out.println(passenger);
+                }
+                return Mono.empty();
+            })
+            .subscribe();
+        // END: com.azure.cosmos.CosmosAsyncContainer.readMany
     }
 }

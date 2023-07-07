@@ -407,7 +407,22 @@ public class CosmosContainer {
 
     /**
      * Reads many documents.
-     *
+     * Useful for reading many documents with a particular id and partition key in a single request.
+     * If any document from the list is missing, no exception will be thrown.
+     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.readMany -->
+     * <pre>
+     * List&lt;CosmosItemIdentity&gt; itemIdentityList = List.of&#40;
+     *     new CosmosItemIdentity&#40;new PartitionKey&#40;passenger1Id&#41;, passenger1Id&#41;,
+     *     new CosmosItemIdentity&#40;new PartitionKey&#40;passenger2Id&#41;, passenger2Id&#41;
+     * &#41;;
+     * FeedResponse&lt;Passenger&gt; passengerFeedResponse = cosmosContainer.readMany&#40;itemIdentityList, Passenger.class&#41;;
+     * for &#40;Passenger passenger : passengerFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *     System.out.println&#40;passenger&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.readMany -->
+     * <p>
      * @param <T> the type parameter
      * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param classType   class type
@@ -422,7 +437,22 @@ public class CosmosContainer {
 
     /**
      * Reads many documents.
-     *
+     * Useful for reading many documents with a particular id and partition key in a single request.
+     * If any document from the list is missing, no exception will be thrown.
+     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.readMany -->
+     * <pre>
+     * List&lt;CosmosItemIdentity&gt; itemIdentityList = List.of&#40;
+     *     new CosmosItemIdentity&#40;new PartitionKey&#40;passenger1Id&#41;, passenger1Id&#41;,
+     *     new CosmosItemIdentity&#40;new PartitionKey&#40;passenger2Id&#41;, passenger2Id&#41;
+     * &#41;;
+     * FeedResponse&lt;Passenger&gt; passengerFeedResponse = cosmosContainer.readMany&#40;itemIdentityList, Passenger.class&#41;;
+     * for &#40;Passenger passenger : passengerFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *     System.out.println&#40;passenger&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.readMany -->
+     * <p>
      * @param <T> the type parameter
      * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param sessionToken the optional Session token - null if the read can be made without specific session token
@@ -443,6 +473,16 @@ public class CosmosContainer {
 
     /**
      * Reads all the items of a logical partition returning the results as {@link CosmosPagedIterable}.
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.readAllItems -->
+     * <pre>
+     * CosmosPagedIterable&lt;Passenger&gt; passengers = cosmosContainer
+     *     .readAllItems&#40;new PartitionKey&#40;partitionKey&#41;, Passenger.class&#41;;
+     *
+     * passengers.forEach&#40;passenger -&gt; &#123;
+     *     System.out.println&#40;passenger&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.readAllItems -->
      *
      * @param <T> the type parameter.
      * @param partitionKey the partition key value of the documents that need to be read
@@ -458,6 +498,16 @@ public class CosmosContainer {
 
     /**
      * Reads all the items of a logical partition returning the results as {@link CosmosPagedIterable}.
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.readAllItems -->
+     * <pre>
+     * CosmosPagedIterable&lt;Passenger&gt; passengers = cosmosContainer
+     *     .readAllItems&#40;new PartitionKey&#40;partitionKey&#41;, Passenger.class&#41;;
+     *
+     * passengers.forEach&#40;passenger -&gt; &#123;
+     *     System.out.println&#40;passenger&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.readAllItems -->
      *
      * @param <T> the type parameter.
      * @param partitionKey the partition key value of the documents that need to be read

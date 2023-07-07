@@ -4,13 +4,13 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.NotFoundException;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.CosmosPatchOperations;
-import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.*;
+import com.azure.cosmos.util.CosmosPagedIterable;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 public class ReadmeSamples {
@@ -239,6 +239,34 @@ public class ReadmeSamples {
             new PartitionKey(oldPassenger.getId()),
             new CosmosItemRequestOptions());
         // END: com.azure.cosmos.CosmosContainer.replaceItem
+    }
+
+    public void readAllItemsSample() {
+        String partitionKey = "partitionKey";
+        // BEGIN: com.azure.cosmos.CosmosContainer.readAllItems
+        CosmosPagedIterable<Passenger> passengers = cosmosContainer
+            .readAllItems(new PartitionKey(partitionKey), Passenger.class);
+
+        passengers.forEach(passenger -> {
+            System.out.println(passenger);
+        });
+        // END: com.azure.cosmos.CosmosContainer.readAllItems
+    }
+
+    public void readManySample() {
+        String passenger1Id = "item1";
+        String passenger2Id = "item1";
+
+        // BEGIN: com.azure.cosmos.CosmosContainer.readMany
+        List<CosmosItemIdentity> itemIdentityList = List.of(
+            new CosmosItemIdentity(new PartitionKey(passenger1Id), passenger1Id),
+            new CosmosItemIdentity(new PartitionKey(passenger2Id), passenger2Id)
+        );
+        FeedResponse<Passenger> passengerFeedResponse = cosmosContainer.readMany(itemIdentityList, Passenger.class);
+        for (Passenger passenger : passengerFeedResponse.getResults()) {
+            System.out.println(passenger);
+        }
+        // END: com.azure.cosmos.CosmosContainer.readMany
     }
 
     static final class Passenger {
