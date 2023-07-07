@@ -1422,7 +1422,23 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Replaces an item with the passed in item.
+     * Replaces an existing item in a container with a new item.
+     * It performs a complete replacement of the item,
+     * replacing all its properties with the properties of the new item
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.replaceItem -->
+     * <pre>
+     * cosmosAsyncContainer.replaceItem&#40;
+     *         newPassenger,
+     *         oldPassenger.getId&#40;&#41;,
+     *         new PartitionKey&#40;oldPassenger.getId&#40;&#41;&#41;,
+     *         new CosmosItemRequestOptions&#40;&#41;&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         System.out.println&#40;response&#41;;
+     *     &#125;, throwable -&gt; &#123;
+     *         throwable.printStackTrace&#40;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.replaceItem -->
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single Cosmos item response with the replaced item.
@@ -1438,7 +1454,23 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Replaces an item with the passed in item.
+     * Replaces an existing item in a container with a new item.
+     * It performs a complete replacement of the item,
+     * replacing all its properties with the properties of the new item
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.replaceItem -->
+     * <pre>
+     * cosmosAsyncContainer.replaceItem&#40;
+     *         newPassenger,
+     *         oldPassenger.getId&#40;&#41;,
+     *         new PartitionKey&#40;oldPassenger.getId&#40;&#41;&#41;,
+     *         new CosmosItemRequestOptions&#40;&#41;&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         System.out.println&#40;response&#41;;
+     *     &#125;, throwable -&gt; &#123;
+     *         throwable.printStackTrace&#40;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.replaceItem -->
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single Cosmos item response with the replaced item.
@@ -1465,7 +1497,28 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Run patch operations on an Item.
+     * Run partial update that modifies specific properties or fields of the item without replacing the entire item.
+     *
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.patchItem -->
+     * <pre>
+     * CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create&#40;&#41;;
+     *
+     * cosmosPatchOperations
+     *     .add&#40;&quot;&#47;departure&quot;, &quot;SEA&quot;&#41;
+     *     .increment&#40;&quot;&#47;trips&quot;, 1&#41;;
+     *
+     * cosmosAsyncContainer.patchItem&#40;
+     *         passenger.getId&#40;&#41;,
+     *         new PartitionKey&#40;passenger.getId&#40;&#41;&#41;,
+     *         cosmosPatchOperations,
+     *         Passenger.class&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         System.out.println&#40;response&#41;;
+     *     &#125;, throwable -&gt; &#123;
+     *         throwable.printStackTrace&#40;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.patchItem -->
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single Cosmos item response with the patched item.
@@ -1488,7 +1541,28 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Run patch operations on an Item.
+     * Run partial update that modifies specific properties or fields of the item without replacing the entire item.
+     *
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.patchItem -->
+     * <pre>
+     * CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create&#40;&#41;;
+     *
+     * cosmosPatchOperations
+     *     .add&#40;&quot;&#47;departure&quot;, &quot;SEA&quot;&#41;
+     *     .increment&#40;&quot;&#47;trips&quot;, 1&#41;;
+     *
+     * cosmosAsyncContainer.patchItem&#40;
+     *         passenger.getId&#40;&#41;,
+     *         new PartitionKey&#40;passenger.getId&#40;&#41;&#41;,
+     *         cosmosPatchOperations,
+     *         Passenger.class&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         System.out.println&#40;response&#41;;
+     *     &#125;, throwable -&gt; &#123;
+     *         throwable.printStackTrace&#40;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.patchItem -->
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single Cosmos item response with the patched item.

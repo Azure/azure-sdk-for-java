@@ -6,6 +6,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.Mono;
 
@@ -211,12 +212,40 @@ public class ReadmeSamples {
         // END: com.azure.cosmos.CosmosContainer.deleteItem
     }
 
+    public void patchItemSample() {
+        Passenger passenger = new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND");
+        // BEGIN: com.azure.cosmos.CosmosContainer.patchItem
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
 
-    private static final class Passenger {
+        cosmosPatchOperations
+            .add("/departure", "SEA")
+            .increment("/trips", 1);
+
+        CosmosItemResponse<Passenger> response = cosmosContainer.patchItem(
+            passenger.getId(),
+            new PartitionKey(passenger.getId()),
+            cosmosPatchOperations,
+            Passenger.class);
+        // END: com.azure.cosmos.CosmosContainer.patchItem
+    }
+
+    public void replaceItemSample() {
+        Passenger oldPassenger = new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND");
+        Passenger newPassenger = new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND");
+        // BEGIN: com.azure.cosmos.CosmosContainer.replaceItem
+        CosmosItemResponse<Passenger> response = cosmosContainer.replaceItem(
+            newPassenger,
+            oldPassenger.getId(),
+            new PartitionKey(oldPassenger.getId()),
+            new CosmosItemRequestOptions());
+        // END: com.azure.cosmos.CosmosContainer.replaceItem
+    }
+
+    static final class Passenger {
         private final String id;
         private final String email;
         private final String name;
-
+        private int trips;
         private String departure;
         private String destination;
 

@@ -9,6 +9,8 @@ import reactor.core.publisher.Mono;
 import java.util.Collections;
 import java.util.List;
 
+import static com.azure.cosmos.ReadmeSamples.*;
+
 public class AsyncContainerCodeSnippets {
     private final CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
         .endpoint("<YOUR ENDPOINT HERE>")
@@ -147,4 +149,42 @@ public class AsyncContainerCodeSnippets {
         // END: com.azure.cosmos.CosmosAsyncContainer.readAllConflicts
     }
 
+    public void patchItemAsyncSample() {
+        Passenger passenger = new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND");
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.patchItem
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
+
+        cosmosPatchOperations
+            .add("/departure", "SEA")
+            .increment("/trips", 1);
+
+        cosmosAsyncContainer.patchItem(
+                passenger.getId(),
+                new PartitionKey(passenger.getId()),
+                cosmosPatchOperations,
+                Passenger.class)
+            .subscribe(response -> {
+                System.out.println(response);
+            }, throwable -> {
+                throwable.printStackTrace();
+            });
+        // END: com.azure.cosmos.CosmosAsyncContainer.patchItem
+    }
+
+    public void replaceItemAsyncSample() {
+        Passenger oldPassenger = new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND");
+        Passenger newPassenger = new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND");
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.replaceItem
+        cosmosAsyncContainer.replaceItem(
+                newPassenger,
+                oldPassenger.getId(),
+                new PartitionKey(oldPassenger.getId()),
+                new CosmosItemRequestOptions())
+            .subscribe(response -> {
+                System.out.println(response);
+            }, throwable -> {
+                throwable.printStackTrace();
+            });
+        // END: com.azure.cosmos.CosmosAsyncContainer.replaceItem
+    }
 }

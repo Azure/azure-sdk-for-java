@@ -250,7 +250,7 @@ public class CosmosContainer {
     }
 
     /**
-     * Upserts a item Cosmos sync item while specifying additional options.
+     * Upserts an item Cosmos sync item while specifying additional options.
      *
      * @param <T> the type parameter.
      * @param item the item.
@@ -534,8 +534,19 @@ public class CosmosContainer {
     }
 
     /**
-     * Replaces an item in the current container.
-     *
+     * Replaces an existing item in a container with a new item.
+     * It performs a complete replacement of the item,
+     * replacing all its properties with the properties of the new item
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.replaceItem -->
+     * <pre>
+     * CosmosItemResponse&lt;Passenger&gt; response = cosmosContainer.replaceItem&#40;
+     *     newPassenger,
+     *     oldPassenger.getId&#40;&#41;,
+     *     new PartitionKey&#40;oldPassenger.getId&#40;&#41;&#41;,
+     *     new CosmosItemRequestOptions&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.replaceItem -->
+     * <p>
      * @param <T> the type parameter.
      * @param item the item.
      * @param itemId the item id.
@@ -551,7 +562,23 @@ public class CosmosContainer {
     }
 
     /**
-     * Run patch operations on an Item.
+     * Run partial update that modifies specific properties or fields of the item without replacing the entire item.
+     *
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.patchItem -->
+     * <pre>
+     * CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create&#40;&#41;;
+     *
+     * cosmosPatchOperations
+     *     .add&#40;&quot;&#47;departure&quot;, &quot;SEA&quot;&#41;
+     *     .increment&#40;&quot;&#47;trips&quot;, 1&#41;;
+     *
+     * CosmosItemResponse&lt;Passenger&gt; response = cosmosContainer.patchItem&#40;
+     *     passenger.getId&#40;&#41;,
+     *     new PartitionKey&#40;passenger.getId&#40;&#41;&#41;,
+     *     cosmosPatchOperations,
+     *     Passenger.class&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.patchItem -->
      *
      * @param <T> the type parameter.
      * @param itemId the item id.
@@ -571,7 +598,23 @@ public class CosmosContainer {
     }
 
     /**
-     * Run patch operations on an Item.
+     * Run partial update that modifies specific properties or fields of the item without replacing the entire item.
+     *
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.patchItem -->
+     * <pre>
+     * CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create&#40;&#41;;
+     *
+     * cosmosPatchOperations
+     *     .add&#40;&quot;&#47;departure&quot;, &quot;SEA&quot;&#41;
+     *     .increment&#40;&quot;&#47;trips&quot;, 1&#41;;
+     *
+     * CosmosItemResponse&lt;Passenger&gt; response = cosmosContainer.patchItem&#40;
+     *     passenger.getId&#40;&#41;,
+     *     new PartitionKey&#40;passenger.getId&#40;&#41;&#41;,
+     *     cosmosPatchOperations,
+     *     Passenger.class&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.patchItem -->
      *
      * @param <T> the type parameter.
      * @param itemId the item id.
