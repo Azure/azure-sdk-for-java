@@ -123,7 +123,7 @@ public final class FaultInjectionRuleBuilder {
         checkNotNull(this.condition, "Argument 'condition' can not be null");
         checkNotNull(this.result, "Argument 'result' can not be null");
 
-        if (this.condition.getConnectionType() == FaultInjectionConnectionType.GATEWAY) {
+        if (this.condition != null && this.condition.getConnectionType() == FaultInjectionConnectionType.GATEWAY) {
             this.validateRuleOnGatewayConnection();
         }
 
@@ -138,6 +138,10 @@ public final class FaultInjectionRuleBuilder {
     }
 
     private void validateRuleOnGatewayConnection() {
+        if (this.result == null) {
+            throw new IllegalArgumentException("Argument 'result' can not be null");
+        }
+
         if (this.result instanceof FaultInjectionConnectionErrorResult) {
             throw new IllegalArgumentException("FaultInjectionConnectionError result can not be configured for rule with gateway connection type.");
         }

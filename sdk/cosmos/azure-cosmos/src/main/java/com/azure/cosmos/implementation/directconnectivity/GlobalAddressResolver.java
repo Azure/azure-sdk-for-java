@@ -255,7 +255,7 @@ public class GlobalAddressResolver implements IAddressResolver {
         }
     }
 
-    public synchronized void configureFaultInjectorProvider(IFaultInjectorProvider faultInjectorProvider, Configs configs) {
+    public void configureFaultInjectorProvider(IFaultInjectorProvider faultInjectorProvider, Configs configs) {
         if (this.gatewayServerErrorInjector == null) {
             this.gatewayServerErrorInjector = new GatewayServerErrorInjector(configs);
 

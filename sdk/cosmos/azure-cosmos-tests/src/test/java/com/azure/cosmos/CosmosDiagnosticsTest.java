@@ -1324,7 +1324,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(readResourceResponse.getDiagnostics().toString()).contains("\"inflightRequest\":false");
             assertThat(readResourceResponse.getDiagnostics().toString()).doesNotContain("endTime=\"null\"");
             assertThat(readResourceResponse.getDiagnostics().toString()).contains("\"exceptionMessage\":\"io.netty" +
-                ".channel.AbstractChannel$AnnotatedConnectException: finishConnect(..) failed: Connection refused");
+                ".channel.AbstractChannel$AnnotatedConnectException: Connection refused");
         } catch (Exception ex) {
             logger.error("Error in test addressResolutionStatistics", ex);
             fail("This test should not throw exception " + ex);

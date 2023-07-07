@@ -4,7 +4,6 @@
 package com.azure.cosmos.test.implementation.faultinjection;
 
 import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestArgs;
