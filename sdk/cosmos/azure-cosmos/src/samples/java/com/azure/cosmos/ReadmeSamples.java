@@ -4,13 +4,11 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.NotFoundException;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.*;
+import com.azure.cosmos.util.CosmosPagedIterable;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
-import java.util.UUID;
+import java.util.*;
 
 public class ReadmeSamples {
     private final String serviceEndpoint = "<service-endpoint>";
@@ -211,12 +209,114 @@ public class ReadmeSamples {
         // END: com.azure.cosmos.CosmosContainer.deleteItem
     }
 
+    public void patchItemSample() {
+        Passenger passenger = new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND");
+        // BEGIN: com.azure.cosmos.CosmosContainer.patchItem
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
 
-    private static final class Passenger {
+        cosmosPatchOperations
+            .add("/departure", "SEA")
+            .increment("/trips", 1);
+
+        CosmosItemResponse<Passenger> response = cosmosContainer.patchItem(
+            passenger.getId(),
+            new PartitionKey(passenger.getId()),
+            cosmosPatchOperations,
+            Passenger.class);
+        // END: com.azure.cosmos.CosmosContainer.patchItem
+    }
+
+    public void replaceItemSample() {
+        Passenger oldPassenger = new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND");
+        Passenger newPassenger = new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND");
+        // BEGIN: com.azure.cosmos.CosmosContainer.replaceItem
+        CosmosItemResponse<Passenger> response = cosmosContainer.replaceItem(
+            newPassenger,
+            oldPassenger.getId(),
+            new PartitionKey(oldPassenger.getId()),
+            new CosmosItemRequestOptions());
+        // END: com.azure.cosmos.CosmosContainer.replaceItem
+    }
+
+    public void readAllItemsSample() {
+        String partitionKey = "partitionKey";
+        // BEGIN: com.azure.cosmos.CosmosContainer.readAllItems
+        CosmosPagedIterable<Passenger> passengers = cosmosContainer
+            .readAllItems(new PartitionKey(partitionKey), Passenger.class);
+
+        passengers.forEach(passenger -> {
+            System.out.println(passenger);
+        });
+        // END: com.azure.cosmos.CosmosContainer.readAllItems
+    }
+
+    public void readManySample() {
+        String passenger1Id = "item1";
+        String passenger2Id = "item1";
+
+        // BEGIN: com.azure.cosmos.CosmosContainer.readMany
+        List<CosmosItemIdentity> itemIdentityList = new ArrayList<>();
+        itemIdentityList.add(new CosmosItemIdentity(new PartitionKey(passenger1Id), passenger1Id));
+        itemIdentityList.add(new CosmosItemIdentity(new PartitionKey(passenger2Id), passenger2Id));
+
+        FeedResponse<Passenger> passengerFeedResponse = cosmosContainer.readMany(itemIdentityList, Passenger.class);
+        for (Passenger passenger : passengerFeedResponse.getResults()) {
+            System.out.println(passenger);
+        }
+        // END: com.azure.cosmos.CosmosContainer.readMany
+    }
+
+    public void queryChangeFeedSample() {
+        // BEGIN: com.azure.cosmos.CosmosContainer.queryChangeFeed
+        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromNow(FeedRange.forFullRange())
+            .allVersionsAndDeletes();
+
+        Iterable<FeedResponse<Passenger>> feedResponses = cosmosContainer.queryChangeFeed(options, Passenger.class)
+            .iterableByPage();
+        for (FeedResponse<Passenger> feedResponse : feedResponses) {
+            List<Passenger> results = feedResponse.getResults();
+            System.out.println(results);
+        }
+        // END: com.azure.cosmos.CosmosContainer.queryChangeFeed
+    }
+
+    public void queryItemsSample() {
+        // BEGIN: com.azure.cosmos.CosmosContainer.queryItems
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        String query = "SELECT * FROM Passenger WHERE Passenger.departure IN ('SEA', 'IND')";
+        Iterable<FeedResponse<Passenger>> queryResponses = cosmosContainer.queryItems(query, options, Passenger.class)
+            .iterableByPage();
+
+        for (FeedResponse<Passenger> feedResponse : queryResponses) {
+            List<Passenger> results = feedResponse.getResults();
+            System.out.println(results);
+        }
+        // END: com.azure.cosmos.CosmosContainer.queryItems
+    }
+
+    public void queryItemsQuerySpecSample() {
+        // BEGIN: com.azure.cosmos.CosmosContainer.SqlQuerySpec.queryItems
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        String query = "SELECT * FROM Passenger p WHERE (p.departure = @departure)";
+        List<SqlParameter> parameters = Collections.singletonList(new SqlParameter("@departure", "SEA"));
+        SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query, parameters);
+
+        Iterable<FeedResponse<Passenger>> queryResponses = cosmosContainer.queryItems(sqlQuerySpec, options, Passenger.class)
+            .iterableByPage();
+
+        for (FeedResponse<Passenger> feedResponse : queryResponses) {
+            List<Passenger> results = feedResponse.getResults();
+            System.out.println(results);
+        }
+        // END: com.azure.cosmos.CosmosContainer.SqlQuerySpec.queryItems
+    }
+
+    static final class Passenger {
         private final String id;
         private final String email;
         private final String name;
-
+        private int trips;
         private String departure;
         private String destination;
 
