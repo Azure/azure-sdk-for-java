@@ -3,8 +3,11 @@
 
 package com.azure.identity;
 
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
+
+import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN_FILE;
 
 /**
  * Fluent credential builder for instantiating a {@link WorkloadIdentityCredential}.
@@ -48,7 +51,12 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
     /**
      * Creates an instance of a WorkloadIdentityCredentialBuilder.
      */
-    public WorkloadIdentityCredentialBuilder() { }
+    public WorkloadIdentityCredentialBuilder() {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
+        clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        tokenFilePath = configuration.get(AZURE_FEDERATED_TOKEN_FILE);
+    }
 
 
     /**
