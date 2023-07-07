@@ -64,15 +64,22 @@ stages:
           SubscriptionConfiguration: $(sub-config-gov-test-resources)
         China:
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
+      MatrixConfigs:
+        - Name: Cosmos_live_test_integration
+          Path: sdk/spring/cosmos-integration-matrix.json
+          Selection: all
+          GenerateVMJobs: true
       TestResourceDirectories:
         - spring/spring-cloud-azure-integration-tests/test-resources/cosmos-spring
       Artifacts:
         - name: azure-spring-data-cosmos
           groupId: com.azure
           safeName: azurespringdatacosmos
-      TimeoutInMinutes: 60
+      TimeoutInMinutes: 90
+      PreSteps:
+        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
       ServiceDirectory: spring
-      TestName: Spring_Data_Cosmos_IT
-      TestGoals: 'verify'
-      TestOptions: '-P integration-test-azure'
+      TestName: 'Spring_Data_Cosmos_Integration'
+      TestGoals: 'clean verify'
+      TestOptions: '$(ProfileFlag)'
 

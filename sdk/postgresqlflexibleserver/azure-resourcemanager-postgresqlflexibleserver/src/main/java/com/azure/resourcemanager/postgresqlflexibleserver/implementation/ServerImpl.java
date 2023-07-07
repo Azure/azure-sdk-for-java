@@ -383,8 +383,13 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public ServerImpl withNetwork(Network network) {
-        this.innerModel().withNetwork(network);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withNetwork(network);
+            return this;
+        } else {
+            this.updateParameters.withNetwork(network);
+            return this;
+        }
     }
 
     public ServerImpl withHighAvailability(HighAvailability highAvailability) {
@@ -420,11 +425,6 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
             this.updateParameters.withReplicationRole(replicationRole);
             return this;
         }
-    }
-
-    public ServerImpl withReplicaCapacity(Integer replicaCapacity) {
-        this.innerModel().withReplicaCapacity(replicaCapacity);
-        return this;
     }
 
     public ServerImpl withCreateMode(CreateMode createMode) {

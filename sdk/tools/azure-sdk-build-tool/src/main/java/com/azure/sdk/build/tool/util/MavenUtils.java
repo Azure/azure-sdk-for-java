@@ -2,6 +2,7 @@ package com.azure.sdk.build.tool.util;
 
 import com.azure.sdk.build.tool.util.logging.Logger;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.model.Dependency;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -25,6 +26,15 @@ public class MavenUtils {
      */
     public static String toGAV(Artifact artifact) {
         return artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion();
+    }
+
+    /**
+     * Creates artifact string representation of a dependency.
+     * @param dependency The dependency.
+     * @return The string representation of the dependency.
+     */
+    public static String toGAV(Dependency dependency) {
+        return dependency.getGroupId() + ":" + dependency.getArtifactId() + ":" + dependency.getVersion();
     }
 
     /**

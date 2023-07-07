@@ -33,9 +33,9 @@ To use this package, add the following to your _pom.xml_.
 ```xml
 
 <dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-core-test</artifactId>
-    <version>1.18.0</version>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-core-test</artifactId>
+  <version>1.18.1</version>
 </dependency>
 ```
 

@@ -934,7 +934,7 @@ public final class BlobContainerClient {
      *     .setPrefix&#40;&quot;directoryName&quot;&#41;
      *     .setDetails&#40;new BlobListDetails&#40;&#41;
      *         .setRetrieveDeletedBlobs&#40;true&#41;
-     *         .setRetrieveSnapshots&#40;true&#41;&#41;;
+     *         .setRetrieveSnapshots&#40;false&#41;&#41;;
      *
      * client.listBlobsByHierarchy&#40;&quot;&#47;&quot;, options, timeout&#41;.forEach&#40;blob -&gt;
      *     System.out.printf&#40;&quot;Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n&quot;,

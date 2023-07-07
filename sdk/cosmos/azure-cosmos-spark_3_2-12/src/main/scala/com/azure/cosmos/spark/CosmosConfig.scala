@@ -19,7 +19,7 @@ import com.azure.cosmos.spark.PriorityLevels.PriorityLevel
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 import com.azure.cosmos.spark.SerializationDateTimeConversionModes.SerializationDateTimeConversionMode
 import com.azure.cosmos.spark.SerializationInclusionModes.SerializationInclusionMode
-import com.azure.cosmos.spark.diagnostics.{DiagnosticsProvider, FeedDiagnosticsProvider, SimpleDiagnosticsProvider}
+import com.azure.cosmos.spark.diagnostics.{DetailedFeedDiagnosticsProvider, DiagnosticsProvider, FeedDiagnosticsProvider, SimpleDiagnosticsProvider}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.util.CaseInsensitiveMap
@@ -749,6 +749,8 @@ private[spark] object DiagnosticsConfig {
         classOf[SimpleDiagnosticsProvider].getName
       } else if (diagnostics == "feed") {
         classOf[FeedDiagnosticsProvider].getName
+      } else if (diagnostics == "feed_details") {
+        classOf[DetailedFeedDiagnosticsProvider].getName
       } else {
         // this is experimental and to be used by cosmos db dev engineers.
         Class.forName(diagnostics).asSubclass(classOf[DiagnosticsProvider]).getDeclaredConstructor()

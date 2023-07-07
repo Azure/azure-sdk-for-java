@@ -15,17 +15,15 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestBase;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
@@ -41,10 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ContainerRegistryClientsTestBase extends TestBase {
-
-    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
-        = Pattern.compile("(\".*_token\":\"(.*)\".*)");
+public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
 
     protected static ArtifactTagProperties tagWriteableProperties = new ArtifactTagProperties()
         .setDeleteEnabled(false)
@@ -85,21 +80,36 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         .setWriteEnabled(true);
         //.setTeleportEnabled(false);
 
+    @Override
+    protected void beforeTest() {
+        if (!interceptorManager.isLiveMode()) {
+            List<TestProxySanitizer> sanitizers = new ArrayList<>();
+            sanitizers.add(new TestProxySanitizer("token=(?<token>[^\\u0026]+)($|\\u0026)", "REDACTED", TestProxySanitizerType.BODY_REGEX).setGroupForReplace("token"));
+            sanitizers.add(new TestProxySanitizer("service=(?<service>[^\\u0026]+)\\u0026", "REDACTED", TestProxySanitizerType.BODY_REGEX).setGroupForReplace("service"));
+            sanitizers.add(new TestProxySanitizer("WWW-Authenticate", "realm=\\u0022https://(?<realm>[^\\u0022]+)\\u0022", "REDACTED", TestProxySanitizerType.HEADER).setGroupForReplace("realm"));
+            sanitizers.add(new TestProxySanitizer("WWW-Authenticate", "service=\\u0022(?<service>[^\\u0022]+)\\u0022", "REDACTED", TestProxySanitizerType.HEADER).setGroupForReplace("service"));
+
+            interceptorManager.addSanitizers(sanitizers);
+        }
+    }
+
     ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient) {
         TokenCredential credential = getCredentialsByEndpoint(getTestMode(), REGISTRY_ENDPOINT);
         return getContainerRegistryBuilder(httpClient, credential);
     }
 
     ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient, TokenCredential credential, String endpoint) {
-        List<Function<String, String>> redactors = new ArrayList<>();
-        redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-
-        return new ContainerRegistryClientBuilder()
+        ContainerRegistryClientBuilder builder = new ContainerRegistryClientBuilder()
             .endpoint(getEndpoint(endpoint))
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .addPolicy(interceptorManager.getRecordPolicy(redactors))
             .credential(credential);
+
+        if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder;
     }
 
     ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient, TokenCredential credential) {
@@ -118,19 +128,23 @@ public class ContainerRegistryClientsTestBase extends TestBase {
 
     ContainerRegistryContentClientBuilder getContentClientBuilder(String repositoryName, HttpClient httpClient,
         TokenCredential credential, String endpoint) {
-        List<Function<String, String>> redactors = new ArrayList<>();
-        redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-
-        return new ContainerRegistryContentClientBuilder()
+        ContainerRegistryContentClientBuilder builder = new ContainerRegistryContentClientBuilder()
             .endpoint(getEndpoint(endpoint))
             .repositoryName(repositoryName)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addAllowedHeaderName("Docker-Content-Digest")
                 .addAllowedHeaderName("Range")
+                .addAllowedHeaderName("Location")
+                .addAllowedHeaderName("x-recording-id")
+                .addAllowedHeaderName("x-recording-upstream-base-uri")
                 .addAllowedHeaderName("Content-Range"))
-            .addPolicy(interceptorManager.getRecordPolicy(redactors))
             .credential(credential);
+
+        if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+        return builder;
     }
 
     List<String> getChildArtifacts(Collection<ArtifactManifestPlatform> artifacts) {
@@ -328,18 +342,5 @@ public class ContainerRegistryClientsTestBase extends TestBase {
     protected String getEndpoint(String endpoint) {
         return interceptorManager.isPlaybackMode() ? REGISTRY_ENDPOINT_PLAYBACK
             : endpoint;
-    }
-
-    private String redact(String content, Matcher matcher, String replacement) {
-        while (matcher.find()) {
-            if (matcher.groupCount() == 2) {
-                String captureGroup = matcher.group(1);
-                if (!CoreUtils.isNullOrEmpty(captureGroup)) {
-                    content = content.replace(matcher.group(2), replacement);
-                }
-            }
-        }
-
-        return content;
     }
 }

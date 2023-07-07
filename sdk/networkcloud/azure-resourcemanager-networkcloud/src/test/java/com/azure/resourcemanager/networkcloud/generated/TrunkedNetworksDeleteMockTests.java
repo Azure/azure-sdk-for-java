@@ -56,6 +56,6 @@ public final class TrunkedNetworksDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.trunkedNetworks().delete("txvcm", "funlcpxxvi", com.azure.core.util.Context.NONE);
+        manager.trunkedNetworks().delete("qjm", "g", com.azure.core.util.Context.NONE);
     }
 }

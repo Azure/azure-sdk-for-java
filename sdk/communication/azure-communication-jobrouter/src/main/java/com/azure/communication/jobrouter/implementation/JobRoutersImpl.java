@@ -73,7 +73,7 @@ public final class JobRoutersImpl {
     @ServiceInterface(name = "AzureCommunicationSe")
     public interface JobRoutersService {
         @Patch("/routing/jobs/{id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<RouterJob>> upsertJob(
                 @HostParam("endpoint") String endpoint,
@@ -215,7 +215,7 @@ public final class JobRoutersImpl {
                 Context context);
 
         @Patch("/routing/workers/{workerId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<RouterWorker>> upsertWorker(
                 @HostParam("endpoint") String endpoint,

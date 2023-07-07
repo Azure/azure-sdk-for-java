@@ -10,6 +10,17 @@
 
 ### Other Changes
 
+## 12.22.3 (2023-06-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+- Upgraded `azure-storage-common` from `12.21.1` to version `12.21.2`.
+- Upgraded `azure-storage-internal-avro` from `12.7.1` to version `12.8.0-beta.2`.
+
 ## 12.23.0-beta.1 (2023-05-30)
 
 ### Features Added

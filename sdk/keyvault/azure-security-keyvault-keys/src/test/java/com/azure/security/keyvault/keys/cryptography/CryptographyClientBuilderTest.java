@@ -82,7 +82,7 @@ public class CryptographyClientBuilderTest {
 
         assertNotNull(cryptographyClient);
         assertEquals(CryptographyClient.class.getSimpleName(), cryptographyClient.getClass().getSimpleName());
-        assertTrue(cryptographyClient.getServiceClient().getVaultUrl().contains(":443"));
+        assertTrue(cryptographyClient.getImplClient().getVaultUrl().contains(":443"));
     }
 
     @Test

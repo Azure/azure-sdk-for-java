@@ -15,7 +15,6 @@ import com.azure.resourcemanager.networkcloud.fluent.models.StorageApplianceInne
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceEnableRemoteVendorManagementParameters;
 import com.azure.resourcemanager.networkcloud.models.StorageAppliancePatchParameters;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceRunReadCommandsParameters;
-import com.azure.resourcemanager.networkcloud.models.StorageApplianceValidateHardwareParameters;
 
 /** An instance of this class provides access to all the operations defined in StorageAppliancesClient. */
 public interface StorageAppliancesClient {
@@ -260,7 +259,7 @@ public interface StorageAppliancesClient {
     /**
      * Patch the storage appliance.
      *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -278,7 +277,7 @@ public interface StorageAppliancesClient {
     /**
      * Patch the storage appliance.
      *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -301,7 +300,7 @@ public interface StorageAppliancesClient {
     /**
      * Patch the storage appliance.
      *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -317,7 +316,7 @@ public interface StorageAppliancesClient {
     /**
      * Patch the storage appliance.
      *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * <p>Update properties of the provided storage appliance, or update tags associated with the storage appliance
      * Properties and tag updates can be done independently.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -545,83 +544,5 @@ public interface StorageAppliancesClient {
         String resourceGroupName,
         String storageApplianceName,
         StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters,
-        Context context);
-
-    /**
-     * Trigger hardware validation of the storage appliance.
-     *
-     * <p>Validate the hardware of the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceValidateHardwareParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginValidateHardware(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters);
-
-    /**
-     * Trigger hardware validation of the storage appliance.
-     *
-     * <p>Validate the hardware of the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceValidateHardwareParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginValidateHardware(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters,
-        Context context);
-
-    /**
-     * Trigger hardware validation of the storage appliance.
-     *
-     * <p>Validate the hardware of the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceValidateHardwareParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void validateHardware(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters);
-
-    /**
-     * Trigger hardware validation of the storage appliance.
-     *
-     * <p>Validate the hardware of the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceValidateHardwareParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void validateHardware(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceValidateHardwareParameters storageApplianceValidateHardwareParameters,
         Context context);
 }
