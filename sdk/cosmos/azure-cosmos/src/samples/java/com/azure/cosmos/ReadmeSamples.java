@@ -277,7 +277,7 @@ public class ReadmeSamples {
 
         Iterable<FeedResponse<Passenger>> feedResponses = cosmosContainer.queryChangeFeed(options, Passenger.class)
             .iterableByPage();
-        for (FeedResponse feedResponse : feedResponses) {
+        for (FeedResponse<Passenger> feedResponse : feedResponses) {
             List<Passenger> results = feedResponse.getResults();
             System.out.println(results);
         }
