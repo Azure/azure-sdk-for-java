@@ -1,24 +1,33 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.microsoft.com/geolocation/ip/json?api-version=1.0&ip=131.107.0.89",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-JavaGeolocationSDK/1.0 (14.0.2; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "X-Cache" : "CONFIG_NOCACHE",
-      "content-length" : "61",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "X-Content-Type-Options" : "nosniff",
-      "x-ms-azuremaps-region" : "West US 2",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "X-MSEdge-Ref" : "Ref A: 25F230D9C1E449DDA5BFFB68185925FA Ref B: BY3EDGE0408 Ref C: 2022-09-29T21:42:06Z",
-      "Body" : "{\"countryRegion\":{\"isoCode\":\"US\"},\"ipAddress\":\"131.107.0.89\"}",
-      "Date" : "Thu, 29 Sep 2022 21:42:06 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/geolocation/ip/json?api-version=1.0\u0026ip=131.107.0.89",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "subscription-key": "REDACTED",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "61",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 07 Jul 2023 23:26:44 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-azuremaps-region": "West US 2",
+        "X-MSEdge-Ref": "Ref A: 1CCE9F3DB2C74906A35D2BA480F3880A Ref B: STBEDGE0206 Ref C: 2023-07-07T23:26:45Z"
+      },
+      "ResponseBody": {
+        "countryRegion": {
+          "isoCode": "US"
+        },
+        "ipAddress": "131.107.0.89"
+      }
+    }
+  ],
+  "Variables": {}
 }

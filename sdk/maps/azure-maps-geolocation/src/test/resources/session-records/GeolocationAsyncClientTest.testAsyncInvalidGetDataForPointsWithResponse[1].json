@@ -1,24 +1,33 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.microsoft.com/geolocation/ip/json?api-version=1.0&ip=0000000adfasfwe",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-JavaGeolocationSDK/1.0 (14.0.2; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "X-Cache" : "CONFIG_NOCACHE",
-      "content-length" : "84",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "X-Content-Type-Options" : "nosniff",
-      "x-ms-azuremaps-region" : "West US 2",
-      "retry-after" : "0",
-      "StatusCode" : "400",
-      "X-MSEdge-Ref" : "Ref A: CDC6BE0A2A1342D1942A866DCD042C2B Ref B: BY3EDGE0408 Ref C: 2022-09-29T21:42:05Z",
-      "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"The provided IP address is not valid\"}}",
-      "Date" : "Thu, 29 Sep 2022 21:42:05 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/geolocation/ip/json?api-version=1.0\u0026ip=0000000adfasfwe",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "subscription-key": "REDACTED",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Content-Length": "84",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 07 Jul 2023 23:26:33 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-azuremaps-region": "West US 2",
+        "X-MSEdge-Ref": "Ref A: D50FCE6527814AE9B0D10099E5A93096 Ref B: STBEDGE0613 Ref C: 2023-07-07T23:26:33Z"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "400 BadRequest",
+          "message": "The provided IP address is not valid"
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }
