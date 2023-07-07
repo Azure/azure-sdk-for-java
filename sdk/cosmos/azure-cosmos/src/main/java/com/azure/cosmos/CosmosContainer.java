@@ -421,7 +421,7 @@ public class CosmosContainer {
      *
      * Iterable&lt;FeedResponse&lt;Passenger&gt;&gt; feedResponses = cosmosContainer.queryChangeFeed&#40;options, Passenger.class&#41;
      *     .iterableByPage&#40;&#41;;
-     * for &#40;FeedResponse feedResponse : feedResponses&#41; &#123;
+     * for &#40;FeedResponse&lt;Passenger&gt; feedResponse : feedResponses&#41; &#123;
      *     List&lt;Passenger&gt; results = feedResponse.getResults&#40;&#41;;
      *     System.out.println&#40;results&#41;;
      * &#125;
