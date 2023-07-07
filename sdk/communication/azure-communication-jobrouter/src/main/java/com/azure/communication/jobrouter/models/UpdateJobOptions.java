@@ -1,20 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.jobrouter.models.options;
-
-import com.azure.communication.jobrouter.models.LabelValue;
-import com.azure.communication.jobrouter.models.RouterWorkerSelector;
-import com.azure.communication.jobrouter.models.WorkerSelector;
+package com.azure.communication.jobrouter.models;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * Request options to create a job.
+ * Request options to update a job.
  * Job: A unit of work to be routed.
  */
-public final class CreateJobOptions {
+public final class UpdateJobOptions {
     /**
      * The id of the job.
      */
@@ -28,7 +24,7 @@ public final class CreateJobOptions {
     /**
      * The channel identifier. eg. voice, chat, etc.
      */
-    private final String channelId;
+    private String channelId;
 
     /**
      * The Id of the Classification policy used for classifying a job.
@@ -38,7 +34,7 @@ public final class CreateJobOptions {
     /**
      * The Id of the Queue that this job is queued to.
      */
-    private final String queueId;
+    private String queueId;
 
     /**
      * The priority of this job.
@@ -73,25 +69,11 @@ public final class CreateJobOptions {
     private Map<String, String> notes;
 
     /**
-     * Constructor for CreateJobOptions.
+     * Constructor for UpdateJobOptions.
      * @param id The id of the job.
-     * @param channelId The channel identifier. eg. voice, chat, etc.
-     * @param queueId The Id of the Queue that this job is queued to.
      */
-    public CreateJobOptions(String id, String channelId, String queueId) {
+    public UpdateJobOptions(String id) {
         this.id = id;
-        this.channelId = channelId;
-        this.queueId = queueId;
-    }
-
-    /**
-     * Sets job priority.
-     * @param priority The priority of this job.
-     * @return this
-     */
-    public CreateJobOptions setPriority(Integer priority) {
-        this.priority = priority;
-        return this;
     }
 
     /**
@@ -99,8 +81,38 @@ public final class CreateJobOptions {
      * @param channelReference Reference to an external parent context, eg. call ID.
      * @return this
      */
-    public CreateJobOptions setChannelReference(String channelReference) {
+    public UpdateJobOptions setChannelReference(String channelReference) {
         this.channelReference = channelReference;
+        return this;
+    }
+
+    /**
+     * Sets channelId.
+     * @param channelId The channel identifier. eg. voice, chat, etc.
+     * @return this
+     */
+    public UpdateJobOptions setChannelId(String channelId) {
+        this.channelId = channelId;
+        return this;
+    }
+
+    /**
+     * Sets queueId.
+     * @param queueId The Id of the Queue that this job is queued to.
+     * @return this
+     */
+    public UpdateJobOptions setQueueId(String queueId) {
+        this.queueId = queueId;
+        return this;
+    }
+
+    /**
+     * Sets priority.
+     * @param priority The priority of this job.
+     * @return this
+     */
+    public UpdateJobOptions setPriority(Integer priority) {
+        this.priority = priority;
         return this;
     }
 
@@ -109,7 +121,7 @@ public final class CreateJobOptions {
      * @param classificationPolicyId The Id of the Classification policy used for classifying a job.
      * @return this
      */
-    public CreateJobOptions setClassificationPolicyId(String classificationPolicyId) {
+    public UpdateJobOptions setClassificationPolicyId(String classificationPolicyId) {
         this.classificationPolicyId = classificationPolicyId;
         return this;
     }
@@ -119,7 +131,7 @@ public final class CreateJobOptions {
      * @param dispositionCode Reason code for cancelled or closed jobs.
      * @return this
      */
-    public CreateJobOptions setDispositionCode(String dispositionCode) {
+    public UpdateJobOptions setDispositionCode(String dispositionCode) {
         this.dispositionCode = dispositionCode;
         return this;
     }
@@ -130,7 +142,7 @@ public final class CreateJobOptions {
      *   satisfy in order to process this job.
      * @return this
      */
-    public CreateJobOptions setRequestedWorkerSelectors(List<RouterWorkerSelector> requestedWorkerSelectors) {
+    public UpdateJobOptions setRequestedWorkerSelectors(List<RouterWorkerSelector> requestedWorkerSelectors) {
         this.requestedWorkerSelectors = requestedWorkerSelectors;
         return this;
     }
@@ -141,7 +153,7 @@ public final class CreateJobOptions {
      *   rules engines to make decisions.
      * @return this
      */
-    public CreateJobOptions setLabels(Map<String, LabelValue> labels) {
+    public UpdateJobOptions setLabels(Map<String, LabelValue> labels) {
         this.labels = labels;
         return this;
     }
@@ -151,7 +163,7 @@ public final class CreateJobOptions {
      * @param tags A set of non-identifying attributes attached to this job.
      * @return this
      */
-    public CreateJobOptions setTags(Map<String, Object> tags) {
+    public UpdateJobOptions setTags(Map<String, Object> tags) {
         this.tags = tags;
         return this;
     }
@@ -161,7 +173,7 @@ public final class CreateJobOptions {
      * @param notes Notes attached to a job, sorted by timestamp.
      * @return this
      */
-    public CreateJobOptions setNotes(Map<String, String> notes) {
+    public UpdateJobOptions setNotes(Map<String, String> notes) {
         this.notes = notes;
         return this;
     }

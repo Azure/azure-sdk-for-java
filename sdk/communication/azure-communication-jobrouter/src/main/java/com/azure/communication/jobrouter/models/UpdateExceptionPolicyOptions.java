@@ -1,19 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.jobrouter.models.options;
+package com.azure.communication.jobrouter.models;
 
-import com.azure.communication.jobrouter.models.ExceptionRule;
 import com.azure.core.annotation.Fluent;
 
 import java.util.Map;
 
 /**
- * Request options for Create ExceptionPolicy.
+ * Request options for updating ExceptionPolicy.
  * ExceptionPolicy: A policy that defines actions to execute when exception are triggered.
  */
 @Fluent
-public final class CreateExceptionPolicyOptions {
+public final class UpdateExceptionPolicyOptions {
     /**
      * The Id of the exception policy
      */
@@ -23,7 +22,7 @@ public final class CreateExceptionPolicyOptions {
      * (Optional) A dictionary collection of exception rules on the exception
      * policy. Key is the Id of each exception rule.
      */
-    private final Map<String, ExceptionRule> exceptionRules;
+    private Map<String, ExceptionRule> exceptionRules;
 
     /**
      * (Optional) The name of the exception policy.
@@ -31,13 +30,21 @@ public final class CreateExceptionPolicyOptions {
     private String name;
 
     /**
-     * Constructor for CreateExceptionPolicyOptions
-     * @param id ExceptionPolicy id
-     * @param exceptionRules Map of exception rules with a string key
+     * Constructor for UpdateExceptionPolicyOptions.
+     * @param id id of ExceptionPolicy.
      */
-    public CreateExceptionPolicyOptions(String id, Map<String, ExceptionRule> exceptionRules) {
+    public UpdateExceptionPolicyOptions(String id) {
         this.id = id;
+    }
+
+    /**
+     * Sets exception rules.
+     * @param exceptionRules Map of exception rules with a string key.
+     * @return this
+     */
+    public UpdateExceptionPolicyOptions setExceptionRules(Map<String, ExceptionRule> exceptionRules) {
         this.exceptionRules = exceptionRules;
+        return this;
     }
 
     /**
@@ -45,7 +52,7 @@ public final class CreateExceptionPolicyOptions {
      * @param name ExceptionPolicy name
      * @return this
      */
-    public CreateExceptionPolicyOptions setName(String name) {
+    public UpdateExceptionPolicyOptions setName(String name) {
         this.name = name;
         return this;
     }
@@ -59,18 +66,18 @@ public final class CreateExceptionPolicyOptions {
     }
 
     /**
-     * Returns Exception Rules.
-     * @return exceptionRules.
-     */
-    public Map<String, ExceptionRule> getExceptionRules() {
-        return this.exceptionRules;
-    }
-
-    /**
      * Returns Exception Policy name.
      * @return name
      */
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * Returns Exception Rules.
+     * @return exceptionRules.
+     */
+    public Map<String, ExceptionRule> getExceptionRules() {
+        return this.exceptionRules;
     }
 }

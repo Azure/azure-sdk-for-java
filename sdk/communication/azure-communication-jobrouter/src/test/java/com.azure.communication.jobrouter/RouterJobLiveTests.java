@@ -15,7 +15,7 @@ import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.UnassignJobResult;
 import com.azure.communication.jobrouter.models.options.CreateJobOptions;
 import com.azure.communication.jobrouter.models.options.CreateWorkerOptions;
-import com.azure.communication.jobrouter.models.options.UnassignJobOptions;
+import com.azure.communication.jobrouter.models.UnassignJobOptions;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;

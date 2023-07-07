@@ -1,26 +1,26 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.jobrouter.models.options;
+package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
 
 /**
- *  Request options to list ExceptionPolicies.
- *  ExceptionPolicy: A policy that defines actions to execute when exception are triggered.
+ *  Request options to list ClassificationPolicies.
+ *  ClassificationPolicy: A container for the rules that govern how jobs are classified.
  * */
 @Fluent
-public class ListExceptionPoliciesOptions {
+public class ListClassificationPoliciesOptions {
     /**
      * Maximum number of items per page.
      */
     private final Integer maxPageSize;
 
     /**
-     * Constructor for ListExceptionPoliciesOptions.
+     * Constructor for ListClassificationPoliciesOptions.
      * @param maxPageSize Maximum number of items per page.
      */
-    public ListExceptionPoliciesOptions(Integer maxPageSize) {
+    public ListClassificationPoliciesOptions(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
     }
 

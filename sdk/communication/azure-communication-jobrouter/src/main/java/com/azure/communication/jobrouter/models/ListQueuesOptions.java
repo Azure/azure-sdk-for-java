@@ -1,27 +1,26 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.jobrouter.models.options;
+package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
 
 /**
- *  Request options to list DistributionPolicies.
- *  DistributionPolicy: Policy governing how jobs are distributed to workers.
- * */
+ * Request options to list queues.
+ * Queue: A queue that can contain jobs to be routed.
+ */
 @Fluent
-public class ListDistributionPoliciesOptions {
-
+public class ListQueuesOptions {
     /**
      * Maximum number of items per page.
      */
     private final Integer maxPageSize;
 
     /**
-     * Constructor for ListDistributionPoliciesOptions.
+     * Constructor for ListQueuesOptions.
      * @param maxPageSize Maximum number of items per page.
      */
-    public ListDistributionPoliciesOptions(Integer maxPageSize) {
+    public ListQueuesOptions(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
     }
 

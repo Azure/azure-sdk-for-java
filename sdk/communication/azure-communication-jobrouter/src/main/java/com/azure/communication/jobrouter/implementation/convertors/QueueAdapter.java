@@ -4,10 +4,10 @@
 package com.azure.communication.jobrouter.implementation.convertors;
 
 import com.azure.communication.jobrouter.models.RouterQueue;
-import com.azure.communication.jobrouter.models.options.CreateQueueOptions;
+import com.azure.communication.jobrouter.models.CreateQueueOptions;
 import com.azure.communication.jobrouter.models.JobQueue;
 import com.azure.communication.jobrouter.models.LabelValue;
-import com.azure.communication.jobrouter.models.options.UpdateQueueOptions;
+import com.azure.communication.jobrouter.models.UpdateQueueOptions;
 
 import java.util.Map;
 import java.util.stream.Collectors;

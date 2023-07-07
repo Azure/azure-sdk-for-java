@@ -4,8 +4,8 @@
 package com.azure.communication.jobrouter.implementation.convertors;
 
 import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.options.CreateDistributionPolicyOptions;
-import com.azure.communication.jobrouter.models.options.UpdateDistributionPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
+import com.azure.communication.jobrouter.models.UpdateDistributionPolicyOptions;
 
 /**
  * Converts request options for create and update Classification Policy to {@link DistributionPolicy}.

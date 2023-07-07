@@ -1,19 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.jobrouter.models.options;
-
-import com.azure.communication.jobrouter.models.DistributionMode;
-import com.azure.core.annotation.Fluent;
+package com.azure.communication.jobrouter.models;
 
 import java.time.Duration;
 
 /**
- *  Request options to create a DistributionPolicy.
+ *  Request options to update a DistributionPolicy.
  *  DistributionPolicy: Policy governing how jobs are distributed to workers.
  * */
-@Fluent
-public final class CreateDistributionPolicyOptions {
+public final class UpdateDistributionPolicyOptions {
     /**
      * The unique identifier of the policy.
      */
@@ -28,32 +24,49 @@ public final class CreateDistributionPolicyOptions {
      * The expiry time of any offers created under this policy will be governed
      * by the offer time to live.
      */
-    private final Duration offerTtl;
+    private Duration offerTtl;
 
     /**
      * Abstract base class for defining a distribution mode
      */
-    private final DistributionMode mode;
+    private DistributionMode mode;
 
     /**
-     * Constructor for CreateDistributionPolicyOptions.
+     * Constructor for UpdateDistributionPolicyOptions.
      * @param id The unique identifier of the policy.
-     * @param offerTtl The expiry time of any offers created under this policy will be governed
-     *   by the offer time to live.
-     * @param mode Abstract base class for defining a distribution mode.
      */
-    public CreateDistributionPolicyOptions(String id, Duration offerTtl, DistributionMode mode) {
+    public UpdateDistributionPolicyOptions(String id) {
         this.id = id;
-        this.offerTtl = offerTtl;
-        this.mode = mode;
     }
 
     /**
+     * Sets distribution policy name.
      * @param name The human-readable name of the policy.
      * @return this
      */
-    public CreateDistributionPolicyOptions setName(String name) {
+    public UpdateDistributionPolicyOptions setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Sets offerTtlSeconds.
+     * @param offerTtl The expiry time of any offers created under this policy will be governed
+     *   by the offer time to live.
+     * @return this
+     */
+    public UpdateDistributionPolicyOptions setOfferTtl(Duration offerTtl) {
+        this.offerTtl = offerTtl;
+        return this;
+    }
+
+    /**
+     * Sets DistributionMode.
+     * @param mode One of best-worker, round-robin, longest-idle modes.
+     * @return this
+     */
+    public UpdateDistributionPolicyOptions setMode(DistributionMode mode) {
+        this.mode = mode;
         return this;
     }
 
