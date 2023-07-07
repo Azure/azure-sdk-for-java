@@ -54,12 +54,12 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-api</artifactId>
-      <version>1.27.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+      <version>1.28.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk</artifactId>
-      <version>1.27.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <version>1.28.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.github.spotbugs</groupId>
@@ -107,7 +107,7 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-testing</artifactId>
-      <version>1.27.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
+      <version>1.28.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -163,8 +163,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.opentelemetry:opentelemetry-api:[1.27.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk:[1.27.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-api:[1.28.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk:[1.28.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
                 <include>com.github.spotbugs:spotbugs-annotations:[4.2.2]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
                 <include>org.awaitility:awaitility:[4.2.0]</include> <!-- {x-include-update;org.awaitility:awaitility;external_dependency} -->
               </includes>
