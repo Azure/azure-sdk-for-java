@@ -225,4 +225,58 @@ public class AsyncContainerCodeSnippets {
             .subscribe();
         // END: com.azure.cosmos.CosmosAsyncContainer.readMany
     }
+
+    public void queryChangeFeedSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.queryChangeFeed
+        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromNow(FeedRange.forFullRange())
+            .allVersionsAndDeletes();
+
+        cosmosAsyncContainer.queryChangeFeed(options, Passenger.class)
+            .byPage()
+            .flatMap(passengerFeedResponse -> {
+                for (Passenger passenger : passengerFeedResponse.getResults()) {
+                    System.out.println(passenger);
+                }
+                return Flux.empty();
+            })
+            .subscribe();
+        // END: com.azure.cosmos.CosmosAsyncContainer.queryChangeFeed
+    }
+
+    public void queryItemsAsyncSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.queryItems
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        String query = "SELECT * FROM Passenger WHERE Passenger.departure IN ('SEA', 'IND')";
+        cosmosAsyncContainer.queryItems(query, options, Passenger.class)
+            .byPage()
+            .flatMap(passengerFeedResponse -> {
+                for (Passenger passenger : passengerFeedResponse.getResults()) {
+                    System.out.println(passenger);
+                }
+                return Flux.empty();
+            })
+            .subscribe();
+        // END: com.azure.cosmos.CosmosAsyncContainer.queryItems
+    }
+
+    public void queryItemsAsyncSqlQuerySpecSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.SqlQuerySpec.queryItems
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
+        String query = "SELECT * FROM Passenger p WHERE (p.departure = @departure)";
+        List<SqlParameter> parameters = List.of(new SqlParameter("@departure", "SEA"));
+        SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query, parameters);
+
+        cosmosAsyncContainer.queryItems(sqlQuerySpec, options, Passenger.class)
+            .byPage()
+            .flatMap(passengerFeedResponse -> {
+                for (Passenger passenger : passengerFeedResponse.getResults()) {
+                    System.out.println(passenger);
+                }
+                return Flux.empty();
+            })
+            .subscribe();
+        // END: com.azure.cosmos.CosmosAsyncContainer.SqlQuerySpec.queryItems
+    }
 }

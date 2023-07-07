@@ -682,6 +682,22 @@ public class CosmosAsyncContainer {
     /**
      * Query for items in the current container.
      * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.queryItems -->
+     * <pre>
+     * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
+     * String query = &quot;SELECT * FROM Passenger WHERE Passenger.departure IN &#40;'SEA', 'IND'&#41;&quot;;
+     * cosmosAsyncContainer.queryItems&#40;query, options, Passenger.class&#41;
+     *     .byPage&#40;&#41;
+     *     .flatMap&#40;passengerFeedResponse -&gt; &#123;
+     *         for &#40;Passenger passenger : passengerFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;passenger&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.queryItems -->
+     * <p>
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained items. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -831,6 +847,22 @@ public class CosmosAsyncContainer {
     /**
      * Query for items in the current container using a string.
      * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.queryItems -->
+     * <pre>
+     * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
+     * String query = &quot;SELECT * FROM Passenger WHERE Passenger.departure IN &#40;'SEA', 'IND'&#41;&quot;;
+     * cosmosAsyncContainer.queryItems&#40;query, options, Passenger.class&#41;
+     *     .byPage&#40;&#41;
+     *     .flatMap&#40;passengerFeedResponse -&gt; &#123;
+     *         for &#40;Passenger passenger : passengerFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;passenger&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.queryItems -->
+     * <p>
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained items. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -852,6 +884,26 @@ public class CosmosAsyncContainer {
 
     /**
      * Query for items in the current container using a {@link SqlQuerySpec}.
+     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.SqlQuerySpec.queryItems -->
+     * <pre>
+     * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
+     *
+     * String query = &quot;SELECT * FROM Passenger p WHERE &#40;p.departure = &#64;departure&#41;&quot;;
+     * List&lt;SqlParameter&gt; parameters = List.of&#40;new SqlParameter&#40;&quot;&#64;departure&quot;, &quot;SEA&quot;&#41;&#41;;
+     * SqlQuerySpec sqlQuerySpec = new SqlQuerySpec&#40;query, parameters&#41;;
+     *
+     * cosmosAsyncContainer.queryItems&#40;sqlQuerySpec, options, Passenger.class&#41;
+     *     .byPage&#40;&#41;
+     *     .flatMap&#40;passengerFeedResponse -&gt; &#123;
+     *         for &#40;Passenger passenger : passengerFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;passenger&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.SqlQuerySpec.queryItems -->
      * <p>
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained items. In case of
@@ -974,6 +1026,24 @@ public class CosmosAsyncContainer {
 
     /**
      * Query for items in the change feed of the current container using the {@link CosmosChangeFeedRequestOptions}.
+     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.queryChangeFeed -->
+     * <pre>
+     * CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+     *     .createForProcessingFromNow&#40;FeedRange.forFullRange&#40;&#41;&#41;
+     *     .allVersionsAndDeletes&#40;&#41;;
+     *
+     * cosmosAsyncContainer.queryChangeFeed&#40;options, Passenger.class&#41;
+     *     .byPage&#40;&#41;
+     *     .flatMap&#40;passengerFeedResponse -&gt; &#123;
+     *         for &#40;Passenger passenger : passengerFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;passenger&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.queryChangeFeed -->
      * <p>
      * After subscription the operation will be performed. The {@link Flux} will
      * contain one or several feed response of the obtained items. In case of

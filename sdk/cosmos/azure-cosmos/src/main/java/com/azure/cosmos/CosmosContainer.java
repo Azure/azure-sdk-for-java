@@ -355,7 +355,21 @@ public class CosmosContainer {
 
     /**
      * Query items in the current container returning the results as {@link CosmosPagedIterable}.
+     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.queryItems -->
+     * <pre>
+     * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
+     * String query = &quot;SELECT * FROM Passenger WHERE Passenger.departure IN &#40;'SEA', 'IND'&#41;&quot;;
+     * Iterable&lt;FeedResponse&lt;Passenger&gt;&gt; queryResponses = cosmosContainer.queryItems&#40;query, options, Passenger.class&#41;
+     *     .iterableByPage&#40;&#41;;
      *
+     * for &#40;FeedResponse&lt;Passenger&gt; feedResponse : queryResponses&#41; &#123;
+     *     List&lt;Passenger&gt; results = feedResponse.getResults&#40;&#41;;
+     *     System.out.println&#40;results&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.queryItems -->
+     * <p>
      * @param <T> the type parameter.
      * @param query the query.
      * @param options the options.
@@ -368,7 +382,24 @@ public class CosmosContainer {
 
     /**
      * Query items in the current container returning the results as {@link CosmosPagedIterable}.
+     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.SqlQuerySpec.queryItems -->
+     * <pre>
+     * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
+     * String query = &quot;SELECT * FROM Passenger p WHERE &#40;p.departure = &#64;departure&#41;&quot;;
+     * List&lt;SqlParameter&gt; parameters = List.of&#40;new SqlParameter&#40;&quot;&#64;departure&quot;, &quot;SEA&quot;&#41;&#41;;
+     * SqlQuerySpec sqlQuerySpec = new SqlQuerySpec&#40;query, parameters&#41;;
      *
+     * Iterable&lt;FeedResponse&lt;Passenger&gt;&gt; queryResponses = cosmosContainer.queryItems&#40;sqlQuerySpec, options, Passenger.class&#41;
+     *     .iterableByPage&#40;&#41;;
+     *
+     * for &#40;FeedResponse&lt;Passenger&gt; feedResponse : queryResponses&#41; &#123;
+     *     List&lt;Passenger&gt; results = feedResponse.getResults&#40;&#41;;
+     *     System.out.println&#40;results&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.SqlQuerySpec.queryItems -->
+     * <p>
      * @param <T> the type parameter.
      * @param querySpec the query spec.
      * @param options the options.
@@ -381,6 +412,21 @@ public class CosmosContainer {
 
     /**
      * Query for items in the change feed of the current container using the {@link CosmosChangeFeedRequestOptions}.
+     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.queryChangeFeed -->
+     * <pre>
+     * CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+     *     .createForProcessingFromNow&#40;FeedRange.forFullRange&#40;&#41;&#41;
+     *     .allVersionsAndDeletes&#40;&#41;;
+     *
+     * Iterable&lt;FeedResponse&lt;Passenger&gt;&gt; feedResponses = cosmosContainer.queryChangeFeed&#40;options, Passenger.class&#41;
+     *     .iterableByPage&#40;&#41;;
+     * for &#40;FeedResponse feedResponse : feedResponses&#41; &#123;
+     *     List&lt;Passenger&gt; results = feedResponse.getResults&#40;&#41;;
+     *     System.out.println&#40;results&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.queryChangeFeed -->
      * <p>
      * The next page can be retrieved by calling queryChangeFeed again with a new instance of
      * {@link CosmosChangeFeedRequestOptions} created from the continuation token of the previously returned

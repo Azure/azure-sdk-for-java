@@ -269,6 +269,52 @@ public class ReadmeSamples {
         // END: com.azure.cosmos.CosmosContainer.readMany
     }
 
+    public void queryChangeFeedSample() {
+        // BEGIN: com.azure.cosmos.CosmosContainer.queryChangeFeed
+        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromNow(FeedRange.forFullRange())
+            .allVersionsAndDeletes();
+
+        Iterable<FeedResponse<Passenger>> feedResponses = cosmosContainer.queryChangeFeed(options, Passenger.class)
+            .iterableByPage();
+        for (FeedResponse feedResponse : feedResponses) {
+            List<Passenger> results = feedResponse.getResults();
+            System.out.println(results);
+        }
+        // END: com.azure.cosmos.CosmosContainer.queryChangeFeed
+    }
+
+    public void queryItemsSample() {
+        // BEGIN: com.azure.cosmos.CosmosContainer.queryItems
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        String query = "SELECT * FROM Passenger WHERE Passenger.departure IN ('SEA', 'IND')";
+        Iterable<FeedResponse<Passenger>> queryResponses = cosmosContainer.queryItems(query, options, Passenger.class)
+            .iterableByPage();
+
+        for (FeedResponse<Passenger> feedResponse : queryResponses) {
+            List<Passenger> results = feedResponse.getResults();
+            System.out.println(results);
+        }
+        // END: com.azure.cosmos.CosmosContainer.queryItems
+    }
+
+    public void queryItemsQuerySpecSample() {
+        // BEGIN: com.azure.cosmos.CosmosContainer.SqlQuerySpec.queryItems
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        String query = "SELECT * FROM Passenger p WHERE (p.departure = @departure)";
+        List<SqlParameter> parameters = List.of(new SqlParameter("@departure", "SEA"));
+        SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query, parameters);
+
+        Iterable<FeedResponse<Passenger>> queryResponses = cosmosContainer.queryItems(sqlQuerySpec, options, Passenger.class)
+            .iterableByPage();
+
+        for (FeedResponse<Passenger> feedResponse : queryResponses) {
+            List<Passenger> results = feedResponse.getResults();
+            System.out.println(results);
+        }
+        // END: com.azure.cosmos.CosmosContainer.SqlQuerySpec.queryItems
+    }
+
     static final class Passenger {
         private final String id;
         private final String email;
