@@ -42,7 +42,6 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     OpenAIClientBuilder getOpenAIClientBuilder(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
             .httpClient(httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
 
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -64,8 +63,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     OpenAIClientBuilder getNonAzureOpenAIClientBuilder(HttpClient httpClient) {
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
-            .httpClient(httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+            .httpClient(httpClient);
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder
