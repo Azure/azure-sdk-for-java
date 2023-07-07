@@ -78,7 +78,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
         // Test to validate if there is http connection exception for address refresh,
         // SDK will make the region unavailable and retry the request in another region.
 
-        // We need to create a new client because client may have marked region unavailable
+        // We need to create a new client because client may have marked region unavailable in other tests
         // which can impact the test result
         CosmosAsyncClient testClient = getClientBuilder()
             .contentResponseOnWriteEnabled(true)
@@ -172,7 +172,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
         // Test to validate if there is http request timeout for address refresh,
         // SDK will retry 3 times before fail the request
 
-        // We need to create a new client because client may have marked region unavailable
+        // We need to create a new client because client may have marked region unavailable in other tests
         // which can impact the test result
         CosmosAsyncClient testClient = getClientBuilder()
             .contentResponseOnWriteEnabled(true)
@@ -251,7 +251,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
     @Test(groups = { "multi-region" }, timeOut = 4 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_AddressRefresh_byPartition() {
 
-        // We need to create a new client because client may have marked region unavailable
+        // We need to create a new client because client may have marked region unavailable in other tests
         // which can impact the test result
         CosmosAsyncClient testClient = getClientBuilder()
             .contentResponseOnWriteEnabled(true)
@@ -361,7 +361,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
     @Test(groups = { "multi-region" }, timeOut = 4 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_AddressRefresh_TooManyRequest() throws JsonProcessingException {
 
-        // We need to create a new client because client may have marked region unavailable
+        // We need to create a new client because client may have marked region unavailable in other tests
         // which can impact the test result
         CosmosAsyncClient testClient = getClientBuilder()
             .contentResponseOnWriteEnabled(true)
@@ -432,7 +432,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
     @Test(groups = { "multi-region" }, timeOut = 40 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_PartitionKeyRanges_ConnectionDelay() throws JsonProcessingException {
 
-        // We need to create a new client because client may have marked region unavailable
+        // We need to create a new client because client may have marked region unavailable in other tests
         // which can impact the test result
         CosmosAsyncClient testClient = getClientBuilder()
             .contentResponseOnWriteEnabled(true)

@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added fault injection support on gateway - See [PR 35378](https://github.com/Azure/azure-sdk-for-java/pull/35378)
 
 ### 4.47.0 (2023-06-26)
 

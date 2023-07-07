@@ -787,7 +787,7 @@ public class ClientSideRequestStatistics {
         }
 
         public static class GatewayStatisticsSerializer extends StdSerializer<GatewayStatistics> {
-            private static final long serialVersionUID = 5315472126043077905L;
+            private static final long serialVersionUID = 1L;
 
             public GatewayStatisticsSerializer(){
                 super(GatewayStatistics.class);
