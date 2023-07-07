@@ -262,6 +262,14 @@ public CosmosConfig cosmosConfig() {
 By default, `@EnableCosmosRepositories` will scan the current package for any interfaces that extend one of Spring Data's repository interfaces.
 Use it to annotate your Configuration class to scan a different root package by `@EnableCosmosRepositories(basePackageClass=UserRepository.class)` if your project layout has multiple projects.
 
+#### Enabling Diagnostics with JavaAgent
+
+Diagnostics can be enabled by passing the JavaAgent with your application like below. The '-javaagent' must be passed before the '-jar'.
+
+```commandline
+java -javaagent:"<path-to-applicationinsights-agent-jar>" -jar <myapp.jar>
+```
+
 #### Using database provisioned throughput
 
 Cosmos supports both [container](https://docs.microsoft.com/azure/cosmos-db/sql/how-to-provision-container-throughput)
