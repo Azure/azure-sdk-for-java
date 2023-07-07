@@ -120,10 +120,15 @@ public final class FaultInjectionRuleBuilder {
      * @return the {@link FaultInjectionRule}.
      */
     public FaultInjectionRule build() {
-        checkNotNull(this.condition, "Argument 'condition' can not be null");
-        checkNotNull(this.result, "Argument 'result' can not be null");
+        if (this.condition == null) {
+            throw new IllegalArgumentException("Argument 'condition' can not be null");
+        }
 
-        if (this.condition != null && this.condition.getConnectionType() == FaultInjectionConnectionType.GATEWAY) {
+        if (this.result == null) {
+            throw new IllegalArgumentException("Argument 'result' can not be null");
+        }
+
+        if (this.condition.getConnectionType() == FaultInjectionConnectionType.GATEWAY) {
             this.validateRuleOnGatewayConnection();
         }
 
