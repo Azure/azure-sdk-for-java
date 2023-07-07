@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-graphservices</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-graphservices;current} -->
+  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-graphservices;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for GraphServices Management</name>
-  <description>This package contains Microsoft Azure SDK for GraphServices Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Self service experience for Microsoft Graph metered services. Package tag package-2022-09-22-preview.</description>
+  <description>This package contains Microsoft Azure SDK for GraphServices Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Self service experience for Microsoft Graph metered services. Package tag package-2023-04-13.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

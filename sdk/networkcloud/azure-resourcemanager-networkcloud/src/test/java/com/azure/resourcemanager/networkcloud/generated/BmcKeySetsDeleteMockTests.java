@@ -56,6 +56,6 @@ public final class BmcKeySetsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.bmcKeySets().delete("yxpavidnie", "wffcvvye", "slpuxgcbdsva", com.azure.core.util.Context.NONE);
+        manager.bmcKeySets().delete("yszekbhwlka", "ggkrehbf", "n", com.azure.core.util.Context.NONE);
     }
 }

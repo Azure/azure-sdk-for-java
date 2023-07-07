@@ -20,49 +20,59 @@ public final class ClusterListTests {
         ClusterList model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"nljky\",\"value\":[{\"extendedLocation\":{\"name\":\"vuujq\",\"type\":\"idokgjlj\"},\"properties\":{\"analyticsWorkspaceId\":\"oxgvclt\",\"availableUpgradeVersions\":[],\"clusterConnectionStatus\":\"Timeout\",\"clusterLocation\":\"kjeszz\",\"clusterManagerConnectionStatus\":\"Connected\",\"clusterManagerId\":\"htxfvgxbfsmxnehm\",\"clusterType\":\"SingleRack\",\"clusterVersion\":\"cxgod\",\"computeRackDefinitions\":[],\"detailedStatus\":\"PendingDeployment\",\"detailedStatusMessage\":\"rbmpukgri\",\"manualActionCount\":5296014061379055947,\"networkFabricId\":\"bxzpuzycisp\",\"provisioningState\":\"Canceled\",\"supportExpiryDate\":\"hmgkbrpyy\",\"workloadResourceIds\":[]},\"location\":\"bnuqqkpik\",\"tags\":{\"jggmebfsiarbu\":\"gvtqagnbuynh\",\"ttdbhrbnl\":\"rcvpnazzmhjrunmp\"},\"id\":\"nkxmyskpbhenbtk\",\"name\":\"xywnytnrsynlqidy\",\"type\":\"yxczfclh\"}]}")
+                    "{\"nextLink\":\"dhibnuq\",\"value\":[{\"extendedLocation\":{\"name\":\"ik\",\"type\":\"drgvtqagn\"},\"properties\":{\"analyticsWorkspaceId\":\"ynhijggme\",\"availableUpgradeVersions\":[],\"clusterConnectionStatus\":\"Connected\",\"clusterLocation\":\"utrc\",\"clusterManagerConnectionStatus\":\"Connected\",\"clusterManagerId\":\"zzmhjrunmpxttd\",\"clusterType\":\"MultiRack\",\"clusterVersion\":\"bnlankxmyskpb\",\"computeRackDefinitions\":[],\"detailedStatus\":\"Disconnected\",\"detailedStatusMessage\":\"cxy\",\"manualActionCount\":3361050620024364671,\"networkFabricId\":\"synlqidybyxczfc\",\"provisioningState\":\"Failed\",\"supportExpiryDate\":\"xdbabphlwr\",\"workloadResourceIds\":[]},\"location\":\"ktsthsucocmny\",\"tags\":{\"bt\":\"t\"},\"id\":\"wrqpue\",\"name\":\"ckzywbiexzfeyue\",\"type\":\"xibxujwbhqwalm\"},{\"extendedLocation\":{\"name\":\"zyoxaepdkzjan\",\"type\":\"ux\"},\"properties\":{\"analyticsWorkspaceId\":\"d\",\"availableUpgradeVersions\":[],\"clusterConnectionStatus\":\"Undefined\",\"clusterLocation\":\"iwdjswztsdbpgn\",\"clusterManagerConnectionStatus\":\"Connected\",\"clusterManagerId\":\"hpzxbzpfzab\",\"clusterType\":\"SingleRack\",\"clusterVersion\":\"uhxwtctyqiklbbov\",\"computeRackDefinitions\":[],\"detailedStatus\":\"Running\",\"detailedStatusMessage\":\"vgyuguos\",\"manualActionCount\":1888744128895186672,\"networkFabricId\":\"xquk\",\"provisioningState\":\"Accepted\",\"supportExpiryDate\":\"gmgsxnkjzkde\",\"workloadResourceIds\":[]},\"location\":\"vlopwiyighx\",\"tags\":{\"baumnyqupedeoj\":\"wzbaiue\",\"ckhsmtxpsieb\":\"a\"},\"id\":\"fhvpesaps\",\"name\":\"rdqmhjjdhtldwkyz\",\"type\":\"uutkncw\"}]}")
                 .toObject(ClusterList.class);
-        Assertions.assertEquals("nljky", model.nextLink());
-        Assertions.assertEquals("bnuqqkpik", model.value().get(0).location());
-        Assertions.assertEquals("gvtqagnbuynh", model.value().get(0).tags().get("jggmebfsiarbu"));
-        Assertions.assertEquals("vuujq", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("idokgjlj", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("oxgvclt", model.value().get(0).analyticsWorkspaceId());
-        Assertions.assertEquals("kjeszz", model.value().get(0).clusterLocation());
-        Assertions.assertEquals(ClusterType.SINGLE_RACK, model.value().get(0).clusterType());
-        Assertions.assertEquals("cxgod", model.value().get(0).clusterVersion());
-        Assertions.assertEquals("bxzpuzycisp", model.value().get(0).networkFabricId());
+        Assertions.assertEquals("dhibnuq", model.nextLink());
+        Assertions.assertEquals("ktsthsucocmny", model.value().get(0).location());
+        Assertions.assertEquals("t", model.value().get(0).tags().get("bt"));
+        Assertions.assertEquals("ik", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("drgvtqagn", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("ynhijggme", model.value().get(0).analyticsWorkspaceId());
+        Assertions.assertEquals("utrc", model.value().get(0).clusterLocation());
+        Assertions.assertEquals(ClusterType.MULTI_RACK, model.value().get(0).clusterType());
+        Assertions.assertEquals("bnlankxmyskpb", model.value().get(0).clusterVersion());
+        Assertions.assertEquals("synlqidybyxczfc", model.value().get(0).networkFabricId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterList model =
             new ClusterList()
-                .withNextLink("nljky")
+                .withNextLink("dhibnuq")
                 .withValue(
                     Arrays
                         .asList(
                             new ClusterInner()
-                                .withLocation("bnuqqkpik")
-                                .withTags(mapOf("jggmebfsiarbu", "gvtqagnbuynh", "ttdbhrbnl", "rcvpnazzmhjrunmp"))
-                                .withExtendedLocation(new ExtendedLocation().withName("vuujq").withType("idokgjlj"))
-                                .withAnalyticsWorkspaceId("oxgvclt")
-                                .withClusterLocation("kjeszz")
-                                .withClusterType(ClusterType.SINGLE_RACK)
-                                .withClusterVersion("cxgod")
+                                .withLocation("ktsthsucocmny")
+                                .withTags(mapOf("bt", "t"))
+                                .withExtendedLocation(new ExtendedLocation().withName("ik").withType("drgvtqagn"))
+                                .withAnalyticsWorkspaceId("ynhijggme")
+                                .withClusterLocation("utrc")
+                                .withClusterType(ClusterType.MULTI_RACK)
+                                .withClusterVersion("bnlankxmyskpb")
                                 .withComputeRackDefinitions(Arrays.asList())
-                                .withNetworkFabricId("bxzpuzycisp")));
+                                .withNetworkFabricId("synlqidybyxczfc"),
+                            new ClusterInner()
+                                .withLocation("vlopwiyighx")
+                                .withTags(mapOf("baumnyqupedeoj", "wzbaiue", "ckhsmtxpsieb", "a"))
+                                .withExtendedLocation(new ExtendedLocation().withName("zyoxaepdkzjan").withType("ux"))
+                                .withAnalyticsWorkspaceId("d")
+                                .withClusterLocation("iwdjswztsdbpgn")
+                                .withClusterType(ClusterType.SINGLE_RACK)
+                                .withClusterVersion("uhxwtctyqiklbbov")
+                                .withComputeRackDefinitions(Arrays.asList())
+                                .withNetworkFabricId("xquk")));
         model = BinaryData.fromObject(model).toObject(ClusterList.class);
-        Assertions.assertEquals("nljky", model.nextLink());
-        Assertions.assertEquals("bnuqqkpik", model.value().get(0).location());
-        Assertions.assertEquals("gvtqagnbuynh", model.value().get(0).tags().get("jggmebfsiarbu"));
-        Assertions.assertEquals("vuujq", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("idokgjlj", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("oxgvclt", model.value().get(0).analyticsWorkspaceId());
-        Assertions.assertEquals("kjeszz", model.value().get(0).clusterLocation());
-        Assertions.assertEquals(ClusterType.SINGLE_RACK, model.value().get(0).clusterType());
-        Assertions.assertEquals("cxgod", model.value().get(0).clusterVersion());
-        Assertions.assertEquals("bxzpuzycisp", model.value().get(0).networkFabricId());
+        Assertions.assertEquals("dhibnuq", model.nextLink());
+        Assertions.assertEquals("ktsthsucocmny", model.value().get(0).location());
+        Assertions.assertEquals("t", model.value().get(0).tags().get("bt"));
+        Assertions.assertEquals("ik", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("drgvtqagn", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("ynhijggme", model.value().get(0).analyticsWorkspaceId());
+        Assertions.assertEquals("utrc", model.value().get(0).clusterLocation());
+        Assertions.assertEquals(ClusterType.MULTI_RACK, model.value().get(0).clusterType());
+        Assertions.assertEquals("bnlankxmyskpb", model.value().get(0).clusterVersion());
+        Assertions.assertEquals("synlqidybyxczfc", model.value().get(0).networkFabricId());
     }
 
     @SuppressWarnings("unchecked")

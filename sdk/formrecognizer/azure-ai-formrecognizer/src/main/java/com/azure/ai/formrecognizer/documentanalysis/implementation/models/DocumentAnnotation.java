@@ -39,7 +39,7 @@ public final class DocumentAnnotation {
      * @param confidence the confidence value to set.
      */
     @JsonCreator
-    public DocumentAnnotation(
+    private DocumentAnnotation(
             @JsonProperty(value = "kind", required = true) DocumentAnnotationKind kind,
             @JsonProperty(value = "polygon", required = true) List<Float> polygon,
             @JsonProperty(value = "confidence", required = true) float confidence) {

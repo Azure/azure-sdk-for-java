@@ -13,18 +13,18 @@ public final class RacksPatchPropertiesTests {
     public void testDeserialize() throws Exception {
         RacksPatchProperties model =
             BinaryData
-                .fromString("{\"rackLocation\":\"fuijtkbus\",\"rackSerialNumber\":\"gsfikayiansha\"}")
+                .fromString("{\"rackLocation\":\"xjawrt\",\"rackSerialNumber\":\"fjmyccxlzhco\"}")
                 .toObject(RacksPatchProperties.class);
-        Assertions.assertEquals("fuijtkbus", model.rackLocation());
-        Assertions.assertEquals("gsfikayiansha", model.rackSerialNumber());
+        Assertions.assertEquals("xjawrt", model.rackLocation());
+        Assertions.assertEquals("fjmyccxlzhco", model.rackSerialNumber());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RacksPatchProperties model =
-            new RacksPatchProperties().withRackLocation("fuijtkbus").withRackSerialNumber("gsfikayiansha");
+            new RacksPatchProperties().withRackLocation("xjawrt").withRackSerialNumber("fjmyccxlzhco");
         model = BinaryData.fromObject(model).toObject(RacksPatchProperties.class);
-        Assertions.assertEquals("fuijtkbus", model.rackLocation());
-        Assertions.assertEquals("gsfikayiansha", model.rackSerialNumber());
+        Assertions.assertEquals("xjawrt", model.rackLocation());
+        Assertions.assertEquals("fjmyccxlzhco", model.rackSerialNumber());
     }
 }

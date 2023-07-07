@@ -44,6 +44,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0.1</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.1</jacoco.min.branchcoverage>
+    <javaModulesSurefireArgLine>
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
   <dependencies>
     <dependency>

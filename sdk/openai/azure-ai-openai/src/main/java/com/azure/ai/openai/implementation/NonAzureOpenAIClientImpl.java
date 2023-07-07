@@ -197,6 +197,44 @@ public final class NonAzureOpenAIClientImpl {
             @BodyParam("application/json") BinaryData chatCompletionsOptions,
             RequestOptions requestOptions,
             Context context);
+
+        @Post("/images/generations")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+            value = ClientAuthenticationException.class,
+            code = {401})
+        @UnexpectedResponseExceptionType(
+            value = ResourceNotFoundException.class,
+            code = {404})
+        @UnexpectedResponseExceptionType(
+            value = ResourceModifiedException.class,
+            code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> generateImage(
+            @HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData imageGenerationOptions,
+            RequestOptions requestOptions,
+            Context context);
+
+        @Post("/images/generations")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+            value = ClientAuthenticationException.class,
+            code = {401})
+        @UnexpectedResponseExceptionType(
+            value = ResourceNotFoundException.class,
+            code = {404})
+        @UnexpectedResponseExceptionType(
+            value = ResourceModifiedException.class,
+            code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> generateImageSync(
+            @HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData imageGenerationOptions,
+            RequestOptions requestOptions,
+            Context context);
     }
 
     /**
@@ -717,5 +755,119 @@ public final class NonAzureOpenAIClientImpl {
             chatCompletionsOptionsUpdated,
             requestOptions,
             Context.NONE);
+    }
+
+    /**
+     * Starts the generation of a batch of images from a text caption.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     prompt: String (Required)
+     *     n: Integer (Optional)
+     *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     user: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     status: String (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param imageGenerationOptions Represents the request data used to generate images.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return A list of image URLs that were generated based on the prompt sent in the request
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> generateImageWithResponseAsync(
+        BinaryData imageGenerationOptions, RequestOptions requestOptions) {
+        final String accept = "application/json";
+
+        return service.generateImage(
+            OPEN_AI_ENDPOINT,
+            accept,
+            imageGenerationOptions,
+            requestOptions,
+            Context.NONE
+        );
+    }
+
+    /**
+     * Starts the generation of a batch of images from a text caption.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     prompt: String (Required)
+     *     n: Integer (Optional)
+     *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     user: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     status: String (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param imageGenerationOptions Represents the request data used to generate images.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return A list of image URLs that were generated based on the prompt sent in the request
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> generateImageWithResponse(
+        BinaryData imageGenerationOptions, RequestOptions requestOptions) {
+        final String accept = "application/json";
+
+        return service.generateImageSync(
+            OPEN_AI_ENDPOINT,
+            accept,
+            imageGenerationOptions,
+            requestOptions,
+            Context.NONE
+        );
     }
 }

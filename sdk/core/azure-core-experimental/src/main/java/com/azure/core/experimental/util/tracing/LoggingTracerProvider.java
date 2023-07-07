@@ -26,6 +26,12 @@ public class LoggingTracerProvider implements TracerProvider {
     private static final TracingOptions DEFAULT_OPTIONS = new TracingOptions().setEnabled(false);
 
     /**
+     * Creates new instance of {@link LoggingTracerProvider}.
+     */
+    public LoggingTracerProvider() {
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

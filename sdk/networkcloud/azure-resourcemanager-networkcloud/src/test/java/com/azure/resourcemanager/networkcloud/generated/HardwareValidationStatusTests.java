@@ -12,7 +12,7 @@ public final class HardwareValidationStatusTests {
     public void testDeserialize() throws Exception {
         HardwareValidationStatus model =
             BinaryData
-                .fromString("{\"lastValidationTime\":\"2021-03-24T00:19:46Z\",\"result\":\"Fail\"}")
+                .fromString("{\"lastValidationTime\":\"2021-08-05T10:27:23Z\",\"result\":\"Fail\"}")
                 .toObject(HardwareValidationStatus.class);
     }
 

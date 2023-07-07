@@ -61,7 +61,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-data-appconfiguration</artifactId>
-            <version>1.4.5</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+            <version>1.4.6</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
@@ -71,7 +71,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-security-keyvault-keys</artifactId>
-            <version>4.6.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+            <version>4.6.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
@@ -82,28 +82,28 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-security-keyvault-secrets</artifactId>
-            <version>4.6.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+            <version>4.6.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-security-keyvault-certificates</artifactId>
-            <version>4.5.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+            <version>4.5.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
         </dependency>
 
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-messaging-eventhubs</artifactId>
-            <version>5.15.5</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+            <version>5.15.6</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-cosmos</artifactId>
-            <version>4.46.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+            <version>4.47.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-ai-formrecognizer</artifactId>
-            <version>4.0.7</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;dependency} -->
+            <version>4.0.8</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
@@ -160,7 +160,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.2.0</version>  <!-- {x-version-update;org.apache.maven.plugins:maven-assembly-plugin;external_dependency} -->
+                <version>3.3.0</version>  <!-- {x-version-update;org.apache.maven.plugins:maven-assembly-plugin;external_dependency} -->
                 <configuration>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>

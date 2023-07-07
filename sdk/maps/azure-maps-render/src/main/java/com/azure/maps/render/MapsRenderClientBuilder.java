@@ -41,7 +41,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.maps.render.implementation.RenderClientImpl;
 import com.azure.maps.render.implementation.RenderClientImplBuilder;
 
-/** A builder for creating a new instance of the RenderClient type. 
+/** A builder for creating a new instance of the RenderClient type.
  * Builder class used to instantiate both synchronous and asynchronous {@link MapsRenderClient} clients.
  * Creating a sync client using a {@link com.azure.core.credential.AzureKeyCredential}:
  * <!-- src_embed com.azure.maps.render.sync.builder.key.instantiation -->
@@ -186,7 +186,7 @@ public final class MapsRenderClientBuilder implements AzureKeyCredentialTrait<Ma
     public MapsRenderClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             LOGGER.info("Pipeline is being set to 'null' when it was previously configured.");
-    
+
         }
         this.pipeline = pipeline;
         return this;
@@ -202,7 +202,7 @@ public final class MapsRenderClientBuilder implements AzureKeyCredentialTrait<Ma
     public MapsRenderClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
-    
+
         }
         this.httpClient = httpClient;
         return this;
@@ -311,7 +311,6 @@ public final class MapsRenderClientBuilder implements AzureKeyCredentialTrait<Ma
         // client impl
         RenderClientImplBuilder builder = new RenderClientImplBuilder();
         builder.host(this.endpoint);
-        builder.apiVersion(this.serviceVersion.getVersion());
         builder.pipeline(this.pipeline);
         builder.clientId(this.mapsClientId);
         builder.httpClient(this.httpClient);
@@ -391,7 +390,7 @@ public final class MapsRenderClientBuilder implements AzureKeyCredentialTrait<Ma
      * @return an instance of RenderAsyncClient.
      */
     public MapsRenderAsyncClient buildAsyncClient() {
-        return new MapsRenderAsyncClient(buildInnerClient().getRenderV2s());
+        return new MapsRenderAsyncClient(buildInnerClient().getRenders());
     }
 
     /**
