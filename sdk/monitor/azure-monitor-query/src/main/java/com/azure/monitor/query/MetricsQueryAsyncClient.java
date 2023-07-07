@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -19,28 +18,16 @@ import com.azure.monitor.query.implementation.metrics.models.ErrorResponseExcept
 import com.azure.monitor.query.implementation.metrics.models.MetricsHelper;
 import com.azure.monitor.query.implementation.metrics.models.ResultType;
 import com.azure.monitor.query.implementation.metricsbatch.AzureMonitorMetricBatch;
-import com.azure.monitor.query.implementation.metricsbatch.models.Metric;
-import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponse;
-import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponseValuesItem;
-import com.azure.monitor.query.implementation.metricsbatch.models.ResourceIdList;
 import com.azure.monitor.query.implementation.metricsdefinitions.MetricsDefinitionsClientImpl;
 import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespacesClientImpl;
 import com.azure.monitor.query.models.MetricDefinition;
 import com.azure.monitor.query.models.MetricNamespace;
-import com.azure.monitor.query.models.MetricResult;
-import com.azure.monitor.query.models.MetricUnit;
-import com.azure.monitor.query.models.MetricValue;
-import com.azure.monitor.query.models.MetricsBatchResult;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
-import com.azure.monitor.query.models.QueryTimeInterval;
-import com.azure.monitor.query.models.TimeSeriesElement;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -63,15 +50,13 @@ public final class MetricsQueryAsyncClient {
     private final MonitorManagementClientImpl metricsClient;
     private final MetricsNamespacesClientImpl metricsNamespaceClient;
     private final MetricsDefinitionsClientImpl metricsDefinitionsClient;
-    private final AzureMonitorMetricBatch metricsBatchClient;
 
     MetricsQueryAsyncClient(MonitorManagementClientImpl metricsClient,
                             MetricsNamespacesClientImpl metricsNamespaceClient,
-                            MetricsDefinitionsClientImpl metricsDefinitionsClients, AzureMonitorMetricBatch azureMonitorMetricBatch) {
+                            MetricsDefinitionsClientImpl metricsDefinitionsClients) {
         this.metricsClient = metricsClient;
         this.metricsNamespaceClient = metricsNamespaceClient;
         this.metricsDefinitionsClient = metricsDefinitionsClients;
-        this.metricsBatchClient = azureMonitorMetricBatch;
     }
 
     /**
@@ -117,98 +102,6 @@ public final class MetricsQueryAsyncClient {
     public Mono<Response<MetricsQueryResult>> queryResourceWithResponse(String resourceUri, List<String> metricsNames,
                                                                         MetricsQueryOptions options) {
         return withContext(context -> queryResourceWithResponse(resourceUri, metricsNames, options, context));
-    }
-
-
-    /**
-     * Returns all the Azure Monitor metrics requested for the batch of resources.
-     *
-     * @param resourceUris The resource URIs for which the metrics is requested.
-     * @param metricsNames The names of the metrics to query.
-     * @param metricsNamespace The namespace of the metrics to query.
-     * @return A time-series metrics result for the requested metric names.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MetricsBatchResult> queryBatch(List<String> resourceUris, List<String> metricsNames, String metricsNamespace) {
-        return this.queryBatchWithResponse(resourceUris, metricsNames, metricsNamespace, Context.NONE)
-            .map(Response::getValue);
-    }
-
-    /**
-     * Returns all the Azure Monitor metrics requested for the batch of resources.
-     *
-     * @param resourceUris The resource URIs for which the metrics is requested.
-     * @param metricsNames The names of the metrics to query.
-     * @param metricsNamespace The namespace of the metrics to query.
-     * @param context The context to associate with this operation.
-     * @return A time-series metrics result for the requested metric names.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MetricsBatchResult>> queryBatchWithResponse(List<String> resourceUris, List<String> metricsNames,
-                                                               String metricsNamespace, Context context) {
-
-        if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(resourceUris, "'resourceUris cannot be null."))) {
-            throw new IllegalArgumentException("resourceUris cannot be empty");
-        }
-
-        if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(metricsNames, "metricsNames cannot be null"))) {
-            throw new IllegalArgumentException("metricsNames cannot be empty");
-        }
-
-        String subscriptionId = getSubscriptionFromResourceId(resourceUris.get(0));
-        ResourceIdList resourceIdList = new ResourceIdList();
-        resourceIdList.setResourceids(resourceUris);
-        Mono<Response<MetricResultsResponse>> responseMono = this.metricsBatchClient.getMetrics()
-            .batchWithResponseAsync(subscriptionId, metricsNamespace, metricsNames, resourceIdList, null,
-                null, null, null, null, null, null, context);
-
-
-        return responseMono.map(response -> {
-            MetricResultsResponse value = response.getValue();
-            List<MetricResultsResponseValuesItem> values = value.getValues();
-            List<MetricsQueryResult> metricsQueryResults = values.stream()
-                .map(result -> mapToMetricsQueryResult(result))
-                .collect(Collectors.toList());
-            MetricsBatchResult metricsBatchResult = new MetricsBatchResult(metricsQueryResults);
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), metricsBatchResult);
-        });
-    }
-
-    private MetricsQueryResult mapToMetricsQueryResult(MetricResultsResponseValuesItem item) {
-        List<MetricResult> metrics = item.getValue()
-            .stream()
-            .map(metric -> mapToMetrics(metric))
-            .collect(Collectors.toList());
-
-        MetricsQueryResult metricsQueryResult = new MetricsQueryResult(/* TODO (srnagar): fix this item.getCost() */ null,
-            new QueryTimeInterval(item.getInterval()), item.getInterval(), item.getNamespace(), item.getResourceregion(), metrics);
-        return metricsQueryResult;
-    }
-
-    private MetricResult mapToMetrics(Metric metric) {
-        List<TimeSeriesElement> timeSeries = metric.getTimeseries().stream().map(ts -> mapToTimeSeries(ts)).collect(Collectors.toList());
-        MetricResult metricResult = new MetricResult(metric.getId(), metric.getType(), MetricUnit.fromString(metric.getUnit().name()),
-            metric.getName().getValue(), timeSeries, metric.getDisplayDescription(),
-            new ResponseError(metric.getErrorCode(), metric.getErrorMessage()));
-        return metricResult;
-    }
-
-    private TimeSeriesElement mapToTimeSeries(com.azure.monitor.query.implementation.metricsbatch.models.TimeSeriesElement ts) {
-        List<MetricValue> values = ts.getData().stream().map(mv -> mapToMetricValue(mv)).collect(Collectors.toList());
-        Map<String, String> metadata = ts.getMetadatavalues().stream().collect(Collectors.toMap(md -> md.getName().getValue(), md -> md.getValue()));
-        TimeSeriesElement timeSeriesElement = new TimeSeriesElement(values, metadata);
-        return timeSeriesElement;
-    }
-
-    private MetricValue mapToMetricValue(com.azure.monitor.query.implementation.metricsbatch.models.MetricValue mv) {
-        MetricValue metricValue = new MetricValue(mv.getTimeStamp(), mv.getAverage(), mv.getMinimum(), mv.getMaximum(), mv.getTotal(), mv.getCount());
-        return metricValue;
-    }
-    private String getSubscriptionFromResourceId(String s) {
-        int i = s.indexOf("subscriptions/") + 14;
-        String subscriptionId = s.substring(i, s.indexOf("/", i));
-        return subscriptionId;
     }
 
     /**
