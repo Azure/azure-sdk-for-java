@@ -262,7 +262,7 @@ public CosmosConfig cosmosConfig() {
 By default, `@EnableCosmosRepositories` will scan the current package for any interfaces that extend one of Spring Data's repository interfaces.
 Use it to annotate your Configuration class to scan a different root package by `@EnableCosmosRepositories(basePackageClass=UserRepository.class)` if your project layout has multiple projects.
 
-#### Enabling Diagnostics with JavaAgent
+#### Enabling logging diagnostics to Azure Application Insights with JavaAgent
 
 Diagnostics can be enabled by passing the JavaAgent with your application like below. This will enable logging with the default thresholds. The '-javaagent' must be passed before the '-jar'.
 
