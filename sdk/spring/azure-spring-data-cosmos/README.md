@@ -264,7 +264,7 @@ Use it to annotate your Configuration class to scan a different root package by 
 
 #### Enabling Diagnostics with JavaAgent
 
-Diagnostics can be enabled by passing the JavaAgent with your application like below. The '-javaagent' must be passed before the '-jar'.
+Diagnostics can be enabled by passing the JavaAgent with your application like below. This will enable logging with the default thresholds. The '-javaagent' must be passed before the '-jar'.
 
 ```commandline
 java -javaagent:"<path-to-applicationinsights-agent-jar>" -jar <myapp.jar>
