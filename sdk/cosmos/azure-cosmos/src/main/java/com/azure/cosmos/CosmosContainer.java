@@ -355,7 +355,6 @@ public class CosmosContainer {
 
     /**
      * Query items in the current container returning the results as {@link CosmosPagedIterable}.
-     * <p>
      * <!-- src_embed com.azure.cosmos.CosmosContainer.queryItems -->
      * <pre>
      * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
@@ -369,7 +368,6 @@ public class CosmosContainer {
      * &#125;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosContainer.queryItems -->
-     * <p>
      * @param <T> the type parameter.
      * @param query the query.
      * @param options the options.
@@ -382,7 +380,6 @@ public class CosmosContainer {
 
     /**
      * Query items in the current container returning the results as {@link CosmosPagedIterable}.
-     * <p>
      * <!-- src_embed com.azure.cosmos.CosmosContainer.SqlQuerySpec.queryItems -->
      * <pre>
      * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
@@ -399,7 +396,6 @@ public class CosmosContainer {
      * &#125;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosContainer.SqlQuerySpec.queryItems -->
-     * <p>
      * @param <T> the type parameter.
      * @param querySpec the query spec.
      * @param options the options.
@@ -412,7 +408,6 @@ public class CosmosContainer {
 
     /**
      * Query for items in the change feed of the current container using the {@link CosmosChangeFeedRequestOptions}.
-     * <p>
      * <!-- src_embed com.azure.cosmos.CosmosContainer.queryChangeFeed -->
      * <pre>
      * CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
@@ -455,7 +450,6 @@ public class CosmosContainer {
      * Reads many documents.
      * Useful for reading many documents with a particular id and partition key in a single request.
      * If any document from the list is missing, no exception will be thrown.
-     * <p>
      * <!-- src_embed com.azure.cosmos.CosmosContainer.readMany -->
      * <pre>
      * List&lt;CosmosItemIdentity&gt; itemIdentityList = new ArrayList&lt;&gt;&#40;&#41;;
@@ -468,7 +462,6 @@ public class CosmosContainer {
      * &#125;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosContainer.readMany -->
-     * <p>
      * @param <T> the type parameter
      * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param classType   class type
@@ -485,7 +478,6 @@ public class CosmosContainer {
      * Reads many documents.
      * Useful for reading many documents with a particular id and partition key in a single request.
      * If any document from the list is missing, no exception will be thrown.
-     * <p>
      * <!-- src_embed com.azure.cosmos.CosmosContainer.readMany -->
      * <pre>
      * List&lt;CosmosItemIdentity&gt; itemIdentityList = new ArrayList&lt;&gt;&#40;&#41;;
@@ -498,7 +490,6 @@ public class CosmosContainer {
      * &#125;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosContainer.readMany -->
-     * <p>
      * @param <T> the type parameter
      * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param sessionToken the optional Session token - null if the read can be made without specific session token
@@ -642,7 +633,6 @@ public class CosmosContainer {
      *     new CosmosItemRequestOptions&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosContainer.replaceItem -->
-     * <p>
      * @param <T> the type parameter.
      * @param item the item.
      * @param itemId the item id.

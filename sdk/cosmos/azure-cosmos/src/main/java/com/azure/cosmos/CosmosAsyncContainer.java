@@ -681,7 +681,6 @@ public class CosmosAsyncContainer {
 
     /**
      * Query for items in the current container.
-     * <p>
      * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.queryItems -->
      * <pre>
      * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
@@ -846,7 +845,6 @@ public class CosmosAsyncContainer {
 
     /**
      * Query for items in the current container using a string.
-     * <p>
      * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.queryItems -->
      * <pre>
      * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
@@ -884,7 +882,6 @@ public class CosmosAsyncContainer {
 
     /**
      * Query for items in the current container using a {@link SqlQuerySpec}.
-     * <p>
      * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.SqlQuerySpec.queryItems -->
      * <pre>
      * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
@@ -1026,7 +1023,6 @@ public class CosmosAsyncContainer {
 
     /**
      * Query for items in the change feed of the current container using the {@link CosmosChangeFeedRequestOptions}.
-     * <p>
      * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.queryChangeFeed -->
      * <pre>
      * CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
@@ -1044,7 +1040,6 @@ public class CosmosAsyncContainer {
      *     .subscribe&#40;&#41;;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncContainer.queryChangeFeed -->
-     * <p>
      * After subscription the operation will be performed. The {@link Flux} will
      * contain one or several feed response of the obtained items. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -1379,7 +1374,6 @@ public class CosmosAsyncContainer {
      * Reads many documents.
      * Useful for reading many documents with a particular id and partition key in a single request.
      * If any document from the list is missing, no exception will be thrown.
-     * <p>
      * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.readMany -->
      * <pre>
      * List&lt;CosmosItemIdentity&gt; itemIdentityList = new ArrayList&lt;&gt;&#40;&#41;;
@@ -1396,7 +1390,6 @@ public class CosmosAsyncContainer {
      *     .subscribe&#40;&#41;;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncContainer.readMany -->
-     * <p>
      * @param <T> the type parameter
      * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param classType   class type
@@ -1413,7 +1406,6 @@ public class CosmosAsyncContainer {
      * Reads many documents.
      * Useful for reading many documents with a particular id and partition key in a single request.
      * If any document from the list is missing, no exception will be thrown.
-     * <p>
      * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.readMany -->
      * <pre>
      * List&lt;CosmosItemIdentity&gt; itemIdentityList = new ArrayList&lt;&gt;&#40;&#41;;
@@ -1430,7 +1422,6 @@ public class CosmosAsyncContainer {
      *     .subscribe&#40;&#41;;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncContainer.readMany -->
-     * <p>
      * @param <T> the type parameter
      * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param sessionToken the optional Session token - null if the read can be made without specific session token
@@ -1506,7 +1497,6 @@ public class CosmosAsyncContainer {
      *     .subscribe&#40;&#41;;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncContainer.readAllItems -->
-     * <p>
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed responses of the read Cosmos items. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -1571,7 +1561,6 @@ public class CosmosAsyncContainer {
      *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncContainer.replaceItem -->
-     * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single Cosmos item response with the replaced item.
      *
@@ -1603,7 +1592,6 @@ public class CosmosAsyncContainer {
      *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncContainer.replaceItem -->
-     * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single Cosmos item response with the replaced item.
      *
@@ -1651,7 +1639,6 @@ public class CosmosAsyncContainer {
      *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncContainer.patchItem -->
-     * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single Cosmos item response with the patched item.
      *
@@ -1695,7 +1682,6 @@ public class CosmosAsyncContainer {
      *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncContainer.patchItem -->
-     * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single Cosmos item response with the patched item.
      *
