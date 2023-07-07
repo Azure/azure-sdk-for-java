@@ -182,6 +182,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     static void assertChatCompletionsStream(ChatCompletions chatCompletions) {
         assertNotNull(chatCompletions.getId());
         assertNotNull(chatCompletions.getChoices());
+        System.out.println(chatCompletions.getId() + " " + chatCompletions.getChoices().size());
         assertFalse(chatCompletions.getChoices().isEmpty());
         assertNotNull(chatCompletions.getChoices().get(0).getDelta());
     }
