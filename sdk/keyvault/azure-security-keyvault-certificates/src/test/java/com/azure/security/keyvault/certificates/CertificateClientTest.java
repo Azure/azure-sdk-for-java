@@ -8,7 +8,6 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
@@ -41,7 +40,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiFunction;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -78,18 +76,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        //skip paging and polling requests until their sync stack support lands in azure-core.
-        BiFunction<HttpRequest, Context, Boolean> skipRequestFunction = (request, context) -> {
-            String callerMethod = (String) context.getData("caller-method").orElse("");
-            return (callerMethod.contains("list") || callerMethod.contains("getCertificates")
-                || callerMethod.contains("getCertificateVersions") || callerMethod.contains("delete")
-                || callerMethod.contains("recover") || callerMethod.contains("createCertificate")
-                || callerMethod.contains("getCertificateOperation") || callerMethod.contains("setCertificateContacts")
-                || callerMethod.contains("deleteCertificateContacts") || callerMethod.contains("getCertificateContacts")
-                || callerMethod.contains("getCertificateIssuers"));
-        };
         return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest(skipRequestFunction)
             .assertSync()
             .build();
     }
@@ -475,7 +462,8 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
         cancelCertificateOperationRunner((certName) -> {
             SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault());
+                certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault())
+                    .setPollInterval(Duration.ofMillis(250));
 
             LongRunningOperationStatus firstStatus = certPoller.poll().getStatus();
 
@@ -487,7 +475,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             }
 
             certPoller.cancelOperation();
-            certPoller.waitUntil(LongRunningOperationStatus.USER_CANCELLED);
+            certPoller.waitUntil(LongRunningOperationStatus.fromString("cancelled", true));
 
             KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
 

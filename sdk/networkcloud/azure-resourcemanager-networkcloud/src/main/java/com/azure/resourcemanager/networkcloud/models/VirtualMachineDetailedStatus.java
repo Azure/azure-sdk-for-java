@@ -10,14 +10,29 @@ import java.util.Collection;
 
 /** The more detailed status of the virtual machine. */
 public final class VirtualMachineDetailedStatus extends ExpandableStringEnum<VirtualMachineDetailedStatus> {
-    /** Static value Error for VirtualMachineDetailedStatus. */
-    public static final VirtualMachineDetailedStatus ERROR = fromString("Error");
-
     /** Static value Available for VirtualMachineDetailedStatus. */
     public static final VirtualMachineDetailedStatus AVAILABLE = fromString("Available");
 
+    /** Static value Error for VirtualMachineDetailedStatus. */
+    public static final VirtualMachineDetailedStatus ERROR = fromString("Error");
+
     /** Static value Provisioning for VirtualMachineDetailedStatus. */
     public static final VirtualMachineDetailedStatus PROVISIONING = fromString("Provisioning");
+
+    /** Static value Running for VirtualMachineDetailedStatus. */
+    public static final VirtualMachineDetailedStatus RUNNING = fromString("Running");
+
+    /** Static value Scheduling for VirtualMachineDetailedStatus. */
+    public static final VirtualMachineDetailedStatus SCHEDULING = fromString("Scheduling");
+
+    /** Static value Stopped for VirtualMachineDetailedStatus. */
+    public static final VirtualMachineDetailedStatus STOPPED = fromString("Stopped");
+
+    /** Static value Terminating for VirtualMachineDetailedStatus. */
+    public static final VirtualMachineDetailedStatus TERMINATING = fromString("Terminating");
+
+    /** Static value Unknown for VirtualMachineDetailedStatus. */
+    public static final VirtualMachineDetailedStatus UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of VirtualMachineDetailedStatus value.

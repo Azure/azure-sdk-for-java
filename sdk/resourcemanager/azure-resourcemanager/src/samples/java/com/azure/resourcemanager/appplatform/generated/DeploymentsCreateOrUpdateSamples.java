@@ -8,19 +8,26 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.appplatform.fluent.models.DeploymentResourceInner;
+import com.azure.resourcemanager.appplatform.models.CustomContainer;
+import com.azure.resourcemanager.appplatform.models.CustomContainerUserSourceInfo;
 import com.azure.resourcemanager.appplatform.models.DeploymentResourceProperties;
 import com.azure.resourcemanager.appplatform.models.DeploymentSettings;
+import com.azure.resourcemanager.appplatform.models.HttpGetAction;
+import com.azure.resourcemanager.appplatform.models.HttpSchemeType;
+import com.azure.resourcemanager.appplatform.models.ImageRegistryCredential;
+import com.azure.resourcemanager.appplatform.models.Probe;
 import com.azure.resourcemanager.appplatform.models.ResourceRequests;
 import com.azure.resourcemanager.appplatform.models.Sku;
 import com.azure.resourcemanager.appplatform.models.SourceUploadedUserSourceInfo;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for Deployments CreateOrUpdate. */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Deployments_CreateOrUpdate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Deployments_CreateOrUpdate.json
      */
     /**
      * Sample code: Deployments_CreateOrUpdate.
@@ -60,8 +67,84 @@ public final class DeploymentsCreateOrUpdateSamples {
                                                 SerializerFactory
                                                     .createDefaultManagementSerializerAdapter()
                                                     .deserialize(
-                                                        "[\"mypattern\"]", Object.class, SerializerEncoding.JSON))))))
+                                                        "[\"mypattern\"]", Object.class, SerializerEncoding.JSON))))
+                                    .withLivenessProbe(
+                                        new Probe()
+                                            .withProbeAction(
+                                                new HttpGetAction().withPath("/health").withScheme(HttpSchemeType.HTTP))
+                                            .withDisableProbe(false)
+                                            .withInitialDelaySeconds(30)
+                                            .withPeriodSeconds(10)
+                                            .withFailureThreshold(3))
+                                    .withReadinessProbe(
+                                        new Probe()
+                                            .withProbeAction(
+                                                new HttpGetAction().withPath("/health").withScheme(HttpSchemeType.HTTP))
+                                            .withDisableProbe(false)
+                                            .withInitialDelaySeconds(30)
+                                            .withPeriodSeconds(10)
+                                            .withFailureThreshold(3))
+                                    .withTerminationGracePeriodSeconds(30)))
                     .withSku(new Sku().withName("S0").withTier("Standard").withCapacity(1)),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Deployments_CreateOrUpdate_CustomContainer.json
+     */
+    /**
+     * Sample code: Deployments_CreateOrUpdate_CustomContainer.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void deploymentsCreateOrUpdateCustomContainer(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .springServices()
+            .manager()
+            .serviceClient()
+            .getDeployments()
+            .createOrUpdate(
+                "myResourceGroup",
+                "myservice",
+                "myapp",
+                "mydeployment",
+                new DeploymentResourceInner()
+                    .withProperties(
+                        new DeploymentResourceProperties()
+                            .withSource(
+                                new CustomContainerUserSourceInfo()
+                                    .withCustomContainer(
+                                        new CustomContainer()
+                                            .withServer("myacr.azurecr.io")
+                                            .withContainerImage("myContainerImage:v1")
+                                            .withCommand(Arrays.asList("/bin/sh"))
+                                            .withArgs(Arrays.asList("-c", "while true; do echo hello; sleep 10;done"))
+                                            .withImageRegistryCredential(
+                                                new ImageRegistryCredential()
+                                                    .withUsername("myUsername")
+                                                    .withPassword("myPassword"))
+                                            .withLanguageFramework("springboot")))
+                            .withDeploymentSettings(
+                                new DeploymentSettings()
+                                    .withResourceRequests(new ResourceRequests().withCpu("1000m").withMemory("3Gi"))
+                                    .withEnvironmentVariables(mapOf("env", "test"))
+                                    .withLivenessProbe(
+                                        new Probe()
+                                            .withProbeAction(
+                                                new HttpGetAction().withPath("/health").withScheme(HttpSchemeType.HTTP))
+                                            .withDisableProbe(false)
+                                            .withInitialDelaySeconds(30)
+                                            .withPeriodSeconds(10)
+                                            .withFailureThreshold(3))
+                                    .withReadinessProbe(
+                                        new Probe()
+                                            .withProbeAction(
+                                                new HttpGetAction().withPath("/health").withScheme(HttpSchemeType.HTTP))
+                                            .withDisableProbe(false)
+                                            .withInitialDelaySeconds(30)
+                                            .withPeriodSeconds(10)
+                                            .withFailureThreshold(3))
+                                    .withTerminationGracePeriodSeconds(30))),
                 Context.NONE);
     }
 

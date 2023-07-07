@@ -15,18 +15,17 @@ public final class CacheHealthTests {
         CacheHealth model =
             BinaryData
                 .fromString(
-                    "{\"state\":\"UpgradeFailed\",\"statusDescription\":\"mwvvjektcxsenhw\",\"conditions\":[{\"timestamp\":\"2021-01-30T03:05:29Z\",\"message\":\"zpwv\"}]}")
+                    "{\"state\":\"UpgradeFailed\",\"statusDescription\":\"aq\",\"conditions\":[{\"timestamp\":\"2021-01-14T07:52:43Z\",\"message\":\"iidzyexzne\"},{\"timestamp\":\"2021-06-14T02:46Z\",\"message\":\"nr\"}]}")
                 .toObject(CacheHealth.class);
         Assertions.assertEquals(HealthStateType.UPGRADE_FAILED, model.state());
-        Assertions.assertEquals("mwvvjektcxsenhw", model.statusDescription());
+        Assertions.assertEquals("aq", model.statusDescription());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CacheHealth model =
-            new CacheHealth().withState(HealthStateType.UPGRADE_FAILED).withStatusDescription("mwvvjektcxsenhw");
+        CacheHealth model = new CacheHealth().withState(HealthStateType.UPGRADE_FAILED).withStatusDescription("aq");
         model = BinaryData.fromObject(model).toObject(CacheHealth.class);
         Assertions.assertEquals(HealthStateType.UPGRADE_FAILED, model.state());
-        Assertions.assertEquals("mwvvjektcxsenhw", model.statusDescription());
+        Assertions.assertEquals("aq", model.statusDescription());
     }
 }

@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -153,6 +154,7 @@ public class ConsistencyReader {
     private final StoreReader storeReader;
     private final QuorumReader quorumReader;
     private final Configs configs;
+    private final SessionRetryOptions sessionRetryOptions;
 
     public ConsistencyReader(
         DiagnosticsClientContext diagnosticsClientContext,
@@ -161,12 +163,14 @@ public class ConsistencyReader {
         ISessionContainer sessionContainer,
         TransportClient transportClient,
         GatewayServiceConfigurationReader serviceConfigReader,
-        IAuthorizationTokenProvider authorizationTokenProvider) {
+        IAuthorizationTokenProvider authorizationTokenProvider,
+        SessionRetryOptions sessionRetryOptions) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.configs = configs;
         this.serviceConfigReader = serviceConfigReader;
         this.storeReader = createStoreReader(transportClient, addressSelector, sessionContainer);
         this.quorumReader = createQuorumReader(transportClient, addressSelector, this.storeReader, serviceConfigReader, authorizationTokenProvider);
+        this.sessionRetryOptions = sessionRetryOptions;
     }
 
     public Mono<StoreResponse> readAsync(RxDocumentServiceRequest entity,
@@ -231,7 +235,7 @@ public class ConsistencyReader {
                 if (targetConsistencyLevel.v == ConsistencyLevel.SESSION) {
                     return BackoffRetryUtility.executeRetry(
                         () -> this.readSessionAsync(entity, desiredReadMode),
-                        new SessionTokenMismatchRetryPolicy(BridgeInternal.getRetryContext(entity.requestContext.cosmosDiagnostics)));
+                        new SessionTokenMismatchRetryPolicy(BridgeInternal.getRetryContext(entity.requestContext.cosmosDiagnostics), sessionRetryOptions));
                 } else {
                     return this.readAnyAsync(entity, desiredReadMode);
                 }

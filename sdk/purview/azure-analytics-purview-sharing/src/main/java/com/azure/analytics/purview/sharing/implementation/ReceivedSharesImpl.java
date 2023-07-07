@@ -142,7 +142,7 @@ public final class ReceivedSharesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAllAttachedReceivedShares(
+        Mono<Response<BinaryData>> listAttachedReceivedShares(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("referenceName") String referenceName,
                 @QueryParam("api-version") String apiVersion,
@@ -162,7 +162,7 @@ public final class ReceivedSharesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAllDetachedReceivedShares(
+        Mono<Response<BinaryData>> listDetachedReceivedShares(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -220,7 +220,7 @@ public final class ReceivedSharesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAllAttachedReceivedSharesNext(
+        Mono<Response<BinaryData>> listAttachedReceivedSharesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -239,7 +239,7 @@ public final class ReceivedSharesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAllDetachedReceivedSharesNext(
+        Mono<Response<BinaryData>> listDetachedReceivedSharesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -594,7 +594,6 @@ public final class ReceivedSharesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -619,12 +618,12 @@ public final class ReceivedSharesImpl {
      * @return list of received shares along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getAllAttachedReceivedSharesSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listAttachedReceivedSharesSinglePageAsync(
             String referenceName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.getAllAttachedReceivedShares(
+                                service.listAttachedReceivedShares(
                                         this.client.getEndpoint(),
                                         referenceName,
                                         this.client.getServiceVersion().getVersion(),
@@ -652,7 +651,6 @@ public final class ReceivedSharesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -677,16 +675,15 @@ public final class ReceivedSharesImpl {
      * @return list of received shares as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getAllAttachedReceivedSharesAsync(
-            String referenceName, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listAttachedReceivedSharesAsync(String referenceName, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> getAllAttachedReceivedSharesSinglePageAsync(referenceName, requestOptions),
-                nextLink -> getAllAttachedReceivedSharesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                () -> listAttachedReceivedSharesSinglePageAsync(referenceName, requestOptions),
+                nextLink -> listAttachedReceivedSharesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -699,7 +696,6 @@ public final class ReceivedSharesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -724,8 +720,8 @@ public final class ReceivedSharesImpl {
      * @return list of received shares as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getAllAttachedReceivedShares(String referenceName, RequestOptions requestOptions) {
-        return new PagedIterable<>(getAllAttachedReceivedSharesAsync(referenceName, requestOptions));
+    public PagedIterable<BinaryData> listAttachedReceivedShares(String referenceName, RequestOptions requestOptions) {
+        return new PagedIterable<>(listAttachedReceivedSharesAsync(referenceName, requestOptions));
     }
 
     /**
@@ -738,7 +734,6 @@ public final class ReceivedSharesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -762,11 +757,11 @@ public final class ReceivedSharesImpl {
      * @return list of received shares along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getAllDetachedReceivedSharesSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listDetachedReceivedSharesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.getAllDetachedReceivedShares(
+                                service.listDetachedReceivedShares(
                                         this.client.getEndpoint(),
                                         this.client.getServiceVersion().getVersion(),
                                         accept,
@@ -793,7 +788,6 @@ public final class ReceivedSharesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -817,15 +811,15 @@ public final class ReceivedSharesImpl {
      * @return list of received shares as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getAllDetachedReceivedSharesAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listDetachedReceivedSharesAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> getAllDetachedReceivedSharesSinglePageAsync(requestOptions),
-                nextLink -> getAllDetachedReceivedSharesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                () -> listDetachedReceivedSharesSinglePageAsync(requestOptions),
+                nextLink -> listDetachedReceivedSharesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -838,7 +832,6 @@ public final class ReceivedSharesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -862,8 +855,8 @@ public final class ReceivedSharesImpl {
      * @return list of received shares as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getAllDetachedReceivedShares(RequestOptions requestOptions) {
-        return new PagedIterable<>(getAllDetachedReceivedSharesAsync(requestOptions));
+    public PagedIterable<BinaryData> listDetachedReceivedShares(RequestOptions requestOptions) {
+        return new PagedIterable<>(listDetachedReceivedSharesAsync(requestOptions));
     }
 
     /**
@@ -1081,12 +1074,12 @@ public final class ReceivedSharesImpl {
      * @return list of received shares along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getAllAttachedReceivedSharesNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listAttachedReceivedSharesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.getAllAttachedReceivedSharesNext(
+                                service.listAttachedReceivedSharesNext(
                                         nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
@@ -1121,12 +1114,12 @@ public final class ReceivedSharesImpl {
      * @return list of received shares along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getAllDetachedReceivedSharesNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listDetachedReceivedSharesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.getAllDetachedReceivedSharesNext(
+                                service.listDetachedReceivedSharesNext(
                                         nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->

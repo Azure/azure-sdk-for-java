@@ -17,7 +17,7 @@ public final class SentSharesListTests extends PurviewShareClientTestBase {
     public void testSentSharesListTests() {
         RequestOptions requestOptions = new RequestOptions().addQueryParam("filter", "Name eq 'testName'");
         PagedIterable<BinaryData> response =
-                sentSharesClient.getAllSentShares(
+                sentSharesClient.listSentShares(
                         "/subscriptions/de06c3a0-4610-4ca0-8cbb-bbdac204bd65/resourceGroups/sender-storage-rg/providers/Microsoft.Storage/storageAccounts/providerstorage",
                         requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

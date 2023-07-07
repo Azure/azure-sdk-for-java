@@ -17,6 +17,15 @@ public final class BackupScheduleType extends ExpandableStringEnum<BackupSchedul
     public static final BackupScheduleType AUTOMATED = fromString("Automated");
 
     /**
+     * Creates a new instance of BackupScheduleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BackupScheduleType() {
+    }
+
+    /**
      * Creates or finds a BackupScheduleType from its string representation.
      *
      * @param name a name to look for.

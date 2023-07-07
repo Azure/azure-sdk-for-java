@@ -22,6 +22,10 @@ import com.azure.communication.jobrouter.models.options.CreateClassificationPoli
 import com.azure.communication.jobrouter.models.options.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.options.CreateExceptionPolicyOptions;
 import com.azure.communication.jobrouter.models.options.CreateQueueOptions;
+import com.azure.communication.jobrouter.models.options.ListClassificationPoliciesOptions;
+import com.azure.communication.jobrouter.models.options.ListDistributionPoliciesOptions;
+import com.azure.communication.jobrouter.models.options.ListExceptionPoliciesOptions;
+import com.azure.communication.jobrouter.models.options.ListQueuesOptions;
 import com.azure.communication.jobrouter.models.options.UpdateClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.options.UpdateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.options.UpdateExceptionPolicyOptions;
@@ -291,16 +295,34 @@ public final class RouterAdministrationAsyncClient {
     /**
      * Retrieves existing classification policies.
      *
-     * @param maxPageSize Maximum page size.
+     * @param listClassificationPoliciesOptions options for listClassificationPolicies.
      * @return a paged collection of classification policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ClassificationPolicyItem> listClassificationPolicies(Integer maxPageSize) {
+    public PagedFlux<ClassificationPolicyItem> listClassificationPolicies(ListClassificationPoliciesOptions listClassificationPoliciesOptions) {
         try {
-            return jobRouterAdmin.listClassificationPoliciesAsync(maxPageSize);
+            return jobRouterAdmin.listClassificationPoliciesAsync(listClassificationPoliciesOptions.getMaxPageSize());
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Retrieves existing classification policies.
+     *
+     * @param listClassificationPoliciesOptions options for listClassificationPolicies.
+     * @param context Context for listClassificationPolicies.
+     * @return a paged collection of classification policies.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    PagedFlux<ClassificationPolicyItem> listClassificationPolicies(ListClassificationPoliciesOptions listClassificationPoliciesOptions, Context context) {
+        try {
+            return jobRouterAdmin.listClassificationPoliciesAsync(listClassificationPoliciesOptions.getMaxPageSize(), context);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -513,16 +535,34 @@ public final class RouterAdministrationAsyncClient {
     /**
      * Retrieves existing distribution policies.
      *
-     * @param maxPageSize Maximum page size.
+     * @param listDistributionPoliciesOptions list options.
      * @return a paged collection of distribution policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DistributionPolicyItem> listDistributionPolicies(Integer maxPageSize) {
+    public PagedFlux<DistributionPolicyItem> listDistributionPolicies(ListDistributionPoliciesOptions listDistributionPoliciesOptions) {
         try {
-            return jobRouterAdmin.listDistributionPoliciesAsync(maxPageSize);
+            return jobRouterAdmin.listDistributionPoliciesAsync(listDistributionPoliciesOptions.getMaxPageSize());
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Retrieves existing distribution policies.
+     *
+     * @param listDistributionPoliciesOptions list options.
+     * @param context Context for listDistributionPolicies.
+     * @return a paged collection of distribution policies.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    PagedFlux<DistributionPolicyItem> listDistributionPolicies(ListDistributionPoliciesOptions listDistributionPoliciesOptions, Context context) {
+        try {
+            return jobRouterAdmin.listDistributionPoliciesAsync(listDistributionPoliciesOptions.getMaxPageSize(), context);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -751,16 +791,34 @@ public final class RouterAdministrationAsyncClient {
     /**
      * Retrieves existing exception policies.
      *
-     * @param maxPageSize Maximum Number of objects to return per page.
+     * @param listExceptionPoliciesOptions options for listExceptionPolicies.
      * @return a paged collection of exception policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ExceptionPolicyItem> listExceptionPolicies(Integer maxPageSize) {
+    public PagedFlux<ExceptionPolicyItem> listExceptionPolicies(ListExceptionPoliciesOptions listExceptionPoliciesOptions) {
         try {
-            return jobRouterAdmin.listExceptionPoliciesAsync(maxPageSize);
+            return jobRouterAdmin.listExceptionPoliciesAsync(listExceptionPoliciesOptions.getMaxPageSize());
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Retrieves existing exception policies.
+     *
+     * @param listExceptionPoliciesOptions options for listExceptionPolicies.
+     * @param context Context for listExceptionPolicies.
+     * @return a paged collection of exception policies.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    PagedFlux<ExceptionPolicyItem> listExceptionPolicies(ListExceptionPoliciesOptions listExceptionPoliciesOptions, Context context) {
+        try {
+            return jobRouterAdmin.listExceptionPoliciesAsync(listExceptionPoliciesOptions.getMaxPageSize(), context);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -989,16 +1047,34 @@ public final class RouterAdministrationAsyncClient {
     /**
      * Retrieves existing queues.
      *
-     * @param maxPageSize Number of objects to return per page.
+     * @param listQueuesOptions options for listQueues.
      * @return a paged collection of queues.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobQueueItem> listQueues(Integer maxPageSize) {
+    public PagedFlux<JobQueueItem> listQueues(ListQueuesOptions listQueuesOptions) {
         try {
-            return jobRouterAdmin.listQueuesAsync(maxPageSize);
+            return jobRouterAdmin.listQueuesAsync(listQueuesOptions.getMaxPageSize());
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Retrieves existing queues.
+     *
+     * @param listQueuesOptions options for listQueues.
+     * @param context context for listQueues.
+     * @return a paged collection of queues.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    PagedFlux<JobQueueItem> listQueues(ListQueuesOptions listQueuesOptions, Context context) {
+        try {
+            return jobRouterAdmin.listQueuesAsync(listQueuesOptions.getMaxPageSize(), context);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }

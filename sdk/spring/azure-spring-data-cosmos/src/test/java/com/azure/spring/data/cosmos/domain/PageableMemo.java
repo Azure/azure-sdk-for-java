@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.domain;
 
+import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 
 import java.util.Date;
@@ -10,7 +11,7 @@ import java.util.Objects;
 /**
  * For testing date and enum purpose
  */
-@Container()
+@Container(ru = TestConstants.DEFAULT_MINIMUM_RU)
 public class PageableMemo {
     private String id;
     private String message;

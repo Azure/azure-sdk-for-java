@@ -12,12 +12,16 @@ import com.azure.resourcemanager.monitor.models.LogSettings;
 import com.azure.resourcemanager.monitor.models.MetricSettings;
 import com.azure.resourcemanager.monitor.models.RetentionPolicy;
 import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsResourceInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import reactor.core.publisher.Mono;
 
 /** The Azure metric definition entries are of type DiagnosticSetting. */
@@ -219,20 +223,23 @@ class DiagnosticSettingImpl
 
     @Override
     public Mono<DiagnosticSetting> createResourceAsync() {
-        this.innerModel().withLogs(new ArrayList<>(logSet.values()));
-        this.innerModel().withLogs(new ArrayList<>(logCategoryGroupSet.values()));
+        this.innerModel()
+            .withLogs(new ArrayList<>(
+                Stream.concat(logSet.values().stream(),
+                logCategoryGroupSet.values().stream()).distinct().collect(Collectors.toList())));
         this.innerModel().withMetrics(new ArrayList<>(metricSet.values()));
         return this
             .manager()
             .serviceClient()
             .getDiagnosticSettingsOperations()
-            .createOrUpdateAsync(this.resourceId, this.name(), this.innerModel())
+            .createOrUpdateAsync(ResourceUtils.encodeResourceId(this.resourceId), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<DiagnosticSettingsResourceInner> getInnerAsync() {
-        return this.manager().serviceClient().getDiagnosticSettingsOperations().getAsync(this.resourceId, this.name());
+        return this.manager().serviceClient().getDiagnosticSettingsOperations()
+            .getAsync(ResourceUtils.encodeResourceId(this.resourceId), this.name());
     }
 
     @Override

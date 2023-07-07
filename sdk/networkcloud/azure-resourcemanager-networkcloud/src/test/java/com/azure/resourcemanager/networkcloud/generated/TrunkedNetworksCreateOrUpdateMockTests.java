@@ -36,7 +36,7 @@ public final class TrunkedNetworksCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"extendedLocation\":{\"name\":\"rlhgenuze\",\"type\":\"gvkvebaqszll\"},\"properties\":{\"clusterId\":\"lsmmdqgmi\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"mcqrhnxt\",\"hybridAksClustersAssociatedIds\":[\"klogx\",\"vtza\",\"hzvqnsqktcmbjwz\",\"oslpky\"],\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"wkzpga\",\"isolationDomainIds\":[\"qjcemqbmf\",\"vqar\",\"z\",\"uqrebluimmbwx\"],\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"mbvx\",\"kraokq\",\"budbt\"],\"vlans\":[4508123453658920592,4762329078829269298,6783828828714715371,3248104129731185824]},\"location\":\"aaknwfr\",\"tags\":{\"p\":\"sm\",\"gatolekscbctnan\":\"ujd\",\"wnsnlaimouxwks\":\"imwbzxpdcldpk\"},\"id\":\"mud\",\"name\":\"fco\",\"type\":\"bicziuswswj\"}";
+            "{\"extendedLocation\":{\"name\":\"mgnlqxsjxtel\",\"type\":\"xhvuqbozool\"},\"properties\":{\"associatedResourceIds\":[\"carkuzlb\",\"nndtsnxa\",\"qytl\",\"hd\"],\"clusterId\":\"myck\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"xak\",\"hybridAksClustersAssociatedIds\":[\"wymxgaabjk\",\"tfohf\",\"ogzvk\"],\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"iwdyjqurykcrraue\",\"isolationDomainIds\":[\"csuehogddac\",\"cbgydlqi\"],\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"mptyrilkfbnrqqxv\",\"tpbnfnqtxjtoma\",\"swbnfddepldwqjns\"],\"vlans\":[7872201121451479596,3432210895062323891,2525083841214269064]},\"location\":\"hvmywhsbrcarycs\",\"tags\":{\"dmkrrb\":\"yvoaqajuvehzp\",\"ubefgybpmfbfunu\":\"mpfu\"},\"id\":\"mpzkrvfyifkd\",\"name\":\"chlzvfi\",\"type\":\"tnkjjwgcwnphb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,27 +67,25 @@ public final class TrunkedNetworksCreateOrUpdateMockTests {
         TrunkedNetwork response =
             manager
                 .trunkedNetworks()
-                .define("g")
-                .withRegion("jxul")
-                .withExistingResourceGroup("yeyng")
-                .withExtendedLocation(new ExtendedLocation().withName("rquv").withType("ygg"))
-                .withIsolationDomainIds(Arrays.asList("xyxgbkkqv", "cteoedlrslsk"))
-                .withVlans(
-                    Arrays
-                        .asList(709135618554592742L, 5929214324622775226L, 7524586451465684112L, 8005992370097576622L))
-                .withTags(mapOf("gcj", "cyrthxqlehm", "oka", "inue"))
-                .withHybridAksPluginType(HybridAksPluginType.SRIOV)
-                .withInterfaceName("blioskkfmkmf")
+                .define("bjczjnciuiyqvlda")
+                .withRegion("dvwnjkgvfnmxa")
+                .withExistingResourceGroup("syparybjufp")
+                .withExtendedLocation(new ExtendedLocation().withName("wvppi").withType("qqzlgcndhz"))
+                .withIsolationDomainIds(Arrays.asList("qezxlhdj", "qdcadwvps", "zjiihjr"))
+                .withVlans(Arrays.asList(1795211368428256483L))
+                .withTags(mapOf("tibtyi", "q", "jpnqnoowsbeden", "uyvpirf", "ucnulgmnh", "exkxbhx", "fajs", "evdyz"))
+                .withHybridAksPluginType(HybridAksPluginType.OSDEVICE)
+                .withInterfaceName("puq")
                 .create();
 
-        Assertions.assertEquals("aaknwfr", response.location());
-        Assertions.assertEquals("sm", response.tags().get("p"));
-        Assertions.assertEquals("rlhgenuze", response.extendedLocation().name());
-        Assertions.assertEquals("gvkvebaqszll", response.extendedLocation().type());
+        Assertions.assertEquals("hvmywhsbrcarycs", response.location());
+        Assertions.assertEquals("yvoaqajuvehzp", response.tags().get("dmkrrb"));
+        Assertions.assertEquals("mgnlqxsjxtel", response.extendedLocation().name());
+        Assertions.assertEquals("xhvuqbozool", response.extendedLocation().type());
         Assertions.assertEquals(HybridAksPluginType.DPDK, response.hybridAksPluginType());
-        Assertions.assertEquals("wkzpga", response.interfaceName());
-        Assertions.assertEquals("qjcemqbmf", response.isolationDomainIds().get(0));
-        Assertions.assertEquals(4508123453658920592L, response.vlans().get(0));
+        Assertions.assertEquals("iwdyjqurykcrraue", response.interfaceName());
+        Assertions.assertEquals("csuehogddac", response.isolationDomainIds().get(0));
+        Assertions.assertEquals(7872201121451479596L, response.vlans().get(0));
     }
 
     @SuppressWarnings("unchecked")
