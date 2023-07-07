@@ -10,6 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -30,6 +31,7 @@ import com.azure.monitor.query.models.MetricNamespace;
 import com.azure.monitor.query.models.MetricResult;
 import com.azure.monitor.query.models.MetricUnit;
 import com.azure.monitor.query.models.MetricValue;
+import com.azure.monitor.query.models.MetricsBatchResult;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
 import com.azure.monitor.query.models.QueryTimeInterval;
@@ -104,7 +106,31 @@ public final class MetricsQueryClient {
         return queryResourceWithResponse(resourceUri, metricsNames, new MetricsQueryOptions(), Context.NONE).getValue();
     }
 
-    List<MetricsQueryResult> queryBatch(List<String> resourceUris, List<String> metricsNames, String metricsNamespace) {
+    /**
+     * Returns all the Azure Monitor metrics requested for the batch of resources.
+     *
+     * @param resourceUris The resource URIs for which the metrics is requested.
+     * @param metricsNames The names of the metrics to query.
+     * @param metricsNamespace The namespace of the metrics to query.
+     * @return A time-series metrics result for the requested metric names.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MetricsBatchResult queryBatch(List<String> resourceUris, List<String> metricsNames, String metricsNamespace) {
+        return this.queryBatchWithResponse(resourceUris, metricsNames, metricsNamespace, Context.NONE).getValue();
+    }
+
+    /**
+     * Returns all the Azure Monitor metrics requested for the batch of resources.
+     *
+     * @param resourceUris The resource URIs for which the metrics is requested.
+     * @param metricsNames The names of the metrics to query.
+     * @param metricsNamespace The namespace of the metrics to query.
+     * @param context The context to associate with this operation.
+     * @return A time-series metrics result for the requested metric names.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MetricsBatchResult> queryBatchWithResponse(List<String> resourceUris, List<String> metricsNames,
+                                                               String metricsNamespace, Context context) {
         if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(resourceUris, "'resourceUris cannot be null."))) {
             throw new IllegalArgumentException("resourceUris cannot be empty");
         }
@@ -116,15 +142,18 @@ public final class MetricsQueryClient {
         String subscriptionId = getSubscriptionFromResourceId(resourceUris.get(0));
         ResourceIdList resourceIdList = new ResourceIdList();
         resourceIdList.setResourceids(resourceUris);
-        Response<MetricResultsResponse> metricResultsResponseResponse = this.metricsBatchClient.getMetrics()
+        Response<MetricResultsResponse> response = this.metricsBatchClient.getMetrics()
             .batchWithResponse(subscriptionId, metricsNamespace, metricsNames, resourceIdList, null,
-                null, null, null, null, null, null, Context.NONE);
-
-        MetricResultsResponse value = metricResultsResponseResponse.getValue();
+                null, null, null, null, null, null, context);
+        MetricResultsResponse value = response.getValue();
         List<MetricResultsResponseValuesItem> values = value.getValues();
-        return values.stream()
-            .map(mrrvi -> mapToMetricsQueryResult(mrrvi))
+        List<MetricsQueryResult> metricsQueryResults = values.stream()
+            .map(result -> mapToMetricsQueryResult(result))
             .collect(Collectors.toList());
+        MetricsBatchResult metricsBatchResult = new MetricsBatchResult(metricsQueryResults);
+
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), metricsBatchResult);
 
     }
 
@@ -163,26 +192,6 @@ public final class MetricsQueryClient {
         int i = s.indexOf("subscriptions/") + 14;
         String subscriptionId = s.substring(i, s.indexOf("/", i));
         return subscriptionId;
-    }
-
-    public Response<MetricResultsResponse> batchWithResponse(
-        String subscriptionId,
-        String metricnamespace,
-        List<String> metricnames,
-        ResourceIdList resourceIds,
-        String starttime,
-        String endtime,
-        Duration interval,
-        String aggregation,
-        Integer top,
-        String orderBy,
-        String filter,
-        Context context) {
-
-        return this.metricsBatchClient.getMetrics()
-            .batchWithResponse(subscriptionId, metricnamespace, metricnames, resourceIds, starttime, endtime,
-                interval, aggregation, top, orderBy, filter, context);
-
     }
 
     /**

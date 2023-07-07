@@ -59,6 +59,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
     private final AzureMonitorMetricBatchBuilder innerMetricsBatchBuilder = new AzureMonitorMetricBatchBuilder();
     private final ClientLogger logger = new ClientLogger(MetricsQueryClientBuilder.class);
     private MetricsQueryServiceVersion serviceVersion;
+    private String batchEndpoint;
 
     /**
      * Sets the metrics query endpoint.
@@ -72,6 +73,16 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
         innerMetricsNamespaceBuilder.host(endpoint);
         // TODO (srnagar): what should be the metrics batch endpoint if the customer sets the endpoint?
         innerMetricsBatchBuilder.endpoint(endpoint);
+        return this;
+    }
+
+    /**
+     * Sets the endpoint for making batch metrics query requests.
+     * @param batchEndpoint the batch endpoint value.
+     * @return the MetricsClientBuilder.
+     */
+    public MetricsQueryClientBuilder batchEndpoint(String batchEndpoint) {
+        this.batchEndpoint = batchEndpoint;
         return this;
     }
 

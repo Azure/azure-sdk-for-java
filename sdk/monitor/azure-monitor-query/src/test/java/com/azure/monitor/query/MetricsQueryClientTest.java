@@ -23,6 +23,7 @@ import com.azure.monitor.query.models.MetricDefinition;
 import com.azure.monitor.query.models.MetricNamespace;
 import com.azure.monitor.query.models.MetricResult;
 import com.azure.monitor.query.models.MetricValue;
+import com.azure.monitor.query.models.MetricsBatchResult;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
 import com.azure.monitor.query.models.QueryTimeInterval;
@@ -209,15 +210,6 @@ public class MetricsQueryClientTest extends TestProxyTestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
 
-        List<MetricsQueryResult> metricsQueryResults = metricsQueryClient.queryBatch(Arrays.asList("/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.Storage/storageAccounts/srnagarstorage"), Arrays.asList("Transactions"), "Account");
-
-        Response<MetricResultsResponse> metricResultsResponseResponse = metricsQueryClient.batchWithResponse(
-            "faa080af-c1d8-40ad-9cce-e1a450ca5b57",
-            "Account",
-            Arrays.asList("Transactions"),
-            new ResourceIdList().setResourceids(Arrays.asList("/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.Storage/storageAccounts/srnagarstorage")),
-            null, null, null, null, null, null, null, Context.NONE);
-
-        System.out.println(metricResultsResponseResponse.getValue().getValues());
+        MetricsBatchResult metricsQueryResults = metricsQueryClient.queryBatch(Arrays.asList("/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.Storage/storageAccounts/srnagarstorage"), Arrays.asList("Transactions"), "Account");
     }
 }
