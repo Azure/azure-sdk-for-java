@@ -4,8 +4,11 @@
 
 package com.azure.ai.openai;
 
+import com.azure.ai.openai.functions.Parameters;
+import com.azure.ai.openai.functions.Properties;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
+import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
@@ -13,6 +16,7 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
+import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageResponse;
 import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
@@ -25,6 +29,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -138,6 +143,10 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         );
     }
 
+    void getChatFunctionRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        testRunner.accept("gpt-3.5-turbo-0613", getChatMessagesWithFunction());
+    }
+
     private List<ChatMessage> getChatMessages() {
         List<ChatMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatMessage(ChatRole.SYSTEM).setContent("You are a helpful assistant. You will talk like a pirate."));
@@ -145,6 +154,20 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Of course, me hearty! What can I do for ye?"));
         chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way to train a parrot?"));
         return chatMessages;
+    }
+
+    private ChatCompletionsOptions getChatMessagesWithFunction() {
+        FunctionDefinition functionDefinition = new FunctionDefinition("MyFunction");
+        Parameters parameters = new Parameters();
+        functionDefinition.setParameters(parameters);
+        List<FunctionDefinition> functions = Arrays.asList(functionDefinition);
+
+        List<ChatMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the weather like in San Francisco in Celsius?"));
+
+        ChatCompletionsOptions chatCompletionOptions = new ChatCompletionsOptions(chatMessages);
+        chatCompletionOptions.setFunctions(functions);
+        return chatCompletionOptions;
     }
 
     static void assertCompletions(int choicesPerPrompt, Completions actual) {
