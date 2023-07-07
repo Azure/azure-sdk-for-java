@@ -62,8 +62,8 @@ public class AppConfigurationCodeSnippet extends AbstractCosmosConfiguration {
     @Value("${azure.cosmos.diagnosticsThresholds.requestChargeThresholdInRU}")
     private int requestChargeThresholdInRU;
 
-    @Value("${azure.cosmos.diagnosticsThresholds.payloadSizeInBytesThreshold}")
-    private int payloadSizeInBytesThreshold;
+    @Value("${azure.cosmos.diagnosticsThresholds.payloadSizeThresholdInBytes}")
+    private int payloadSizeThresholdInBytes;
 
     // BEGIN: readme-sample-AppConfigurationCodeSnippet
     @Bean
@@ -80,7 +80,7 @@ public class AppConfigurationCodeSnippet extends AbstractCosmosConfiguration {
                         new CosmosDiagnosticsThresholds()
                             .setNonPointOperationLatencyThreshold(Duration.ofMillis(nonPointOperationLatencyThresholdInMS))
                             .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
-                            .setPayloadSizeThreshold(payloadSizeInBytesThreshold)
+                            .setPayloadSizeThreshold(payloadSizeThresholdInBytes)
                             .setRequestChargeThreshold(requestChargeThresholdInRU)
                     )
                     .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));

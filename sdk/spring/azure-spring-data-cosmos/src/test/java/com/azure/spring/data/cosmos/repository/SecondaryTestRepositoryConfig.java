@@ -57,8 +57,8 @@ public class SecondaryTestRepositoryConfig {
     @Value("${cosmos.diagnosticsThresholds.requestChargeThresholdInRU}")
     private int requestChargeThresholdInRU;
 
-    @Value("${cosmos.diagnosticsThresholds.payloadSizeInBytesThreshold}")
-    private int payloadSizeInBytesThreshold;
+    @Value("${cosmos.diagnosticsThresholds.payloadSizeThresholdInBytes}")
+    private int payloadSizeThresholdInBytes;
 
     @Bean
     public CosmosClientBuilder secondaryCosmosClientBuilder() {
@@ -72,7 +72,7 @@ public class SecondaryTestRepositoryConfig {
                         new CosmosDiagnosticsThresholds()
                             .setNonPointOperationLatencyThreshold(Duration.ofMillis(nonPointOperationLatencyThresholdInMS))
                             .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
-                            .setPayloadSizeThreshold(payloadSizeInBytesThreshold)
+                            .setPayloadSizeThreshold(payloadSizeThresholdInBytes)
                             .setRequestChargeThreshold(requestChargeThresholdInRU)
                     )
                     .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));

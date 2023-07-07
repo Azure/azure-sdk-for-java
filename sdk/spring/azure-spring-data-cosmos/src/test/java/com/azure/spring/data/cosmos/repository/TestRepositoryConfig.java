@@ -60,8 +60,8 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
     @Value("${cosmos.diagnosticsThresholds.requestChargeThresholdInRU}")
     private int requestChargeThresholdInRU;
 
-    @Value("${cosmos.diagnosticsThresholds.payloadSizeInBytesThreshold}")
-    private int payloadSizeInBytesThreshold;
+    @Value("${cosmos.diagnosticsThresholds.payloadSizeThresholdInBytes}")
+    private int payloadSizeThresholdInBytes;
 
     @Bean
     public ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils() {
@@ -80,7 +80,7 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
                     new CosmosDiagnosticsThresholds()
                         .setNonPointOperationLatencyThreshold(Duration.ofMillis(nonPointOperationLatencyThresholdInMS))
                         .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
-                        .setPayloadSizeThreshold(payloadSizeInBytesThreshold)
+                        .setPayloadSizeThreshold(payloadSizeThresholdInBytes)
                         .setRequestChargeThreshold(requestChargeThresholdInRU)
                 )
                 .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));

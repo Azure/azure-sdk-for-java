@@ -34,7 +34,7 @@ public class CosmosProperties {
 
     private int requestChargeThresholdInRU;
 
-    private int payloadSizeInBytesThreshold;
+    private int payloadSizeThresholdInBytes;
 
     public String getUri() {
         return uri;
@@ -124,11 +124,11 @@ public class CosmosProperties {
         this.requestChargeThresholdInRU = requestChargeThresholdInRU;
     }
 
-    public int getPayloadSizeInBytesThreshold() {
-        return payloadSizeInBytesThreshold;
+    public int getPayloadSizeThresholdInBytes() {
+        return payloadSizeThresholdInBytes;
     }
 
-    public void setPayloadSizeInBytesThreshold(int payloadSizeInBytesThreshold) {
-        this.payloadSizeInBytesThreshold = payloadSizeInBytesThreshold;
+    public void setPayloadSizeThresholdInBytes(int payloadSizeThresholdInBytes) {
+        this.payloadSizeThresholdInBytes = payloadSizeThresholdInBytes;
     }
 }
