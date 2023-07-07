@@ -235,6 +235,7 @@ public class CosmosTemplateIT {
         final List<Person> result = TestUtils.toList(cosmosTemplate.findAll(Person.class.getSimpleName(),
             Person.class));
         assertTrue(TestRepositoryConfig.capturingLogger.getLoggedMessages().size() > 0);
+    }
 
     public void testFindByIdPointRead() {
         final BasicItem result = cosmosTemplate.findById(BasicItem.class.getSimpleName(),
