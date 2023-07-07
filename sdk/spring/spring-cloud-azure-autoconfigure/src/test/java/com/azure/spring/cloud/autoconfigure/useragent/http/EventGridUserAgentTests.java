@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class EventGridUserAgentTests {
 
     @Test
+    @SuppressWarnings("unchecked")
     void userAgentTest(CapturedOutput output) {
         new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AzureEventGridAutoConfiguration.class))
@@ -50,7 +51,7 @@ class EventGridUserAgentTests {
                 assertThat(context).hasSingleBean(EventGridPublisherClient.class);
                 assertThat(context).hasSingleBean(EventGridPublisherAsyncClient.class);
 
-                EventGridPublisherClient eventGridPublisherClient = context.getBean(EventGridPublisherClient.class);
+                EventGridPublisherClient<EventGridEvent> eventGridPublisherClient = (EventGridPublisherClient<EventGridEvent>) context.getBean(EventGridPublisherClient.class);
                 try {
                     EventGridEvent event = new EventGridEvent("A user is created", "User.Created.Object", BinaryData.fromObject("user1"), "0.1");  // topic must be set when sending to an Event Grid Domain.
                     eventGridPublisherClient.sendEvent(event);
