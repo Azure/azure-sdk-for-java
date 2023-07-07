@@ -19,7 +19,7 @@ import java.util.Map;
 /** Samples for Clusters Update. */
 public final class ClustersUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Clusters_Patch_Location.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Clusters_Patch_Location.json
      */
     /**
      * Sample code: Patch cluster location.
@@ -40,7 +40,7 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Clusters_Patch_AggregatorOrSingleRackDefinition.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Clusters_Patch_AggregatorOrSingleRackDefinition.json
      */
     /**
      * Sample code: Patch cluster AggregatorOrSingleRackDefinition.
@@ -85,11 +85,11 @@ public final class ClustersUpdateSamples {
                                     .withRackSlot(2L)
                                     .withSerialNumber("BM1219YYY")))
                     .withNetworkRackId(
-                        "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName")
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName")
                     .withRackLocation("Foo Datacenter, Floor 3, Aisle 9, Rack 2")
                     .withRackSerialNumber("newSerialNumber")
                     .withRackSkuId(
-                        "/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName")
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName")
                     .withStorageApplianceConfigurationData(
                         Arrays
                             .asList(

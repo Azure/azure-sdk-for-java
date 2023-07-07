@@ -1836,6 +1836,13 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withContainerSize(int containerSize) {
+        this.innerModel().withContainerSize(containerSize);
+        return (FluentImplT) this;
+    }
+
+    @Override
     public Map<String, String> getSiteAppSettings() {
         return getSiteAppSettingsAsync().block();
     }

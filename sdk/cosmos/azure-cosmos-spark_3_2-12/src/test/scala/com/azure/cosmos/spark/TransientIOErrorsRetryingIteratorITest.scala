@@ -65,7 +65,7 @@ class TransientIOErrorsRetryingIteratorITest
             jsonNode.asInstanceOf[ObjectNode],
             SchemaConversionModes.Strict)
 
-          SparkRowItem(row)
+          SparkRowItem(row, None)
         })
     val retryingIterator = new TransientIOErrorsRetryingIterator(
       continuationToken => {
@@ -191,7 +191,7 @@ class TransientIOErrorsRetryingIteratorITest
             jsonNode.asInstanceOf[ObjectNode],
             SchemaConversionModes.Strict)
 
-          SparkRowItem(row)
+          SparkRowItem(row, None)
         })
     val retryingIterator = new TransientIOErrorsRetryingIterator(
       continuationToken => {

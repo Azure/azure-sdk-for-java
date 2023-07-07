@@ -42,7 +42,7 @@ public class AnalyzeInvoices {
         File invoice = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
                                     + "sample-forms/invoices/sample_invoice.jpg");
         Path filePath = invoice.toPath();
-        BinaryData invoiceData = BinaryData.fromFile(filePath);
+        BinaryData invoiceData = BinaryData.fromFile(filePath, (int) invoice.length());
 
         SyncPoller<OperationResult, AnalyzeResult> analyzeInvoicesPoller =
             client.beginAnalyzeDocument("prebuilt-invoice", invoiceData);

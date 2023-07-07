@@ -77,6 +77,7 @@ The following application starters are provided by Spring Cloud Azure under the 
 | spring-cloud-azure-starter-cosmos                    | Starter for using Azure Cosmos DB                                  |
 | spring-cloud-azure-starter-data-cosmos               | Starter for using Azure Cosmos DB and Spring Data Cosmos DB        |
 | spring-cloud-azure-starter-eventhubs                 | Starter for using Azure Event Hubs                                 |
+| spring-cloud-azure-starter-eventgrid                 | Starter for using Azure Event Grid                                 |
 | spring-cloud-azure-starter-integration-eventhubs     | Starter for using Azure Event Hubs and Spring Integration          |
 | spring-cloud-azure-starter-integration-servicebus    | Starter for using Azure Service Bus and Spring Integration         |
 | spring-cloud-azure-starter-integration-storage-queue | Starter for using Azure Storage Queue and Spring Integration       |
@@ -137,7 +138,7 @@ If you’re a Maven user, add our BOM to your pom.xml `<dependencyManagement>` s
         <dependency>
             <groupId>com.azure.spring</groupId>
             <artifactId>spring-cloud-azure-dependencies</artifactId>
-            <version>4.8.0</version>
+            <version>4.9.0</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>

@@ -1321,7 +1321,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyProperties> listPropertiesOfKeys() {
-        return implClient.listPropertiesOfKeys();
+        return implClient.listPropertiesOfKeysAsync();
     }
 
     /**
@@ -1346,7 +1346,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedKey> listDeletedKeys() {
-        return implClient.listDeletedKeys();
+        return implClient.listDeletedKeysAsync();
     }
 
     /**
@@ -1381,7 +1381,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyProperties> listPropertiesOfKeyVersions(String name) {
-        return implClient.listPropertiesOfKeyVersions(name);
+        return implClient.listPropertiesOfKeyVersionsAsync(name);
     }
 
     /**

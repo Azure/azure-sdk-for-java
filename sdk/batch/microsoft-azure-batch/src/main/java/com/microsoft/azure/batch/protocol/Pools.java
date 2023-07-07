@@ -26,8 +26,6 @@ import com.microsoft.azure.batch.protocol.models.PoolEvaluateAutoScaleHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolEvaluateAutoScaleOptions;
 import com.microsoft.azure.batch.protocol.models.PoolExistsHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolExistsOptions;
-import com.microsoft.azure.batch.protocol.models.PoolGetAllLifetimeStatisticsHeaders;
-import com.microsoft.azure.batch.protocol.models.PoolGetAllLifetimeStatisticsOptions;
 import com.microsoft.azure.batch.protocol.models.PoolGetHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolGetOptions;
 import com.microsoft.azure.batch.protocol.models.PoolListHeaders;
@@ -44,7 +42,6 @@ import com.microsoft.azure.batch.protocol.models.PoolRemoveNodesOptions;
 import com.microsoft.azure.batch.protocol.models.PoolResizeHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolResizeOptions;
 import com.microsoft.azure.batch.protocol.models.PoolResizeParameter;
-import com.microsoft.azure.batch.protocol.models.PoolStatistics;
 import com.microsoft.azure.batch.protocol.models.PoolStopResizeHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolStopResizeOptions;
 import com.microsoft.azure.batch.protocol.models.PoolUpdatePropertiesHeaders;
@@ -146,87 +143,6 @@ public interface Pools {
      * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsWithServiceResponseAsync(final PoolListUsageMetricsOptions poolListUsageMetricsOptions);
-
-    /**
-     * Gets lifetime summary statistics for all of the Pools in the specified Account.
-     * Statistics are aggregated across all Pools that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws BatchErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PoolStatistics object if successful.
-     */
-    PoolStatistics getAllLifetimeStatistics();
-
-    /**
-     * Gets lifetime summary statistics for all of the Pools in the specified Account.
-     * Statistics are aggregated across all Pools that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<PoolStatistics> getAllLifetimeStatisticsAsync(final ServiceCallback<PoolStatistics> serviceCallback);
-
-    /**
-     * Gets lifetime summary statistics for all of the Pools in the specified Account.
-     * Statistics are aggregated across all Pools that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PoolStatistics object
-     */
-    Observable<PoolStatistics> getAllLifetimeStatisticsAsync();
-
-    /**
-     * Gets lifetime summary statistics for all of the Pools in the specified Account.
-     * Statistics are aggregated across all Pools that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PoolStatistics object
-     */
-    Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync();
-    /**
-     * Gets lifetime summary statistics for all of the Pools in the specified Account.
-     * Statistics are aggregated across all Pools that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws BatchErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PoolStatistics object if successful.
-     */
-    PoolStatistics getAllLifetimeStatistics(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions);
-
-    /**
-     * Gets lifetime summary statistics for all of the Pools in the specified Account.
-     * Statistics are aggregated across all Pools that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<PoolStatistics> getAllLifetimeStatisticsAsync(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions, final ServiceCallback<PoolStatistics> serviceCallback);
-
-    /**
-     * Gets lifetime summary statistics for all of the Pools in the specified Account.
-     * Statistics are aggregated across all Pools that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PoolStatistics object
-     */
-    Observable<PoolStatistics> getAllLifetimeStatisticsAsync(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions);
-
-    /**
-     * Gets lifetime summary statistics for all of the Pools in the specified Account.
-     * Statistics are aggregated across all Pools that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PoolStatistics object
-     */
-    Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions);
 
     /**
      * Adds a Pool to the specified Account.

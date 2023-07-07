@@ -91,10 +91,11 @@ FormTrainingClient formTrainingClient = new FormTrainingClientBuilder()
 
 Instantiating DocumentModelAdministrationClient client with 4.x.x:
 ```java readme-sample-createDocumentModelAdministrationClient
-DocumentModelAdministrationClient documentModelAdminClient = new DocumentModelAdministrationClientBuilder()
-    .credential(new AzureKeyCredential("{key}"))
-    .endpoint("{endpoint}")
-    .buildClient();
+DocumentModelAdministrationClient client =
+    new DocumentModelAdministrationClientBuilder()
+        .credential(new AzureKeyCredential("{key}"))
+        .endpoint("{endpoint}")
+        .buildClient();
 ```
 
 #### Analyze documents
@@ -285,7 +286,7 @@ Analyze layout using 4.x.x `beginAnalyzeDocument`:
 // analyze document layout using file input stream
 File layoutDocument = new File("local/file_path/filename.png");
 Path filePath = layoutDocument.toPath();
-BinaryData layoutDocumentData = BinaryData.fromFile(filePath);
+BinaryData layoutDocumentData = BinaryData.fromFile(filePath, (int) layoutDocument.length());
 
 SyncPoller<OperationResult, AnalyzeResult> analyzeLayoutResultPoller =
     documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", layoutDocumentData);

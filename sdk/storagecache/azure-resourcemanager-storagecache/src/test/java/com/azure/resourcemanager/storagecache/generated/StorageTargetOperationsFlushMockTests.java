@@ -58,6 +58,6 @@ public final class StorageTargetOperationsFlushMockTests {
 
         manager
             .storageTargetOperations()
-            .flush("vfvpdbodaciz", "j", "lhkrribdeibqipqk", com.azure.core.util.Context.NONE);
+            .flush("pyouaibrebqaays", "kixqtnqtt", "zlwfffiakp", com.azure.core.util.Context.NONE);
     }
 }

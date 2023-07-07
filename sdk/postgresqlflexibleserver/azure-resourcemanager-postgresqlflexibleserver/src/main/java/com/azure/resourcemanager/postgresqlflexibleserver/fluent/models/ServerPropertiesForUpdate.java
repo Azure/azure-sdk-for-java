@@ -11,6 +11,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateModeForUp
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
@@ -78,6 +79,13 @@ public final class ServerPropertiesForUpdate {
      */
     @JsonProperty(value = "replicationRole")
     private ReplicationRole replicationRole;
+
+    /*
+     * Network properties of a server. These are required to be passed only in case if server is a private access
+     * server.
+     */
+    @JsonProperty(value = "network")
+    private Network network;
 
     /** Creates an instance of ServerPropertiesForUpdate class. */
     public ServerPropertiesForUpdate() {
@@ -284,6 +292,28 @@ public final class ServerPropertiesForUpdate {
     }
 
     /**
+     * Get the network property: Network properties of a server. These are required to be passed only in case if server
+     * is a private access server.
+     *
+     * @return the network value.
+     */
+    public Network network() {
+        return this.network;
+    }
+
+    /**
+     * Set the network property: Network properties of a server. These are required to be passed only in case if server
+     * is a private access server.
+     *
+     * @param network the network value to set.
+     * @return the ServerPropertiesForUpdate object itself.
+     */
+    public ServerPropertiesForUpdate withNetwork(Network network) {
+        this.network = network;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -306,6 +336,9 @@ public final class ServerPropertiesForUpdate {
         }
         if (dataEncryption() != null) {
             dataEncryption().validate();
+        }
+        if (network() != null) {
+            network().validate();
         }
     }
 }

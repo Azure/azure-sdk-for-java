@@ -1,14 +1,17 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.0-beta.4 (2023-07-06)
 
 ### Bugs Fixed
 
+- Removed needlessly wrapping with an `UncheckedIOException` on `IOExpection` in the method of 
+  `writeBodyTo(WritableByteChannel channel)` of class `JdkHttpResponseSync`.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to `1.41.0`.
 
 ## 1.0.0-beta.3 (2023-06-02)
 

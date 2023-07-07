@@ -30,7 +30,7 @@ public final class ResourceDetails {
      * @param customNeuralDocumentModelBuilds the customNeuralDocumentModelBuilds value to set.
      */
     @JsonCreator
-    public ResourceDetails(
+    private ResourceDetails(
             @JsonProperty(value = "customDocumentModels", required = true)
                     CustomDocumentModelsDetails customDocumentModels,
             @JsonProperty(value = "customNeuralDocumentModelBuilds", required = true)

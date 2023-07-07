@@ -73,6 +73,7 @@ class BulkWriter(container: CosmosAsyncContainer,
   private val closed = new AtomicBoolean(false)
   private val lock = new ReentrantLock
   private val pendingTasksCompleted = lock.newCondition
+  private val pendingRetries = new AtomicLong(0);
   private val activeTasks = new AtomicInteger(0)
   private val errorCaptureFirstException = new AtomicReference[Throwable]()
   private val bulkInputEmitter: Sinks.Many[models.CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
@@ -351,12 +352,15 @@ class BulkWriter(container: CosmosAsyncContainer,
         s"attemptNumber=${context.attemptNumber}, exceptionMessage=${exceptionMessage},  " +
         s"Context: {${operationContext.toString}} ${getThreadInfo}")
 
+      this.pendingRetries.incrementAndGet();
+
       // this is to ensure the submission will happen on a different thread in background
       // and doesn't block the active thread
       val deferredRetryMono = SMono.defer(() => {
         scheduleWriteInternal(itemOperation.getPartitionKeyValue,
           itemOperation.getItem.asInstanceOf[ObjectNode],
           OperationContext(context.itemId, context.partitionKeyValue, context.eTag, context.attemptNumber + 1))
+        this.pendingRetries.decrementAndGet()
         SMono.empty
       })
 
@@ -487,10 +491,13 @@ class BulkWriter(container: CosmosAsyncContainer,
           try {
             val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
             var activeTasksSnapshot = activeTasks.get()
-            while (activeTasksSnapshot > 0 && errorCaptureFirstException.get == null) {
+            var pendingRetriesSnapshot = pendingRetries.get()
+            while ((pendingRetriesSnapshot > 0 || activeTasksSnapshot > 0)
+              && errorCaptureFirstException.get == null) {
+
               log.logInfo(
-                s"Waiting for pending activeTasks $activeTasksSnapshot, " +
-                  s"Context: ${operationContext.toString} ${getThreadInfo}")
+                s"Waiting for pending activeTasks $activeTasksSnapshot and/or pendingRetries " +
+                  s"$pendingRetriesSnapshot,  Context: ${operationContext.toString} ${getThreadInfo}")
               val activeOperationsSnapshot = activeOperations.clone()
               val awaitCompleted = pendingTasksCompleted.await(1, TimeUnit.MINUTES)
               if (!awaitCompleted) {
@@ -501,20 +508,21 @@ class BulkWriter(container: CosmosAsyncContainer,
                 )
               }
               activeTasksSnapshot = activeTasks.get()
+              pendingRetriesSnapshot = pendingRetries.get()
               val semaphoreAvailablePermitsSnapshot = semaphore.availablePermits()
 
               if (awaitCompleted) {
-                log.logInfo(s"Waiting completed for pending activeTasks $activeTasksSnapshot, " +
-                  s"Context: ${operationContext.toString} ${getThreadInfo}")
+                log.logInfo(s"Waiting completed for pending activeTasks $activeTasksSnapshot, pendingRetries " +
+                  s"$pendingRetriesSnapshot Context: ${operationContext.toString} ${getThreadInfo}")
               } else {
-                log.logInfo(s"Waiting interrupted for pending activeTasks $activeTasksSnapshot - " +
-                  s"available permits ${semaphoreAvailablePermitsSnapshot}, " +
+                log.logInfo(s"Waiting interrupted for pending activeTasks $activeTasksSnapshot , pendingRetries " +
+                  s"$pendingRetriesSnapshot - available permits ${semaphoreAvailablePermitsSnapshot}, " +
                   s"Context: ${operationContext.toString} ${getThreadInfo}")
               }
             }
 
-            log.logInfo(s"Waiting completed for pending activeTasks $activeTasksSnapshot, " +
-              s"Context: ${operationContext.toString} ${getThreadInfo}")
+            log.logInfo(s"Waiting completed for pending activeTasks $activeTasksSnapshot, pendingRetries " +
+              s"$pendingRetriesSnapshot Context: ${operationContext.toString} ${getThreadInfo}")
           } finally {
             lock.unlock()
           }

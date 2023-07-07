@@ -21,7 +21,7 @@ import org.testng.annotations.Test;
 import java.util.List;
 import java.util.UUID;
 
-import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstants.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
+import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
 import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -331,7 +331,7 @@ public class TransactionalBatchTest extends BatchTestBase {
     @Test(groups = {"simple"}, timeOut = TIMEOUT * 10)
     public void batchLargerThanServerRequest() {
         int operationCount = 20;
-        int appxDocSize = (MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES * 11) / operationCount;
+        int appxDocSize = (DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES * 11) / operationCount;
 
         // Increase the doc size by a bit so all docs won't fit in one server request.
         appxDocSize = (int)(appxDocSize * 1.05);

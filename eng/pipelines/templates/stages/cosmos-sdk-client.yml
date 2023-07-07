@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20230425.1
+      ref: refs/tags/azure-sdk-build-tools_20230613.1
 
 parameters:
 - name: Artifacts
@@ -27,6 +27,12 @@ parameters:
 - name: UseEsrpRelease
   type: boolean
   default: true
+- name: MatrixFilters
+  type: object
+  default: []
+- name: LanguageFilter
+  type: object
+  default: []
 
 variables:
   - template: /eng/pipelines/templates/variables/globals.yml
@@ -55,6 +61,7 @@ stages:
             GenerateVMJobs: true
         MatrixFilters:
           - TestFromSource=^$|false
+          - ${{ parameters.MatrixFilters }}
         MatrixReplace:
           - AZURE_TEST.*=.*/
         BuildParallelization: 1
@@ -72,6 +79,9 @@ stages:
             Path: eng/pipelines/templates/stages/cosmos-emulator-matrix.json
             Selection: all
             GenerateVMJobs: true
+        MatrixFilters:
+          - ${{ parameters.LanguageFilter }}
+          - ${{ parameters.MatrixFilters }}
         AdditionalParameters:
           BuildParallelization: 1
           DisableAzureResourceCreation: true

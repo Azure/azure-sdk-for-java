@@ -1,19 +1,46 @@
 ## Release History
 
-### 4.46.0-beta.1 (Unreleased)
+### 4.48.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added the capability to filter request-level metrics based on diagnostic thresholds. Request-level metrics usually are used to capture metrics per backend endpoint/replica - a high cardinality dimension. Filtering by diagnostic thresholds reduces the overhead - but also means request-level metrics can only be used for debugging purposes - not for monitoring purposes. So, it is important to use the unfiltered operation-level metrics for health monitoring in this case. - See [PR 35114](https://github.com/Azure/azure-sdk-for-java/pull/35114)
-* Added optional tags/dimensions for PartitionId/ReplicaId as alternative to ServiceAddress for direct-mode (rntbd) request-level metrics. - See [PR 35164](https://github.com/Azure/azure-sdk-for-java/pull/35164)
-* Added request level info including timeline and system usage to the `CosmosDiagnosticsContext`. - See [PR 35254](https://github.com/Azure/azure-sdk-for-java/pull/35254)
-* Added an optional dimension/tag `OperationSubStatusCode` for operation-level metrics. - See [PR 35334](https://github.com/Azure/azure-sdk-for-java/pull/35334)
 
 #### Breaking Changes
 
 #### Bugs Fixed
-* Enabled connection warm-up to continue in a best-effort manner to other regions in case of address resolution errors for a particular region - See [PR 35323](https://github.com/Azure/azure-sdk-for-java/pull/35323)
 
 #### Other Changes
+
+### 4.47.0 (2023-06-26)
+
+#### Features Added
+* Added the capability to specify region switch hints through `CosmosClientBuilder#setSessionRetryOptions` for optimizing retries for `READ_SESSION_NOT_AVAILABLE` errors. - See [PR 35292](https://github.com/Azure/azure-sdk-for-java/pull/35292)
+* Added API to exclude regions on request options which helps avoid a regions from preferred regions for the request. - See [PR 35166](https://github.com/Azure/azure-sdk-for-java/pull/35166)
+* Added API for providing an availability strategy to improve availability when end-end timeout is specified. - See [PR 35166](https://github.com/Azure/azure-sdk-for-java/pull/35166)
+* Added Threshold based availability strategy. - See [PR 35166](https://github.com/Azure/azure-sdk-for-java/pull/35166)
+
+#### Bugs Fixed
+* Fixes the `readMany` API to not drop existing documents from the response in point-read scenarios when 
+there are non-existent document IDs also passed through the API - See [PR 35513](https://github.com/Azure/azure-sdk-for-java/pull/35513)
+
+### 4.46.0 (2023-06-09)
+
+#### Features Added
+* Added the capability to filter request-level metrics based on diagnostic thresholds. Request-level metrics usually are used to capture metrics per backend endpoint/replica - a high cardinality dimension. Filtering by diagnostic thresholds reduces the overhead - but also means request-level metrics can only be used for debugging purposes - not for monitoring purposes. So, it is important to use the unfiltered operation-level metrics for health monitoring in this case. - See [PR 35114](https://github.com/Azure/azure-sdk-for-java/pull/35114)
+* Added optional tags/dimensions for PartitionId/ReplicaId as alternative to ServiceAddress for direct-mode (rntbd) request-level metrics. - See [PR 35164](https://github.com/Azure/azure-sdk-for-java/pull/35164)
+* Added request level info including timeline and system usage to the `CosmosDiagnosticsContext`. - See [PR 35254](https://github.com/Azure/azure-sdk-for-java/pull/35254) and [PR 35405](https://github.com/Azure/azure-sdk-for-java/pull/35405)
+* Added an optional dimension/tag `OperationSubStatusCode` for operation-level metrics. - See [PR 35334](https://github.com/Azure/azure-sdk-for-java/pull/35334)
+* Added support for `ComputedProperty` in `CosmosContainerProperties` - See [PR 35046](https://github.com/Azure/azure-sdk-for-java/pull/35046)
+
+#### Breaking Changes
+* Renamed the JVM configuration - `COSMOS.DEFENSIVE_WARMUP_CONCURRENCY` to `COSMOS.OPEN_CONNECTIONS_CONCURRENCY` - See [PR 34859](https://github.com/Azure/azure-sdk-for-java/pull/34859)
+
+#### Bugs Fixed
+* Enabled connection warm-up to continue in a best-effort manner to other regions in case of address resolution errors for a particular region - See [PR 35323](https://github.com/Azure/azure-sdk-for-java/pull/35323)
+* Fixed an issue with `ChangeFeedProcessor` to fetch all changes before delay based on configured `PollDelay`. - See [PR 35324](https://github.com/Azure/azure-sdk-for-java/pull/35324)
+
+#### Other Changes
+* Refactored `CosmosContainerProactiveInitConfigBuilder` to make use of `ContainerDirectConnectionMetadata` and to wire `DirectConnectionConfig` with
+  JVM configuration - `COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT` - See [PR 34859](https://github.com/Azure/azure-sdk-for-java/pull/34859)
 * Extending maximum retry delay in `SessionTokenMismatchRetryPolicy`. - See [PR 35360](https://github.com/Azure/azure-sdk-for-java/pull/35360)
 
 ### 4.45.1 (2023-05-19)

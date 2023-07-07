@@ -39,7 +39,7 @@ public final class DocumentLanguage {
      * @param confidence the confidence value to set.
      */
     @JsonCreator
-    public DocumentLanguage(
+    private DocumentLanguage(
             @JsonProperty(value = "locale", required = true) String locale,
             @JsonProperty(value = "spans", required = true) List<DocumentSpan> spans,
             @JsonProperty(value = "confidence", required = true) float confidence) {

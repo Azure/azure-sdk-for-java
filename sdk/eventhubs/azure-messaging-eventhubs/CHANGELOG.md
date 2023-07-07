@@ -1,6 +1,6 @@
 # Release History
 
-## 5.16.0-beta.1 (Unreleased)
+## 5.16.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -15,8 +15,16 @@
 - Fixed `NullPointerException` when ending span when `AmqpException` is thrown, but its `AmqpErrorCondition` is `null`.
   ([#35299](https://github.com/Azure/azure-sdk-for-java/issues/35299))
 
+### Other Changes
+
+## 5.15.6 (2023-06-20)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-amqp` from `2.8.5` to version `2.8.6`.
 
 ## 5.15.5 (2023-05-23)
 
@@ -59,6 +67,14 @@
 
 - Upgraded `azure-core` to `1.36.0`.
 - Upgraded `azure-core-amqp` to `2.8.2`.
+
+## 5.16.0-beta.1 (2023-01-31)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` to `2.9.0-beta.1`.
 
 ## 5.15.1 (2023-01-18)
 

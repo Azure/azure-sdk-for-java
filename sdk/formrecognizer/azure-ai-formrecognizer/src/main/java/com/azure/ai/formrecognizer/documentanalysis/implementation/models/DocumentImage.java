@@ -4,13 +4,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An image object detected in the page. */
-@Fluent
+@Immutable
 public final class DocumentImage {
     /*
      * Bounding polygon of the image.
@@ -44,7 +44,7 @@ public final class DocumentImage {
      * @param confidence the confidence value to set.
      */
     @JsonCreator
-    public DocumentImage(
+    private DocumentImage(
             @JsonProperty(value = "span", required = true) DocumentSpan span,
             @JsonProperty(value = "pageNumber", required = true) int pageNumber,
             @JsonProperty(value = "confidence", required = true) float confidence) {
@@ -60,17 +60,6 @@ public final class DocumentImage {
      */
     public List<Float> getPolygon() {
         return this.polygon;
-    }
-
-    /**
-     * Set the polygon property: Bounding polygon of the image.
-     *
-     * @param polygon the polygon value to set.
-     * @return the DocumentImage object itself.
-     */
-    public DocumentImage setPolygon(List<Float> polygon) {
-        this.polygon = polygon;
-        return this;
     }
 
     /**

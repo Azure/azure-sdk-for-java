@@ -73,19 +73,19 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager</artifactId>
-      <version>2.27.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
+      <version>2.28.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventgrid</artifactId>
-      <version>4.16.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;dependency} -->
+      <version>4.17.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.15.5</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.15.6</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

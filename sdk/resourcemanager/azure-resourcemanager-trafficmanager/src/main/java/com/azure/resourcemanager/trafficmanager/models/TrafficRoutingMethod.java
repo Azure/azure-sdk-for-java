@@ -29,6 +29,15 @@ public final class TrafficRoutingMethod extends ExpandableStringEnum<TrafficRout
     public static final TrafficRoutingMethod SUBNET = fromString("Subnet");
 
     /**
+     * Creates a new instance of TrafficRoutingMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TrafficRoutingMethod() {
+    }
+
+    /**
      * Creates or finds a TrafficRoutingMethod from its string representation.
      *
      * @param name a name to look for.

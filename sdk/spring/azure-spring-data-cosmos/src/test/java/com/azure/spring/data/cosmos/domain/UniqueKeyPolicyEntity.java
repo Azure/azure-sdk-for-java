@@ -2,13 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.domain;
 
+import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.CosmosUniqueKey;
 import com.azure.spring.data.cosmos.core.mapping.CosmosUniqueKeyPolicy;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.springframework.data.annotation.Id;
 
-@Container
+@Container(ru = TestConstants.DEFAULT_MINIMUM_RU)
 @CosmosUniqueKeyPolicy(uniqueKeys = {
     @CosmosUniqueKey(paths = {"/lastName", "/zipCode"}),
     @CosmosUniqueKey(paths = {"/city"})

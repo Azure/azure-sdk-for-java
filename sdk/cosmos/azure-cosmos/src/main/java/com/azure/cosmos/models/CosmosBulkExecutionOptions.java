@@ -4,11 +4,14 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -22,6 +25,8 @@ public final class CosmosBulkExecutionOptions {
     private int maxMicroBatchConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;
     private double maxMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_RETRY_RATE;
     private double minMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MIN_MICRO_BATCH_RETRY_RATE;
+
+    private int maxMicroBatchPayloadSizeInBytes = BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
     private Duration maxMicroBatchInterval = Duration.ofMillis(
         BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_INTERVAL_IN_MILLISECONDS);
     private final Object legacyBatchScopedContext;
@@ -30,6 +35,7 @@ public final class CosmosBulkExecutionOptions {
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private Map<String, String> customOptions;
     private String throughputControlGroupName;
+    private List<String> excludeRegions;
 
     /**
      * Constructor
@@ -99,6 +105,28 @@ public final class CosmosBulkExecutionOptions {
      */
     CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
         this.maxMicroBatchSize = maxMicroBatchSize;
+        return this;
+    }
+
+    /**
+     * The maximum batching request payload size in bytes for bulk operations.
+     *
+     * @return maximum micro batch payload size in bytes
+     */
+    int getMaxMicroBatchPayloadSizeInBytes() {
+        return maxMicroBatchPayloadSizeInBytes;
+    }
+
+    /**
+     * The maximum batching payload size in bytes for bulk operations. Once queued docs exceed this values the micro
+     * batch will be flushed to the wire.
+     *
+     * @param maxMicroBatchPayloadSizeInBytes maximum payload size of a micro batch in bytes.
+     *
+     * @return the bulk processing options.
+     */
+    CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(int maxMicroBatchPayloadSizeInBytes) {
+        this.maxMicroBatchPayloadSizeInBytes = maxMicroBatchPayloadSizeInBytes;
         return this;
     }
 
@@ -268,6 +296,31 @@ public final class CosmosBulkExecutionOptions {
         return this;
     }
 
+    /**
+     * List of regions to exclude for the request/retries. Example "East US" or "East US, West US"
+     * These regions will be excluded from the preferred regions list
+     *
+     * @param excludeRegions list of regions
+     * @return the {@link CosmosBulkExecutionOptions}
+     */
+    public CosmosBulkExecutionOptions setExcludedRegions(List<String> excludeRegions) {
+        this.excludeRegions = excludeRegions;
+        return this;
+    }
+
+    /**
+     * Gets the list of regions to be excluded for the request/retries. These regions are excluded
+     * from the preferred region list.
+     *
+     * @return a list of excluded regions
+     * */
+    public List<String> getExcludedRegions() {
+        if (this.excludeRegions == null) {
+            return null;
+        }
+        return UnmodifiableList.unmodifiableList(this.excludeRegions);
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -316,6 +369,19 @@ public final class CosmosBulkExecutionOptions {
                 }
 
                 @Override
+                public int getMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options) {
+                    return options.getMaxMicroBatchPayloadSizeInBytes();
+                }
+
+                @Override
+                public CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(
+                    CosmosBulkExecutionOptions options,
+                    int maxMicroBatchPayloadSizeInBytes) {
+
+                    return options.setMaxMicroBatchPayloadSizeInBytes(maxMicroBatchPayloadSizeInBytes);
+                }
+
+                @Override
                 public int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options) {
                     return options.getMaxMicroBatchConcurrency();
                 }
@@ -359,6 +425,11 @@ public final class CosmosBulkExecutionOptions {
                 @Override
                 public Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
                     return cosmosBulkExecutionOptions.customOptions;
+                }
+
+                @Override
+                public List<String> getExcludeRegions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
+                    return cosmosBulkExecutionOptions.excludeRegions;
                 }
 
             });
