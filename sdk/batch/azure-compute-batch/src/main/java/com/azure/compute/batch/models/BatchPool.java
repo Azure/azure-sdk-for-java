@@ -674,6 +674,17 @@ public final class BatchPool {
     }
 
     /**
+     * Set for Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     *
+     * @param certificateReferences the certificateReferences value to set
+     * @return the BatchPool object itself.
+     */
+    public BatchPool setCertificateReferences(List<CertificateReference> certificateReferences) {
+        this.certificateReferences = certificateReferences;
+        return this;
+    }
+
+    /**
      * Get the applicationPackageReferences property: Changes to Package references affect all new Nodes joining the
      * Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is
      * a maximum of 10 Package references on any given Pool.
@@ -683,6 +694,17 @@ public final class BatchPool {
     @Generated
     public List<ApplicationPackageReference> getApplicationPackageReferences() {
         return this.applicationPackageReferences;
+    }
+
+    /**
+     * Set changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any given Pool.
+     *
+     * @param applicationPackageReferences the applicationPackageReferences value to set
+     * @return the BatchPool object itself.
+     */
+    public BatchPool setApplicationPackageReferences(List<ApplicationPackageReference> applicationPackageReferences) {
+        this.applicationPackageReferences = applicationPackageReferences;
+        return this;
     }
 
     /**
@@ -735,6 +757,17 @@ public final class BatchPool {
     @Generated
     public List<MetadataItem> getMetadata() {
         return this.metadata;
+    }
+
+    /**
+     * Set the metadata property.
+     *
+     * @param metadata the metadata value to set.
+     * @return the BatchPool object itself.
+     */
+    public BatchPool setMetadata(List<MetadataItem> metadata) {
+        this.metadata = metadata;
+        return this;
     }
 
     /**

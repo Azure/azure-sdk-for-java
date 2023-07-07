@@ -533,6 +533,17 @@ public final class BatchJob {
     }
 
     /**
+     * Set the poolInfo property: Specifies how a Job should be assigned to a Pool.
+     *
+     * @param poolInfo the poolInfo value to set.
+     * @return the BatchJob object itself.
+     */
+    public BatchJob setPoolInfo(PoolInformation poolInfo) {
+        this.poolInfo = poolInfo;
+        return this;
+    }
+
+    /**
      * Get the onAllTasksComplete property: The default is noaction.
      *
      * @return the onAllTasksComplete value.

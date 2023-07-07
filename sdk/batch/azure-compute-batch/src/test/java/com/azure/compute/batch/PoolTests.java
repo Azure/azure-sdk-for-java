@@ -1,6 +1,7 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.*;
+import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -41,7 +42,8 @@ public class PoolTests extends BatchServiceClientTestBase {
 
     @Test
     public void testPoolUnifiedModel() {
-	     String unifiedModelPool = getStringIdWithUserNamePrefix("-testPoolModelUnification");;
+	     String unifiedModelPoolId = getStringIdWithUserNamePrefix("-testPoolModelUnification");
+         String startTaskCommand = "echo 'hello world'";
 	     try {
              String POOL_VM_SIZE = "STANDARD_D1_V2";
              ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
@@ -49,7 +51,7 @@ public class PoolTests extends BatchServiceClientTestBase {
 
              VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
 
-             BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(unifiedModelPool, POOL_VM_SIZE);
+             BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(unifiedModelPoolId, POOL_VM_SIZE);
              poolCreateParameters.setTargetDedicatedNodes(3)
                      .setVirtualMachineConfiguration(configuration)
                      .setTargetNodeCommunicationMode(NodeCommunicationMode.DEFAULT)
@@ -58,16 +60,25 @@ public class PoolTests extends BatchServiceClientTestBase {
 
              poolClient.create(poolCreateParameters);
 
-             BatchPool pool = poolClient.get(unifiedModelPool);
-             System.out.println(pool.getMetadata());
-             System.out.println(pool.getCertificateReferences());
-             System.out.println(pool.getApplicationPackageReferences());
+             //GET
+             BatchPool pool = poolClient.get(unifiedModelPoolId);
+             Assertions.assertNotNull(pool.getMetadata());
+             Assertions.assertNull(pool.getCertificateReferences());
 
-             pool.setStartTask(new StartTask("echo 'hello world'"));
-             poolClient.updateProperties(unifiedModelPool, pool);       //WILL FAIL as certificateReferences and applicationPackageReferences are null from previous GET - Cannot SET IT on pool object
+            //UPDATE
+             pool.setStartTask(new StartTask(startTaskCommand));
+             pool.setMetadata(new LinkedList<>(List.of(new MetadataItem("UpdatedName", "UpdatedValue"))));
+             pool.setApplicationPackageReferences(new LinkedList<>());
+             pool.setCertificateReferences(new LinkedList<>());
+             poolClient.updateProperties(unifiedModelPoolId, pool);       //certificateReferences and applicationPackageReferences are null from previous GET - Assign value to those properties
+
+             //GET After UPDATE
+             pool = poolClient.get(unifiedModelPoolId);
+             Assertions.assertEquals(pool.getMetadata().get(0).getValue(), "UpdatedValue");
+
          }
 	     finally {
-             poolClient.delete(unifiedModelPool);
+             poolClient.delete(unifiedModelPoolId);
          }
     }
 

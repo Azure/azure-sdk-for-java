@@ -54,7 +54,7 @@ public class JobTests extends BatchServiceClientTestBase {
             OnAllTasksComplete updatedTasksComplete = OnAllTasksComplete.TERMINATE_JOB;
         	job.setPriority(updatedPriority);
         	job.setOnAllTasksComplete(updatedTasksComplete);
-        	//getJob.setPoolInfo - No setter for required property Pool Info
+        	job.setPoolInfo(new PoolInformation().setPoolId(poolId));
             jobClient.update(jobId, job);
 
             //GET After UPDATE
