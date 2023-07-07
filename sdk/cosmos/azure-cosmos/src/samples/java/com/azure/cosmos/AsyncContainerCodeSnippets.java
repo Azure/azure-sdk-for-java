@@ -7,6 +7,7 @@ import com.azure.cosmos.models.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -210,10 +211,9 @@ public class AsyncContainerCodeSnippets {
         String passenger2Id = "item1";
 
         // BEGIN: com.azure.cosmos.CosmosAsyncContainer.readMany
-        List<CosmosItemIdentity> itemIdentityList = List.of(
-            new CosmosItemIdentity(new PartitionKey(passenger1Id), passenger1Id),
-            new CosmosItemIdentity(new PartitionKey(passenger2Id), passenger2Id)
-        );
+        List<CosmosItemIdentity> itemIdentityList = new ArrayList<>();
+        itemIdentityList.add(new CosmosItemIdentity(new PartitionKey(passenger1Id), passenger1Id));
+        itemIdentityList.add(new CosmosItemIdentity(new PartitionKey(passenger2Id), passenger2Id));
 
         cosmosAsyncContainer.readMany(itemIdentityList, Passenger.class)
             .flatMap(passengerFeedResponse -> {
@@ -265,7 +265,7 @@ public class AsyncContainerCodeSnippets {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         String query = "SELECT * FROM Passenger p WHERE (p.departure = @departure)";
-        List<SqlParameter> parameters = List.of(new SqlParameter("@departure", "SEA"));
+        List<SqlParameter> parameters = Collections.singletonList(new SqlParameter("@departure", "SEA"));
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query, parameters);
 
         cosmosAsyncContainer.queryItems(sqlQuerySpec, options, Passenger.class)

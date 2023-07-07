@@ -387,7 +387,7 @@ public class CosmosContainer {
      * <pre>
      * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
      * String query = &quot;SELECT * FROM Passenger p WHERE &#40;p.departure = &#64;departure&#41;&quot;;
-     * List&lt;SqlParameter&gt; parameters = List.of&#40;new SqlParameter&#40;&quot;&#64;departure&quot;, &quot;SEA&quot;&#41;&#41;;
+     * List&lt;SqlParameter&gt; parameters = Collections.singletonList&#40;new SqlParameter&#40;&quot;&#64;departure&quot;, &quot;SEA&quot;&#41;&#41;;
      * SqlQuerySpec sqlQuerySpec = new SqlQuerySpec&#40;query, parameters&#41;;
      *
      * Iterable&lt;FeedResponse&lt;Passenger&gt;&gt; queryResponses = cosmosContainer.queryItems&#40;sqlQuerySpec, options, Passenger.class&#41;
@@ -458,10 +458,10 @@ public class CosmosContainer {
      * <p>
      * <!-- src_embed com.azure.cosmos.CosmosContainer.readMany -->
      * <pre>
-     * List&lt;CosmosItemIdentity&gt; itemIdentityList = List.of&#40;
-     *     new CosmosItemIdentity&#40;new PartitionKey&#40;passenger1Id&#41;, passenger1Id&#41;,
-     *     new CosmosItemIdentity&#40;new PartitionKey&#40;passenger2Id&#41;, passenger2Id&#41;
-     * &#41;;
+     * List&lt;CosmosItemIdentity&gt; itemIdentityList = new ArrayList&lt;&gt;&#40;&#41;;
+     * itemIdentityList.add&#40;new CosmosItemIdentity&#40;new PartitionKey&#40;passenger1Id&#41;, passenger1Id&#41;&#41;;
+     * itemIdentityList.add&#40;new CosmosItemIdentity&#40;new PartitionKey&#40;passenger2Id&#41;, passenger2Id&#41;&#41;;
+     *
      * FeedResponse&lt;Passenger&gt; passengerFeedResponse = cosmosContainer.readMany&#40;itemIdentityList, Passenger.class&#41;;
      * for &#40;Passenger passenger : passengerFeedResponse.getResults&#40;&#41;&#41; &#123;
      *     System.out.println&#40;passenger&#41;;
@@ -488,10 +488,10 @@ public class CosmosContainer {
      * <p>
      * <!-- src_embed com.azure.cosmos.CosmosContainer.readMany -->
      * <pre>
-     * List&lt;CosmosItemIdentity&gt; itemIdentityList = List.of&#40;
-     *     new CosmosItemIdentity&#40;new PartitionKey&#40;passenger1Id&#41;, passenger1Id&#41;,
-     *     new CosmosItemIdentity&#40;new PartitionKey&#40;passenger2Id&#41;, passenger2Id&#41;
-     * &#41;;
+     * List&lt;CosmosItemIdentity&gt; itemIdentityList = new ArrayList&lt;&gt;&#40;&#41;;
+     * itemIdentityList.add&#40;new CosmosItemIdentity&#40;new PartitionKey&#40;passenger1Id&#41;, passenger1Id&#41;&#41;;
+     * itemIdentityList.add&#40;new CosmosItemIdentity&#40;new PartitionKey&#40;passenger2Id&#41;, passenger2Id&#41;&#41;;
+     *
      * FeedResponse&lt;Passenger&gt; passengerFeedResponse = cosmosContainer.readMany&#40;itemIdentityList, Passenger.class&#41;;
      * for &#40;Passenger passenger : passengerFeedResponse.getResults&#40;&#41;&#41; &#123;
      *     System.out.println&#40;passenger&#41;;

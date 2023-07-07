@@ -890,7 +890,7 @@ public class CosmosAsyncContainer {
      * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
      *
      * String query = &quot;SELECT * FROM Passenger p WHERE &#40;p.departure = &#64;departure&#41;&quot;;
-     * List&lt;SqlParameter&gt; parameters = List.of&#40;new SqlParameter&#40;&quot;&#64;departure&quot;, &quot;SEA&quot;&#41;&#41;;
+     * List&lt;SqlParameter&gt; parameters = Collections.singletonList&#40;new SqlParameter&#40;&quot;&#64;departure&quot;, &quot;SEA&quot;&#41;&#41;;
      * SqlQuerySpec sqlQuerySpec = new SqlQuerySpec&#40;query, parameters&#41;;
      *
      * cosmosAsyncContainer.queryItems&#40;sqlQuerySpec, options, Passenger.class&#41;
@@ -1382,10 +1382,9 @@ public class CosmosAsyncContainer {
      * <p>
      * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.readMany -->
      * <pre>
-     * List&lt;CosmosItemIdentity&gt; itemIdentityList = List.of&#40;
-     *     new CosmosItemIdentity&#40;new PartitionKey&#40;passenger1Id&#41;, passenger1Id&#41;,
-     *     new CosmosItemIdentity&#40;new PartitionKey&#40;passenger2Id&#41;, passenger2Id&#41;
-     * &#41;;
+     * List&lt;CosmosItemIdentity&gt; itemIdentityList = new ArrayList&lt;&gt;&#40;&#41;;
+     * itemIdentityList.add&#40;new CosmosItemIdentity&#40;new PartitionKey&#40;passenger1Id&#41;, passenger1Id&#41;&#41;;
+     * itemIdentityList.add&#40;new CosmosItemIdentity&#40;new PartitionKey&#40;passenger2Id&#41;, passenger2Id&#41;&#41;;
      *
      * cosmosAsyncContainer.readMany&#40;itemIdentityList, Passenger.class&#41;
      *     .flatMap&#40;passengerFeedResponse -&gt; &#123;
@@ -1417,10 +1416,9 @@ public class CosmosAsyncContainer {
      * <p>
      * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.readMany -->
      * <pre>
-     * List&lt;CosmosItemIdentity&gt; itemIdentityList = List.of&#40;
-     *     new CosmosItemIdentity&#40;new PartitionKey&#40;passenger1Id&#41;, passenger1Id&#41;,
-     *     new CosmosItemIdentity&#40;new PartitionKey&#40;passenger2Id&#41;, passenger2Id&#41;
-     * &#41;;
+     * List&lt;CosmosItemIdentity&gt; itemIdentityList = new ArrayList&lt;&gt;&#40;&#41;;
+     * itemIdentityList.add&#40;new CosmosItemIdentity&#40;new PartitionKey&#40;passenger1Id&#41;, passenger1Id&#41;&#41;;
+     * itemIdentityList.add&#40;new CosmosItemIdentity&#40;new PartitionKey&#40;passenger2Id&#41;, passenger2Id&#41;&#41;;
      *
      * cosmosAsyncContainer.readMany&#40;itemIdentityList, Passenger.class&#41;
      *     .flatMap&#40;passengerFeedResponse -&gt; &#123;

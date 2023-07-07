@@ -8,10 +8,7 @@ import com.azure.cosmos.models.*;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class ReadmeSamples {
     private final String serviceEndpoint = "<service-endpoint>";
@@ -258,10 +255,10 @@ public class ReadmeSamples {
         String passenger2Id = "item1";
 
         // BEGIN: com.azure.cosmos.CosmosContainer.readMany
-        List<CosmosItemIdentity> itemIdentityList = List.of(
-            new CosmosItemIdentity(new PartitionKey(passenger1Id), passenger1Id),
-            new CosmosItemIdentity(new PartitionKey(passenger2Id), passenger2Id)
-        );
+        List<CosmosItemIdentity> itemIdentityList = new ArrayList<>();
+        itemIdentityList.add(new CosmosItemIdentity(new PartitionKey(passenger1Id), passenger1Id));
+        itemIdentityList.add(new CosmosItemIdentity(new PartitionKey(passenger2Id), passenger2Id));
+
         FeedResponse<Passenger> passengerFeedResponse = cosmosContainer.readMany(itemIdentityList, Passenger.class);
         for (Passenger passenger : passengerFeedResponse.getResults()) {
             System.out.println(passenger);
@@ -302,7 +299,7 @@ public class ReadmeSamples {
         // BEGIN: com.azure.cosmos.CosmosContainer.SqlQuerySpec.queryItems
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         String query = "SELECT * FROM Passenger p WHERE (p.departure = @departure)";
-        List<SqlParameter> parameters = List.of(new SqlParameter("@departure", "SEA"));
+        List<SqlParameter> parameters = Collections.singletonList(new SqlParameter("@departure", "SEA"));
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query, parameters);
 
         Iterable<FeedResponse<Passenger>> queryResponses = cosmosContainer.queryItems(sqlQuerySpec, options, Passenger.class)
