@@ -9,8 +9,6 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
-import com.azure.ai.openai.models.FunctionCallPreset;
-import com.azure.ai.openai.models.FunctionCallPresetFunctionCallModel;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;

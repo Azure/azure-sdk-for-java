@@ -12,4 +12,6 @@ module com.azure.ai.openai {
     opens com.azure.ai.openai.models to
             com.azure.core,
             com.fasterxml.jackson.databind;
+    exports com.azure.ai.openai.implementation;
+    opens com.azure.ai.openai.implementation to com.azure.core, com.fasterxml.jackson.databind;
 }
