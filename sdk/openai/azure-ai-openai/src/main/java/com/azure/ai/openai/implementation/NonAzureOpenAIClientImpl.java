@@ -28,7 +28,13 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * Implementation for calling Non-Azure OpenAI service
@@ -650,20 +656,30 @@ public final class NonAzureOpenAIClientImpl {
         BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
 
-        // OpenAI has model ID in request body
-        BinaryData chatCompletionsOptionsUpdated = BinaryData.fromObject(
-            chatCompletionsOptions.toObject(ChatCompletionsOptions.class)
-                .setModel(modelId)
-        );
+        try {
+            ObjectMapper mapper = new ObjectMapper();
 
-        return FluxUtil.withContext(
-            context ->
-                service.getChatCompletions(
-                    OPEN_AI_ENDPOINT,
-                    accept,
-                    chatCompletionsOptionsUpdated,
-                    requestOptions,
-                    context));
+            JsonNode jsonNode = mapper.readTree(chatCompletionsOptions.toString());
+
+            if (jsonNode instanceof ObjectNode) {
+                ObjectNode objectNode = (ObjectNode) jsonNode;
+                objectNode.put("model", modelId);
+                chatCompletionsOptions = BinaryData.fromBytes(objectNode.toString().getBytes(StandardCharsets.UTF_8));
+            }
+
+            BinaryData chatCompletionsOptionsUpdated = chatCompletionsOptions;
+
+            return FluxUtil.withContext(
+                context ->
+                    service.getChatCompletions(
+                        OPEN_AI_ENDPOINT,
+                        accept,
+                        chatCompletionsOptionsUpdated,
+                        requestOptions,
+                        context));
+        } catch (Exception exception) {
+            return Mono.error(exception);
+        }
     }
 
     /**

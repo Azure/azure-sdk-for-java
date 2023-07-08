@@ -11,6 +11,7 @@ import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FunctionCallPreset;
 import com.azure.ai.openai.models.FunctionCallPresetFunctionCallModel;
+import com.azure.ai.openai.models.FunctionCalls;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -249,8 +250,12 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testChatFunctionAutoPreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getChatFunctionRunner((modelId, chatCompletionsOptions) -> {
-            chatCompletionsOptions.setFunctionCall(new FunctionCallPresetFunctionCallModel(FunctionCallPreset.AUTO));
-
+            chatCompletionsOptions.setFunctionCalls(FunctionCalls.AUTO);
+            StepVerifier.create(client.getChatCompletions(modelId, chatCompletionsOptions))
+                .assertNext(chatCompletions -> {
+                    System.out.println(chatCompletions);
+                })
+                .verifyComplete();
         });
     }
 
@@ -259,7 +264,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testChatFunctionNonePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getChatFunctionRunner((modelId, chatCompletionsOptions) -> {
-            chatCompletionsOptions.setFunctionCall(new FunctionCallPresetFunctionCallModel(FunctionCallPreset.NONE));
+            chatCompletionsOptions.setFunctionCalls(FunctionCalls.NONE);
             StepVerifier.create(client.getChatCompletions(modelId, chatCompletionsOptions))
                 .assertNext(chatCompletions -> {
                     System.out.println(chatCompletions);

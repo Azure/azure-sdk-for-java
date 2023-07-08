@@ -4,8 +4,16 @@
 
 package com.azure.ai.openai.models;
 
+
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+@JsonSubTypes({
+    @JsonSubTypes.Type(name="preset", value = FunctionCallPresetFunctionCallModel.class),
+    @JsonSubTypes.Type(name="custom", value = FunctionNameFunctionCallModel.class)
+})
 /** The FunctionCallModelBase model. */
-public abstract class FunctionCallModelBase {
+public class FunctionCallModelBase {
     /** Creates an instance of FunctionCallModelBase class. */
     protected FunctionCallModelBase() {}
 }

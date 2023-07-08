@@ -5,10 +5,12 @@
 package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /** The FunctionCallPresetFunctionCallModel model. */
 @Immutable
+@JsonTypeName("preset")
 public final class FunctionCallPresetFunctionCallModel extends FunctionCallModelBase {
     private final FunctionCallPreset value;
 

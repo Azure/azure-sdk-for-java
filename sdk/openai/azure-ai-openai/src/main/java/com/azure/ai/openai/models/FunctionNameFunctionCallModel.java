@@ -5,10 +5,14 @@
 package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The FunctionNameFunctionCallModel model. */
+/**
+ * The FunctionNameFunctionCallModel model.
+ */
 @Immutable
+@JsonTypeName("custom")
 public final class FunctionNameFunctionCallModel extends FunctionCallModelBase {
     private final FunctionName value;
 

@@ -233,7 +233,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testChatFunctionAutoPreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getChatFunctionRunner((deploymentId, chatCompletionsOptions) -> {
-            chatCompletionsOptions.setFunctionCall(new FunctionCallPresetFunctionCallModel(FunctionCallPreset.AUTO));
+//            chatCompletionsOptions.setFunctionCall(new FunctionCallPresetFunctionCallModel(FunctionCallPreset.AUTO));
 
         });
     }
@@ -243,7 +243,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testChatFunctionNonePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getChatFunctionRunner((deploymentId, chatCompletionsOptions) -> {
-            chatCompletionsOptions.setFunctionCall(new FunctionCallPresetFunctionCallModel(FunctionCallPreset.NONE));
+//            chatCompletionsOptions.setFunctionCall(new FunctionCallPresetFunctionCallModel(FunctionCallPreset.NONE));
 //            StepVerifier.create(client.getChatCompletions())
         });
     }

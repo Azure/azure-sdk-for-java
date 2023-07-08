@@ -6,6 +6,7 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -447,6 +448,9 @@ public final class ChatCompletionsOptions {
     @JsonProperty(value = "function_call")
     private FunctionCallModelBase functionCall;
 
+    @JsonIgnore
+    private FunctionCalls functionCalls;
+
     /**
      * Get the functions property: A list of functions the model may generate JSON inputs for.
      *
@@ -477,8 +481,7 @@ public final class ChatCompletionsOptions {
      *
      * @return the functionCall value.
      */
-    @Generated
-    public FunctionCallModelBase getFunctionCall() {
+    FunctionCallModelBase getFunctionCall() {
         return this.functionCall;
     }
 
@@ -491,9 +494,22 @@ public final class ChatCompletionsOptions {
      * @param functionCall the functionCall value to set.
      * @return the ChatCompletionsOptions object itself.
      */
-    @Generated
-    public ChatCompletionsOptions setFunctionCall(FunctionCallModelBase functionCall) {
+    ChatCompletionsOptions setFunctionCall(FunctionCallModelBase functionCall) {
         this.functionCall = functionCall;
+        return this;
+    }
+
+    public FunctionCalls getFunctionCalls() {
+        return this.functionCalls;
+    }
+
+    public ChatCompletionsOptions setFunctionCalls(FunctionCalls functionCalls) {
+        this.functionCalls = functionCalls;
+        if (FunctionCallPreset.values().stream().anyMatch(preset -> preset.toString().equals(functionCalls.getName()))) {
+            this.functionCall = new FunctionCallPresetFunctionCallModel(FunctionCallPreset.fromString(this.functionCalls.getName()));
+        } else {
+            this.functionCall = new FunctionNameFunctionCallModel(new FunctionName(this.functionCalls.getName()));
+        }
         return this;
     }
 }

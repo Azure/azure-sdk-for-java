@@ -8,25 +8,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class Properties {
-
-    @JsonProperty(value = "type")
-    private String type = "object";
-
     @JsonProperty(value = "unit")
     private Unit unit = new Unit();
 
     @JsonProperty
     private Location location = new Location();
-
-    @JsonGetter
-    public String getType() {
-        return type;
-    }
-
-    @JsonSetter
-    public void setType(String type) {
-        this.type = type;
-    }
 
     @JsonGetter
     public Unit getUnit() {
