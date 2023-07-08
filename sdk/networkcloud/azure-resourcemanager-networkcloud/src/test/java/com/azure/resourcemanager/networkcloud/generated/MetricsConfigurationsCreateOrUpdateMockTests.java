@@ -35,7 +35,7 @@ public final class MetricsConfigurationsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"extendedLocation\":{\"name\":\"greohtwhlpuzjp\",\"type\":\"eezn\"},\"properties\":{\"collectionInterval\":4212796390166853117,\"detailedStatus\":\"Applied\",\"detailedStatusMessage\":\"bfaxyxzlbc\",\"disabledMetrics\":[\"msexroqr\"],\"enabledMetrics\":[\"txfvonfe\",\"qgpkrie\",\"bgnixxoww\"],\"provisioningState\":\"Succeeded\"},\"location\":\"wnwpiwxeii\",\"tags\":{\"pk\":\"p\",\"xxij\":\"dm\",\"yacwrasekwefc\":\"skwsdgkj\",\"nwoqartwy\":\"o\"},\"id\":\"qicladv\",\"name\":\"tdavuqmcbymsfobj\",\"type\":\"quvjez\"}";
+            "{\"extendedLocation\":{\"name\":\"vhl\",\"type\":\"dculregp\"},\"properties\":{\"collectionInterval\":8741120039848211654,\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"vr\",\"disabledMetrics\":[\"vgysh\",\"rdgrtwmewjzlp\",\"kcfazzw\",\"cayer\"],\"enabledMetrics\":[\"ansyb\",\"lpolwzrghsrle\"],\"provisioningState\":\"Succeeded\"},\"location\":\"scjfncjwvuagf\",\"tags\":{\"klzmijajw\":\"ltngvmreupt\",\"fsvagh\":\"l\"},\"id\":\"pynwlslrcigtzjcv\",\"name\":\"xqlaps\",\"type\":\"ssov\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,21 +66,21 @@ public final class MetricsConfigurationsCreateOrUpdateMockTests {
         ClusterMetricsConfiguration response =
             manager
                 .metricsConfigurations()
-                .define("aqgzekajclyzgs")
-                .withRegion("drqrsw")
-                .withExistingCluster("c", "buvczldbglzoutb")
-                .withExtendedLocation(new ExtendedLocation().withName("orbjg").withType("nzjotvmr"))
-                .withCollectionInterval(5797673624091953020L)
-                .withTags(mapOf("joxztfwfqchvczev", "ubpyrow", "qpemh", "nnctagfyvrt"))
-                .withEnabledMetrics(Arrays.asList("uudtelv"))
+                .define("c")
+                .withRegion("ftxudqy")
+                .withExistingCluster("jwzzqseuzu", "kykcyqhyqqzz")
+                .withExtendedLocation(new ExtendedLocation().withName("keys").withType("ewfopazdazg"))
+                .withCollectionInterval(1353577403006428053L)
+                .withTags(mapOf("emmjauwcg", "bunaucmcirtn", "itranizerwguda", "efnoh"))
+                .withEnabledMetrics(Arrays.asList("eyowmndcovd", "zqauxzan", "mk", "fruwkud"))
                 .create();
 
-        Assertions.assertEquals("wnwpiwxeii", response.location());
-        Assertions.assertEquals("p", response.tags().get("pk"));
-        Assertions.assertEquals("greohtwhlpuzjp", response.extendedLocation().name());
-        Assertions.assertEquals("eezn", response.extendedLocation().type());
-        Assertions.assertEquals(4212796390166853117L, response.collectionInterval());
-        Assertions.assertEquals("txfvonfe", response.enabledMetrics().get(0));
+        Assertions.assertEquals("scjfncjwvuagf", response.location());
+        Assertions.assertEquals("ltngvmreupt", response.tags().get("klzmijajw"));
+        Assertions.assertEquals("vhl", response.extendedLocation().name());
+        Assertions.assertEquals("dculregp", response.extendedLocation().type());
+        Assertions.assertEquals(8741120039848211654L, response.collectionInterval());
+        Assertions.assertEquals("ansyb", response.enabledMetrics().get(0));
     }
 
     @SuppressWarnings("unchecked")

@@ -43,11 +43,10 @@
       --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus.administration.models=ALL-UNNAMED
 
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-      --add-exports com.azure.core/com.azure.core.implementation.instrumentation=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-reads com.azure.messaging.servicebus=com.azure.http.netty
-      --add-reads com.azure.messaging.servicebus=com.azure.core.tracing.opentelemetry
       --add-reads com.azure.messaging.servicebus=com.azure.core.experimental
+      --add-reads com.azure.messaging.servicebus=com.azure.core.tracing.opentelemetry
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -114,7 +113,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.29</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.30</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -141,14 +140,14 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-api</artifactId>
-      <version>1.23.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+      <version>1.27.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk</artifactId>
-      <version>1.23.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <version>1.27.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

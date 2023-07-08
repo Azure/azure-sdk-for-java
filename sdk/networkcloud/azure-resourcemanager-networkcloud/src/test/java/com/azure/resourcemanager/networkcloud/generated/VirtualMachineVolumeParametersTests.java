@@ -12,14 +12,14 @@ public final class VirtualMachineVolumeParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineVolumeParameters model =
-            BinaryData.fromString("{\"volumeId\":\"hhtklnvnafvvkyfe\"}").toObject(VirtualMachineVolumeParameters.class);
-        Assertions.assertEquals("hhtklnvnafvvkyfe", model.volumeId());
+            BinaryData.fromString("{\"volumeId\":\"c\"}").toObject(VirtualMachineVolumeParameters.class);
+        Assertions.assertEquals("c", model.volumeId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualMachineVolumeParameters model = new VirtualMachineVolumeParameters().withVolumeId("hhtklnvnafvvkyfe");
+        VirtualMachineVolumeParameters model = new VirtualMachineVolumeParameters().withVolumeId("c");
         model = BinaryData.fromObject(model).toObject(VirtualMachineVolumeParameters.class);
-        Assertions.assertEquals("hhtklnvnafvvkyfe", model.volumeId());
+        Assertions.assertEquals("c", model.volumeId());
     }
 }

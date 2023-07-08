@@ -250,7 +250,7 @@ public class CosmosContainer {
     }
 
     /**
-     * Upserts a item Cosmos sync item while specifying additional options.
+     * Upserts an item Cosmos sync item while specifying additional options.
      *
      * @param <T> the type parameter.
      * @param item the item.
@@ -355,7 +355,19 @@ public class CosmosContainer {
 
     /**
      * Query items in the current container returning the results as {@link CosmosPagedIterable}.
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.queryItems -->
+     * <pre>
+     * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
+     * String query = &quot;SELECT * FROM Passenger WHERE Passenger.departure IN &#40;'SEA', 'IND'&#41;&quot;;
+     * Iterable&lt;FeedResponse&lt;Passenger&gt;&gt; queryResponses = cosmosContainer.queryItems&#40;query, options, Passenger.class&#41;
+     *     .iterableByPage&#40;&#41;;
      *
+     * for &#40;FeedResponse&lt;Passenger&gt; feedResponse : queryResponses&#41; &#123;
+     *     List&lt;Passenger&gt; results = feedResponse.getResults&#40;&#41;;
+     *     System.out.println&#40;results&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.queryItems -->
      * @param <T> the type parameter.
      * @param query the query.
      * @param options the options.
@@ -368,7 +380,22 @@ public class CosmosContainer {
 
     /**
      * Query items in the current container returning the results as {@link CosmosPagedIterable}.
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.SqlQuerySpec.queryItems -->
+     * <pre>
+     * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
+     * String query = &quot;SELECT * FROM Passenger p WHERE &#40;p.departure = &#64;departure&#41;&quot;;
+     * List&lt;SqlParameter&gt; parameters = Collections.singletonList&#40;new SqlParameter&#40;&quot;&#64;departure&quot;, &quot;SEA&quot;&#41;&#41;;
+     * SqlQuerySpec sqlQuerySpec = new SqlQuerySpec&#40;query, parameters&#41;;
      *
+     * Iterable&lt;FeedResponse&lt;Passenger&gt;&gt; queryResponses = cosmosContainer.queryItems&#40;sqlQuerySpec, options, Passenger.class&#41;
+     *     .iterableByPage&#40;&#41;;
+     *
+     * for &#40;FeedResponse&lt;Passenger&gt; feedResponse : queryResponses&#41; &#123;
+     *     List&lt;Passenger&gt; results = feedResponse.getResults&#40;&#41;;
+     *     System.out.println&#40;results&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.SqlQuerySpec.queryItems -->
      * @param <T> the type parameter.
      * @param querySpec the query spec.
      * @param options the options.
@@ -381,6 +408,20 @@ public class CosmosContainer {
 
     /**
      * Query for items in the change feed of the current container using the {@link CosmosChangeFeedRequestOptions}.
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.queryChangeFeed -->
+     * <pre>
+     * CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+     *     .createForProcessingFromNow&#40;FeedRange.forFullRange&#40;&#41;&#41;
+     *     .allVersionsAndDeletes&#40;&#41;;
+     *
+     * Iterable&lt;FeedResponse&lt;Passenger&gt;&gt; feedResponses = cosmosContainer.queryChangeFeed&#40;options, Passenger.class&#41;
+     *     .iterableByPage&#40;&#41;;
+     * for &#40;FeedResponse&lt;Passenger&gt; feedResponse : feedResponses&#41; &#123;
+     *     List&lt;Passenger&gt; results = feedResponse.getResults&#40;&#41;;
+     *     System.out.println&#40;results&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.queryChangeFeed -->
      * <p>
      * The next page can be retrieved by calling queryChangeFeed again with a new instance of
      * {@link CosmosChangeFeedRequestOptions} created from the continuation token of the previously returned
@@ -407,7 +448,20 @@ public class CosmosContainer {
 
     /**
      * Reads many documents.
+     * Useful for reading many documents with a particular id and partition key in a single request.
+     * If any document from the list is missing, no exception will be thrown.
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.readMany -->
+     * <pre>
+     * List&lt;CosmosItemIdentity&gt; itemIdentityList = new ArrayList&lt;&gt;&#40;&#41;;
+     * itemIdentityList.add&#40;new CosmosItemIdentity&#40;new PartitionKey&#40;passenger1Id&#41;, passenger1Id&#41;&#41;;
+     * itemIdentityList.add&#40;new CosmosItemIdentity&#40;new PartitionKey&#40;passenger2Id&#41;, passenger2Id&#41;&#41;;
      *
+     * FeedResponse&lt;Passenger&gt; passengerFeedResponse = cosmosContainer.readMany&#40;itemIdentityList, Passenger.class&#41;;
+     * for &#40;Passenger passenger : passengerFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *     System.out.println&#40;passenger&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.readMany -->
      * @param <T> the type parameter
      * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param classType   class type
@@ -422,7 +476,20 @@ public class CosmosContainer {
 
     /**
      * Reads many documents.
+     * Useful for reading many documents with a particular id and partition key in a single request.
+     * If any document from the list is missing, no exception will be thrown.
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.readMany -->
+     * <pre>
+     * List&lt;CosmosItemIdentity&gt; itemIdentityList = new ArrayList&lt;&gt;&#40;&#41;;
+     * itemIdentityList.add&#40;new CosmosItemIdentity&#40;new PartitionKey&#40;passenger1Id&#41;, passenger1Id&#41;&#41;;
+     * itemIdentityList.add&#40;new CosmosItemIdentity&#40;new PartitionKey&#40;passenger2Id&#41;, passenger2Id&#41;&#41;;
      *
+     * FeedResponse&lt;Passenger&gt; passengerFeedResponse = cosmosContainer.readMany&#40;itemIdentityList, Passenger.class&#41;;
+     * for &#40;Passenger passenger : passengerFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *     System.out.println&#40;passenger&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.readMany -->
      * @param <T> the type parameter
      * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param sessionToken the optional Session token - null if the read can be made without specific session token
@@ -443,6 +510,16 @@ public class CosmosContainer {
 
     /**
      * Reads all the items of a logical partition returning the results as {@link CosmosPagedIterable}.
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.readAllItems -->
+     * <pre>
+     * CosmosPagedIterable&lt;Passenger&gt; passengers = cosmosContainer
+     *     .readAllItems&#40;new PartitionKey&#40;partitionKey&#41;, Passenger.class&#41;;
+     *
+     * passengers.forEach&#40;passenger -&gt; &#123;
+     *     System.out.println&#40;passenger&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.readAllItems -->
      *
      * @param <T> the type parameter.
      * @param partitionKey the partition key value of the documents that need to be read
@@ -458,6 +535,16 @@ public class CosmosContainer {
 
     /**
      * Reads all the items of a logical partition returning the results as {@link CosmosPagedIterable}.
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.readAllItems -->
+     * <pre>
+     * CosmosPagedIterable&lt;Passenger&gt; passengers = cosmosContainer
+     *     .readAllItems&#40;new PartitionKey&#40;partitionKey&#41;, Passenger.class&#41;;
+     *
+     * passengers.forEach&#40;passenger -&gt; &#123;
+     *     System.out.println&#40;passenger&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.readAllItems -->
      *
      * @param <T> the type parameter.
      * @param partitionKey the partition key value of the documents that need to be read
@@ -534,8 +621,18 @@ public class CosmosContainer {
     }
 
     /**
-     * Replaces an item in the current container.
-     *
+     * Replaces an existing item in a container with a new item.
+     * It performs a complete replacement of the item,
+     * replacing all its properties with the properties of the new item
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.replaceItem -->
+     * <pre>
+     * CosmosItemResponse&lt;Passenger&gt; response = cosmosContainer.replaceItem&#40;
+     *     newPassenger,
+     *     oldPassenger.getId&#40;&#41;,
+     *     new PartitionKey&#40;oldPassenger.getId&#40;&#41;&#41;,
+     *     new CosmosItemRequestOptions&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.replaceItem -->
      * @param <T> the type parameter.
      * @param item the item.
      * @param itemId the item id.
@@ -551,7 +648,23 @@ public class CosmosContainer {
     }
 
     /**
-     * Run patch operations on an Item.
+     * Run partial update that modifies specific properties or fields of the item without replacing the entire item.
+     *
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.patchItem -->
+     * <pre>
+     * CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create&#40;&#41;;
+     *
+     * cosmosPatchOperations
+     *     .add&#40;&quot;&#47;departure&quot;, &quot;SEA&quot;&#41;
+     *     .increment&#40;&quot;&#47;trips&quot;, 1&#41;;
+     *
+     * CosmosItemResponse&lt;Passenger&gt; response = cosmosContainer.patchItem&#40;
+     *     passenger.getId&#40;&#41;,
+     *     new PartitionKey&#40;passenger.getId&#40;&#41;&#41;,
+     *     cosmosPatchOperations,
+     *     Passenger.class&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.patchItem -->
      *
      * @param <T> the type parameter.
      * @param itemId the item id.
@@ -571,7 +684,23 @@ public class CosmosContainer {
     }
 
     /**
-     * Run patch operations on an Item.
+     * Run partial update that modifies specific properties or fields of the item without replacing the entire item.
+     *
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.patchItem -->
+     * <pre>
+     * CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create&#40;&#41;;
+     *
+     * cosmosPatchOperations
+     *     .add&#40;&quot;&#47;departure&quot;, &quot;SEA&quot;&#41;
+     *     .increment&#40;&quot;&#47;trips&quot;, 1&#41;;
+     *
+     * CosmosItemResponse&lt;Passenger&gt; response = cosmosContainer.patchItem&#40;
+     *     passenger.getId&#40;&#41;,
+     *     new PartitionKey&#40;passenger.getId&#40;&#41;&#41;,
+     *     cosmosPatchOperations,
+     *     Passenger.class&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.patchItem -->
      *
      * @param <T> the type parameter.
      * @param itemId the item id.

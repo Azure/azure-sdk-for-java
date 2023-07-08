@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class KeySetUserStatus {
     /*
-     * The Azure Active Directory user name (email name).
+     * The user name that will be used for access.
      */
     @JsonProperty(value = "azureUserName", access = JsonProperty.Access.WRITE_ONLY)
     private String azureUsername;
@@ -33,7 +33,7 @@ public final class KeySetUserStatus {
     }
 
     /**
-     * Get the azureUsername property: The Azure Active Directory user name (email name).
+     * Get the azureUsername property: The user name that will be used for access.
      *
      * @return the azureUsername value.
      */

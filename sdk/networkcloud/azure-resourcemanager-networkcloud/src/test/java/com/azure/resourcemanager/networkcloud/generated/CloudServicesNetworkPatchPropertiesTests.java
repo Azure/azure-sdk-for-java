@@ -17,11 +17,11 @@ public final class CloudServicesNetworkPatchPropertiesTests {
         CloudServicesNetworkPatchProperties model =
             BinaryData
                 .fromString(
-                    "{\"additionalEgressEndpoints\":[{\"category\":\"xmysuxswqrntv\",\"endpoints\":[]}],\"enableDefaultEgressEndpoints\":\"False\"}")
+                    "{\"additionalEgressEndpoints\":[{\"category\":\"xvodhtnsir\",\"endpoints\":[]}],\"enableDefaultEgressEndpoints\":\"True\"}")
                 .toObject(CloudServicesNetworkPatchProperties.class);
-        Assertions.assertEquals("xmysuxswqrntv", model.additionalEgressEndpoints().get(0).category());
+        Assertions.assertEquals("xvodhtnsir", model.additionalEgressEndpoints().get(0).category());
         Assertions
-            .assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE, model.enableDefaultEgressEndpoints());
+            .assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE, model.enableDefaultEgressEndpoints());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,11 +29,11 @@ public final class CloudServicesNetworkPatchPropertiesTests {
         CloudServicesNetworkPatchProperties model =
             new CloudServicesNetworkPatchProperties()
                 .withAdditionalEgressEndpoints(
-                    Arrays.asList(new EgressEndpoint().withCategory("xmysuxswqrntv").withEndpoints(Arrays.asList())))
-                .withEnableDefaultEgressEndpoints(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE);
+                    Arrays.asList(new EgressEndpoint().withCategory("xvodhtnsir").withEndpoints(Arrays.asList())))
+                .withEnableDefaultEgressEndpoints(CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE);
         model = BinaryData.fromObject(model).toObject(CloudServicesNetworkPatchProperties.class);
-        Assertions.assertEquals("xmysuxswqrntv", model.additionalEgressEndpoints().get(0).category());
+        Assertions.assertEquals("xvodhtnsir", model.additionalEgressEndpoints().get(0).category());
         Assertions
-            .assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE, model.enableDefaultEgressEndpoints());
+            .assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE, model.enableDefaultEgressEndpoints());
     }
 }

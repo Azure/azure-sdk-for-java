@@ -9,7 +9,7 @@ import com.azure.resourcemanager.networkcloud.models.VirtualMachineVolumeParamet
 /** Samples for VirtualMachines DetachVolume. */
 public final class VirtualMachinesDetachVolumeSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/VirtualMachines_DetachVolume.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/VirtualMachines_DetachVolume.json
      */
     /**
      * Sample code: Detach volume from virtual machine.
@@ -25,7 +25,7 @@ public final class VirtualMachinesDetachVolumeSamples {
                 "virtualMachineName",
                 new VirtualMachineVolumeParameters()
                     .withVolumeId(
-                        "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName"),
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName"),
                 com.azure.core.util.Context.NONE);
     }
 }
