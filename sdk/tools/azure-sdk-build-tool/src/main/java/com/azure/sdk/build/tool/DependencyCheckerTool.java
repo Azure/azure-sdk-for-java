@@ -76,7 +76,7 @@ public class DependencyCheckerTool implements Runnable {
             }
             boolean isLatestBomVersion = usedBomVersion.equals(latestAvailableBomVersion);
             if (!isLatestBomVersion) {
-                failOrWarn(AzureSdkMojo.MOJO::isValidateAzureSdkBomUsed, BuildErrorCode.OUTDATED_DEPENDENCY, getString("outdatedBomDependency") + " using" +
+                failOrWarn(AzureSdkMojo.MOJO::isValidateLatestBomVersionUsed, BuildErrorCode.OUTDATED_DEPENDENCY, getString("outdatedBomDependency") + " using" +
                         " version" + usedBomVersion + " latest version: " + latestAvailableBomVersion, Arrays.asList(MavenUtils.toGAV(bomDependency.get())));
             }
             checkForAzureSdkDependencyVersions();

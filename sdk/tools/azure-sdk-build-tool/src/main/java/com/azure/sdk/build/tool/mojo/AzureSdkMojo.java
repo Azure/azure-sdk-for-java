@@ -68,6 +68,9 @@ public class AzureSdkMojo extends AbstractMojo {
     @Parameter(property = "validateNoBetaApiUsed", defaultValue = "true")
     private boolean validateNoBetaApiUsed;
 
+    @Parameter(property = "validateLatestBomVersionUsed", defaultValue = "true")
+    private boolean validateLatestBomVersionUsed;
+
     @Parameter(property = "reportFile", defaultValue = "")
     private String reportFile;
 
@@ -219,6 +222,16 @@ public class AzureSdkMojo extends AbstractMojo {
      */
     public boolean isValidateNoBetaApiUsed() {
         return validateNoBetaApiUsed;
+    }
+
+    /**
+     * If this validation is enabled, build will fail if the latest version of Azure SDK BOM is not used. By default,
+     * this is set to {@code true}.
+     *
+     * @return {@code true} if the latest version of Azure SDK BOM is used.
+     */
+    public boolean isValidateLatestBomVersionUsed() {
+        return validateLatestBomVersionUsed;
     }
 
     /**
