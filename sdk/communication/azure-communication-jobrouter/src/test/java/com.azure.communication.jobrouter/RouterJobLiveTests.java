@@ -29,15 +29,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RouterJobLiveTests extends JobRouterTestBase {
-    private RouterClient routerClient;
+    private JobRouterClient jobRouterClient;
 
-    private RouterAdministrationClient routerAdminClient;
+    private JobRouterAdministrationClient routerAdminClient;
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void unassignJob(HttpClient httpClient) {
         // Setup
-        routerClient = getRouterClient(httpClient);
+        jobRouterClient = getRouterClient(httpClient);
         routerAdminClient = getRouterAdministrationClient(httpClient);
         String testName = "unassign-job-2";
         /**
@@ -86,17 +86,17 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             .setChannelConfigurations(channelConfigurations)
             .setQueueAssignments(queueAssignments);
 
-        RouterWorker worker = routerClient.createWorker(createWorkerOptions);
+        RouterWorker worker = jobRouterClient.createWorker(createWorkerOptions);
 
         String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
         CreateJobOptions createJobOptions = new CreateJobOptions(jobId, "channel1", queueId);
 
-        RouterJob job = routerClient.createJob(createJobOptions);
+        RouterJob job = jobRouterClient.createJob(createJobOptions);
 
         List<JobOffer> jobOffers = new ArrayList<>();
         long startTimeMillis = System.currentTimeMillis();
         while (true) {
-            worker = routerClient.getWorker(workerId);
+            worker = jobRouterClient.getWorker(workerId);
             jobOffers = worker.getOffers();
             if (jobOffers.size() > 0 || System.currentTimeMillis() - startTimeMillis > 10000) {
                 break;
@@ -107,21 +107,21 @@ public class RouterJobLiveTests extends JobRouterTestBase {
 
         JobOffer offer = jobOffers.get(0);
 
-        AcceptJobOfferResult acceptJobOfferResult = routerClient.acceptJobOffer(workerId, offer.getId());
+        AcceptJobOfferResult acceptJobOfferResult = jobRouterClient.acceptJobOffer(workerId, offer.getId());
 
         String assignmentId = acceptJobOfferResult.getAssignmentId();
 
         // Action
         UnassignJobOptions unassignJobOptions = new UnassignJobOptions(jobId, assignmentId);
-        UnassignJobResult unassignJobResult = routerClient.unassignJob(unassignJobOptions);
+        UnassignJobResult unassignJobResult = jobRouterClient.unassignJob(unassignJobOptions);
 
         // Verify
         assertEquals(1, unassignJobResult.getUnassignmentCount());
 
         // Cleanup
-        routerClient.cancelJob(jobId, "Done.", "test");
-        routerClient.deleteJob(jobId);
-        routerClient.deleteWorker(workerId);
+        jobRouterClient.cancelJob(jobId, "Done.", "test");
+        jobRouterClient.deleteJob(jobId);
+        jobRouterClient.deleteWorker(workerId);
         routerAdminClient.deleteQueue(queueId);
         routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }

@@ -47,25 +47,25 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <!-- src_embed com.azure.communication.jobrouter.routerasyncclient.instantiation -->
  * <pre>
  * &#47;&#47; Initialize the router client builder
- * final RouterClientBuilder builder = new RouterClientBuilder&#40;&#41;
+ * final JobRouterClientBuilder builder = new JobRouterClientBuilder&#40;&#41;
  *     .connectionString&#40;connectionString&#41;;
  * &#47;&#47; Build the router client
- * RouterAsyncClient routerAsyncClient = builder.buildAsyncClient&#40;&#41;;
+ * JobRouterAsyncClient jobRouterAsyncClient = builder.buildAsyncClient&#40;&#41;;
  *
  * </pre>
  * <!-- end com.azure.communication.jobrouter.routerasyncclient.instantiation -->
  *
- * <p>View {@link RouterClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link JobRouterClientBuilder this} for additional ways to construct the client.</p>
  *
- * @see RouterClientBuilder
+ * @see JobRouterClientBuilder
  */
-@ServiceClient(builder = RouterClientBuilder.class, isAsync = true)
-public final class RouterAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(RouterAsyncClient.class);
+@ServiceClient(builder = JobRouterClientBuilder.class, isAsync = true)
+public final class JobRouterAsyncClient {
+    private static final ClientLogger LOGGER = new ClientLogger(JobRouterAsyncClient.class);
 
     private final JobRoutersImpl jobRouter;
 
-    RouterAsyncClient(AzureCommunicationServicesImpl jobRouterService) {
+    JobRouterAsyncClient(AzureCommunicationServicesImpl jobRouterService) {
         this.jobRouter = jobRouterService.getJobRouters();
     }
 

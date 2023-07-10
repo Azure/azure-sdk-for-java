@@ -36,30 +36,30 @@ import com.azure.core.util.Context;
  * <!-- src_embed com.azure.communication.jobrouter.routerclient.instantiation -->
  * <pre>
  * &#47;&#47; Initialize the router client builder
- * final RouterClientBuilder builder = new RouterClientBuilder&#40;&#41;
+ * final JobRouterClientBuilder builder = new JobRouterClientBuilder&#40;&#41;
  *     .connectionString&#40;connectionString&#41;;
  * &#47;&#47; Build the router client
- * RouterClient routerClient = builder.buildClient&#40;&#41;;
+ * JobRouterClient jobRouterClient = builder.buildClient&#40;&#41;;
  *
  * </pre>
  * <!-- end com.azure.communication.jobrouter.routerclient.instantiation -->
  *
- * <p>View {@link RouterClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link JobRouterClientBuilder this} for additional ways to construct the client.</p>
  *
- * @see RouterClientBuilder
+ * @see JobRouterClientBuilder
  */
-@ServiceClient(builder = RouterClientBuilder.class, isAsync = false)
-public final class RouterClient {
+@ServiceClient(builder = JobRouterClientBuilder.class, isAsync = false)
+public final class JobRouterClient {
 
-    private final RouterAsyncClient client;
+    private final JobRouterAsyncClient client;
 
     /**
      * Creates a RouterClient that sends requests to the job router service at {@code serviceEndpoint}. Each
      * service call goes through the {@code pipeline}.
      *
-     * @param client The {@link RouterAsyncClient} that the client routes its request through.
+     * @param client The {@link JobRouterAsyncClient} that the client routes its request through.
      */
-    RouterClient(RouterAsyncClient client) {
+    JobRouterClient(JobRouterAsyncClient client) {
         this.client = client;
     }
 

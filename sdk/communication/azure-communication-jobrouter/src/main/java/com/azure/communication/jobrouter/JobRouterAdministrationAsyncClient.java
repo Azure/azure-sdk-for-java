@@ -50,25 +50,25 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <!-- src_embed com.azure.communication.jobrouter.routeradministrationasyncclient.instantiation -->
  * <pre>
  * &#47;&#47; Initialize the router administration client builder
- * final RouterAdministrationClientBuilder builder = new RouterAdministrationClientBuilder&#40;&#41;
+ * final JobRouterAdministrationClientBuilder builder = new JobRouterAdministrationClientBuilder&#40;&#41;
  *     .connectionString&#40;connectionString&#41;;
  * &#47;&#47; Build the router administration client
- * RouterAdministrationAsyncClient routerAdministrationClient = builder.buildAsyncClient&#40;&#41;;
+ * JobRouterAdministrationAsyncClient routerAdministrationClient = builder.buildAsyncClient&#40;&#41;;
  *
  * </pre>
  * <!-- end com.azure.communication.jobrouter.routeradministrationasyncclient.instantiation -->
  *
- * <p>View {@link RouterAdministrationClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link JobRouterAdministrationClientBuilder this} for additional ways to construct the client.</p>
  *
- * @see RouterAdministrationClientBuilder
+ * @see JobRouterAdministrationClientBuilder
  */
-@ServiceClient(builder = RouterAdministrationClientBuilder.class, isAsync = true)
-public final class RouterAdministrationAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(RouterAdministrationAsyncClient.class);
+@ServiceClient(builder = JobRouterAdministrationClientBuilder.class, isAsync = true)
+public final class JobRouterAdministrationAsyncClient {
+    private static final ClientLogger LOGGER = new ClientLogger(JobRouterAdministrationAsyncClient.class);
 
     private final JobRouterAdministrationsImpl jobRouterAdmin;
 
-    RouterAdministrationAsyncClient(AzureCommunicationServicesImpl jobRouterService) {
+    JobRouterAdministrationAsyncClient(AzureCommunicationServicesImpl jobRouterService) {
         this.jobRouterAdmin = jobRouterService.getJobRouterAdministrations();
     }
 

@@ -56,7 +56,7 @@ public class WorkerAdapter {
             .setLabels(labels)
             .setTags(updateWorkerOptions.getTags())
             .setQueueAssignments(queueAssignments)
-            .setAvailableForOffers(updateWorkerOptions.getAvailableForOffers())
+            .setAvailableForOffers(updateWorkerOptions.isAvailableForOffers())
             .setChannelConfigurations(updateWorkerOptions.getChannelConfigurations())
             .setTotalCapacity(updateWorkerOptions.getTotalCapacity());
     }

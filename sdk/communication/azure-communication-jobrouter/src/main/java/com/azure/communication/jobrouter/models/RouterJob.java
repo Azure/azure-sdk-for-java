@@ -4,9 +4,9 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.communication.jobrouter.models.RouterWorkerSelector;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;

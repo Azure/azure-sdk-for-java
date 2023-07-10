@@ -15,7 +15,7 @@ public final class ChannelConfiguration {
      * consume of the total worker capacity.
      */
     @JsonProperty(value = "capacityCostPerJob", required = true)
-    private int capacityCostPerJob;
+    private Integer capacityCostPerJob;
 
     /*
      * The maximum number of jobs that can be supported concurrently for this
@@ -30,7 +30,7 @@ public final class ChannelConfiguration {
      *
      * @return the capacityCostPerJob value.
      */
-    public int getCapacityCostPerJob() {
+    public Integer getCapacityCostPerJob() {
         return this.capacityCostPerJob;
     }
 
@@ -41,7 +41,7 @@ public final class ChannelConfiguration {
      * @param capacityCostPerJob the capacityCostPerJob value to set.
      * @return the ChannelConfiguration object itself.
      */
-    public ChannelConfiguration setCapacityCostPerJob(int capacityCostPerJob) {
+    public ChannelConfiguration setCapacityCostPerJob(Integer capacityCostPerJob) {
         this.capacityCostPerJob = capacityCostPerJob;
         return this;
     }

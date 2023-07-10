@@ -48,22 +48,22 @@ class JobRouterTestBase extends TestBase {
         return connectionString;
     }
 
-    protected RouterAdministrationClient getRouterAdministrationClient(HttpClient client) {
+    protected JobRouterAdministrationClient getRouterAdministrationClient(HttpClient client) {
         HttpPipeline httpPipeline = buildHttpPipeline(client);
-        RouterAdministrationClient routerAdministrationClient = new RouterAdministrationClientBuilder()
+        JobRouterAdministrationClient jobRouterAdministrationClient = new JobRouterAdministrationClientBuilder()
             .connectionString(getConnectionString())
             .pipeline(httpPipeline)
             .buildClient();
-        return routerAdministrationClient;
+        return jobRouterAdministrationClient;
     }
 
-    protected RouterClient getRouterClient(HttpClient client) {
+    protected JobRouterClient getRouterClient(HttpClient client) {
         HttpPipeline httpPipeline = buildHttpPipeline(client);
-        RouterClient routerClient = new RouterClientBuilder()
+        JobRouterClient jobRouterClient = new JobRouterClientBuilder()
             .connectionString(getConnectionString())
             .pipeline(httpPipeline)
             .buildClient();
-        return routerClient;
+        return jobRouterClient;
     }
 
     private HttpPipeline buildHttpPipeline(HttpClient httpClient) {
@@ -97,7 +97,7 @@ class JobRouterTestBase extends TestBase {
         return pipeline;
     }
 
-    protected JobQueue createQueue(RouterAdministrationClient routerAdminClient, String queueId, String distributionPolicyId) {
+    protected JobQueue createQueue(JobRouterAdministrationClient routerAdminClient, String queueId, String distributionPolicyId) {
         String queueName = String.format("%s-Name", queueId);
         Map<String, LabelValue> queueLabels = new HashMap<String, LabelValue>() {
             {
@@ -112,7 +112,7 @@ class JobRouterTestBase extends TestBase {
         return routerAdminClient.createQueue(createQueueOptions);
     }
 
-    protected DistributionPolicy createDistributionPolicy(RouterAdministrationClient routerAdminClient, String id) {
+    protected DistributionPolicy createDistributionPolicy(JobRouterAdministrationClient routerAdminClient, String id) {
         String distributionPolicyName = String.format("%s-Name", id);
 
         CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
@@ -127,7 +127,7 @@ class JobRouterTestBase extends TestBase {
         return routerAdminClient.createDistributionPolicy(createDistributionPolicyOptions);
     }
 
-    protected RouterJob createJob(RouterClient routerClient, String queueId) {
+    protected RouterJob createJob(JobRouterClient jobRouterClient, String queueId) {
         CreateJobOptions createJobOptions = new CreateJobOptions("job-id", "chat-channel", queueId)
             .setPriority(1)
             .setChannelReference("12345")
@@ -141,6 +141,6 @@ class JobRouterTestBase extends TestBase {
                     }
                 }
             );
-        return routerClient.createJob(createJobOptions);
+        return jobRouterClient.createJob(createJobOptions);
     }
 }

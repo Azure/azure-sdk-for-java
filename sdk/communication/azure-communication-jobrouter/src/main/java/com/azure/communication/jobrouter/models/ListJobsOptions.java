@@ -17,22 +17,22 @@ public class ListJobsOptions {
     /**
      * JobStateSelector.
      */
-    private final RouterJobStatusSelector jobStateSelector;
+    private RouterJobStatusSelector jobStateSelector;
 
     /**
      * QueueId.
      */
-    private final String queueId;
+    private String queueId;
 
     /**
      * ChannelId.
      */
-    private final String channelId;
+    private String channelId;
 
     /**
      * ClassificationPolicyId.
      */
-    private final String classificationPolicyId;
+    private String classificationPolicyId;
 
     private OffsetDateTime scheduledBefore;
 
@@ -41,23 +41,62 @@ public class ListJobsOptions {
     /**
      * MaxPageSize.
      */
-    private final Integer maxPageSize;
+    private Integer maxPageSize;
 
     /**
      * Constructor for ListJobsOptions.
-     *
-     * @param jobStateSelector JobStateSelector.
-     * @param queueId QueueId.
-     * @param channelId ChannelId.
-     * @param classificationPolicyId ClassificationPolicyId.
-     * @param maxPageSize Maximum number of items per page.
      */
-    public ListJobsOptions(RouterJobStatusSelector jobStateSelector, String queueId, String channelId, String classificationPolicyId, Integer maxPageSize) {
+    public ListJobsOptions() {
+    }
+
+    /**
+     * Setter for RouterJobStatusSelector.
+     * @param jobStateSelector of type RouterJobStatusSelector.
+     * @return object of type ListJobOptions.
+     */
+    public ListJobsOptions setJobStateSelector(RouterJobStatusSelector jobStateSelector) {
         this.jobStateSelector = jobStateSelector;
+        return this;
+    }
+
+    /**
+     * Setter for QueueId.
+     * @param queueId queueId.
+     * @return object of type ListJobOptions.
+     */
+    public ListJobsOptions setQueueId(String queueId) {
         this.queueId = queueId;
+        return this;
+    }
+
+    /**
+     * Setter for channelId.
+     * @param channelId channelId.
+     * @return object of type ListJobOptions.
+     */
+    public ListJobsOptions setChannelId(String channelId) {
         this.channelId = channelId;
+        return this;
+    }
+
+    /**
+     * Setter for classificationPolicyId.
+     * @param classificationPolicyId classificationPolicyId.
+     * @return object of type ListJobOptions.
+     */
+    public ListJobsOptions setClassificationPolicyId(String classificationPolicyId) {
         this.classificationPolicyId = classificationPolicyId;
+        return this;
+    }
+
+    /**
+     * Setter for maxPageSize.
+     * @param maxPageSize maxPageSize.
+     * @return object of type ListJobOptions.
+     */
+    public ListJobsOptions setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
+        return this;
     }
 
     /**

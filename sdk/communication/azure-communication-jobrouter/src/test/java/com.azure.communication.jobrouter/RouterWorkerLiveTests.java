@@ -20,15 +20,15 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RouterWorkerLiveTests extends JobRouterTestBase {
-    private RouterClient routerClient;
+    private JobRouterClient jobRouterClient;
 
-    private RouterAdministrationClient routerAdminClient;
+    private JobRouterAdministrationClient routerAdminClient;
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createWorker(HttpClient httpClient) {
         // Setup
-        routerClient = getRouterClient(httpClient);
+        jobRouterClient = getRouterClient(httpClient);
         routerAdminClient = getRouterAdministrationClient(httpClient);
         /**
          * Setup queue
@@ -78,13 +78,13 @@ public class RouterWorkerLiveTests extends JobRouterTestBase {
             .setQueueAssignments(queueAssignments);
 
         // Action
-        RouterWorker result = routerClient.createWorker(createWorkerOptions);
+        RouterWorker result = jobRouterClient.createWorker(createWorkerOptions);
 
         // Verify
         assertEquals(workerId, result.getId());
 
         // Cleanup
-        routerClient.deleteWorker(workerId);
+        jobRouterClient.deleteWorker(workerId);
         routerAdminClient.deleteQueue(queueId);
         routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }

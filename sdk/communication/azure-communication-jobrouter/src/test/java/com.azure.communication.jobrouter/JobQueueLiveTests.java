@@ -17,15 +17,15 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JobQueueLiveTests extends JobRouterTestBase {
-    private RouterClient routerClient;
+    private JobRouterClient jobRouterClient;
 
-    private RouterAdministrationClient routerAdminClient;
+    private JobRouterAdministrationClient routerAdminClient;
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createQueue(HttpClient httpClient) {
         // Setup
-        routerClient = getRouterClient(httpClient);
+        jobRouterClient = getRouterClient(httpClient);
         routerAdminClient = getRouterAdministrationClient(httpClient);
         String distributionPolicyId = String.format("%s-CreateQueue-DistributionPolicy", JAVA_LIVE_TESTS);
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
@@ -47,7 +47,7 @@ public class JobQueueLiveTests extends JobRouterTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void updateQueue(HttpClient httpClient) {
         // Setup
-        routerClient = getRouterClient(httpClient);
+        jobRouterClient = getRouterClient(httpClient);
         routerAdminClient = getRouterAdministrationClient(httpClient);
         String distributionPolicyId = String.format("%s-CreateQueue-DistributionPolicy", JAVA_LIVE_TESTS);
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);

@@ -42,24 +42,24 @@ import com.azure.core.util.Context;
  * <!-- src_embed com.azure.communication.jobrouter.routeradministrationclient.instantiation -->
  * <pre>
  * &#47;&#47; Initialize the router administration client builder
- * final RouterAdministrationClientBuilder builder = new RouterAdministrationClientBuilder&#40;&#41;
+ * final JobRouterAdministrationClientBuilder builder = new JobRouterAdministrationClientBuilder&#40;&#41;
  *     .connectionString&#40;connectionString&#41;;
  * &#47;&#47; Build the router administration client
- * RouterAdministrationClient routerAdministrationClient = builder.buildClient&#40;&#41;;
+ * JobRouterAdministrationClient jobRouterAdministrationClient = builder.buildClient&#40;&#41;;
  *
  * </pre>
  * <!-- end com.azure.communication.jobrouter.routeradministrationclient.instantiation -->
  *
- * <p>View {@link RouterAdministrationClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link JobRouterAdministrationClientBuilder this} for additional ways to construct the client.</p>
  *
- * @see RouterAdministrationClientBuilder
+ * @see JobRouterAdministrationClientBuilder
  */
-@ServiceClient(builder = RouterAdministrationClientBuilder.class, isAsync = false)
-public final class RouterAdministrationClient {
+@ServiceClient(builder = JobRouterAdministrationClientBuilder.class, isAsync = false)
+public final class JobRouterAdministrationClient {
 
-    private final RouterAdministrationAsyncClient client;
+    private final JobRouterAdministrationAsyncClient client;
 
-    RouterAdministrationClient(RouterAdministrationAsyncClient client) {
+    JobRouterAdministrationClient(JobRouterAdministrationAsyncClient client) {
         this.client = client;
     }
 
@@ -204,6 +204,7 @@ public final class RouterAdministrationClient {
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClassificationPolicyItem> listClassificationPolicies(ListClassificationPoliciesOptions listClassificationPoliciesOptions, Context context) {
         return new PagedIterable<>(this.client.listClassificationPolicies(listClassificationPoliciesOptions, context));
     }
