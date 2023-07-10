@@ -5,6 +5,7 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.functions.Parameters;
+import com.azure.ai.openai.implementation.FunctionCall;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
@@ -266,5 +267,14 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     static void assertImageResponse(ImageResponse actual) {
         assertNotNull(actual.getData());
         assertFalse(actual.getData().isEmpty());
+    }
+
+    static <T> T assertFunctionCall(ChatChoice actual, String functionName, Class<T> myPropertiesClazz) {
+        assertEquals(0, actual.getIndex());
+        assertEquals("function_call", actual.getFinishReason().toString());
+        FunctionCall functionCall = actual.getMessage().getFunctionCall();
+        assertEquals(functionName, functionCall.getName());
+        BinaryData argumentJson = BinaryData.fromString(functionCall.getArguments());
+        return argumentJson.toObject(myPropertiesClazz);
     }
 }

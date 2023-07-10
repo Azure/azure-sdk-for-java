@@ -9,9 +9,15 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class Location {
 
+    /**
+     * type defines the JSON type of the value that the service will request if a @FunctionCall is requested
+     */
     @JsonProperty(value = "type")
     private String type = "string";
 
+    /**
+     * Examples provided in the description appear to be used verbatim. Such as "San Francisco, CA"
+     */
     @JsonProperty(value = "description")
     private String description = "The city and state, e.g. San Francisco, CA";
 
