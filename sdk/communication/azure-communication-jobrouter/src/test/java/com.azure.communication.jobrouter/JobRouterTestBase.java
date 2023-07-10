@@ -5,17 +5,18 @@ package com.azure.communication.jobrouter;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
+import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateQueueOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.JobQueue;
 import com.azure.communication.jobrouter.models.LabelOperator;
 import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.LongestIdleMode;
 import com.azure.communication.jobrouter.models.RouterJob;
+import com.azure.communication.jobrouter.models.RouterQueue;
+import com.azure.communication.jobrouter.models.RouterWorkerSelector;
 import com.azure.communication.jobrouter.models.WorkerSelector;
-import com.azure.communication.jobrouter.models.options.CreateDistributionPolicyOptions;
-import com.azure.communication.jobrouter.models.options.CreateJobOptions;
-import com.azure.communication.jobrouter.models.options.CreateQueueOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -98,7 +99,7 @@ class JobRouterTestBase extends TestBase {
         return pipeline;
     }
 
-    protected JobQueue createQueue(JobRouterAdministrationClient routerAdminClient, String queueId, String distributionPolicyId) {
+    protected RouterQueue createQueue(JobRouterAdministrationClient routerAdminClient, String queueId, String distributionPolicyId) {
         String queueName = String.format("%s-Name", queueId);
         Map<String, LabelValue> queueLabels = new HashMap<String, LabelValue>() {
             {
@@ -133,9 +134,9 @@ class JobRouterTestBase extends TestBase {
             .setPriority(1)
             .setChannelReference("12345")
             .setRequestedWorkerSelectors(
-                new ArrayList<WorkerSelector>() {
+                new ArrayList<RouterWorkerSelector>() {
                     {
-                        new WorkerSelector()
+                        new RouterWorkerSelector()
                             .setKey("Some-skill")
                             .setLabelOperator(LabelOperator.GREATER_THAN)
                             .setValue(10);

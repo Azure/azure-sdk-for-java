@@ -6,17 +6,16 @@ package com.azure.communication.jobrouter;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
 import com.azure.communication.jobrouter.models.ChannelConfiguration;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.JobOffer;
-import com.azure.communication.jobrouter.models.JobQueue;
 import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.QueueAssignment;
 import com.azure.communication.jobrouter.models.RouterJob;
+import com.azure.communication.jobrouter.models.RouterJobOffer;
+import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.communication.jobrouter.models.RouterWorker;
-import com.azure.communication.jobrouter.models.UnassignJobResult;
-import com.azure.communication.jobrouter.models.options.CreateJobOptions;
-import com.azure.communication.jobrouter.models.options.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.UnassignJobOptions;
+import com.azure.communication.jobrouter.models.UnassignJobResult;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -48,7 +47,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
 
         String queueId = String.format("%s-%s-Queue", JAVA_LIVE_TESTS, testName);
-        JobQueue jobQueue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
+        RouterQueue jobQueue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
 
         /**
          * Setup worker
@@ -94,7 +93,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
 
         RouterJob job = jobRouterClient.createJob(createJobOptions);
 
-        List<JobOffer> jobOffers = new ArrayList<>();
+        List<RouterJobOffer> jobOffers = new ArrayList<>();
         long startTimeMillis = System.currentTimeMillis();
         while (true) {
             worker = jobRouterClient.getWorker(workerId);
@@ -106,9 +105,9 @@ public class RouterJobLiveTests extends JobRouterTestBase {
 
         assertTrue(jobOffers.size() == 1);
 
-        JobOffer offer = jobOffers.get(0);
+        RouterJobOffer offer = jobOffers.get(0);
 
-        AcceptJobOfferResult acceptJobOfferResult = jobRouterClient.acceptJobOffer(workerId, offer.getId());
+        AcceptJobOfferResult acceptJobOfferResult = jobRouterClient.acceptJobOffer(workerId, offer.getOfferId());
 
         String assignmentId = acceptJobOfferResult.getAssignmentId();
 

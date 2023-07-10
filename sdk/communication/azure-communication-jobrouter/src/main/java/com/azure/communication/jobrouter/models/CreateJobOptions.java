@@ -248,7 +248,7 @@ public final class CreateJobOptions {
      * Notes attached to a job, sorted by timestamp
      * @return note
      */
-    public Map<String, String> getNotes() {
+    public List<RouterJobNote> getNotes() {
         return this.notes;
     }
 }
