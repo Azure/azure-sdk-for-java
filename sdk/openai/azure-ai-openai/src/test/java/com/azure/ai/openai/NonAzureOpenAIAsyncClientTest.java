@@ -258,7 +258,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                 .assertNext(chatCompletions -> {
                     assertEquals(1, chatCompletions.getChoices().size());
                     ChatChoice chatChoice = chatCompletions.getChoices().get(0);
-                    MyFunctionCallArguments arguments = assertFunctionCall(chatChoice, "MyFunction", MyFunctionCallArguments.class);
+                    MyFunctionCallArguments arguments = assertFunctionCall(
+                        chatChoice,
+                        "MyFunction",
+                        MyFunctionCallArguments.class);
                     assertEquals(arguments.getLocation(), "San Francisco, CA");
                     assertEquals(arguments.getUnit(), "CELSIUS");
                 })
@@ -285,7 +288,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testChatFunctionNotSuppliedByNamePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getChatFunctionRunner((modelId, chatCompletionsOptions) -> {
-            chatCompletionsOptions.setFunctionCall(new FunctionCall("UnavailableFunction"));
+            chatCompletionsOptions.setFunctionCall(new FunctionCall("NotMyFunction"));
             StepVerifier.create(client.getChatCompletions(modelId, chatCompletionsOptions))
                 .verifyErrorSatisfies(throwable -> {
                     assertInstanceOf(HttpResponseException.class, throwable);
