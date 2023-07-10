@@ -342,6 +342,31 @@ public final class ServerForUpdate {
     }
 
     /**
+     * Get the network property: Network properties of a server. These are required to be passed only in case if server
+     * is a private access server.
+     *
+     * @return the network value.
+     */
+    public Network network() {
+        return this.innerProperties() == null ? null : this.innerProperties().network();
+    }
+
+    /**
+     * Set the network property: Network properties of a server. These are required to be passed only in case if server
+     * is a private access server.
+     *
+     * @param network the network value to set.
+     * @return the ServerForUpdate object itself.
+     */
+    public ServerForUpdate withNetwork(Network network) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerPropertiesForUpdate();
+        }
+        this.innerProperties().withNetwork(network);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

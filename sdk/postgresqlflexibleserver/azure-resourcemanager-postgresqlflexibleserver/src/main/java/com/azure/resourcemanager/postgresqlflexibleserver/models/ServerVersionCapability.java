@@ -10,9 +10,9 @@ import java.util.List;
 
 /** Server version capabilities. */
 @Immutable
-public final class ServerVersionCapability {
+public final class ServerVersionCapability extends CapabilityBase {
     /*
-     * server version
+     * Server version
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
@@ -23,24 +23,12 @@ public final class ServerVersionCapability {
     @JsonProperty(value = "supportedVersionsToUpgrade", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> supportedVersionsToUpgrade;
 
-    /*
-     * The supportedVcores property.
-     */
-    @JsonProperty(value = "supportedVcores", access = JsonProperty.Access.WRITE_ONLY)
-    private List<VcoreCapability> supportedVcores;
-
-    /*
-     * The status
-     */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
-    private String status;
-
     /** Creates an instance of ServerVersionCapability class. */
     public ServerVersionCapability() {
     }
 
     /**
-     * Get the name property: server version.
+     * Get the name property: Server version.
      *
      * @return the name value.
      */
@@ -58,31 +46,12 @@ public final class ServerVersionCapability {
     }
 
     /**
-     * Get the supportedVcores property: The supportedVcores property.
-     *
-     * @return the supportedVcores value.
-     */
-    public List<VcoreCapability> supportedVcores() {
-        return this.supportedVcores;
-    }
-
-    /**
-     * Get the status property: The status.
-     *
-     * @return the status value.
-     */
-    public String status() {
-        return this.status;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (supportedVcores() != null) {
-            supportedVcores().forEach(e -> e.validate());
-        }
+        super.validate();
     }
 }

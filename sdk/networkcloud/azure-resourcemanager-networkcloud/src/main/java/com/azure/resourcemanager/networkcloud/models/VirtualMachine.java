@@ -74,6 +74,13 @@ public interface VirtualMachine {
     String adminUsername();
 
     /**
+     * Gets the availabilityZone property: The cluster availability zone containing this virtual machine.
+     *
+     * @return the availabilityZone value.
+     */
+    String availabilityZone();
+
+    /**
      * Gets the bareMetalMachineId property: The resource ID of the bare metal machine the virtual machine has landed
      * to.
      *

@@ -9,14 +9,12 @@ import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateQueueOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.JobQueue;
 import com.azure.communication.jobrouter.models.LabelOperator;
 import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.LongestIdleMode;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.communication.jobrouter.models.RouterWorkerSelector;
-import com.azure.communication.jobrouter.models.WorkerSelector;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -29,17 +27,19 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.Configuration;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-class JobRouterTestBase extends TestBase {
+class JobRouterTestBase extends TestProxyTestBase {
     protected static final String JAVA_LIVE_TESTS = "JAVA_LIVE_TESTS";
 
     protected String getConnectionString() {
@@ -88,15 +88,23 @@ class JobRouterTestBase extends TestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             httpClient = interceptorManager.getPlaybackClient();
+            addMatchers();
         }
-        policies.add(interceptorManager.getRecordPolicy());
+        if (interceptorManager.isRecordMode()) {
+            policies.add(interceptorManager.getRecordPolicy());
+        }
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .build();
 
         return pipeline;
+    }
+
+    private void addMatchers() {
+        interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(
+            Arrays.asList("x-ms-hmac-string-to-sign-base64"))));
     }
 
     protected RouterQueue createQueue(JobRouterAdministrationClient routerAdminClient, String queueId, String distributionPolicyId) {

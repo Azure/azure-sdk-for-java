@@ -22,7 +22,7 @@ import java.util.Map;
 /** Samples for Clusters CreateOrUpdate. */
 public final class ClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Clusters_Create.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Clusters_Create.json
      */
     /**
      * Sample code: Create or update cluster.
@@ -38,7 +38,7 @@ public final class ClustersCreateOrUpdateSamples {
             .withExtendedLocation(
                 new ExtendedLocation()
                     .withName(
-                        "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName")
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName")
                     .withType("CustomLocation"))
             .withAggregatorOrSingleRackDefinition(
                 new RackDefinition()
@@ -68,11 +68,11 @@ public final class ClustersCreateOrUpdateSamples {
                                     .withRackSlot(2L)
                                     .withSerialNumber("BM1219YYY")))
                     .withNetworkRackId(
-                        "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName")
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName")
                     .withRackLocation("Foo Datacenter, Floor 3, Aisle 9, Rack 2")
                     .withRackSerialNumber("AA1234")
                     .withRackSkuId(
-                        "/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName")
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName")
                     .withStorageApplianceConfigurationData(
                         Arrays
                             .asList(
@@ -84,13 +84,13 @@ public final class ClustersCreateOrUpdateSamples {
                                     .withRackSlot(1L)
                                     .withSerialNumber("BM1219XXX")
                                     .withStorageApplianceName("vmName"))))
-            .withAnalyticsWorkspaceId(
-                "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName")
             .withClusterType(ClusterType.SINGLE_RACK)
             .withClusterVersion("1.0.0")
             .withNetworkFabricId(
-                "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName")
+                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName")
             .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
+            .withAnalyticsWorkspaceId(
+                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName")
             .withClusterLocation("Foo Street, 3rd Floor, row 9")
             .withClusterServicePrincipal(
                 new ServicePrincipalInformation()
@@ -133,11 +133,11 @@ public final class ClustersCreateOrUpdateSamples {
                                             .withRackSlot(2L)
                                             .withSerialNumber("BM1219YYY")))
                             .withNetworkRackId(
-                                "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName")
+                                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName")
                             .withRackLocation("Foo Datacenter, Floor 3, Aisle 9, Rack 2")
                             .withRackSerialNumber("AA1234")
                             .withRackSkuId(
-                                "/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName")
+                                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName")
                             .withStorageApplianceConfigurationData(
                                 Arrays
                                     .asList(

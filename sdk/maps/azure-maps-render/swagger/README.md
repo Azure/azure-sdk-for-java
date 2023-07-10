@@ -41,7 +41,7 @@ directive:
           }
     
 title: RenderClient
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Render/preview/2.1/render.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Render/stable/2022-08-01/render.json
 namespace: com.azure.maps.render
 java: true
 output-folder: ../
@@ -58,4 +58,7 @@ custom-types-subpackage: models
 custom-types: LocalizedMapView,MapImageStyle,RasterTileFormat,StaticMapLayer,MapTileSize,TileIndex,TilesetID,Copyright,CopyrightCaption,MapAttribution,RegionCopyrights,RegionCopyrightsCountry,MapTileset
 customization-jar-path: target/azure-maps-render-customization-1.0.0-beta.1.jar
 customization-class: RenderCustomization
+modelerfour:
+  additional-checks: false
+  lenient-model-deduplication: true
 ```

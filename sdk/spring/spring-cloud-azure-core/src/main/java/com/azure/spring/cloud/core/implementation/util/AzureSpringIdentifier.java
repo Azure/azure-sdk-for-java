@@ -39,8 +39,11 @@ public final class AzureSpringIdentifier {
     //    b2c: for AAD B2C
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureSpringIdentifier.class);
     public static final String VERSION = getVersion();
+    public static final int MAX_VERSION_LENGTH = 12;
     public static final String AZURE_SPRING_APP_CONFIG = "az-sp-cfg/" + VERSION;
     public static final String AZURE_SPRING_EVENT_HUBS = "az-sp-eh/" + VERSION;
+
+    public static final String AZURE_SPRING_EVENT_GRID = "az-sp-eg/" + VERSION;
     //Kafka supports set client software name and version individually.
     //We add the separator of . here to split Azure UA with the native Kafka UA.
     //And given the limitation of Kafka, only . is allowed here.
@@ -90,8 +93,23 @@ public final class AzureSpringIdentifier {
             Properties properties = PropertiesLoaderUtils.loadProperties(
                 new ClassPathResource("azure-spring-identifier.properties"));
             version = properties.getProperty("version");
+            //Add this logic to avoid creating app id failed
+            version = formatVersion(version);
         } catch (IOException e) {
             LOGGER.warn("Can not get version.");
+        }
+        return version;
+    }
+
+    static String formatVersion(String version) {
+        if (version.length() > MAX_VERSION_LENGTH) {
+            if (version.contains("beta")) {
+                version = version.replace("beta", "b");
+            } else if (version.contains("alpha")) {
+                version = version.replace("alpha", "a");
+            } else {
+                throw new RuntimeException("version is too long to create application id");
+            }
         }
         return version;
     }

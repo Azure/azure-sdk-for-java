@@ -13,19 +13,24 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
     private final boolean isEnabled;
     private final Duration endToEndOperationTimeout;
 
+    private final AvailabilityStrategy availabilityStrategy;
+
     /**
      * Constructor
      *
-     * @param isEnabled                toggle if the policy should be enabled or disabled
-     * @param endToEndOperationTimeout the timeout for request cancellation in {@link Duration}. Setting very low timeouts
-     *                                 can cause the request to never succeed.
+     * @param isEnabled                    toggle if the policy should be enabled or disabled
+     * @param endToEndOperationTimeout     the timeout for request cancellation in {@link Duration}. Setting very low timeouts
+     *                                     can cause the request to never succeed.
+     * @param availabilityStrategy         the availability strategy to be used for the policy
      */
     CosmosEndToEndOperationLatencyPolicyConfig(
         boolean isEnabled,
-        Duration endToEndOperationTimeout) {
+        Duration endToEndOperationTimeout,
+        AvailabilityStrategy availabilityStrategy) {
 
         this.isEnabled = isEnabled;
         this.endToEndOperationTimeout = endToEndOperationTimeout;
+        this.availabilityStrategy = availabilityStrategy;
     }
 
     /**
@@ -44,6 +49,15 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
      */
     public Duration getEndToEndOperationTimeout() {
         return endToEndOperationTimeout;
+    }
+
+    /**
+     * Gets the availability strategy to be used for the policy.
+     *
+     * @return the availability strategy to be used for the policy
+     */
+    public AvailabilityStrategy getAvailabilityStrategy() {
+        return availabilityStrategy;
     }
 
 }
