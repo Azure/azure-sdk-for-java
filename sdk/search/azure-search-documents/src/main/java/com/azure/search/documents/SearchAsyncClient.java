@@ -1072,7 +1072,12 @@ public final class SearchAsyncClient {
             .setSkip(options.getSkip())
             .setTop(options.getTop())
             .setCaptions(createSearchRequestCaptions(options))
-            .setSemanticFields(nullSafeStringJoin(options.getSemanticFields()));
+            .setSemanticFields(nullSafeStringJoin(options.getSemanticFields()))
+            .setSemanticErrorHandling(options.getSemanticErrorHandling())
+            .setSemanticMaxWaitInMilliseconds(options.getSemanticMaxWaitInMilliseconds())
+            .setDebug(options.getDebug())
+            .setVector(options.getVector());
+
     }
 
     static String createSearchRequestAnswers(SearchOptions searchOptions) {
