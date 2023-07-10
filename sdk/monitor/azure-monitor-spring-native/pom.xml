@@ -42,17 +42,17 @@
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
       <artifactId>opentelemetry-spring-boot-starter</artifactId>
-      <version>1.24.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
+      <version>1.27.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
-      <version>1.24.0-alpha</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
+      <version>1.28.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
       <artifactId>opentelemetry-runtime-metrics</artifactId>
-      <version>1.24.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-runtime-metrics;external_dependency} -->
+      <version>1.26.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-runtime-metrics;external_dependency} -->
     </dependency>
     <!-- End of OTel dependencies -->
 
@@ -75,9 +75,9 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:[1.24.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.24.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
-                <include>io.opentelemetry.instrumentation:opentelemetry-runtime-metrics:[1.24.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-metrics;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:[1.27.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.28.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-runtime-metrics:[1.26.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-metrics;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
