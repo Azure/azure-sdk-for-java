@@ -486,7 +486,7 @@ public final class ChatCompletionsOptions {
      *
      * @return the functionCall value.
      */
-    FunctionCallModelBase _getFunctionCall() {
+    FunctionCallModelBase getFunctionCallInternal() {
         return this.functionCall;
     }
 
@@ -499,16 +499,16 @@ public final class ChatCompletionsOptions {
      * @param functionCall the functionCall value to set.
      * @return the ChatCompletionsOptions object itself.
      */
-    ChatCompletionsOptions setFunctionCall(FunctionCallModelBase functionCall) {
+    ChatCompletionsOptions setFunctionCallInternal(FunctionCallModelBase functionCall) {
         this.functionCall = functionCall;
         return this;
     }
 
-    public FunctionCall getFunctionCalls() {
+    public FunctionCall getFunctionCall() {
         return this.functionCalls;
     }
 
-    public ChatCompletionsOptions setFunctionCalls(FunctionCall functionCalls) {
+    public ChatCompletionsOptions setFunctionCall(FunctionCall functionCalls) {
         this.functionCalls = functionCalls;
         if (FunctionCallPreset.values().stream().anyMatch(preset -> preset.toString().equals(functionCalls.getName()))) {
             this.functionCall = new FunctionCallPresetFunctionCallModel(FunctionCallPreset.fromString(this.functionCalls.getName()));

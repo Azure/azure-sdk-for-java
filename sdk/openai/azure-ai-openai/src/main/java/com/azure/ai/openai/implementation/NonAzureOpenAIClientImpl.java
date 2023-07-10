@@ -3,9 +3,6 @@
 
 package com.azure.ai.openai.implementation;
 
-import com.azure.ai.openai.models.ChatCompletionsOptions;
-import com.azure.ai.openai.models.CompletionsOptions;
-import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -28,10 +25,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
@@ -71,6 +68,11 @@ public final class NonAzureOpenAIClientImpl {
      * This is the endpoint that non-azure OpenAI supports. Currently, it has only v1 version.
      */
     public static final String OPEN_AI_ENDPOINT = "https://api.openai.com/v1";
+
+    /**
+     * Mapper used to add the `modelId` into the request body for an nonAzure OpenAI request
+     */
+    private static final ObjectMapper jsonMapper = new ObjectMapper();
 
     /**
      * Initializes an instance of OpenAIClient client.
@@ -295,11 +297,8 @@ public final class NonAzureOpenAIClientImpl {
         BinaryData embeddingsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
 
-        // OpenAI has model ID in request body
-        BinaryData embeddingsOptionsUpdated = BinaryData.fromObject(
-            embeddingsOptions.toObject(EmbeddingsOptions.class)
-                .setModel(modelId)
-        );
+        // modelId is part of the request body in nonAzure OpenAI
+        BinaryData embeddingsOptionsUpdated = addModelIdJson(embeddingsOptions, modelId);
 
         return FluxUtil.withContext(
             context ->
@@ -363,11 +362,8 @@ public final class NonAzureOpenAIClientImpl {
                                                           RequestOptions requestOptions) {
         final String accept = "application/json";
 
-        // OpenAI has model ID in request body
-        BinaryData embeddingsOptionsUpdated = BinaryData.fromObject(
-            embeddingsOptions.toObject(EmbeddingsOptions.class)
-                .setModel(modelId)
-        );
+        // modelId is part of the request body in nonAzure OpenAI
+        BinaryData embeddingsOptionsUpdated = addModelIdJson(embeddingsOptions, modelId);
 
         return service.getEmbeddingsSync(
             OPEN_AI_ENDPOINT,
@@ -464,11 +460,8 @@ public final class NonAzureOpenAIClientImpl {
         BinaryData completionsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
 
-        // OpenAI has model ID in request body
-        BinaryData completionsOptionsUpdated = BinaryData.fromObject(
-            completionsOptions.toObject(CompletionsOptions.class)
-                .setModel(modelId)
-        );
+        // modelId is part of the request body in nonAzure OpenAI
+        BinaryData completionsOptionsUpdated = addModelIdJson(completionsOptions, modelId);
 
         return FluxUtil.withContext(
             context ->
@@ -565,11 +558,9 @@ public final class NonAzureOpenAIClientImpl {
                                                            RequestOptions requestOptions) {
         final String accept = "application/json";
 
-        // OpenAI has model ID in request body
-        BinaryData completionsOptionsUpdated = BinaryData.fromObject(
-            completionsOptions.toObject(CompletionsOptions.class)
-                .setModel(modelId)
-        );
+        // modelId is part of the request body in nonAzure OpenAI
+        BinaryData completionsOptionsUpdated = addModelIdJson(completionsOptions, modelId);
+
         return service.getCompletionsSync(
             OPEN_AI_ENDPOINT,
             accept,
@@ -656,30 +647,17 @@ public final class NonAzureOpenAIClientImpl {
         BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
 
-        try {
-            ObjectMapper mapper = new ObjectMapper();
+        // modelId is part of the request body in nonAzure OpenAI
+        BinaryData chatCompletionsOptionsUpdated = addModelIdJson(chatCompletionsOptions, modelId);
 
-            JsonNode jsonNode = mapper.readTree(chatCompletionsOptions.toString());
-
-            if (jsonNode instanceof ObjectNode) {
-                ObjectNode objectNode = (ObjectNode) jsonNode;
-                objectNode.put("model", modelId);
-                chatCompletionsOptions = BinaryData.fromBytes(objectNode.toString().getBytes(StandardCharsets.UTF_8));
-            }
-
-            BinaryData chatCompletionsOptionsUpdated = chatCompletionsOptions;
-
-            return FluxUtil.withContext(
-                context ->
-                    service.getChatCompletions(
-                        OPEN_AI_ENDPOINT,
-                        accept,
-                        chatCompletionsOptionsUpdated,
-                        requestOptions,
-                        context));
-        } catch (Exception exception) {
-            return Mono.error(exception);
-        }
+        return FluxUtil.withContext(
+            context ->
+                service.getChatCompletions(
+                    OPEN_AI_ENDPOINT,
+                    accept,
+                    chatCompletionsOptionsUpdated,
+                    requestOptions,
+                    context));
     }
 
     /**
@@ -759,11 +737,8 @@ public final class NonAzureOpenAIClientImpl {
                                                                RequestOptions requestOptions) {
         final String accept = "application/json";
 
-        // OpenAI has model ID in request body
-        BinaryData chatCompletionsOptionsUpdated = BinaryData.fromObject(
-            chatCompletionsOptions.toObject(ChatCompletionsOptions.class)
-                .setModel(modelId)
-        );
+        // modelId is part of the request body in nonAzure OpenAI
+        BinaryData chatCompletionsOptionsUpdated = addModelIdJson(chatCompletionsOptions, modelId);
 
         return service.getChatCompletionsSync(
             OPEN_AI_ENDPOINT,
@@ -885,5 +860,33 @@ public final class NonAzureOpenAIClientImpl {
             requestOptions,
             Context.NONE
         );
+    }
+
+    /**
+     * This method injects the modelId in the request body for requests against nonAzure OpenAI. Unlike Azure OpenAI,
+     * the service expects this value in the body of the request, whereas Azure OpenAI passes it as part of the
+     * path of the request.
+     *
+     * @param inputJson JSON submitted by the client
+     * @param modelId The LLM model ID to be injected in the JSON
+     * @return
+     */
+    private static BinaryData addModelIdJson(BinaryData inputJson, String modelId) {
+        JsonNode jsonNode = null;
+        try {
+            jsonNode = jsonMapper.readTree(inputJson.toString());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (jsonNode instanceof ObjectNode) {
+            ObjectNode objectNode = (ObjectNode) jsonNode;
+            objectNode.put("model", modelId);
+            inputJson = BinaryData.fromBytes(
+                objectNode.toString()
+                    .getBytes(StandardCharsets.UTF_8));
+        }
+
+        return inputJson;
     }
 }

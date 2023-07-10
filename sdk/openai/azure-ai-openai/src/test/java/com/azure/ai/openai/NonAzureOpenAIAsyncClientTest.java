@@ -253,7 +253,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testChatFunctionAutoPreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getChatFunctionRunner((modelId, chatCompletionsOptions) -> {
-            chatCompletionsOptions.setFunctionCalls(FunctionCall.AUTO);
+            chatCompletionsOptions.setFunctionCall(FunctionCall.AUTO);
             StepVerifier.create(client.getChatCompletions(modelId, chatCompletionsOptions))
                 .assertNext(chatCompletions -> {
                     assertEquals(1, chatCompletions.getChoices().size());
@@ -271,10 +271,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testChatFunctionNonePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getChatFunctionRunner((modelId, chatCompletionsOptions) -> {
-            chatCompletionsOptions.setFunctionCalls(FunctionCall.NONE);
+            chatCompletionsOptions.setFunctionCall(FunctionCall.NONE);
             StepVerifier.create(client.getChatCompletions(modelId, chatCompletionsOptions))
                 .assertNext(chatCompletions -> {
-                    assertChatCompletions(1, "stop", ChatRole.ASSISTANT, chatCompletions );
+                    assertChatCompletions(1, "stop", ChatRole.ASSISTANT, chatCompletions);
                 })
                 .verifyComplete();
         });
@@ -285,7 +285,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testChatFunctionNotSuppliedByNamePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getChatFunctionRunner((modelId, chatCompletionsOptions) -> {
-            chatCompletionsOptions.setFunctionCalls(new FunctionCall("UnavailableFunction"));
+            chatCompletionsOptions.setFunctionCall(new FunctionCall("UnavailableFunction"));
             StepVerifier.create(client.getChatCompletions(modelId, chatCompletionsOptions))
                 .verifyErrorSatisfies(throwable -> {
                     assertInstanceOf(HttpResponseException.class, throwable);
