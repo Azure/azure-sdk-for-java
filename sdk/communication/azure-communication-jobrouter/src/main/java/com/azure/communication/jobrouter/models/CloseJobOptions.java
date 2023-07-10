@@ -49,25 +49,31 @@ public final class CloseJobOptions {
     /**
      * Sets dispositionCode.
      * @param dispositionCode Reason code for cancelled or closed jobs.
+     * @return object of type CloseJobOptions.
      */
-    public void setDispositionCode(String dispositionCode) {
+    public CloseJobOptions setDispositionCode(String dispositionCode) {
         this.dispositionCode = dispositionCode;
+        return this;
     }
 
     /**
      * Sets closeTime.
      * @param closeTime A future time determined to close the job.
+     * @return object of type CloseJobOptions.
      */
-    public void setCloseTime(OffsetDateTime closeTime) {
+    public CloseJobOptions setCloseTime(OffsetDateTime closeTime) {
         this.closeTime = closeTime;
+        return this;
     }
 
     /**
      * Sets note.
      * @param note Note attached to job.
+     * @return object of type CloseJobOptions
      */
-    public void setNote(String note) {
+    public CloseJobOptions setNote(String note) {
         this.note = note;
+        return this;
     }
 
     /**

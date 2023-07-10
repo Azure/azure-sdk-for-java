@@ -66,7 +66,7 @@ public final class CreateJobOptions {
     /**
      * Notes attached to a job, sorted by timestamp.
      */
-    private Map<String, String> notes;
+    private List<RouterJobNote> notes;
 
     /**
      * Constructor for CreateJobOptions.
@@ -157,7 +157,7 @@ public final class CreateJobOptions {
      * @param notes Notes attached to a job, sorted by timestamp.
      * @return this
      */
-    public CreateJobOptions setNotes(Map<String, String> notes) {
+    public CreateJobOptions setNotes(List<RouterJobNote> notes) {
         this.notes = notes;
         return this;
     }

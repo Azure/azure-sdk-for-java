@@ -18,7 +18,7 @@ public final class WebhookRule extends RouterRule {
      * Uri for Authorization Server.
      */
     @JsonProperty(value = "authorizationServerUri")
-    private String authorizationServerUri;
+    private String authorizationServerUrl;
 
     /*
      * OAuth2.0 Credentials used to Contoso's Authorization server.
@@ -39,18 +39,18 @@ public final class WebhookRule extends RouterRule {
      *
      * @return the authorizationServerUri value.
      */
-    public String getAuthorizationServerUri() {
-        return this.authorizationServerUri;
+    public String getAuthorizationServerUrl() {
+        return this.authorizationServerUrl;
     }
 
     /**
      * Set the authorizationServerUri property: Uri for Authorization Server.
      *
-     * @param authorizationServerUri the authorizationServerUri value to set.
+     * @param authorizationServerUrl the authorizationServerUri value to set.
      * @return the WebhookRule object itself.
      */
-    public WebhookRule setAuthorizationServerUri(String authorizationServerUri) {
-        this.authorizationServerUri = authorizationServerUri;
+    public WebhookRule setAuthorizationServerUrl(String authorizationServerUrl) {
+        this.authorizationServerUrl = authorizationServerUrl;
         return this;
     }
 

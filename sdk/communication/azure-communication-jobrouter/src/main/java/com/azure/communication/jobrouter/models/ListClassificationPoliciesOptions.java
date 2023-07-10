@@ -14,14 +14,22 @@ public class ListClassificationPoliciesOptions {
     /**
      * Maximum number of items per page.
      */
-    private final Integer maxPageSize;
+    private Integer maxPageSize;
 
     /**
      * Constructor for ListClassificationPoliciesOptions.
-     * @param maxPageSize Maximum number of items per page.
      */
-    public ListClassificationPoliciesOptions(Integer maxPageSize) {
+    public ListClassificationPoliciesOptions() {
+    }
+
+    /**
+     * Setter for maxPageSize.
+     * @param maxPageSize maxPageSize.
+     * @return object of type ListClassificationPoliciesOptions.
+     */
+    public ListClassificationPoliciesOptions setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
+        return this;
     }
 
     /**

@@ -5,6 +5,7 @@ package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
 import com.azure.communication.jobrouter.models.ChannelConfiguration;
+import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.JobOffer;
 import com.azure.communication.jobrouter.models.JobQueue;

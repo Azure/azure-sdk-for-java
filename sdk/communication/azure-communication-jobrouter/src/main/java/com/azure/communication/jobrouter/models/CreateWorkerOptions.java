@@ -167,7 +167,7 @@ public final class CreateWorkerOptions {
      * Returns availableForOffers.
      * @return availableForOffers
      */
-    public Boolean getAvailableForOffers() {
+    public Boolean isAvailableForOffers() {
         return this.availableForOffers;
     }
 }

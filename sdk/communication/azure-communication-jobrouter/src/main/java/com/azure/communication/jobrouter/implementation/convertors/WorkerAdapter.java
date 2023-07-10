@@ -34,7 +34,7 @@ public class WorkerAdapter {
             .setLabels(labels)
             .setTags(createWorkerOptions.getTags())
             .setQueueAssignments(queueAssignments)
-            .setAvailableForOffers(createWorkerOptions.getAvailableForOffers())
+            .setAvailableForOffers(createWorkerOptions.isAvailableForOffers())
             .setChannelConfigurations(createWorkerOptions.getChannelConfigurations())
             .setTotalCapacity(createWorkerOptions.getTotalCapacity());
     }
