@@ -338,7 +338,7 @@ public class ReadmeSamples {
         try {
             CosmosContainerResponse container = cosmosDatabase.createContainer(containerProperties);
         } catch (CosmosException ce) {
-            System.out.printf("Container with id : %s already exists \n", containerId);
+            System.out.println("Failed to create container: " + ce);
         }
         // END: com.azure.cosmos.CosmosDatabase.createContainer
 
@@ -360,7 +360,7 @@ public class ReadmeSamples {
                 throughputProperties
             );
         } catch (CosmosException ce) {
-            System.out.printf("Container with id : %s already exists \n", containerId);
+            System.out.println("Failed to create container: " + ce);
         }
         // END: com.azure.cosmos.CosmosDatabase.createContainerProps
     }
@@ -382,7 +382,7 @@ public class ReadmeSamples {
                 options
             );
         } catch (CosmosException ce) {
-            System.out.printf("Container with id : %s already exists \n", containerId);
+            System.out.println("Failed to create container: " + ce);
         }
         // END: com.azure.cosmos.CosmosDatabase.createContainerThroughput
     }
@@ -402,7 +402,7 @@ public class ReadmeSamples {
                 throughputProperties
             );
         } catch (CosmosException ce) {
-            System.out.printf("Container with id : %s already exists \n", containerId);
+            System.out.println("Failed to create container: " + ce);
         }
         // END: com.azure.cosmos.CosmosDatabase.createContainerPartitionKey
     }

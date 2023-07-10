@@ -316,7 +316,7 @@ public class AsyncContainerCodeSnippets {
         cosmosAsyncDatabase.createContainer(containerProperties)
             .subscribe(
                 cosmosContainerResponse -> System.out.println(cosmosContainerResponse),
-                throwable -> System.out.printf("Container with id : %s already exists \n", containerId)
+                throwable -> System.out.println("Failed to create container: " + throwable)
             );
         // END: com.azure.cosmos.CosmosAsyncDatabase.createContainer
     }
@@ -334,7 +334,7 @@ public class AsyncContainerCodeSnippets {
         cosmosAsyncDatabase.createContainer(containerProperties, throughputProperties)
             .subscribe(
                 cosmosContainerResponse -> System.out.println(cosmosContainerResponse),
-                throwable -> System.out.printf("Container with id : %s already exists \n", containerId)
+                throwable -> System.out.println("Failed to create container: " + throwable)
             );
         // END: com.azure.cosmos.CosmosAsyncDatabase.createContainerProps
     }
@@ -356,7 +356,7 @@ public class AsyncContainerCodeSnippets {
             )
             .subscribe(
                 cosmosContainerResponse -> System.out.println(cosmosContainerResponse),
-                throwable -> System.out.printf("Container with id : %s already exists \n", containerId)
+                throwable -> System.out.println("Failed to create container: " + throwable)
             );
         // END: com.azure.cosmos.CosmosAsyncDatabase.createContainerThroughput
     }
@@ -376,7 +376,7 @@ public class AsyncContainerCodeSnippets {
             )
             .subscribe(
                 cosmosContainerResponse -> System.out.println(cosmosContainerResponse),
-                throwable -> System.out.printf("Container with id : %s already exists \n", containerId)
+                throwable -> System.out.println("Failed to create container: " + throwable)
             );
         // END: com.azure.cosmos.CosmosAsyncDatabase.createContainerPartitionKey
     }

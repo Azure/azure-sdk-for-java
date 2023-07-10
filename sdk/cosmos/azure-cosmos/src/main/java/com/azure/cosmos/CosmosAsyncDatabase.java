@@ -183,7 +183,7 @@ public class CosmosAsyncDatabase {
      * cosmosAsyncDatabase.createContainer&#40;containerProperties&#41;
      *     .subscribe&#40;
      *         cosmosContainerResponse -&gt; System.out.println&#40;cosmosContainerResponse&#41;,
-     *         throwable -&gt; System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create container: &quot; + throwable&#41;
      *     &#41;;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainer -->
@@ -211,7 +211,7 @@ public class CosmosAsyncDatabase {
      * cosmosAsyncDatabase.createContainer&#40;containerProperties, throughputProperties&#41;
      *     .subscribe&#40;
      *         cosmosContainerResponse -&gt; System.out.println&#40;cosmosContainerResponse&#41;,
-     *         throwable -&gt; System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create container: &quot; + throwable&#41;
      *     &#41;;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerProps -->
@@ -250,7 +250,7 @@ public class CosmosAsyncDatabase {
      *     &#41;
      *     .subscribe&#40;
      *         cosmosContainerResponse -&gt; System.out.println&#40;cosmosContainerResponse&#41;,
-     *         throwable -&gt; System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create container: &quot; + throwable&#41;
      *     &#41;;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerThroughput -->
@@ -276,7 +276,7 @@ public class CosmosAsyncDatabase {
      * cosmosAsyncDatabase.createContainer&#40;containerProperties&#41;
      *     .subscribe&#40;
      *         cosmosContainerResponse -&gt; System.out.println&#40;cosmosContainerResponse&#41;,
-     *         throwable -&gt; System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create container: &quot; + throwable&#41;
      *     &#41;;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainer -->
@@ -315,7 +315,7 @@ public class CosmosAsyncDatabase {
      *     &#41;
      *     .subscribe&#40;
      *         cosmosContainerResponse -&gt; System.out.println&#40;cosmosContainerResponse&#41;,
-     *         throwable -&gt; System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create container: &quot; + throwable&#41;
      *     &#41;;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerThroughput -->
@@ -354,7 +354,7 @@ public class CosmosAsyncDatabase {
      *     &#41;
      *     .subscribe&#40;
      *         cosmosContainerResponse -&gt; System.out.println&#40;cosmosContainerResponse&#41;,
-     *         throwable -&gt; System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create container: &quot; + throwable&#41;
      *     &#41;;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerPartitionKey -->
@@ -384,7 +384,7 @@ public class CosmosAsyncDatabase {
      *     &#41;
      *     .subscribe&#40;
      *         cosmosContainerResponse -&gt; System.out.println&#40;cosmosContainerResponse&#41;,
-     *         throwable -&gt; System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create container: &quot; + throwable&#41;
      *     &#41;;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerPartitionKey -->

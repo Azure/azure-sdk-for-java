@@ -129,7 +129,7 @@ public class CosmosDatabase {
      * try &#123;
      *     CosmosContainerResponse container = cosmosDatabase.createContainer&#40;containerProperties&#41;;
      * &#125; catch &#40;CosmosException ce&#41; &#123;
-     *     System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;;
+     *     System.out.println&#40;&quot;Failed to create container: &quot; + ce&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosDatabase.createContainer -->
@@ -155,7 +155,7 @@ public class CosmosDatabase {
      *         throughputProperties
      *     &#41;;
      * &#125; catch &#40;CosmosException ce&#41; &#123;
-     *     System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;;
+     *     System.out.println&#40;&quot;Failed to create container: &quot; + ce&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosDatabase.createContainerProps -->
@@ -179,7 +179,7 @@ public class CosmosDatabase {
      * try &#123;
      *     CosmosContainerResponse container = cosmosDatabase.createContainer&#40;containerProperties&#41;;
      * &#125; catch &#40;CosmosException ce&#41; &#123;
-     *     System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;;
+     *     System.out.println&#40;&quot;Failed to create container: &quot; + ce&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosDatabase.createContainer -->
@@ -208,7 +208,7 @@ public class CosmosDatabase {
      *         options
      *     &#41;;
      * &#125; catch &#40;CosmosException ce&#41; &#123;
-     *     System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;;
+     *     System.out.println&#40;&quot;Failed to create container: &quot; + ce&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosDatabase.createContainerThroughput -->
@@ -241,7 +241,7 @@ public class CosmosDatabase {
      *         throughputProperties
      *     &#41;;
      * &#125; catch &#40;CosmosException ce&#41; &#123;
-     *     System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;;
+     *     System.out.println&#40;&quot;Failed to create container: &quot; + ce&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosDatabase.createContainerProps -->
@@ -273,7 +273,7 @@ public class CosmosDatabase {
      *         throughputProperties
      *     &#41;;
      * &#125; catch &#40;CosmosException ce&#41; &#123;
-     *     System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;;
+     *     System.out.println&#40;&quot;Failed to create container: &quot; + ce&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosDatabase.createContainerPartitionKey -->
@@ -299,7 +299,7 @@ public class CosmosDatabase {
      *         throughputProperties
      *     &#41;;
      * &#125; catch &#40;CosmosException ce&#41; &#123;
-     *     System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;;
+     *     System.out.println&#40;&quot;Failed to create container: &quot; + ce&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.cosmos.CosmosDatabase.createContainerPartitionKey -->
