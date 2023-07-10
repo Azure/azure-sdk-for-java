@@ -55,6 +55,14 @@ public class CosmosDatabase {
 
     /**
      * Reads the current Cosmos database.
+     * Fetch the details and properties of a database based on its unique identifier.
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.read -->
+     * <pre>
+     * CosmosDatabase cosmosDatabase = cosmosClient
+     *     .getDatabase&#40;&quot;&lt;YOUR DATABASE NAME&gt;&quot;&#41;;
+     * CosmosDatabaseResponse readResponse = cosmosDatabase.read&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.read -->
      *
      * @return the {@link CosmosDatabaseResponse}.
      */
@@ -64,7 +72,14 @@ public class CosmosDatabase {
 
     /**
      * Reads the current Cosmos database while specifying additional request options.
-     *
+     * Fetch the details and properties of a database based on its unique identifier.
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.read -->
+     * <pre>
+     * CosmosDatabase cosmosDatabase = cosmosClient
+     *     .getDatabase&#40;&quot;&lt;YOUR DATABASE NAME&gt;&quot;&#41;;
+     * CosmosDatabaseResponse readResponse = cosmosDatabase.read&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.read -->
      * @param options the {@link CosmosDatabaseRequestOptions} request options.
      * @return the {@link CosmosDatabaseResponse}
      */
@@ -74,7 +89,13 @@ public class CosmosDatabase {
 
     /**
      * Deletes the current Cosmos database.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.delete -->
+     * <pre>
+     * CosmosDatabase cosmosDatabase = cosmosClient
+     *     .getDatabase&#40;&quot;&lt;YOUR DATABASE NAME&gt;&quot;&#41;;
+     * CosmosDatabaseResponse deleteResponse = cosmosDatabase.delete&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.delete -->
      * @return the {@link CosmosDatabaseResponse}.
      */
     public CosmosDatabaseResponse delete() {
@@ -83,7 +104,13 @@ public class CosmosDatabase {
 
     /**
      * Delete the current Cosmos database while specifying additional request options.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.delete -->
+     * <pre>
+     * CosmosDatabase cosmosDatabase = cosmosClient
+     *     .getDatabase&#40;&quot;&lt;YOUR DATABASE NAME&gt;&quot;&#41;;
+     * CosmosDatabaseResponse deleteResponse = cosmosDatabase.delete&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.delete -->
      * @param options the {@link CosmosDatabaseRequestOptions} request options.
      * @return the {@link CosmosDatabaseResponse}.
      */
@@ -95,9 +122,20 @@ public class CosmosDatabase {
 
     /**
      * Creates a Cosmos container.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainer -->
+     * <pre>
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
+     * try &#123;
+     *     CosmosContainerResponse container = cosmosDatabase.createContainer&#40;containerProperties&#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.createContainer -->
      * @param containerProperties the {@link CosmosContainerProperties}.
      * @return the {@link CosmosContainerResponse} with the created container.
+     * @throws CosmosException if resource with specified id already exists
      */
     public CosmosContainerResponse createContainer(CosmosContainerProperties containerProperties) {
         return this.blockContainerResponse(databaseWrapper.createContainer(containerProperties));
@@ -105,10 +143,26 @@ public class CosmosDatabase {
 
     /**
      * Creates a Cosmos container with custom throughput setting.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainerProps -->
+     * <pre>
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
+     * ThroughputProperties throughputProperties =
+     *     ThroughputProperties.createAutoscaledThroughput&#40;autoScaleMaxThroughput&#41;;
+     * try &#123;
+     *     CosmosContainerResponse container = cosmosDatabase.createContainer&#40;
+     *         containerProperties,
+     *         throughputProperties
+     *     &#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.createContainerProps -->
      * @param containerProperties the {@link CosmosContainerProperties}.
      * @param throughputProperties the throughput properties.
      * @return the {@link CosmosContainerResponse} with the created container.
+     * @throws CosmosException if resource with specified id already exists
      */
     public CosmosContainerResponse createContainer(
         CosmosContainerProperties containerProperties,
@@ -118,10 +172,21 @@ public class CosmosDatabase {
 
     /**
      * Creates a Cosmos container while passing additional request options.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainer -->
+     * <pre>
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
+     * try &#123;
+     *     CosmosContainerResponse container = cosmosDatabase.createContainer&#40;containerProperties&#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.createContainer -->
      * @param containerProperties the {@link CosmosContainerProperties}.
      * @param options the {@link CosmosContainerProperties}.
      * @return the {@link CosmosContainerResponse} with the created container.
+     * @throws CosmosException if resource with specified id already exists
      */
     public CosmosContainerResponse createContainer(
         CosmosContainerProperties containerProperties,
@@ -131,11 +196,27 @@ public class CosmosDatabase {
 
     /**
      * Creates a Cosmos container.
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainerThroughput -->
+     * <pre>
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
      *
+     * try &#123;
+     *     CosmosContainerResponse container = cosmosDatabase.createContainer&#40;
+     *         containerProperties,
+     *         throughput,
+     *         options
+     *     &#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.createContainerThroughput -->
      * @param containerProperties the {@link CosmosContainerProperties}.
      * @param throughput the throughput.
      * @param options the {@link CosmosContainerProperties}.
      * @return the {@link CosmosContainerResponse} with the created container.
+     * @throws CosmosException if resource with specified id already exists
      */
     CosmosContainerResponse createContainer(
         CosmosContainerProperties containerProperties,
@@ -148,11 +229,27 @@ public class CosmosDatabase {
 
     /**
      * Creates a Cosmos container.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainerProps -->
+     * <pre>
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
+     * ThroughputProperties throughputProperties =
+     *     ThroughputProperties.createAutoscaledThroughput&#40;autoScaleMaxThroughput&#41;;
+     * try &#123;
+     *     CosmosContainerResponse container = cosmosDatabase.createContainer&#40;
+     *         containerProperties,
+     *         throughputProperties
+     *     &#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.createContainerProps -->
      * @param containerProperties the container properties.
      * @param throughputProperties the throughput properties.
      * @param options the options.
      * @return the cosmos container response.
+     * @throws CosmosException if resource with specified id already exists
      */
     public CosmosContainerResponse createContainer(
         CosmosContainerProperties containerProperties,
@@ -165,10 +262,25 @@ public class CosmosDatabase {
 
     /**
      * Create a Cosmos container.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainerPartitionKey -->
+     * <pre>
+     * ThroughputProperties throughputProperties =
+     *     ThroughputProperties.createAutoscaledThroughput&#40;autoscaledThroughput&#41;;
+     * try &#123;
+     *     CosmosContainerResponse container = cosmosDatabase.createContainer&#40;
+     *         containerId,
+     *         partitionKeyPath,
+     *         throughputProperties
+     *     &#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.createContainerPartitionKey -->
      * @param id the container id.
      * @param partitionKeyPath the partition key path.
      * @return the cosmos container response.
+     * @throws CosmosException if resource with specified id already exists
      */
     public CosmosContainerResponse createContainer(String id, String partitionKeyPath) {
         return this.blockContainerResponse(databaseWrapper.createContainer(id, partitionKeyPath));
@@ -176,11 +288,26 @@ public class CosmosDatabase {
 
     /**
      * Create a Cosmos container.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.createContainerPartitionKey -->
+     * <pre>
+     * ThroughputProperties throughputProperties =
+     *     ThroughputProperties.createAutoscaledThroughput&#40;autoscaledThroughput&#41;;
+     * try &#123;
+     *     CosmosContainerResponse container = cosmosDatabase.createContainer&#40;
+     *         containerId,
+     *         partitionKeyPath,
+     *         throughputProperties
+     *     &#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     System.out.printf&#40;&quot;Container with id : %s already exists &#92;n&quot;, containerId&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.createContainerPartitionKey -->
      * @param id the id.
      * @param partitionKeyPath the partition key path.
      * @param throughputProperties the throughput properties.
      * @return the cosmos container response.
+     * @throws CosmosException if resource with specified id already exists
      */
     public CosmosContainerResponse createContainer(String id, String partitionKeyPath, ThroughputProperties throughputProperties) {
         return this.blockContainerResponse(databaseWrapper.createContainer(id, partitionKeyPath, throughputProperties));
