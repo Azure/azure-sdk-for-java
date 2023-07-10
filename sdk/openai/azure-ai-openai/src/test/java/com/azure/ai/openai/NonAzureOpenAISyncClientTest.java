@@ -204,7 +204,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatFunctionAutoPreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
-        getChatFunctionRunner((modelId, chatCompletionsOptions) -> {
+        getChatFunctionForNonAzureRunner((modelId, chatCompletionsOptions) -> {
             chatCompletionsOptions.setFunctionCall(FunctionCall.AUTO);
             ChatCompletions chatCompletions = client.getChatCompletions(modelId, chatCompletionsOptions);
 
@@ -223,7 +223,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatFunctionNonePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
-        getChatFunctionRunner((modelId, chatCompletionsOptions) -> {
+        getChatFunctionForNonAzureRunner((modelId, chatCompletionsOptions) -> {
             chatCompletionsOptions.setFunctionCall(FunctionCall.NONE);
             ChatCompletions chatCompletions = client.getChatCompletions(modelId, chatCompletionsOptions);
 
@@ -235,7 +235,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatFunctionNotSuppliedByNamePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
-        getChatFunctionRunner((modelId, chatCompletionsOptions) -> {
+        getChatFunctionForNonAzureRunner((modelId, chatCompletionsOptions) -> {
             chatCompletionsOptions.setFunctionCall(new FunctionCall("NotMyFunction"));
             HttpResponseException exception = assertThrows(HttpResponseException.class,
                 () ->  client.getChatCompletions(modelId, chatCompletionsOptions));

@@ -230,7 +230,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatFunctionAutoPreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
-        getChatFunctionRunner((deploymentId, chatCompletionsOptions) -> {
+        getChatFunctionForNonAzureRunner((deploymentId, chatCompletionsOptions) -> {
 //            chatCompletionsOptions.setFunctionCall(new FunctionCallPresetFunctionCallModel(FunctionCallPreset.AUTO));
 
         });
@@ -240,7 +240,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatFunctionNonePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
-        getChatFunctionRunner((deploymentId, chatCompletionsOptions) -> {
+        getChatFunctionForNonAzureRunner((deploymentId, chatCompletionsOptions) -> {
 //            chatCompletionsOptions.setFunctionCall(new FunctionCallPresetFunctionCallModel(FunctionCallPreset.NONE));
 //            StepVerifier.create(client.getChatCompletions())
         });
