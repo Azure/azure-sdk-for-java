@@ -71,6 +71,7 @@ public class MessageSessionSenderAsync extends ServiceBusScenario {
         blockingWait(testDuration);
         LOGGER.info("done");
         client.close();
+        rateLimiter.close();
     }
 
     private String randomSessionId() {

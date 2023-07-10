@@ -4,7 +4,7 @@
     {
       "type": 1,
       "content": {
-        "json": "## ServiceBus for Java stress testing\n\nEnter the test runId - it matches ServiceBus resource name and is a suffix in AppInsights role instance."
+        "json": "## ServiceBus for Java stress testing\n\nEnter the test runId - it matches ServiceBus resource name and is a suffix in ApplocationInsights role instance."
       },
       "name": "text - 2"
     },

@@ -10,7 +10,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
-class RateLimiter {
+class RateLimiter implements AutoCloseable {
     private final int maxConcurrency;
     private final AtomicInteger inFlight = new AtomicInteger(0);
     private final AtomicInteger bucket = new AtomicInteger(0);
@@ -61,5 +61,10 @@ class RateLimiter {
 
     public void release() {
         inFlight.decrementAndGet();
+    }
+
+    @Override
+    public void close() {
+        replenishTimer.cancel();
     }
 }

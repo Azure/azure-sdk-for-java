@@ -77,6 +77,7 @@ public class MessageSenderAsync extends ServiceBusScenario {
         blockingWait(testDuration.plusSeconds(30));
         LOGGER.info("done");
         clients.forEach(c -> c.close());
+        rateLimiter.close();
     }
 
     private ServiceBusSenderAsyncClient getClient(List<ServiceBusSenderAsyncClient> clients) {

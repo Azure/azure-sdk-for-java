@@ -59,5 +59,6 @@ public class MessageSender extends ServiceBusScenario {
         }
 
         client.close();
+        rateLimiter.close();
     }
 }
