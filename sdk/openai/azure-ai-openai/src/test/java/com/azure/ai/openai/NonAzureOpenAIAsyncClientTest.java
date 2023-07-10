@@ -279,4 +279,20 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                 .verifyComplete();
         });
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatFunctionByNamePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        getChatFunctionRunner((modelId, chatCompletionsOptions) -> {
+            chatCompletionsOptions.setFunctionCalls(new FunctionCall("UnavailableFunction"));
+            StepVerifier.create(client.getChatCompletions(modelId, chatCompletionsOptions))
+                .verifyErrorSatisfies(throwable -> {
+                    assertInstanceOf(HttpResponseException.class, throwable);
+                    HttpResponseException httpResponseException = (HttpResponseException) throwable;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    assertTrue(httpResponseException.getMessage().contains("Invalid value for 'function_call'"));
+                });
+        });
+    }
 }
