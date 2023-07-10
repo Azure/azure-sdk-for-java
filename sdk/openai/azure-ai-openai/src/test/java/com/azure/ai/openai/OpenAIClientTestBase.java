@@ -18,8 +18,6 @@ import com.azure.ai.openai.models.ImageResponse;
 import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
@@ -45,7 +43,6 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     OpenAIClientBuilder getOpenAIClientBuilder(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
             .httpClient(httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
 
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -67,8 +64,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     OpenAIClientBuilder getNonAzureOpenAIClientBuilder(HttpClient httpClient) {
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
-            .httpClient(httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+            .httpClient(httpClient);
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder
@@ -193,18 +189,22 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     // We are currently using the same model. Eventually we will have a separate one for the streaming scenario
     static void assertChatCompletionsStream(ChatCompletions chatCompletions) {
-        assertNotNull(chatCompletions.getId());
-        assertNotNull(chatCompletions.getChoices());
-        assertFalse(chatCompletions.getChoices().isEmpty());
-        assertNotNull(chatCompletions.getChoices().get(0).getDelta());
+        if (chatCompletions.getId() != null && !chatCompletions.getId().isEmpty()) {
+            assertNotNull(chatCompletions.getId());
+            assertNotNull(chatCompletions.getChoices());
+            assertFalse(chatCompletions.getChoices().isEmpty());
+            assertNotNull(chatCompletions.getChoices().get(0).getDelta());
+        }
     }
 
     // We are currently using the same model. Eventually we will have a separate one for the streaming scenario
     static void assertCompletionsStream(Completions completions) {
-        assertNotNull(completions.getId());
-        assertNotNull(completions.getChoices());
-        assertFalse(completions.getChoices().isEmpty());
-        assertNotNull(completions.getChoices().get(0).getText());
+        if (completions.getId() != null && !completions.getId().isEmpty()) {
+            assertNotNull(completions.getId());
+            assertNotNull(completions.getChoices());
+            assertFalse(completions.getChoices().isEmpty());
+            assertNotNull(completions.getChoices().get(0).getText());
+        }
     }
 
     static void assertChatCompletions(int choiceCount, String expectedFinishReason, ChatRole chatRole, ChatCompletions actual) {

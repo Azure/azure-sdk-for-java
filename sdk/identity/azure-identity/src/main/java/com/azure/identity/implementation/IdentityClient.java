@@ -321,7 +321,8 @@ public class IdentityClient extends IdentityClientBase {
 
         try {
             String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
-            if (!CoreUtils.isNullOrEmpty(tenant)) {
+            // The default is not correct for many cases, such as when the logged in entity is a service principal.
+            if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
                 azCommand.append(" --tenant ").append(tenant);
             }
         } catch (ClientAuthenticationException e) {
@@ -362,7 +363,7 @@ public class IdentityClient extends IdentityClientBase {
 
         try {
             String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
-            if (!CoreUtils.isNullOrEmpty(tenant)) {
+            if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
                 azdCommand.append(" --tenant-id ").append(tenant);
             }
         } catch (ClientAuthenticationException e) {
