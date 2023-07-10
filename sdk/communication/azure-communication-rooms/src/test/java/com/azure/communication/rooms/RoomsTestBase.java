@@ -11,8 +11,8 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -31,7 +31,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RoomsTestBase extends TestBase {
+public class RoomsTestBase extends TestProxyTestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get(
