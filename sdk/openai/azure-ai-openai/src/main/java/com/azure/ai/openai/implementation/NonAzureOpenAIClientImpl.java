@@ -31,7 +31,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
 /**
- * Implementation for calling Non-Azure OpenAI service
+ * Implementation for calling Non-Azure OpenAI Service
  */
 public final class NonAzureOpenAIClientImpl {
     /** The proxy service used to perform REST calls. */

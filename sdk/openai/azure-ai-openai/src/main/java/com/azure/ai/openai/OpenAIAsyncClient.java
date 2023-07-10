@@ -429,10 +429,10 @@ public final class OpenAIAsyncClient {
 
     /**
      * Initializes an instance of OpenAIAsyncClient class by using "Azure" OpenAI service implementation. Azure OpenAI
-     * and Non-Azure OpenAI service implementations are mutually exclusive. Both service client implementation cannot
+     * and Non-Azure OpenAI Service implementations are mutually exclusive. Both service client implementation cannot
      * coexist because `OpenAIClient` operates either way in a mutually exclusive way.
      *
-     * @param serviceClient the service client implementation for Azure OpenAI service client.
+     * @param serviceClient the service client implementation for Azure OpenAI Service client.
      */
     OpenAIAsyncClient(OpenAIClientImpl serviceClient) {
         this.serviceClient = serviceClient;
@@ -441,10 +441,10 @@ public final class OpenAIAsyncClient {
 
     /**
      * Initializes an instance of OpenAIAsyncClient class by using "Non-Azure" OpenAI service implementation. Azure
-     * OpenAI and Non-Azure OpenAI service implementations are mutually exclusive. Both service client implementation
+     * OpenAI and Non-Azure OpenAI Service implementations are mutually exclusive. Both service client implementation
      * cannot coexist because `OpenAIClient` operates either way in a mutually exclusive way.
      *
-     * @param serviceClient the service client implementation for Non-Azure OpenAI service client.
+     * @param serviceClient the service client implementation for Non-Azure OpenAI Service client.
      */
     OpenAIAsyncClient(NonAzureOpenAIClientImpl serviceClient) {
         this.serviceClient = null;
