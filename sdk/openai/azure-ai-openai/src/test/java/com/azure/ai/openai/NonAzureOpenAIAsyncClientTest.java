@@ -282,7 +282,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testChatFunctionByNamePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testChatFunctionNotSuppliedByNamePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getChatFunctionRunner((modelId, chatCompletionsOptions) -> {
             chatCompletionsOptions.setFunctionCalls(new FunctionCall("UnavailableFunction"));
