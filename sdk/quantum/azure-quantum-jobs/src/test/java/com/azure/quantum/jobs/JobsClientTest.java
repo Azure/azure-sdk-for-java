@@ -48,7 +48,7 @@ public class JobsClientTest extends QuantumClientTestBase {
         String inputDataFormat = "microsoft.qio.v2";
         String outputDataFormat = "microsoft.qio-results.v2";
         String providerId = "microsoft";
-        String target = "microsoft.paralleltempering-parameterfree.cpu";
+        String target = "microsoft.estimator";
 
         //if in record mode, setup the storage account
         if (!interceptorManager.isPlaybackMode()) {

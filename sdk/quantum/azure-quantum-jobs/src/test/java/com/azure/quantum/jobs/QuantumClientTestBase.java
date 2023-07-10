@@ -13,10 +13,12 @@ import com.azure.identity.AzureCliCredentialBuilder;
 import java.nio.file.Files;
 
 public class QuantumClientTestBase extends TestProxyTestBase {
-    private final String endpoint = Configuration.getGlobalConfiguration().get("QUANTUM_ENDPOINT");
-    private final String subscriptionId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
-    private final String resourceGroup = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_RESOURCE_GROUP);
-    private final String workspaceName = Configuration.getGlobalConfiguration().get("QUANTUM_WORKSPACE");
+//    private final String endpoint = Configuration.getGlobalConfiguration().get("QUANTUM_ENDPOINT");
+    private final String endpoint = "https://westus2.quantum.azure.com";
+//    private final String subscriptionId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
+    private final String subscriptionId = "faa080af-c1d8-40ad-9cce-e1a450ca5b57";
+    private final String resourceGroup = "vigera-group";
+    private final String workspaceName = "vigeraQuantumWorkspace";
 
     QuantumClientBuilder getClientBuilder(HttpClient httpClient) {
 
