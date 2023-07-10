@@ -61,6 +61,12 @@
       <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
       <version>1.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
     </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-api-logs</artifactId>
+      <version>1.26.0-alpha</version>
+      <scope>compile</scope>
+    </dependency>
 
 
   </dependencies>
