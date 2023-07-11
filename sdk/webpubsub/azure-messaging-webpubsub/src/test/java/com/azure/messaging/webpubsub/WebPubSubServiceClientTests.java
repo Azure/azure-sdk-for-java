@@ -12,7 +12,6 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
@@ -35,22 +34,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class WebPubSubServiceClientTests extends TestBase {
 
-    private static final String DEFAULT_CONNECTION_STRING =
-        "Endpoint=https://example.com;AccessKey=dummykey;Version=1.0;";
-    private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("WEB_PUB_SUB_CS", DEFAULT_CONNECTION_STRING);
-    private static final String ENDPOINT = Configuration.getGlobalConfiguration()
-            .get("WEB_PUB_SUB_ENDPOINT", "https://srnagar-wps-pubsub.webpubsub.azure.com");
-
     private WebPubSubServiceClient client;
     private WebPubSubServiceAsyncClient asyncClient;
 
     @BeforeEach
     public void setup() {
         WebPubSubServiceClientBuilder webPubSubServiceClientBuilder = new WebPubSubServiceClientBuilder()
-            .connectionString(CONNECTION_STRING)
+            .connectionString(TestUtils.getConnectionString())
             .httpClient(HttpClient.createDefault())
-            .hub("test");
+            .hub(TestUtils.HUB_NAME);
 
         if (getTestMode() == TestMode.PLAYBACK) {
             webPubSubServiceClientBuilder.httpClient(interceptorManager.getPlaybackClient());
@@ -263,14 +255,14 @@ public class WebPubSubServiceClientTests extends TestBase {
     @Test
     public void testAadCredential() {
         WebPubSubServiceClientBuilder webPubSubServiceClientBuilder = new WebPubSubServiceClientBuilder()
-                .endpoint(ENDPOINT)
+                .endpoint(TestUtils.getEndpoint())
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .hub("test");
 
         if (getTestMode() == TestMode.PLAYBACK) {
             webPubSubServiceClientBuilder.httpClient(interceptorManager.getPlaybackClient())
-                    .connectionString(CONNECTION_STRING);
+                    .connectionString(TestUtils.getConnectionString());
         } else if (getTestMode() == TestMode.RECORD) {
             webPubSubServiceClientBuilder.addPolicy(interceptorManager.getRecordPolicy())
                     .credential(new DefaultAzureCredentialBuilder().build());

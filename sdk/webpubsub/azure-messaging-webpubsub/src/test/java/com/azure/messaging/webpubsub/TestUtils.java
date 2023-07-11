@@ -1,0 +1,34 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.messaging.webpubsub;
+
+import com.azure.core.http.policy.FixedDelayOptions;
+import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.util.Configuration;
+
+import java.time.Duration;
+
+/**
+ * Common properties used in testing.
+ */
+class TestUtils {
+    static final String HUB_NAME = "Hub";
+
+    static String getEndpoint() {
+        return Configuration.getGlobalConfiguration()
+            .get("WEB_PUB_SUB_ENDPOINT", "http://testendpoint.webpubsubdev.azure.com");
+    }
+
+    static String getConnectionString() {
+        return Configuration.getGlobalConfiguration()
+            .get("WEB_PUB_SUB_CONNECTION_STRING", "Endpoint=https://example.com;AccessKey=dummykey;Version=1.0;");
+    }
+
+    static RetryOptions getRetryOptions() {
+        return new RetryOptions(new FixedDelayOptions(0, Duration.ofSeconds(20)));
+    }
+
+    private TestUtils() {
+    }
+}
