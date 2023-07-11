@@ -1125,7 +1125,7 @@ class ServiceBusReceiverAsyncClientTest {
         "true",
         "false"
     })
-    void cannotPerformGetSessionState() {
+    void cannotPerformGetSessionState(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
 
@@ -1162,7 +1162,7 @@ class ServiceBusReceiverAsyncClientTest {
         "true",
         "false"
     })
-    void cannotPerformRenewSessionLock() {
+    void cannotPerformRenewSessionLock(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
 
