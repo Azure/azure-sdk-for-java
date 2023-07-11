@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.models.*;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import reactor.core.publisher.Mono;
 
@@ -405,6 +406,77 @@ public class ReadmeSamples {
             System.out.println("Failed to create container: " + ce);
         }
         // END: com.azure.cosmos.CosmosDatabase.createContainerPartitionKey
+
+    public void createDatabaseSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncClient.createDatabase
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+            .endpoint("<YOUR ENDPOINT HERE>")
+            .key("<YOUR KEY HERE>")
+            .buildAsyncClient();
+        String databaseId = "<YOUR DATABASE NAME>";
+        CosmosDatabaseProperties databaseProperties =
+            new CosmosDatabaseProperties(databaseId);
+
+        Mono<CosmosDatabaseResponse> cosmosDatabaseResponse = cosmosAsyncClient.createDatabase(databaseProperties);
+        // END: com.azure.cosmos.CosmosAsyncClient.createDatabase
+    }
+
+    public void createDatabaseIfNotExistsSample() {
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+            .buildAsyncClient();
+        // BEGIN: com.azure.cosmos.CosmosAsyncClient.createDatabaseIfNotExists
+        String databaseId = "<YOUR DATABASE NAME>";
+
+        Mono<CosmosDatabaseResponse> response = cosmosAsyncClient.createDatabaseIfNotExists(databaseId);
+        // END: com.azure.cosmos.CosmosAsyncClient.createDatabaseIfNotExists
+    }
+
+    public void readAllDatabasesSample() {
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+            .buildAsyncClient();
+        // BEGIN: com.azure.cosmos.CosmosAsyncClient.readAllDatabases
+        CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
+
+        cosmosAsyncClient.readAllDatabases(requestOptions);
+        // END: com.azure.cosmos.CosmosAsyncClient.readAllDatabases
+    }
+
+    public void queryDatabasesSample() {
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+            .buildAsyncClient();
+
+        // BEGIN: com.azure.cosmos.CosmosAsyncClient.queryDatabases
+        String queryText = "<YOUR QUERY>";
+        SqlQuerySpec querySpec = new SqlQuerySpec(queryText);
+        CosmosQueryRequestOptions requestOptions =
+            new CosmosQueryRequestOptions();
+
+        CosmosPagedFlux<CosmosDatabaseProperties> dbProperties =
+            cosmosAsyncClient.queryDatabases(querySpec, requestOptions);
+        // END: com.azure.cosmos.CosmosAsyncClient.queryDatabases
+    }
+
+    public void getDatabaseSample() {
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+            .buildAsyncClient();
+        // BEGIN: com.azure.cosmos.CosmosAsyncClient.getDatabase
+        String databaseId = "<YOUR DATABASE NAME>";
+
+        CosmosAsyncDatabase database = cosmosAsyncClient.getDatabase(databaseId);
+        // END: com.azure.cosmos.CosmosAsyncClient.getDatabase
+    }
+
+    public void createGlobalThroughputControlConfigBuilderSample() {
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+            .buildAsyncClient();
+        // BEGIN: com.azure.cosmos.CosmosAsyncClient.createGlobalThroughputControlConfigBuilder
+        String databaseId = "<YOUR DATABASE NAME>";
+        String containerId = "<YOUR CONTAINER NAME>";
+
+        GlobalThroughputControlConfig config =
+            cosmosAsyncClient.createGlobalThroughputControlConfigBuilder(databaseId, containerId)
+                .build();
+        // END: com.azure.cosmos.CosmosAsyncClient.createGlobalThroughputControlConfigBuilder
     }
 
     static final class Passenger {
