@@ -104,7 +104,7 @@ public class ServiceBusSessionReceiverTest {
         final Duration maxSessionRenewalDuration = Duration.ofMinutes(5);
 
         // Act
-        final ServiceBusSessionReceiver sessionReceiver = new ServiceBusSessionReceiver(amqpReceiveLink,
+        final ServiceBusSessionReceiver sessionReceiver = new ServiceBusSessionReceiver(sessionId, amqpReceiveLink,
             messageSerializer, retryOptions, 1, scheduler,
             unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, NO_SESSION_IDLE_TIMEOUT);
 
@@ -152,7 +152,7 @@ public class ServiceBusSessionReceiverTest {
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
         final Scheduler scheduler = Schedulers.boundedElastic();
         final Duration maxSessionRenewalDuration = Duration.ofMinutes(5);
-        final ServiceBusSessionReceiver sessionReceiver = new ServiceBusSessionReceiver(amqpReceiveLink,
+        final ServiceBusSessionReceiver sessionReceiver = new ServiceBusSessionReceiver(sessionId, amqpReceiveLink,
             messageSerializer, retryOptions, 1, scheduler,
             unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, NO_SESSION_IDLE_TIMEOUT);
 
@@ -222,7 +222,7 @@ public class ServiceBusSessionReceiverTest {
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofMinutes(10));
         final Scheduler scheduler = Schedulers.boundedElastic();
         final Duration maxSessionRenewalDuration = Duration.ofMinutes(5);
-        final ServiceBusSessionReceiver sessionReceiver = new ServiceBusSessionReceiver(amqpReceiveLink,
+        final ServiceBusSessionReceiver sessionReceiver = new ServiceBusSessionReceiver(sessionId, amqpReceiveLink,
             messageSerializer, retryOptions, 1, scheduler,
             unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, waitTime);
 
@@ -281,7 +281,7 @@ public class ServiceBusSessionReceiverTest {
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
         final Scheduler scheduler = Schedulers.boundedElastic();
         final Duration maxSessionRenewalDuration = Duration.ofMinutes(5);
-        final ServiceBusSessionReceiver sessionReceiver = new ServiceBusSessionReceiver(amqpReceiveLink,
+        final ServiceBusSessionReceiver sessionReceiver = new ServiceBusSessionReceiver(sessionId, amqpReceiveLink,
             messageSerializer, retryOptions, 1, scheduler,
             unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, NO_SESSION_IDLE_TIMEOUT);
 
