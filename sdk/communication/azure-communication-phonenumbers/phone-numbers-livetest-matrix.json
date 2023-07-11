@@ -37,6 +37,7 @@
             "TestFromSource": true,
             "TestGoals": "verify",
             "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
+            "CoverageArg": "",
             "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS": "false",
             "AZURE_TEST_AGENT": "UBUNTU_2004_JAVA11"
         },
@@ -52,6 +53,7 @@
             "TestFromSource": false,
             "TestGoals": "verify",
             "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
+            "CoverageArg": "--disablecov",
             "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS": "false",
             "AZURE_TEST_AGENT": "WINDOWS_2019_JAVA11"
         }
