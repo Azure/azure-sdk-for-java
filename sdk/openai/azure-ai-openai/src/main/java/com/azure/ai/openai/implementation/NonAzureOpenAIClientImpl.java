@@ -72,7 +72,7 @@ public final class NonAzureOpenAIClientImpl {
     /**
      * Mapper used to add the `modelId` into the request body for an nonAzure OpenAI request
      */
-    private static final ObjectMapper jsonMapper = new ObjectMapper();
+    private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
 
     /**
      * Initializes an instance of OpenAIClient client.
@@ -874,7 +874,7 @@ public final class NonAzureOpenAIClientImpl {
     private static BinaryData addModelIdJson(BinaryData inputJson, String modelId) {
         JsonNode jsonNode = null;
         try {
-            jsonNode = jsonMapper.readTree(inputJson.toString());
+            jsonNode = JSON_MAPPER.readTree(inputJson.toString());
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
