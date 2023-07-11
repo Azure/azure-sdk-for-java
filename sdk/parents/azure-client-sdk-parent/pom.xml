@@ -1568,7 +1568,6 @@
       </build>
     </profile>
 
-    <!-- TODO (JG): Is this profile still being used? -->
     <profile>
       <id>requires-java-18-or-later-allow-securitymanager</id>
       <activation>

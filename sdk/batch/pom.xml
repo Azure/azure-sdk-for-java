@@ -11,18 +11,6 @@
 
   <profiles>
     <profile>
-      <id>libraries-data-plane-track1</id>
-      <activation>
-        <property>
-          <name>data-plane-track1</name>
-        </property>
-      </activation>
-      <modules>
-        <module>microsoft-azure-batch</module>
-      </modules>
-    </profile>
-
-    <profile>
       <id>libraries-mgmt-plane-current</id>
       <activation>
         <property>
@@ -31,6 +19,18 @@
       </activation>
       <modules>
         <module>azure-resourcemanager-batch</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>libraries-data-plane-track1</id>
+      <activation>
+        <property>
+          <name>data-plane-track1</name>
+        </property>
+      </activation>
+      <modules>
+        <module>microsoft-azure-batch</module>
       </modules>
     </profile>
   </profiles>

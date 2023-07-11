@@ -25,7 +25,9 @@
     <profile>
       <id>libraries-data-plane-track1</id>
       <activation>
-        <activeByDefault>true</activeByDefault>
+        <property>
+          <name>data-plane-track1</name>
+        </property>
       </activation>
       <modules>
         <module>microsoft-azure-applicationinsights-query</module>
