@@ -96,7 +96,7 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
             new LongestIdleMode()
                 .setMinConcurrentOffers(1)
                 .setMaxConcurrentOffers(10)
-        )
+            )
             .setName(longestIdleModeDistributionPolicyName);
 
         // Action

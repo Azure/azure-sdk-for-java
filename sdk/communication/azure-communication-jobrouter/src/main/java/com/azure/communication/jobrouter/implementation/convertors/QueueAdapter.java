@@ -5,7 +5,6 @@ package com.azure.communication.jobrouter.implementation.convertors;
 
 import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.communication.jobrouter.models.CreateQueueOptions;
-import com.azure.communication.jobrouter.models.JobQueue;
 import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.UpdateQueueOptions;
 
@@ -13,13 +12,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Converts request options for create and update Queue to {@link JobQueue}.
+ * Converts request options for create and update Queue to {@link RouterQueue}.
  */
 public class QueueAdapter {
 
     /**
-     * Converts {@link CreateQueueOptions} to {@link JobQueue}.
-     * @param createQueueOptions Container with options to create {@link JobQueue}
+     * Converts {@link CreateQueueOptions} to {@link RouterQueue}.
+     * @param createQueueOptions Container with options to create {@link RouterQueue}
      * @return JobQueue
      */
     public static RouterQueue convertCreateQueueOptionsToJobQueue(CreateQueueOptions createQueueOptions) {
@@ -34,9 +33,9 @@ public class QueueAdapter {
     }
 
     /**
-     * Converts {@link UpdateQueueOptions} to {@link JobQueue}.
-     * @param updateQueueOptions Container with options to update {@link JobQueue}
-     * @return JobQueue
+     * Converts {@link UpdateQueueOptions} to {@link RouterQueue}.
+     * @param updateQueueOptions Container with options to update {@link RouterQueue}
+     * @return RouterQueue.
      */
     public static RouterQueue convertUpdateQueueOptionsToJobQueue(UpdateQueueOptions updateQueueOptions) {
         Map<String, LabelValue> labelValueMap = updateQueueOptions.getLabels();

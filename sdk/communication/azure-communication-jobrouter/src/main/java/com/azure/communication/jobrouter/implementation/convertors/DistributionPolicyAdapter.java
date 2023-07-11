@@ -19,7 +19,7 @@ public class DistributionPolicyAdapter {
     public static DistributionPolicy convertCreateOptionsToDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
         return new DistributionPolicy()
             .setMode(createDistributionPolicyOptions.getMode())
-            .setOfferExpiresAfterSeconds(Long.valueOf(createDistributionPolicyOptions.getOfferTtl().getSeconds()).doubleValue())
+            .setOfferExpiresAfterSeconds(Long.valueOf(createDistributionPolicyOptions.getOfferExpiresAfterSeconds().getSeconds()).doubleValue())
             .setName(createDistributionPolicyOptions.getName());
     }
 
