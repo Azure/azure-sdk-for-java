@@ -453,8 +453,7 @@ public final class ChatCompletionsOptions {
     @JsonProperty(value = "function_call")
     private FunctionCallModelBase functionCall;
 
-    @JsonIgnore
-    private FunctionCall functionCalls;
+    @JsonIgnore private FunctionCall functionCalls;
 
     /**
      * Get the functions property: A list of functions the model may generate JSON inputs for.
@@ -510,8 +509,11 @@ public final class ChatCompletionsOptions {
 
     public ChatCompletionsOptions setFunctionCall(FunctionCall functionCalls) {
         this.functionCalls = functionCalls;
-        if (FunctionCallPreset.values().stream().anyMatch(preset -> preset.toString().equals(functionCalls.getName()))) {
-            this.functionCall = new FunctionCallPresetFunctionCallModel(FunctionCallPreset.fromString(this.functionCalls.getName()));
+        if (FunctionCallPreset.values().stream()
+                .anyMatch(preset -> preset.toString().equals(functionCalls.getName()))) {
+            this.functionCall =
+                    new FunctionCallPresetFunctionCallModel(
+                            FunctionCallPreset.fromString(this.functionCalls.getName()));
         } else {
             this.functionCall = new FunctionNameFunctionCallModel(new FunctionName(this.functionCalls.getName()));
         }
