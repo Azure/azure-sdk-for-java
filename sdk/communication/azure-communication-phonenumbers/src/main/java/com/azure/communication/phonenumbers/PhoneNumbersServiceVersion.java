@@ -10,9 +10,14 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum PhoneNumbersServiceVersion implements ServiceVersion {
     /**
-     * Service version {@code 2023-05-01-preview}
+     * Latest stable service version {@code 2021-03-07}
      */
-    NumberLookupPreview("2023-05-01-preview");
+    V2021_03_07("2021-03-07"),
+
+    /**
+     * Number Lookup preview version {@code 2023-05-01-preview}
+     */
+    V2023_05_01_Preview("2023-05-01-preview");
 
     private final String version;
 
@@ -37,6 +42,6 @@ public enum PhoneNumbersServiceVersion implements ServiceVersion {
      */
     public static PhoneNumbersServiceVersion getLatest() {
 
-        return NumberLookupPreview;
+        return V2023_05_01_Preview;
     }
 }
