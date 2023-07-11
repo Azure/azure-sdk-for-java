@@ -154,10 +154,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             CommunicationIdentifier caller;
             CommunicationIdentifier receiver;
             // when in playback, use Sanitized values
-            if (getTestMode() == TestMode.PLAYBACK) {
-                caller = new PhoneNumberIdentifier("Sanitized");
-                receiver = new PhoneNumberIdentifier("Sanitized");
-            } else {
+
                 PhoneNumbersClient phoneNumberClient = new PhoneNumbersClientBuilder()
                     .connectionString(CONNECTION_STRING)
                     .httpClient(getHttpClientOrUsePlayback(httpClient))
@@ -165,7 +162,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
                 List<String> phoneNumbers = phoneNumberClient.listPurchasedPhoneNumbers().stream().map(PurchasedPhoneNumber::getPhoneNumber).collect(Collectors.toList());
                 receiver = new PhoneNumberIdentifier(phoneNumbers.get(1));
                 caller = new PhoneNumberIdentifier(phoneNumbers.get(0));
-            }
+
 
             CallAutomationAsyncClient client = getCallAutomationClientUsingConnectionString(httpClient)
                 .addPolicy((context, next) -> logHeaders("dtmfActionsInACallAutomatedTest", next))

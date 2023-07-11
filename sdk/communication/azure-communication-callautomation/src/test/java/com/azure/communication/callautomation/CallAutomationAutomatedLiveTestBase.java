@@ -64,39 +64,39 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         eventsToPersist = new ArrayList<>();
 
         // Load persisted events back to memory when in playback mode
-        if (getTestMode() == TestMode.PLAYBACK) {
-            try {
-                String fileName = "./src/test/resources/session-records/" + testContextManager.getTestName();
-                ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(fileName));
-                ArrayList<String> persistedEvents = (ArrayList<String>) objectInputStream.readObject();
-                persistedEvents.forEach(this::messageBodyHandler);
-                objectInputStream.close();
-            } catch (IOException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        // if (getTestMode() == TestMode.PLAYBACK) {
+        //     try {
+        //         String fileName = "./src/test/resources/session-records/" + testContextManager.getTestName();
+        //         ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(fileName));
+        //         ArrayList<String> persistedEvents = (ArrayList<String>) objectInputStream.readObject();
+        //         persistedEvents.forEach(this::messageBodyHandler);
+        //         objectInputStream.close();
+        //     } catch (IOException | ClassNotFoundException e) {
+        //         throw new RuntimeException(e);
+        //     }
+        // }
 
     }
 
     @Override
     protected void afterTest() {
         super.afterTest();
-        processorStore.forEach((key, value) -> value.close());
+        // processorStore.forEach((key, value) -> value.close());
 
         // In recording mode, manually store events from event dispatcher into local disk as the callAutomationClient doesn't do so
-        if (getTestMode() == TestMode.RECORD) {
-            try {
-                String fileName = "./src/test/resources/session-records/" + testContextManager.getTestName();
-                new FileOutputStream(fileName).close();
-                FileOutputStream fileOutputStream = new FileOutputStream(fileName, false);
-                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-                objectOutputStream.writeObject(eventsToPersist);
-                objectOutputStream.flush();
-                objectOutputStream.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        // if (getTestMode() == TestMode.RECORD) {
+        //     try {
+        //         String fileName = "./src/test/resources/session-records/" + testContextManager.getTestName();
+        //         new FileOutputStream(fileName).close();
+        //         FileOutputStream fileOutputStream = new FileOutputStream(fileName, false);
+        //         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        //         objectOutputStream.writeObject(eventsToPersist);
+        //         objectOutputStream.flush();
+        //         objectOutputStream.close();
+        //     } catch (IOException e) {
+        //         throw new RuntimeException(e);
+        //     }
+        // }
     }
 
     protected static ServiceBusClientBuilder createServiceBusClientBuilderWithConnectionString() {
