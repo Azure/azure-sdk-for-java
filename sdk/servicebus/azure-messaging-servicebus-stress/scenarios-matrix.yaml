@@ -1,3 +1,4 @@
 matrix:
-    scenarios:
-        - longrunning
+  scenarios:
+    longrunning:
+      chaos: "true"

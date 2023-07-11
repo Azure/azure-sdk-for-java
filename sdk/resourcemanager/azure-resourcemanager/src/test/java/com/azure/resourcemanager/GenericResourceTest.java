@@ -14,6 +14,9 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.GenericResource;
+import com.azure.resourcemanager.resources.models.PolicyAssignment;
+import com.azure.resourcemanager.resources.models.PolicyDefinition;
+import com.azure.resourcemanager.resources.models.PolicyType;
 import com.azure.resourcemanager.sql.models.SqlElasticPool;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
@@ -23,7 +26,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GenericResourceTest extends ResourceManagerTestBase {
 
@@ -31,6 +36,7 @@ public class GenericResourceTest extends ResourceManagerTestBase {
 
     protected String rgName = "";
     protected final Region region = Region.US_EAST;
+    private final String policyRule = "{\"if\":{\"not\":{\"field\":\"location\",\"in\":[\"southcentralus\",\"eastus\"]}},\"then\":{\"effect\":\"deny\"}}";
 
     @Override
     protected HttpPipeline buildHttpPipeline(
@@ -90,6 +96,35 @@ public class GenericResourceTest extends ResourceManagerTestBase {
 
         // status code 405
 //        Assertions.assertTrue(azureResourceManager.genericResources().checkExistenceById(poolId));
+
+        // policy assignment
+        String policyName = generateRandomResourceName("policy", 15);
+        String assignmentName = generateRandomResourceName("assign", 15);
+        PolicyDefinition definition = azureResourceManager.policyDefinitions().define(policyName)
+            .withPolicyRuleJson(policyRule)
+            .withPolicyType(PolicyType.CUSTOM)
+            .withDisplayName(policyName)
+            .withDescription("This is my policy")
+            .create();
+        PolicyAssignment assignment = azureResourceManager.policyAssignments()
+            .define(assignmentName)
+            .forResource(pool)
+            .withPolicyDefinition(definition)
+            .withDisplayName("My Assignment")
+            .create();
+        assignment = azureResourceManager.policyAssignments().getById(assignment.id());
+        Assertions.assertEquals(assignmentName, assignment.name());
+
+        azureResourceManager.policyAssignments().deleteById(assignment.id());
+
+        // tags
+        Map<String, String> tags = new HashMap<>();
+        tags.put("myTagKey", "myTagValue");
+        azureResourceManager.tagOperations()
+            .updateTags(pool, tags);
+
+        pool = pool.refresh();
+        Assertions.assertTrue(pool.tags().containsKey("myTagKey"));
 
         azureResourceManager.genericResources().deleteById(poolId);
     }

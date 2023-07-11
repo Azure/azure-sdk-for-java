@@ -65,12 +65,12 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.40.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.41.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.13.4</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.13.5</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -99,7 +99,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>7.5</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
+      <version>7.5.1</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <!-- Excluding these 2 dependencies as they have vulnerabilities and we don't use them -->

@@ -4,7 +4,8 @@
 
 ### Bugs Fixed
 
-- Fixed a bug that methods in `GenericResources` fails when get or delete a resource, if the resource name contains space.
+- Fixed a bug that methods in `GenericResources`, `PolicyAssignments` and `TagOperations` fails when get or delete a 
+  resource, if the resource name contains space.
 
 ## 2.28.0 (2023-06-25)
 
