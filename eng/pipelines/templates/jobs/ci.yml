@@ -67,7 +67,7 @@ jobs:
 
     steps:
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
-      # as we require the github service connection to be loaded.
+      # as we require the GitHub service connection to be loaded.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
           parameters:
@@ -100,7 +100,7 @@ jobs:
             -ProjectList $(ProjectList)
 
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
-      # as we require the github service connection to be loaded.
+      # as we require the GitHub service connection to be loaded.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
           parameters:
@@ -234,7 +234,7 @@ jobs:
           versionSpec: $(PythonVersion)
 
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
-      # as we require the github service connection to be loaded.
+      # as we require the GitHub service connection to be loaded.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
           parameters:
@@ -269,7 +269,7 @@ jobs:
             -ProjectList $(ProjectList)
 
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
-      # as we require the github service connection to be loaded.
+      # as we require the GitHub service connection to be loaded.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
           parameters:
@@ -411,6 +411,34 @@ jobs:
       name: azsdk-pool-mms-win-2022-general
       vmImage: windows-2022
     steps:
+      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+      # as we require the GitHub service connection to be loaded.
+      - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            Paths:
+              - '**/*.xml'
+              - '**/*.md'
+              - '!sdk/**/test-recordings'
+              - '!sdk/**/session-records'
+
+      - task: PowerShell@2
+        displayName: Generate directories variable for sparse checkout
+        inputs:
+          pwsh: true
+          filePath: $(Build.SourcesDirectory)/eng/scripts/Generate-ServiceDirectories-From-Project-List.ps1
+          arguments: >
+            -SourcesDirectory $(Build.SourcesDirectory)
+            -ProjectList $(ProjectList)
+
+      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+      # as we require the GitHub service connection to be loaded.
+      - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            Paths: $(SparseCheckoutDirectories)
+            SkipCheckoutNone: true
+
       - template: /eng/common/pipelines/templates/steps/credscan.yml
         parameters:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
