@@ -222,9 +222,8 @@
     </profile>
 
     <!-- Override the parent client.pom.xml's java11+ profile to override target of base-compile execution from 1.8 to 11-->
-    <!-- TODO (JG): Should this LTS be moved up to 17? -->
     <profile>
-      <id>requires-java-lts</id>
+      <id>requires-java-11-or-later</id>
       <activation>
         <jdk>[11,)</jdk>
       </activation>

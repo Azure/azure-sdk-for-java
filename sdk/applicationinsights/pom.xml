@@ -11,16 +11,6 @@
 
   <profiles>
     <profile>
-      <id>libraries-data-plane-current</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>microsoft-azure-applicationinsights-query</module>
-      </modules>
-    </profile>
-
-    <profile>
       <id>libraries-mgmt-plane-current</id>
       <activation>
         <property>
@@ -29,6 +19,16 @@
       </activation>
       <modules>
         <module>azure-resourcemanager-applicationinsights</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>libraries-data-plane-track1</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>microsoft-azure-applicationinsights-query</module>
       </modules>
     </profile>
   </profiles>
