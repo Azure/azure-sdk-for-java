@@ -412,15 +412,14 @@ jobs:
       vmImage: windows-2022
 
     steps:
-      - checkout: none
-
       # For PullRequests CredScan will be run against the files changed in the PR.
       # For non-pull requests CredScan
       - ${{if eq(variables['Build.Reason'], 'PullRequest')}}:
-          - pwsh: |
-              $changedFiles = & "eng/common/scripts/get-changedfiles.ps1"
-              $tmp = ConvertTo-Json @($changedFiles | Sort-Object | Get-Unique) -Compress
-              Write-Host "##vso[task.setvariable variable=SparseCheckoutDirectories;]$tmp"
+        - checkout: none
+        - pwsh: |
+            $changedFiles = & "eng/common/scripts/get-changedfiles.ps1"
+            $tmp = ConvertTo-Json @($changedFiles | Sort-Object | Get-Unique) -Compress
+            Write-Host "##vso[task.setvariable variable=SparseCheckoutDirectories;]$tmp"
       - ${{else}}:
         # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
         # as we require the GitHub service connection to be loaded.
