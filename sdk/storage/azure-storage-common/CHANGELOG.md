@@ -5,7 +5,7 @@
 ### Features Added
 - Added `ServiceTimeoutPolicy` which allows for service level timeouts to be set on client builders through `HttpPipelinePolicy`. If the
   server timeout interval elapses before the service has finished processing the request, the service returns an error.
-- Added support for 2023-01-03 service version.
+- Added support for the `2023-01-03` service version.
 
 ### Bugs Fixed
 - Adding support for sas tokens with start and end times that only contain a date, no timestamp, ex: st=2021-06-21&se=2021-06-22.

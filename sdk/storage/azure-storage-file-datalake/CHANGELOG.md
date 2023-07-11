@@ -5,7 +5,7 @@
 ### Features Added
 - Added `DataLakeFileClient.getOutputStream()` which allows users to open an `OutputStream` on the file and write data
   to it using `ParallelTransferOptions`.
-- Added support for 2023-01-03 service version.
+- Added support for the `2023-01-03` service version.
 - Added owner, group, and permissions properties to `PathProperties`.
 - Added encryptionContext property to `FileParallelUploadOptions`.
 
