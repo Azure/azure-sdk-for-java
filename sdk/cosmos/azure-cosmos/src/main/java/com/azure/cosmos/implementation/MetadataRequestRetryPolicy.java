@@ -49,12 +49,10 @@ public class MetadataRequestRetryPolicy implements IRetryPolicy {
         if (shouldMarkRegionAsUnavailable(cosmosException)) {
             URI locationEndpointToRoute = request.requestContext.locationEndpointToRoute;
 
-            if (shouldMarkRegionAsUnavailable(cosmosException)) {
-                if (request.isReadOnlyRequest()) {
-                    this.globalEndpointManager.markEndpointUnavailableForRead(locationEndpointToRoute);
-                } else {
-                    this.globalEndpointManager.markEndpointUnavailableForWrite(locationEndpointToRoute);
-                }
+            if (request.isReadOnlyRequest()) {
+                this.globalEndpointManager.markEndpointUnavailableForRead(locationEndpointToRoute);
+            } else {
+                this.globalEndpointManager.markEndpointUnavailableForWrite(locationEndpointToRoute);
             }
         }
 
