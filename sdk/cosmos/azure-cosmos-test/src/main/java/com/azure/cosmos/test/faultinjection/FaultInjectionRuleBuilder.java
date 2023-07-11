@@ -118,6 +118,8 @@ public final class FaultInjectionRuleBuilder {
      * Create a new fault injection rule.
      *
      * @return the {@link FaultInjectionRule}.
+     * @throws IllegalArgumentException if condition is null.
+     * @throws IllegalArgumentException if result is null.
      */
     public FaultInjectionRule build() {
         if (this.condition == null) {
