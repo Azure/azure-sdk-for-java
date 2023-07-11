@@ -44,7 +44,7 @@ import static com.azure.data.appconfiguration.implementation.ConfigurationSettin
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithResponse;
 import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
-import static com.azure.data.appconfiguration.implementation.Utility.getEtag;
+import static com.azure.data.appconfiguration.implementation.Utility.getETag;
 import static com.azure.data.appconfiguration.implementation.Utility.iterableToList;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
@@ -568,7 +568,7 @@ public final class ConfigurationAsyncClient {
         return withContext(
             context -> validateSettingAsync(setting).flatMap(
                 settingInternal -> serviceClient.putKeyValueWithResponseAsync(settingInternal.getKey(),
-                    settingInternal.getLabel(), getEtag(ifUnchanged, settingInternal), null,
+                    settingInternal.getLabel(), getETag(ifUnchanged, settingInternal), null,
                     toKeyValue(settingInternal), addTracingNamespace(context))
                                        .map(response -> toConfigurationSettingWithResponse(response))));
     }
@@ -716,7 +716,7 @@ public final class ConfigurationAsyncClient {
                 settingInternal ->
                     serviceClient.getKeyValueWithResponseAsync(settingInternal.getKey(), settingInternal.getLabel(),
                         acceptDateTime == null ? null : acceptDateTime.toString(), null,
-                        getEtag(ifChanged, settingInternal), null, addTracingNamespace(context))
+                        getETag(ifChanged, settingInternal), null, addTracingNamespace(context))
                         .onErrorResume(
                             HttpResponseException.class,
                             (Function<Throwable, Mono<ResponseBase<GetKeyValueHeaders, KeyValue>>>) throwable -> {
@@ -850,7 +850,7 @@ public final class ConfigurationAsyncClient {
         boolean ifUnchanged) {
         return withContext(context -> validateSettingAsync(setting).flatMap(
             settingInternal -> serviceClient.deleteKeyValueWithResponseAsync(settingInternal.getKey(),
-                settingInternal.getLabel(), getEtag(ifUnchanged, settingInternal), addTracingNamespace(context))
+                settingInternal.getLabel(), getETag(ifUnchanged, settingInternal), addTracingNamespace(context))
                                    .map(response -> toConfigurationSettingWithResponse(response))));
     }
 
@@ -1311,7 +1311,7 @@ public final class ConfigurationAsyncClient {
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.archiveSnapshotMaxOverload -->
      *
      * @param snapshot The snapshot to be archived.
-     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getEtag ETag} is
+     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag ETag} is
      * used as a IF-MATCH header.
      * @return A {@link Mono} of {@link ConfigurationSettingSnapshot}.
      */
@@ -1365,7 +1365,7 @@ public final class ConfigurationAsyncClient {
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.recoverSnapshotMaxOverload -->
      *
      * @param snapshot The snapshot to be archived.
-     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getEtag()} ETag}
+     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag()} ETag}
      *                    is used as an IF-MATCH header.
      * @return A {@link Mono} of {@link ConfigurationSettingSnapshot}.
      */

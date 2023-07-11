@@ -177,6 +177,8 @@ A configuration setting is the fundamental resource within a configuration store
 
 The Label property of a configuration setting provides a way to separate configuration settings into different dimensions. These dimensions are user defined and can take any form. Some common examples of dimensions to use for a label include regions, semantic versions, or environments. Many applications have a required set of configuration keys that have varying values as the application exists across different dimensions. For example, MaxRequests may be 100 in "NorthAmerica", and 200 in "WestEurope". By creating a configuration setting named MaxRequests with a label of "NorthAmerica" and another, only with a different value, in the "WestEurope" label, a solution can be achieved that allows the application to seamlessly retrieve Configuration Settings as it runs in these two dimensions.
 
+Azure App Configuration allows users to create a point-in-time snapshot of their configuration store, providing them with the ability to treat settings as one consistent version. This feature enables applications to hold a consistent view of configuration, ensuring that there are no version mismatches to individual settings due to reading as updates were made. Snapshots are immutable, ensuring that configuration can confidently be rolled back to a last-known-good configuration in the event of a problem.
+
 ### Configuration Client
 
 The client performs the interactions with the App Configuration service, getting, setting, deleting, and selecting configuration settings. An asynchronous, `ConfigurationAsyncClient`, and synchronous, `ConfigurationClient`, client exists in the SDK allowing for selection of a client based on an application's use case.
@@ -221,6 +223,23 @@ configurationClient.listConfigurationSettings(new SettingSelector().setLabelFilt
 
 The following sections provide several code snippets covering some of the most common configuration service tasks, including:
 For "Feature Flag" and "Secret Reference" configuration settings, see [samples][samples_readme] for more detail.
+
+* [Create a Configuration Client](#create-a-client)
+* [Create a Configuration Setting](#create-a-configuration-setting)
+* [Retrieve a Configuration Setting](#retrieve-a-configuration-setting)
+* [Update an existing Configuration Setting](#update-an-existing-configuration-setting)
+* [Delete a Configuration Setting](#delete-a-configuration-setting)
+* [List Configuration Settings with multiple keys](#list-configuration-settings-with-multiple-keys)
+* [List revisions of multiple Configuration Settings](#list-revisions-of-multiple-configuration-settings)
+* [Set a Configuration Setting to read only](#set-a-configuration-setting-to-read-only)
+* [Clear read only from a Configuration Setting](#clear-read-only-from-a-configuration-setting)
+* [Create a client with Proxy Options](#create-a-client-with-proxy-options)
+* [Create a Snapshot](#create-a-snapshot)
+* [Retrieve a Snapshot](#retrieve-a-snapshot)
+* [Archive a Snapshot](#archive-a-snapshot)
+* [Recover a snapshot](#recover-a-snapshot)
+* [Retrieve all Snapshots](#retrieve-all-snapshots)
+* [Retrieve Configuration Settings in a Snapshot](#retrieve-configuration-settings-in-a-snapshot)
 
 ### Create a Configuration Client
 
@@ -401,6 +420,7 @@ Set a configuration setting to read-only status.
 configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
 ConfigurationSetting setting = configurationClient.setReadOnly("some_key", "some_label", true);
 ```
+
 ### Clear read only from a Configuration Setting
 
 Clear read-only from a configuration setting.
@@ -427,6 +447,91 @@ ConfigurationAsyncClient configurationAsyncClient = new ConfigurationClientBuild
     .connectionString("{your_connection_string}")
     .httpClient(httpClient)
     .buildAsyncClient();
+```
+
+### Create a Snapshot
+
+To create a snapshot, you need to instantiate the `ConfigurationSettingsSnapshot` class and specify filters to determine 
+which configuration settings should be included. The creation process is a Long-Running Operation (LRO) and can be 
+achieved by calling the `beginCreateSnapshot` method.
+
+```java readme-sample-createSnapshot
+String snapshotName = "{snapshotName}";
+// Prepare the snapshot filters
+List<SnapshotSettingFilter> filters = new ArrayList<>();
+// Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
+filters.add(new SnapshotSettingFilter("Test*"));
+SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
+    configurationClient.beginCreateSnapshot(snapshotName, new ConfigurationSettingSnapshot(filters), Context.NONE);
+poller.setPollInterval(Duration.ofSeconds(10));
+poller.waitForCompletion();
+ConfigurationSettingSnapshot snapshot = poller.getFinalResult();
+System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
+    snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
+```
+
+### Retrieve a Snapshot
+
+Once a configuration setting snapshot is created, you can retrieve it using the `getSnapshot` method.
+
+```java readme-sample-getSnapshot
+String snapshotName = "{snapshotName}";
+ConfigurationSettingSnapshot getSnapshot = configurationClient.getSnapshot(snapshotName);
+System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
+    getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
+```
+
+### Archive a Snapshot
+
+To archive a snapshot, you can utilize the `archiveSnapshot` method. This operation updates the status of the snapshot 
+to `archived`.
+
+```java readme-sample-archiveSnapshot
+String snapshotName = "{snapshotName}";
+ConfigurationSettingSnapshot archivedSnapshot = configurationClient.archiveSnapshot(snapshotName);
+System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
+    archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
+```
+
+### Recover a snapshot
+
+You can recover an archived snapshot by using the `recoverSnapshot` method. This operation updates the status of the 
+snapshot to `ready`.
+
+```java readme-sample-recoverSnapshot
+String snapshotName = "{snapshotName}";
+ConfigurationSettingSnapshot recoveredSnapshot = configurationClient.recoverSnapshot(snapshotName);
+System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
+    recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
+```
+
+### Retrieve all Snapshots
+
+To retrieve all snapshots, you can use the `listSnapshots` method.
+
+```java readme-sample-getAllSnapshots
+String snapshotNameProduct = "{snapshotNameInProduct}";
+SnapshotSelector snapshotSelector = new SnapshotSelector().setName(snapshotNameProduct);
+PagedIterable<ConfigurationSettingSnapshot> configurationSettingSnapshots =
+    configurationClient.listSnapshots(snapshotSelector);
+for (ConfigurationSettingSnapshot snapshot : configurationSettingSnapshots) {
+    System.out.printf("Listed Snapshot name = %s is created at %s, snapshot status is %s.%n",
+        snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
+}
+```
+
+### Retrieve Configuration Settings in a Snapshot
+List multiple configuration settings in a snapshot by calling `listConfigurationSettingsForSnapshot`.
+
+```java readme-sample-listSettingsInSnapshot
+String snapshotNameProduct = "{snapshotNameInProduct}";
+PagedIterable<ConfigurationSetting> configurationSettings =
+    configurationClient.listConfigurationSettingsForSnapshot(snapshotNameProduct);
+
+for (ConfigurationSetting setting : configurationSettings) {
+    System.out.printf("[ConfigurationSetting in snapshot] Key: %s, Value: %s%n",
+        setting.getKey(), setting.getValue());
+}
 ```
 
 ## Troubleshooting

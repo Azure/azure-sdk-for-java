@@ -105,16 +105,16 @@ public class Utility {
      * Get HTTP header value, if-match or if-none-match.. Used to perform an operation only if the targeted resource's
      * etag matches the value provided.
      */
-    public static String getEtag(boolean isEtagRequired, ConfigurationSetting setting) {
-        return isEtagRequired ? getETagValue(setting.getETag()) : null;
+    public static String getETag(boolean isETagRequired, ConfigurationSetting setting) {
+        return isETagRequired ? getETagValue(setting.getETag()) : null;
     }
 
-    public static String getEtagSnapshot(boolean isEtagRequired, ConfigurationSettingSnapshot snapshot) {
-        if (!isEtagRequired) {
+    public static String getETagSnapshot(boolean isETagRequired, ConfigurationSettingSnapshot snapshot) {
+        if (!isETagRequired) {
             return null;
         }
         Objects.requireNonNull(snapshot);
-        return getETagValue(snapshot.getEtag());
+        return getETagValue(snapshot.getETag());
     }
 
     /*
@@ -166,7 +166,7 @@ public class Utility {
         final ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot> response =
             serviceClient.updateSnapshotWithResponse(snapshotName,
                 new SnapshotUpdateParameters().setStatus(status),
-                getEtagSnapshot(ifUnchanged, snapshot), null, context);
+                getETagSnapshot(ifUnchanged, snapshot), null, context);
         return new SimpleResponse<>(response, response.getValue());
     }
 
@@ -175,7 +175,7 @@ public class Utility {
         AzureAppConfigurationImpl serviceClient) {
         return serviceClient.updateSnapshotWithResponseAsync(snapshotName,
                 new SnapshotUpdateParameters().setStatus(status),
-                getEtagSnapshot(ifUnchanged, snapshot),
+                getETagSnapshot(ifUnchanged, snapshot),
                 null)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
