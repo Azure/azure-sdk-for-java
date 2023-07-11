@@ -30,8 +30,9 @@ public class ReadmeSamples {
         .getDatabase("<YOUR DATABASE NAME>")
         .getContainer("<YOUR CONTAINER NAME>");
 
-    private final CosmosContainer cosmosContainer = cosmosClient
-        .getDatabase("<YOUR DATABASE NAME>")
+    private final CosmosDatabase cosmosDatabase = cosmosClient
+        .getDatabase("<YOUR DATABASE NAME>");
+    private final CosmosContainer cosmosContainer = cosmosDatabase
         .getContainer("<YOUR CONTAINER NAME>");
 
     public void createCosmosAsyncClient() {
@@ -310,6 +311,100 @@ public class ReadmeSamples {
             System.out.println(results);
         }
         // END: com.azure.cosmos.CosmosContainer.SqlQuerySpec.queryItems
+    }
+
+    public void databaseReadSample() {
+        // BEGIN: com.azure.cosmos.CosmosDatabase.read
+        CosmosDatabase cosmosDatabase = cosmosClient
+            .getDatabase("<YOUR DATABASE NAME>");
+        CosmosDatabaseResponse readResponse = cosmosDatabase.read();
+        // END: com.azure.cosmos.CosmosDatabase.read
+    }
+
+    public void databaseDeleteSample() {
+        // BEGIN: com.azure.cosmos.CosmosDatabase.delete
+        CosmosDatabase cosmosDatabase = cosmosClient
+            .getDatabase("<YOUR DATABASE NAME>");
+        CosmosDatabaseResponse deleteResponse = cosmosDatabase.delete();
+        // END: com.azure.cosmos.CosmosDatabase.delete
+    }
+
+    public void databaseCreateContainerSample() {
+        String containerId = "passengers";
+        PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+        // BEGIN: com.azure.cosmos.CosmosDatabase.createContainer
+        CosmosContainerProperties containerProperties =
+            new CosmosContainerProperties(containerId, partitionKeyDefinition);
+        try {
+            CosmosContainerResponse container = cosmosDatabase.createContainer(containerProperties);
+        } catch (CosmosException ce) {
+            System.out.println("Failed to create container: " + ce);
+        }
+        // END: com.azure.cosmos.CosmosDatabase.createContainer
+
+    }
+
+    public void databaseCreateContainerPropsSample() {
+        String containerId = "passengers";
+        PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+        int autoScaleMaxThroughput = 1000;
+
+        // BEGIN: com.azure.cosmos.CosmosDatabase.createContainerProps
+        CosmosContainerProperties containerProperties =
+            new CosmosContainerProperties(containerId, partitionKeyDefinition);
+        ThroughputProperties throughputProperties =
+            ThroughputProperties.createAutoscaledThroughput(autoScaleMaxThroughput);
+        try {
+            CosmosContainerResponse container = cosmosDatabase.createContainer(
+                containerProperties,
+                throughputProperties
+            );
+        } catch (CosmosException ce) {
+            System.out.println("Failed to create container: " + ce);
+        }
+        // END: com.azure.cosmos.CosmosDatabase.createContainerProps
+    }
+
+    public void databaseCreateContainerThroughputSample() {
+        String containerId = "passengers";
+        PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+        int throughput = 1000;
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+
+        // BEGIN: com.azure.cosmos.CosmosDatabase.createContainerThroughput
+        CosmosContainerProperties containerProperties =
+            new CosmosContainerProperties(containerId, partitionKeyDefinition);
+
+        try {
+            CosmosContainerResponse container = cosmosDatabase.createContainer(
+                containerProperties,
+                throughput,
+                options
+            );
+        } catch (CosmosException ce) {
+            System.out.println("Failed to create container: " + ce);
+        }
+        // END: com.azure.cosmos.CosmosDatabase.createContainerThroughput
+    }
+
+    public void databaseCreateContainerPartitionKeySample() {
+        String containerId = "passengers";
+        String partitionKeyPath = "/id";
+        int autoscaledThroughput = 1000;
+
+        // BEGIN: com.azure.cosmos.CosmosDatabase.createContainerPartitionKey
+        ThroughputProperties throughputProperties =
+            ThroughputProperties.createAutoscaledThroughput(autoscaledThroughput);
+        try {
+            CosmosContainerResponse container = cosmosDatabase.createContainer(
+                containerId,
+                partitionKeyPath,
+                throughputProperties
+            );
+        } catch (CosmosException ce) {
+            System.out.println("Failed to create container: " + ce);
+        }
+        // END: com.azure.cosmos.CosmosDatabase.createContainerPartitionKey
     }
 
     static final class Passenger {
