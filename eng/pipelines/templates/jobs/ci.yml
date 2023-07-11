@@ -414,7 +414,7 @@ jobs:
     steps:
       # For PullRequests CredScan will be run against the files changed in the PR.
       # For non-pull requests CredScan
-      - ${{if eq(variables[Build.Reason], 'PullRequest')}}:
+      - ${{if eq(variables['Build.Reason'], 'PullRequest')}}:
           - pwsh: |
               $changedFiles = & "eng/common/scripts/get-changedfiles.ps1"
               $tmp = ConvertTo-Json @($changedFiles | Sort-Object | Get-Unique) -Compress
