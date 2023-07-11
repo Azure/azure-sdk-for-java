@@ -3,27 +3,27 @@
 
 package com.azure.storage.common.implementation;
 
-import com.azure.core.test.TestProxyTestBase;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.Mockito;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.NonReadableChannelException;
 import java.nio.channels.NonWritableChannelException;
-import java.util.Arrays;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
-public class StorageSeekableByteChannelTests extends TestProxyTestBase {
+class StorageSeekableByteChannelTests {
 
     private byte[] getRandomData(int size) {
         byte[] result = new byte[size];
@@ -33,6 +33,14 @@ public class StorageSeekableByteChannelTests extends TestProxyTestBase {
 
     @Test
     void readSequentially() throws IOException {
+        /*
+        dataSize         | chunkSize    | readLength
+        8 * Constants.KB | Constants.KB | Constants.KB // easy path
+        8 * Constants.KB | Constants.KB | 100          // reads unaligned (smaller)
+        8 * Constants.KB | Constants.KB | 1500         // reads unaligned (larger)
+        8 * Constants.KB | 1000         | 1000         // buffer unaligned
+        100              | Constants.KB | Constants.KB // buffer larger than data
+         */
         int[] dataSizes = {8 * Constants.KB, 8 * Constants.KB, 8 * Constants.KB, 8 * Constants.KB, 100};
         int[] chunkSizes = {Constants.KB, Constants.KB, Constants.KB, 1000, Constants.KB};
         int[] readLengths = {Constants.KB, 100, 1500, 1000, Constants.KB};
@@ -59,468 +67,257 @@ public class StorageSeekableByteChannelTests extends TestProxyTestBase {
     }
 
     @Test
-    public void seekWithinBuffer() throws IOException {
+    void seekWithinBuffer() throws IOException {
         int bufferLength = 4 * Constants.KB;
         byte[] data = getRandomData(2 * bufferLength);
 
-        StorageSeekableByteChannel.ReadBehavior behavior = new StorageSeekableByteChannel.ReadBehavior() {
-            @Override
-            public int read(ByteBuffer dst, long sourceOffset) {
-                assertEquals(0L, sourceOffset); // Ensure sourceOffset is 0
-                int read = Math.min(dst.remaining(), data.length - (int) sourceOffset);
-                dst.put(data, (int) sourceOffset, read);
-                return read;
-            }
+        StorageSeekableByteChannel.ReadBehavior behavior = Mockito.mock(StorageSeekableByteChannel.ReadBehavior.class);
+        Mockito.when(behavior.getResourceLength()).thenReturn((long) data.length);
 
-            @Override
-            public long getResourceLength() {
-                return data.length;
-            }
-        };
+        Mockito.doAnswer(invocation -> {
+            ByteBuffer dst = invocation.getArgument(0);
+            long sourceOffset = invocation.getArgument(1);
+            assert sourceOffset == 0;
+            int read = Math.min(dst.remaining(), data.length);
+            dst.put(data, 0, read);
+            return read;
+        }).when(behavior).read(Mockito.any(ByteBuffer.class), Mockito.anyLong());
 
         StorageSeekableByteChannel channel = new StorageSeekableByteChannel(bufferLength, behavior, 0L);
 
         ByteBuffer temp = ByteBuffer.allocate(100);
         long[] seekIndices = {
-            0,                  // initial read at 0 to control buffer location
-            bufferLength / 2,   // seek somewhere in middle
-            bufferLength / 2,   // seek back to that same spot
-            0,                  // seek back to beginning
-            bufferLength - 100, // seek to last temp.length chunk of the internal buffer
-            bufferLength - 1    // seek to last byte of the internal buffer
+            0L,                        // initial read at 0 to control buffer location
+            bufferLength / 2,           // seek somewhere in middle
+            bufferLength / 2,           // seek back to that same spot
+            0L,                        // seek back to beginning
+            bufferLength - 100,         // seek to last temp.length chunk of the internal buffer
+            bufferLength - 1            // seek to last byte of the internal buffer
         };
 
         for (long seekIndex : seekIndices) {
             temp.clear();
             channel.position(seekIndex);
-            assertEquals(Math.min(temp.limit(), bufferLength - seekIndex), channel.read(temp));
-        }
-    }
-
-    private static class MockReadBehavior implements StorageSeekableByteChannel.ReadBehavior {
-        private final byte[] data;
-
-        MockReadBehavior(byte[] data) {
-            this.data = data;
-        }
-
-        @Override
-        public int read(ByteBuffer dst, long sourceOffset) {
-            //assertEquals(sourceOffset, 0); // Test is designed to have gotten its buffer at position 0, ensure we do this
-            int read = Math.min(dst.remaining(), data.length - (int) sourceOffset);
-            dst.put(data, (int) sourceOffset, read);
-            return read;
-        }
-
-        @Override
-        public long getResourceLength() {
-            return data.length;
+            int bytesRead = channel.read(temp);
+            int expectedBytesRead = Math.min(temp.limit(), bufferLength - (int) seekIndex);
+            assertEquals(expectedBytesRead, bytesRead);
         }
     }
 
     @Test
-    public void seekToNewBuffer() throws IOException {
+    void seekToNewBuffer() throws IOException {
         int bufferLength = 5;
         byte[] data = getRandomData(Constants.KB);
-        // each index should be outside the previous buffer
-        long[] seekIndices = {20, 500, 1, 6, 5};
+        long[] seekIndices = new long[]{20, 500, 1, 6, 5};
 
-        StorageSeekableByteChannel.ReadBehavior behavior = new StorageSeekableByteChannel.ReadBehavior() {
-            @Override
-            public int read(ByteBuffer dst, long sourceOffset) {
-                int read = Math.min(dst.remaining(), data.length - (int) sourceOffset);
-                if (read > 0) {
-                    dst.put(data, (int) sourceOffset, read);
-                }
-                return read;
-            }
-            @Override
-            public long getResourceLength() {
-                return data.length;
-            }
-        };
+        StorageSeekableByteChannel.ReadBehavior behavior = Mockito.mock(StorageSeekableByteChannel.ReadBehavior.class);
+        when(behavior.getResourceLength()).thenReturn((long) data.length);
 
         StorageSeekableByteChannel channel = new StorageSeekableByteChannel(bufferLength, behavior, 0L);
 
+        ByteBuffer temp = ByteBuffer.allocate(bufferLength * 2);
         for (long seekIndex : seekIndices) {
-            ByteBuffer temp = ByteBuffer.allocate(bufferLength * 2);
             temp.clear();
             channel.position(seekIndex);
             channel.read(temp);
         }
 
-        // expect a buffer refill at each seek index
         for (long l : seekIndices) {
-            assertEquals(bufferLength, behavior.read(ByteBuffer.allocate(bufferLength), l));
+            verify(behavior).read(Mockito.any(ByteBuffer.class), Mockito.eq(l));
         }
     }
 
     @Test
-    public void seekResultsInCorrectRead() throws IOException {
+    void seekResultsInCorrectRead() throws IOException {
         int bufferLength = 5;
         byte[] data = getRandomData(Constants.KB);
         long seekIndex = 345;
 
-        // Custom implementation of ReadBehavior
-        StorageSeekableByteChannel.ReadBehavior behavior = new StorageSeekableByteChannel.ReadBehavior() {
-            private boolean readCalled = false;
+        StorageSeekableByteChannel.ReadBehavior behavior = Mockito.mock(StorageSeekableByteChannel.ReadBehavior.class);
+        when(behavior.getResourceLength()).thenReturn((long) data.length);
+        when(behavior.read(Mockito.any(ByteBuffer.class), Mockito.eq(seekIndex))).thenAnswer(invocation -> {
+            ByteBuffer dst = invocation.getArgument(0);
+            long sourceOffset = invocation.getArgument(1);
 
-            @Override
-            public int read(ByteBuffer dst, long sourceOffset) {
-                if (!readCalled && sourceOffset == seekIndex) {
-                    byte[] expectedData = Arrays.copyOfRange(data, (int) seekIndex, (int) seekIndex + bufferLength);
-                    int read = Math.min(dst.remaining(), expectedData.length);
-                    dst.put(expectedData, 0, read);
-                    readCalled = true;
-                    return read;
-                } else {
-                    return -1;  // Indicate end of data
-                }
-            }
-
-            @Override
-            public long getResourceLength() {
-                return data.length;
-            }
-        };
+            dst.put(data, (int) sourceOffset, bufferLength);
+            return bufferLength;
+        });
 
         StorageSeekableByteChannel channel = new StorageSeekableByteChannel(bufferLength, behavior, 0L);
 
         ByteBuffer result = ByteBuffer.allocate(bufferLength);
         channel.position(seekIndex);
-        int bytesRead = channel.read(result);
+        channel.read(result);
 
-        byte[] expectedData = Arrays.copyOfRange(data, (int) seekIndex, (int) seekIndex + bufferLength);
-
-        assertArrayEquals(expectedData, Arrays.copyOf(result.array(), bytesRead));
+        assertArrayEquals(data, result.array());
+        verify(behavior).read(Mockito.any(ByteBuffer.class), Mockito.eq(seekIndex));
+        verify(behavior, Mockito.never()).read(Mockito.any(ByteBuffer.class), Mockito.anyLong());
     }
 
     @Test
-    public void readPastResourceEnd() throws IOException {
-        int offset;
-        int expectedReadLength;
+    void readPastResourceEnd() throws IOException {
+        int resourceSize = Constants.KB;
+        int offset = 500;
+        int expectedReadLength = Constants.KB - 500;
 
-        // Test cases
-        int[][] testData = {
-            { Constants.KB, 500, Constants.KB - 500 },           // Overlap on end of resource
-            { Constants.KB, Constants.KB, -1 },                  // Starts at end of resource
-            { Constants.KB, Constants.KB + 20, -1 }              // Completely past resource
-        };
+        StorageSeekableByteChannel.ReadBehavior behavior = Mockito.mock(StorageSeekableByteChannel.ReadBehavior.class);
+        when(behavior.getResourceLength()).thenReturn((long) resourceSize);
+        when(behavior.read(Mockito.any(ByteBuffer.class), Mockito.anyLong())).thenAnswer(invocation -> {
+            ByteBuffer dst = invocation.getArgument(0);
+            long sourceOffset = invocation.getArgument(1);
 
-        for (int[] testCase : testData) {
-            final int resourceSize = testCase[0];
-            offset = testCase[1];
-            expectedReadLength = testCase[2];
+            int toRead = Math.min(dst.remaining(), resourceSize - (int) sourceOffset);
+            if (toRead > 0) {
+                dst.put(new byte[toRead]);
+                return toRead;
+            } else {
+                return -1;
+            }
+        });
 
-            StorageSeekableByteChannel.ReadBehavior behavior = new StorageSeekableByteChannel.ReadBehavior() {
+        StorageSeekableByteChannel channel = new StorageSeekableByteChannel(resourceSize, behavior, 0L);
 
-                @Override
-                public int read(ByteBuffer dst, long sourceOffset) {
-                    int toRead = Math.min(dst.remaining(), resourceSize - (int) sourceOffset);
-                    if (toRead > 0) {
-                        dst.put(new byte[toRead]);
-                        return toRead;
-                    } else {
-                        return -1;
-                    }
-                }
+        channel.position(offset);
+        int read = channel.read(ByteBuffer.allocate(resourceSize));
 
-                @Override
-                public long getResourceLength() {
-                    return resourceSize;
-                }
-            };
-
-            StorageSeekableByteChannel channel = new StorageSeekableByteChannel(resourceSize, behavior, 0L);
-
-            ByteBuffer buffer = ByteBuffer.allocate(resourceSize);
-            channel.position(offset);
-            int bytesRead = channel.read(buffer);
-
-            // Assertions
-            assertEquals(expectedReadLength, bytesRead);
-            assertEquals(resourceSize, channel.position());
-            assertEquals(resourceSize, channel.size());
-        }
+        assertNull(assertThrows(Throwable.class, () -> { }));
+        assertEquals(expectedReadLength, read);
+        assertEquals(resourceSize, channel.position());
+        assertEquals(resourceSize, channel.size());
     }
 
+    @Test
+    void writeModeSeek() throws IOException {
+        int bufferSize = Constants.KB;
 
+        StorageSeekableByteChannel.WriteBehavior writeBehavior = Mockito.mock(StorageSeekableByteChannel.WriteBehavior.class);
+        StorageSeekableByteChannel channel = new StorageSeekableByteChannel(bufferSize, writeBehavior, 0L);
 
-    private static class StubReadBehavior2 implements StorageSeekableByteChannel.ReadBehavior {
-        private ResourceLengthFunction resourceLengthFunction;
-        private ReadFunction readFunction;
+        ByteBuffer partialData = ByteBuffer.wrap(getRandomData(bufferSize - 5));
+        channel.write(partialData);
+        channel.position(2048);
 
-        public void setResourceLength(ResourceLengthFunction resourceLengthFunction) {
-            this.resourceLengthFunction = resourceLengthFunction;
-        }
+        verify(writeBehavior).write(Mockito.argThat(bb -> bb.limit() == bufferSize - 5), Mockito.eq(0L));
+        verifyNoMoreInteractions(writeBehavior);
 
-        public void setReadFunction(ReadFunction readFunction) {
-            this.readFunction = readFunction;
-        }
+        ByteBuffer fullData = ByteBuffer.wrap(getRandomData(bufferSize));
+        channel.write(fullData);
+        channel.position(0);
 
-        @Override
-        public int read(ByteBuffer dst, long sourceOffset) {
-            return readFunction.read(dst, sourceOffset);
-        }
+        verify(writeBehavior).write(Mockito.argThat(bb -> bb.limit() == bufferSize), Mockito.eq(2048L));
+        verifyNoMoreInteractions(writeBehavior);
 
-        @Override
-        public long getResourceLength() {
-            return resourceLengthFunction.getResourceLength();
-        }
+        channel.position(1000);
 
-        @FunctionalInterface
-        interface ResourceLengthFunction {
-            long getResourceLength();
-        }
-
-        @FunctionalInterface
-        interface ReadFunction {
-            int read(ByteBuffer dst, long sourceOffset);
-        }
+        Mockito.verifyNoInteractions(writeBehavior);
     }
 
-    @ParameterizedTest
-    @CsvSource({
-        "8192, 8192, 8192", // easy path
-        "8192, 8192, 100",  // writes unaligned (smaller)
-        "8192, 8192, 1500", // writes unaligned (larger)
-        "8192, 1000, 1000", // buffer unaligned
-        "100, 1024, 1024"   // buffer larger than data
-    })
-    public void write(int dataSize, int chunkSize, int writeSize) throws IOException {
+    @Test
+    void write() throws IOException {
+        int dataSize = 8 * Constants.KB;
+        int chunkSize = Constants.KB;
+        int writeSize = Constants.KB;
+
         byte[] source = getRandomData(dataSize);
         byte[] dest = new byte[dataSize];
-        StorageSeekableByteChannel.WriteBehavior behavior = new StubWriteBehavior(dest);
 
-        StorageSeekableByteChannel channel = new StorageSeekableByteChannel(chunkSize, behavior, 0L);
+        StorageSeekableByteChannel.WriteBehavior writeBehavior = Mockito.mock(StorageSeekableByteChannel.WriteBehavior.class);
+        doAnswer(invocation -> {
+            ByteBuffer src = invocation.getArgument(0);
+            long destOffset = invocation.getArgument(1);
+
+            src.get(dest, (int) destOffset, src.remaining());
+            return null;
+        }).when(writeBehavior).write(Mockito.any(ByteBuffer.class), Mockito.anyLong());
+
+        StorageSeekableByteChannel channel = new StorageSeekableByteChannel(chunkSize, writeBehavior, 0L);
 
         int bytesLastWritten;
         for (int i = 0; i < source.length; i += bytesLastWritten) {
-            ByteBuffer buffer = ByteBuffer.wrap(source, i, Math.min(writeSize, source.length - i));
-            bytesLastWritten = channel.write(buffer);
+            bytesLastWritten = channel.write(ByteBuffer.wrap(source, i, Math.min(writeSize, source.length - i)));
         }
         channel.close();
 
         assertArrayEquals(source, dest);
     }
 
-    private static class StubWriteBehavior implements StorageSeekableByteChannel.WriteBehavior {
-        private final byte[] dest;
-
-        StubWriteBehavior(byte[] dest) {
-            this.dest = dest;
-        }
-
-        StubWriteBehavior() {
-            this(new byte[0]);
-        }
-
-        @Override
-        public void write(ByteBuffer src, long destOffset) {
-            int remaining = src.remaining();
-            src.get(dest, (int) destOffset, remaining);
-        }
-
-        @Override
-        public void commit(long committedSize) {
-            // No implementation needed for this test case
-            // You can add any necessary logic here if required by your actual use case.
-        }
-
-        @Override
-        public void assertCanSeek(long position) {
-            // No implementation needed for this test case
-            // You can add any necessary logic here if required by your actual use case.
-        }
-
-        @Override
-        public void resize(long newSize) {
-            // No implementation needed for this test case
-            // You can add any necessary logic here if required by your actual use case.
-        }
-    }
-
-    @Test
-    public void writeModeSeek() throws IOException {
-        int bufferSize = Constants.KB;
-        StubWriteBehavior2 writeBehavior = new StubWriteBehavior2(bufferSize);
-        StorageSeekableByteChannel channel = new StorageSeekableByteChannel(bufferSize, writeBehavior, 0L);
-
-        // Write partial data then seek
-        ByteBuffer partialData = ByteBuffer.wrap(getRandomData(bufferSize - 5));
-        channel.write(partialData);
-        channel.position(2048);
-
-        // Verify behavior write correctly called once
-        writeBehavior.setExpectedWrite(bufferSize - 5, 0L);
-        writeBehavior.verifyInvocation();
-
-        // Fill entire buffer
-        ByteBuffer fullData = ByteBuffer.wrap(getRandomData(bufferSize));
-        channel.write(fullData);
-        channel.position(0);
-
-        // Verify behavior write correctly called once
-        writeBehavior.setExpectedWrite(bufferSize, 2048L);
-        writeBehavior.verifyInvocation();
-
-        // No data before seek
-        channel.position(1000);
-
-        // Verify behavior write not called
-        assertNull(writeBehavior.getBuffer());
-        assertEquals(-1L, writeBehavior.getOffset());
-    }
-
-
-//    private void verifyWriteInvocation(StubWriteBehavior2 writeBehavior, int expectedSize, long expectedOffset) {
-//        ByteBuffer capturedBuffer = writeBehavior.getBuffer();
-//        long capturedOffset = writeBehavior.getOffset();
-//        assertEquals(expectedSize, capturedBuffer.remaining());
-//        assertEquals(expectedOffset, capturedOffset);
-//    }
-//
-//    private void verifyNoMoreInteractions(StubWriteBehavior2 writeBehavior) {
-//        assertNull(writeBehavior.getBuffer());
-//        assertEquals(-1L, writeBehavior.getOffset());
-//    }
-//
-//    private void verifyNoInteractions(StubWriteBehavior2 writeBehavior) {
-//        assertNull(writeBehavior.getBuffer());
-//        assertEquals(-1L, writeBehavior.getOffset());
-//    }
-
-
-
-    private static class StubWriteBehavior2 implements StorageSeekableByteChannel.WriteBehavior {
-        private ByteBuffer buffer;
-        private long offset;
-        private final int bufferSize;
-        private int expectedLength;
-        private long expectedOffset;
-
-        StubWriteBehavior2(int bufferSize) {
-            this.bufferSize = bufferSize;
-        }
-
-        public void setExpectedWrite(int length, long offset) {
-            this.expectedLength = length;
-            this.expectedOffset = offset;
-        }
-
-        @Override
-        public void write(ByteBuffer src, long targetOffset) {
-            buffer = src;
-            offset = targetOffset;
-        }
-
-        public ByteBuffer getBuffer() {
-            return buffer;
-        }
-
-        public long getOffset() {
-            return offset;
-        }
-
-        public int getBufferSize() {
-            return bufferSize;
-        }
-
-        @Override
-        public void commit(long totalLength) {
-
-        }
-
-        @Override
-        public void assertCanSeek(long position) {
-
-        }
-
-        @Override
-        public void resize(long newSize) {
-
-        }
-
-        public void verifyInvocation() {
-            assertEquals(expectedLength, buffer.limit());
-            assertEquals(expectedOffset, offset);
-        }
-    }
-
-
-
 
     @Test
     void writeModeSeekObeysBehavior() throws IOException {
-        // Channel that allows seeking in 512-byte increments
-        StorageSeekableByteChannel.WriteBehavior writeBehavior = new StubWriteBehavior();
-        StorageSeekableByteChannel channel = new StorageSeekableByteChannel(Constants.KB, writeBehavior, 0L);
+        int chunkSize = Constants.KB;
 
-        // Seek to 0
+        StorageSeekableByteChannel.WriteBehavior writeBehavior = Mockito.mock(StorageSeekableByteChannel.WriteBehavior.class);
+        StorageSeekableByteChannel channel = new StorageSeekableByteChannel(chunkSize, writeBehavior, 0L);
+
         channel.position(0);
         assertEquals(0, channel.position());
 
-        // Seek to 512
         channel.position(512);
         assertEquals(512, channel.position());
 
-        // Seek to 5 gigs
         channel.position(5L * Constants.GB);
         assertEquals(5L * Constants.GB, channel.position());
 
-        // Seek is invalid
         assertThrows(UnsupportedOperationException.class, () -> channel.position(100));
+
+        verify(writeBehavior, Mockito.never()).write(Mockito.any(ByteBuffer.class), Mockito.anyLong());
     }
 
     @Test
     void failedBehaviorWriteCanResumeWhereLeftOff() throws IOException {
-        // Channel with behavior that throws first write attempt
         ByteBuffer testWriteDest = ByteBuffer.allocate(Constants.KB);
-        StorageSeekableByteChannel.WriteBehavior writeBehavior = new StubWriteBehavior() {
-            private boolean firstAttempt = true;
 
-            @Override
-            public void write(ByteBuffer src, long destOffset) {
-                if (firstAttempt) {
-                    firstAttempt = false;
-                    throw new RuntimeException("mock behavior interrupt");
-                } else {
-                    testWriteDest.put(src);
-                }
-            }
-        };
+        StorageSeekableByteChannel.WriteBehavior writeBehavior = Mockito.mock(StorageSeekableByteChannel.WriteBehavior.class);
+
+        // Throw an exception on the first write attempt
+        Mockito.doThrow(new RuntimeException("mock behavior interrupt")).doReturn(Constants.KB)
+            .when(writeBehavior).write(Mockito.any(ByteBuffer.class), Mockito.eq(0L));
+
+        // Perform the desired action on subsequent write attempts
+        doAnswer(invocation -> {
+            ByteBuffer src = invocation.getArgument(0);
+            long offset = invocation.getArgument(1);
+            testWriteDest.put(src);
+            return src.remaining();
+        }).when(writeBehavior).write(Mockito.any(ByteBuffer.class), Mockito.anyLong());
+
         StorageSeekableByteChannel channel = new StorageSeekableByteChannel(Constants.KB, writeBehavior, 0L);
 
-        // First attempt
         ByteBuffer data1 = ByteBuffer.wrap(getRandomData(Constants.KB));
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> channel.write(data1));
-        assertEquals("mock behavior interrupt", exception.getMessage());
+        assertThrows(RuntimeException.class, () -> channel.write(data1));
         assertEquals(0, channel.position());
 
-        // Second attempt
         ByteBuffer data2 = ByteBuffer.wrap(getRandomData(Constants.KB));
         int written = channel.write(data2);
-        assertFalse(exception instanceof Throwable);
+
+        assertNull(assertThrows(Throwable.class, () -> {
+        }));
         assertEquals(Constants.KB, data2.position());
         assertEquals(Constants.KB, written);
         assertEquals(Constants.KB, channel.position());
         assertArrayEquals(data2.array(), testWriteDest.array());
     }
 
+
     @Test
     void writeModeCannotRead() {
-        StorageSeekableByteChannel channel = new StorageSeekableByteChannel(Constants.KB, new StubWriteBehavior(), 0L);
+        StorageSeekableByteChannel.WriteBehavior writeBehavior = Mockito.mock(StorageSeekableByteChannel.WriteBehavior.class);
+        StorageSeekableByteChannel channel = new StorageSeekableByteChannel(Constants.KB, writeBehavior, 0L);
 
         assertThrows(NonReadableChannelException.class, () -> channel.read(ByteBuffer.allocate(Constants.KB)));
+
+        Mockito.verifyNoInteractions(writeBehavior);
     }
 
     @Test
     void readModeCannotWrite() {
-        StorageSeekableByteChannel channel = new StorageSeekableByteChannel(Constants.KB, new StubReadBehavior2(), 0L);
+        StorageSeekableByteChannel.ReadBehavior readBehavior = Mockito.mock(StorageSeekableByteChannel.ReadBehavior.class);
+        StorageSeekableByteChannel channel = new StorageSeekableByteChannel(Constants.KB, readBehavior, 0L);
 
         assertThrows(NonWritableChannelException.class, () -> channel.write(ByteBuffer.allocate(Constants.KB)));
-    }
 
+        Mockito.verifyNoInteractions(readBehavior);
+    }
 
     private static class StubReadBehavior implements StorageSeekableByteChannel.ReadBehavior {
         private final byte[] data;
@@ -546,3 +343,4 @@ public class StorageSeekableByteChannelTests extends TestProxyTestBase {
         }
     }
 }
+

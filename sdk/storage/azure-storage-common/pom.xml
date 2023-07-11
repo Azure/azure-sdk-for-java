@@ -124,6 +124,12 @@
       <version>2.4-M1-groovy-4.0</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
+      <dependency>
+          <groupId>org.mockito</groupId>
+          <artifactId>mockito-core</artifactId>
+          <version>4.11.0</version>
+          <scope>test</scope>
+      </dependency>
   </dependencies>
 
   <build>
