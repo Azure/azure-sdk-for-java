@@ -5,13 +5,10 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import com.azure.cosmos.implementation.query.QueryInfo;
-import com.azure.cosmos.implementation.query.metrics.QueryMetricsTextWriter;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Duration;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,9 +18,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class FeedResponseDiagnostics {
 
-    private final static String EQUALS = "=";
-    private final static String QUERY_PLAN = "QueryPlan";
-    private final static String SPACE = " ";
     private static final ObjectMapper mapper = new ObjectMapper();
     private static final Logger LOGGER = LoggerFactory.getLogger(FeedResponseDiagnostics.class);
     private Map<String, QueryMetrics> queryMetricsMap;

@@ -6,7 +6,6 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.query.metrics.FetchExecutionRange;
-import com.azure.cosmos.implementation.query.metrics.QueryMetricsTextWriter;
 import com.azure.cosmos.implementation.query.metrics.SchedulingTimeSpan;
 
 import java.time.Duration;
@@ -16,7 +15,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 /**
  * Query metrics in the Azure Cosmos database service.
  * This metric represents a moving average for a set of queries whose metrics have been aggregated together.
@@ -195,13 +193,6 @@ public final class QueryMetrics {
                 }
             });
         }
-    }
-
-    private String toTextString(int indentLevel) {
-        StringBuilder stringBuilder = new StringBuilder();
-        QueryMetricsTextWriter queryMetricsTextWriter = new QueryMetricsTextWriter(stringBuilder);
-        queryMetricsTextWriter.writeQueryMetrics(this);
-        return stringBuilder.toString();
     }
 
     public static QueryMetrics createFromCollection(Collection<QueryMetrics> queryMetricsCollection) {
