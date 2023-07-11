@@ -479,6 +479,39 @@ public class ReadmeSamples {
         // END: com.azure.cosmos.CosmosAsyncClient.createGlobalThroughputControlConfigBuilder
     }
 
+    public void readConflictSample() {
+        CosmosAsyncClient asyncClient = new CosmosClientBuilder().buildAsyncClient();
+        // BEGIN: com.azure.cosmos.CosmosAsyncConflict.read
+        String conflictId = "CONFLICT_ID";
+        CosmosAsyncDatabase cosmosAsyncDatabase =
+            new CosmosAsyncDatabase(conflictId, asyncClient);
+        CosmosAsyncContainer cosmosAsyncContainer =
+            new CosmosAsyncContainer(conflictId, cosmosAsyncDatabase);
+        CosmosConflictRequestOptions options =
+            new CosmosConflictRequestOptions();
+        CosmosAsyncConflict conflict =
+            new CosmosAsyncConflict(conflictId, cosmosAsyncContainer);
+
+        Mono<CosmosConflictResponse> conflictResponseMono = conflict.read(options);
+        // END: com.azure.cosmos.CosmosAsyncConflict.read
+    }
+
+    public void deleteConflictSample() {
+        String conflictId = "CONFLICT_ID";
+        CosmosAsyncClient asyncClient = new CosmosClientBuilder().buildAsyncClient();
+        CosmosAsyncDatabase cosmosAsyncDatabase =
+            new CosmosAsyncDatabase(conflictId, asyncClient);
+        CosmosAsyncContainer cosmosAsyncContainer =
+            new CosmosAsyncContainer(conflictId, cosmosAsyncDatabase);
+        // BEGIN: com.azure.cosmos.CosmosAsyncConflict.delete
+        CosmosConflictRequestOptions options =
+            new CosmosConflictRequestOptions();
+        CosmosAsyncConflict conflict =
+            new CosmosAsyncConflict(conflictId, cosmosAsyncContainer);
+
+        Mono<CosmosConflictResponse> conflictResponseMono = conflict.delete(options);
+        // END: com.azure.cosmos.CosmosAsyncConflict.delete
+    }
     static final class Passenger {
         private final String id;
         private final String email;

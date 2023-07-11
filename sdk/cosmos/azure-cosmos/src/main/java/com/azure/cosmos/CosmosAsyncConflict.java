@@ -56,7 +56,22 @@ public final class CosmosAsyncConflict {
 
     /**
      * Reads a conflict.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncConflict.read -->
+     * <pre>
+     * String conflictId = &quot;CONFLICT_ID&quot;;
+     * CosmosAsyncDatabase cosmosAsyncDatabase =
+     *      new CosmosAsyncDatabase&#40;conflictId, asyncClient&#41;;
+     * CosmosAsyncContainer cosmosAsyncContainer =
+     *      new CosmosAsyncContainer&#40;conflictId, cosmosAsyncDatabase&#41;;
+     * CosmosConflictRequestOptions options =
+     *      new CosmosConflictRequestOptions&#40;&#41;;
+     * CosmosAsyncConflict conflict =
+     *      new CosmosAsyncConflict&#40;conflictId, cosmosAsyncContainer&#41;;
+     *
+     * Mono&lt;CosmosConflictResponse&gt; conflictResponseMono =
+     *      conflict.read&#40;options&#41;;
+     <pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncConflict.read -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a single resource response with the read
      * conflict. In case of failure the {@link Mono} will error.
@@ -75,7 +90,17 @@ public final class CosmosAsyncConflict {
 
     /**
      * Deletes a conflict.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncConflict.delete -->
+     * <pre>
+     * CosmosConflictRequestOptions options =
+     *      new CosmosConflictRequestOptions&#40;&#41;;
+     * CosmosAsyncConflict conflict =
+     *      new CosmosAsyncConflict&#40;conflictId, cosmosAsyncContainer&#41;;
+     *
+     * Mono&lt;CosmosConflictResponse&gt; conflictResponseMono =
+     *      conflict.delete&#40;options&#41;;
+     * <pre>
+     <!-- end com.azure.cosmos.CosmosAsyncConflict.delete -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a single resource response for the deleted
      * conflict. In case of failure the {@link Mono} will error.
