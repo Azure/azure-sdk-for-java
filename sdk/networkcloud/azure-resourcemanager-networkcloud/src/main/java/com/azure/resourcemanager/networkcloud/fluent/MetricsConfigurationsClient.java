@@ -17,25 +17,25 @@ import com.azure.resourcemanager.networkcloud.models.ClusterMetricsConfiguration
 /** An instance of this class provides access to all the operations defined in MetricsConfigurationsClient. */
 public interface MetricsConfigurationsClient {
     /**
-     * List metrics configurations of the cluster in the resource group.
+     * List metrics configurations of the cluster.
      *
-     * <p>Get a list of metrics configurations of the clusters in the provided resource group.
+     * <p>Get a list of metrics configurations for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of metrics configurations of the clusters in the provided resource group as paginated response
-     *     with {@link PagedIterable}.
+     * @return a list of metrics configurations for the provided cluster as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ClusterMetricsConfigurationInner> listByResourceGroup(String resourceGroupName, String clusterName);
+    PagedIterable<ClusterMetricsConfigurationInner> listByCluster(String resourceGroupName, String clusterName);
 
     /**
-     * List metrics configurations of the cluster in the resource group.
+     * List metrics configurations of the cluster.
      *
-     * <p>Get a list of metrics configurations of the clusters in the provided resource group.
+     * <p>Get a list of metrics configurations for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
@@ -43,11 +43,11 @@ public interface MetricsConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of metrics configurations of the clusters in the provided resource group as paginated response
-     *     with {@link PagedIterable}.
+     * @return a list of metrics configurations for the provided cluster as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ClusterMetricsConfigurationInner> listByResourceGroup(
+    PagedIterable<ClusterMetricsConfigurationInner> listByCluster(
         String resourceGroupName, String clusterName, Context context);
 
     /**
@@ -85,9 +85,9 @@ public interface MetricsConfigurationsClient {
     ClusterMetricsConfigurationInner get(String resourceGroupName, String clusterName, String metricsConfigurationName);
 
     /**
-     * Update the metrics configuration of the cluster.
+     * Create or update metrics configuration of the cluster.
      *
-     * <p>Update the metrics configuration of the provided cluster.
+     * <p>Create new or update the existing metrics configuration of the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
@@ -107,9 +107,9 @@ public interface MetricsConfigurationsClient {
         ClusterMetricsConfigurationInner metricsConfigurationParameters);
 
     /**
-     * Update the metrics configuration of the cluster.
+     * Create or update metrics configuration of the cluster.
      *
-     * <p>Update the metrics configuration of the provided cluster.
+     * <p>Create new or update the existing metrics configuration of the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
@@ -131,9 +131,9 @@ public interface MetricsConfigurationsClient {
         Context context);
 
     /**
-     * Update the metrics configuration of the cluster.
+     * Create or update metrics configuration of the cluster.
      *
-     * <p>Update the metrics configuration of the provided cluster.
+     * <p>Create new or update the existing metrics configuration of the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
@@ -152,9 +152,9 @@ public interface MetricsConfigurationsClient {
         ClusterMetricsConfigurationInner metricsConfigurationParameters);
 
     /**
-     * Update the metrics configuration of the cluster.
+     * Create or update metrics configuration of the cluster.
      *
-     * <p>Update the metrics configuration of the provided cluster.
+     * <p>Create new or update the existing metrics configuration of the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.

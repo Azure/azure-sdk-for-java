@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for BareMetalMachines RunReadCommands. */
 public final class BareMetalMachinesRunReadCommandsSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BareMetalMachines_RunReadCommands.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_RunReadCommands.json
      */
     /**
      * Sample code: Run and retrieve output from read only commands on bare metal machine.

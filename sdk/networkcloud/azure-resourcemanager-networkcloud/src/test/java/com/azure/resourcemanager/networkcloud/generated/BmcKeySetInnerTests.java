@@ -21,46 +21,45 @@ public final class BmcKeySetInnerTests {
         BmcKeySetInner model =
             BinaryData
                 .fromString(
-                    "{\"extendedLocation\":{\"name\":\"xqhndvnoamlds\",\"type\":\"haohdjhhflzokxc\"},\"properties\":{\"azureGroupId\":\"xpelnjetagltsx\",\"detailedStatus\":\"AllActive\",\"detailedStatusMessage\":\"tgzpnpb\",\"expiration\":\"2021-09-09T07:57:24Z\",\"lastValidation\":\"2021-04-26T08:51:39Z\",\"privilegeLevel\":\"Administrator\",\"provisioningState\":\"Succeeded\",\"userList\":[{\"azureUserName\":\"cs\",\"description\":\"ozihmipgawt\"},{\"azureUserName\":\"xp\",\"description\":\"jcxcjxgrytfmpcyc\"},{\"azureUserName\":\"lrmcaykg\",\"description\":\"oxuztrksx\"},{\"azureUserName\":\"pndfcpfnznt\",\"description\":\"twk\"}],\"userListStatus\":[{\"azureUserName\":\"rxuzvoam\",\"status\":\"Invalid\",\"statusMessage\":\"iosmgbzahgxqdly\"},{\"azureUserName\":\"ltlaprltzkatbhj\",\"status\":\"Invalid\",\"statusMessage\":\"bsoqeqala\"},{\"azureUserName\":\"lagun\",\"status\":\"Active\",\"statusMessage\":\"ebwlnbmhyreeudzq\"}]},\"location\":\"bpdqmjxlyy\",\"tags\":{\"yuojqtobaxk\":\"gouwtlmj\",\"lbfjkwr\":\"eytu\",\"hsyrqunj\":\"snkq\"},\"id\":\"hdenxaulk\",\"name\":\"akdkifmjnnawtqab\",\"type\":\"xuckpggqoweyir\"}")
+                    "{\"extendedLocation\":{\"name\":\"aabzmif\",\"type\":\"ygznmmaxrizk\"},\"properties\":{\"azureGroupId\":\"obgop\",\"detailedStatus\":\"AllActive\",\"detailedStatusMessage\":\"lnelxieixynl\",\"expiration\":\"2021-05-18T07:09:15Z\",\"lastValidation\":\"2021-03-23T01:16:36Z\",\"privilegeLevel\":\"Administrator\",\"provisioningState\":\"Accepted\",\"userList\":[{\"azureUserName\":\"jphslhcaw\",\"description\":\"tifdwfmvi\"},{\"azureUserName\":\"orq\",\"description\":\"ttzhra\"}],\"userListStatus\":[{\"azureUserName\":\"fhonqjujeickpzvc\",\"status\":\"Invalid\",\"statusMessage\":\"xelnwc\"},{\"azureUserName\":\"yjede\",\"status\":\"Active\",\"statusMessage\":\"f\"}]},\"location\":\"qscazuawxtz\",\"tags\":{\"aivmxyasflvgs\":\"amwabzxrvxcushsp\",\"hknsmjbl\":\"zwywako\",\"ryuzcbmqqv\":\"ljhlnymzotq\"},\"id\":\"mv\",\"name\":\"fgtayxonsup\",\"type\":\"ujlzqnhcvsqltn\"}")
                 .toObject(BmcKeySetInner.class);
-        Assertions.assertEquals("bpdqmjxlyy", model.location());
-        Assertions.assertEquals("gouwtlmj", model.tags().get("yuojqtobaxk"));
-        Assertions.assertEquals("xqhndvnoamlds", model.extendedLocation().name());
-        Assertions.assertEquals("haohdjhhflzokxc", model.extendedLocation().type());
-        Assertions.assertEquals("xpelnjetagltsx", model.azureGroupId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-09T07:57:24Z"), model.expiration());
+        Assertions.assertEquals("qscazuawxtz", model.location());
+        Assertions.assertEquals("amwabzxrvxcushsp", model.tags().get("aivmxyasflvgs"));
+        Assertions.assertEquals("aabzmif", model.extendedLocation().name());
+        Assertions.assertEquals("ygznmmaxrizk", model.extendedLocation().type());
+        Assertions.assertEquals("obgop", model.azureGroupId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-18T07:09:15Z"), model.expiration());
         Assertions.assertEquals(BmcKeySetPrivilegeLevel.ADMINISTRATOR, model.privilegeLevel());
-        Assertions.assertEquals("cs", model.userList().get(0).azureUsername());
-        Assertions.assertEquals("ozihmipgawt", model.userList().get(0).description());
+        Assertions.assertEquals("jphslhcaw", model.userList().get(0).azureUsername());
+        Assertions.assertEquals("tifdwfmvi", model.userList().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BmcKeySetInner model =
             new BmcKeySetInner()
-                .withLocation("bpdqmjxlyy")
-                .withTags(mapOf("yuojqtobaxk", "gouwtlmj", "lbfjkwr", "eytu", "hsyrqunj", "snkq"))
-                .withExtendedLocation(new ExtendedLocation().withName("xqhndvnoamlds").withType("haohdjhhflzokxc"))
-                .withAzureGroupId("xpelnjetagltsx")
-                .withExpiration(OffsetDateTime.parse("2021-09-09T07:57:24Z"))
+                .withLocation("qscazuawxtz")
+                .withTags(
+                    mapOf("aivmxyasflvgs", "amwabzxrvxcushsp", "hknsmjbl", "zwywako", "ryuzcbmqqv", "ljhlnymzotq"))
+                .withExtendedLocation(new ExtendedLocation().withName("aabzmif").withType("ygznmmaxrizk"))
+                .withAzureGroupId("obgop")
+                .withExpiration(OffsetDateTime.parse("2021-05-18T07:09:15Z"))
                 .withPrivilegeLevel(BmcKeySetPrivilegeLevel.ADMINISTRATOR)
                 .withUserList(
                     Arrays
                         .asList(
-                            new KeySetUser().withAzureUsername("cs").withDescription("ozihmipgawt"),
-                            new KeySetUser().withAzureUsername("xp").withDescription("jcxcjxgrytfmpcyc"),
-                            new KeySetUser().withAzureUsername("lrmcaykg").withDescription("oxuztrksx"),
-                            new KeySetUser().withAzureUsername("pndfcpfnznt").withDescription("twk")));
+                            new KeySetUser().withAzureUsername("jphslhcaw").withDescription("tifdwfmvi"),
+                            new KeySetUser().withAzureUsername("orq").withDescription("ttzhra")));
         model = BinaryData.fromObject(model).toObject(BmcKeySetInner.class);
-        Assertions.assertEquals("bpdqmjxlyy", model.location());
-        Assertions.assertEquals("gouwtlmj", model.tags().get("yuojqtobaxk"));
-        Assertions.assertEquals("xqhndvnoamlds", model.extendedLocation().name());
-        Assertions.assertEquals("haohdjhhflzokxc", model.extendedLocation().type());
-        Assertions.assertEquals("xpelnjetagltsx", model.azureGroupId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-09T07:57:24Z"), model.expiration());
+        Assertions.assertEquals("qscazuawxtz", model.location());
+        Assertions.assertEquals("amwabzxrvxcushsp", model.tags().get("aivmxyasflvgs"));
+        Assertions.assertEquals("aabzmif", model.extendedLocation().name());
+        Assertions.assertEquals("ygznmmaxrizk", model.extendedLocation().type());
+        Assertions.assertEquals("obgop", model.azureGroupId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-18T07:09:15Z"), model.expiration());
         Assertions.assertEquals(BmcKeySetPrivilegeLevel.ADMINISTRATOR, model.privilegeLevel());
-        Assertions.assertEquals("cs", model.userList().get(0).azureUsername());
-        Assertions.assertEquals("ozihmipgawt", model.userList().get(0).description());
+        Assertions.assertEquals("jphslhcaw", model.userList().get(0).azureUsername());
+        Assertions.assertEquals("tifdwfmvi", model.userList().get(0).description());
     }
 
     @SuppressWarnings("unchecked")

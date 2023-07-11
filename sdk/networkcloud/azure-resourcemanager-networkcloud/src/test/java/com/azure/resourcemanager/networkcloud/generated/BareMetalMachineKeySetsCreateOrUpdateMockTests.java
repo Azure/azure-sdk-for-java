@@ -36,7 +36,7 @@ public final class BareMetalMachineKeySetsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"extendedLocation\":{\"name\":\"tsnld\",\"type\":\"pwolgisubxb\"},\"properties\":{\"azureGroupId\":\"eogfgfiijrykwl\",\"detailedStatus\":\"AllActive\",\"detailedStatusMessage\":\"xqceazfpxgn\",\"expiration\":\"2021-09-07T15:14:18Z\",\"jumpHostsAllowed\":[\"zvluyqqaiosss\",\"yvaifpp\"],\"lastValidation\":\"2020-12-21T21:17:06Z\",\"osGroupName\":\"fye\",\"privilegeLevel\":\"Standard\",\"provisioningState\":\"Succeeded\",\"userList\":[],\"userListStatus\":[]},\"location\":\"dhsoymhpv\",\"tags\":{\"pboujs\":\"ftteh\",\"suenyg\":\"kfvvdshxcde\",\"nquktrfnslnlrxs\":\"xcgjtf\",\"wntfmtbgwjdxwna\":\"ylt\"},\"id\":\"kurrdreyzjwh\",\"name\":\"etw\",\"type\":\"jwzzqseuzu\"}";
+            "{\"extendedLocation\":{\"name\":\"ipowza\",\"type\":\"czuumljcir\"},\"properties\":{\"azureGroupId\":\"pefyc\",\"detailedStatus\":\"AllActive\",\"detailedStatusMessage\":\"ti\",\"expiration\":\"2021-11-27T20:01:13Z\",\"jumpHostsAllowed\":[\"s\",\"zaj\",\"nsjhwjuyxxb\"],\"lastValidation\":\"2021-12-04T16:41:30Z\",\"osGroupName\":\"vuaytuad\",\"privilegeLevel\":\"Superuser\",\"provisioningState\":\"Succeeded\",\"userList\":[],\"userListStatus\":[]},\"location\":\"ntghyksarcdr\",\"tags\":{\"fdqqjwkrhwz\":\"luvlzladltxkpbqh\",\"ztjctibpvbkae\":\"anojisgglmvokat\",\"akw\":\"xsmzygdf\",\"hysowljuxlkbect\":\"eivmak\"},\"id\":\"tfjmskdchmaiub\",\"name\":\"vlzw\",\"type\":\"vgmfalkzazmgok\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,29 +67,37 @@ public final class BareMetalMachineKeySetsCreateOrUpdateMockTests {
         BareMetalMachineKeySet response =
             manager
                 .bareMetalMachineKeySets()
-                .define("cqypz")
-                .withRegion("gzlrqhbj")
-                .withExistingCluster("o", "jy")
-                .withExtendedLocation(new ExtendedLocation().withName("zufgs").withType("fejyvdwtfxptpqa"))
-                .withAzureGroupId("amkncfgy")
-                .withExpiration(OffsetDateTime.parse("2021-02-01T21:40:19Z"))
-                .withJumpHostsAllowed(Arrays.asList("kpoy"))
+                .define("xdm")
+                .withRegion("qsyrilmhxdqao")
+                .withExistingCluster("yxpzruzythqk", "whbgxvellvul")
+                .withExtendedLocation(new ExtendedLocation().withName("itmujdtvm").withType("lyymffhmjpddny"))
+                .withAzureGroupId("fzuvrzmz")
+                .withExpiration(OffsetDateTime.parse("2021-10-17T01:47:41Z"))
+                .withJumpHostsAllowed(Arrays.asList("pglaoh"))
                 .withPrivilegeLevel(BareMetalMachineKeySetPrivilegeLevel.SUPERUSER)
                 .withUserList(Arrays.asList())
                 .withTags(
-                    mapOf("jlf", "gdxwbsfpyxx", "ilz", "ecominxojjluxxd", "za", "dzzqjmu", "otokhtvwtaznk", "ovribq"))
-                .withOsGroupName("djuxdbdljzgd")
+                    mapOf(
+                        "obbjwhlwy",
+                        "lnkkbjpjvlywltmf",
+                        "zgczeu",
+                        "fnqzocr",
+                        "iekoif",
+                        "tgxdncaqt",
+                        "gyrihlgm",
+                        "vnyttzgi"))
+                .withOsGroupName("jtnqjil")
                 .create();
 
-        Assertions.assertEquals("dhsoymhpv", response.location());
-        Assertions.assertEquals("ftteh", response.tags().get("pboujs"));
-        Assertions.assertEquals("tsnld", response.extendedLocation().name());
-        Assertions.assertEquals("pwolgisubxb", response.extendedLocation().type());
-        Assertions.assertEquals("eogfgfiijrykwl", response.azureGroupId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-07T15:14:18Z"), response.expiration());
-        Assertions.assertEquals("zvluyqqaiosss", response.jumpHostsAllowed().get(0));
-        Assertions.assertEquals("fye", response.osGroupName());
-        Assertions.assertEquals(BareMetalMachineKeySetPrivilegeLevel.STANDARD, response.privilegeLevel());
+        Assertions.assertEquals("ntghyksarcdr", response.location());
+        Assertions.assertEquals("luvlzladltxkpbqh", response.tags().get("fdqqjwkrhwz"));
+        Assertions.assertEquals("ipowza", response.extendedLocation().name());
+        Assertions.assertEquals("czuumljcir", response.extendedLocation().type());
+        Assertions.assertEquals("pefyc", response.azureGroupId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-27T20:01:13Z"), response.expiration());
+        Assertions.assertEquals("s", response.jumpHostsAllowed().get(0));
+        Assertions.assertEquals("vuaytuad", response.osGroupName());
+        Assertions.assertEquals(BareMetalMachineKeySetPrivilegeLevel.SUPERUSER, response.privilegeLevel());
     }
 
     @SuppressWarnings("unchecked")

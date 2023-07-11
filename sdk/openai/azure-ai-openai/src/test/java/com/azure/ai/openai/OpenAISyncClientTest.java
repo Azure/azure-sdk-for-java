@@ -175,4 +175,11 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             assertEmbeddings(resultEmbeddings);
         });
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGenerateImage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getImageGenerationRunner(options -> assertImageResponse(client.generateImage(options)));
+    }
 }

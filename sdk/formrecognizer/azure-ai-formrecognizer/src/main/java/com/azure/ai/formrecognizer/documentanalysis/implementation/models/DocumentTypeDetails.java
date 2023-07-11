@@ -4,13 +4,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Document type info. */
-@Fluent
+@Immutable
 public final class DocumentTypeDetails {
     /*
      * Document model description.
@@ -42,7 +42,7 @@ public final class DocumentTypeDetails {
      * @param fieldSchema the fieldSchema value to set.
      */
     @JsonCreator
-    public DocumentTypeDetails(
+    private DocumentTypeDetails(
             @JsonProperty(value = "fieldSchema", required = true) Map<String, DocumentFieldSchema> fieldSchema) {
         this.fieldSchema = fieldSchema;
     }
@@ -57,34 +57,12 @@ public final class DocumentTypeDetails {
     }
 
     /**
-     * Set the description property: Document model description.
-     *
-     * @param description the description value to set.
-     * @return the DocumentTypeDetails object itself.
-     */
-    public DocumentTypeDetails setDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
      * Get the buildMode property: Custom document model build mode.
      *
      * @return the buildMode value.
      */
     public DocumentBuildMode getBuildMode() {
         return this.buildMode;
-    }
-
-    /**
-     * Set the buildMode property: Custom document model build mode.
-     *
-     * @param buildMode the buildMode value to set.
-     * @return the DocumentTypeDetails object itself.
-     */
-    public DocumentTypeDetails setBuildMode(DocumentBuildMode buildMode) {
-        this.buildMode = buildMode;
-        return this;
     }
 
     /**
@@ -103,16 +81,5 @@ public final class DocumentTypeDetails {
      */
     public Map<String, Float> getFieldConfidence() {
         return this.fieldConfidence;
-    }
-
-    /**
-     * Set the fieldConfidence property: Estimated confidence for each field.
-     *
-     * @param fieldConfidence the fieldConfidence value to set.
-     * @return the DocumentTypeDetails object itself.
-     */
-    public DocumentTypeDetails setFieldConfidence(Map<String, Float> fieldConfidence) {
-        this.fieldConfidence = fieldConfidence;
-        return this;
     }
 }
