@@ -121,7 +121,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
     /*
      * The dimensionality of the vector field.
      */
-    private Integer dimensions;
+    private Integer vectorSearchDimensions;
 
     /*
      * The name of the vector search algorithm configuration that specifies the algorithm and optional parameters for
@@ -456,22 +456,22 @@ public final class SearchField implements JsonSerializable<SearchField> {
     }
 
     /**
-     * Get the dimensions property: The dimensionality of the vector field.
+     * Get the vectorSearchDimensions property: The dimensionality of the vector field.
      *
-     * @return the dimensions value.
+     * @return the vectorSearchDimensions value.
      */
-    public Integer getDimensions() {
-        return this.dimensions;
+    public Integer getVectorSearchDimensions() {
+        return this.vectorSearchDimensions;
     }
 
     /**
-     * Set the dimensions property: The dimensionality of the vector field.
+     * Set the vectorSearchDimensions property: The dimensionality of the vector field.
      *
-     * @param dimensions the dimensions value to set.
+     * @param vectorSearchDimensions the vectorSearchDimensions value to set.
      * @return the SearchField object itself.
      */
-    public SearchField setDimensions(Integer dimensions) {
-        this.dimensions = dimensions;
+    public SearchField setVectorSearchDimensions(Integer vectorSearchDimensions) {
+        this.vectorSearchDimensions = vectorSearchDimensions;
         return this;
     }
 
@@ -562,7 +562,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
         jsonWriter.writeStringField("searchAnalyzer", Objects.toString(this.searchAnalyzerName, null));
         jsonWriter.writeStringField("indexAnalyzer", Objects.toString(this.indexAnalyzerName, null));
         jsonWriter.writeStringField("normalizer", Objects.toString(this.normalizerName, null));
-        jsonWriter.writeNumberField("dimensions", this.dimensions);
+        jsonWriter.writeNumberField("dimensions", this.vectorSearchDimensions);
         jsonWriter.writeStringField("vectorSearchConfiguration", this.vectorSearchConfiguration);
         jsonWriter.writeArrayField(
                 "synonymMaps", this.synonymMapNames, (writer, element) -> writer.writeString(element));
@@ -596,7 +596,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
                     LexicalAnalyzerName searchAnalyzerName = null;
                     LexicalAnalyzerName indexAnalyzerName = null;
                     LexicalNormalizerName normalizerName = null;
-                    Integer dimensions = null;
+                    Integer vectorSearchDimensions = null;
                     String vectorSearchConfiguration = null;
                     List<String> synonymMapNames = null;
                     List<SearchField> fields = null;
@@ -631,7 +631,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
                         } else if ("normalizer".equals(fieldName)) {
                             normalizerName = LexicalNormalizerName.fromString(reader.getString());
                         } else if ("dimensions".equals(fieldName)) {
-                            dimensions = reader.getNullable(JsonReader::getInt);
+                            vectorSearchDimensions = reader.getNullable(JsonReader::getInt);
                         } else if ("vectorSearchConfiguration".equals(fieldName)) {
                             vectorSearchConfiguration = reader.getString();
                         } else if ("synonymMaps".equals(fieldName)) {
@@ -654,7 +654,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
                         deserializedSearchField.searchAnalyzerName = searchAnalyzerName;
                         deserializedSearchField.indexAnalyzerName = indexAnalyzerName;
                         deserializedSearchField.normalizerName = normalizerName;
-                        deserializedSearchField.dimensions = dimensions;
+                        deserializedSearchField.vectorSearchDimensions = vectorSearchDimensions;
                         deserializedSearchField.vectorSearchConfiguration = vectorSearchConfiguration;
                         deserializedSearchField.synonymMapNames = synonymMapNames;
                         deserializedSearchField.fields = fields;

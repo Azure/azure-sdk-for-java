@@ -17,6 +17,7 @@ import com.azure.search.documents.models.QuerySpellerType;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
+import com.azure.search.documents.models.SearchQueryVector;
 import com.azure.search.documents.models.SemanticErrorHandling;
 import java.io.IOException;
 import java.util.List;
@@ -205,7 +206,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     /*
      * The query parameters for vector and hybrid search queries.
      */
-    private Vector vector;
+    private SearchQueryVector vector;
 
     /** Creates an instance of SearchRequest class. */
     public SearchRequest() {}
@@ -865,7 +866,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      *
      * @return the vector value.
      */
-    public Vector getVector() {
+    public SearchQueryVector getVector() {
         return this.vector;
     }
 
@@ -875,7 +876,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param vector the vector value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest setVector(Vector vector) {
+    public SearchRequest setVector(SearchQueryVector vector) {
         this.vector = vector;
         return this;
     }
@@ -995,7 +996,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                         } else if ("semanticFields".equals(fieldName)) {
                             deserializedSearchRequest.semanticFields = reader.getString();
                         } else if ("vector".equals(fieldName)) {
-                            deserializedSearchRequest.vector = Vector.fromJson(reader);
+                            deserializedSearchRequest.vector = SearchQueryVector.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }
