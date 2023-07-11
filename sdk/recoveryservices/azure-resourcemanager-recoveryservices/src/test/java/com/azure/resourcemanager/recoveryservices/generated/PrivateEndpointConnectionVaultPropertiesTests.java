@@ -13,7 +13,7 @@ public final class PrivateEndpointConnectionVaultPropertiesTests {
         PrivateEndpointConnectionVaultProperties model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"fgugnxkrxdqmid\",\"properties\":{\"provisioningState\":\"Deleting\",\"privateEndpoint\":{\"id\":\"qdrabhjybigehoqf\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"anyktzlcuiywg\",\"actionsRequired\":\"wgndrvynhzgpp\"},\"groupIds\":[\"AzureSiteRecovery\",\"AzureBackup\",\"AzureBackup_secondary\"]},\"name\":\"ocpecfvmmco\",\"type\":\"sxlzevgbmqj\",\"location\":\"bcypmi\"}")
+                    "{\"id\":\"wgndrvynhzgpp\",\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{\"id\":\"cocpecfvmmcoofsx\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"bmqj\",\"actionsRequired\":\"bcypmi\"},\"groupIds\":[\"AzureBackup_secondary\"]},\"name\":\"uvcc\",\"type\":\"nfnbacfionlebxe\",\"location\":\"gtzxdpn\"}")
                 .toObject(PrivateEndpointConnectionVaultProperties.class);
     }
 

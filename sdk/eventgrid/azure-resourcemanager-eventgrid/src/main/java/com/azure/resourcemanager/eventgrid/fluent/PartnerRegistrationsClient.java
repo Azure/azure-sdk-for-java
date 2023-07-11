@@ -17,20 +17,9 @@ import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationUpdateParam
 /** An instance of this class provides access to all the operations defined in PartnerRegistrationsClient. */
 public interface PartnerRegistrationsClient {
     /**
-     * Gets a partner registration with the specified parameters.
+     * Get a partner registration.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerRegistrationName Name of the partner registration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a partner registration with the specified parameters.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PartnerRegistrationInner getByResourceGroup(String resourceGroupName, String partnerRegistrationName);
-
-    /**
-     * Gets a partner registration with the specified parameters.
+     * <p>Gets a partner registration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
@@ -45,7 +34,24 @@ public interface PartnerRegistrationsClient {
         String resourceGroupName, String partnerRegistrationName, Context context);
 
     /**
-     * Creates a new partner registration with the specified parameters.
+     * Get a partner registration.
+     *
+     * <p>Gets a partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a partner registration with the specified parameters.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PartnerRegistrationInner getByResourceGroup(String resourceGroupName, String partnerRegistrationName);
+
+    /**
+     * Create a partner registration.
+     *
+     * <p>Creates a new partner registration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
@@ -60,7 +66,9 @@ public interface PartnerRegistrationsClient {
         String resourceGroupName, String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo);
 
     /**
-     * Creates a new partner registration with the specified parameters.
+     * Create a partner registration.
+     *
+     * <p>Creates a new partner registration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
@@ -79,7 +87,9 @@ public interface PartnerRegistrationsClient {
         Context context);
 
     /**
-     * Creates a new partner registration with the specified parameters.
+     * Create a partner registration.
+     *
+     * <p>Creates a new partner registration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
@@ -94,7 +104,9 @@ public interface PartnerRegistrationsClient {
         String resourceGroupName, String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo);
 
     /**
-     * Creates a new partner registration with the specified parameters.
+     * Create a partner registration.
+     *
+     * <p>Creates a new partner registration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
@@ -113,7 +125,9 @@ public interface PartnerRegistrationsClient {
         Context context);
 
     /**
-     * Deletes a partner registration with the specified parameters.
+     * Delete a partner registration.
+     *
+     * <p>Deletes a partner registration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
@@ -126,7 +140,9 @@ public interface PartnerRegistrationsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerRegistrationName);
 
     /**
-     * Deletes a partner registration with the specified parameters.
+     * Delete a partner registration.
+     *
+     * <p>Deletes a partner registration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
@@ -141,7 +157,9 @@ public interface PartnerRegistrationsClient {
         String resourceGroupName, String partnerRegistrationName, Context context);
 
     /**
-     * Deletes a partner registration with the specified parameters.
+     * Delete a partner registration.
+     *
+     * <p>Deletes a partner registration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
@@ -153,7 +171,9 @@ public interface PartnerRegistrationsClient {
     void delete(String resourceGroupName, String partnerRegistrationName);
 
     /**
-     * Deletes a partner registration with the specified parameters.
+     * Delete a partner registration.
+     *
+     * <p>Deletes a partner registration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
@@ -166,7 +186,9 @@ public interface PartnerRegistrationsClient {
     void delete(String resourceGroupName, String partnerRegistrationName, Context context);
 
     /**
-     * Updates a partner registration with the specified parameters.
+     * Update a partner registration.
+     *
+     * <p>Updates a partner registration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
@@ -183,7 +205,9 @@ public interface PartnerRegistrationsClient {
         PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters);
 
     /**
-     * Updates a partner registration with the specified parameters.
+     * Update a partner registration.
+     *
+     * <p>Updates a partner registration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
@@ -202,7 +226,9 @@ public interface PartnerRegistrationsClient {
         Context context);
 
     /**
-     * Updates a partner registration with the specified parameters.
+     * Update a partner registration.
+     *
+     * <p>Updates a partner registration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
@@ -219,7 +245,9 @@ public interface PartnerRegistrationsClient {
         PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters);
 
     /**
-     * Updates a partner registration with the specified parameters.
+     * Update a partner registration.
+     *
+     * <p>Updates a partner registration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
@@ -238,7 +266,9 @@ public interface PartnerRegistrationsClient {
         Context context);
 
     /**
-     * List all the partner registrations under an Azure subscription.
+     * List partner registrations under an Azure subscription.
+     *
+     * <p>List all the partner registrations under an Azure subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -248,7 +278,9 @@ public interface PartnerRegistrationsClient {
     PagedIterable<PartnerRegistrationInner> list();
 
     /**
-     * List all the partner registrations under an Azure subscription.
+     * List partner registrations under an Azure subscription.
+     *
+     * <p>List all the partner registrations under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -268,7 +300,9 @@ public interface PartnerRegistrationsClient {
     PagedIterable<PartnerRegistrationInner> list(String filter, Integer top, Context context);
 
     /**
-     * List all the partner registrations under a resource group.
+     * List partner registrations under a resource group.
+     *
+     * <p>List all the partner registrations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -280,7 +314,9 @@ public interface PartnerRegistrationsClient {
     PagedIterable<PartnerRegistrationInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List all the partner registrations under a resource group.
+     * List partner registrations under a resource group.
+     *
+     * <p>List all the partner registrations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the

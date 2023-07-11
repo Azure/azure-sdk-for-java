@@ -99,6 +99,8 @@ public interface ScheduledActionsClient {
      *
      * @param name Scheduled action name.
      * @param scheduledAction Scheduled action to be created or updated.
+     * @param ifMatch ETag of the Entity. Not required when creating an entity. Optional when updating an entity and can
+     *     be specified to achieve optimistic concurrency.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,7 +109,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ScheduledActionInner> createOrUpdateWithResponse(
-        String name, ScheduledActionInner scheduledAction, Context context);
+        String name, ScheduledActionInner scheduledAction, String ifMatch, Context context);
 
     /**
      * Create or update a private scheduled action.
@@ -192,6 +194,8 @@ public interface ScheduledActionsClient {
      *     Subscription scope. Note: Insight Alerts are only available on subscription scope.
      * @param name Scheduled action name.
      * @param scheduledAction Scheduled action to be created or updated.
+     * @param ifMatch ETag of the Entity. Not required when creating an entity. Optional when updating an entity and can
+     *     be specified to achieve optimistic concurrency.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -200,7 +204,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ScheduledActionInner> createOrUpdateByScopeWithResponse(
-        String scope, String name, ScheduledActionInner scheduledAction, Context context);
+        String scope, String name, ScheduledActionInner scheduledAction, String ifMatch, Context context);
 
     /**
      * Create or update a shared scheduled action within the given scope.

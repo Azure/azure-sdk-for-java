@@ -3,23 +3,33 @@
 package com.azure.core.test;
 
 import com.azure.core.util.logging.ClientLogger;
+import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
+import java.lang.reflect.Method;
+import java.time.Duration;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * A utility and extension to dump threads after 30 minutes from starting tests.
- * It can be used as standalone utility via {@link #initialize()} as well as hooked up with JUnit
- * by implementing {@link BeforeAllCallback#beforeAll(ExtensionContext)}.
+ * A utility and extension to dump threads after 30 minutes from starting tests. It can be used as standalone utility
+ * via {@link #initialize()} as well as hooked up with JUnit by implementing
+ * {@link BeforeAllCallback#beforeAll(ExtensionContext)}.
+ * <p>
+ * ThreadDumper also tracks which tests are running and when they began running. These tests and how long they've been
+ * running will be included in the thread dumps if they've been running longer than 5 minutes.
  */
-public class ThreadDumper implements BeforeAllCallback {
+public class ThreadDumper implements BeforeAllCallback, BeforeEachCallback, AfterEachCallback {
 
     private static final ClientLogger LOGGER = new ClientLogger(ThreadDumper.class);
     private static volatile ExecutorService executorService;
@@ -28,6 +38,9 @@ public class ThreadDumper implements BeforeAllCallback {
     private static final int INITIAL_DELAY_IN_MINUTES = 30;
     // Log every minute after initial interval passes.
     private static final int RATE_IN_MINUTES = 2;
+    private static final long FIVE_MINUTES_MILLIS = Duration.ofMinutes(5).toMillis();
+
+    private static final Map<String, Long> RUNNING_TEST_TIMES = new ConcurrentHashMap<>();
 
     /**
      * Creates a new instance of {@link ThreadDumper}.
@@ -56,12 +69,8 @@ public class ThreadDumper implements BeforeAllCallback {
         });
         Runtime.getRuntime().addShutdownHook(new Thread(service::shutdown));
 
-        service.scheduleAtFixedRate(
-            ThreadDumper::printThreadStacks,
-            INITIAL_DELAY_IN_MINUTES,
-            RATE_IN_MINUTES,
-            TimeUnit.MINUTES
-        );
+        service.scheduleAtFixedRate(ThreadDumper::printThreadStacks, INITIAL_DELAY_IN_MINUTES, RATE_IN_MINUTES,
+            TimeUnit.MINUTES);
 
         return service;
     }
@@ -84,7 +93,23 @@ public class ThreadDumper implements BeforeAllCallback {
             }
             dump.append("\n\n");
         }
-        dump.append("============= THREAD DUMP END =========");
+
+        dump.append("============= THREAD DUMP END =========")
+            .append(System.lineSeparator())
+            .append("========= RUNNING TESTS START =========");
+
+        long nowMillis = System.currentTimeMillis();
+        for (Map.Entry<String, Long> runningTest : RUNNING_TEST_TIMES.entrySet()) {
+            if (nowMillis - runningTest.getValue() > FIVE_MINUTES_MILLIS) {
+                dump.append(System.lineSeparator())
+                    .append(runningTest.getKey())
+                    .append(": ")
+                    .append(nowMillis - runningTest.getValue())
+                    .append(" millis");
+            }
+        }
+        dump.append("========== RUNNING TESTS END ==========\n");
+
         String output = dump.toString();
 
         // Log to both console and logs
@@ -93,7 +118,33 @@ public class ThreadDumper implements BeforeAllCallback {
     }
 
     @Override
-    public void beforeAll(ExtensionContext context) throws Exception {
+    public void beforeAll(ExtensionContext context) {
         initialize();
+    }
+
+    @Override
+    public void beforeEach(ExtensionContext context) {
+        RUNNING_TEST_TIMES.put(getFullTestName(context), System.currentTimeMillis());
+    }
+
+    @Override
+    public void afterEach(ExtensionContext context) {
+        RUNNING_TEST_TIMES.remove(getFullTestName(context));
+    }
+
+    private static String getFullTestName(ExtensionContext context) {
+        String displayName = context.getDisplayName();
+
+        String testName = "";
+        String fullyQualifiedTestName = "";
+        if (context.getTestMethod().isPresent()) {
+            Method method = context.getTestMethod().get();
+            testName = method.getName();
+            fullyQualifiedTestName = method.getDeclaringClass().getName() + "." + testName;
+        }
+
+        return !Objects.equals(displayName, testName)
+            ? fullyQualifiedTestName + "(" + displayName + ")"
+            : fullyQualifiedTestName;
     }
 }

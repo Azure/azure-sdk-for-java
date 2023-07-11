@@ -10,7 +10,7 @@ import java.util.Collection;
 
 /**
  * Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings.
- * &lt;br&gt;&lt;br&gt; Default: UefiSettings will not be enabled unless this property is set.
+ * The default behavior is: UefiSettings will not be enabled unless this property is set.
  */
 public final class SecurityTypes extends ExpandableStringEnum<SecurityTypes> {
     /** Static value TrustedLaunch for SecurityTypes. */

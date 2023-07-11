@@ -23,6 +23,15 @@ public final class PullRequestStatus extends ExpandableStringEnum<PullRequestSta
     public static final PullRequestStatus REMOVED = fromString("removed");
 
     /**
+     * Creates a new instance of PullRequestStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PullRequestStatus() {
+    }
+
+    /**
      * Creates or finds a PullRequestStatus from its string representation.
      *
      * @param name a name to look for.

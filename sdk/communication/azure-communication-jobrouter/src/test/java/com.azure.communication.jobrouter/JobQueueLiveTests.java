@@ -7,7 +7,9 @@ import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.JobQueue;
 import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.options.UpdateQueueOptions;
-import org.junit.jupiter.api.Test;
+import com.azure.core.http.HttpClient;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,22 +21,12 @@ public class JobQueueLiveTests extends JobRouterTestBase {
 
     private RouterAdministrationClient routerAdminClient;
 
-    @Override
-    protected void beforeTest() {
-        routerClient = clientSetup(httpPipeline -> new RouterClientBuilder()
-            .connectionString(getConnectionString())
-            .pipeline(httpPipeline)
-            .buildClient());
-
-        routerAdminClient = clientSetup(httpPipeline -> new RouterAdministrationClientBuilder()
-            .connectionString(getConnectionString())
-            .pipeline(httpPipeline)
-            .buildClient());
-    }
-
-    @Test
-    public void createQueue() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createQueue(HttpClient httpClient) {
         // Setup
+        routerClient = getRouterClient(httpClient);
+        routerAdminClient = getRouterAdministrationClient(httpClient);
         String distributionPolicyId = String.format("%s-CreateQueue-DistributionPolicy", JAVA_LIVE_TESTS);
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
 
@@ -51,9 +43,12 @@ public class JobQueueLiveTests extends JobRouterTestBase {
         routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }
 
-    @Test
-    public void updateQueue() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updateQueue(HttpClient httpClient) {
         // Setup
+        routerClient = getRouterClient(httpClient);
+        routerAdminClient = getRouterAdministrationClient(httpClient);
         String distributionPolicyId = String.format("%s-CreateQueue-DistributionPolicy", JAVA_LIVE_TESTS);
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
 

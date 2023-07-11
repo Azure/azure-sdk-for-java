@@ -17,8 +17,13 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -51,6 +56,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +70,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public abstract class CertificateClientTestBase extends TestBase {
+public abstract class CertificateClientTestBase extends TestProxyTestBase {
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
@@ -81,6 +87,7 @@ public abstract class CertificateClientTestBase extends TestBase {
     }
 
     void beforeTestSetup() {
+        KeyVaultCredentialPolicy.clearCache();
     }
 
     HttpPipeline getHttpPipeline(HttpClient httpClient) {
@@ -88,7 +95,7 @@ public abstract class CertificateClientTestBase extends TestBase {
     }
 
     HttpPipeline getHttpPipeline(HttpClient httpClient, String testTenantId) {
-        TokenCredential credential = null;
+        TokenCredential credential;
 
         if (!interceptorManager.isPlaybackMode()) {
             String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
@@ -107,6 +114,19 @@ public abstract class CertificateClientTestBase extends TestBase {
                 .tenantId(tenantId)
                 .additionallyAllowedTenants("*")
                 .build();
+
+            if (interceptorManager.isRecordMode()) {
+                List<TestProxySanitizer> customSanitizers = new ArrayList<>();
+                customSanitizers.add(new TestProxySanitizer("value", "-----BEGIN PRIVATE KEY-----\\n(.+\\n)*-----END PRIVATE KEY-----\\n", "-----BEGIN PRIVATE KEY-----\\nREDACTED\\n-----END PRIVATE KEY-----\\n", TestProxySanitizerType.BODY_KEY));
+                interceptorManager.addSanitizers(customSanitizers);
+            }
+        } else {
+            credential = new MockTokenCredential();
+
+            List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
+            customMatchers.add(new BodilessMatcher());
+            customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));
+            interceptorManager.addMatchers(customMatchers);
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -121,19 +141,20 @@ public abstract class CertificateClientTestBase extends TestBase {
         policies.add(new RetryPolicy(strategy));
 
         if (credential != null) {
-            policies.add(new KeyVaultCredentialPolicy(credential, false));
+            // If in playback mode, disable the challenge resource verification.
+            policies.add(new KeyVaultCredentialPolicy(credential, interceptorManager.isPlaybackMode()));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
-        if (getTestMode() == TestMode.RECORD) {
+        if (interceptorManager.isRecordMode()) {
             policies.add(interceptorManager.getRecordPolicy());
         }
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .build();
     }
 
@@ -626,7 +647,7 @@ public abstract class CertificateClientTestBase extends TestBase {
 
     public String getEndpoint() {
         final String endpoint =
-            Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "http://localhost:8080");
+            Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "https://localhost:8080");
 
         Objects.requireNonNull(endpoint);
 

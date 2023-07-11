@@ -27,15 +27,6 @@ public final class PartnerTopicsImpl implements PartnerTopics {
         this.serviceManager = serviceManager;
     }
 
-    public PartnerTopic getByResourceGroup(String resourceGroupName, String partnerTopicName) {
-        PartnerTopicInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, partnerTopicName);
-        if (inner != null) {
-            return new PartnerTopicImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PartnerTopic> getByResourceGroupWithResponse(
         String resourceGroupName, String partnerTopicName, Context context) {
         Response<PartnerTopicInner> inner =
@@ -46,6 +37,15 @@ public final class PartnerTopicsImpl implements PartnerTopics {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PartnerTopicImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PartnerTopic getByResourceGroup(String resourceGroupName, String partnerTopicName) {
+        PartnerTopicInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, partnerTopicName);
+        if (inner != null) {
+            return new PartnerTopicImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -81,15 +81,6 @@ public final class PartnerTopicsImpl implements PartnerTopics {
         return Utils.mapPage(inner, inner1 -> new PartnerTopicImpl(inner1, this.manager()));
     }
 
-    public PartnerTopic activate(String resourceGroupName, String partnerTopicName) {
-        PartnerTopicInner inner = this.serviceClient().activate(resourceGroupName, partnerTopicName);
-        if (inner != null) {
-            return new PartnerTopicImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PartnerTopic> activateWithResponse(
         String resourceGroupName, String partnerTopicName, Context context) {
         Response<PartnerTopicInner> inner =
@@ -105,8 +96,8 @@ public final class PartnerTopicsImpl implements PartnerTopics {
         }
     }
 
-    public PartnerTopic deactivate(String resourceGroupName, String partnerTopicName) {
-        PartnerTopicInner inner = this.serviceClient().deactivate(resourceGroupName, partnerTopicName);
+    public PartnerTopic activate(String resourceGroupName, String partnerTopicName) {
+        PartnerTopicInner inner = this.serviceClient().activate(resourceGroupName, partnerTopicName);
         if (inner != null) {
             return new PartnerTopicImpl(inner, this.manager());
         } else {
@@ -124,6 +115,15 @@ public final class PartnerTopicsImpl implements PartnerTopics {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PartnerTopicImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PartnerTopic deactivate(String resourceGroupName, String partnerTopicName) {
+        PartnerTopicInner inner = this.serviceClient().deactivate(resourceGroupName, partnerTopicName);
+        if (inner != null) {
+            return new PartnerTopicImpl(inner, this.manager());
         } else {
             return null;
         }

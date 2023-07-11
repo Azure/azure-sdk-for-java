@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.Gallery;
 import java.nio.ByteBuffer;
@@ -33,7 +32,7 @@ public final class GalleriesListByDevCenterMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"galleryResourceId\":\"luyovwxnbkfezzx\"},\"id\":\"yhwzdgiruj\",\"name\":\"zbomvzzbtdcqvpni\",\"type\":\"ujviylwdshfs\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"galleryResourceId\":\"zqljyxgtczh\"},\"id\":\"dbsdshm\",\"name\":\"xmaehvbbxu\",\"type\":\"iplt\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,8 +61,8 @@ public final class GalleriesListByDevCenterMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Gallery> response =
-            manager.galleries().listByDevCenter("ghhavgrvkffo", "jzhpjbibgjmfx", 504672156, Context.NONE);
+            manager.galleries().listByDevCenter("p", "jpr", 967300246, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("luyovwxnbkfezzx", response.iterator().next().galleryResourceId());
+        Assertions.assertEquals("zqljyxgtczh", response.iterator().next().galleryResourceId());
     }
 }

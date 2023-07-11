@@ -12,7 +12,7 @@ import io.lettuce.core.RedisCredentialsProvider;
 import io.lettuce.core.RedisException;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
-import io.lettuce.core.api.sync.RedisStringCommands;
+import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.protocol.ProtocolVersion;
 import io.lettuce.core.ClientOptions;
@@ -36,7 +36,7 @@ public class HandleReauthentication {
         int i = 0;
         while (i < maxTries) {
             // Create the connection, in this case we're using a sync connection, but you can create async / reactive connections as needed.
-            RedisStringCommands<String, String> sync = connection.sync();
+            RedisCommands<String, String> sync = connection.sync();
             try {
                 sync.set("Az:testKey", "testVal");
                 System.out.println(sync.get("Az:testKey"));
@@ -66,7 +66,7 @@ public class HandleReauthentication {
         RedisURI redisURI = RedisURI.Builder.redis(hostName)
             .withPort(port)
             .withSsl(true) // Targeting SSL Based 6380 port.
-            .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials("USERNAME", tokenCredential)))
+            .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials(username, tokenCredential)))
             .withClientName("LettuceClient")
             .build();
 
@@ -89,7 +89,7 @@ public class HandleReauthentication {
      */
     public static class AzureRedisCredentials implements RedisCredentials {
         private TokenRequestContext tokenRequestContext = new TokenRequestContext()
-            .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+            .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
         private TokenCredential tokenCredential;
         private final String username;
 

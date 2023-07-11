@@ -24,8 +24,8 @@ public final class SourceControlConfigurationProperties {
     private String repositoryUrl;
 
     /*
-     * The namespace to which this operator is installed to. Maximum of 253
-     * lower case alphanumeric characters, hyphen and period only.
+     * The namespace to which this operator is installed to. Maximum of 253 lower case alphanumeric characters, hyphen
+     * and period only.
      */
     @JsonProperty(value = "operatorNamespace")
     private String operatorNamespace;
@@ -49,8 +49,7 @@ public final class SourceControlConfigurationProperties {
     private String operatorParams;
 
     /*
-     * Name-value pairs of protected configuration settings for the
-     * configuration
+     * Name-value pairs of protected configuration settings for the configuration
      */
     @JsonProperty(value = "configurationProtectedSettings")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -63,15 +62,14 @@ public final class SourceControlConfigurationProperties {
     private OperatorScopeType operatorScope;
 
     /*
-     * Public Key associated with this SourceControl configuration (either
-     * generated within the cluster or provided by the user).
+     * Public Key associated with this SourceControl configuration (either generated within the cluster or provided by
+     * the user).
      */
     @JsonProperty(value = "repositoryPublicKey", access = JsonProperty.Access.WRITE_ONLY)
     private String repositoryPublicKey;
 
     /*
-     * Base64-encoded known_hosts contents containing public SSH keys required
-     * to access private Git instances
+     * Base64-encoded known_hosts contents containing public SSH keys required to access private Git instances
      */
     @JsonProperty(value = "sshKnownHostsContents")
     private String sshKnownHostsContents;
@@ -99,6 +97,10 @@ public final class SourceControlConfigurationProperties {
      */
     @JsonProperty(value = "complianceStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ComplianceStatus complianceStatus;
+
+    /** Creates an instance of SourceControlConfigurationProperties class. */
+    public SourceControlConfigurationProperties() {
+    }
 
     /**
      * Get the repositoryUrl property: Url of the SourceControl Repository.

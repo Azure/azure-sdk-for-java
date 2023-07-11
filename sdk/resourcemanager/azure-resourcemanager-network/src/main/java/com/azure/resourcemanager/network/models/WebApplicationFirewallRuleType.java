@@ -13,6 +13,9 @@ public final class WebApplicationFirewallRuleType extends ExpandableStringEnum<W
     /** Static value MatchRule for WebApplicationFirewallRuleType. */
     public static final WebApplicationFirewallRuleType MATCH_RULE = fromString("MatchRule");
 
+    /** Static value RateLimitRule for WebApplicationFirewallRuleType. */
+    public static final WebApplicationFirewallRuleType RATE_LIMIT_RULE = fromString("RateLimitRule");
+
     /** Static value Invalid for WebApplicationFirewallRuleType. */
     public static final WebApplicationFirewallRuleType INVALID = fromString("Invalid");
 

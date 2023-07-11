@@ -6,14 +6,10 @@ package com.azure.cosmos.benchmark;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.codahale.metrics.Timer;
-import org.apache.commons.lang3.RandomUtils;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-
-import java.time.Duration;
 
 class AsyncReadBenchmark extends AsyncBenchmark<PojoizedJson> {
 

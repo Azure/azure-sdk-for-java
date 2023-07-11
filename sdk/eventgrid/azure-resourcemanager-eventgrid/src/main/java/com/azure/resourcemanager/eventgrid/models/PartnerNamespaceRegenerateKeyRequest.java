@@ -17,6 +17,10 @@ public final class PartnerNamespaceRegenerateKeyRequest {
     @JsonProperty(value = "keyName", required = true)
     private String keyName;
 
+    /** Creates an instance of PartnerNamespaceRegenerateKeyRequest class. */
+    public PartnerNamespaceRegenerateKeyRequest() {
+    }
+
     /**
      * Get the keyName property: Key name to regenerate (key1 or key2).
      *

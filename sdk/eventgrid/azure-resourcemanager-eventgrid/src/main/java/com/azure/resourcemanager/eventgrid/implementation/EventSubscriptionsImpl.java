@@ -32,10 +32,26 @@ public final class EventSubscriptionsImpl implements EventSubscriptions {
         this.serviceManager = serviceManager;
     }
 
-    public EventSubscription get(String scope, String eventSubscriptionName) {
-        EventSubscriptionInner inner = this.serviceClient().get(scope, eventSubscriptionName);
+    public Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(
+        String scope, String eventSubscriptionName, Context context) {
+        Response<DeliveryAttributeListResultInner> inner =
+            this.serviceClient().getDeliveryAttributesWithResponse(scope, eventSubscriptionName, context);
         if (inner != null) {
-            return new EventSubscriptionImpl(inner, this.manager());
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new DeliveryAttributeListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DeliveryAttributeListResult getDeliveryAttributes(String scope, String eventSubscriptionName) {
+        DeliveryAttributeListResultInner inner =
+            this.serviceClient().getDeliveryAttributes(scope, eventSubscriptionName);
+        if (inner != null) {
+            return new DeliveryAttributeListResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -50,6 +66,15 @@ public final class EventSubscriptionsImpl implements EventSubscriptions {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new EventSubscriptionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public EventSubscription get(String scope, String eventSubscriptionName) {
+        EventSubscriptionInner inner = this.serviceClient().get(scope, eventSubscriptionName);
+        if (inner != null) {
+            return new EventSubscriptionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -112,15 +137,6 @@ public final class EventSubscriptionsImpl implements EventSubscriptions {
         }
     }
 
-    public EventSubscriptionFullUrl getFullUrl(String scope, String eventSubscriptionName) {
-        EventSubscriptionFullUrlInner inner = this.serviceClient().getFullUrl(scope, eventSubscriptionName);
-        if (inner != null) {
-            return new EventSubscriptionFullUrlImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<EventSubscriptionFullUrl> getFullUrlWithResponse(
         String scope, String eventSubscriptionName, Context context) {
         Response<EventSubscriptionFullUrlInner> inner =
@@ -131,6 +147,15 @@ public final class EventSubscriptionsImpl implements EventSubscriptions {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new EventSubscriptionFullUrlImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public EventSubscriptionFullUrl getFullUrl(String scope, String eventSubscriptionName) {
+        EventSubscriptionFullUrlInner inner = this.serviceClient().getFullUrl(scope, eventSubscriptionName);
+        if (inner != null) {
+            return new EventSubscriptionFullUrlImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -278,31 +303,6 @@ public final class EventSubscriptionsImpl implements EventSubscriptions {
         PagedIterable<EventSubscriptionInner> inner =
             this.serviceClient().listByDomainTopic(resourceGroupName, domainName, topicName, filter, top, context);
         return Utils.mapPage(inner, inner1 -> new EventSubscriptionImpl(inner1, this.manager()));
-    }
-
-    public DeliveryAttributeListResult getDeliveryAttributes(String scope, String eventSubscriptionName) {
-        DeliveryAttributeListResultInner inner =
-            this.serviceClient().getDeliveryAttributes(scope, eventSubscriptionName);
-        if (inner != null) {
-            return new DeliveryAttributeListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(
-        String scope, String eventSubscriptionName, Context context) {
-        Response<DeliveryAttributeListResultInner> inner =
-            this.serviceClient().getDeliveryAttributesWithResponse(scope, eventSubscriptionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new DeliveryAttributeListResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
     }
 
     private EventSubscriptionsClient serviceClient() {

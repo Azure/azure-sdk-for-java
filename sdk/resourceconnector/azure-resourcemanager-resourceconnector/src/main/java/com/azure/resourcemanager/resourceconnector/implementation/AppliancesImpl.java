@@ -10,14 +10,16 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resourceconnector.fluent.AppliancesClient;
+import com.azure.resourcemanager.resourceconnector.fluent.models.ApplianceGetTelemetryConfigResultInner;
 import com.azure.resourcemanager.resourceconnector.fluent.models.ApplianceInner;
-import com.azure.resourcemanager.resourceconnector.fluent.models.ApplianceListClusterCustomerUserCredentialResultsInner;
 import com.azure.resourcemanager.resourceconnector.fluent.models.ApplianceListCredentialResultsInner;
+import com.azure.resourcemanager.resourceconnector.fluent.models.ApplianceListKeysResultsInner;
 import com.azure.resourcemanager.resourceconnector.fluent.models.ApplianceOperationInner;
 import com.azure.resourcemanager.resourceconnector.fluent.models.UpgradeGraphInner;
 import com.azure.resourcemanager.resourceconnector.models.Appliance;
-import com.azure.resourcemanager.resourceconnector.models.ApplianceListClusterCustomerUserCredentialResults;
+import com.azure.resourcemanager.resourceconnector.models.ApplianceGetTelemetryConfigResult;
 import com.azure.resourcemanager.resourceconnector.models.ApplianceListCredentialResults;
+import com.azure.resourcemanager.resourceconnector.models.ApplianceListKeysResults;
 import com.azure.resourcemanager.resourceconnector.models.ApplianceOperation;
 import com.azure.resourcemanager.resourceconnector.models.Appliances;
 import com.azure.resourcemanager.resourceconnector.models.UpgradeGraph;
@@ -55,6 +57,29 @@ public final class AppliancesImpl implements Appliances {
         return Utils.mapPage(inner, inner1 -> new ApplianceImpl(inner1, this.manager()));
     }
 
+    public Response<ApplianceGetTelemetryConfigResult> getTelemetryConfigWithResponse(Context context) {
+        Response<ApplianceGetTelemetryConfigResultInner> inner =
+            this.serviceClient().getTelemetryConfigWithResponse(context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new ApplianceGetTelemetryConfigResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApplianceGetTelemetryConfigResult getTelemetryConfig() {
+        ApplianceGetTelemetryConfigResultInner inner = this.serviceClient().getTelemetryConfig();
+        if (inner != null) {
+            return new ApplianceGetTelemetryConfigResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<Appliance> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ApplianceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
         return Utils.mapPage(inner, inner1 -> new ApplianceImpl(inner1, this.manager()));
@@ -63,15 +88,6 @@ public final class AppliancesImpl implements Appliances {
     public PagedIterable<Appliance> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ApplianceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
         return Utils.mapPage(inner, inner1 -> new ApplianceImpl(inner1, this.manager()));
-    }
-
-    public Appliance getByResourceGroup(String resourceGroupName, String resourceName) {
-        ApplianceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new ApplianceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<Appliance> getByResourceGroupWithResponse(
@@ -89,50 +105,21 @@ public final class AppliancesImpl implements Appliances {
         }
     }
 
+    public Appliance getByResourceGroup(String resourceGroupName, String resourceName) {
+        ApplianceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new ApplianceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void deleteByResourceGroup(String resourceGroupName, String resourceName) {
         this.serviceClient().delete(resourceGroupName, resourceName);
     }
 
     public void delete(String resourceGroupName, String resourceName, Context context) {
         this.serviceClient().delete(resourceGroupName, resourceName, context);
-    }
-
-    public ApplianceListClusterCustomerUserCredentialResults listClusterCustomerUserCredential(
-        String resourceGroupName, String resourceName) {
-        ApplianceListClusterCustomerUserCredentialResultsInner inner =
-            this.serviceClient().listClusterCustomerUserCredential(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new ApplianceListClusterCustomerUserCredentialResultsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ApplianceListClusterCustomerUserCredentialResults> listClusterCustomerUserCredentialWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<ApplianceListClusterCustomerUserCredentialResultsInner> inner =
-            this
-                .serviceClient()
-                .listClusterCustomerUserCredentialWithResponse(resourceGroupName, resourceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ApplianceListClusterCustomerUserCredentialResultsImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public ApplianceListCredentialResults listClusterUserCredential(String resourceGroupName, String resourceName) {
-        ApplianceListCredentialResultsInner inner =
-            this.serviceClient().listClusterUserCredential(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new ApplianceListCredentialResultsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ApplianceListCredentialResults> listClusterUserCredentialWithResponse(
@@ -150,10 +137,35 @@ public final class AppliancesImpl implements Appliances {
         }
     }
 
-    public UpgradeGraph getUpgradeGraph(String resourceGroupName, String resourceName, String upgradeGraph) {
-        UpgradeGraphInner inner = this.serviceClient().getUpgradeGraph(resourceGroupName, resourceName, upgradeGraph);
+    public ApplianceListCredentialResults listClusterUserCredential(String resourceGroupName, String resourceName) {
+        ApplianceListCredentialResultsInner inner =
+            this.serviceClient().listClusterUserCredential(resourceGroupName, resourceName);
         if (inner != null) {
-            return new UpgradeGraphImpl(inner, this.manager());
+            return new ApplianceListCredentialResultsImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<ApplianceListKeysResults> listKeysWithResponse(
+        String resourceGroupName, String resourceName, Context context) {
+        Response<ApplianceListKeysResultsInner> inner =
+            this.serviceClient().listKeysWithResponse(resourceGroupName, resourceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new ApplianceListKeysResultsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApplianceListKeysResults listKeys(String resourceGroupName, String resourceName) {
+        ApplianceListKeysResultsInner inner = this.serviceClient().listKeys(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new ApplianceListKeysResultsImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -169,6 +181,15 @@ public final class AppliancesImpl implements Appliances {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new UpgradeGraphImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public UpgradeGraph getUpgradeGraph(String resourceGroupName, String resourceName, String upgradeGraph) {
+        UpgradeGraphInner inner = this.serviceClient().getUpgradeGraph(resourceGroupName, resourceName, upgradeGraph);
+        if (inner != null) {
+            return new UpgradeGraphImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -26,6 +26,7 @@ import com.azure.resourcemanager.sqlvirtualmachine.fluent.AvailabilityGroupListe
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.OperationsClient;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.SqlVirtualMachineGroupsClient;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.SqlVirtualMachineManagementClient;
+import com.azure.resourcemanager.sqlvirtualmachine.fluent.SqlVirtualMachineTroubleshootsClient;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.SqlVirtualMachinesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -159,6 +160,18 @@ public final class SqlVirtualMachineManagementClientImpl implements SqlVirtualMa
         return this.sqlVirtualMachines;
     }
 
+    /** The SqlVirtualMachineTroubleshootsClient object to access its operations. */
+    private final SqlVirtualMachineTroubleshootsClient sqlVirtualMachineTroubleshoots;
+
+    /**
+     * Gets the SqlVirtualMachineTroubleshootsClient object to access its operations.
+     *
+     * @return the SqlVirtualMachineTroubleshootsClient object.
+     */
+    public SqlVirtualMachineTroubleshootsClient getSqlVirtualMachineTroubleshoots() {
+        return this.sqlVirtualMachineTroubleshoots;
+    }
+
     /**
      * Initializes an instance of SqlVirtualMachineManagementClient client.
      *
@@ -181,11 +194,12 @@ public final class SqlVirtualMachineManagementClientImpl implements SqlVirtualMa
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-07-01-preview";
+        this.apiVersion = "2022-08-01-preview";
         this.availabilityGroupListeners = new AvailabilityGroupListenersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.sqlVirtualMachineGroups = new SqlVirtualMachineGroupsClientImpl(this);
         this.sqlVirtualMachines = new SqlVirtualMachinesClientImpl(this);
+        this.sqlVirtualMachineTroubleshoots = new SqlVirtualMachineTroubleshootsClientImpl(this);
     }
 
     /**

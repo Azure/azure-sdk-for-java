@@ -15,6 +15,7 @@ import com.azure.communication.jobrouter.models.StaticWorkerSelector;
 import com.azure.communication.jobrouter.models.WorkerSelector;
 import com.azure.communication.jobrouter.models.WorkerSelectorAttachment;
 import com.azure.communication.jobrouter.models.options.CreateClassificationPolicyOptions;
+import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -26,18 +27,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ClassificationPolicyLiveTests extends JobRouterTestBase {
     private RouterAdministrationClient routerAdminClient;
 
-    @Override
-    protected void beforeTest() {
-        routerAdminClient = clientSetup(httpPipeline -> new RouterAdministrationClientBuilder()
-            .connectionString(getConnectionString())
-            .pipeline(httpPipeline)
-            .buildClient());
-    }
-
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createClassificationPolicy() {
+    public void createClassificationPolicy(HttpClient httpClient) {
         // Setup
+        routerAdminClient = getRouterAdministrationClient(httpClient);
         String distributionPolicyId = String.format("%s-DistributionPolicy", JAVA_LIVE_TESTS);
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
 
@@ -82,13 +76,12 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
          * Create classification policy
          */
         CreateClassificationPolicyOptions createClassificationPolicyOptions = new CreateClassificationPolicyOptions(
-            classificationPolicyId,
-            classificationPolicyName,
-            new StaticRule().setValue(1),
-            workerSelectors,
-            queueSelectors,
-            jobQueue.getId()
-        );
+            classificationPolicyId)
+            .setName(classificationPolicyName)
+            .setPrioritizationRule(new StaticRule().setValue(1))
+            .setWorkerSelectors(workerSelectors)
+            .setQueueSelectors(queueSelectors)
+            .setFallbackQueueId(jobQueue.getId());
 
         // Action
         ClassificationPolicy result = routerAdminClient.createClassificationPolicy(createClassificationPolicyOptions);

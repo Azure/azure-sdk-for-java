@@ -13,7 +13,7 @@ public final class ServerVersionCapabilityTests {
         ServerVersionCapability model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"upfh\",\"supportedSkus\":[{\"name\":\"rpmopjmc\",\"vCores\":2395939551856044935,\"supportedIops\":6897678654981048180,\"supportedMemoryPerVCoreMB\":2263429425422948962},{\"name\":\"uaodsfcpk\",\"vCores\":4623800830468359424,\"supportedIops\":5484313845577670913,\"supportedMemoryPerVCoreMB\":6217574440199654297}]}")
+                    "{\"name\":\"zjuqkhrsaj\",\"supportedSkus\":[{\"name\":\"ofoskghs\",\"vCores\":7334574875693973004,\"supportedIops\":6549860277400431394,\"supportedMemoryPerVCoreMB\":5129594388409222078}]}")
                 .toObject(ServerVersionCapability.class);
     }
 

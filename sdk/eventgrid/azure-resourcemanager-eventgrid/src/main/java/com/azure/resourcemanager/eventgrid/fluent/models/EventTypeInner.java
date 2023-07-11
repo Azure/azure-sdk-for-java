@@ -17,6 +17,10 @@ public final class EventTypeInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private EventTypeProperties innerProperties;
 
+    /** Creates an instance of EventTypeInner class. */
+    public EventTypeInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the event type.
      *

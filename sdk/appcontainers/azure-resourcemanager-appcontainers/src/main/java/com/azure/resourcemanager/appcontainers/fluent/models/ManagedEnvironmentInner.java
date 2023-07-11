@@ -9,8 +9,9 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appcontainers.models.AppLogsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
+import com.azure.resourcemanager.appcontainers.models.DaprConfiguration;
 import com.azure.resourcemanager.appcontainers.models.EnvironmentProvisioningState;
-import com.azure.resourcemanager.appcontainers.models.EnvironmentSkuProperties;
+import com.azure.resourcemanager.appcontainers.models.KedaConfiguration;
 import com.azure.resourcemanager.appcontainers.models.VnetConfiguration;
 import com.azure.resourcemanager.appcontainers.models.WorkloadProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,10 +22,10 @@ import java.util.Map;
 @Fluent
 public final class ManagedEnvironmentInner extends Resource {
     /*
-     * SKU properties of the Environment.
+     * Kind of the Environment.
      */
-    @JsonProperty(value = "sku")
-    private EnvironmentSkuProperties sku;
+    @JsonProperty(value = "kind")
+    private String kind;
 
     /*
      * Managed environment resource specific properties
@@ -43,22 +44,22 @@ public final class ManagedEnvironmentInner extends Resource {
     }
 
     /**
-     * Get the sku property: SKU properties of the Environment.
+     * Get the kind property: Kind of the Environment.
      *
-     * @return the sku value.
+     * @return the kind value.
      */
-    public EnvironmentSkuProperties sku() {
-        return this.sku;
+    public String kind() {
+        return this.kind;
     }
 
     /**
-     * Set the sku property: SKU properties of the Environment.
+     * Set the kind property: Kind of the Environment.
      *
-     * @param sku the sku value to set.
+     * @param kind the kind value to set.
      * @return the ManagedEnvironmentInner object itself.
      */
-    public ManagedEnvironmentInner withSku(EnvironmentSkuProperties sku) {
-        this.sku = sku;
+    public ManagedEnvironmentInner withKind(String kind) {
+        this.kind = kind;
         return this;
     }
 
@@ -307,14 +308,84 @@ public final class ManagedEnvironmentInner extends Resource {
     }
 
     /**
+     * Get the kedaConfiguration property: The configuration of Keda component.
+     *
+     * @return the kedaConfiguration value.
+     */
+    public KedaConfiguration kedaConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().kedaConfiguration();
+    }
+
+    /**
+     * Set the kedaConfiguration property: The configuration of Keda component.
+     *
+     * @param kedaConfiguration the kedaConfiguration value to set.
+     * @return the ManagedEnvironmentInner object itself.
+     */
+    public ManagedEnvironmentInner withKedaConfiguration(KedaConfiguration kedaConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedEnvironmentProperties();
+        }
+        this.innerProperties().withKedaConfiguration(kedaConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the daprConfiguration property: The configuration of Dapr component.
+     *
+     * @return the daprConfiguration value.
+     */
+    public DaprConfiguration daprConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().daprConfiguration();
+    }
+
+    /**
+     * Set the daprConfiguration property: The configuration of Dapr component.
+     *
+     * @param daprConfiguration the daprConfiguration value to set.
+     * @return the ManagedEnvironmentInner object itself.
+     */
+    public ManagedEnvironmentInner withDaprConfiguration(DaprConfiguration daprConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedEnvironmentProperties();
+        }
+        this.innerProperties().withDaprConfiguration(daprConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the infrastructureResourceGroup property: Name of the platform-managed resource group created for the Managed
+     * Environment to host infrastructure resources. If a subnet ID is provided, this resource group will be created in
+     * the same subscription as the subnet.
+     *
+     * @return the infrastructureResourceGroup value.
+     */
+    public String infrastructureResourceGroup() {
+        return this.innerProperties() == null ? null : this.innerProperties().infrastructureResourceGroup();
+    }
+
+    /**
+     * Set the infrastructureResourceGroup property: Name of the platform-managed resource group created for the Managed
+     * Environment to host infrastructure resources. If a subnet ID is provided, this resource group will be created in
+     * the same subscription as the subnet.
+     *
+     * @param infrastructureResourceGroup the infrastructureResourceGroup value to set.
+     * @return the ManagedEnvironmentInner object itself.
+     */
+    public ManagedEnvironmentInner withInfrastructureResourceGroup(String infrastructureResourceGroup) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedEnvironmentProperties();
+        }
+        this.innerProperties().withInfrastructureResourceGroup(infrastructureResourceGroup);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sku() != null) {
-            sku().validate();
-        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }

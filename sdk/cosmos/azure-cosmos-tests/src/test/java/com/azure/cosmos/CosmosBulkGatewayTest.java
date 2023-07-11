@@ -53,7 +53,7 @@ public class CosmosBulkGatewayTest extends BatchTestBase {
 
     @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeCloseAsync(this.bulkClient);
+        safeClose(this.bulkClient);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT * 20)

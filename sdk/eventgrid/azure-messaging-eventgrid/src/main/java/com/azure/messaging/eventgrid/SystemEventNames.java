@@ -24,6 +24,7 @@ import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdated
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadWithUserDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsEmailDeliveryReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsEmailEngagementTrackingReportReceivedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsIncomingCallEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsRecordingFileStatusUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsDeliveryReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsReceivedEventData;
@@ -60,13 +61,19 @@ import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartDeletedE
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartPushedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImageDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImagePushedEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerServiceClusterSupportEndedEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerServiceClusterSupportEndingEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerServiceNewKubernetesVersionAvailableEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerServiceNodePoolRollingFailedEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerServiceNodePoolRollingStartedEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerServiceNodePoolRollingSucceededEventData;
 import com.azure.messaging.eventgrid.systemevents.DataBoxCopyCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.DataBoxCopyStartedEventData;
 import com.azure.messaging.eventgrid.systemevents.DataBoxOrderCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.EventHubCaptureFileCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.HealthcareDicomImageCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.HealthcareDicomImageDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.HealthcareDicomImageUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.HealthcareFhirResourceCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.HealthcareFhirResourceDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.HealthcareFhirResourceUpdatedEventData;
@@ -150,6 +157,8 @@ import com.azure.messaging.eventgrid.systemevents.StorageDirectoryCreatedEventDa
 import com.azure.messaging.eventgrid.systemevents.StorageDirectoryDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageDirectoryRenamedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageLifecyclePolicyCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageTaskCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageTaskQueuedEventData;
 import com.azure.messaging.eventgrid.systemevents.SubscriptionDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.SubscriptionValidationEventData;
 import com.azure.messaging.eventgrid.systemevents.WebAppServicePlanUpdatedEventData;
@@ -274,6 +283,9 @@ public final class SystemEventNames {
      */
     public static final String COMMUNICATION_EMAIL_ENGAGEMENT_TRACKING_REPORT_RECEIVED =
             "Microsoft.Communication.EmailEngagementTrackingReportReceived";
+
+    /** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.IncomingCall event. */
+    public static final String COMMUNICATION_INCOMING_CALL = "Microsoft.Communication.IncomingCall";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RecordingFileStatusUpdated event.
@@ -413,12 +425,38 @@ public final class SystemEventNames {
     /** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ImagePushed event. */
     public static final String CONTAINER_REGISTRY_IMAGE_PUSHED = "Microsoft.ContainerRegistry.ImagePushed";
 
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.ClusterSupportEnded event. */
+    public static final String CONTAINER_SERVICE_CLUSTER_SUPPORT_ENDED =
+            "Microsoft.ContainerService.ClusterSupportEnded";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.ClusterSupportEnding event. */
+    public static final String CONTAINER_SERVICE_CLUSTER_SUPPORT_ENDING =
+            "Microsoft.ContainerService.ClusterSupportEnding";
+
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NewKubernetesVersionAvailable
      * event.
      */
     public static final String CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE =
             "Microsoft.ContainerService.NewKubernetesVersionAvailable";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NodePoolRollingFailed event.
+     */
+    public static final String CONTAINER_SERVICE_NODE_POOL_ROLLING_FAILED =
+            "Microsoft.ContainerService.NodePoolRollingFailed";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NodePoolRollingStarted event.
+     */
+    public static final String CONTAINER_SERVICE_NODE_POOL_ROLLING_STARTED =
+            "Microsoft.ContainerService.NodePoolRollingStarted";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NodePoolRollingSucceeded event.
+     */
+    public static final String CONTAINER_SERVICE_NODE_POOL_ROLLING_SUCCEEDED =
+            "Microsoft.ContainerService.NodePoolRollingSucceeded";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.DataBox.CopyCompleted event. */
     public static final String DATA_BOX_COPY_COMPLETED = "Microsoft.DataBox.CopyCompleted";
@@ -437,6 +475,9 @@ public final class SystemEventNames {
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.DicomImageDeleted event. */
     public static final String HEALTHCARE_DICOM_IMAGE_DELETED = "Microsoft.HealthcareApis.DicomImageDeleted";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.DicomImageUpdated event. */
+    public static final String HEALTHCARE_DICOM_IMAGE_UPDATED = "Microsoft.HealthcareApis.DicomImageUpdated";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.FhirResourceCreated event. */
     public static final String HEALTHCARE_FHIR_RESOURCE_CREATED = "Microsoft.HealthcareApis.FhirResourceCreated";
@@ -823,6 +864,12 @@ public final class SystemEventNames {
     /** Schema of the Data property of an EventGridEvent for a Microsoft.Storage.LifecyclePolicyCompleted event. */
     public static final String STORAGE_LIFECYCLE_POLICY_COMPLETED = "Microsoft.Storage.LifecyclePolicyCompleted";
 
+    /** Schema of the Data property of an EventGridEvent for an Microsoft.Storage.StorageTaskCompleted event. */
+    public static final String STORAGE_TASK_COMPLETED = "Microsoft.Storage.StorageTaskCompleted";
+
+    /** Schema of the Data property of an EventGridEvent for an Microsoft.Storage.StorageTaskQueued event. */
+    public static final String STORAGE_TASK_QUEUED = "Microsoft.Storage.StorageTaskQueued";
+
     /** Schema of the Data property of an EventGridEvent for a Microsoft.EventGrid.SubscriptionDeletedEvent event. */
     public static final String EVENT_GRID_SUBSCRIPTION_DELETED = "Microsoft.EventGrid.SubscriptionDeletedEvent";
 
@@ -916,6 +963,7 @@ public final class SystemEventNames {
                     put(
                             COMMUNICATION_EMAIL_ENGAGEMENT_TRACKING_REPORT_RECEIVED,
                             AcsEmailEngagementTrackingReportReceivedEventData.class);
+                    put(COMMUNICATION_INCOMING_CALL, AcsIncomingCallEventData.class);
                     put(COMMUNICATION_RECORDING_FILE_STATUS_UPDATED, AcsRecordingFileStatusUpdatedEventData.class);
                     put(COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED, AcsSmsDeliveryReportReceivedEventData.class);
                     put(COMMUNICATION_SMS_RECEIVED, AcsSmsReceivedEventData.class);
@@ -964,15 +1012,27 @@ public final class SystemEventNames {
                     put(CONTAINER_REGISTRY_CHART_PUSHED, ContainerRegistryChartPushedEventData.class);
                     put(CONTAINER_REGISTRY_IMAGE_DELETED, ContainerRegistryImageDeletedEventData.class);
                     put(CONTAINER_REGISTRY_IMAGE_PUSHED, ContainerRegistryImagePushedEventData.class);
+                    put(CONTAINER_SERVICE_CLUSTER_SUPPORT_ENDED, ContainerServiceClusterSupportEndedEventData.class);
+                    put(CONTAINER_SERVICE_CLUSTER_SUPPORT_ENDING, ContainerServiceClusterSupportEndingEventData.class);
                     put(
                             CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE,
                             ContainerServiceNewKubernetesVersionAvailableEventData.class);
+                    put(
+                            CONTAINER_SERVICE_NODE_POOL_ROLLING_FAILED,
+                            ContainerServiceNodePoolRollingFailedEventData.class);
+                    put(
+                            CONTAINER_SERVICE_NODE_POOL_ROLLING_STARTED,
+                            ContainerServiceNodePoolRollingStartedEventData.class);
+                    put(
+                            CONTAINER_SERVICE_NODE_POOL_ROLLING_SUCCEEDED,
+                            ContainerServiceNodePoolRollingSucceededEventData.class);
                     put(DATA_BOX_COPY_COMPLETED, DataBoxCopyCompletedEventData.class);
                     put(DATA_BOX_COPY_STARTED, DataBoxCopyStartedEventData.class);
                     put(DATA_BOX_ORDER_COMPLETED, DataBoxOrderCompletedEventData.class);
                     put(EVENT_HUB_CAPTURE_FILE_CREATED, EventHubCaptureFileCreatedEventData.class);
                     put(HEALTHCARE_DICOM_IMAGE_CREATED, HealthcareDicomImageCreatedEventData.class);
                     put(HEALTHCARE_DICOM_IMAGE_DELETED, HealthcareDicomImageDeletedEventData.class);
+                    put(HEALTHCARE_DICOM_IMAGE_UPDATED, HealthcareDicomImageUpdatedEventData.class);
                     put(HEALTHCARE_FHIR_RESOURCE_CREATED, HealthcareFhirResourceCreatedEventData.class);
                     put(HEALTHCARE_FHIR_RESOURCE_DELETED, HealthcareFhirResourceDeletedEventData.class);
                     put(HEALTHCARE_FHIR_RESOURCE_UPDATED, HealthcareFhirResourceUpdatedEventData.class);
@@ -1080,6 +1140,8 @@ public final class SystemEventNames {
                     put(STORAGE_DIRECTORY_DELETED, StorageDirectoryDeletedEventData.class);
                     put(STORAGE_DIRECTORY_RENAMED, StorageDirectoryRenamedEventData.class);
                     put(STORAGE_LIFECYCLE_POLICY_COMPLETED, StorageLifecyclePolicyCompletedEventData.class);
+                    put(STORAGE_TASK_COMPLETED, StorageTaskCompletedEventData.class);
+                    put(STORAGE_TASK_QUEUED, StorageTaskQueuedEventData.class);
                     put(EVENT_GRID_SUBSCRIPTION_DELETED, SubscriptionDeletedEventData.class);
                     put(EVENT_GRID_SUBSCRIPTION_VALIDATION, SubscriptionValidationEventData.class);
                     put(WEB_APP_SERVICE_PLAN_UPDATED, WebAppServicePlanUpdatedEventData.class);

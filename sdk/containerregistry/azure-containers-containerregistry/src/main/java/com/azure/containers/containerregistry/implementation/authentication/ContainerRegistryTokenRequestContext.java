@@ -20,6 +20,7 @@ public class ContainerRegistryTokenRequestContext extends TokenRequestContext {
     public ContainerRegistryTokenRequestContext(String serviceName, String scope) {
         this.serviceName = serviceName;
         this.scope = scope;
+        this.addScopes(scope);
     }
 
     /**

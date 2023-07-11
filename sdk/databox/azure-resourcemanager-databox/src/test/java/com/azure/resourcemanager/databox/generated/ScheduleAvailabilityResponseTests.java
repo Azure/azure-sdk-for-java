@@ -12,7 +12,8 @@ public final class ScheduleAvailabilityResponseTests {
     public void testDeserialize() throws Exception {
         ScheduleAvailabilityResponse model =
             BinaryData
-                .fromString("{\"availableDates\":[\"2021-04-10T12:35:25Z\"]}")
+                .fromString(
+                    "{\"availableDates\":[\"2021-01-13T03:12:52Z\",\"2021-01-31T22:22:25Z\",\"2021-09-01T00:32:36Z\"]}")
                 .toObject(ScheduleAvailabilityResponse.class);
     }
 

@@ -33,7 +33,7 @@ public final class ManagedCcfsListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"appName\":\"mkfssxqukkfplgm\",\"appUri\":\"xnkjzkdesl\",\"identityServiceUri\":\"lopwiyig\",\"memberIdentityCertificates\":[],\"deploymentType\":{\"languageRuntime\":\"CPP\",\"appSourceUri\":\"baiuebbaumny\"},\"provisioningState\":\"Updating\",\"nodeCount\":865900212},\"location\":\"ojnabckhsmtxpsie\",\"tags\":{\"jjdhtld\":\"hvpesapskrdqm\",\"cwscwsvlx\":\"kyzxuutk\",\"rupqsxvnmicy\":\"togt\"},\"id\":\"vce\",\"name\":\"vei\",\"type\":\"ovnotyfjfcnjbkcn\"}]}";
+            "{\"value\":[{\"properties\":{\"appName\":\"vecxgodebfqkk\",\"appUri\":\"mpukgriw\",\"identityServiceUri\":\"zlfbxzpuzycispnq\",\"memberIdentityCertificates\":[],\"deploymentType\":{\"languageRuntime\":\"JS\",\"appSourceUri\":\"rp\"},\"provisioningState\":\"Succeeded\",\"nodeCount\":380689806},\"location\":\"nuqqkpikadrgvt\",\"tags\":{\"uynhijg\":\"n\",\"iarbutrcvpna\":\"mebf\"},\"id\":\"zmhjrunmp\",\"name\":\"ttdbhrbnl\",\"type\":\"nkxmyskpbhenbtk\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,15 +62,16 @@ public final class ManagedCcfsListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ManagedCcf> response =
-            manager.managedCcfs().listByResourceGroup("bhvgy", "gu", com.azure.core.util.Context.NONE);
+            manager
+                .managedCcfs()
+                .listByResourceGroup("bgsncghkjeszzhb", "jhtxfvgxbfsmxne", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ojnabckhsmtxpsie", response.iterator().next().location());
-        Assertions.assertEquals("hvpesapskrdqm", response.iterator().next().tags().get("jjdhtld"));
+        Assertions.assertEquals("nuqqkpikadrgvt", response.iterator().next().location());
+        Assertions.assertEquals("n", response.iterator().next().tags().get("uynhijg"));
         Assertions
             .assertEquals(
-                LanguageRuntime.CPP, response.iterator().next().properties().deploymentType().languageRuntime());
-        Assertions
-            .assertEquals("baiuebbaumny", response.iterator().next().properties().deploymentType().appSourceUri());
-        Assertions.assertEquals(865900212, response.iterator().next().properties().nodeCount());
+                LanguageRuntime.JS, response.iterator().next().properties().deploymentType().languageRuntime());
+        Assertions.assertEquals("rp", response.iterator().next().properties().deploymentType().appSourceUri());
+        Assertions.assertEquals(380689806, response.iterator().next().properties().nodeCount());
     }
 }

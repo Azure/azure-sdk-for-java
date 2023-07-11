@@ -23,8 +23,7 @@ public final class MachineLearningServicesModelDeployedEventData {
     private String serviceComputeType;
 
     /*
-     * A common separated list of model IDs. The IDs of the models deployed in
-     * the service.
+     * A common separated list of model IDs. The IDs of the models deployed in the service.
      */
     @JsonProperty(value = "modelIds")
     private String modelIds;
@@ -40,6 +39,9 @@ public final class MachineLearningServicesModelDeployedEventData {
      */
     @JsonProperty(value = "serviceProperties")
     private Object serviceProperties;
+
+    /** Creates an instance of MachineLearningServicesModelDeployedEventData class. */
+    public MachineLearningServicesModelDeployedEventData() {}
 
     /**
      * Get the serviceName property: The name of the deployed service.

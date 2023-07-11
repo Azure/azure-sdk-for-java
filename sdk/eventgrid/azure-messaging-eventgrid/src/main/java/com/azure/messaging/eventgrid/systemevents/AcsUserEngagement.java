@@ -8,13 +8,21 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AcsUserEngagement. */
+/** The type of engagement user have with email. */
 public final class AcsUserEngagement extends ExpandableStringEnum<AcsUserEngagement> {
     /** Static value view for AcsUserEngagement. */
     public static final AcsUserEngagement VIEW = fromString("view");
 
     /** Static value click for AcsUserEngagement. */
     public static final AcsUserEngagement CLICK = fromString("click");
+
+    /**
+     * Creates a new instance of AcsUserEngagement value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AcsUserEngagement() {}
 
     /**
      * Creates or finds a AcsUserEngagement from its string representation.

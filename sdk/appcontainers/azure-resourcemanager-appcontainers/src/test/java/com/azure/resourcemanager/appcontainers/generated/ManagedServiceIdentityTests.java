@@ -11,36 +11,33 @@ import com.azure.resourcemanager.appcontainers.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ManagedServiceIdentityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ManagedServiceIdentity model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"frzpwvlqdqgb\":{},\"lihkaetcktvfc\":{},\"snkymuctq\":{},\"bebrjcxerfuwuttt\":{}}}")
+                    "{\"principalId\":\"24eebd10-bf80-4224-a885-dc9084199200\",\"tenantId\":\"3c475488-292b-422c-81d4-240c0898d233\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"cjhwq\":{\"principalId\":\"fcd4ddb6-77d0-4861-9a96-0c321ff8271d\",\"clientId\":\"43c0c199-a1e9-4807-84d3-a12f37c5fbfe\"},\"r\":{\"principalId\":\"d8346bc1-ffe5-4f69-b84d-b7ac8ad8a9c5\",\"clientId\":\"667b8c4d-698b-4d40-b6bc-9beef6128b9c\"},\"wj\":{\"principalId\":\"9602c6fb-0ebf-4759-9052-e11914dd8bd4\",\"clientId\":\"79d13a9b-ad01-41f8-993a-83d259b301d4\"}}}")
                 .toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ManagedServiceIdentity model =
             new ManagedServiceIdentity()
-                .withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
                 .withUserAssignedIdentities(
                     mapOf(
-                        "frzpwvlqdqgb",
+                        "cjhwq",
                         new UserAssignedIdentity(),
-                        "lihkaetcktvfc",
+                        "r",
                         new UserAssignedIdentity(),
-                        "snkymuctq",
-                        new UserAssignedIdentity(),
-                        "bebrjcxerfuwuttt",
+                        "wj",
                         new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
     @SuppressWarnings("unchecked")

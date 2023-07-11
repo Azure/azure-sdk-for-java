@@ -20,6 +20,15 @@ public final class VirtualNetworkLinkState extends ExpandableStringEnum<VirtualN
     public static final VirtualNetworkLinkState COMPLETED = fromString("Completed");
 
     /**
+     * Creates a new instance of VirtualNetworkLinkState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualNetworkLinkState() {
+    }
+
+    /**
      * Creates or finds a VirtualNetworkLinkState from its string representation.
      *
      * @param name a name to look for.

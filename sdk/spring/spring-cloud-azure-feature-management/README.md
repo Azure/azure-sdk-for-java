@@ -198,7 +198,7 @@ feature-management:
 
 ### TargetingFilter
 
-This filter provides the capability to enable a feature for a target audience. An in-depth explanation of targeting is explained in the targeting section below. The filter parameters include an audience object which describes users, groups, and a default percentage of the user base that should have access to the feature. Each group object that is listed in the target audience must also specify what percentage of the group's members should have access. If a user is specified in the users section directly, or if the user is in the included percentage of any of the group rollouts, or if the user falls into the default rollout percentage then that user will have the feature enabled.
+This filter provides the capability to enable a feature for a target audience. An in-depth explanation of targeting is explained in the targeting section below. The filter parameters include an audience object which describes users, groups, and a default percentage of the user base that should have access to the feature, and an exclusion object for users and groups that should never be targeted. Each group object that is listed in the target audience must also specify what percentage of the group's members should have access. If a user is specified in the users section directly, or if the user is in the included percentage of any of the group rollouts, or if the user falls into the default rollout percentage then that user will have the feature enabled.
 
 ```yml
 feature-management:
@@ -219,6 +219,11 @@ feature-management:
                 name: Ring1
                 rolloutPercentage: 100
             defaultRolloutPercentage: 50
+            exclusion:
+              users:
+                - Ross
+              groups:
+                - Ring2
 ```
 
 ## Targeting

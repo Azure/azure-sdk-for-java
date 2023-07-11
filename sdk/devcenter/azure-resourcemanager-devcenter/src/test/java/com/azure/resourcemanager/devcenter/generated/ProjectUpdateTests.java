@@ -9,35 +9,37 @@ import com.azure.resourcemanager.devcenter.models.ProjectUpdate;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProjectUpdateTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProjectUpdate model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"devCenterId\":\"rbnwbxgjvtbvpy\",\"description\":\"zdn\"},\"tags\":{\"qfprwzwbn\":\"qguhmuo\"},\"location\":\"itnwuizgazxufi\"}")
+                    "{\"properties\":{\"devCenterId\":\"tbvpysszdnru\",\"description\":\"guhmuouqfpr\",\"maxDevBoxesPerUser\":584563122},\"tags\":{\"itnwuizgazxufi\":\"g\",\"hr\":\"uckyf\",\"zwdzuh\":\"idf\",\"wxmnteiwao\":\"ymwisdkft\"},\"location\":\"km\"}")
                 .toObject(ProjectUpdate.class);
-        Assertions.assertEquals("qguhmuo", model.tags().get("qfprwzwbn"));
-        Assertions.assertEquals("itnwuizgazxufi", model.location());
-        Assertions.assertEquals("rbnwbxgjvtbvpy", model.devCenterId());
-        Assertions.assertEquals("zdn", model.description());
+        Assertions.assertEquals("g", model.tags().get("itnwuizgazxufi"));
+        Assertions.assertEquals("km", model.location());
+        Assertions.assertEquals("tbvpysszdnru", model.devCenterId());
+        Assertions.assertEquals("guhmuouqfpr", model.description());
+        Assertions.assertEquals(584563122, model.maxDevBoxesPerUser());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProjectUpdate model =
             new ProjectUpdate()
-                .withTags(mapOf("qfprwzwbn", "qguhmuo"))
-                .withLocation("itnwuizgazxufi")
-                .withDevCenterId("rbnwbxgjvtbvpy")
-                .withDescription("zdn");
+                .withTags(mapOf("itnwuizgazxufi", "g", "hr", "uckyf", "zwdzuh", "idf", "wxmnteiwao", "ymwisdkft"))
+                .withLocation("km")
+                .withDevCenterId("tbvpysszdnru")
+                .withDescription("guhmuouqfpr")
+                .withMaxDevBoxesPerUser(584563122);
         model = BinaryData.fromObject(model).toObject(ProjectUpdate.class);
-        Assertions.assertEquals("qguhmuo", model.tags().get("qfprwzwbn"));
-        Assertions.assertEquals("itnwuizgazxufi", model.location());
-        Assertions.assertEquals("rbnwbxgjvtbvpy", model.devCenterId());
-        Assertions.assertEquals("zdn", model.description());
+        Assertions.assertEquals("g", model.tags().get("itnwuizgazxufi"));
+        Assertions.assertEquals("km", model.location());
+        Assertions.assertEquals("tbvpysszdnru", model.devCenterId());
+        Assertions.assertEquals("guhmuouqfpr", model.description());
+        Assertions.assertEquals(584563122, model.maxDevBoxesPerUser());
     }
 
     @SuppressWarnings("unchecked")

@@ -35,6 +35,10 @@ public final class PrivateEndpointConnectionReference {
     @JsonProperty(value = "properties")
     private PrivateEndpointConnectionProperties innerProperties;
 
+    /** Creates an instance of PrivateEndpointConnectionReference class. */
+    public PrivateEndpointConnectionReference() {
+    }
+
     /**
      * Get the id property: The resource ID.
      *

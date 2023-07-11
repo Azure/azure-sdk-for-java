@@ -44,7 +44,7 @@ import java.util.zip.GZIPInputStream;
  * recorded into {@link RecordedData}.
  */
 public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
-    private static final int DEFAULT_BUFFER_LENGTH = 4096;
+    private static final int DEFAULT_BUFFER_LENGTH = 8192;
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
     private static final String CONTENT_ENCODING = "Content-Encoding";
     private static final String CONTENT_LENGTH = "Content-Length";
@@ -52,8 +52,6 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     private static final String STATUS_CODE = "StatusCode";
     private static final String BODY = "Body";
     private static final String SIG = "sig";
-
-    private static final TestMode TEST_MODE = TestingHelpers.getTestMode();
 
     private final ClientLogger logger = new ClientLogger(RecordNetworkCallPolicy.class);
     private final RecordedData recordedData;
@@ -83,7 +81,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         // If TEST_MODE isn't RECORD do not record.
-        if (TEST_MODE != TestMode.RECORD) {
+        if (TestingHelpers.getTestMode() != TestMode.RECORD) {
             return next.process();
         }
 
@@ -99,7 +97,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         // Remove sensitive information such as SAS token signatures from the recording.
         UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
         redactedAccountName(urlBuilder);
-        if (urlBuilder.getQuery().containsKey(SIG)) {
+        if (urlBuilder.getQuery().containsKey("sig")) {
             urlBuilder.setQueryParameter(SIG, "REDACTED");
         }
         String uriString = urlBuilder.toString();
@@ -179,45 +177,20 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         }
 
         final HttpResponse bufferedResponse = response.buffer();
-        final Mono<byte[]> responseBody = FluxUtil.collectBytesInByteBufferStream(bufferedResponse.getBody());
-        if (contentType == null) {
-            return responseBody.switchIfEmpty(Mono.fromSupplier(() -> new byte[0]))
-                .map(bytes -> {
-                    if (bytes.length == 0) {
-                        return Tuples.of(bufferedResponse, responseData);
-                    }
-
+        return FluxUtil.collectBytesInByteBufferStream(bufferedResponse.getBody())
+            .map(bytes -> {
+                if (contentType == null) {
                     String content = new String(bytes, StandardCharsets.UTF_8);
                     responseData.put(CONTENT_LENGTH, Integer.toString(content.length()));
                     responseData.put(BODY, content);
-                    return Tuples.of(bufferedResponse, responseData);
-                });
-        } else if (contentType.equalsIgnoreCase(ContentType.APPLICATION_OCTET_STREAM)
-            || "avro/binary".equalsIgnoreCase(contentType)) {
-            return responseBody.switchIfEmpty(Mono.fromSupplier(() -> new byte[0]))
-                .map(bytes -> {
-                    if (bytes.length == 0) {
-                        return Tuples.of(bufferedResponse, responseData);
-                    }
-
+                } else if (ContentType.APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentType)
+                    || "avro/binary".equalsIgnoreCase(contentType)) {
                     responseData.put(BODY, Base64.getEncoder().encodeToString(bytes));
-                    return Tuples.of(bufferedResponse, responseData);
-                });
-        } else if (contentType.contains("json") || response.getHeaderValue(HttpHeaderName.CONTENT_ENCODING) == null) {
-            return responseBody.map(bytes -> CoreUtils.bomAwareToString(bytes,
-                    response.getHeaderValue(HttpHeaderName.CONTENT_TYPE)))
-                .switchIfEmpty(Mono.just(""))
-                .map(content -> {
-                    responseData.put(BODY, redactor.redact(content));
-                    return Tuples.of(bufferedResponse, responseData);
-                });
-        } else {
-            return responseBody.switchIfEmpty(Mono.fromSupplier(() -> new byte[0]))
-                .map(bytes -> {
-                    if (bytes.length == 0) {
-                        return Tuples.of(bufferedResponse, responseData);
-                    }
-
+                } else if (contentType.contains("json")
+                    || response.getHeaderValue(HttpHeaderName.CONTENT_ENCODING) == null) {
+                    responseData.put(BODY, redactor.redact(CoreUtils.bomAwareToString(bytes,
+                        response.getHeaderValue(HttpHeaderName.CONTENT_TYPE))));
+                } else {
                     String content;
                     if ("gzip".equalsIgnoreCase(response.getHeaderValue(HttpHeaderName.CONTENT_ENCODING))) {
                         try (GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(bytes));
@@ -229,7 +202,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                             while (bytesRead != -1) {
                                 output.write(buffer, 0, bytesRead);
                                 position += bytesRead;
-                                bytesRead = gis.read(buffer, position, buffer.length);
+                                bytesRead = gis.read(buffer, 0, buffer.length);
                             }
 
                             content = output.toString("UTF-8");
@@ -244,8 +217,10 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                     responseData.put(CONTENT_LENGTH, Integer.toString(content.length()));
 
                     responseData.put(BODY, content);
-                    return Tuples.of(bufferedResponse, responseData);
-                });
-        }
+                }
+
+                return Tuples.of(bufferedResponse, responseData);
+            })
+            .switchIfEmpty(Mono.fromSupplier(() -> Tuples.of(bufferedResponse, responseData)));
     }
 }

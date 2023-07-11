@@ -39,7 +39,6 @@ import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -968,6 +967,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return new Object[][]{
             {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, true)},
             {createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true, true)}
+        };
+    }
+
+    @DataProvider
+    public static Object[][] clientBuilderSolelyDirectWithSessionConsistency() {
+        return new Object[][]{
+                {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, true)}
         };
     }
 

@@ -76,7 +76,7 @@ public class OfferQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable, validator, 10000);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT * 100)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT * 10)
     public void queryOffersFilterMorePages() throws Exception {
 
         List<String> collectionResourceIds = createdCollections.stream().map(c -> c.getResourceId()).collect(Collectors.toList());

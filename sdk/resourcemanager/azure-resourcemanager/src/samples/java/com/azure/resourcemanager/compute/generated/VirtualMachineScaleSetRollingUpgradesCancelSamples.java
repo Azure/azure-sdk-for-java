@@ -7,14 +7,14 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for VirtualMachineScaleSetRollingUpgrades Cancel. */
 public final class VirtualMachineScaleSetRollingUpgradesCancelSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrades_Cancel_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrade_Cancel_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSetRollingUpgrades_Cancel_MinimumSet_Gen.
+     * Sample code: VirtualMachineScaleSetRollingUpgrade_Cancel_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetRollingUpgradesCancelMinimumSetGen(
+    public static void virtualMachineScaleSetRollingUpgradeCancelMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
@@ -25,14 +25,14 @@ public final class VirtualMachineScaleSetRollingUpgradesCancelSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrades_Cancel_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrade_Cancel_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSetRollingUpgrades_Cancel_MaximumSet_Gen.
+     * Sample code: VirtualMachineScaleSetRollingUpgrade_Cancel_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetRollingUpgradesCancelMaximumSetGen(
+    public static void virtualMachineScaleSetRollingUpgradeCancelMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()

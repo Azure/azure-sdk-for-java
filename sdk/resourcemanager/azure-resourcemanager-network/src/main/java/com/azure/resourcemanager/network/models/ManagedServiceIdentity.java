@@ -11,7 +11,7 @@ import java.util.Map;
 
 /** Identity for the resource. */
 @Fluent
-public class ManagedServiceIdentity {
+public final class ManagedServiceIdentity {
     /*
      * The principal id of the system assigned identity. This property will only be provided for a system assigned
      * identity.

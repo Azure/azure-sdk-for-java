@@ -13,7 +13,7 @@ public final class ServerEditionCapabilityTests {
         ServerEditionCapability model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"gdtjixhbkuofqwey\",\"supportedStorageEditions\":[{\"name\":\"n\",\"minStorageSize\":8434389153088034755,\"maxStorageSize\":2875965285682114251,\"minBackupRetentionDays\":7243731363217682630,\"maxBackupRetentionDays\":6472421771400984812},{\"name\":\"vyvdcs\",\"minStorageSize\":6235593202680912824,\"maxStorageSize\":7516654710743281273,\"minBackupRetentionDays\":2423895035915397618,\"maxBackupRetentionDays\":6881995629612654838},{\"name\":\"f\",\"minStorageSize\":7992686920033217909,\"maxStorageSize\":2053372524556858368,\"minBackupRetentionDays\":3419349819786091531,\"maxBackupRetentionDays\":5856868160780933935}],\"supportedServerVersions\":[{\"name\":\"hcjrefovgmk\",\"supportedSkus\":[]},{\"name\":\"yyvxyqjpkcattpn\",\"supportedSkus\":[]},{\"name\":\"cczsq\",\"supportedSkus\":[]}]}")
+                    "{\"name\":\"udxorrqn\",\"supportedStorageEditions\":[{\"name\":\"zvyifqrvkdvj\",\"minStorageSize\":3602114313463571295,\"maxStorageSize\":5675151701558960603,\"minBackupRetentionDays\":628578749185712506,\"maxBackupRetentionDays\":524078729547921435},{\"name\":\"n\",\"minStorageSize\":2611651142530368234,\"maxStorageSize\":3827252947498209847,\"minBackupRetentionDays\":9207665581714486982,\"maxBackupRetentionDays\":5624751011195276042}],\"supportedServerVersions\":[{\"name\":\"zb\",\"supportedSkus\":[]},{\"name\":\"ovm\",\"supportedSkus\":[]}]}")
                 .toObject(ServerEditionCapability.class);
     }
 

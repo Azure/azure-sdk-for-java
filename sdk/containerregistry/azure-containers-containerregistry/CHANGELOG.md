@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.5 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,45 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.1 (2023-06-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+
+## 1.1.0 (2023-05-11)
+
+### Features added from version 1.0.14
+- Added `ContainerRegistryContentClient` and `ContainerRegistryAsyncContentClient` classes that allow to upload and download images to Azure Container Registry.
+
+### Breaking Changes from version 1.1.0-beta.4
+- Added sanity check for manifest size at download time - if manifest is bigger than 4MB, `ServiceResponseException` will be thrown. Previously no exception was thrown. 
+- Added sanity check for `Content-Length` header presence on the response when downloading blobs - if it's not present, `ServiceResponseException` will be thrown. 
+  Previously, content was buffered and no exception was thrown.
+- Renamed `ManifestMediaType.OCI_MANIFEST` to `ManifestMediaType.OCI_IMAGE_MANIFEST`. 
+
+- There are no breaking changes from previous stable version.
+
+### Other changes from version 1.0.14
+- `ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_GERMANY` is deprecated following [Azure Germany cloud deprecation](https://learn.microsoft.com/azure/cloud-adoption-framework/migrate/azure-best-practices/multiple-regions)
+- Default constructors on following classes were deprecated: `ArtifactManifestPlatform`, `ArtifactManifestOrder`, `ArtifactOperatingSystem`, `ArtifactTagOrder`, `ArtifactManifestPlatform`.
+
+#### Dependency Updates
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
+## 1.0.14 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
 
 ## 1.1.0-beta.4 (2023-04-11)
 

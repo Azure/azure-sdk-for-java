@@ -5,14 +5,20 @@ package com.azure.data.schemaregistry.apacheavro;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.models.MessageContent;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
 import com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.messaging.eventhubs.EventData;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.messaging.eventhubs.EventHubConsumerClient;
+import com.azure.messaging.eventhubs.models.EventPosition;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Java doc samples for {@link SchemaRegistryApacheAvroSerializer}.
@@ -31,21 +37,18 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
      * Demonstrates how to instantiate the serializer.
      */
     public void instantiate() {
-        // BEGIN: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.instantiation
+        // BEGIN: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.construct
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
         SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
             .credential(tokenCredential)
             .fullyQualifiedNamespace("{schema-registry-endpoint}")
             .buildAsyncClient();
 
-        // By setting autoRegisterSchema to true, if the schema does not exist in the Schema Registry instance, it is
-        // added to the instance. By default, this is false, so it will error if the schema is not found.
         SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaRegistryClient(schemaRegistryAsyncClient)
-            .autoRegisterSchemas(true)
             .schemaGroup("{schema-group}")
             .buildSerializer();
-        // END: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.instantiation
+        // END: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.construct
     }
 
     /**
@@ -53,7 +56,7 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
      */
     public void serialize() {
         // BEGIN: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serialize
-        // The object to encode. The avro schema is:
+        // The object to encode. The Avro schema is:
         // {
         //     "namespace": "com.azure.data.schemaregistry.apacheavro.generatedtestsources",
         //     "type": "record",
@@ -75,11 +78,36 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
     }
 
     /**
+     * Sample demonstrating how to serialize an object into an EventData.
+     */
+    public void serializeEventData() {
+        // BEGIN: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serialize-eventdata
+        // The object to encode. The Avro schema is:
+        // {
+        //     "namespace": "com.azure.data.schemaregistry.apacheavro.generatedtestsources",
+        //     "type": "record",
+        //     "name": "Person",
+        //     "fields": [
+        //         {"name":"name", "type": "string"},
+        //         {"name":"favourite_number", "type": ["int", "null"]},
+        //         {"name":"favourite_colour", "type": ["string", "null"]}
+        //   ]
+        // }
+        Person person = Person.newBuilder()
+            .setName("Chase")
+            .setFavouriteColour("Turquoise")
+            .build();
+
+        EventData eventData = serializer.serialize(person, TypeReference.createInstance(EventData.class));
+        // END: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serialize-eventdata
+    }
+
+    /**
      * Serializes an object using a message factory.
      */
     public void serializeMessageFactory() {
         // BEGIN: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.serializeMessageFactory
-        // The object to encode. The avro schema is:
+        // The object to encode. The Avro schema is:
         // {
         //     "namespace": "com.azure.data.schemaregistry.apacheavro.generatedtestsources",
         //     "type": "record",
@@ -108,14 +136,45 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
      * Sample demonstrating how to deserialize an object.
      */
     public void deserialize() {
-        // BEGIN: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.deserialize
-        // Message to deserialize. Assume that the body contains data which has been serialized using an Avro encoder.
-        MessageContent message = new MessageContent()
-            .setBodyAsBinaryData(BinaryData.fromBytes(new byte[0]))
-            .setContentType("avro/binary+{schema-id}");
+        EventHubConsumerClient consumer = new EventHubClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .consumerGroup("{consumer-group}")
+            .buildConsumerClient();
 
-        // This is an object generated from the Avro schema used in the serialization sample.
-        Person person = serializer.deserialize(message, TypeReference.createInstance(Person.class));
+        // BEGIN: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.deserialize
+        List<EventData> eventsList =
+            consumer.receiveFromPartition("0", 10, EventPosition.latest(), Duration.ofSeconds(30))
+                .stream()
+                .map(partitionEvent -> partitionEvent.getData())
+                .collect(Collectors.toList());
+
+        for (EventData eventData : eventsList) {
+            Person person = serializer.deserialize(eventData, TypeReference.createInstance(Person.class));
+
+            System.out.printf("Name: %s, Number: %s%n", person.getName(), person.getFavouriteNumber());
+        }
         // END: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.deserialize
+
+        // Dispose of client after.
+        consumer.close();
+    }
+
+    /**
+     * Snippet for deserializing Avro object.
+     */
+    public void deserializeEventData() {
+        Person person = Person.newBuilder()
+            .setName("Foo Bar")
+            .setFavouriteNumber(3)
+            .build();
+
+        // BEGIN: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.deserialize-eventdata
+        // EventData created from the Avro generated object, person.
+        EventData eventData = serializer.serialize(person, TypeReference.createInstance(EventData.class));
+
+        Person deserialized = serializer.deserialize(eventData, TypeReference.createInstance(Person.class));
+
+        System.out.printf("Name: %s, Number: %s%n", deserialized.getName(), deserialized.getFavouriteNumber());
+        // END: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.deserialize-eventdata
     }
 }

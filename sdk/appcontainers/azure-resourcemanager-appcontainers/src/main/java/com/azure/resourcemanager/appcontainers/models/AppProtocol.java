@@ -17,6 +17,15 @@ public final class AppProtocol extends ExpandableStringEnum<AppProtocol> {
     public static final AppProtocol GRPC = fromString("grpc");
 
     /**
+     * Creates a new instance of AppProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AppProtocol() {
+    }
+
+    /**
      * Creates or finds a AppProtocol from its string representation.
      *
      * @param name a name to look for.

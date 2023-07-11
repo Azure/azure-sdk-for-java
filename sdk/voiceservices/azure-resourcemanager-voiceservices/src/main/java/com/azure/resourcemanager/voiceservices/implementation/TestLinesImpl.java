@@ -19,10 +19,10 @@ public final class TestLinesImpl implements TestLines {
 
     private final TestLinesClient innerClient;
 
-    private final com.azure.resourcemanager.voiceservices.VoiceservicesManager serviceManager;
+    private final com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager;
 
     public TestLinesImpl(
-        TestLinesClient innerClient, com.azure.resourcemanager.voiceservices.VoiceservicesManager serviceManager) {
+        TestLinesClient innerClient, com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -196,7 +196,7 @@ public final class TestLinesImpl implements TestLines {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.voiceservices.VoiceservicesManager manager() {
+    private com.azure.resourcemanager.voiceservices.VoiceServicesManager manager() {
         return this.serviceManager;
     }
 

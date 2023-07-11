@@ -22,6 +22,15 @@ public final class ActiveRevisionsMode extends ExpandableStringEnum<ActiveRevisi
     public static final ActiveRevisionsMode SINGLE = fromString("Single");
 
     /**
+     * Creates a new instance of ActiveRevisionsMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ActiveRevisionsMode() {
+    }
+
+    /**
      * Creates or finds a ActiveRevisionsMode from its string representation.
      *
      * @param name a name to look for.

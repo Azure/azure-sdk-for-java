@@ -42,7 +42,7 @@ public class BinaryDataSerializationTests {
 
     private static final BinaryData FROM_BYTES = BinaryData.fromBytes(HELLO_BYTES);
     private static final Supplier<BinaryData> FROM_STREAM
-        = () -> BinaryData.fromStream(new ByteArrayInputStream(HELLO_BYTES));
+        = () -> BinaryData.fromStream(new ByteArrayInputStream(HELLO_BYTES), (long) HELLO_BYTES.length);
     private static final BinaryData FROM_STRING = BinaryData.fromString("hello");
     private static final BinaryData FROM_OBJECT = BinaryData.fromObject(SIMPLE_POJO);
     private static final BinaryData FROM_STRING_BASE64 = BinaryData.fromString(BASE64_HELLO_BYTES);

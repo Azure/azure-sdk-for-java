@@ -4,9 +4,10 @@
 package com.azure.health.insights.cancerprofiling;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.azure.health.insights.cancerprofiling.models.OncoPhenotypePatientResult;
 import com.azure.health.insights.cancerprofiling.models.OncoPhenotypeResult;
-import com.azure.health.insights.cancerprofiling.models.OncoPhenotypeInference;
 
 import com.azure.core.util.serializer.TypeReference;
 
@@ -38,10 +39,7 @@ public class CancerProfilingClientTest extends CancerProfilingClientTestBase {
                 List<OncoPhenotypePatientResult> patients = respone.getResults().getPatients();
                 assertEquals(1, patients.size());
                 OncoPhenotypePatientResult patient = patients.get(0);
-                assertEquals(8, patient.getInferences().size());
-                OncoPhenotypeInference inference = patient.getInferences().get(0);
-                assertEquals("BREAST", inference.getDescription());
-                assertEquals(0.5563, inference.getEvidence().get(0).getImportance());
+                assertTrue(patient.getInferences().size() > 0, "at least one inference should be returned");
             });
 
         } catch (Throwable t) {

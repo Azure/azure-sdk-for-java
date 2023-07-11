@@ -16,6 +16,10 @@ public final class AaaaRecord {
     @JsonProperty(value = "ipv6Address")
     private String ipv6Address;
 
+    /** Creates an instance of AaaaRecord class. */
+    public AaaaRecord() {
+    }
+
     /**
      * Get the ipv6Address property: The IPv6 address of this AAAA record.
      *

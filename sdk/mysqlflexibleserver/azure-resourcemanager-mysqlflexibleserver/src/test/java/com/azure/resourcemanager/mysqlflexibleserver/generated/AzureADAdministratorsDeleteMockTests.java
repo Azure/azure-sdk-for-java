@@ -59,6 +59,10 @@ public final class AzureADAdministratorsDeleteMockTests {
 
         manager
             .azureADAdministrators()
-            .delete("wneaiv", "wczelpci", AdministratorName.ACTIVE_DIRECTORY, com.azure.core.util.Context.NONE);
+            .delete(
+                "vlopwiyighx",
+                "kdwzbaiuebbaumny",
+                AdministratorName.ACTIVE_DIRECTORY,
+                com.azure.core.util.Context.NONE);
     }
 }

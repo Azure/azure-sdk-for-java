@@ -16,13 +16,13 @@ public final class ExperimentPropertiesTests {
         ExperimentProperties model =
             BinaryData
                 .fromString(
-                    "{\"description\":\"zvddntwndeicbtwn\",\"endpointA\":{\"name\":\"oqvuhr\",\"endpoint\":\"f\"},\"endpointB\":{\"name\":\"ddglm\",\"endpoint\":\"hjq\"},\"enabledState\":\"Enabled\",\"resourceState\":\"Creating\",\"status\":\"cxmqciwqvhkhix\",\"scriptFileUri\":\"gdtopbobjogh\"}")
+                    "{\"description\":\"zrfze\",\"endpointA\":{\"name\":\"bizikayuhq\",\"endpoint\":\"jbsybbqw\"},\"endpointB\":{\"name\":\"ldgmfpgvmpip\",\"endpoint\":\"ltha\"},\"enabledState\":\"Enabled\",\"resourceState\":\"Enabled\",\"status\":\"wutwbdsre\",\"scriptFileUri\":\"drhneuyow\"}")
                 .toObject(ExperimentProperties.class);
-        Assertions.assertEquals("zvddntwndeicbtwn", model.description());
-        Assertions.assertEquals("oqvuhr", model.endpointA().name());
-        Assertions.assertEquals("f", model.endpointA().endpoint());
-        Assertions.assertEquals("ddglm", model.endpointB().name());
-        Assertions.assertEquals("hjq", model.endpointB().endpoint());
+        Assertions.assertEquals("zrfze", model.description());
+        Assertions.assertEquals("bizikayuhq", model.endpointA().name());
+        Assertions.assertEquals("jbsybbqw", model.endpointA().endpoint());
+        Assertions.assertEquals("ldgmfpgvmpip", model.endpointB().name());
+        Assertions.assertEquals("ltha", model.endpointB().endpoint());
         Assertions.assertEquals(State.ENABLED, model.enabledState());
     }
 
@@ -30,16 +30,16 @@ public final class ExperimentPropertiesTests {
     public void testSerialize() throws Exception {
         ExperimentProperties model =
             new ExperimentProperties()
-                .withDescription("zvddntwndeicbtwn")
-                .withEndpointA(new Endpoint().withName("oqvuhr").withEndpoint("f"))
-                .withEndpointB(new Endpoint().withName("ddglm").withEndpoint("hjq"))
+                .withDescription("zrfze")
+                .withEndpointA(new Endpoint().withName("bizikayuhq").withEndpoint("jbsybbqw"))
+                .withEndpointB(new Endpoint().withName("ldgmfpgvmpip").withEndpoint("ltha"))
                 .withEnabledState(State.ENABLED);
         model = BinaryData.fromObject(model).toObject(ExperimentProperties.class);
-        Assertions.assertEquals("zvddntwndeicbtwn", model.description());
-        Assertions.assertEquals("oqvuhr", model.endpointA().name());
-        Assertions.assertEquals("f", model.endpointA().endpoint());
-        Assertions.assertEquals("ddglm", model.endpointB().name());
-        Assertions.assertEquals("hjq", model.endpointB().endpoint());
+        Assertions.assertEquals("zrfze", model.description());
+        Assertions.assertEquals("bizikayuhq", model.endpointA().name());
+        Assertions.assertEquals("jbsybbqw", model.endpointA().endpoint());
+        Assertions.assertEquals("ldgmfpgvmpip", model.endpointB().name());
+        Assertions.assertEquals("ltha", model.endpointB().endpoint());
         Assertions.assertEquals(State.ENABLED, model.enabledState());
     }
 }

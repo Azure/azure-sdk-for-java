@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -11,12 +10,13 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -67,7 +67,6 @@ abstract class AsyncBenchmark<T> {
     final CosmosAsyncClient cosmosClient;
     CosmosAsyncContainer cosmosAsyncContainer;
     CosmosAsyncDatabase cosmosAsyncDatabase;
-
     final String partitionKey;
     final Configuration configuration;
     final List<PojoizedJson> docsToRead;
@@ -149,7 +148,6 @@ abstract class AsyncBenchmark<T> {
 
         try {
             cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
-
             cosmosAsyncContainer.read().block();
 
         } catch (CosmosException e) {
@@ -258,6 +256,76 @@ abstract class AsyncBenchmark<T> {
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
                 .convertRatesTo(TimeUnit.SECONDS)
                 .build();
+        }
+
+        boolean shouldOpenConnectionsAndInitCaches = configuration.getConnectionMode() == ConnectionMode.DIRECT
+                && configuration.isProactiveConnectionManagementEnabled()
+                && !configuration.isUseUnWarmedUpContainer();
+
+        CosmosClientBuilder cosmosClientBuilderForOpeningConnections = new CosmosClientBuilder()
+                .endpoint(configuration.getServiceEndpoint())
+                .key(configuration.getMasterKey())
+                .preferredRegions(configuration.getPreferredRegionsList())
+                .directMode();
+
+        if (shouldOpenConnectionsAndInitCaches) {
+
+            logger.info("Proactively establishing connections...");
+
+            List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
+            CosmosContainerIdentity cosmosContainerIdentity = new CosmosContainerIdentity(
+                    configuration.getDatabaseId(),
+                    configuration.getCollectionId()
+            );
+            cosmosContainerIdentities.add(cosmosContainerIdentity);
+            CosmosContainerProactiveInitConfigBuilder cosmosContainerProactiveInitConfigBuilder = new
+                    CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
+                    .setProactiveConnectionRegionsCount(configuration.getProactiveConnectionRegionsCount());
+
+            if (configuration.getAggressiveWarmupDuration() == Duration.ZERO) {
+
+                cosmosClientBuilder = cosmosClientBuilderForOpeningConnections
+                        .openConnectionsAndInitCaches(cosmosContainerProactiveInitConfigBuilder.build())
+                        .endpointDiscoveryEnabled(true);
+            } else {
+
+                logger.info("Setting an aggressive proactive connection establishment duration of {}", configuration.getAggressiveWarmupDuration());
+
+                cosmosContainerProactiveInitConfigBuilder = cosmosContainerProactiveInitConfigBuilder
+                        .setAggressiveWarmupDuration(configuration.getAggressiveWarmupDuration());
+
+                cosmosClientBuilder = cosmosClientBuilder
+                        .openConnectionsAndInitCaches(cosmosContainerProactiveInitConfigBuilder.build())
+                        .endpointDiscoveryEnabled(true);
+            }
+
+            if (configuration.getMinConnectionPoolSizePerEndpoint() >= 1) {
+                System.setProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT", configuration.getMinConnectionPoolSizePerEndpoint().toString());
+                logger.info("Min connection pool size per endpoint : {}", System.getProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT"));
+            }
+
+            CosmosAsyncClient openConnectionsAsyncClient = cosmosClientBuilder.buildAsyncClient();
+            openConnectionsAsyncClient.createDatabaseIfNotExists(cosmosAsyncDatabase.getId()).block();
+            CosmosAsyncDatabase databaseForProactiveConnectionManagement = openConnectionsAsyncClient.getDatabase(cosmosAsyncDatabase.getId());
+            databaseForProactiveConnectionManagement.createContainerIfNotExists(configuration.getCollectionId(), "/id").block();
+            cosmosAsyncContainer = databaseForProactiveConnectionManagement.getContainer(configuration.getCollectionId());
+        }
+
+        if (!configuration.isProactiveConnectionManagementEnabled() && configuration.isUseUnWarmedUpContainer()) {
+
+            logger.info("Creating unwarmed container");
+
+            CosmosAsyncClient clientForUnwarmedContainer = new CosmosClientBuilder()
+                    .endpoint(configuration.getServiceEndpoint())
+                    .key(configuration.getMasterKey())
+                    .preferredRegions(configuration.getPreferredRegionsList())
+                    .directMode()
+                    .buildAsyncClient();
+
+            clientForUnwarmedContainer.createDatabaseIfNotExists(configuration.getDatabaseId()).block();
+            CosmosAsyncDatabase databaseForUnwarmedContainer = clientForUnwarmedContainer.getDatabase(configuration.getDatabaseId());
+            databaseForUnwarmedContainer.createContainerIfNotExists(configuration.getCollectionId(), "/id").block();
+            cosmosAsyncContainer = databaseForUnwarmedContainer.getContainer(configuration.getCollectionId());
         }
     }
 

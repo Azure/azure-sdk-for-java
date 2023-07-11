@@ -17,11 +17,12 @@ public final class ConfigurationListResultInnerTests {
         ConfigurationListResultInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"value\":\"inpm\",\"description\":\"jaqwixjsp\",\"defaultValue\":\"zvcputegjvwmfda\",\"dataType\":\"cmdv\",\"allowedValues\":\"hulsuuvmkjozkrwf\",\"source\":\"system-default\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"True\"},\"id\":\"ej\",\"name\":\"pvwryoqpsoacc\",\"type\":\"azakl\"},{\"properties\":{\"value\":\"hbcryffdfdosyge\",\"description\":\"aojakhmsbzjhcrz\",\"defaultValue\":\"dphlxaolt\",\"dataType\":\"trg\",\"allowedValues\":\"bpf\",\"source\":\"system-default\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"True\"},\"id\":\"jrwzox\",\"name\":\"j\",\"type\":\"felluwfzitonpe\"},{\"properties\":{\"value\":\"jkjlxofpdvhpfx\",\"description\":\"pini\",\"defaultValue\":\"ayhuy\",\"dataType\":\"kpode\",\"allowedValues\":\"oginuvamiheognar\",\"source\":\"system-default\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"True\"},\"id\":\"ivyevcciqihnhun\",\"name\":\"bwjzr\",\"type\":\"fygxgispemvtzfk\"}],\"nextLink\":\"ubljofxqe\"}")
+                    "{\"value\":[{\"properties\":{\"value\":\"xklrypl\",\"currentValue\":\"kbasyypn\",\"description\":\"hsgcbacphejkot\",\"documentationLink\":\"qgoulznd\",\"defaultValue\":\"kwy\",\"dataType\":\"gfgibm\",\"allowedValues\":\"gakeqsr\",\"source\":\"user-override\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"True\"},\"id\":\"tbciqfouflmm\",\"name\":\"kzsmodm\",\"type\":\"lougpbkw\"},{\"properties\":{\"value\":\"tduqktapspwgcuer\",\"currentValue\":\"mkdo\",\"description\":\"qw\",\"documentationLink\":\"mdgbbjfdd\",\"defaultValue\":\"bmbexppbhtqqro\",\"dataType\":\"p\",\"allowedValues\":\"s\",\"source\":\"system-default\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"False\"},\"id\":\"yjgzjaoyfhrtxiln\",\"name\":\"rkujy\",\"type\":\"vlejuvfqa\"}],\"nextLink\":\"lyxwjkcprbnwbx\"}")
                 .toObject(ConfigurationListResultInner.class);
-        Assertions.assertEquals("inpm", model.value().get(0).value());
-        Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.value().get(0).source());
-        Assertions.assertEquals("ubljofxqe", model.nextLink());
+        Assertions.assertEquals("xklrypl", model.value().get(0).value());
+        Assertions.assertEquals("kbasyypn", model.value().get(0).currentValue());
+        Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, model.value().get(0).source());
+        Assertions.assertEquals("lyxwjkcprbnwbx", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -31,17 +32,19 @@ public final class ConfigurationListResultInnerTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new ConfigurationInner().withValue("inpm").withSource(ConfigurationSource.SYSTEM_DEFAULT),
                             new ConfigurationInner()
-                                .withValue("hbcryffdfdosyge")
-                                .withSource(ConfigurationSource.SYSTEM_DEFAULT),
+                                .withValue("xklrypl")
+                                .withCurrentValue("kbasyypn")
+                                .withSource(ConfigurationSource.USER_OVERRIDE),
                             new ConfigurationInner()
-                                .withValue("jkjlxofpdvhpfx")
+                                .withValue("tduqktapspwgcuer")
+                                .withCurrentValue("mkdo")
                                 .withSource(ConfigurationSource.SYSTEM_DEFAULT)))
-                .withNextLink("ubljofxqe");
+                .withNextLink("lyxwjkcprbnwbx");
         model = BinaryData.fromObject(model).toObject(ConfigurationListResultInner.class);
-        Assertions.assertEquals("inpm", model.value().get(0).value());
-        Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.value().get(0).source());
-        Assertions.assertEquals("ubljofxqe", model.nextLink());
+        Assertions.assertEquals("xklrypl", model.value().get(0).value());
+        Assertions.assertEquals("kbasyypn", model.value().get(0).currentValue());
+        Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, model.value().get(0).source());
+        Assertions.assertEquals("lyxwjkcprbnwbx", model.nextLink());
     }
 }

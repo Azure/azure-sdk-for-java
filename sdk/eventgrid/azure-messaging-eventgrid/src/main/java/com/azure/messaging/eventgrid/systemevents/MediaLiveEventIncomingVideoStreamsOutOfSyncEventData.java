@@ -38,11 +38,13 @@ public final class MediaLiveEventIncomingVideoStreamsOutOfSyncEventData {
     private String secondDuration;
 
     /*
-     * Gets the timescale in which both the timestamps and durations are
-     * represented.
+     * Gets the timescale in which both the timestamps and durations are represented.
      */
     @JsonProperty(value = "timescale", access = JsonProperty.Access.WRITE_ONLY)
     private String timescale;
+
+    /** Creates an instance of MediaLiveEventIncomingVideoStreamsOutOfSyncEventData class. */
+    public MediaLiveEventIncomingVideoStreamsOutOfSyncEventData() {}
 
     /**
      * Get the firstTimestamp property: Gets the first timestamp received for one of the quality levels.

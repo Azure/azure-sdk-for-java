@@ -6,20 +6,19 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.HealthCheckStatusDetailsListResult;
-import org.junit.jupiter.api.Test;
 
 public final class HealthCheckStatusDetailsListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         HealthCheckStatusDetailsListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"startDateTime\":\"2021-11-30T02:44:30Z\",\"endDateTime\":\"2021-02-08T05:43:26Z\",\"healthChecks\":[]},\"id\":\"wcsdbnwdcfhucq\",\"name\":\"pfuvglsbjjca\",\"type\":\"vxb\"},{\"properties\":{\"startDateTime\":\"2021-05-11T02:00:05Z\",\"endDateTime\":\"2021-04-07T04:06:35Z\",\"healthChecks\":[]},\"id\":\"cormr\",\"name\":\"xqtvcofu\",\"type\":\"f\"},{\"properties\":{\"startDateTime\":\"2021-10-24T03:31:48Z\",\"endDateTime\":\"2021-04-04T17:02:59Z\",\"healthChecks\":[]},\"id\":\"dknnqvsazn\",\"name\":\"n\",\"type\":\"orudsgsa\"},{\"properties\":{\"startDateTime\":\"2021-05-15T08:27:32Z\",\"endDateTime\":\"2021-03-28T14:55:38Z\",\"healthChecks\":[]},\"id\":\"uwjuetaeburuvdmo\",\"name\":\"s\",\"type\":\"zlxwabmqoefkifr\"}],\"nextLink\":\"puqujmqlgkfbtn\"}")
+                    "{\"value\":[{\"properties\":{\"startDateTime\":\"2021-12-10T01:46:10Z\",\"endDateTime\":\"2021-11-22T00:26:44Z\",\"healthChecks\":[]},\"id\":\"bxarzgszufoxci\",\"name\":\"opidoamciodh\",\"type\":\"haz\"},{\"properties\":{\"startDateTime\":\"2021-11-22T06:47:21Z\",\"endDateTime\":\"2021-03-10T21:25:05Z\",\"healthChecks\":[]},\"id\":\"lwntoego\",\"name\":\"dwbwhkszzcmrvexz\",\"type\":\"vbtqgsfraoyzk\"},{\"properties\":{\"startDateTime\":\"2021-06-11T18:07:16Z\",\"endDateTime\":\"2021-01-01T04:06:13Z\",\"healthChecks\":[]},\"id\":\"ux\",\"name\":\"wqaldsyu\",\"type\":\"ximerqfobwyznk\"}],\"nextLink\":\"kutwpf\"}")
                 .toObject(HealthCheckStatusDetailsListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         HealthCheckStatusDetailsListResult model = new HealthCheckStatusDetailsListResult();
         model = BinaryData.fromObject(model).toObject(HealthCheckStatusDetailsListResult.class);
     }

@@ -9,35 +9,34 @@ import com.azure.resourcemanager.devcenter.fluent.models.EnvironmentTypeInner;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EnvironmentTypeInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         EnvironmentTypeInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"NotSpecified\"},\"tags\":{\"grxwbu\":\"xmzsbbzogg\",\"dptkoenkouk\":\"vjxxjnsp\",\"pocipazyxoegu\":\"vudwtiukbldng\",\"npiucgygevqznty\":\"g\"},\"id\":\"rbpizc\",\"name\":\"r\",\"type\":\"j\"}")
+                    "{\"properties\":{\"provisioningState\":\"Created\"},\"tags\":{\"fmvfaxkffeiit\":\"leggzfbu\",\"ggi\":\"lvmezyvshxmzsbbz\",\"xxjnspydptk\":\"rxwburv\",\"iukbldngkpoci\":\"enkouknvudw\"},\"id\":\"z\",\"name\":\"xoegukgjnpiucgy\",\"type\":\"evqzntypmrbp\"}")
                 .toObject(EnvironmentTypeInner.class);
-        Assertions.assertEquals("xmzsbbzogg", model.tags().get("grxwbu"));
+        Assertions.assertEquals("leggzfbu", model.tags().get("fmvfaxkffeiit"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         EnvironmentTypeInner model =
             new EnvironmentTypeInner()
                 .withTags(
                     mapOf(
-                        "grxwbu",
-                        "xmzsbbzogg",
-                        "dptkoenkouk",
-                        "vjxxjnsp",
-                        "pocipazyxoegu",
-                        "vudwtiukbldng",
-                        "npiucgygevqznty",
-                        "g"));
+                        "fmvfaxkffeiit",
+                        "leggzfbu",
+                        "ggi",
+                        "lvmezyvshxmzsbbz",
+                        "xxjnspydptk",
+                        "rxwburv",
+                        "iukbldngkpoci",
+                        "enkouknvudw"));
         model = BinaryData.fromObject(model).toObject(EnvironmentTypeInner.class);
-        Assertions.assertEquals("xmzsbbzogg", model.tags().get("grxwbu"));
+        Assertions.assertEquals("leggzfbu", model.tags().get("fmvfaxkffeiit"));
     }
 
     @SuppressWarnings("unchecked")

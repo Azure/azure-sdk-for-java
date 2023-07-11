@@ -8,13 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EventSubscriptionIdentityType. */
+/**
+ * The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
+ * identity and a set of user-assigned identities. The type 'None' will remove any identity.
+ */
 public final class EventSubscriptionIdentityType extends ExpandableStringEnum<EventSubscriptionIdentityType> {
     /** Static value SystemAssigned for EventSubscriptionIdentityType. */
     public static final EventSubscriptionIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
     /** Static value UserAssigned for EventSubscriptionIdentityType. */
     public static final EventSubscriptionIdentityType USER_ASSIGNED = fromString("UserAssigned");
+
+    /**
+     * Creates a new instance of EventSubscriptionIdentityType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EventSubscriptionIdentityType() {
+    }
 
     /**
      * Creates or finds a EventSubscriptionIdentityType from its string representation.

@@ -57,8 +57,7 @@ public final class UsagesClientImpl implements UsagesClient {
     public interface UsagesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/usages")
+            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VaultUsageList>> listByVaults(

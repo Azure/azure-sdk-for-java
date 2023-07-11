@@ -449,7 +449,14 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                 this.changeFeedProcessorOptions.getLeaseExpirationInterval());
         }
 
-        PartitionController partitionController = new PartitionControllerImpl(leaseStoreManager, leaseStoreManager, partitionSupervisorFactory, synchronizer, scheduler);
+        PartitionController partitionController =
+            new PartitionControllerImpl(
+                leaseStoreManager,
+                leaseStoreManager,
+                partitionSupervisorFactory,
+                synchronizer,
+                scheduler,
+                this.changeFeedProcessorOptions.getMaxScaleCount());
 
         if (this.healthMonitor == null) {
             this.healthMonitor = new TraceHealthMonitor();

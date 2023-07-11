@@ -8,7 +8,6 @@ import com.azure.communication.callautomation.implementation.models.Communicatio
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -19,6 +18,7 @@ import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusException;
 import com.azure.messaging.servicebus.ServiceBusFailureReason;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.core.http.HttpClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -167,7 +167,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
 
             incomingCallContextStore.put(uniqueId, incomingCallContext);
         } else {
-            CallAutomationEventBase event = EventHandler.parseEvent(body);
+            CallAutomationEventBase event = CallAutomationEventParser.parseEvents(body).get(0);
             assert event != null : "Event cannot be null";
             String callConnectionId = event.getCallConnectionId();
             if (!eventStore.containsKey(callConnectionId)) {
@@ -211,15 +211,18 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         }
     }
 
-    protected static String parseIdsFromIdentifier(CommunicationIdentifier communicationIdentifier) {
+    protected String parseIdsFromIdentifier(CommunicationIdentifier communicationIdentifier) {
         assert communicationIdentifier != null;
         CommunicationIdentifierModel communicationIdentifierModel = CommunicationIdentifierConverter.convert(communicationIdentifier);
         assert communicationIdentifierModel.getRawId() != null;
-        return removeAllNonChar(communicationIdentifierModel.getRawId());
+        return getTestMode() == TestMode.PLAYBACK ? "REDACTED" : removeAllNonChar(communicationIdentifierModel.getRawId());
     }
 
+    /* Change the plus + sign to it's unicode without the special characters i.e. u002B.
+     * It's required because the dispatcher app receives the incoming call context for PSTN calls
+     * with the + as unicode in it and builds the topic id with it to send the event.*/
     protected static String removeAllNonChar(String input) {
-        return input.replaceAll("[^a-zA-Z0-9_-]", "");
+        return input.replace("+", "u002B").replaceAll("[^a-zA-Z0-9_-]", "");
     }
 
     protected String waitForIncomingCallContext(String uniqueId, Duration timeOut) throws InterruptedException {

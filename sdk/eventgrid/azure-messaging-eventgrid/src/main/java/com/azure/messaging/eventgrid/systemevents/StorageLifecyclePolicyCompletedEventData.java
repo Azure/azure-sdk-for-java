@@ -17,25 +17,25 @@ public final class StorageLifecyclePolicyCompletedEventData {
     private String scheduleTime;
 
     /*
-     * Execution statistics of a specific policy action in a Blob Management
-     * cycle.
+     * Execution statistics of a specific policy action in a Blob Management cycle.
      */
     @JsonProperty(value = "deleteSummary")
     private StorageLifecyclePolicyActionSummaryDetail deleteSummary;
 
     /*
-     * Execution statistics of a specific policy action in a Blob Management
-     * cycle.
+     * Execution statistics of a specific policy action in a Blob Management cycle.
      */
     @JsonProperty(value = "tierToCoolSummary")
     private StorageLifecyclePolicyActionSummaryDetail tierToCoolSummary;
 
     /*
-     * Execution statistics of a specific policy action in a Blob Management
-     * cycle.
+     * Execution statistics of a specific policy action in a Blob Management cycle.
      */
     @JsonProperty(value = "tierToArchiveSummary")
     private StorageLifecyclePolicyActionSummaryDetail tierToArchiveSummary;
+
+    /** Creates an instance of StorageLifecyclePolicyCompletedEventData class. */
+    public StorageLifecyclePolicyCompletedEventData() {}
 
     /**
      * Get the scheduleTime property: The time the policy task was scheduled.

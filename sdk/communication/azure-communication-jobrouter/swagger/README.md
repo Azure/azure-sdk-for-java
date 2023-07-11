@@ -21,31 +21,29 @@ There is one swagger for JobRouter management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
+autorest README.md --java
 ```
 
 ## Update generated files for Job Router service
 To update generated files for JobRouter service, run the following command
 
-> autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
+> autorest README.md --java
 
 ## Code generation settings
 ``` yaml
-tag: package-jobrouter-2021-10-20
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/240e5a3289b8c698a1ffa1f1a3a86e7637199411/specification/communication/data-plane/JobRouter/preview/2022-07-18-preview/communicationservicejobrouter.json
-output-folder: ..\
+tag: package-jobrouter-2022-07-18-preview
+require:
+- https://raw.githubusercontent.com/williamzhao87/azure-rest-api-specs/17ac729b6e3e6fe173efccf9822e6d5d7338031b/specification/communication/data-plane/JobRouter/readme.md
+java: true
+output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.jobrouter
-generate-client-as-impl: true
-custom-types: CreateClassificationPolicyOptions
 custom-types-subpackage: models
+generate-client-as-impl: true
+service-interface-as-public: true
 models-subpackage: implementation.models
-customization-class: src/main/java/JobRouterCustomization.java
-generate-client-interfaces: false
-generate-sync-async-clients: false
 sync-methods: all
 add-context-parameter: true
 context-client-method-parameter: true
-enable-xml: false
-required-parameter-client-methods: true
+customization-class: src/main/java/JobRouterCustomization.java
 ```

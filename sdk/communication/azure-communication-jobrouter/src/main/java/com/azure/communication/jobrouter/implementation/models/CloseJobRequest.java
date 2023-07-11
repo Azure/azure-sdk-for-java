@@ -35,7 +35,7 @@ public final class CloseJobRequest {
 
     /*
      * (Optional) A note that will be appended to the jobs' Notes collection
-     * with th current timestamp.
+     * with the current timestamp.
      */
     @JsonProperty(value = "note")
     private String note;
@@ -105,7 +105,7 @@ public final class CloseJobRequest {
     }
 
     /**
-     * Get the note property: (Optional) A note that will be appended to the jobs' Notes collection with th current
+     * Get the note property: (Optional) A note that will be appended to the jobs' Notes collection with the current
      * timestamp.
      *
      * @return the note value.
@@ -115,7 +115,7 @@ public final class CloseJobRequest {
     }
 
     /**
-     * Set the note property: (Optional) A note that will be appended to the jobs' Notes collection with th current
+     * Set the note property: (Optional) A note that will be appended to the jobs' Notes collection with the current
      * timestamp.
      *
      * @param note the note value to set.

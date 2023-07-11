@@ -52,6 +52,9 @@ public final class ContainerRegistryArtifactEventTarget {
     @JsonProperty(value = "version")
     private String version;
 
+    /** Creates an instance of ContainerRegistryArtifactEventTarget class. */
+    public ContainerRegistryArtifactEventTarget() {}
+
     /**
      * Get the mediaType property: The MIME type of the artifact.
      *

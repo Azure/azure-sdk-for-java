@@ -12,44 +12,45 @@ import com.azure.resourcemanager.appcontainers.models.LoginRoutes;
 import com.azure.resourcemanager.appcontainers.models.Nonce;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class LoginTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         Login model =
             BinaryData
                 .fromString(
-                    "{\"routes\":{\"logoutEndpoint\":\"jumasx\"},\"preserveUrlFragmentsForLogins\":false,\"allowedExternalRedirectUrls\":[\"yegu\"],\"cookieExpiration\":{\"convention\":\"FixedTime\",\"timeToExpiration\":\"xhejjzzvdud\"},\"nonce\":{\"validateNonce\":false,\"nonceExpirationInterval\":\"fhotw\"}}")
+                    "{\"routes\":{\"logoutEndpoint\":\"qwpgrjbzn\"},\"preserveUrlFragmentsForLogins\":true,\"allowedExternalRedirectUrls\":[\"vsnb\"],\"cookieExpiration\":{\"convention\":\"IdentityProviderDerived\",\"timeToExpiration\":\"nmoc\"},\"nonce\":{\"validateNonce\":true,\"nonceExpirationInterval\":\"urzafb\"}}")
                 .toObject(Login.class);
-        Assertions.assertEquals("jumasx", model.routes().logoutEndpoint());
-        Assertions.assertEquals(false, model.preserveUrlFragmentsForLogins());
-        Assertions.assertEquals("yegu", model.allowedExternalRedirectUrls().get(0));
-        Assertions.assertEquals(CookieExpirationConvention.FIXED_TIME, model.cookieExpiration().convention());
-        Assertions.assertEquals("xhejjzzvdud", model.cookieExpiration().timeToExpiration());
-        Assertions.assertEquals(false, model.nonce().validateNonce());
-        Assertions.assertEquals("fhotw", model.nonce().nonceExpirationInterval());
+        Assertions.assertEquals("qwpgrjbzn", model.routes().logoutEndpoint());
+        Assertions.assertEquals(true, model.preserveUrlFragmentsForLogins());
+        Assertions.assertEquals("vsnb", model.allowedExternalRedirectUrls().get(0));
+        Assertions
+            .assertEquals(CookieExpirationConvention.IDENTITY_PROVIDER_DERIVED, model.cookieExpiration().convention());
+        Assertions.assertEquals("nmoc", model.cookieExpiration().timeToExpiration());
+        Assertions.assertEquals(true, model.nonce().validateNonce());
+        Assertions.assertEquals("urzafb", model.nonce().nonceExpirationInterval());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Login model =
             new Login()
-                .withRoutes(new LoginRoutes().withLogoutEndpoint("jumasx"))
-                .withPreserveUrlFragmentsForLogins(false)
-                .withAllowedExternalRedirectUrls(Arrays.asList("yegu"))
+                .withRoutes(new LoginRoutes().withLogoutEndpoint("qwpgrjbzn"))
+                .withPreserveUrlFragmentsForLogins(true)
+                .withAllowedExternalRedirectUrls(Arrays.asList("vsnb"))
                 .withCookieExpiration(
                     new CookieExpiration()
-                        .withConvention(CookieExpirationConvention.FIXED_TIME)
-                        .withTimeToExpiration("xhejjzzvdud"))
-                .withNonce(new Nonce().withValidateNonce(false).withNonceExpirationInterval("fhotw"));
+                        .withConvention(CookieExpirationConvention.IDENTITY_PROVIDER_DERIVED)
+                        .withTimeToExpiration("nmoc"))
+                .withNonce(new Nonce().withValidateNonce(true).withNonceExpirationInterval("urzafb"));
         model = BinaryData.fromObject(model).toObject(Login.class);
-        Assertions.assertEquals("jumasx", model.routes().logoutEndpoint());
-        Assertions.assertEquals(false, model.preserveUrlFragmentsForLogins());
-        Assertions.assertEquals("yegu", model.allowedExternalRedirectUrls().get(0));
-        Assertions.assertEquals(CookieExpirationConvention.FIXED_TIME, model.cookieExpiration().convention());
-        Assertions.assertEquals("xhejjzzvdud", model.cookieExpiration().timeToExpiration());
-        Assertions.assertEquals(false, model.nonce().validateNonce());
-        Assertions.assertEquals("fhotw", model.nonce().nonceExpirationInterval());
+        Assertions.assertEquals("qwpgrjbzn", model.routes().logoutEndpoint());
+        Assertions.assertEquals(true, model.preserveUrlFragmentsForLogins());
+        Assertions.assertEquals("vsnb", model.allowedExternalRedirectUrls().get(0));
+        Assertions
+            .assertEquals(CookieExpirationConvention.IDENTITY_PROVIDER_DERIVED, model.cookieExpiration().convention());
+        Assertions.assertEquals("nmoc", model.cookieExpiration().timeToExpiration());
+        Assertions.assertEquals(true, model.nonce().validateNonce());
+        Assertions.assertEquals("urzafb", model.nonce().nonceExpirationInterval());
     }
 }

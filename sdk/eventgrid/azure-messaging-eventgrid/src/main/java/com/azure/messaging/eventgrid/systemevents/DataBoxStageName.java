@@ -8,16 +8,24 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataBoxStageName. */
+/** Schema of DataBox Stage Name enumeration. */
 public final class DataBoxStageName extends ExpandableStringEnum<DataBoxStageName> {
-    /** Static value CopyStarted for DataBoxStageName. */
+    /** Copy has started. */
     public static final DataBoxStageName COPY_STARTED = fromString("CopyStarted");
 
-    /** Static value CopyCompleted for DataBoxStageName. */
+    /** Copy has completed. */
     public static final DataBoxStageName COPY_COMPLETED = fromString("CopyCompleted");
 
-    /** Static value OrderCompleted for DataBoxStageName. */
+    /** Order has been completed. */
     public static final DataBoxStageName ORDER_COMPLETED = fromString("OrderCompleted");
+
+    /**
+     * Creates a new instance of DataBoxStageName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataBoxStageName() {}
 
     /**
      * Creates or finds a DataBoxStageName from its string representation.

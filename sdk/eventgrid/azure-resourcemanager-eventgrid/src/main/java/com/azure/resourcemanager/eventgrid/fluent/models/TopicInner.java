@@ -8,11 +8,16 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.eventgrid.models.DataResidencyBoundary;
+import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
+import com.azure.resourcemanager.eventgrid.models.ExtendedLocation;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
+import com.azure.resourcemanager.eventgrid.models.ResourceKind;
+import com.azure.resourcemanager.eventgrid.models.ResourceSku;
+import com.azure.resourcemanager.eventgrid.models.TlsVersion;
 import com.azure.resourcemanager.eventgrid.models.TopicProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -28,16 +33,38 @@ public final class TopicInner extends Resource {
     private TopicProperties innerProperties;
 
     /*
+     * The Sku pricing tier for the topic.
+     */
+    @JsonProperty(value = "sku")
+    private ResourceSku sku;
+
+    /*
      * Identity information for the resource.
      */
     @JsonProperty(value = "identity")
     private IdentityInfo identity;
 
     /*
+     * Kind of the resource.
+     */
+    @JsonProperty(value = "kind")
+    private ResourceKind kind;
+
+    /*
+     * Extended location of the resource.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
+
+    /*
      * The system metadata relating to Topic resource.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of TopicInner class. */
+    public TopicInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the topic.
@@ -46,6 +73,26 @@ public final class TopicInner extends Resource {
      */
     private TopicProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the sku property: The Sku pricing tier for the topic.
+     *
+     * @return the sku value.
+     */
+    public ResourceSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The Sku pricing tier for the topic.
+     *
+     * @param sku the sku value to set.
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withSku(ResourceSku sku) {
+        this.sku = sku;
+        return this;
     }
 
     /**
@@ -65,6 +112,46 @@ public final class TopicInner extends Resource {
      */
     public TopicInner withIdentity(IdentityInfo identity) {
         this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the kind property: Kind of the resource.
+     *
+     * @return the kind value.
+     */
+    public ResourceKind kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Kind of the resource.
+     *
+     * @param kind the kind value to set.
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withKind(ResourceKind kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
+     * Get the extendedLocation property: Extended location of the resource.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: Extended location of the resource.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
         return this;
     }
 
@@ -116,6 +203,54 @@ public final class TopicInner extends Resource {
      */
     public String endpoint() {
         return this.innerProperties() == null ? null : this.innerProperties().endpoint();
+    }
+
+    /**
+     * Get the eventTypeInfo property: Event Type Information for the user topic. This information is provided by the
+     * publisher and can be used by the subscriber to view different types of events that are published.
+     *
+     * @return the eventTypeInfo value.
+     */
+    public EventTypeInfo eventTypeInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().eventTypeInfo();
+    }
+
+    /**
+     * Set the eventTypeInfo property: Event Type Information for the user topic. This information is provided by the
+     * publisher and can be used by the subscriber to view different types of events that are published.
+     *
+     * @param eventTypeInfo the eventTypeInfo value to set.
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withEventTypeInfo(EventTypeInfo eventTypeInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicProperties();
+        }
+        this.innerProperties().withEventTypeInfo(eventTypeInfo);
+        return this;
+    }
+
+    /**
+     * Get the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this topic.
+     *
+     * @return the minimumTlsVersionAllowed value.
+     */
+    public TlsVersion minimumTlsVersionAllowed() {
+        return this.innerProperties() == null ? null : this.innerProperties().minimumTlsVersionAllowed();
+    }
+
+    /**
+     * Set the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this topic.
+     *
+     * @param minimumTlsVersionAllowed the minimumTlsVersionAllowed value to set.
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicProperties();
+        }
+        this.innerProperties().withMinimumTlsVersionAllowed(minimumTlsVersionAllowed);
+        return this;
     }
 
     /**
@@ -290,8 +425,14 @@ public final class TopicInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (sku() != null) {
+            sku().validate();
+        }
         if (identity() != null) {
             identity().validate();
+        }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
         }
     }
 }

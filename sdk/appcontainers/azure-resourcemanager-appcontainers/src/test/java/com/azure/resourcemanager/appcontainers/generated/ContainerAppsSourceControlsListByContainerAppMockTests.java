@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.SourceControl;
 import java.nio.ByteBuffer;
@@ -33,7 +32,7 @@ public final class ContainerAppsSourceControlsListByContainerAppMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"operationState\":\"Canceled\",\"repoUrl\":\"zszuwiwtglxx\",\"branch\":\"jfpgpicrmn\",\"githubActionConfiguration\":{\"contextPath\":\"qgjsxvpqcbfrmbod\",\"image\":\"s\",\"publishType\":\"gvriibakclac\",\"os\":\"rnxousxauzlwvsg\",\"runtimeStack\":\"ohqfzizv\",\"runtimeVersion\":\"mmkjsvthnwpztek\"}},\"id\":\"mribiat\",\"name\":\"gplucfotangcfhny\",\"type\":\"zcugswvxwlmzqw\"}]}";
+            "{\"value\":[{\"properties\":{\"operationState\":\"Canceled\",\"repoUrl\":\"amrdixtrekidswys\",\"branch\":\"ruffgllukk\",\"githubActionConfiguration\":{\"contextPath\":\"hrpqhv\",\"image\":\"lcouqehbhbcdszir\",\"publishType\":\"an\",\"os\":\"ypmbltoormkfq\",\"runtimeStack\":\"xldykalsygaolnjp\",\"runtimeVersion\":\"bmjk\"}},\"id\":\"bjgsjjxxahmrn\",\"name\":\"dzyqe\",\"type\":\"xyivpinbm\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,17 +63,16 @@ public final class ContainerAppsSourceControlsListByContainerAppMockTests {
         PagedIterable<SourceControl> response =
             manager
                 .containerAppsSourceControls()
-                .listByContainerApp("zdfuydzvkfvxcnqm", "qpswokmvkhlggdhb", Context.NONE);
+                .listByContainerApp("oldtvevboclzhz", "knyuxgvttxpn", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zszuwiwtglxx", response.iterator().next().repoUrl());
-        Assertions.assertEquals("jfpgpicrmn", response.iterator().next().branch());
+        Assertions.assertEquals("amrdixtrekidswys", response.iterator().next().repoUrl());
+        Assertions.assertEquals("ruffgllukk", response.iterator().next().branch());
+        Assertions.assertEquals("hrpqhv", response.iterator().next().githubActionConfiguration().contextPath());
+        Assertions.assertEquals("lcouqehbhbcdszir", response.iterator().next().githubActionConfiguration().image());
+        Assertions.assertEquals("an", response.iterator().next().githubActionConfiguration().publishType());
+        Assertions.assertEquals("ypmbltoormkfq", response.iterator().next().githubActionConfiguration().os());
         Assertions
-            .assertEquals("qgjsxvpqcbfrmbod", response.iterator().next().githubActionConfiguration().contextPath());
-        Assertions.assertEquals("s", response.iterator().next().githubActionConfiguration().image());
-        Assertions.assertEquals("gvriibakclac", response.iterator().next().githubActionConfiguration().publishType());
-        Assertions.assertEquals("rnxousxauzlwvsg", response.iterator().next().githubActionConfiguration().os());
-        Assertions.assertEquals("ohqfzizv", response.iterator().next().githubActionConfiguration().runtimeStack());
-        Assertions
-            .assertEquals("mmkjsvthnwpztek", response.iterator().next().githubActionConfiguration().runtimeVersion());
+            .assertEquals("xldykalsygaolnjp", response.iterator().next().githubActionConfiguration().runtimeStack());
+        Assertions.assertEquals("bmjk", response.iterator().next().githubActionConfiguration().runtimeVersion());
     }
 }

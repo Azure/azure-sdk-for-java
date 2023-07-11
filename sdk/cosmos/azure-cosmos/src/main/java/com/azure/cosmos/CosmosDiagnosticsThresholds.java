@@ -47,7 +47,7 @@ public final class CosmosDiagnosticsThresholds {
     private float requestChargeThreshold;
     private int payloadSizeInBytesThreshold;
 
-    private BiPredicate<Integer, Integer> isFailureHandler = (statusCode, subStatusCode) -> {
+    private BiPredicate<Integer, Integer> failureHandler = (statusCode, subStatusCode) -> {
         checkNotNull(statusCode, "Argument 'statusCode' must not be null." );
         checkNotNull(subStatusCode, "Argument 'subStatusCode' must not be null." );
         if (statusCode >= 500) {
@@ -173,14 +173,14 @@ public final class CosmosDiagnosticsThresholds {
      * emitting diagnostics would be too high.
      * The first parameter will be the status code - the second parameter the subStatusCode. The returned boolean of the
      * function would indicate whether the operation should be considered as failure form a diagnostics perspective.
-     * @param isFailureHandler the function that will be used to determine whether a status code/sub-status code
+     * @param failureHandler the function that will be used to determine whether a status code/sub-status code
      * tuple should be considered a failure.
      * @return current CosmosDiagnosticsThresholds instance
      */
-    public CosmosDiagnosticsThresholds setFailureHandler(BiPredicate<Integer, Integer> isFailureHandler) {
-        checkNotNull(nonPointOperationLatencyThreshold,
-            "Argument 'isFailureHandler' must not be null.");
-        this.isFailureHandler = isFailureHandler;
+    public CosmosDiagnosticsThresholds setFailureHandler(BiPredicate<Integer, Integer> failureHandler) {
+        checkNotNull(failureHandler,
+            "Argument 'failureHandler' must not be null.");
+        this.failureHandler = failureHandler;
         return this;
     }
 
@@ -202,11 +202,22 @@ public final class CosmosDiagnosticsThresholds {
 
     boolean isFailureCondition(int statusCode, int subStatusCode) {
         try {
-            return this.isFailureHandler.test(statusCode, subStatusCode);
+            return this.failureHandler.test(statusCode, subStatusCode);
         } catch (Exception error) {
             LOGGER.error("Execution of custom isFailureHandler failed - treating operation as failure.", error);
             return false;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+            "pointOperationLatencyThreshold=" + this.pointOperationLatencyThreshold +
+            ", nonPointOperationLatencyThreshold=" + this.nonPointOperationLatencyThreshold +
+            ", requestChargeThreshold=" + this.requestChargeThreshold +
+            ", payloadSizeInBytesThreshold=" + this.payloadSizeInBytesThreshold +
+            ", customFailureHandler=" + (this.failureHandler != DEFAULT.failureHandler) +
+            "}";
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

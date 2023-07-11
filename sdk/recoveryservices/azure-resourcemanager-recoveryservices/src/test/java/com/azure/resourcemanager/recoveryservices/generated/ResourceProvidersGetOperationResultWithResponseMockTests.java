@@ -35,7 +35,7 @@ public final class ResourceProvidersGetOperationResultWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"identity\":{\"principalId\":\"zsoibjudpfrxtr\",\"tenantId\":\"zvaytdwkqbr\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"h\",\"upgradeDetails\":{\"operationId\":\"i\",\"startTimeUtc\":\"2021-11-01T17:10:34Z\",\"lastUpdatedTimeUtc\":\"2021-09-29T21:57:11Z\",\"endTimeUtc\":\"2020-12-31T16:12:57Z\",\"status\":\"Unknown\",\"message\":\"tdqoaxoruzfgsq\",\"triggerType\":\"UserTriggered\",\"upgradedResourceId\":\"rxxle\",\"previousResourceId\":\"ramxjezwlwnw\"},\"privateEndpointConnections\":[],\"privateEndpointStateForBackup\":\"Enabled\",\"privateEndpointStateForSiteRecovery\":\"None\",\"encryption\":{\"infrastructureEncryption\":\"Enabled\"},\"moveDetails\":{\"operationId\":\"oa\",\"startTimeUtc\":\"2021-07-09T00:51:43Z\",\"completionTimeUtc\":\"2021-02-12T17:14:45Z\",\"sourceResourceId\":\"dkooebwnu\",\"targetResourceId\":\"emmsbvdkc\"},\"moveState\":\"PrepareFailed\",\"backupStorageVersion\":\"Unassigned\",\"publicNetworkAccess\":\"Disabled\",\"monitoringSettings\":{},\"redundancySettings\":{\"standardTierStorageRedundancy\":\"LocallyRedundant\",\"crossRegionRestore\":\"Disabled\"},\"securitySettings\":{}},\"sku\":{\"name\":\"RS0\",\"tier\":\"f\",\"family\":\"lfoakg\",\"size\":\"fpagaowpulp\",\"capacity\":\"lyls\"},\"etag\":\"qjnsjervtia\",\"location\":\"xsdszuempsb\",\"tags\":{\"eyvpnqicvinvkj\":\"z\"},\"id\":\"xdxr\",\"name\":\"uukzclewyhmlw\",\"type\":\"aztz\"}";
+            "{\"identity\":{\"principalId\":\"judpfrxt\",\"tenantId\":\"hzv\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"qbrqubpaxhexiili\",\"upgradeDetails\":{\"operationId\":\"tiirqtdqoa\",\"startTimeUtc\":\"2021-03-24T09:09:32Z\",\"lastUpdatedTimeUtc\":\"2021-10-06T16:31:40Z\",\"endTimeUtc\":\"2021-03-04T22:00:59Z\",\"status\":\"InProgress\",\"message\":\"yfxrx\",\"triggerType\":\"UserTriggered\",\"upgradedResourceId\":\"tramxjez\",\"previousResourceId\":\"wnwxuqlcvyd\"},\"privateEndpointConnections\":[],\"privateEndpointStateForBackup\":\"Enabled\",\"privateEndpointStateForSiteRecovery\":\"None\",\"encryption\":{\"infrastructureEncryption\":\"Disabled\"},\"moveDetails\":{\"operationId\":\"dkooebwnu\",\"startTimeUtc\":\"2021-05-07T18:52:45Z\",\"completionTimeUtc\":\"2021-05-06T02:47:02Z\",\"sourceResourceId\":\"bvdkcrodtjin\",\"targetResourceId\":\"jlfltkacjvefkdlf\"},\"moveState\":\"PrepareTimedout\",\"backupStorageVersion\":\"V2\",\"publicNetworkAccess\":\"Disabled\",\"monitoringSettings\":{},\"restoreSettings\":{},\"redundancySettings\":{\"standardTierStorageRedundancy\":\"ZoneRedundant\",\"crossRegionRestore\":\"Disabled\"},\"securitySettings\":{}},\"sku\":{\"name\":\"RS0\",\"tier\":\"s\",\"family\":\"k\",\"size\":\"nsj\",\"capacity\":\"vti\"},\"etag\":\"sdszue\",\"location\":\"psbzkfzbeyvpn\",\"tags\":{\"xdxr\":\"vinvkj\",\"aztz\":\"uukzclewyhmlw\",\"yq\":\"ofncckwyfzqwhxxb\",\"ztppriolxorjalto\":\"xzfe\"},\"id\":\"mncwsobqwcsdb\",\"name\":\"wdcfhucqdpfuv\",\"type\":\"lsbjjcanvxbv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,21 +67,21 @@ public final class ResourceProvidersGetOperationResultWithResponseMockTests {
             manager
                 .resourceProviders()
                 .getOperationResultWithResponse(
-                    "fimrzrtuzqogse", "nevfdnw", "wmewzsyy", com.azure.core.util.Context.NONE)
+                    "rzrtuzqogsex", "evfdnwnwm", "wzsyyceuzs", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("xsdszuempsb", response.location());
-        Assertions.assertEquals("z", response.tags().get("eyvpnqicvinvkj"));
-        Assertions.assertEquals(ResourceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("psbzkfzbeyvpn", response.location());
+        Assertions.assertEquals("vinvkj", response.tags().get("xdxr"));
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
         Assertions
             .assertEquals(
-                InfrastructureEncryptionState.ENABLED, response.properties().encryption().infrastructureEncryption());
+                InfrastructureEncryptionState.DISABLED, response.properties().encryption().infrastructureEncryption());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.properties().publicNetworkAccess());
         Assertions.assertEquals(SkuName.RS0, response.sku().name());
-        Assertions.assertEquals("f", response.sku().tier());
-        Assertions.assertEquals("lfoakg", response.sku().family());
-        Assertions.assertEquals("fpagaowpulp", response.sku().size());
-        Assertions.assertEquals("lyls", response.sku().capacity());
-        Assertions.assertEquals("qjnsjervtia", response.etag());
+        Assertions.assertEquals("s", response.sku().tier());
+        Assertions.assertEquals("k", response.sku().family());
+        Assertions.assertEquals("nsj", response.sku().size());
+        Assertions.assertEquals("vti", response.sku().capacity());
+        Assertions.assertEquals("sdszue", response.etag());
     }
 }

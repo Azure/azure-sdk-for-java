@@ -7,31 +7,33 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.WorkloadProfile;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WorkloadProfileTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WorkloadProfile model =
             BinaryData
                 .fromString(
-                    "{\"workloadProfileType\":\"wzjbh\",\"minimumCount\":1608749608,\"maximumCount\":1253939074}")
+                    "{\"name\":\"oylaxxul\",\"workloadProfileType\":\"disdosfjbjsvgj\",\"minimumCount\":1257369093,\"maximumCount\":1647149514}")
                 .toObject(WorkloadProfile.class);
-        Assertions.assertEquals("wzjbh", model.workloadProfileType());
-        Assertions.assertEquals(1608749608, model.minimumCount());
-        Assertions.assertEquals(1253939074, model.maximumCount());
+        Assertions.assertEquals("oylaxxul", model.name());
+        Assertions.assertEquals("disdosfjbjsvgj", model.workloadProfileType());
+        Assertions.assertEquals(1257369093, model.minimumCount());
+        Assertions.assertEquals(1647149514, model.maximumCount());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WorkloadProfile model =
             new WorkloadProfile()
-                .withWorkloadProfileType("wzjbh")
-                .withMinimumCount(1608749608)
-                .withMaximumCount(1253939074);
+                .withName("oylaxxul")
+                .withWorkloadProfileType("disdosfjbjsvgj")
+                .withMinimumCount(1257369093)
+                .withMaximumCount(1647149514);
         model = BinaryData.fromObject(model).toObject(WorkloadProfile.class);
-        Assertions.assertEquals("wzjbh", model.workloadProfileType());
-        Assertions.assertEquals(1608749608, model.minimumCount());
-        Assertions.assertEquals(1253939074, model.maximumCount());
+        Assertions.assertEquals("oylaxxul", model.name());
+        Assertions.assertEquals("disdosfjbjsvgj", model.workloadProfileType());
+        Assertions.assertEquals(1257369093, model.minimumCount());
+        Assertions.assertEquals(1647149514, model.maximumCount());
     }
 }

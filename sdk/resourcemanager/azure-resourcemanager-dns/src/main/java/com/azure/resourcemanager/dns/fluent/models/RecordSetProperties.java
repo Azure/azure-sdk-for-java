@@ -6,7 +6,6 @@ package com.azure.resourcemanager.dns.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dns.models.ARecord;
 import com.azure.resourcemanager.dns.models.AaaaRecord;
 import com.azure.resourcemanager.dns.models.CaaRecord;
@@ -17,7 +16,6 @@ import com.azure.resourcemanager.dns.models.PtrRecord;
 import com.azure.resourcemanager.dns.models.SoaRecord;
 import com.azure.resourcemanager.dns.models.SrvRecord;
 import com.azure.resourcemanager.dns.models.TxtRecord;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -26,8 +24,6 @@ import java.util.Map;
 /** Represents the properties of the records in the record set. */
 @Fluent
 public final class RecordSetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecordSetProperties.class);
-
     /*
      * The metadata attached to the record set.
      */
@@ -54,8 +50,7 @@ public final class RecordSetProperties {
     private String provisioningState;
 
     /*
-     * A reference to an azure resource from where the dns resource value is
-     * taken.
+     * A reference to an azure resource from where the dns resource value is taken.
      */
     @JsonProperty(value = "targetResource")
     private SubResource targetResource;
@@ -119,6 +114,10 @@ public final class RecordSetProperties {
      */
     @JsonProperty(value = "caaRecords")
     private List<CaaRecord> caaRecords;
+
+    /** Creates an instance of RecordSetProperties class. */
+    public RecordSetProperties() {
+    }
 
     /**
      * Get the metadata property: The metadata attached to the record set.

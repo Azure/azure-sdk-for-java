@@ -69,8 +69,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
     public interface SubscriptionNetworkManagerConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkManagerConnections"
-                + "/{networkManagerConnectionName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkManagerConnections/{networkManagerConnectionName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkManagerConnectionInner>> createOrUpdate(
@@ -84,8 +83,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkManagerConnections"
-                + "/{networkManagerConnectionName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkManagerConnections/{networkManagerConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkManagerConnectionInner>> get(
@@ -98,8 +96,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkManagerConnections"
-                + "/{networkManagerConnectionName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkManagerConnections/{networkManagerConnectionName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -171,7 +168,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -226,7 +223,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -320,7 +317,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter networkManagerConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -368,7 +365,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter networkManagerConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -454,7 +451,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter networkManagerConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -500,7 +497,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter networkManagerConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -583,7 +580,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -639,7 +636,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

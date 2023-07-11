@@ -69,11 +69,10 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
-    private interface TopicEventSubscriptionsService {
+    public interface TopicEventSubscriptionsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics"
-                + "/{topicName}/eventSubscriptions/{eventSubscriptionName}/getDeliveryAttributes")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}/getDeliveryAttributes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributes(
@@ -88,8 +87,7 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics"
-                + "/{topicName}/eventSubscriptions/{eventSubscriptionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionInner>> get(
@@ -104,8 +102,7 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics"
-                + "/{topicName}/eventSubscriptions/{eventSubscriptionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -121,8 +118,7 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics"
-                + "/{topicName}/eventSubscriptions/{eventSubscriptionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -136,8 +132,7 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics"
-                + "/{topicName}/eventSubscriptions/{eventSubscriptionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -153,8 +148,7 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics"
-                + "/{topicName}/eventSubscriptions/{eventSubscriptionName}/getFullUrl")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}/getFullUrl")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionFullUrlInner>> getFullUrl(
@@ -169,8 +163,7 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics"
-                + "/{topicName}/eventSubscriptions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}/eventSubscriptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> list(
@@ -196,10 +189,12 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Get all delivery attributes for an event subscription for topic.
+     * Get delivery attributes for an event subscription for topic.
+     *
+     * <p>Get all delivery attributes for an event subscription for topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the domain topic.
+     * @param topicName Name of the topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -251,10 +246,12 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Get all delivery attributes for an event subscription for topic.
+     * Get delivery attributes for an event subscription for topic.
+     *
+     * <p>Get all delivery attributes for an event subscription for topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the domain topic.
+     * @param topicName Name of the topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -304,10 +301,12 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Get all delivery attributes for an event subscription for topic.
+     * Get delivery attributes for an event subscription for topic.
+     *
+     * <p>Get all delivery attributes for an event subscription for topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the domain topic.
+     * @param topicName Name of the topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -322,27 +321,12 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Get all delivery attributes for an event subscription for topic.
+     * Get delivery attributes for an event subscription for topic.
+     *
+     * <p>Get all delivery attributes for an event subscription for topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for topic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeliveryAttributeListResultInner getDeliveryAttributes(
-        String resourceGroupName, String topicName, String eventSubscriptionName) {
-        return getDeliveryAttributesAsync(resourceGroupName, topicName, eventSubscriptionName).block();
-    }
-
-    /**
-     * Get all delivery attributes for an event subscription for topic.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the domain topic.
+     * @param topicName Name of the topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -358,10 +342,32 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Get properties of an event subscription of a topic.
+     * Get delivery attributes for an event subscription for topic.
+     *
+     * <p>Get all delivery attributes for an event subscription for topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the partner topic.
+     * @param topicName Name of the topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription for topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeliveryAttributeListResultInner getDeliveryAttributes(
+        String resourceGroupName, String topicName, String eventSubscriptionName) {
+        return getDeliveryAttributesWithResponse(resourceGroupName, topicName, eventSubscriptionName, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Get an event subscription of a topic.
+     *
+     * <p>Get properties of an event subscription of a topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the topic.
      * @param eventSubscriptionName Name of the event subscription to be found. Event subscription names must be between
      *     3 and 100 characters in length and use alphanumeric letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -414,10 +420,12 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Get properties of an event subscription of a topic.
+     * Get an event subscription of a topic.
+     *
+     * <p>Get properties of an event subscription of a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the partner topic.
+     * @param topicName Name of the topic.
      * @param eventSubscriptionName Name of the event subscription to be found. Event subscription names must be between
      *     3 and 100 characters in length and use alphanumeric letters only.
      * @param context The context to associate with this operation.
@@ -468,10 +476,12 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Get properties of an event subscription of a topic.
+     * Get an event subscription of a topic.
+     *
+     * <p>Get properties of an event subscription of a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the partner topic.
+     * @param topicName Name of the topic.
      * @param eventSubscriptionName Name of the event subscription to be found. Event subscription names must be between
      *     3 and 100 characters in length and use alphanumeric letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -487,27 +497,12 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Get properties of an event subscription of a topic.
+     * Get an event subscription of a topic.
+     *
+     * <p>Get properties of an event subscription of a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be found. Event subscription names must be between
-     *     3 and 100 characters in length and use alphanumeric letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an event subscription of a topic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSubscriptionInner get(String resourceGroupName, String topicName, String eventSubscriptionName) {
-        return getAsync(resourceGroupName, topicName, eventSubscriptionName).block();
-    }
-
-    /**
-     * Get properties of an event subscription of a topic.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the partner topic.
+     * @param topicName Name of the topic.
      * @param eventSubscriptionName Name of the event subscription to be found. Event subscription names must be between
      *     3 and 100 characters in length and use alphanumeric letters only.
      * @param context The context to associate with this operation.
@@ -523,7 +518,28 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * Get an event subscription of a topic.
+     *
+     * <p>Get properties of an event subscription of a topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the topic.
+     * @param eventSubscriptionName Name of the event subscription to be found. Event subscription names must be between
+     *     3 and 100 characters in length and use alphanumeric letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of an event subscription of a topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EventSubscriptionInner get(String resourceGroupName, String topicName, String eventSubscriptionName) {
+        return getWithResponse(resourceGroupName, topicName, eventSubscriptionName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create or update an event subscription to a topic.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain topic.
@@ -589,7 +605,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * Create or update an event subscription to a topic.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain topic.
@@ -654,7 +672,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * Create or update an event subscription to a topic.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain topic.
@@ -685,7 +705,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * Create or update an event subscription to a topic.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain topic.
@@ -720,7 +742,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * Create or update an event subscription to a topic.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain topic.
@@ -738,12 +762,15 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
         String topicName,
         String eventSubscriptionName,
         EventSubscriptionInner eventSubscriptionInfo) {
-        return beginCreateOrUpdateAsync(resourceGroupName, topicName, eventSubscriptionName, eventSubscriptionInfo)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, topicName, eventSubscriptionName, eventSubscriptionInfo)
             .getSyncPoller();
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * Create or update an event subscription to a topic.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain topic.
@@ -763,13 +790,16 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
         String eventSubscriptionName,
         EventSubscriptionInner eventSubscriptionInfo,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, topicName, eventSubscriptionName, eventSubscriptionInfo, context)
             .getSyncPoller();
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * Create or update an event subscription to a topic.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain topic.
@@ -793,7 +823,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * Create or update an event subscription to a topic.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain topic.
@@ -820,7 +852,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * Create or update an event subscription to a topic.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain topic.
@@ -842,7 +876,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * Create or update an event subscription to a topic.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain topic.
@@ -867,7 +903,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Delete an existing event subscription for a topic.
+     * Delete an event subscription for a topic.
+     *
+     * <p>Delete an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -920,7 +958,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Delete an existing event subscription for a topic.
+     * Delete an event subscription for a topic.
+     *
+     * <p>Delete an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -971,7 +1011,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Delete an existing event subscription for a topic.
+     * Delete an event subscription for a topic.
+     *
+     * <p>Delete an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -994,7 +1036,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Delete an existing event subscription for a topic.
+     * Delete an event subscription for a topic.
+     *
+     * <p>Delete an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -1018,7 +1062,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Delete an existing event subscription for a topic.
+     * Delete an event subscription for a topic.
+     *
+     * <p>Delete an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -1032,11 +1078,13 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String topicName, String eventSubscriptionName) {
-        return beginDeleteAsync(resourceGroupName, topicName, eventSubscriptionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, topicName, eventSubscriptionName).getSyncPoller();
     }
 
     /**
-     * Delete an existing event subscription for a topic.
+     * Delete an event subscription for a topic.
+     *
+     * <p>Delete an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -1051,11 +1099,13 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String topicName, String eventSubscriptionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, topicName, eventSubscriptionName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, topicName, eventSubscriptionName, context).getSyncPoller();
     }
 
     /**
-     * Delete an existing event subscription for a topic.
+     * Delete an event subscription for a topic.
+     *
+     * <p>Delete an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -1074,7 +1124,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Delete an existing event subscription for a topic.
+     * Delete an event subscription for a topic.
+     *
+     * <p>Delete an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -1095,7 +1147,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Delete an existing event subscription for a topic.
+     * Delete an event subscription for a topic.
+     *
+     * <p>Delete an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -1111,7 +1165,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Delete an existing event subscription for a topic.
+     * Delete an event subscription for a topic.
+     *
+     * <p>Delete an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -1128,7 +1184,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Update an existing event subscription for a topic.
+     * Update an event subscription for a topic.
+     *
+     * <p>Update an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain.
@@ -1195,7 +1253,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Update an existing event subscription for a topic.
+     * Update an event subscription for a topic.
+     *
+     * <p>Update an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain.
@@ -1261,7 +1321,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Update an existing event subscription for a topic.
+     * Update an event subscription for a topic.
+     *
+     * <p>Update an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain.
@@ -1292,7 +1354,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Update an existing event subscription for a topic.
+     * Update an event subscription for a topic.
+     *
+     * <p>Update an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain.
@@ -1326,7 +1390,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Update an existing event subscription for a topic.
+     * Update an event subscription for a topic.
+     *
+     * <p>Update an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain.
@@ -1343,12 +1409,15 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
         String topicName,
         String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, topicName, eventSubscriptionName, eventSubscriptionUpdateParameters)
+        return this
+            .beginUpdateAsync(resourceGroupName, topicName, eventSubscriptionName, eventSubscriptionUpdateParameters)
             .getSyncPoller();
     }
 
     /**
-     * Update an existing event subscription for a topic.
+     * Update an event subscription for a topic.
+     *
+     * <p>Update an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain.
@@ -1367,13 +1436,16 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
         String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
         Context context) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName, topicName, eventSubscriptionName, eventSubscriptionUpdateParameters, context)
             .getSyncPoller();
     }
 
     /**
-     * Update an existing event subscription for a topic.
+     * Update an event subscription for a topic.
+     *
+     * <p>Update an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain.
@@ -1396,7 +1468,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Update an existing event subscription for a topic.
+     * Update an event subscription for a topic.
+     *
+     * <p>Update an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain.
@@ -1422,7 +1496,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Update an existing event subscription for a topic.
+     * Update an event subscription for a topic.
+     *
+     * <p>Update an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain.
@@ -1444,7 +1520,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Update an existing event subscription for a topic.
+     * Update an event subscription for a topic.
+     *
+     * <p>Update an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain.
@@ -1469,7 +1547,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Get the full endpoint URL for an event subscription for topic.
+     * Get full URL of an event subscription for topic.
+     *
+     * <p>Get the full endpoint URL for an event subscription for topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain topic.
@@ -1524,7 +1604,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Get the full endpoint URL for an event subscription for topic.
+     * Get full URL of an event subscription for topic.
+     *
+     * <p>Get the full endpoint URL for an event subscription for topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain topic.
@@ -1577,7 +1659,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Get the full endpoint URL for an event subscription for topic.
+     * Get full URL of an event subscription for topic.
+     *
+     * <p>Get the full endpoint URL for an event subscription for topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain topic.
@@ -1595,24 +1679,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * Get the full endpoint URL for an event subscription for topic.
+     * Get full URL of an event subscription for topic.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for an event subscription for topic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSubscriptionFullUrlInner getFullUrl(
-        String resourceGroupName, String topicName, String eventSubscriptionName) {
-        return getFullUrlAsync(resourceGroupName, topicName, eventSubscriptionName).block();
-    }
-
-    /**
-     * Get the full endpoint URL for an event subscription for topic.
+     * <p>Get the full endpoint URL for an event subscription for topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain topic.
@@ -1630,7 +1699,28 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * List all event subscriptions that have been created for a specific topic.
+     * Get full URL of an event subscription for topic.
+     *
+     * <p>Get the full endpoint URL for an event subscription for topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the domain topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL for an event subscription for topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EventSubscriptionFullUrlInner getFullUrl(
+        String resourceGroupName, String topicName, String eventSubscriptionName) {
+        return getFullUrlWithResponse(resourceGroupName, topicName, eventSubscriptionName, Context.NONE).getValue();
+    }
+
+    /**
+     * List all event subscriptions for a specific topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -1698,7 +1788,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * List all event subscriptions that have been created for a specific topic.
+     * List all event subscriptions for a specific topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -1764,7 +1856,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * List all event subscriptions that have been created for a specific topic.
+     * List all event subscriptions for a specific topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -1790,7 +1884,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * List all event subscriptions that have been created for a specific topic.
+     * List all event subscriptions for a specific topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -1809,7 +1905,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * List all event subscriptions that have been created for a specific topic.
+     * List all event subscriptions for a specific topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -1836,7 +1934,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * List all event subscriptions that have been created for a specific topic.
+     * List all event subscriptions for a specific topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -1853,7 +1953,9 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     }
 
     /**
-     * List all event subscriptions that have been created for a specific topic.
+     * List all event subscriptions for a specific topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -1880,7 +1982,8 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1916,7 +2019,8 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

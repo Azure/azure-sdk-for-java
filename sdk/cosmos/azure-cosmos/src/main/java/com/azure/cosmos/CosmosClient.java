@@ -18,18 +18,24 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
+import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB service.
  * Calls to CosmosClient API's are blocked for completion.
+ * <p>
+ * CosmosClient is thread-safe.
+ * It's recommended to maintain a single instance of CosmosClient per lifetime of the application which enables efficient connection management and performance.
+ * CosmosClient initialization is a heavy operation - don't use initialization CosmosClient instances as credentials or network connectivity validations.
  */
 @ServiceClient(builder = CosmosClientBuilder.class)
 public final class CosmosClient implements Closeable {
     private final CosmosAsyncClient asyncClientWrapper;
 
     CosmosClient(CosmosClientBuilder builder) {
-        this.asyncClientWrapper = builder.buildAsyncClient();
+        this.asyncClientWrapper = builder.buildAsyncClient(false);
     }
 
     /**
@@ -138,6 +144,10 @@ public final class CosmosClient implements Closeable {
 
     void openConnectionsAndInitCaches() {
         asyncClientWrapper.openConnectionsAndInitCaches();
+    }
+
+    void openConnectionsAndInitCaches(Duration aggressiveWarmupDuration) {
+        asyncClientWrapper.openConnectionsAndInitCaches(aggressiveWarmupDuration);
     }
 
     CosmosDatabaseResponse blockDatabaseResponse(Mono<CosmosDatabaseResponse> databaseMono) {

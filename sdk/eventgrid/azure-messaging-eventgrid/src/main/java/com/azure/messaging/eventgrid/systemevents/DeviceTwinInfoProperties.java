@@ -11,18 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DeviceTwinInfoProperties {
     /*
-     * A portion of the properties that can be written only by the application
-     * back-end, and read by the device.
+     * A portion of the properties that can be written only by the application back-end, and read by the device.
      */
     @JsonProperty(value = "desired")
     private DeviceTwinProperties desired;
 
     /*
-     * A portion of the properties that can be written only by the device, and
-     * read by the application back-end.
+     * A portion of the properties that can be written only by the device, and read by the application back-end.
      */
     @JsonProperty(value = "reported")
     private DeviceTwinProperties reported;
+
+    /** Creates an instance of DeviceTwinInfoProperties class. */
+    public DeviceTwinInfoProperties() {}
 
     /**
      * Get the desired property: A portion of the properties that can be written only by the application back-end, and

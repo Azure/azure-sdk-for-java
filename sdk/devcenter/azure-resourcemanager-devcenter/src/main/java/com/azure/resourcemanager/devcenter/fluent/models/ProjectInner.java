@@ -72,7 +72,7 @@ public final class ProjectInner extends Resource {
     }
 
     /**
-     * Get the devCenterUri property: The URI of the resource.
+     * Get the devCenterUri property: The URI of the Dev Center resource this project is associated with.
      *
      * @return the devCenterUri value.
      */
@@ -123,6 +123,31 @@ public final class ProjectInner extends Resource {
             this.innerProperties = new ProjectProperties();
         }
         this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the maxDevBoxesPerUser property: When specified, limits the maximum number of Dev Boxes a single user can
+     * create across all pools in the project. This will have no effect on existing Dev Boxes when reduced.
+     *
+     * @return the maxDevBoxesPerUser value.
+     */
+    public Integer maxDevBoxesPerUser() {
+        return this.innerProperties() == null ? null : this.innerProperties().maxDevBoxesPerUser();
+    }
+
+    /**
+     * Set the maxDevBoxesPerUser property: When specified, limits the maximum number of Dev Boxes a single user can
+     * create across all pools in the project. This will have no effect on existing Dev Boxes when reduced.
+     *
+     * @param maxDevBoxesPerUser the maxDevBoxesPerUser value to set.
+     * @return the ProjectInner object itself.
+     */
+    public ProjectInner withMaxDevBoxesPerUser(Integer maxDevBoxesPerUser) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProjectProperties();
+        }
+        this.innerProperties().withMaxDevBoxesPerUser(maxDevBoxesPerUser);
         return this;
     }
 

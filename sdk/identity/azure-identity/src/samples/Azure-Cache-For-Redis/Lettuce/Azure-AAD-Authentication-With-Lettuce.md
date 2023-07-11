@@ -11,19 +11,19 @@
 
 #### Prerequisites
 - Configuration of Role and Role Assignments is required before using the sample code in this document.
-- Familiarity with the [Lettuce](https://github.com/lettuce-io/lettuce-core) and [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) client libraries is required.
+- Familiarity with the [Lettuce](https://github.com/lettuce-io/lettuce-core) and [Azure Identity for Java](https://learn.microsoft.com/azure/developer/java/sdk/identity) client libraries is required.
 - **Dependency Requirements:**
    ```xml
     <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-identity</artifactId>
-        <version>1.5.0</version>
+        <version>1.8.2</version>
     </dependency>
     
     <dependency>
         <groupId>io.lettuce</groupId>
         <artifactId>lettuce-core</artifactId>
-        <version>6.2.0.RELEASE</version>
+        <version>6.2.4.RELEASE</version>
     </dependency>
    ```
 
@@ -69,7 +69,7 @@ Integrate the logic in your application code to fetch an Azure AD access token v
 <dependency>
     <groupId>io.lettuce</groupId>
     <artifactId>lettuce-core</artifactId>
-    <version>6.2.0.RELEASE</version>
+    <version>6.2.4.RELEASE</version>
 </dependency>
 ```
 
@@ -82,7 +82,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 RedisURI redisURI = RedisURI.Builder.redis("<HOST_NAME>") // Host Name is Required
     .withPort(6380) // Port is Required
     .withSsl(true) // SSL Connections are required.
-    .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials("USERNAME", defaultAzureCredential))) // Username and Token Credential are required.
+    .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials("<USERNAME>", defaultAzureCredential))) // Username and Token Credential are required.
     .withClientName("LettuceClient")
     .build();
 
@@ -112,7 +112,7 @@ System.out.println(sync.get("Az:testKey"));
 public static class AzureRedisCredentials implements RedisCredentials {
     // Note: The Scopes value will change as the Azure AD Authentication support hits public preview and eventually GA's.
     private TokenRequestContext tokenRequestContext = new TokenRequestContext()
-        .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+        .addScopes("cca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
     private TokenCredential tokenCredential;
     private final String username;
 
@@ -168,7 +168,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
 String token = defaultAzureCredential
     .getToken(new TokenRequestContext()
-        .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default")).block().getToken();
+        .addScopes("cca5fbb-b7e4-4009-81f1-37e38fd66d78/.default")).block().getToken();
 
 // Build Redis URI with host and authentication details.
 // TODO: Replace Host Name with Azure Cache for Redis Host Name.
@@ -199,14 +199,14 @@ System.out.println(sync.get("Az:testKey"));
 ```
 
 ##### Supported Token Credentials for Azure AD Authentication
-**Note:** The samples in this doc use the Azure Identity library's `DefaultAzureCredential` to fetch an Azure AD access token. The other supported `TokenCredential` implementations that can be used from [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) are as follows:
-* [Client Certificate Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#client-certificate-credential)
-* [Client Secret Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#client-secret-credential)
-* [Managed Identity Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-azure-hosted-auth#managed-identity-credential)
-* [Username Password Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-user-auth#username-password-credential)
-* [Azure CLI Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#azure-cli-credential)
-* [Interactive Browser Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-user-auth#interactive-browser-credential)
-* [Device Code Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-user-auth#device-code-credential)
+**Note:** The samples in this doc use the Azure Identity library's `DefaultAzureCredential` to fetch an Azure AD access token. The other supported `TokenCredential` implementations that can be used from [Azure Identity for Java](https://learn.microsoft.com/azure/developer/java/sdk/identity) are as follows:
+* [Client Certificate Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#client-certificate-credential)
+* [Client Secret Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#client-secret-credential)
+* [Managed Identity Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-azure-hosted-auth#managed-identity-credential)
+* [Username Password Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-user-auth#username-password-credential)
+* [Azure CLI Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#azure-cli-credential)
+* [Interactive Browser Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-user-auth#interactive-browser-credential)
+* [Device Code Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-user-auth#device-code-credential)
 
 ##### Authenticate with Azure AD: Handle Reauthentication
 This sample is intended to assist in authenticating with Azure AD via the Lettuce client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Lettuce Redis client instance. It also shows how to recreate and authenticate the Lettuce client instance when its connection is broken in error/exception scenarios.
@@ -220,7 +220,7 @@ Integrate the logic in your application code to fetch an Azure AD access token v
 <dependency>
     <groupId>io.lettuce</groupId>
     <artifactId>lettuce-core</artifactId>
-    <version>6.2.0.RELEASE</version>
+    <version>6.2.4.RELEASE</version>
 </dependency>
 ```
 
@@ -267,7 +267,7 @@ private static RedisClient createLettuceRedisClient(String hostName, int port, S
     RedisURI redisURI = RedisURI.Builder.redis(hostName)
         .withPort(port)
         .withSsl(true) // Targeting SSL Based 6380 port.
-        .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials("USERNAME", tokenCredential)))
+        .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials(username, tokenCredential)))
         .withClientName("LettuceClient")
         .build();
 
@@ -291,7 +291,7 @@ private static RedisClient createLettuceRedisClient(String hostName, int port, S
 public static class AzureRedisCredentials implements RedisCredentials {
     // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
     private TokenRequestContext tokenRequestContext = new TokenRequestContext()
-        .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+        .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
     private TokenCredential tokenCredential;
     private final String username;
 
@@ -346,7 +346,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 
 // Fetch an AAD token to be used for authentication. This token will be used as the password.
 // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
-TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
 AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 
 // Host Name, Port, Username and Azure AD Token are required here.
@@ -372,7 +372,7 @@ while (i < maxTries) {
 
         if (!connection.isOpen()) {
             // Recreate the client with a fresh token non-expired token as password for authentication.
-            client = createLettuceRedisClient("<HOST_NAME>", 6380, "USERNAME", getAccessToken(defaultAzureCredential, trc));
+            client = createLettuceRedisClient("<HOST_NAME>", 6380, "<USERNAME>", getAccessToken(defaultAzureCredential, trc));
             connection = client.connect(StringCodec.UTF8);
             sync = connection.sync();
         }
@@ -426,7 +426,7 @@ Integrate the logic in your application code to fetch an Azure AD access token v
 <dependency>
   <groupId>io.lettuce</groupId>
   <artifactId>lettuce-core</artifactId>
-  <version>6.2.0.RELEASE</version>
+  <version>6.2.4.RELEASE</version>
 </dependency>
 ```
 
@@ -436,17 +436,27 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 
 // Host Name, Port, Username and Azure AD Token are required here.
 // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
-RedisClient client = createLettuceRedisClient("<HOST_NAME>", 6380, "<USERNAME>", defaultAzureCredential);
+String hostName = "<HOST_NAME>";
+String userName = "<USERNAME>";
+
+AzureRedisCredentials credentials = new AzureRedisCredentials(userName, defaultAzureCredential);
+RedisClient client = createLettuceRedisClient(hostName, 6380, RedisCredentialsProvider.from(() -> credentials));
 StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
+
+// Create the connection, in this case we're using a sync connection, but you can create async / reactive connections as needed.
+RedisCommands<String, String> sync = connection.sync();
+
+credentials.getTokenCache()
+    .setLettuceInstanceToAuthenticate(sync)
+    .setUsername(userName);
 
 int maxTries = 3;
 int i = 0;
 while (i < maxTries) {
-    // Create the connection, in this case we're using a sync connection, but you can create async / reactive connections as needed.
-    RedisStringCommands<String, String> sync = connection.sync();
     try {
         sync.set("Az:testKey", "testVal");
         System.out.println(sync.get("Az:testKey"));
+        break;
     } catch (RedisException e) {
         // Handle the Exception as required in your application.
         e.printStackTrace();
@@ -457,6 +467,11 @@ while (i < maxTries) {
             // Recreate the connection
             connection = client.connect(StringCodec.UTF8);
             sync = connection.sync();
+
+
+            credentials.getTokenCache()
+                .setLettuceInstanceToAuthenticate(sync)
+                .setUsername(userName);
         }
     } catch (Exception e) {
         // Handle the Exception as required in your application.
@@ -466,13 +481,13 @@ while (i < maxTries) {
 }
 
 // Helper Code
-private static RedisClient createLettuceRedisClient(String hostName, int port, String username, TokenCredential tokenCredential) {
+private static RedisClient createLettuceRedisClient(String hostName, int port, RedisCredentialsProvider credentialsProvider) {
 
     // Build Redis URI with host and authentication details.
     RedisURI redisURI = RedisURI.Builder.redis(hostName)
         .withPort(port)
         .withSsl(true) // Targeting SSL Based 6380 port.
-        .withAuthentication(RedisCredentialsProvider.from(() -> new HandleReauthentication.AzureRedisCredentials("USERNAME", tokenCredential)))
+        .withAuthentication(credentialsProvider)
         .withClientName("LettuceClient")
         .build();
 
@@ -494,9 +509,8 @@ private static RedisClient createLettuceRedisClient(String hostName, int port, S
  * Redis Credential Implementation for Azure Redis for Cache
  */
 public static class AzureRedisCredentials implements RedisCredentials {
-    // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
     private TokenRequestContext tokenRequestContext = new TokenRequestContext()
-        .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+        .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
     private TokenCredential tokenCredential;
     private TokenRefreshCache refreshCache;
     private final String username;
@@ -511,7 +525,7 @@ public static class AzureRedisCredentials implements RedisCredentials {
         Objects.requireNonNull(tokenCredential, "Token Credential is required");
         this.username = username;
         this.tokenCredential = tokenCredential;
-        this.refreshCache = new TokenRefreshCache(tokenCredential, tokenRequestContext, Duration.ofMinutes(2));
+        this.refreshCache = new TokenRefreshCache(tokenCredential, tokenRequestContext);
     }
 
     @Override
@@ -534,6 +548,10 @@ public static class AzureRedisCredentials implements RedisCredentials {
     public boolean hasPassword() {
         return tokenCredential != null;
     }
+
+    public TokenRefreshCache getTokenCache() {
+        return this.refreshCache;
+    }
 }
 
 /**
@@ -544,19 +562,20 @@ public static class TokenRefreshCache {
     private final TokenRequestContext tokenRequestContext;
     private final Timer timer;
     private volatile AccessToken accessToken;
-    private final Duration refreshOffset;
+    private final Duration maxRefreshOffset = Duration.ofMinutes(5);
+    private final Duration baseRefreshOffset = Duration.ofMinutes(2);
+    private RedisCommands<String, String> lettuceInstanceToAuthenticate;
+    private String username;
 
     /**
      * Creates an instance of TokenRefreshCache
      * @param tokenCredential the token credential to be used for authentication.
      * @param tokenRequestContext the token request context to be used for authentication.
-     * @param refreshOffset the refresh offset to use to proactively fetch a new access token before expiry time.
      */
-    public TokenRefreshCache(TokenCredential tokenCredential, TokenRequestContext tokenRequestContext, Duration refreshOffset) {
+    public TokenRefreshCache(TokenCredential tokenCredential, TokenRequestContext tokenRequestContext) {
         this.tokenCredential = tokenCredential;
         this.tokenRequestContext = tokenRequestContext;
-        this.timer = new Timer();
-        this.refreshOffset = refreshOffset;
+        this.timer = new Timer(true);
     }
 
     /**
@@ -579,17 +598,43 @@ public static class TokenRefreshCache {
         public void run() {
             accessToken = tokenCredential.getToken(tokenRequestContext).block();
             System.out.println("Refreshed Token with Expiry: " + accessToken.getExpiresAt().toEpochSecond());
+
+            if (lettuceInstanceToAuthenticate != null && !CoreUtils.isNullOrEmpty(username)) {
+                lettuceInstanceToAuthenticate.auth(username, accessToken.getToken());
+                System.out.println("Refreshed Lettuce Connection with fresh access token, token expires at : "
+                    + accessToken.getExpiresAt().toEpochSecond());
+            }
+
             timer.schedule(new TokenRefreshTask(), getTokenRefreshDelay());
         }
     }
 
     private long getTokenRefreshDelay() {
         return ((accessToken.getExpiresAt()
-            .minusSeconds(refreshOffset.getSeconds()))
-            .toEpochSecond() - OffsetDateTime.now().toEpochSecond()) * 1000;
+            .minusSeconds(ThreadLocalRandom.current().nextLong(baseRefreshOffset.getSeconds(), maxRefreshOffset.getSeconds()))
+            .toEpochSecond() - OffsetDateTime.now().toEpochSecond()) * 1000);
+    }
+
+    /**
+     * Sets the Lettuce instance to proactively authenticate before token expiry.
+     * @param lettuceInstanceToAuthenticate the instance to authenticate
+     * @return the updated instance
+     */
+    public TokenRefreshCache setLettuceInstanceToAuthenticate(RedisCommands<String, String> lettuceInstanceToAuthenticate) {
+        this.lettuceInstanceToAuthenticate = lettuceInstanceToAuthenticate;
+        return this;
+    }
+
+    /**
+     * Sets the username to authenticate jedis instance with.
+     * @param username the username to authenticate with
+     * @return the updated instance
+     */
+    public TokenRefreshCache setUsername(String username) {
+        this.username = username;
+        return this;
     }
 }
-
 ```
 
 ##### Version 6.1.8.RELEASE or less
@@ -608,10 +653,10 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 
 // Fetch an AAD token to be used for authentication. This token will be used as the password.
 // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
-TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
 
 // Instantiate the Token Refresh Cache, this cache will proactively refresh the access token 2 minutes before expiry.
-TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc, Duration.ofMinutes(2));;
+TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc);
 AccessToken accessToken = tokenRefreshCache.getAccessToken();
 
 // Host Name, Port, Username and Azure AD Token are required here.
@@ -681,24 +726,23 @@ public static class TokenRefreshCache {
     private final TokenRequestContext tokenRequestContext;
     private final Timer timer;
     private volatile AccessToken accessToken;
-    private final Duration refreshOffset;
+    private final Duration maxRefreshOffset = Duration.ofMinutes(5);
+    private final Duration baseRefreshOffset = Duration.ofMinutes(2);
 
     /**
      * Creates an instance of TokenRefreshCache
      * @param tokenCredential the token credential to be used for authentication.
      * @param tokenRequestContext the token request context to be used for authentication.
-     * @param refreshOffset the refresh offset to use to proactively fetch a new access token before expiry time.
      */
-    public TokenRefreshCache(TokenCredential tokenCredential, TokenRequestContext tokenRequestContext, Duration refreshOffset) {
+    public TokenRefreshCache(TokenCredential tokenCredential, TokenRequestContext tokenRequestContext) {
         this.tokenCredential = tokenCredential;
         this.tokenRequestContext = tokenRequestContext;
         this.timer = new Timer();
-        this.refreshOffset = refreshOffset;
     }
 
     /**
      * Gets the cached access token.
-     * @return the {@link AccessToken}
+     * @return the AccessToken
      */
     public AccessToken getAccessToken() {
         if (accessToken != null) {
@@ -722,8 +766,8 @@ public static class TokenRefreshCache {
 
     private long getTokenRefreshDelay() {
         return ((accessToken.getExpiresAt()
-            .minusSeconds(refreshOffset.getSeconds()))
-            .toEpochSecond() - OffsetDateTime.now().toEpochSecond()) * 1000;
+            .minusSeconds(ThreadLocalRandom.current().nextLong(baseRefreshOffset.getSeconds(), maxRefreshOffset.getSeconds()))
+            .toEpochSecond() - OffsetDateTime.now().toEpochSecond()) * 1000);
     }
 }
 ```
@@ -733,11 +777,12 @@ public static class TokenRefreshCache {
 ##### Invalid Username Password Pair Error
 In this error scenario, the username provided and the access token used as password are not compatible.
 To mitigate this error, navigate to your Azure Cache for Redis resource in the Azure portal. Confirm that:
-* In **RBAC Rules**, you've assigned the required role to your user/service principal identity.
+* In **Data Access Configuration**, you've assigned the required role to your user/service principal identity.
 * In **Advanced settings**, the **AAD access authorization** box is selected. If not, select it and select the **Save** button.
 
 ##### Permissions not granted / NOPERM Error
 In this error scenario, the authentication was successful, but your registered user/service principal is not granted the RBAC permission to perform the action.
 To mitigate this error, navigate to your Azure Cache for Redis resource in the Azure portal. Confirm that:
-* In **RBAC Rules**, you've assigned the appropriate role (Owner, Contributor, Reader) to your user/service principal identity.
+* In **Data Access Configuration**, you've assigned the appropriate role (Owner, Contributor, Reader) to your user/service principal identity.
 * In the event you're using a custom role, ensure the permissions granted under your custom role include the one required for your target action.
+

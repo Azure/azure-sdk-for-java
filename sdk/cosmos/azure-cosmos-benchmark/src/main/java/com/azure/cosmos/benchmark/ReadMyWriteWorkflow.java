@@ -9,15 +9,14 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.implementation.ResourceResponse;
-import com.azure.cosmos.implementation.Utils;
 import org.apache.commons.lang3.RandomUtils;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
@@ -29,6 +28,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -186,8 +186,8 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      * @return Observable of document
      */
     private Flux<Document> writeDocument(Integer i) {
-        String idString = Utils.randomUUID().toString();
-        String randomVal = Utils.randomUUID().toString();
+        String idString = UUID.randomUUID().toString();
+        String randomVal = UUID.randomUUID().toString();
         Document document = new Document();
         document.setId(idString);
         BridgeInternal.setProperty(document, partitionKey, idString);

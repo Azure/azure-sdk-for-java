@@ -72,11 +72,26 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
-    private interface DomainTopicEventSubscriptionsService {
+    public interface DomainTopicEventSubscriptionsService {
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}/getDeliveryAttributes")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributes(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("domainName") String domainName,
+            @PathParam("topicName") String topicName,
+            @PathParam("eventSubscriptionName") String eventSubscriptionName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains"
-                + "/{domainName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionInner>> get(
@@ -92,8 +107,7 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains"
-                + "/{domainName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -110,8 +124,7 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains"
-                + "/{domainName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -126,8 +139,7 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains"
-                + "/{domainName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -144,8 +156,7 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains"
-                + "/{domainName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}/getFullUrl")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}/getFullUrl")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionFullUrlInner>> getFullUrl(
@@ -161,8 +172,7 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains"
-                + "/{domainName}/topics/{topicName}/eventSubscriptions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{topicName}/eventSubscriptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> list(
@@ -178,23 +188,6 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
             Context context);
 
         @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains"
-                + "/{domainName}/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}/getDeliveryAttributes")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributes(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("domainName") String domainName,
-            @PathParam("topicName") String topicName,
-            @PathParam("eventSubscriptionName") String eventSubscriptionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -206,7 +199,198 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Get properties of a nested event subscription for a domain topic.
+     * Get delivery attributes for an event subscription for domain topic.
+     *
+     * <p>Get all delivery attributes for an event subscription for domain topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the top level domain.
+     * @param topicName Name of the domain topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription for domain topic along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
+        String resourceGroupName, String domainName, String topicName, String eventSubscriptionName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (topicName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
+        }
+        if (eventSubscriptionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getDeliveryAttributes(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            domainName,
+                            topicName,
+                            eventSubscriptionName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get delivery attributes for an event subscription for domain topic.
+     *
+     * <p>Get all delivery attributes for an event subscription for domain topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the top level domain.
+     * @param topicName Name of the domain topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription for domain topic along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
+        String resourceGroupName, String domainName, String topicName, String eventSubscriptionName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (topicName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
+        }
+        if (eventSubscriptionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getDeliveryAttributes(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                domainName,
+                topicName,
+                eventSubscriptionName,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Get delivery attributes for an event subscription for domain topic.
+     *
+     * <p>Get all delivery attributes for an event subscription for domain topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the top level domain.
+     * @param topicName Name of the domain topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription for domain topic on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<DeliveryAttributeListResultInner> getDeliveryAttributesAsync(
+        String resourceGroupName, String domainName, String topicName, String eventSubscriptionName) {
+        return getDeliveryAttributesWithResponseAsync(resourceGroupName, domainName, topicName, eventSubscriptionName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get delivery attributes for an event subscription for domain topic.
+     *
+     * <p>Get all delivery attributes for an event subscription for domain topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the top level domain.
+     * @param topicName Name of the domain topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription for domain topic along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(
+        String resourceGroupName, String domainName, String topicName, String eventSubscriptionName, Context context) {
+        return getDeliveryAttributesWithResponseAsync(
+                resourceGroupName, domainName, topicName, eventSubscriptionName, context)
+            .block();
+    }
+
+    /**
+     * Get delivery attributes for an event subscription for domain topic.
+     *
+     * <p>Get all delivery attributes for an event subscription for domain topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the top level domain.
+     * @param topicName Name of the domain topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription for domain topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeliveryAttributeListResultInner getDeliveryAttributes(
+        String resourceGroupName, String domainName, String topicName, String eventSubscriptionName) {
+        return getDeliveryAttributesWithResponse(
+                resourceGroupName, domainName, topicName, eventSubscriptionName, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Get a nested event subscription for domain topic.
+     *
+     * <p>Get properties of a nested event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -266,7 +450,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Get properties of a nested event subscription for a domain topic.
+     * Get a nested event subscription for domain topic.
+     *
+     * <p>Get properties of a nested event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -324,7 +510,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Get properties of a nested event subscription for a domain topic.
+     * Get a nested event subscription for domain topic.
+     *
+     * <p>Get properties of a nested event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -343,25 +531,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Get properties of a nested event subscription for a domain topic.
+     * Get a nested event subscription for domain topic.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the top level domain.
-     * @param topicName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a nested event subscription for a domain topic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSubscriptionInner get(
-        String resourceGroupName, String domainName, String topicName, String eventSubscriptionName) {
-        return getAsync(resourceGroupName, domainName, topicName, eventSubscriptionName).block();
-    }
-
-    /**
-     * Get properties of a nested event subscription for a domain topic.
+     * <p>Get properties of a nested event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -380,7 +552,30 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * Get a nested event subscription for domain topic.
+     *
+     * <p>Get properties of a nested event subscription for a domain topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the top level domain.
+     * @param topicName Name of the domain topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a nested event subscription for a domain topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EventSubscriptionInner get(
+        String resourceGroupName, String domainName, String topicName, String eventSubscriptionName) {
+        return getWithResponse(resourceGroupName, domainName, topicName, eventSubscriptionName, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Create or update a nested event subscription to a domain topic.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -452,7 +647,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * Create or update a nested event subscription to a domain topic.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -523,7 +720,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * Create or update a nested event subscription to a domain topic.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -557,7 +756,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * Create or update a nested event subscription to a domain topic.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -594,7 +795,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * Create or update a nested event subscription to a domain topic.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -614,13 +817,16 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
         String topicName,
         String eventSubscriptionName,
         EventSubscriptionInner eventSubscriptionInfo) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, domainName, topicName, eventSubscriptionName, eventSubscriptionInfo)
             .getSyncPoller();
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * Create or update a nested event subscription to a domain topic.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -642,13 +848,16 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
         String eventSubscriptionName,
         EventSubscriptionInner eventSubscriptionInfo,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, domainName, topicName, eventSubscriptionName, eventSubscriptionInfo, context)
             .getSyncPoller();
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * Create or update a nested event subscription to a domain topic.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -675,7 +884,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * Create or update a nested event subscription to a domain topic.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -704,7 +915,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * Create or update a nested event subscription to a domain topic.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -730,7 +943,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * Create or update a nested event subscription to a domain topic.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -758,7 +973,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Delete a nested existing event subscription for a domain topic.
+     * Delete a nested event subscription for a domain topic.
+     *
+     * <p>Delete a nested existing event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -816,7 +1033,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Delete a nested existing event subscription for a domain topic.
+     * Delete a nested event subscription for a domain topic.
+     *
+     * <p>Delete a nested existing event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -872,7 +1091,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Delete a nested existing event subscription for a domain topic.
+     * Delete a nested event subscription for a domain topic.
+     *
+     * <p>Delete a nested existing event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -896,7 +1117,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Delete a nested existing event subscription for a domain topic.
+     * Delete a nested event subscription for a domain topic.
+     *
+     * <p>Delete a nested existing event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -921,7 +1144,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Delete a nested existing event subscription for a domain topic.
+     * Delete a nested event subscription for a domain topic.
+     *
+     * <p>Delete a nested existing event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -936,11 +1161,13 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String domainName, String topicName, String eventSubscriptionName) {
-        return beginDeleteAsync(resourceGroupName, domainName, topicName, eventSubscriptionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, domainName, topicName, eventSubscriptionName).getSyncPoller();
     }
 
     /**
-     * Delete a nested existing event subscription for a domain topic.
+     * Delete a nested event subscription for a domain topic.
+     *
+     * <p>Delete a nested existing event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -956,12 +1183,15 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String domainName, String topicName, String eventSubscriptionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, domainName, topicName, eventSubscriptionName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, domainName, topicName, eventSubscriptionName, context)
             .getSyncPoller();
     }
 
     /**
-     * Delete a nested existing event subscription for a domain topic.
+     * Delete a nested event subscription for a domain topic.
+     *
+     * <p>Delete a nested existing event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -982,7 +1212,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Delete a nested existing event subscription for a domain topic.
+     * Delete a nested event subscription for a domain topic.
+     *
+     * <p>Delete a nested existing event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -1004,7 +1236,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Delete a nested existing event subscription for a domain topic.
+     * Delete a nested event subscription for a domain topic.
+     *
+     * <p>Delete a nested existing event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -1021,7 +1255,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Delete a nested existing event subscription for a domain topic.
+     * Delete a nested event subscription for a domain topic.
+     *
+     * <p>Delete a nested existing event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -1040,7 +1276,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Update an existing event subscription for a domain topic.
+     * Update a nested event subscription for a domain topic.
+     *
+     * <p>Update an existing event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1113,7 +1351,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Update an existing event subscription for a domain topic.
+     * Update a nested event subscription for a domain topic.
+     *
+     * <p>Update an existing event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1185,7 +1425,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Update an existing event subscription for a domain topic.
+     * Update a nested event subscription for a domain topic.
+     *
+     * <p>Update an existing event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1218,7 +1460,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Update an existing event subscription for a domain topic.
+     * Update a nested event subscription for a domain topic.
+     *
+     * <p>Update an existing event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1259,7 +1503,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Update an existing event subscription for a domain topic.
+     * Update a nested event subscription for a domain topic.
+     *
+     * <p>Update an existing event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1278,13 +1524,16 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
         String topicName,
         String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName, domainName, topicName, eventSubscriptionName, eventSubscriptionUpdateParameters)
             .getSyncPoller();
     }
 
     /**
-     * Update an existing event subscription for a domain topic.
+     * Update a nested event subscription for a domain topic.
+     *
+     * <p>Update an existing event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1305,7 +1554,8 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
         String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
         Context context) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName,
                 domainName,
                 topicName,
@@ -1316,7 +1566,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Update an existing event subscription for a domain topic.
+     * Update a nested event subscription for a domain topic.
+     *
+     * <p>Update an existing event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1342,7 +1594,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Update an existing event subscription for a domain topic.
+     * Update a nested event subscription for a domain topic.
+     *
+     * <p>Update an existing event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1375,7 +1629,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Update an existing event subscription for a domain topic.
+     * Update a nested event subscription for a domain topic.
+     *
+     * <p>Update an existing event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1400,7 +1656,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Update an existing event subscription for a domain topic.
+     * Update a nested event subscription for a domain topic.
+     *
+     * <p>Update an existing event subscription for a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1432,7 +1690,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Get the full endpoint URL for a nested event subscription for domain topic.
+     * Get full URL of a nested event subscription for domain topic.
+     *
+     * <p>Get the full endpoint URL for a nested event subscription for domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -1492,7 +1752,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Get the full endpoint URL for a nested event subscription for domain topic.
+     * Get full URL of a nested event subscription for domain topic.
+     *
+     * <p>Get the full endpoint URL for a nested event subscription for domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -1550,7 +1812,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Get the full endpoint URL for a nested event subscription for domain topic.
+     * Get full URL of a nested event subscription for domain topic.
+     *
+     * <p>Get the full endpoint URL for a nested event subscription for domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -1570,25 +1834,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Get the full endpoint URL for a nested event subscription for domain topic.
+     * Get full URL of a nested event subscription for domain topic.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the top level domain.
-     * @param topicName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for a nested event subscription for domain topic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSubscriptionFullUrlInner getFullUrl(
-        String resourceGroupName, String domainName, String topicName, String eventSubscriptionName) {
-        return getFullUrlAsync(resourceGroupName, domainName, topicName, eventSubscriptionName).block();
-    }
-
-    /**
-     * Get the full endpoint URL for a nested event subscription for domain topic.
+     * <p>Get the full endpoint URL for a nested event subscription for domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -1608,7 +1856,30 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * List all event subscriptions that have been created for a specific domain topic.
+     * Get full URL of a nested event subscription for domain topic.
+     *
+     * <p>Get the full endpoint URL for a nested event subscription for domain topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the top level domain.
+     * @param topicName Name of the domain topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL for a nested event subscription for domain topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EventSubscriptionFullUrlInner getFullUrl(
+        String resourceGroupName, String domainName, String topicName, String eventSubscriptionName) {
+        return getFullUrlWithResponse(resourceGroupName, domainName, topicName, eventSubscriptionName, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * List all nested event subscriptions for a specific domain topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -1681,7 +1952,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * List all event subscriptions that have been created for a specific domain topic.
+     * List all nested event subscriptions for a specific domain topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -1752,7 +2025,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * List all event subscriptions that have been created for a specific domain topic.
+     * List all nested event subscriptions for a specific domain topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -1779,7 +2054,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * List all event subscriptions that have been created for a specific domain topic.
+     * List all nested event subscriptions for a specific domain topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -1799,7 +2076,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * List all event subscriptions that have been created for a specific domain topic.
+     * List all nested event subscriptions for a specific domain topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -1827,7 +2106,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * List all event subscriptions that have been created for a specific domain topic.
+     * List all nested event subscriptions for a specific domain topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -1845,7 +2126,9 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * List all event subscriptions that have been created for a specific domain topic.
+     * List all nested event subscriptions for a specific domain topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -1871,186 +2154,10 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     }
 
     /**
-     * Get all delivery attributes for an event subscription for domain topic.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the top level domain.
-     * @param topicName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for domain topic along with {@link Response} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
-        String resourceGroupName, String domainName, String topicName, String eventSubscriptionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        if (topicName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
-        }
-        if (eventSubscriptionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getDeliveryAttributes(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            domainName,
-                            topicName,
-                            eventSubscriptionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get all delivery attributes for an event subscription for domain topic.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the top level domain.
-     * @param topicName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for domain topic along with {@link Response} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
-        String resourceGroupName, String domainName, String topicName, String eventSubscriptionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        if (topicName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
-        }
-        if (eventSubscriptionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getDeliveryAttributes(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                domainName,
-                topicName,
-                eventSubscriptionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
-    }
-
-    /**
-     * Get all delivery attributes for an event subscription for domain topic.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the top level domain.
-     * @param topicName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for domain topic on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeliveryAttributeListResultInner> getDeliveryAttributesAsync(
-        String resourceGroupName, String domainName, String topicName, String eventSubscriptionName) {
-        return getDeliveryAttributesWithResponseAsync(resourceGroupName, domainName, topicName, eventSubscriptionName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get all delivery attributes for an event subscription for domain topic.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the top level domain.
-     * @param topicName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for domain topic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeliveryAttributeListResultInner getDeliveryAttributes(
-        String resourceGroupName, String domainName, String topicName, String eventSubscriptionName) {
-        return getDeliveryAttributesAsync(resourceGroupName, domainName, topicName, eventSubscriptionName).block();
-    }
-
-    /**
-     * Get all delivery attributes for an event subscription for domain topic.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the top level domain.
-     * @param topicName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for domain topic along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(
-        String resourceGroupName, String domainName, String topicName, String eventSubscriptionName, Context context) {
-        return getDeliveryAttributesWithResponseAsync(
-                resourceGroupName, domainName, topicName, eventSubscriptionName, context)
-            .block();
-    }
-
-    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2086,7 +2193,8 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -14,7 +14,7 @@ import java.util.Map;
  * used to encrypt disks.
  */
 @Fluent
-public class EncryptionSetIdentity {
+public final class EncryptionSetIdentity {
     /*
      * The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is supported for new creations.
      * Disk Encryption Sets can be updated with Identity type None during migration of subscription to a new Azure

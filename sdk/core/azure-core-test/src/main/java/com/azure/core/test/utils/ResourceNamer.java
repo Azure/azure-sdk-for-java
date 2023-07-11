@@ -3,8 +3,9 @@
 
 package com.azure.core.test.utils;
 
+import com.azure.core.util.CoreUtils;
+
 import java.util.Locale;
-import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -21,7 +22,8 @@ public class ResourceNamer {
      * @param name The prefix for generated strings.
      */
     public ResourceNamer(String name) {
-        this.randName = name.toLowerCase(LOCALE) + UUID.randomUUID().toString().replace("-", "").substring(0, 3).toLowerCase(LOCALE);
+        this.randName = name.toLowerCase(LOCALE)
+            + CoreUtils.randomUuid().toString().replace("-", "").substring(0, 3).toLowerCase(LOCALE);
     }
 
     /**
@@ -58,13 +60,13 @@ public class ResourceNamer {
      * @return the UUID string.
      */
     public String randomUuid() {
-        return UUID.randomUUID().toString();
+        return CoreUtils.randomUuid().toString();
     }
 
     private String randomString(int length) {
         StringBuilder str = new StringBuilder();
         while (str.length() < length) {
-            str.append(UUID.randomUUID()
+            str.append(CoreUtils.randomUuid()
                 .toString()
                 .replace("-", "")
                 .substring(0, Math.min(32, length)).toLowerCase(LOCALE));

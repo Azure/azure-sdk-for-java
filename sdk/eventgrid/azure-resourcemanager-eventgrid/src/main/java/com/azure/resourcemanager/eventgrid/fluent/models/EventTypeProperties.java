@@ -34,6 +34,10 @@ public final class EventTypeProperties {
     @JsonProperty(value = "isInDefaultSet")
     private Boolean isInDefaultSet;
 
+    /** Creates an instance of EventTypeProperties class. */
+    public EventTypeProperties() {
+    }
+
     /**
      * Get the displayName property: Display name of the event type.
      *

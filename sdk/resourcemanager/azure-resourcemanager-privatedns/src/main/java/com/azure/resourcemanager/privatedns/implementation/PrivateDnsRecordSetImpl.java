@@ -264,12 +264,12 @@ class PrivateDnsRecordSetImpl
     @Override
     public Mono<Void> deleteResourceAsync() {
         return parent().manager().serviceClient().getRecordSets()
-            .deleteAsync(
+            .deleteWithResponseAsync(
                 parent().resourceGroupName(),
                 parent().name(),
                 recordType(),
                 name(),
-                etagState.ifMatchValueOnDelete());
+                etagState.ifMatchValueOnDelete()).then();
     }
 
     @Override
@@ -303,7 +303,7 @@ class PrivateDnsRecordSetImpl
     private Mono<PrivateDnsRecordSet> createOrUpdateAsync(RecordSetInner resource) {
         final PrivateDnsRecordSetImpl self = this;
         return parent().manager().serviceClient().getRecordSets()
-            .createOrUpdateAsync(
+            .createOrUpdateWithResponseAsync(
                 parent().resourceGroupName(),
                 parent().name(),
                 recordType(),
@@ -312,7 +312,7 @@ class PrivateDnsRecordSetImpl
                 etagState.ifMatchValueOnUpdate(resource.etag()),
                 etagState.ifNonMatchValueOnCreate())
             .map(recordSetInner -> {
-                setInner(recordSetInner);
+                setInner(recordSetInner.getValue());
                 self.etagState.clear();
                 return self;
             });

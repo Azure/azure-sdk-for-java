@@ -13,7 +13,7 @@ public final class PrivateLinkServiceConnectionStateTests {
         PrivateLinkServiceConnectionState model =
             BinaryData
                 .fromString(
-                    "{\"status\":\"Disconnected\",\"description\":\"mngnzscxaqw\",\"actionsRequired\":\"chcbonqvpkvlrxnj\"}")
+                    "{\"status\":\"Approved\",\"description\":\"keyyi\",\"actionsRequired\":\"jbdlwtgrhpdjpju\"}")
                 .toObject(PrivateLinkServiceConnectionState.class);
     }
 

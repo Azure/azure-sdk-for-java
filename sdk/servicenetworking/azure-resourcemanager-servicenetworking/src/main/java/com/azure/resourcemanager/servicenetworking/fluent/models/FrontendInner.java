@@ -7,9 +7,6 @@ package com.azure.resourcemanager.servicenetworking.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.servicenetworking.models.FrontendIpAddressVersion;
-import com.azure.resourcemanager.servicenetworking.models.FrontendMode;
-import com.azure.resourcemanager.servicenetworking.models.FrontendPropertiesIpAddress;
 import com.azure.resourcemanager.servicenetworking.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -66,76 +63,17 @@ public final class FrontendInner extends Resource {
     }
 
     /**
-     * Get the mode property: Frontend Mode (Optional).
+     * Get the fqdn property: The Fully Qualified Domain Name of the DNS record associated to a Traffic Controller
+     * frontend.
      *
-     * @return the mode value.
+     * @return the fqdn value.
      */
-    public FrontendMode mode() {
-        return this.innerProperties() == null ? null : this.innerProperties().mode();
+    public String fqdn() {
+        return this.innerProperties() == null ? null : this.innerProperties().fqdn();
     }
 
     /**
-     * Set the mode property: Frontend Mode (Optional).
-     *
-     * @param mode the mode value to set.
-     * @return the FrontendInner object itself.
-     */
-    public FrontendInner withMode(FrontendMode mode) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new FrontendProperties();
-        }
-        this.innerProperties().withMode(mode);
-        return this;
-    }
-
-    /**
-     * Get the ipAddressVersion property: Frontend IP Address Version (Optional).
-     *
-     * @return the ipAddressVersion value.
-     */
-    public FrontendIpAddressVersion ipAddressVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().ipAddressVersion();
-    }
-
-    /**
-     * Set the ipAddressVersion property: Frontend IP Address Version (Optional).
-     *
-     * @param ipAddressVersion the ipAddressVersion value to set.
-     * @return the FrontendInner object itself.
-     */
-    public FrontendInner withIpAddressVersion(FrontendIpAddressVersion ipAddressVersion) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new FrontendProperties();
-        }
-        this.innerProperties().withIpAddressVersion(ipAddressVersion);
-        return this;
-    }
-
-    /**
-     * Get the publicIpAddress property: Frontend Public IP Address (Optional).
-     *
-     * @return the publicIpAddress value.
-     */
-    public FrontendPropertiesIpAddress publicIpAddress() {
-        return this.innerProperties() == null ? null : this.innerProperties().publicIpAddress();
-    }
-
-    /**
-     * Set the publicIpAddress property: Frontend Public IP Address (Optional).
-     *
-     * @param publicIpAddress the publicIpAddress value to set.
-     * @return the FrontendInner object itself.
-     */
-    public FrontendInner withPublicIpAddress(FrontendPropertiesIpAddress publicIpAddress) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new FrontendProperties();
-        }
-        this.innerProperties().withPublicIpAddress(publicIpAddress);
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: test doc.
+     * Get the provisioningState property: Provisioning State of Traffic Controller Frontend Resource.
      *
      * @return the provisioningState value.
      */

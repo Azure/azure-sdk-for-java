@@ -4,12 +4,12 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
-import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.RecordingStateResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.BlobStorageInternal;
 import com.azure.communication.callautomation.implementation.models.CallLocatorInternal;
 import com.azure.communication.callautomation.implementation.models.CallLocatorKindInternal;
+import com.azure.communication.callautomation.implementation.models.ChannelAffinityInternal;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.ExternalStorageInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingContentInternal;
@@ -20,7 +20,7 @@ import com.azure.communication.callautomation.implementation.models.StartCallRec
 import com.azure.communication.callautomation.models.BlobStorage;
 import com.azure.communication.callautomation.models.CallLocator;
 import com.azure.communication.callautomation.models.CallLocatorKind;
-import com.azure.communication.callautomation.models.CallingServerErrorException;
+import com.azure.communication.callautomation.models.ChannelAffinity;
 import com.azure.communication.callautomation.models.DownloadToFileOptions;
 import com.azure.communication.callautomation.models.GroupCallLocator;
 import com.azure.communication.callautomation.models.ParallelDownloadOptions;
@@ -29,7 +29,6 @@ import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRange;
@@ -52,31 +51,34 @@ import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.security.InvalidParameterException;
+import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import com.azure.core.exception.HttpResponseException;
 
 /**
  * CallRecordingAsync.
  */
-public class CallRecordingAsync {
+public final class CallRecordingAsync {
     private final CallRecordingsImpl callRecordingsInternal;
     private final ClientLogger logger;
     private final ContentDownloader contentDownloader;
     private final HttpPipeline httpPipelineInternal;
-    private final String resourceEndpoint;
+    private final String resourceUrl;
 
     CallRecordingAsync(CallRecordingsImpl callRecordingsInternal, ContentDownloader contentDownloader,
-                       HttpPipeline httpPipelineInternal, String resourceEndpoint) {
+                       HttpPipeline httpPipelineInternal, String resourceUrl) {
         this.callRecordingsInternal = callRecordingsInternal;
         this.contentDownloader = contentDownloader;
         this.httpPipelineInternal = httpPipelineInternal;
-        this.resourceEndpoint = resourceEndpoint;
+        this.resourceUrl = resourceUrl;
         this.logger = new ClientLogger(CallRecordingAsync.class);
     }
 
@@ -85,13 +87,13 @@ public class CallRecordingAsync {
      *
      * @param options A {@link StartRecordingOptions} object containing different options for recording.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordingStateResult> startRecording(StartRecordingOptions options) {
-        return startRecordingWithResponse(options)
+    public Mono<RecordingStateResult> start(StartRecordingOptions options) {
+        return startWithResponse(options)
             .flatMap(response -> Mono.just(response.getValue()));
     }
 
@@ -100,18 +102,18 @@ public class CallRecordingAsync {
      *
      * @param options A {@link StartRecordingOptions} object containing different options for recording.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordingStateResult>> startRecordingWithResponse(StartRecordingOptions options) {
+    public Mono<Response<RecordingStateResult>> startWithResponse(StartRecordingOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
-        return startRecordingWithResponseInternal(options, null);
+        return startWithResponseInternal(options, null);
     }
 
-    Mono<Response<RecordingStateResult>> startRecordingWithResponseInternal(StartRecordingOptions options, Context context) {
+    Mono<Response<RecordingStateResult>> startWithResponseInternal(StartRecordingOptions options, Context context) {
         try {
             StartCallRecordingRequestInternal request = getStartCallRecordingRequest(options);
 
@@ -120,8 +122,9 @@ public class CallRecordingAsync {
                 return callRecordingsInternal
                     .startRecordingWithResponseAsync(
                         request,
+                        UUID.randomUUID(),
+                        OffsetDateTime.now(),
                         contextValue)
-                    .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                     .map(response ->
                         new SimpleResponse<>(response, RecordingStateResponseConstructorProxy.create(response.getValue()))
                     );
@@ -165,6 +168,12 @@ public class CallRecordingAsync {
                 .collect(Collectors.toList());
             request.setAudioChannelParticipantOrdering(audioChannelParticipantOrdering);
         }
+        if (options.getChannelAffinity() != null) {
+            List<ChannelAffinityInternal> channelAffinityInternals = options.getChannelAffinity()
+                .stream().map(this::getChannelAffinityInternal)
+                .collect(Collectors.toList());
+            request.setChannelAffinity(channelAffinityInternals);
+        }
         if (options.getExternalStorage() != null) {
             ExternalStorageInternal externalStorageInternal = new ExternalStorageInternal()
                 .setStorageType(RecordingStorageTypeInternal.fromString(options.getExternalStorage().getStorageType().toString()));
@@ -183,35 +192,34 @@ public class CallRecordingAsync {
      * Stop recording of the call.
      *
      * @param recordingId Recording id to stop.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful stop recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopRecording(String recordingId) {
-        return stopRecordingWithResponse(recordingId).then();
+    public Mono<Void> stop(String recordingId) {
+        return stopWithResponse(recordingId).then();
     }
 
     /**
      * Stop recording of the call.
      *
      * @param recordingId Recording id to stop.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful stop recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stopRecordingWithResponse(String recordingId) {
-        return stopRecordingWithResponseInternal(recordingId, null);
+    public Mono<Response<Void>> stopWithResponse(String recordingId) {
+        return stopWithResponseInternal(recordingId, null);
     }
 
-    Mono<Response<Void>> stopRecordingWithResponseInternal(String recordingId, Context context) {
+    Mono<Response<Void>> stopWithResponseInternal(String recordingId, Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return callRecordingsInternal
-                    .stopRecordingWithResponseAsync(recordingId, contextValue)
-                    .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
+                    .stopRecordingWithResponseAsync(recordingId, contextValue);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -222,35 +230,34 @@ public class CallRecordingAsync {
      * Pause recording of the call.
      *
      * @param recordingId Recording id to stop.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful pause recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> pauseRecording(String recordingId) {
-        return pauseRecordingWithResponse(recordingId).then();
+    public Mono<Void> pause(String recordingId) {
+        return pauseWithResponse(recordingId).then();
     }
 
     /**
      * Pause recording of the call.
      *
      * @param recordingId Recording id to stop.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful pause recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> pauseRecordingWithResponse(String recordingId) {
-        return pauseRecordingWithResponseInternal(recordingId, null);
+    public Mono<Response<Void>> pauseWithResponse(String recordingId) {
+        return pauseWithResponseInternal(recordingId, null);
     }
 
-    Mono<Response<Void>> pauseRecordingWithResponseInternal(String recordingId, Context context) {
+    Mono<Response<Void>> pauseWithResponseInternal(String recordingId, Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return callRecordingsInternal
-                    .pauseRecordingWithResponseAsync(recordingId, contextValue)
-                    .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
+                    .pauseRecordingWithResponseAsync(recordingId, contextValue);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -261,35 +268,34 @@ public class CallRecordingAsync {
      * Resume recording of the call.
      *
      * @param recordingId Recording id to stop.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful resume recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resumeRecording(String recordingId) {
-        return resumeRecordingWithResponse(recordingId).then();
+    public Mono<Void> resume(String recordingId) {
+        return resumeWithResponse(recordingId).then();
     }
 
     /**
      * Resume recording of the call.
      *
      * @param recordingId Recording id to stop.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful resume recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resumeRecordingWithResponse(String recordingId) {
-        return resumeRecordingWithResponseInternal(recordingId, null);
+    public Mono<Response<Void>> resumeWithResponse(String recordingId) {
+        return resumeWithResponseInternal(recordingId, null);
     }
 
-    Mono<Response<Void>> resumeRecordingWithResponseInternal(String recordingId, Context context) {
+    Mono<Response<Void>> resumeWithResponseInternal(String recordingId, Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return callRecordingsInternal
-                    .resumeRecordingWithResponseAsync(recordingId, contextValue)
-                    .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
+                    .resumeRecordingWithResponseAsync(recordingId, contextValue);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -300,35 +306,34 @@ public class CallRecordingAsync {
      * Get current recording state by recording id.
      *
      * @param recordingId Recording id to stop.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordingStateResult> getRecordingState(String recordingId) {
-        return getRecordingStateWithResponse(recordingId).flatMap(response -> Mono.just(response.getValue()));
+    public Mono<RecordingStateResult> getState(String recordingId) {
+        return getStateWithResponse(recordingId).flatMap(response -> Mono.just(response.getValue()));
     }
 
     /**
      * Get current recording state by recording id.
      *
      * @param recordingId Recording id to stop.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordingStateResult>> getRecordingStateWithResponse(String recordingId) {
-        return getRecordingStateWithResponseInternal(recordingId, null);
+    public Mono<Response<RecordingStateResult>> getStateWithResponse(String recordingId) {
+        return getStateWithResponseInternal(recordingId, null);
     }
 
-    Mono<Response<RecordingStateResult>> getRecordingStateWithResponseInternal(String recordingId, Context context) {
+    Mono<Response<RecordingStateResult>> getStateWithResponseInternal(String recordingId, Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return callRecordingsInternal
                     .getRecordingPropertiesWithResponseAsync(recordingId, contextValue)
-                    .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                     .map(response ->
                         new SimpleResponse<>(response, RecordingStateResponseConstructorProxy.create(response.getValue())));
             });
@@ -340,12 +345,12 @@ public class CallRecordingAsync {
     /**
      * Download the recording content, e.g. Recording's metadata, Recording video, from the ACS endpoint
      * passed as parameter.
-     * @param sourceEndpoint - URL where the content is located.
+     * @param sourceUrl - URL where the content is located.
      * @return A {@link Flux} object containing the byte stream of the content requested.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<ByteBuffer> downloadStream(String sourceEndpoint) {
-        return downloadStreamWithResponse(sourceEndpoint, null)
+    public Flux<ByteBuffer> downloadStream(String sourceUrl) {
+        return downloadStreamWithResponse(sourceUrl, null)
             .map(Response::getValue)
             .flux()
             .flatMap(flux -> flux);
@@ -353,22 +358,22 @@ public class CallRecordingAsync {
 
     /**
      * Download the recording content, (e.g. Recording's metadata, Recording video, etc.) from the {@code endpoint}.
-     * @param sourceEndpoint - URL where the content is located.
+     * @param sourceUrl - URL where the content is located.
      * @param range - An optional {@link HttpRange} value containing the range of bytes to download. If missing,
      *                  the whole content will be downloaded.
      * @return A {@link Mono} object containing a {@link Response} with the byte stream of the content requested.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> downloadStreamWithResponse(String sourceEndpoint, HttpRange range) {
-        return downloadStreamWithResponseInternal(sourceEndpoint, range, null);
+    public Mono<Response<Flux<ByteBuffer>>> downloadStreamWithResponse(String sourceUrl, HttpRange range) {
+        return downloadStreamWithResponseInternal(sourceUrl, range, null);
     }
 
-    Mono<Response<Flux<ByteBuffer>>> downloadStreamWithResponseInternal(String sourceEndpoint, HttpRange range, Context context) {
+    Mono<Response<Flux<ByteBuffer>>> downloadStreamWithResponseInternal(String sourceUrl, HttpRange range, Context context) {
         try {
-            Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+            Objects.requireNonNull(sourceUrl, "'sourceUrl' cannot be null");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return contentDownloader.downloadStreamWithResponse(sourceEndpoint, range, contextValue);
+                return contentDownloader.downloadStreamWithResponse(sourceUrl, range, contextValue);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -383,12 +388,12 @@ public class CallRecordingAsync {
      * <p>This method supports downloads up to 2GB of data.
      * Use {@link #downloadStream(String)} ()} to download larger blobs.</p>
      *
-     * @param sourceEndpoint - URL where the content is located.
+     * @param sourceUrl - URL where the content is located.
      * @return A reactive response containing the content data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> downloadContent(String sourceEndpoint) {
-        return downloadStreamWithResponse(sourceEndpoint, null)
+    public Mono<BinaryData> downloadContent(String sourceUrl) {
+        return downloadStreamWithResponse(sourceUrl, null)
             .flatMap(response -> BinaryData.fromFlux(response.getValue()));
     }
 
@@ -399,20 +404,20 @@ public class CallRecordingAsync {
      * Use {@link #downloadStreamWithResponse(String, HttpRange)}
      * to download larger blobs.</p>
      *
-     * @param sourceEndpoint - URL where the content is located.
+     * @param sourceUrl - URL where the content is located.
      * @param range - An optional {@link HttpRange} value containing the range of bytes to download. If missing,
      *                  the whole content will be downloaded.
      * @return A reactive response containing the blob data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadContentWithResponse(String sourceEndpoint, HttpRange range) {
-        return downloadContentWithResponseInternal(sourceEndpoint, range, null);
+    public Mono<Response<BinaryData>> downloadContentWithResponse(String sourceUrl, HttpRange range) {
+        return downloadContentWithResponseInternal(sourceUrl, range, null);
     }
 
-    Mono<Response<BinaryData>> downloadContentWithResponseInternal(String sourceEndpoint, HttpRange range, Context context) {
+    Mono<Response<BinaryData>> downloadContentWithResponseInternal(String sourceUrl, HttpRange range, Context context) {
         return withContext(contextValue -> {
             contextValue = context == null ? contextValue : context;
-            return downloadStreamWithResponseInternal(sourceEndpoint, range, contextValue)
+            return downloadStreamWithResponseInternal(sourceUrl, range, contextValue)
                 .flatMap(response -> BinaryData.fromFlux(response.getValue())
                     .map(data -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), data)));
@@ -422,17 +427,17 @@ public class CallRecordingAsync {
     /**
      * Download the content located in {@code endpoint} into a file marked by {@code path}.
      * This download will be done using parallel workers.
-     * @param sourceEndpoint - ACS URL where the content is located.
+     * @param sourceUrl - ACS URL where the content is located.
      * @param destinationPath - File location.
      * @return Response for a successful downloadTo request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> downloadTo(
-        String sourceEndpoint,
+        String sourceUrl,
         Path destinationPath) {
         try {
             DownloadToFileOptions options = new DownloadToFileOptions();
-            return downloadToWithResponse(sourceEndpoint, destinationPath, options).then();
+            return downloadTo(sourceUrl, destinationPath, options).then();
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -441,26 +446,26 @@ public class CallRecordingAsync {
     /**
      * Download the content located in {@code endpoint} into a file marked by {@code path}.
      * This download will be done using parallel workers.
-     * @param sourceEndpoint - ACS URL where the content is located.
+     * @param sourceUrl - ACS URL where the content is located.
      * @param destinationPath - File location.
      * @param options - an optional {@link DownloadToFileOptions} object to modify how the
      *                download will work.
      * @return Response containing the http response information from the download.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> downloadToWithResponse(
-        String sourceEndpoint,
+    public Mono<Void> downloadTo(
+        String sourceUrl,
         Path destinationPath,
         DownloadToFileOptions options) {
-        return downloadToWithResponseInternal(sourceEndpoint, destinationPath, options, null);
+        return downloadToInternal(sourceUrl, destinationPath, options, null);
     }
 
-    Mono<Response<Void>> downloadToWithResponseInternal(
-        String sourceEndpoint,
+    Mono<Void> downloadToInternal(
+        String sourceUrl,
         Path destinationPath,
         DownloadToFileOptions options,
         Context context) {
-        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+        Objects.requireNonNull(sourceUrl, "'sourceUrl' cannot be null");
         Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
 
         Set<OpenOption> openOptions = new HashSet<>();
@@ -476,24 +481,24 @@ public class CallRecordingAsync {
             AsynchronousFileChannel file = AsynchronousFileChannel.open(destinationPath, openOptions, null);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return downloadToWithResponse(sourceEndpoint, destinationPath, file, options, contextValue);
+                return downloadTo(sourceUrl, destinationPath, file, options, contextValue);
             });
         } catch (IOException ex) {
             return monoError(logger, new RuntimeException(ex));
         }
     }
 
-    Mono<Response<Void>> downloadToWithResponse(
-        String sourceEndpoint,
+    Mono<Void> downloadTo(
+        String sourceUrl,
         OutputStream destinationStream,
         HttpRange httpRange,
         Context context) {
 
-        return contentDownloader.downloadToStreamWithResponse(sourceEndpoint, destinationStream, httpRange, context);
+        return contentDownloader.downloadToStreamWithResponse(sourceUrl, destinationStream, httpRange, context).then();
     }
 
-    Mono<Response<Void>> downloadToWithResponse(
-        String sourceEndpoint,
+    Mono<Void> downloadTo(
+        String sourceUrl,
         Path destinationPath,
         AsynchronousFileChannel fileChannel,
         DownloadToFileOptions options,
@@ -505,51 +510,49 @@ public class CallRecordingAsync {
                 : options.getParallelDownloadOptions();
 
         return Mono.just(fileChannel).flatMap(
-                c -> contentDownloader.downloadToFileWithResponse(sourceEndpoint, c, finalParallelDownloadOptions, context))
-            .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-            .doFinally(signalType -> contentDownloader.downloadToFileCleanup(fileChannel, destinationPath, signalType));
+                c -> contentDownloader.downloadToFileWithResponse(sourceUrl, c, finalParallelDownloadOptions, context))
+
+            .doFinally(signalType -> contentDownloader.downloadToFileCleanup(fileChannel, destinationPath, signalType))
+            .then();
     }
 
     /**
-     * Delete the content located at the deleteEndpoint
-     * @param deleteEndpoint - ACS URL where the content is located.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * Delete the content located at the deleteUrl
+     * @param deleteUrl - ACS URL where the content is located.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for successful delete request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteRecording(String deleteEndpoint) {
+    public Mono<Void> delete(String deleteUrl) {
         try {
-            return deleteRecordingWithResponseInternal(deleteEndpoint, null)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .then();
+            return deleteWithResponseInternal(deleteUrl, null).then();
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     /**
-     * Delete the content located at the deleteEndpoint
+     * Delete the content located at the deleteUrl
      * Recording deletion will be done using parallel workers.
-     * @param deleteEndpoint - ACS URL where the content is located.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param deleteUrl - ACS URL where the content is located.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return Response for successful delete request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteRecordingWithResponse(String deleteEndpoint) {
-        return deleteRecordingWithResponseInternal(deleteEndpoint, null);
+    public Mono<Response<Void>> deleteWithResponse(String deleteUrl) {
+        return deleteWithResponseInternal(deleteUrl, null);
     }
 
-    Mono<Response<Void>> deleteRecordingWithResponseInternal(String deleteEndpoint, Context context) {
-        HttpRequest request = new HttpRequest(HttpMethod.DELETE, deleteEndpoint);
-        URL urlToSignWith = getUrlToSignRequestWith(deleteEndpoint);
+    Mono<Response<Void>> deleteWithResponseInternal(String deleteUrl, Context context) {
+        HttpRequest request = new HttpRequest(HttpMethod.DELETE, deleteUrl);
+        URL urlToSignWith = getUrlToSignRequestWith(deleteUrl);
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 contextValue = contextValue.addData("hmacSignatureURL", urlToSignWith);
                 return httpPipelineInternal
                     .send(request, contextValue)
-                    .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                     .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
             });
         } catch (RuntimeException ex) {
@@ -557,21 +560,31 @@ public class CallRecordingAsync {
         }
     }
 
-    private URL getUrlToSignRequestWith(String endpoint) {
+    private URL getUrlToSignRequestWith(String url) {
         try {
-            String path = new URL(endpoint).getPath();
+            String path = new URL(url).getPath();
 
             if (path.startsWith("/")) {
                 path = path.substring(1);
             }
 
-            return new URL(resourceEndpoint + path);
+            return new URL(resourceUrl + path);
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException(ex));
         }
     }
 
     private BlobStorageInternal getBlobStorageInternalFromBlobStorage(BlobStorage blobStorage) {
-        return new BlobStorageInternal().setContainerUri(blobStorage.getContainerUri());
+        return new BlobStorageInternal().setContainerUri(blobStorage.getContainerUrl());
+    }
+
+    private ChannelAffinityInternal getChannelAffinityInternal(ChannelAffinity channelAffinity) {
+        ChannelAffinityInternal channelAffinityInternal = new ChannelAffinityInternal();
+        CommunicationIdentifierModel communicationIdentifierModel = CommunicationIdentifierConverter.convert(channelAffinity.getParticipant());
+        channelAffinityInternal.setParticipant(communicationIdentifierModel);
+        if (channelAffinity.getChannel() != null) {
+            channelAffinityInternal.setChannel(channelAffinity.getChannel());
+        }
+        return channelAffinityInternal;
     }
 }

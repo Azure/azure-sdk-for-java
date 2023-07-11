@@ -13,8 +13,7 @@ import java.util.Map;
 @Fluent
 public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThreadEventInThreadBaseProperties {
     /*
-     * The communication identifier of the user who updated the thread
-     * properties
+     * The communication identifier of the user who updated the thread properties
      */
     @JsonProperty(value = "editedByCommunicationIdentifier")
     private CommunicationIdentifierModel editedByCommunicationIdentifier;
@@ -30,6 +29,9 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
      */
     @JsonProperty(value = "properties")
     private Map<String, Object> properties;
+
+    /** Creates an instance of AcsChatThreadPropertiesUpdatedEventData class. */
+    public AcsChatThreadPropertiesUpdatedEventData() {}
 
     /**
      * Get the editedByCommunicationIdentifier property: The communication identifier of the user who updated the thread

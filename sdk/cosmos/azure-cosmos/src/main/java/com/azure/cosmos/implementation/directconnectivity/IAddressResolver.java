@@ -4,9 +4,11 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -24,12 +26,12 @@ public interface IAddressResolver {
      * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and no. of proactive connection regions
      * @return A flux of {@link OpenConnectionResponse}.
      */
-    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
+    Flux<Void> submitOpenConnectionTasksAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
 
-    /***
-     * Set the open connection handler so SDK can proactively create connections based on need.
+    /**
+     * Sets the open connection processor so SDK can proactively create connections based on need.
      *
-     * @param openConnectionHandler the {@link IOpenConnectionsHandler}.
+     * @param proactiveOpenConnectionsProcessor the {@link ProactiveOpenConnectionsProcessor}.
      */
-    void setOpenConnectionsHandler(IOpenConnectionsHandler openConnectionHandler);
+    void setOpenConnectionsProcessor(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor);
 }

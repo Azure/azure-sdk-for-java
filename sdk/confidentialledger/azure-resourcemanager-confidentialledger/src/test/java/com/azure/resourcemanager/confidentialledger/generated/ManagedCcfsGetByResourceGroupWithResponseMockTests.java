@@ -32,7 +32,7 @@ public final class ManagedCcfsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"appName\":\"sncghkjeszz\",\"appUri\":\"ijhtxf\",\"identityServiceUri\":\"xbf\",\"memberIdentityCertificates\":[],\"deploymentType\":{\"languageRuntime\":\"CPP\",\"appSourceUri\":\"pvecxgodeb\"},\"provisioningState\":\"Unknown\",\"nodeCount\":156663672},\"location\":\"mpukgriw\",\"tags\":{\"qzahmgkbrp\":\"lfbxzpuzycisp\",\"hibnuqqkpika\":\"y\",\"buynhijggm\":\"rgvtqag\",\"arbu\":\"bfs\"},\"id\":\"rcvpnazzmhjrunmp\",\"name\":\"ttdbhrbnl\",\"type\":\"nkxmyskpbhenbtk\"}";
+            "{\"properties\":{\"appName\":\"rvjx\",\"appUri\":\"nspydptkoenkoukn\",\"identityServiceUri\":\"dwtiukbldngkp\",\"memberIdentityCertificates\":[],\"deploymentType\":{\"languageRuntime\":\"CPP\",\"appSourceUri\":\"xoegukgjnpiucgy\"},\"provisioningState\":\"Creating\",\"nodeCount\":2009239525},\"location\":\"typmrbpizcdrqjsd\",\"tags\":{\"eoejzic\":\"nfyhx\",\"hajdeyeamdpha\":\"ifsjttgzfbishcb\",\"wkgshwa\":\"alpbuxwgipwhon\",\"bin\":\"kix\"},\"id\":\"eputtmrywnuzoqf\",\"name\":\"iyqzrnk\",\"type\":\"qvyxlwhzlsicoho\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,13 @@ public final class ManagedCcfsGetByResourceGroupWithResponseMockTests {
         ManagedCcf response =
             manager
                 .managedCcfs()
-                .getByResourceGroupWithResponse("ljkyqxjvuuj", "gidokgjljyoxgvcl", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("zy", "shxmzsbbzoggigrx", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("mpukgriw", response.location());
-        Assertions.assertEquals("lfbxzpuzycisp", response.tags().get("qzahmgkbrp"));
+        Assertions.assertEquals("typmrbpizcdrqjsd", response.location());
+        Assertions.assertEquals("nfyhx", response.tags().get("eoejzic"));
         Assertions.assertEquals(LanguageRuntime.CPP, response.properties().deploymentType().languageRuntime());
-        Assertions.assertEquals("pvecxgodeb", response.properties().deploymentType().appSourceUri());
-        Assertions.assertEquals(156663672, response.properties().nodeCount());
+        Assertions.assertEquals("xoegukgjnpiucgy", response.properties().deploymentType().appSourceUri());
+        Assertions.assertEquals(2009239525, response.properties().nodeCount());
     }
 }

@@ -13,7 +13,7 @@ public final class SkuCapabilityTests {
         SkuCapability model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"ydagfuaxbe\",\"vCores\":1834993457183141824,\"supportedIops\":13185464662023528,\"supportedMemoryPerVCoreMB\":6990871855215979529}")
+                    "{\"name\":\"duugidyjr\",\"vCores\":3682891038702940178,\"supportedIops\":7621842593771814376,\"supportedMemoryPerVCoreMB\":122532505466115624}")
                 .toObject(SkuCapability.class);
     }
 

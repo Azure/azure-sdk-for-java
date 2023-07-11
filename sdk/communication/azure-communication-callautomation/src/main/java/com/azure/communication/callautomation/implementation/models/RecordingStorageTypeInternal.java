@@ -27,11 +27,7 @@ public final class RecordingStorageTypeInternal extends ExpandableStringEnum<Rec
         return fromString(name, RecordingStorageTypeInternal.class);
     }
 
-    /**
-     * Gets known RecordingStorageTypeInternal values.
-     *
-     * @return known RecordingStorageTypeInternal values.
-     */
+    /** @return known RecordingStorageTypeInternal values. */
     public static Collection<RecordingStorageTypeInternal> values() {
         return values(RecordingStorageTypeInternal.class);
     }

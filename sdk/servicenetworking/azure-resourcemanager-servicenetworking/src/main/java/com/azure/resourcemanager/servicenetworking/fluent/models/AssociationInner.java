@@ -111,7 +111,7 @@ public final class AssociationInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning State.
+     * Get the provisioningState property: Provisioning State of Traffic Controller Association Resource.
      *
      * @return the provisioningState value.
      */

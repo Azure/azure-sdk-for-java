@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedEnvironmentDiagnostics GetDetector. */
 public final class ManagedEnvironmentDiagnosticsGetDetectorSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ManagedEnvironmentDiagnostics_Get.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ManagedEnvironmentDiagnostics_Get.json
      */
     /**
      * Sample code: Get diagnostic data for a managed environments.
@@ -21,6 +19,9 @@ public final class ManagedEnvironmentDiagnosticsGetDetectorSamples {
         manager
             .managedEnvironmentDiagnostics()
             .getDetectorWithResponse(
-                "mikono-workerapp-test-rg", "mikonokubeenv", "ManagedEnvAvailabilityMetrics", Context.NONE);
+                "mikono-workerapp-test-rg",
+                "mikonokubeenv",
+                "ManagedEnvAvailabilityMetrics",
+                com.azure.core.util.Context.NONE);
     }
 }

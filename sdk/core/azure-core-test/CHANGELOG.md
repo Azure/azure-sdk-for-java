@@ -1,6 +1,6 @@
 # Release History
 
-## 1.17.0-beta.1 (Unreleased)
+## 1.19.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,49 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.18.1 (2023-07-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to `1.41.0`.
+
+## 1.18.0 (2023-06-02)
+
+### Features Added
+
+- Enabled ability to use test playback records from the assets repo, removing the need to maintain them in `azure-sdk-for-java`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to `1.40.0`.
+
+## 1.17.0 (2023-05-04)
+
+### Features Added
+
+- Enabled ability to skip matching request bodies with Test Proxy. ([#34631](https://github.com/Azure/azure-sdk-for-java/pull/34631))
+
+### Bugs Fixed
+
+- Updated command line for Test Proxy to match changes it had with options. ([#34748](https://github.com/Azure/azure-sdk-for-java/pull/34748))
+
+### Other Changes
+
+- Include names of long-running tests if test run takes longer than 30 minutes. ([#34374](https://github.com/Azure/azure-sdk-for-java/pull/34374))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to `1.39.0`.
+
+## 1.16.2 (2023-04-19)
+
+### Bugs fixed
+- Refactored startup of test-proxy instances to properly work in multi-threaded situations.
 
 ## 1.16.1 (2023-04-13)
 

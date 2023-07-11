@@ -34,6 +34,9 @@ public final class AppConfigurationKeyValueModifiedEventData {
     @JsonProperty(value = "syncToken")
     private String syncToken;
 
+    /** Creates an instance of AppConfigurationKeyValueModifiedEventData class. */
+    public AppConfigurationKeyValueModifiedEventData() {}
+
     /**
      * Get the key property: The key used to identify the key-value that was modified.
      *

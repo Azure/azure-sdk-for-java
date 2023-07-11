@@ -203,7 +203,7 @@ public final class AppliancesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.resourceconnector")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")

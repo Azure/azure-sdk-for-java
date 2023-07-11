@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.8 (Unreleased)
+## 1.0.0-beta.11 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,35 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.10 (2023-07-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to `1.41.0`.
+
+## 1.0.0-beta.9 (2023-06-02)
+
+### Breaking Changes
+
+- Replaced `OpenTelemetryMetricsOptions.setProvider` with `OpenTelemetryMetricsOptions.setOpenTelemetry` method. Instead of `io.opentelemetry.api.metrics.MeterProvider` instance 
+  it now takes `io.opentelemetry.api.OpenTelemetry` container.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to `1.40.0`.
+
+## 1.0.0-beta.8 (2023-05-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to `1.39.0`.
 
 ## 1.0.0-beta.7 (2023-04-07)
 

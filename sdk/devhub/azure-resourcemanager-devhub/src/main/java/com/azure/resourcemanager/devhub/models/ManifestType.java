@@ -17,6 +17,15 @@ public final class ManifestType extends ExpandableStringEnum<ManifestType> {
     public static final ManifestType KUBE = fromString("kube");
 
     /**
+     * Creates a new instance of ManifestType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManifestType() {
+    }
+
+    /**
      * Creates or finds a ManifestType from its string representation.
      *
      * @param name a name to look for.

@@ -31,6 +31,9 @@ public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEv
     @JsonProperty(value = "participants")
     private List<AcsChatThreadParticipantProperties> participants;
 
+    /** Creates an instance of AcsChatThreadCreatedWithUserEventData class. */
+    public AcsChatThreadCreatedWithUserEventData() {}
+
     /**
      * Get the createdByCommunicationIdentifier property: The communication identifier of the user who created the
      * thread.

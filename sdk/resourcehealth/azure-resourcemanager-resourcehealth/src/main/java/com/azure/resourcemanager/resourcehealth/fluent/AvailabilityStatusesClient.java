@@ -41,7 +41,7 @@ public interface AvailabilityStatusesClient {
     /**
      * Lists the current availability status for all the resources in the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -53,7 +53,7 @@ public interface AvailabilityStatusesClient {
     /**
      * Lists the current availability status for all the resources in the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter The filter to apply on the operation. For more information please see
      *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.

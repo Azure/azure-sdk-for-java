@@ -14,8 +14,7 @@ import java.util.List;
 @Immutable
 public final class ApplianceListCredentialResultsInner {
     /*
-     * Contains the REP (rendezvous endpoint) and “Listener” access token from
-     * notification service (NS).
+     * Contains the REP (rendezvous endpoint) and “Listener” access token from notification service (NS).
      */
     @JsonProperty(value = "hybridConnectionConfig", access = JsonProperty.Access.WRITE_ONLY)
     private HybridConnectionConfig hybridConnectionConfig;
@@ -25,6 +24,10 @@ public final class ApplianceListCredentialResultsInner {
      */
     @JsonProperty(value = "kubeconfigs", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApplianceCredentialKubeconfig> kubeconfigs;
+
+    /** Creates an instance of ApplianceListCredentialResultsInner class. */
+    public ApplianceListCredentialResultsInner() {
+    }
 
     /**
      * Get the hybridConnectionConfig property: Contains the REP (rendezvous endpoint) and “Listener” access token from

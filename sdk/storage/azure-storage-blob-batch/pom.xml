@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-batch</artifactId>
-  <version>12.19.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
+  <version>12.19.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
 
   <name>Microsoft Azure client library for Blob Storage batching</name>
   <description>This module contains client library for Microsoft Azure Blob Storage batching.</description>
@@ -38,47 +38,29 @@
     <AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE>../azure-storage-common/ci.system.properties</AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
-      --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-      --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
       --add-opens com.azure.storage.blob/com.azure.storage.blob.implementation=ALL-UNNAMED
       --add-opens com.azure.storage.blob.batch/com.azure.storage.blob.batch=ALL-UNNAMED
-      --add-reads com.azure.core=ALL-UNNAMED
-      --add-reads com.azure.core.test=ALL-UNNAMED
-      --add-reads com.azure.core.amqp=ALL-UNNAMED
-      --add-reads com.azure.storage.common=ALL-UNNAMED
-      --add-reads com.azure.storage.blob=ALL-UNNAMED
+      --add-reads com.azure.storage.blob.batch=com.azure.http.netty
+      --add-reads com.azure.storage.blob.batch=com.azure.core.http.okhttp
     </javaModulesSurefireArgLine>
+    <parallelizeLiveTests>true</parallelizeLiveTests>
   </properties>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>bintray</id>
-      <name>Groovy Bintray</name>
-      <url>https://dl.bintray.com/groovy/maven</url>
-      <releases>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.38.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.41.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.13.5</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.23.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.23.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
 
     <dependency>
@@ -100,7 +82,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.22.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.22.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>
@@ -108,19 +90,19 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.16.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.18.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.8.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.9.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.27</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.30</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -144,13 +126,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.11.8</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.spockframework</groupId>
-      <artifactId>spock-core</artifactId>
-      <version>2.4-M1-groovy-4.0</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
+      <version>1.11.11</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -179,63 +155,6 @@
           </rules>
         </configuration>
       </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
-        <version>2.1.0</version> <!-- {x-version-update;org.codehaus.gmavenplus:gmavenplus-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <goals>
-              <goal>addTestSources</goal>
-              <goal>generateTestStubs</goal>
-              <goal>compileTests</goal>
-              <goal>removeTestStubs</goal>
-            </goals>
-            <phase>test-compile</phase>
-          </execution>
-        </executions>
-        <configuration>
-          <skipTests>${skipTestCompile}</skipTests>
-          <testSources>
-            <testSource>
-              <directory>${project.basedir}/src/test</directory>
-              <includes>
-                <include>**/*.groovy</include>
-              </includes>
-            </testSource>
-          </testSources>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>java9plus</id>
-      <activation>
-        <jdk>[9,)</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>default-testCompile</id>
-                <phase>process-test-sources</phase>
-                <goals>
-                  <goal>testCompile</goal>
-                </goals>
-                <configuration>
-                  <failOnWarning>false</failOnWarning>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>

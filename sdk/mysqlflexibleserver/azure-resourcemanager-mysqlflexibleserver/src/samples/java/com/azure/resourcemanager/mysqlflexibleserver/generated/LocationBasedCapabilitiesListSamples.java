@@ -7,7 +7,7 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
 /** Samples for LocationBasedCapabilities List. */
 public final class LocationBasedCapabilitiesListSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/CapabilitiesByLocationList.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/ServiceOperations/preview/2021-12-01-preview/examples/CapabilitiesByLocationList.json
      */
     /**
      * Sample code: CapabilitiesList.

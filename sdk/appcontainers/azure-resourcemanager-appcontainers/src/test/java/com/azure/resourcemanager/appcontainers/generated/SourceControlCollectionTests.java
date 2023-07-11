@@ -9,33 +9,31 @@ import com.azure.resourcemanager.appcontainers.fluent.models.SourceControlInner;
 import com.azure.resourcemanager.appcontainers.models.SourceControlCollection;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SourceControlCollectionTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SourceControlCollection model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"operationState\":\"Canceled\",\"repoUrl\":\"mtggu\",\"branch\":\"ijr\"},\"id\":\"ivmmghfcfiwrxgk\",\"name\":\"euvyinzqodfvpgs\",\"type\":\"oxgsgbpfgzdjtx\"},{\"properties\":{\"operationState\":\"Canceled\",\"repoUrl\":\"q\",\"branch\":\"aqvlgafcqusr\"},\"id\":\"t\",\"name\":\"wsdtutnwl\",\"type\":\"uycvuzhyrmewip\"},{\"properties\":{\"operationState\":\"InProgress\",\"repoUrl\":\"xukuqgsj\",\"branch\":\"undxgketw\"},\"id\":\"zjhfjmhvv\",\"name\":\"uvgp\",\"type\":\"uneqsxvmhf\"},{\"properties\":{\"operationState\":\"Canceled\",\"repoUrl\":\"ihsasb\",\"branch\":\"dyp\"},\"id\":\"uemsly\",\"name\":\"sqy\",\"type\":\"pfoobr\"}],\"nextLink\":\"tyms\"}")
+                    "{\"value\":[{\"properties\":{\"operationState\":\"Succeeded\",\"repoUrl\":\"qucwyhahnom\",\"branch\":\"kywuhpsvfuu\"},\"id\":\"lwexxwl\",\"name\":\"lniexz\",\"type\":\"rzpgep\"},{\"properties\":{\"operationState\":\"InProgress\",\"repoUrl\":\"wwpgdakchzyvlixq\",\"branch\":\"kcxk\"},\"id\":\"nxm\",\"name\":\"suxswqrntvlwijp\",\"type\":\"ttexoqqpwcyyufmh\"},{\"properties\":{\"operationState\":\"Succeeded\",\"repoUrl\":\"wmqs\",\"branch\":\"cdqzhlctddu\"},\"id\":\"dyfpchrqbnj\",\"name\":\"rcgegydcwboxjum\",\"type\":\"qqoli\"}],\"nextLink\":\"raiouaubrjtl\"}")
                 .toObject(SourceControlCollection.class);
-        Assertions.assertEquals("mtggu", model.value().get(0).repoUrl());
-        Assertions.assertEquals("ijr", model.value().get(0).branch());
+        Assertions.assertEquals("qucwyhahnom", model.value().get(0).repoUrl());
+        Assertions.assertEquals("kywuhpsvfuu", model.value().get(0).branch());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SourceControlCollection model =
             new SourceControlCollection()
                 .withValue(
                     Arrays
                         .asList(
-                            new SourceControlInner().withRepoUrl("mtggu").withBranch("ijr"),
-                            new SourceControlInner().withRepoUrl("q").withBranch("aqvlgafcqusr"),
-                            new SourceControlInner().withRepoUrl("xukuqgsj").withBranch("undxgketw"),
-                            new SourceControlInner().withRepoUrl("ihsasb").withBranch("dyp")));
+                            new SourceControlInner().withRepoUrl("qucwyhahnom").withBranch("kywuhpsvfuu"),
+                            new SourceControlInner().withRepoUrl("wwpgdakchzyvlixq").withBranch("kcxk"),
+                            new SourceControlInner().withRepoUrl("wmqs").withBranch("cdqzhlctddu")));
         model = BinaryData.fromObject(model).toObject(SourceControlCollection.class);
-        Assertions.assertEquals("mtggu", model.value().get(0).repoUrl());
-        Assertions.assertEquals("ijr", model.value().get(0).branch());
+        Assertions.assertEquals("qucwyhahnom", model.value().get(0).repoUrl());
+        Assertions.assertEquals("kywuhpsvfuu", model.value().get(0).branch());
     }
 }

@@ -17,12 +17,12 @@ public final class ServerBackupListResultTests {
         ServerBackupListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"backupType\":\"ufpo\",\"completedTime\":\"2021-04-30T22:33:15Z\",\"source\":\"zhwlrxy\"},\"id\":\"soqijg\",\"name\":\"dmbpazlobcufpdz\",\"type\":\"rbt\"},{\"properties\":{\"backupType\":\"jnqglhqgnu\",\"completedTime\":\"2021-07-08T13:35:12Z\",\"source\":\"jywif\"},\"id\":\"esaagdfm\",\"name\":\"lzl\",\"type\":\"j\"}],\"nextLink\":\"ifkwmrvktsizntoc\"}")
+                    "{\"value\":[{\"properties\":{\"backupType\":\"t\",\"completedTime\":\"2021-02-24T11:34:50Z\",\"source\":\"hmwhfpmrqo\"},\"id\":\"tu\",\"name\":\"knryrtihfxtij\",\"type\":\"pzvgnwzsymglzufc\"},{\"properties\":{\"backupType\":\"ohdbihanufh\",\"completedTime\":\"2021-01-11T10:02:32Z\",\"source\":\"y\"},\"id\":\"git\",\"name\":\"xqhabi\",\"type\":\"pikxwczbyscnpqxu\"},{\"properties\":{\"backupType\":\"y\",\"completedTime\":\"2021-06-17T16:29:35Z\",\"source\":\"b\"},\"id\":\"rkxvdum\",\"name\":\"grtfwvu\",\"type\":\"xgaudccs\"},{\"properties\":{\"backupType\":\"jcny\",\"completedTime\":\"2021-04-04T05:13:51Z\",\"source\":\"ryhtnapczwlokjy\"},\"id\":\"kkvnipjox\",\"name\":\"jnchgej\",\"type\":\"podmailzydehojwy\"}],\"nextLink\":\"uxinpmqnjaq\"}")
                 .toObject(ServerBackupListResult.class);
-        Assertions.assertEquals("ufpo", model.value().get(0).backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T22:33:15Z"), model.value().get(0).completedTime());
-        Assertions.assertEquals("zhwlrxy", model.value().get(0).source());
-        Assertions.assertEquals("ifkwmrvktsizntoc", model.nextLink());
+        Assertions.assertEquals("t", model.value().get(0).backupType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-24T11:34:50Z"), model.value().get(0).completedTime());
+        Assertions.assertEquals("hmwhfpmrqo", model.value().get(0).source());
+        Assertions.assertEquals("uxinpmqnjaq", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -33,18 +33,26 @@ public final class ServerBackupListResultTests {
                     Arrays
                         .asList(
                             new ServerBackupInner()
-                                .withBackupType("ufpo")
-                                .withCompletedTime(OffsetDateTime.parse("2021-04-30T22:33:15Z"))
-                                .withSource("zhwlrxy"),
+                                .withBackupType("t")
+                                .withCompletedTime(OffsetDateTime.parse("2021-02-24T11:34:50Z"))
+                                .withSource("hmwhfpmrqo"),
                             new ServerBackupInner()
-                                .withBackupType("jnqglhqgnu")
-                                .withCompletedTime(OffsetDateTime.parse("2021-07-08T13:35:12Z"))
-                                .withSource("jywif")))
-                .withNextLink("ifkwmrvktsizntoc");
+                                .withBackupType("ohdbihanufh")
+                                .withCompletedTime(OffsetDateTime.parse("2021-01-11T10:02:32Z"))
+                                .withSource("y"),
+                            new ServerBackupInner()
+                                .withBackupType("y")
+                                .withCompletedTime(OffsetDateTime.parse("2021-06-17T16:29:35Z"))
+                                .withSource("b"),
+                            new ServerBackupInner()
+                                .withBackupType("jcny")
+                                .withCompletedTime(OffsetDateTime.parse("2021-04-04T05:13:51Z"))
+                                .withSource("ryhtnapczwlokjy")))
+                .withNextLink("uxinpmqnjaq");
         model = BinaryData.fromObject(model).toObject(ServerBackupListResult.class);
-        Assertions.assertEquals("ufpo", model.value().get(0).backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T22:33:15Z"), model.value().get(0).completedTime());
-        Assertions.assertEquals("zhwlrxy", model.value().get(0).source());
-        Assertions.assertEquals("ifkwmrvktsizntoc", model.nextLink());
+        Assertions.assertEquals("t", model.value().get(0).backupType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-24T11:34:50Z"), model.value().get(0).completedTime());
+        Assertions.assertEquals("hmwhfpmrqo", model.value().get(0).source());
+        Assertions.assertEquals("uxinpmqnjaq", model.nextLink());
     }
 }

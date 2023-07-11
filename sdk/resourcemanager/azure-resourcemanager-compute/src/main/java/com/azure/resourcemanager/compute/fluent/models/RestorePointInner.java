@@ -71,6 +71,20 @@ public final class RestorePointInner extends ProxyResource {
     }
 
     /**
+     * Set the sourceMetadata property: Gets the details of the VM captured at the time of the restore point creation.
+     *
+     * @param sourceMetadata the sourceMetadata value to set.
+     * @return the RestorePointInner object itself.
+     */
+    public RestorePointInner withSourceMetadata(RestorePointSourceMetadata sourceMetadata) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorePointProperties();
+        }
+        this.innerProperties().withSourceMetadata(sourceMetadata);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Gets the provisioning state of the restore point.
      *
      * @return the provisioningState value.

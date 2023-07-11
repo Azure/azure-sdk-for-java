@@ -17,6 +17,10 @@ public final class TxtRecord {
     @JsonProperty(value = "value")
     private List<String> value;
 
+    /** Creates an instance of TxtRecord class. */
+    public TxtRecord() {
+    }
+
     /**
      * Get the value property: The text value of this TXT record.
      *

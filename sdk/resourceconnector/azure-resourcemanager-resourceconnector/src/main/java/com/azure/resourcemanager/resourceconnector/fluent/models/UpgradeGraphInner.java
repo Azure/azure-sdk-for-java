@@ -29,6 +29,10 @@ public final class UpgradeGraphInner {
     @JsonProperty(value = "properties")
     private UpgradeGraphProperties properties;
 
+    /** Creates an instance of UpgradeGraphInner class. */
+    public UpgradeGraphInner() {
+    }
+
     /**
      * Get the id property: The appliance resource path.
      *

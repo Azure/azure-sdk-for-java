@@ -4,6 +4,7 @@ package com.azure.resourcemanager.dns.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.dns.DnsZoneManager;
 import com.azure.resourcemanager.dns.models.ARecordSets;
@@ -406,12 +407,13 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
                         .manager()
                         .serviceClient()
                         .getZones()
-                        .createOrUpdateAsync(
+                        .createOrUpdateWithResponseAsync(
                             self.resourceGroupName(),
                             self.name(),
                             self.innerModel(),
                             etagState.ifMatchValueOnUpdate(self.innerModel().etag()),
                             etagState.ifNonMatchValueOnCreate()))
+            .map(Response::getValue)
             .map(innerToFluentMap(this))
             .map(
                 dnsZone -> {

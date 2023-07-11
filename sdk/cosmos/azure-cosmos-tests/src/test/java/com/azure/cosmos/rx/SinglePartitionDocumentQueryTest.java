@@ -244,7 +244,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(maxItemCount), validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 1000)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10)
     public void continuationToken() throws Exception {
         String query = "SELECT * FROM r ORDER BY r.prop ASC";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();

@@ -28,32 +28,32 @@ public final class JsonInputSchemaMappingProperties {
     private JsonField topic;
 
     /*
-     * The mapping information for the EventTime property of the Event Grid
-     * Event.
+     * The mapping information for the EventTime property of the Event Grid Event.
      */
     @JsonProperty(value = "eventTime")
     private JsonField eventTime;
 
     /*
-     * The mapping information for the EventType property of the Event Grid
-     * Event.
+     * The mapping information for the EventType property of the Event Grid Event.
      */
     @JsonProperty(value = "eventType")
     private JsonFieldWithDefault eventType;
 
     /*
-     * The mapping information for the Subject property of the Event Grid
-     * Event.
+     * The mapping information for the Subject property of the Event Grid Event.
      */
     @JsonProperty(value = "subject")
     private JsonFieldWithDefault subject;
 
     /*
-     * The mapping information for the DataVersion property of the Event Grid
-     * Event.
+     * The mapping information for the DataVersion property of the Event Grid Event.
      */
     @JsonProperty(value = "dataVersion")
     private JsonFieldWithDefault dataVersion;
+
+    /** Creates an instance of JsonInputSchemaMappingProperties class. */
+    public JsonInputSchemaMappingProperties() {
+    }
 
     /**
      * Get the id property: The mapping information for the Id property of the Event Grid Event.

@@ -264,7 +264,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      */
     @Override
     public Mono<OffsetDateTime> renewMessageLock(String lockToken, String associatedLinkName) {
-        return isAuthorized(OPERATION_PEEK).then(createChannel.flatMap(channel -> {
+        return isAuthorized(ManagementConstants.OPERATION_RENEW_LOCK).then(createChannel.flatMap(channel -> {
             final Message requestMessage = createManagementMessage(ManagementConstants.OPERATION_RENEW_LOCK,
                 associatedLinkName);
             final Map<String, Object> requestBody = new HashMap<>();
@@ -428,7 +428,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
         final UUID[] lockTokens = new UUID[]{UUID.fromString(lockToken)};
         return isAuthorized(OPERATION_UPDATE_DISPOSITION).then(createChannel.flatMap(channel -> {
             logger.atVerbose()
-                .addKeyValue("lockTokens", Arrays.toString(lockTokens))
+                .addKeyValue("lockTokens", () -> Arrays.toString(lockTokens))
                 .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
                 .addKeyValue(SESSION_ID_KEY, sessionId)
                 .log("Update disposition of deliveries.");

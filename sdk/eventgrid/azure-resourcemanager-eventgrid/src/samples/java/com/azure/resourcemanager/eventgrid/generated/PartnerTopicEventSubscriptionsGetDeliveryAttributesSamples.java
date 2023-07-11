@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PartnerTopicEventSubscriptions GetDeliveryAttributes. */
 public final class PartnerTopicEventSubscriptionsGetDeliveryAttributesSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerTopicEventSubscriptions_GetDeliveryAttributes.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerTopicEventSubscriptions_GetDeliveryAttributes.json
      */
     /**
      * Sample code: PartnerTopicEventSubscriptions_GetDeliveryAttributes.
@@ -21,6 +19,6 @@ public final class PartnerTopicEventSubscriptionsGetDeliveryAttributesSamples {
         manager
             .partnerTopicEventSubscriptions()
             .getDeliveryAttributesWithResponse(
-                "examplerg", "examplePartnerTopic1", "examplesubscription1", Context.NONE);
+                "examplerg", "examplePartnerTopic1", "examplesubscription1", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,10 +4,13 @@
 
 package com.azure.resourcemanager.appcontainers.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.ConnectedEnvironmentInner;
+import com.azure.resourcemanager.appcontainers.models.CheckNameAvailabilityRequest;
+import com.azure.resourcemanager.appcontainers.models.CheckNameAvailabilityResponse;
 import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironment;
 import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironmentProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
@@ -159,7 +162,7 @@ public final class ConnectedEnvironmentImpl
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");
+        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
         this.connectedEnvironmentName = Utils.getValueFromIdByName(innerObject.id(), "connectedEnvironments");
     }
 
@@ -181,6 +184,21 @@ public final class ConnectedEnvironmentImpl
                 .getByResourceGroupWithResponse(resourceGroupName, connectedEnvironmentName, context)
                 .getValue();
         return this;
+    }
+
+    public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
+        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
+        return serviceManager
+            .connectedEnvironments()
+            .checkNameAvailabilityWithResponse(
+                resourceGroupName, connectedEnvironmentName, checkNameAvailabilityRequest, context);
+    }
+
+    public CheckNameAvailabilityResponse checkNameAvailability(
+        CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
+        return serviceManager
+            .connectedEnvironments()
+            .checkNameAvailability(resourceGroupName, connectedEnvironmentName, checkNameAvailabilityRequest);
     }
 
     public ConnectedEnvironmentImpl withRegion(Region location) {

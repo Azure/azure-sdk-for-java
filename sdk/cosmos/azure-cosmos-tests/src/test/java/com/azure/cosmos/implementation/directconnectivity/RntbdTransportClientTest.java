@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.BaseAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.FailureValidator;
@@ -39,6 +40,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedExceptio
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.AsyncRntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionRntbdRequestRecord;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelHealthChecker;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContext;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextNegotiator;
@@ -103,7 +105,7 @@ public final class RntbdTransportClientTest {
     private static final int lsn = 5;
     private static final ByteBuf noContent = Unpooled.wrappedBuffer(new byte[0]);
     private static final String partitionKeyRangeId = "3";
-    private static final Uri physicalAddress = new Uri("rntbd://host:10251/replica-path/");
+    private static final Uri addressUri = new Uri("rntbd://host:10251/replica-path/");
     private static final Duration requestTimeout = Duration.ofSeconds(1000);
     private static final int sslHandshakeTimeoutInMillis = 5000;
     private static final boolean timeoutDetectionEnabled = true;
@@ -729,7 +731,7 @@ public final class RntbdTransportClientTest {
             final Mono<StoreResponse> responseMono;
 
             try {
-                responseMono = client.invokeResourceOperationAsync(physicalAddress, request);
+                responseMono = client.invokeResourceOperationAsync(addressUri, request);
             } catch (final Exception error) {
                 throw new AssertionError(String.format("%s: %s", error.getClass(), error));
             }
@@ -828,7 +830,7 @@ public final class RntbdTransportClientTest {
             RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         URI locationToRoute = new URI("http://localhost-west:8080");
         request.requestContext.locationEndpointToRoute = locationToRoute;
-        RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, physicalAddress);
+        RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, addressUri);
         RntbdRequestTimer requestTimer = new RntbdRequestTimer(5000, 5000);
         RntbdRequestRecord rntbdRequestRecord = new AsyncRntbdRequestRecord(requestArgs, requestTimer);
 
@@ -836,12 +838,15 @@ public final class RntbdTransportClientTest {
         Mockito.when(rntbdEndpoint.request(any())).thenReturn(rntbdRequestRecord);
 
         RntbdEndpoint.Provider endpointProvider = Mockito.mock(RntbdEndpoint.Provider.class);
-        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, physicalAddress.getURI())).thenReturn(rntbdEndpoint);
+
 
         RntbdTransportClient transportClient = new RntbdTransportClient(endpointProvider);
+
+        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, addressUri, transportClient.getProactiveOpenConnectionsProcessor(), Configs.getMinConnectionPoolSizePerEndpoint())).thenReturn(rntbdEndpoint);
+
         transportClient
             .invokeStoreAsync(
-                physicalAddress,
+                addressUri,
                 request)
             .cancelOn(Schedulers.boundedElastic())
             .subscribe()
@@ -952,17 +957,21 @@ public final class RntbdTransportClientTest {
 
         final RntbdRequestTimer requestTimer;
         final FakeChannel fakeChannel;
-        final URI physicalAddress;
+        final Uri addressUri;
         final URI remoteURI;
         final Tag tag;
         private final Tag clientMetricTag;
         private final RntbdDurableEndpointMetrics durableEndpointMetrics;
 
         private FakeEndpoint(
-            final Config config, final RntbdRequestTimer timer, final URI physicalAddress,
+            final Config config, final RntbdRequestTimer timer, final Uri addressUri,
             final RntbdResponse... expected
         ) {
+
+            URI physicalAddress = addressUri.getURI();
+
             try {
+                this.addressUri = addressUri;
                 this.remoteURI = new URI(
                     physicalAddress.getScheme(),
                     null,
@@ -975,7 +984,7 @@ public final class RntbdTransportClientTest {
                 this.durableEndpointMetrics.setEndpoint(this);
             } catch (URISyntaxException error) {
                 throw new IllegalArgumentException(
-                    lenientFormat("physicalAddress %s cannot be parsed as a server-based authority", physicalAddress),
+                    lenientFormat("addressUri %s cannot be parsed as a server-based authority", addressUri),
                     error);
             }
 
@@ -990,7 +999,6 @@ public final class RntbdTransportClientTest {
                     Duration.ofMillis(100).toNanos(),
                     null,
                     config.tcpNetworkRequestTimeoutInNanos());
-            this.physicalAddress = physicalAddress;
             this.requestTimer = timer;
 
             this.fakeChannel = new FakeChannel(responses,
@@ -1003,7 +1011,7 @@ public final class RntbdTransportClientTest {
             this.tag = Tag.of(FakeEndpoint.class.getSimpleName(), this.fakeChannel.remoteAddress().toString());
             this.clientMetricTag = Tag.of(
                 TagName.ServiceEndpoint.toString(),
-                String.format("%s_%d", this.physicalAddress.getHost(), this.physicalAddress.getPort()));
+                String.format("%s_%d", physicalAddress.getHost(), physicalAddress.getPort()));
         }
 
         // region Accessors
@@ -1114,6 +1122,21 @@ public final class RntbdTransportClientTest {
             throw new NotImplementedException("injectConnectionErrors is not supported in FakeEndpoint");
         }
 
+        @Override
+        public int getMinChannelsRequired() {
+            return Configs.getMinConnectionPoolSizePerEndpoint();
+        }
+
+        @Override
+        public void setMinChannelsRequired(int minConnectionsRequired) {
+            throw new NotImplementedException("setMinChannelsRequired is not implemented for FakeServiceEndpoint");
+        }
+
+        @Override
+        public Uri getAddressUri() {
+            return addressUri;
+        }
+
         // endregion
 
         // region Methods
@@ -1176,13 +1199,13 @@ public final class RntbdTransportClientTest {
             }
 
             @Override
-            public RntbdEndpoint createIfAbsent(URI serviceEndpoint, URI physicalAddress) {
-                return new FakeEndpoint(config, timer, physicalAddress, expected);
+            public RntbdEndpoint createIfAbsent(URI serviceEndpoint, Uri addressUri, ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor, int minRequiredChannelsForEndpoint) {
+                return new FakeEndpoint(config, timer, addressUri, expected);
             }
 
             @Override
             public RntbdEndpoint get(URI physicalAddress) {
-                return new FakeEndpoint(config, timer, physicalAddress, expected);
+                return new FakeEndpoint(config, timer, new Uri(physicalAddress.toString()), expected);
             }
 
             @Override
@@ -1193,6 +1216,11 @@ public final class RntbdTransportClientTest {
             @Override
             public Stream<RntbdEndpoint> list() {
                 return Stream.empty();
+            }
+
+            @Override
+            public boolean isClosed() {
+                return false;
             }
         }
 

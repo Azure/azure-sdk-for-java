@@ -131,7 +131,7 @@ public final class SubnetPropertiesFormatInner {
     /*
      * Application gateway IP configurations of virtual network resource.
      */
-    @JsonProperty(value = "applicationGatewayIpConfigurations")
+    @JsonProperty(value = "applicationGatewayIPConfigurations")
     private List<ApplicationGatewayIpConfigurationInner> applicationGatewayIpConfigurations;
 
     /** Creates an instance of SubnetPropertiesFormatInner class. */

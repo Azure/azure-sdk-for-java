@@ -8,6 +8,8 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import java.util.Collection;
+
 /**
  * Defines values for {@link WarningCode}.
  */
@@ -32,5 +34,10 @@ public final class WarningCode extends ExpandableStringEnum<WarningCode> {
     @JsonCreator
     public static WarningCode fromString(String name) {
         return fromString(name, WarningCode.class);
+    }
+
+    /** @return known WarningCode values. */
+    public static Collection<WarningCode> values() {
+        return values(WarningCode.class);
     }
 }

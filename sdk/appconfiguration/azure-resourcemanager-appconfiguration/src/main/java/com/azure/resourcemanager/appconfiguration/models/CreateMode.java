@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appconfiguration.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CreateMode. */
+/** Indicates whether the configuration store need to be recovered. */
 public enum CreateMode {
     /** Enum value Recover. */
     RECOVER("Recover"),
@@ -30,6 +30,9 @@ public enum CreateMode {
      */
     @JsonCreator
     public static CreateMode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CreateMode[] items = CreateMode.values();
         for (CreateMode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum CreateMode {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

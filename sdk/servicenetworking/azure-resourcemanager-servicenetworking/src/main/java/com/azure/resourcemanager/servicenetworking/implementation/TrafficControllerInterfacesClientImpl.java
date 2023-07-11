@@ -81,8 +81,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking"
-                + "/trafficControllers")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TrafficControllerListResult>> listByResourceGroup(
@@ -95,8 +94,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking"
-                + "/trafficControllers/{trafficControllerName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TrafficControllerInner>> getByResourceGroup(
@@ -110,8 +108,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking"
-                + "/trafficControllers/{trafficControllerName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -126,8 +123,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking"
-                + "/trafficControllers/{trafficControllerName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TrafficControllerInner>> update(
@@ -142,8 +138,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking"
-                + "/trafficControllers/{trafficControllerName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -812,7 +807,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TrafficControllerInner>, TrafficControllerInner> beginCreateOrUpdate(
         String resourceGroupName, String trafficControllerName, TrafficControllerInner resource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, resource).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, resource).getSyncPoller();
     }
 
     /**
@@ -831,7 +826,9 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TrafficControllerInner>, TrafficControllerInner> beginCreateOrUpdate(
         String resourceGroupName, String trafficControllerName, TrafficControllerInner resource, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, resource, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, resource, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1227,7 +1224,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName) {
-        return beginDeleteAsync(resourceGroupName, trafficControllerName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, trafficControllerName).getSyncPoller();
     }
 
     /**
@@ -1244,7 +1241,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String trafficControllerName, Context context) {
-        return beginDeleteAsync(resourceGroupName, trafficControllerName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, trafficControllerName, context).getSyncPoller();
     }
 
     /**

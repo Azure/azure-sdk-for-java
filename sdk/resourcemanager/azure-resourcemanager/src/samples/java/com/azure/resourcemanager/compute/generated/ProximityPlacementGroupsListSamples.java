@@ -7,14 +7,14 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for ProximityPlacementGroups List. */
 public final class ProximityPlacementGroupsListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_ListBySubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_ListBySubscription.json
      */
     /**
-     * Sample code: Create a proximity placement group.
+     * Sample code: List proximity placement groups.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createAProximityPlacementGroup(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void listProximityPlacementGroups(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()

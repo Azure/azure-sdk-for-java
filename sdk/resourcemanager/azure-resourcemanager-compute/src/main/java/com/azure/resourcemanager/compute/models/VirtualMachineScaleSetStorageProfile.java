@@ -20,16 +20,16 @@ public final class VirtualMachineScaleSetStorageProfile {
     private ImageReference imageReference;
 
     /*
-     * Specifies information about the operating system disk used by the virtual machines in the scale set. <br><br>
-     * For more information about disks, see [About disks and VHDs for Azure virtual
+     * Specifies information about the operating system disk used by the virtual machines in the scale set. For more
+     * information about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      */
     @JsonProperty(value = "osDisk")
     private VirtualMachineScaleSetOSDisk osDisk;
 
     /*
-     * Specifies the parameters that are used to add data disks to the virtual machines in the scale set. <br><br> For
-     * more information about disks, see [About disks and VHDs for Azure virtual
+     * Specifies the parameters that are used to add data disks to the virtual machines in the scale set. For more
+     * information about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      */
     @JsonProperty(value = "dataDisks")
@@ -71,7 +71,7 @@ public final class VirtualMachineScaleSetStorageProfile {
 
     /**
      * Get the osDisk property: Specifies information about the operating system disk used by the virtual machines in
-     * the scale set. &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual
+     * the scale set. For more information about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      *
      * @return the osDisk value.
@@ -82,7 +82,7 @@ public final class VirtualMachineScaleSetStorageProfile {
 
     /**
      * Set the osDisk property: Specifies information about the operating system disk used by the virtual machines in
-     * the scale set. &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual
+     * the scale set. For more information about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      *
      * @param osDisk the osDisk value to set.
@@ -95,7 +95,7 @@ public final class VirtualMachineScaleSetStorageProfile {
 
     /**
      * Get the dataDisks property: Specifies the parameters that are used to add data disks to the virtual machines in
-     * the scale set. &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual
+     * the scale set. For more information about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      *
      * @return the dataDisks value.
@@ -106,7 +106,7 @@ public final class VirtualMachineScaleSetStorageProfile {
 
     /**
      * Set the dataDisks property: Specifies the parameters that are used to add data disks to the virtual machines in
-     * the scale set. &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual
+     * the scale set. For more information about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      *
      * @param dataDisks the dataDisks value to set.

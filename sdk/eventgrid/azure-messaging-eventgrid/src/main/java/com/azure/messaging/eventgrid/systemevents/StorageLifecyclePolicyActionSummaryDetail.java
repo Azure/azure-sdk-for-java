@@ -28,6 +28,9 @@ public final class StorageLifecyclePolicyActionSummaryDetail {
     @JsonProperty(value = "errorList")
     private String errorList;
 
+    /** Creates an instance of StorageLifecyclePolicyActionSummaryDetail class. */
+    public StorageLifecyclePolicyActionSummaryDetail() {}
+
     /**
      * Get the totalObjectsCount property: Total number of objects to be acted on by this action.
      *

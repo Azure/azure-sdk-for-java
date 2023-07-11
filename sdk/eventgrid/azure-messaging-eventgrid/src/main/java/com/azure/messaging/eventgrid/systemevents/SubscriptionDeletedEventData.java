@@ -16,6 +16,9 @@ public final class SubscriptionDeletedEventData {
     @JsonProperty(value = "eventSubscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String eventSubscriptionId;
 
+    /** Creates an instance of SubscriptionDeletedEventData class. */
+    public SubscriptionDeletedEventData() {}
+
     /**
      * Get the eventSubscriptionId property: The Azure resource ID of the deleted event subscription.
      *

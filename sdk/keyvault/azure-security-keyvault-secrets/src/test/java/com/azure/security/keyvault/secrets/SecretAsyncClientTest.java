@@ -8,9 +8,7 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
-import com.azure.core.util.Context;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
@@ -21,6 +19,7 @@ import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
@@ -28,7 +27,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.BiFunction;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -50,8 +48,8 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
 
     private void createSecretAsyncClient(HttpClient httpClient, SecretServiceVersion serviceVersion,
                                          String testTenantId) {
-        HttpPipeline httpPipeline = getHttpPipeline(buildAsyncAssertingClient(httpClient == null
-            ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
+        HttpPipeline httpPipeline = getHttpPipeline(buildAsyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
         SecretClientImpl implClient = spy(new SecretClientImpl(getEndpoint(), httpPipeline, serviceVersion));
 
         if (interceptorManager.isPlaybackMode()) {
@@ -62,15 +60,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        //skip paging requests until #30031 resolved
-        BiFunction<HttpRequest, Context, Boolean> skipRequestFunction = (request, context) -> {
-            String callerMethod = (String) context.getData("caller-method").orElse("");
-            return (callerMethod.contains("list") || callerMethod.contains("getSecrets")
-                || callerMethod.contains("getSecretVersions") || callerMethod.contains("delete")
-                || callerMethod.contains("recover"));
-        };
         return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest(skipRequestFunction)
             .assertAsync()
             .build();
     }
@@ -543,11 +533,15 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
 
             sleepInRecordMode(30000);
 
-            secretAsyncClient.listPropertiesOfSecretVersions(secretName).subscribe(output::add);
-
-            sleepInRecordMode(30000);
-
-            assertEquals(secretsToSetAndList.size(), output.size());
+            StepVerifier.create(secretAsyncClient.listPropertiesOfSecretVersions(secretName)
+                    .map(secretProperties -> {
+                        output.add(secretProperties);
+                        return Mono.empty();
+                    })
+                    .last())
+                .assertNext(ignore ->
+                    assertEquals(secretsToSetAndList.size(), output.size()))
+                .verifyComplete();
         });
     }
 

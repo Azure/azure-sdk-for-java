@@ -10,7 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appcontainers.models.AvailableWorkloadProfileProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A premium workload profile. */
+/** A workload profile with specific hardware configure to run container apps. */
 @Fluent
 public final class AvailableWorkloadProfileInner extends ProxyResource {
     /*

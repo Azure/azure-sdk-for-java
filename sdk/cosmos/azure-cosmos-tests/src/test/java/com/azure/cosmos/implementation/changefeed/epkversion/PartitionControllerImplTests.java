@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledExcept
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.routing.Range;
 import org.mockito.Mockito;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,13 +26,24 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class PartitionControllerImplTests {
-    @Test(groups = "unit")
-    public void handleSplit() throws InterruptedException {
+
+    @DataProvider(name = "shouldSkipDirectLeaseAssignmentArgProvider")
+    public static Object[][] shouldSkipDirectLeaseAssignmentArgProvider() {
+        return new Object[][]{
+            // shouldSkipDirectLeaseAssignment
+            { true },
+            { false }
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "shouldSkipDirectLeaseAssignmentArgProvider")
+    public void handleSplit(boolean shouldSkipDirectLeaseAssignment) throws InterruptedException {
         LeaseContainer leaseContainer = Mockito.mock(LeaseContainer.class);
         when(leaseContainer.getOwnedLeases()).thenReturn(Flux.empty());
 
@@ -76,7 +88,8 @@ public class PartitionControllerImplTests {
                         synchronizer,
                         lease,
                         Arrays.asList(childLease1, childLease2),
-                        true);
+                        true,
+                        shouldSkipDirectLeaseAssignment);
 
         StepVerifier.create(partitionController.initialize()).verifyComplete();
         StepVerifier.create(partitionController.addOrUpdateLease(lease))
@@ -87,28 +100,53 @@ public class PartitionControllerImplTests {
         // add some waiting time here so that we can capture all the calls
         Thread.sleep(500);
 
-        // Verify total three leases are acquired
-        verify(leaseManager, times(1)).acquire(lease);
-        verify(leaseManager, times(1)).acquire(childLease1);
-        verify(leaseManager, times(1)).acquire(childLease2);
+        if (shouldSkipDirectLeaseAssignment) {
+            // Verify only parent lease is acquired
+            verify(leaseManager, times(1)).acquire(lease);
+            verify(leaseManager, never()).acquire(childLease1);
+            verify(leaseManager, never()).acquire(childLease2);
 
-        // Verify partitionSupervisor is created for each lease
-        verify(partitionSupervisorFactory, times(1)).create(lease);
-        verify(partitionSupervisorFactory, times(1)).create(childLease1);
-        verify(partitionSupervisorFactory, times(1)).create(childLease2);
+            // Verify partitionSupervisor is created for parent lease
+            verify(partitionSupervisorFactory, times(1)).create(lease);
+            verify(partitionSupervisorFactory, never()).create(childLease1);
+            verify(partitionSupervisorFactory, never()).create(childLease2);
 
-        // Verify only the lease with feedRangeGone exception will be deleted from lease container
-        verify(leaseManager, times(1)).delete(lease);
-        verify(leaseManager, Mockito.never()).delete(childLease1);
-        verify(leaseManager, Mockito.never()).delete(childLease2);
+            // Verify only the lease with feedRangeGone exception will be deleted from lease container
+            verify(leaseManager, times(1)).delete(lease);
+            verify(leaseManager, Mockito.never()).delete(childLease1);
+            verify(leaseManager, Mockito.never()).delete(childLease2);
 
-        // Verify at the end, all the leases will be released
-        verify(leaseManager, times(1)).release(lease);
-        verify(leaseManager, times(1)).release(childLease1);
-        verify(leaseManager, times(1)).release(childLease2);
+            // Verify at the end, only parent lease will be released
+            verify(leaseManager, times(1)).release(lease);
+            verify(leaseManager, never()).release(childLease1);
+            verify(leaseManager, never()).release(childLease2);
 
-        verify(leaseManager, Mockito.never()).updateProperties(Mockito.any());
-        verify(feedRangeGoneHandler, times(1)).handlePartitionGone();
+            verify(leaseManager, Mockito.never()).updateProperties(Mockito.any());
+            verify(feedRangeGoneHandler, times(1)).handlePartitionGone();
+        } else {
+            // Verify total three leases are acquired
+            verify(leaseManager, times(1)).acquire(lease);
+            verify(leaseManager, times(1)).acquire(childLease1);
+            verify(leaseManager, times(1)).acquire(childLease2);
+
+            // Verify partitionSupervisor is created for each lease
+            verify(partitionSupervisorFactory, times(1)).create(lease);
+            verify(partitionSupervisorFactory, times(1)).create(childLease1);
+            verify(partitionSupervisorFactory, times(1)).create(childLease2);
+
+            // Verify only the lease with feedRangeGone exception will be deleted from lease container
+            verify(leaseManager, times(1)).delete(lease);
+            verify(leaseManager, Mockito.never()).delete(childLease1);
+            verify(leaseManager, Mockito.never()).delete(childLease2);
+
+            // Verify at the end, all the leases will be released
+            verify(leaseManager, times(1)).release(lease);
+            verify(leaseManager, times(1)).release(childLease1);
+            verify(leaseManager, times(1)).release(childLease2);
+
+            verify(leaseManager, Mockito.never()).updateProperties(Mockito.any());
+            verify(feedRangeGoneHandler, times(1)).handlePartitionGone();
+        }
     }
 
 
@@ -151,6 +189,7 @@ public class PartitionControllerImplTests {
                         synchronizer,
                         lease,
                         Arrays.asList(lease), // For merge with epkBased lease, we are going to reuse the lease
+                        false,
                         false);
 
         StepVerifier.create(partitionController.initialize()).verifyComplete();
@@ -256,10 +295,12 @@ public class PartitionControllerImplTests {
             PartitionSynchronizer partitionSynchronizer,
             ServiceItemLeaseV1 leaseWithException,
             List<ServiceItemLeaseV1> newLeases,
-            boolean shouldDeleteLeaseWithException){
+            boolean shouldDeleteLeaseWithException,
+            boolean shouldSkipDirectLeaseAssignment){
         FeedRangeGoneHandler feedRangeGoneHandler = Mockito.mock(FeedRangeGoneHandler.class);
         when(feedRangeGoneHandler.handlePartitionGone()).thenReturn(Flux.fromIterable(newLeases));
         when(feedRangeGoneHandler.shouldDeleteCurrentLease()).thenReturn(shouldDeleteLeaseWithException);
+        when(feedRangeGoneHandler.shouldSkipDirectLeaseAssignment()).thenReturn(shouldSkipDirectLeaseAssignment);
 
         when(partitionSynchronizer.getFeedRangeGoneHandler(leaseWithException)).thenReturn(Mono.just(feedRangeGoneHandler));
 

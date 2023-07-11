@@ -37,7 +37,6 @@ import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.BoundingRegion;
 import com.azure.ai.formrecognizer.documentanalysis.models.CurrencyValue;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisFeature;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnnotation;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnnotationKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcode;
@@ -230,9 +229,9 @@ public class Transforms {
                         .map(innerDocumentCell -> {
                             DocumentTableCell documentTableCell = new DocumentTableCell();
                             DocumentTableCellHelper.setBoundingRegions(documentTableCell,
-                                toBoundingRegions(innerDocumentTable.getBoundingRegions()));
+                                toBoundingRegions(innerDocumentCell.getBoundingRegions()));
                             DocumentTableCellHelper.setSpans(documentTableCell,
-                                toDocumentSpans(innerDocumentTable.getSpans()));
+                                toDocumentSpans(innerDocumentCell.getSpans()));
                             DocumentTableCellHelper.setContent(documentTableCell, innerDocumentCell.getContent());
                             DocumentTableCellHelper.setColumnIndex(documentTableCell,
                                 innerDocumentCell.getColumnIndex());
@@ -345,10 +344,8 @@ public class Transforms {
 
     public static BuildDocumentClassifierRequest getBuildDocumentClassifierRequest(String classifierId,
                                                                                    String description, Map<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails> docTypes) {
-        BuildDocumentClassifierRequest buildDocumentClassifierRequest
-            = new BuildDocumentClassifierRequest(classifierId, docTypes)
-            .setDescription(description);
-        return buildDocumentClassifierRequest;
+        return new BuildDocumentClassifierRequest(classifierId, docTypes)
+        .setDescription(description);
     }
 
     /**
@@ -365,14 +362,13 @@ public class Transforms {
     }
 
     public static HttpResponseException getHttpResponseException(ErrorResponseException throwable) {
-        ErrorResponseException errorResponseException = throwable;
         com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error = null;
-        if (errorResponseException.getValue() != null && errorResponseException.getValue().getError() != null) {
-            error = (errorResponseException.getValue().getError());
+        if (throwable.getValue() != null && throwable.getValue().getError() != null) {
+            error = (throwable.getValue().getError());
         }
         return new HttpResponseException(
-            errorResponseException.getMessage(),
-            errorResponseException.getResponse(),
+            throwable.getMessage(),
+            throwable.getResponse(),
             toResponseError(error)
         );
     }
@@ -491,14 +487,6 @@ public class Transforms {
         return null;
     }
 
-    private static Map<String, DocumentFieldSchema> toDocumentFieldProperties(
-        Map<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldSchema> properties) {
-        Map<String, DocumentFieldSchema> schemaMap = new HashMap<>();
-        properties.forEach((key, innerDocFieldSchema) ->
-            schemaMap.put(key, toDocumentFieldSchema(innerDocFieldSchema)));
-        return schemaMap;
-    }
-
     private static DocumentKeyValueElement toDocumentKeyValueElement(
         com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentKeyValueElement innerDocKeyValElement) {
         if (innerDocKeyValElement == null) {
@@ -511,6 +499,14 @@ public class Transforms {
         DocumentKeyValueElementHelper.setSpans(documentKeyValueElement,
             toDocumentSpans(innerDocKeyValElement.getSpans()));
         return documentKeyValueElement;
+    }
+
+    private static Map<String, DocumentFieldSchema> toDocumentFieldProperties(
+        Map<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldSchema> properties) {
+        Map<String, DocumentFieldSchema> schemaMap = new HashMap<>();
+        properties.forEach((key, innerDocFieldSchema) ->
+            schemaMap.put(key, toDocumentFieldSchema(innerDocFieldSchema)));
+        return schemaMap;
     }
 
     private static Map<String, DocumentField> toDocumentFields(
@@ -780,14 +776,12 @@ public class Transforms {
     }
 
     public static CopyAuthorization getInnerCopyAuthorization(DocumentModelCopyAuthorization target) {
-        CopyAuthorization copyRequest
-            = new CopyAuthorization(target.getTargetResourceId(),
-            target.getTargetResourceRegion(),
-            target.getTargetModelId(),
-            target.getTargetModelLocation(),
-            target.getAccessToken(),
-            target.getExpiresOn());
-        return copyRequest;
+        return new CopyAuthorization(target.getTargetResourceId(),
+        target.getTargetResourceRegion(),
+        target.getTargetModelId(),
+        target.getTargetModelLocation(),
+        target.getAccessToken(),
+        target.getExpiresOn());
     }
 
     private static ResponseError toResponseError(com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error) {
@@ -854,16 +848,6 @@ public class Transforms {
         DocumentClassifierDetailsHelper.setExpiresOn(classifierDetails, inner.getExpirationDateTime());
 
         return classifierDetails;
-    }
-
-    public static List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentAnalysisFeature> toInnerDocAnalysisFeatures(List<DocumentAnalysisFeature> documentAnalysisFeatures) {
-        if (documentAnalysisFeatures != null) {
-            return documentAnalysisFeatures
-                .stream()
-                .map(documentAnalysisFeature -> com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentAnalysisFeature.fromString(documentAnalysisFeature.toString()))
-                .collect(Collectors.toList());
-        }
-        return null;
     }
 
     private static Map<String, ClassifierDocumentTypeDetails> fromInnerDocTypes(

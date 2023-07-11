@@ -39,15 +39,6 @@ public final class TopicTypesImpl implements TopicTypes {
         return Utils.mapPage(inner, inner1 -> new TopicTypeInfoImpl(inner1, this.manager()));
     }
 
-    public TopicTypeInfo get(String topicTypeName) {
-        TopicTypeInfoInner inner = this.serviceClient().get(topicTypeName);
-        if (inner != null) {
-            return new TopicTypeInfoImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<TopicTypeInfo> getWithResponse(String topicTypeName, Context context) {
         Response<TopicTypeInfoInner> inner = this.serviceClient().getWithResponse(topicTypeName, context);
         if (inner != null) {
@@ -56,6 +47,15 @@ public final class TopicTypesImpl implements TopicTypes {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new TopicTypeInfoImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public TopicTypeInfo get(String topicTypeName) {
+        TopicTypeInfoInner inner = this.serviceClient().get(topicTypeName);
+        if (inner != null) {
+            return new TopicTypeInfoImpl(inner, this.manager());
         } else {
             return null;
         }

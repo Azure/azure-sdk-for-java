@@ -509,6 +509,7 @@ public final class Utils {
                 .append("\n\tTags: ").append(resource.tags())
                 .append("\n\tHardwareProfile: ")
                 .append("\n\t\tSize: ").append(resource.size())
+                .append("\n\ttimeCreated: ").append(resource.timeCreated())
                 .append(storageProfile)
                 .append(osProfile)
                 .append(networkProfile)

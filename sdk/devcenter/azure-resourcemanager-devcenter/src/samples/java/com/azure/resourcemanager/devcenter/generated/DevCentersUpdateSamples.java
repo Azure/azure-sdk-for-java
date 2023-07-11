@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.models.DevCenter;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for DevCenters Update. */
 public final class DevCentersUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevCenters_Patch.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/DevCenters_Patch.json
      */
     /**
      * Sample code: DevCenters_Update.
@@ -21,7 +20,10 @@ public final class DevCentersUpdateSamples {
      */
     public static void devCentersUpdate(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
         DevCenter resource =
-            manager.devCenters().getByResourceGroupWithResponse("rg1", "Contoso", Context.NONE).getValue();
+            manager
+                .devCenters()
+                .getByResourceGroupWithResponse("rg1", "Contoso", com.azure.core.util.Context.NONE)
+                .getValue();
         resource.update().withTags(mapOf("CostCode", "12345")).apply();
     }
 

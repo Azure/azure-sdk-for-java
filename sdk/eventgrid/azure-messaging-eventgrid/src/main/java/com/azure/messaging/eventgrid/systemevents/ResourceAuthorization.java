@@ -29,6 +29,9 @@ public final class ResourceAuthorization {
     @JsonProperty(value = "evidence")
     private Map<String, String> evidence;
 
+    /** Creates an instance of ResourceAuthorization class. */
+    public ResourceAuthorization() {}
+
     /**
      * Get the scope property: The scope of the authorization.
      *

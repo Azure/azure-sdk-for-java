@@ -6,57 +6,95 @@ package com.azure.resourcemanager.devhub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devhub.fluent.models.WorkflowInner;
-import com.azure.resourcemanager.devhub.models.ManifestType;
+import com.azure.resourcemanager.devhub.models.DockerfileGenerationMode;
+import com.azure.resourcemanager.devhub.models.GenerationLanguage;
+import com.azure.resourcemanager.devhub.models.GenerationManifestType;
+import com.azure.resourcemanager.devhub.models.ManifestGenerationMode;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WorkflowInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WorkflowInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"githubWorkflowProfile\":{\"repositoryOwner\":\"e\",\"repositoryName\":\"hqjbasvmsmj\",\"branchName\":\"lngsntnbybkzgcwr\",\"dockerfile\":\"lxxwrljdouskc\",\"dockerBuildContext\":\"kocrcjdkwtnhx\",\"namespace\":\"biksq\",\"aksResourceId\":\"sainqpjwnzl\",\"prURL\":\"fmppe\",\"pullNumber\":1862600222,\"prStatus\":\"submitted\",\"authStatus\":\"kube\"}},\"location\":\"bkyqduu\",\"tags\":{\"czdzev\":\"c\"},\"id\":\"dhkrwpdappdsbdk\",\"name\":\"wrwjfeu\",\"type\":\"nhutjeltmrldhugj\"}")
+                    "{\"properties\":{\"githubWorkflowProfile\":{\"repositoryOwner\":\"uujitcjc\",\"repositoryName\":\"zevndhkrwpdappds\",\"branchName\":\"kvwrwjfeu\",\"dockerfile\":\"hutje\",\"dockerBuildContext\":\"mrldhu\",\"namespace\":\"zdatqxhocdg\",\"aksResourceId\":\"gphuticndvka\",\"prURL\":\"wyiftyhxhur\",\"pullNumber\":233179905,\"prStatus\":\"submitted\",\"authStatus\":\"NotFound\"},\"artifactGenerationProperties\":{\"generationLanguage\":\"php\",\"languageVersion\":\"wcukjfkgiawxk\",\"builderVersion\":\"ypl\",\"port\":\"kbasyypn\",\"appName\":\"hsgcbacphejkot\",\"dockerfileOutputDirectory\":\"qgoulznd\",\"manifestOutputDirectory\":\"kwy\",\"dockerfileGenerationMode\":\"enabled\",\"manifestGenerationMode\":\"enabled\",\"manifestType\":\"helm\",\"imageName\":\"adgakeqsrxybz\",\"namespace\":\"e\",\"imageTag\":\"ytb\"}},\"location\":\"qfou\",\"tags\":{\"glougpbk\":\"mnkzsmod\",\"uqktap\":\"tmut\",\"kdosvqw\":\"pwgcuertu\"},\"id\":\"bmdg\",\"name\":\"bjf\",\"type\":\"dgmb\"}")
                 .toObject(WorkflowInner.class);
-        Assertions.assertEquals("bkyqduu", model.location());
-        Assertions.assertEquals("c", model.tags().get("czdzev"));
-        Assertions.assertEquals("e", model.repositoryOwner());
-        Assertions.assertEquals("hqjbasvmsmj", model.repositoryName());
-        Assertions.assertEquals("lngsntnbybkzgcwr", model.branchName());
-        Assertions.assertEquals("lxxwrljdouskc", model.dockerfile());
-        Assertions.assertEquals("kocrcjdkwtnhx", model.dockerBuildContext());
-        Assertions.assertEquals("biksq", model.namespace());
-        Assertions.assertEquals("sainqpjwnzl", model.aksResourceId());
-        Assertions.assertEquals(ManifestType.KUBE, model.authStatus());
+        Assertions.assertEquals("qfou", model.location());
+        Assertions.assertEquals("mnkzsmod", model.tags().get("glougpbk"));
+        Assertions.assertEquals("uujitcjc", model.repositoryOwner());
+        Assertions.assertEquals("zevndhkrwpdappds", model.repositoryName());
+        Assertions.assertEquals("kvwrwjfeu", model.branchName());
+        Assertions.assertEquals("hutje", model.dockerfile());
+        Assertions.assertEquals("mrldhu", model.dockerBuildContext());
+        Assertions.assertEquals("zdatqxhocdg", model.namespace());
+        Assertions.assertEquals("gphuticndvka", model.aksResourceId());
+        Assertions.assertEquals(GenerationLanguage.PHP, model.generationLanguage());
+        Assertions.assertEquals("wcukjfkgiawxk", model.languageVersion());
+        Assertions.assertEquals("ypl", model.builderVersion());
+        Assertions.assertEquals("kbasyypn", model.port());
+        Assertions.assertEquals("hsgcbacphejkot", model.appName());
+        Assertions.assertEquals("qgoulznd", model.dockerfileOutputDirectory());
+        Assertions.assertEquals("kwy", model.manifestOutputDirectory());
+        Assertions.assertEquals(DockerfileGenerationMode.ENABLED, model.dockerfileGenerationMode());
+        Assertions.assertEquals(ManifestGenerationMode.ENABLED, model.manifestGenerationMode());
+        Assertions.assertEquals(GenerationManifestType.HELM, model.manifestType());
+        Assertions.assertEquals("adgakeqsrxybz", model.imageName());
+        Assertions.assertEquals("e", model.namespaceArtifactGenerationPropertiesNamespace());
+        Assertions.assertEquals("ytb", model.imageTag());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WorkflowInner model =
             new WorkflowInner()
-                .withLocation("bkyqduu")
-                .withTags(mapOf("czdzev", "c"))
-                .withRepositoryOwner("e")
-                .withRepositoryName("hqjbasvmsmj")
-                .withBranchName("lngsntnbybkzgcwr")
-                .withDockerfile("lxxwrljdouskc")
-                .withDockerBuildContext("kocrcjdkwtnhx")
-                .withNamespace("biksq")
-                .withAksResourceId("sainqpjwnzl")
-                .withAuthStatus(ManifestType.KUBE);
+                .withLocation("qfou")
+                .withTags(mapOf("glougpbk", "mnkzsmod", "uqktap", "tmut", "kdosvqw", "pwgcuertu"))
+                .withRepositoryOwner("uujitcjc")
+                .withRepositoryName("zevndhkrwpdappds")
+                .withBranchName("kvwrwjfeu")
+                .withDockerfile("hutje")
+                .withDockerBuildContext("mrldhu")
+                .withNamespace("zdatqxhocdg")
+                .withAksResourceId("gphuticndvka")
+                .withGenerationLanguage(GenerationLanguage.PHP)
+                .withLanguageVersion("wcukjfkgiawxk")
+                .withBuilderVersion("ypl")
+                .withPort("kbasyypn")
+                .withAppName("hsgcbacphejkot")
+                .withDockerfileOutputDirectory("qgoulznd")
+                .withManifestOutputDirectory("kwy")
+                .withDockerfileGenerationMode(DockerfileGenerationMode.ENABLED)
+                .withManifestGenerationMode(ManifestGenerationMode.ENABLED)
+                .withManifestType(GenerationManifestType.HELM)
+                .withImageName("adgakeqsrxybz")
+                .withNamespaceArtifactGenerationPropertiesNamespace("e")
+                .withImageTag("ytb");
         model = BinaryData.fromObject(model).toObject(WorkflowInner.class);
-        Assertions.assertEquals("bkyqduu", model.location());
-        Assertions.assertEquals("c", model.tags().get("czdzev"));
-        Assertions.assertEquals("e", model.repositoryOwner());
-        Assertions.assertEquals("hqjbasvmsmj", model.repositoryName());
-        Assertions.assertEquals("lngsntnbybkzgcwr", model.branchName());
-        Assertions.assertEquals("lxxwrljdouskc", model.dockerfile());
-        Assertions.assertEquals("kocrcjdkwtnhx", model.dockerBuildContext());
-        Assertions.assertEquals("biksq", model.namespace());
-        Assertions.assertEquals("sainqpjwnzl", model.aksResourceId());
-        Assertions.assertEquals(ManifestType.KUBE, model.authStatus());
+        Assertions.assertEquals("qfou", model.location());
+        Assertions.assertEquals("mnkzsmod", model.tags().get("glougpbk"));
+        Assertions.assertEquals("uujitcjc", model.repositoryOwner());
+        Assertions.assertEquals("zevndhkrwpdappds", model.repositoryName());
+        Assertions.assertEquals("kvwrwjfeu", model.branchName());
+        Assertions.assertEquals("hutje", model.dockerfile());
+        Assertions.assertEquals("mrldhu", model.dockerBuildContext());
+        Assertions.assertEquals("zdatqxhocdg", model.namespace());
+        Assertions.assertEquals("gphuticndvka", model.aksResourceId());
+        Assertions.assertEquals(GenerationLanguage.PHP, model.generationLanguage());
+        Assertions.assertEquals("wcukjfkgiawxk", model.languageVersion());
+        Assertions.assertEquals("ypl", model.builderVersion());
+        Assertions.assertEquals("kbasyypn", model.port());
+        Assertions.assertEquals("hsgcbacphejkot", model.appName());
+        Assertions.assertEquals("qgoulznd", model.dockerfileOutputDirectory());
+        Assertions.assertEquals("kwy", model.manifestOutputDirectory());
+        Assertions.assertEquals(DockerfileGenerationMode.ENABLED, model.dockerfileGenerationMode());
+        Assertions.assertEquals(ManifestGenerationMode.ENABLED, model.manifestGenerationMode());
+        Assertions.assertEquals(GenerationManifestType.HELM, model.manifestType());
+        Assertions.assertEquals("adgakeqsrxybz", model.imageName());
+        Assertions.assertEquals("e", model.namespaceArtifactGenerationPropertiesNamespace());
+        Assertions.assertEquals("ytb", model.imageTag());
     }
 
     @SuppressWarnings("unchecked")

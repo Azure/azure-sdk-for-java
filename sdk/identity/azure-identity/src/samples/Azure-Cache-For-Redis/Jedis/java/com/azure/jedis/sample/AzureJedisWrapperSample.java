@@ -25,6 +25,7 @@ public class AzureJedisWrapperSample {
 
         // Set a value against your key in the Redis cache.
         jedisClient.set("Az:key", "sample");
+        System.out.println(jedisClient.get("Az:key"));
 
         // Close the Jedis Client
         jedisClient.close();

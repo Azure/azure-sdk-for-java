@@ -20,6 +20,15 @@ public final class RevisionHealthState extends ExpandableStringEnum<RevisionHeal
     public static final RevisionHealthState NONE = fromString("None");
 
     /**
+     * Creates a new instance of RevisionHealthState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RevisionHealthState() {
+    }
+
+    /**
      * Creates or finds a RevisionHealthState from its string representation.
      *
      * @param name a name to look for.

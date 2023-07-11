@@ -29,6 +29,9 @@ public final class RedisScalingCompletedEventData {
     @JsonProperty(value = "status")
     private String status;
 
+    /** Creates an instance of RedisScalingCompletedEventData class. */
+    public RedisScalingCompletedEventData() {}
+
     /**
      * Get the timestamp property: The time at which the event occurred.
      *

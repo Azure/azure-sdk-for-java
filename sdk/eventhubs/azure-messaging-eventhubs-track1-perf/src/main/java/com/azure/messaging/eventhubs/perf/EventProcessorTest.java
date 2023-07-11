@@ -139,7 +139,7 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
                 startTime = System.nanoTime();
 
                 return Mono.fromCompletionStage(
-                    processor.registerEventProcessorFactory(processorFactory))
+                        processor.registerEventProcessorFactory(processorFactory))
                     .then(Mono.when(timeout));
             },
             processor -> {

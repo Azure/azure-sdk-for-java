@@ -9,11 +9,10 @@ import com.azure.resourcemanager.appcontainers.models.GlobalValidation;
 import com.azure.resourcemanager.appcontainers.models.UnauthenticatedClientActionV2;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class GlobalValidationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         GlobalValidation model =
             BinaryData
                 .fromString(
@@ -24,8 +23,8 @@ public final class GlobalValidationTests {
         Assertions.assertEquals("r", model.excludedPaths().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         GlobalValidation model =
             new GlobalValidation()
                 .withUnauthenticatedClientAction(UnauthenticatedClientActionV2.ALLOW_ANONYMOUS)

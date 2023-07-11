@@ -28,8 +28,13 @@ public class FeedRangeGoneSplitHandler implements FeedRangeGoneHandler {
     private final List<PartitionKeyRange> overlappingRanges;
     private final LeaseManager leaseManager;
     private final boolean removeCurrentLease;
+    private final boolean shouldSkipDirectLeaseAssignment;
 
-    public FeedRangeGoneSplitHandler(Lease lease, List<PartitionKeyRange> overlappingRanges, LeaseManager leaseManager) {
+    public FeedRangeGoneSplitHandler(
+        Lease lease,
+        List<PartitionKeyRange> overlappingRanges,
+        LeaseManager leaseManager,
+        int maxScaleCount) {
         checkNotNull(lease, "Argument 'lease' can not be null");
         checkNotNull(overlappingRanges, "Argument 'overlappingRanges' can not be null");
         checkNotNull(leaseManager, "Argument 'leaseManager' can not be null");
@@ -41,6 +46,10 @@ public class FeedRangeGoneSplitHandler implements FeedRangeGoneHandler {
         // A flag to indicate to upstream whether the current lease which we get FeedRangeGoneException should be removed.
         // For split, the parent lease will be replaced by the child leases. so we need to remove the current lease in the end.
         this.removeCurrentLease = true;
+
+        // If maxScaleCount is configured, then all lease assignments should go through load balancer
+        // It will make sure the change feed processor instance always honor the maxScaleCount config
+        this.shouldSkipDirectLeaseAssignment = maxScaleCount > 0;
     }
 
     @Override
@@ -117,5 +126,10 @@ public class FeedRangeGoneSplitHandler implements FeedRangeGoneHandler {
     @Override
     public boolean shouldDeleteCurrentLease() {
         return this.removeCurrentLease;
+    }
+
+    @Override
+    public boolean shouldSkipDirectLeaseAssignment() {
+        return this.shouldSkipDirectLeaseAssignment;
     }
 }

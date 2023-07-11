@@ -19,15 +19,19 @@ public final class EventTypeInfo {
     private EventDefinitionKind kind;
 
     /*
-     * A collection of inline event types for the resource. The inline event
-     * type keys are of type string which represents the name of the event.
+     * A collection of inline event types for the resource. The inline event type keys are of type string which
+     * represents the name of the event.
      * An example of a valid inline event name is "Contoso.OrderCreated".
-     * The inline event type values are of type InlineEventProperties and will
-     * contain additional information for every inline event type.
+     * The inline event type values are of type InlineEventProperties and will contain additional information for every
+     * inline event type.
      */
     @JsonProperty(value = "inlineEventTypes")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, InlineEventProperties> inlineEventTypes;
+
+    /** Creates an instance of EventTypeInfo class. */
+    public EventTypeInfo() {
+    }
 
     /**
      * Get the kind property: The kind of event type used.

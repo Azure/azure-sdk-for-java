@@ -10,15 +10,6 @@ import java.util.Collection;
 
 /** Defines values for ProvisioningState. */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
-    /** Static value Succeeded for ProvisioningState. */
-    public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
-
-    /** Static value Failed for ProvisioningState. */
-    public static final ProvisioningState FAILED = fromString("Failed");
-
-    /** Static value Canceled for ProvisioningState. */
-    public static final ProvisioningState CANCELED = fromString("Canceled");
-
     /** Static value Provisioning for ProvisioningState. */
     public static final ProvisioningState PROVISIONING = fromString("Provisioning");
 
@@ -30,6 +21,24 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
 
     /** Static value Accepted for ProvisioningState. */
     public static final ProvisioningState ACCEPTED = fromString("Accepted");
+
+    /** Static value Succeeded for ProvisioningState. */
+    public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
+
+    /** Static value Failed for ProvisioningState. */
+    public static final ProvisioningState FAILED = fromString("Failed");
+
+    /** Static value Canceled for ProvisioningState. */
+    public static final ProvisioningState CANCELED = fromString("Canceled");
+
+    /**
+     * Creates a new instance of ProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProvisioningState() {
+    }
 
     /**
      * Creates or finds a ProvisioningState from its string representation.

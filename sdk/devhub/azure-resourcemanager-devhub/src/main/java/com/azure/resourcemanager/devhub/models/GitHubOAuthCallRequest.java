@@ -16,6 +16,10 @@ public final class GitHubOAuthCallRequest {
     @JsonProperty(value = "redirectUrl")
     private String redirectUrl;
 
+    /** Creates an instance of GitHubOAuthCallRequest class. */
+    public GitHubOAuthCallRequest() {
+    }
+
     /**
      * Get the redirectUrl property: The URL the client will redirect to on successful authentication. If empty, no
      * redirect will occur.

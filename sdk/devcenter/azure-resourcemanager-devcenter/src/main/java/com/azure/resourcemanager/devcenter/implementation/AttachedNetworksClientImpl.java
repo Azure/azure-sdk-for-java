@@ -66,8 +66,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     public interface AttachedNetworksService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects"
-                + "/{projectName}/attachednetworks")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/attachednetworks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AttachedNetworkListResult>> listByProject(
@@ -82,8 +81,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects"
-                + "/{projectName}/attachednetworks/{attachedNetworkConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/attachednetworks/{attachedNetworkConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AttachedNetworkConnectionInner>> getByProject(
@@ -98,8 +96,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/devcenters/{devCenterName}/attachednetworks")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/attachednetworks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AttachedNetworkListResult>> listByDevCenter(
@@ -114,8 +111,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/devcenters/{devCenterName}/attachednetworks/{attachedNetworkConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/attachednetworks/{attachedNetworkConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AttachedNetworkConnectionInner>> getByDevCenter(
@@ -130,8 +126,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/devcenters/{devCenterName}/attachednetworks/{attachedNetworkConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/attachednetworks/{attachedNetworkConnectionName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -147,8 +142,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/devcenters/{devCenterName}/attachednetworks/{attachedNetworkConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/attachednetworks/{attachedNetworkConnectionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -1149,7 +1143,8 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
         String devCenterName,
         String attachedNetworkConnectionName,
         AttachedNetworkConnectionInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, body)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, body)
             .getSyncPoller();
     }
 
@@ -1173,7 +1168,8 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
         String attachedNetworkConnectionName,
         AttachedNetworkConnectionInner body,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, body, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, body, context)
             .getSyncPoller();
     }
 
@@ -1439,7 +1435,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String devCenterName, String attachedNetworkConnectionName) {
-        return beginDeleteAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName).getSyncPoller();
     }
 
     /**
@@ -1457,7 +1453,8 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String devCenterName, String attachedNetworkConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, context)
             .getSyncPoller();
     }
 

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.compute.models.KeyVaultSecretReference;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Describes the properties of a Virtual Machine Extension. */
 @Fluent
@@ -88,6 +89,12 @@ public final class VirtualMachineExtensionProperties {
      */
     @JsonProperty(value = "protectedSettingsFromKeyVault")
     private KeyVaultSecretReference protectedSettingsFromKeyVault;
+
+    /*
+     * Collection of extension names after which this extension needs to be provisioned.
+     */
+    @JsonProperty(value = "provisionAfterExtensions")
+    private List<String> provisionAfterExtensions;
 
     /** Creates an instance of VirtualMachineExtensionProperties class. */
     public VirtualMachineExtensionProperties() {
@@ -336,6 +343,28 @@ public final class VirtualMachineExtensionProperties {
     public VirtualMachineExtensionProperties withProtectedSettingsFromKeyVault(
         KeyVaultSecretReference protectedSettingsFromKeyVault) {
         this.protectedSettingsFromKeyVault = protectedSettingsFromKeyVault;
+        return this;
+    }
+
+    /**
+     * Get the provisionAfterExtensions property: Collection of extension names after which this extension needs to be
+     * provisioned.
+     *
+     * @return the provisionAfterExtensions value.
+     */
+    public List<String> provisionAfterExtensions() {
+        return this.provisionAfterExtensions;
+    }
+
+    /**
+     * Set the provisionAfterExtensions property: Collection of extension names after which this extension needs to be
+     * provisioned.
+     *
+     * @param provisionAfterExtensions the provisionAfterExtensions value to set.
+     * @return the VirtualMachineExtensionProperties object itself.
+     */
+    public VirtualMachineExtensionProperties withProvisionAfterExtensions(List<String> provisionAfterExtensions) {
+        this.provisionAfterExtensions = provisionAfterExtensions;
         return this;
     }
 

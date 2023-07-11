@@ -44,8 +44,7 @@ public final class MediaLiveEventTrackDiscontinuityDetectedEventData {
     private String newTimestamp;
 
     /*
-     * Gets the timescale in which both timestamps and discontinuity gap are
-     * represented.
+     * Gets the timescale in which both timestamps and discontinuity gap are represented.
      */
     @JsonProperty(value = "timescale", access = JsonProperty.Access.WRITE_ONLY)
     private String timescale;
@@ -55,6 +54,9 @@ public final class MediaLiveEventTrackDiscontinuityDetectedEventData {
      */
     @JsonProperty(value = "discontinuityGap", access = JsonProperty.Access.WRITE_ONLY)
     private String discontinuityGap;
+
+    /** Creates an instance of MediaLiveEventTrackDiscontinuityDetectedEventData class. */
+    public MediaLiveEventTrackDiscontinuityDetectedEventData() {}
 
     /**
      * Get the trackType property: Gets the type of the track (Audio / Video).

@@ -13,16 +13,14 @@ public final class ClassicAlertSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClassicAlertSettings model =
-            BinaryData
-                .fromString("{\"alertsForCriticalOperations\":\"Disabled\"}")
-                .toObject(ClassicAlertSettings.class);
-        Assertions.assertEquals(AlertsState.DISABLED, model.alertsForCriticalOperations());
+            BinaryData.fromString("{\"alertsForCriticalOperations\":\"Enabled\"}").toObject(ClassicAlertSettings.class);
+        Assertions.assertEquals(AlertsState.ENABLED, model.alertsForCriticalOperations());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClassicAlertSettings model = new ClassicAlertSettings().withAlertsForCriticalOperations(AlertsState.DISABLED);
+        ClassicAlertSettings model = new ClassicAlertSettings().withAlertsForCriticalOperations(AlertsState.ENABLED);
         model = BinaryData.fromObject(model).toObject(ClassicAlertSettings.class);
-        Assertions.assertEquals(AlertsState.DISABLED, model.alertsForCriticalOperations());
+        Assertions.assertEquals(AlertsState.ENABLED, model.alertsForCriticalOperations());
     }
 }

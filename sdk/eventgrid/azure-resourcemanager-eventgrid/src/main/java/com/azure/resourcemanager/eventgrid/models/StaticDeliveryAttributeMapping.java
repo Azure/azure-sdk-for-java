@@ -21,6 +21,10 @@ public final class StaticDeliveryAttributeMapping extends DeliveryAttributeMappi
     @JsonProperty(value = "properties")
     private StaticDeliveryAttributeMappingProperties innerProperties;
 
+    /** Creates an instance of StaticDeliveryAttributeMapping class. */
+    public StaticDeliveryAttributeMapping() {
+    }
+
     /**
      * Get the innerProperties property: Properties of static delivery attribute mapping.
      *

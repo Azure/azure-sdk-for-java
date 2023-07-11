@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedEnvironments ListWorkloadProfileStates. */
 public final class ManagedEnvironmentsListWorkloadProfileStatesSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ManagedEnvironments_ListWorkloadProfileStates.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ManagedEnvironments_ListWorkloadProfileStates.json
      */
     /**
      * Sample code: List environments by subscription.
@@ -18,6 +16,8 @@ public final class ManagedEnvironmentsListWorkloadProfileStatesSamples {
      */
     public static void listEnvironmentsBySubscription(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.managedEnvironments().listWorkloadProfileStates("examplerg", "jlaw-demo1", Context.NONE);
+        manager
+            .managedEnvironments()
+            .listWorkloadProfileStates("examplerg", "jlaw-demo1", com.azure.core.util.Context.NONE);
     }
 }

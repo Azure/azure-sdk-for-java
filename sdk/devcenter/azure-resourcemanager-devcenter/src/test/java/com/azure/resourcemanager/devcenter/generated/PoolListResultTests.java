@@ -6,20 +6,19 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.PoolListResult;
-import org.junit.jupiter.api.Test;
 
 public final class PoolListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PoolListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"devBoxDefinitionName\":\"i\",\"networkConnectionName\":\"byuqerpqlp\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Enabled\"},\"location\":\"qgbdbuta\",\"tags\":{\"hykojoxafnndlpic\":\"btkuwhh\",\"h\":\"koymkcd\",\"reqnovvqfov\":\"pkkpw\"},\"id\":\"jxywsuws\",\"name\":\"rsndsytgadgvra\",\"type\":\"aeneqnzarrwl\"},{\"properties\":{\"provisioningState\":\"TransientFailure\",\"devBoxDefinitionName\":\"fqka\",\"networkConnectionName\":\"wiipfpub\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Disabled\"},\"location\":\"f\",\"tags\":{\"n\":\"qkvpuvksgplsakn\",\"iyntorzihle\":\"synljphuopxodl\",\"yzrpzbchckqqzq\":\"sjswsrms\",\"ysuiizynkedya\":\"ox\"},\"id\":\"rwyhqmibzyhwitsm\",\"name\":\"pyy\",\"type\":\"pcdpumnz\"}],\"nextLink\":\"wznm\"}")
+                    "{\"value\":[{\"properties\":{\"healthStatus\":\"Healthy\",\"healthStatusDetails\":[],\"provisioningState\":\"Deleting\",\"devBoxDefinitionName\":\"swsrms\",\"networkConnectionName\":\"zrpzb\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Enabled\"},\"location\":\"qioxi\",\"tags\":{\"mibzyhwitsmypyyn\":\"iizynkedyatrwyh\",\"nzgmwznmabik\":\"cdpu\"},\"id\":\"sorgj\",\"name\":\"xbldtlwwrlkdmtn\",\"type\":\"vokotllxdyh\"},{\"properties\":{\"healthStatus\":\"Unknown\",\"healthStatusDetails\":[],\"provisioningState\":\"MovingResources\",\"devBoxDefinitionName\":\"ltdtbnnhad\",\"networkConnectionName\":\"crkvcikhnv\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Enabled\"},\"location\":\"queziky\",\"tags\":{\"melwuipiccjz\":\"xkalla\"},\"id\":\"z\",\"name\":\"v\",\"type\":\"vvcnayr\"},{\"properties\":{\"healthStatus\":\"Unknown\",\"healthStatusDetails\":[],\"provisioningState\":\"MovingResources\",\"devBoxDefinitionName\":\"eedndrdvstkwqqtc\",\"networkConnectionName\":\"alm\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Disabled\"},\"location\":\"gdv\",\"tags\":{\"xepxgyqagvrvmn\":\"piohgwxrtfu\",\"kghimdblxgwimfnj\":\"k\",\"kfoqreyfkzikfj\":\"fjxwmsz\",\"wczelpci\":\"wneaiv\"},\"id\":\"elsfeaen\",\"name\":\"abfatkl\",\"type\":\"dxbjhwuaanozj\"}],\"nextLink\":\"ph\"}")
                 .toObject(PoolListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PoolListResult model = new PoolListResult();
         model = BinaryData.fromObject(model).toObject(PoolListResult.class);
     }

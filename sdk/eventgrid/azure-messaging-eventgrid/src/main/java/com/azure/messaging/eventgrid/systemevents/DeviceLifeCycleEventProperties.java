@@ -11,10 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class DeviceLifeCycleEventProperties {
     /*
-     * The unique identifier of the device. This case-sensitive string can be
-     * up to 128 characters long, and supports ASCII 7-bit alphanumeric
-     * characters plus the following special characters: - : . + % _ &#35; * ?
-     * ! ( ) , = @ ; $ '.
+     * The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports
+     * ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = @ ; $
+     * '.
      */
     @JsonProperty(value = "deviceId")
     private String deviceId;
@@ -26,11 +25,13 @@ public class DeviceLifeCycleEventProperties {
     private String hubName;
 
     /*
-     * Information about the device twin, which is the cloud representation of
-     * application device metadata.
+     * Information about the device twin, which is the cloud representation of application device metadata.
      */
     @JsonProperty(value = "twin")
     private DeviceTwinInfo twin;
+
+    /** Creates an instance of DeviceLifeCycleEventProperties class. */
+    public DeviceLifeCycleEventProperties() {}
 
     /**
      * Get the deviceId property: The unique identifier of the device. This case-sensitive string can be up to 128

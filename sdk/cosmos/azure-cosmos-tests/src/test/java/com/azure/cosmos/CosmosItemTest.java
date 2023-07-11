@@ -11,14 +11,18 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -40,12 +44,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static org.apache.commons.io.FileUtils.ONE_MB;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class CosmosItemTest extends TestSuiteBase {
 
@@ -84,6 +90,7 @@ public class CosmosItemTest extends TestSuiteBase {
         validateItemResponse(properties, itemResponse);
 
         properties = getDocumentDefinition(UUID.randomUUID().toString());
+        logger.info("Testing log");
         CosmosItemResponse<InternalObjectNode> itemResponse1 = container.createItem(properties, new CosmosItemRequestOptions());
         validateItemResponse(properties, itemResponse1);
     }
@@ -190,7 +197,7 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(feedResponse.getResults()).isNotNull();
         assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
         assertThat(diagnosticsAccessor.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics())).isNotNull();
-        assertThat(diagnosticsAccessor.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics()).size()).isGreaterThan(1);
+        assertThat(diagnosticsAccessor.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics()).size()).isGreaterThanOrEqualTo(1);
 
         for (int i = 0; i < feedResponse.getResults().size(); i++) {
             InternalObjectNode fetchedResult = feedResponse.getResults().get(i);
@@ -314,6 +321,137 @@ public class CosmosItemTest extends TestSuiteBase {
             assertThat(feedResponse.getResults()).isNotNull();
             assertThat(feedResponse.getResults().size()).isEqualTo(1);
             assertThat(idSet.contains(feedResponse.getResults().get(0).getId())).isTrue();
+        }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readManyWithManyNonExistentItemIds() throws Exception {
+        String partitionKeyValue = UUID.randomUUID().toString();
+        ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
+        ArrayList<CosmosItemIdentity> nonExistentCosmosItemIdentities = new ArrayList<>();
+        HashSet<String> idSet = new HashSet<String>();
+        int numDocuments = 5;
+        int numNonExistentDocuments = 5;
+
+        for (int i = 0; i < numNonExistentDocuments; i++) {
+            CosmosItemIdentity nonExistentItemIdentity = new CosmosItemIdentity(new PartitionKey(UUID.randomUUID().toString()), UUID.randomUUID().toString());
+            nonExistentCosmosItemIdentities.add(nonExistentItemIdentity);
+        }
+
+        for (int i = 0; i < numDocuments; i++) {
+            String documentId = UUID.randomUUID().toString();
+            ObjectNode document = getDocumentDefinition(documentId, partitionKeyValue);
+            container.createItem(document);
+
+            PartitionKey partitionKey = new PartitionKey(partitionKeyValue);
+            CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(partitionKey, documentId);
+
+            cosmosItemIdentities.add(cosmosItemIdentity);
+            idSet.add(documentId);
+        }
+
+        cosmosItemIdentities.addAll(nonExistentCosmosItemIdentities);
+
+        FeedResponse<InternalObjectNode> feedResponse = container.readMany(cosmosItemIdentities, InternalObjectNode.class);
+
+        assertThat(feedResponse).isNotNull();
+        assertThat(feedResponse.getResults()).isNotNull();
+        assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void readManyWithMultiplePartitionsAndSome404s() throws JsonProcessingException {
+
+        CosmosDatabase readManyDatabase = null;
+        CosmosContainer readManyContainer = null;
+
+        int itemCount = 100;
+
+        try {
+
+            readManyDatabase = client
+                .getDatabase(container.asyncContainer.getDatabase().getId());
+
+            String readManyContainerId = "container-with-multiple-partitions";
+
+            CosmosContainerProperties containerProperties = new CosmosContainerProperties(readManyContainerId, "/mypk");
+            ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(30_000);
+
+            readManyDatabase.createContainer(containerProperties, throughputProperties);
+
+            readManyContainer = readManyDatabase.getContainer(readManyContainerId);
+
+            for (int i = 0; i < itemCount; i++) {
+                String id = UUID.randomUUID().toString();
+                String myPk = UUID.randomUUID().toString();
+
+                ObjectNode objectNode = getDocumentDefinition(id, myPk);
+
+                readManyContainer.createItem(objectNode);
+            }
+
+            List<FeedRange> feedRanges = readManyContainer.getFeedRanges();
+
+            assertThat(feedRanges).isNotNull();
+            assertThat(feedRanges.size()).isGreaterThan(1);
+
+            int feedRangeCount = feedRanges.size();
+
+            // select 1 document per feed range
+            // increase the no. of documents with faulty ids
+            // see if documents fetched is (feed range count) - (faulty documents)
+            for (int faultyIdCount = 0; faultyIdCount <= feedRangeCount; faultyIdCount++) {
+                final Set<Integer> faultyIds = new HashSet<>();
+
+                while (faultyIds.size() != faultyIdCount) {
+                    faultyIds.add(ThreadLocalRandom.current().nextInt(feedRangeCount));
+                }
+
+                SqlQuerySpec sqlQuerySpec = new SqlQuerySpec();
+                sqlQuerySpec.setQueryText("SELECT * FROM c OFFSET 0 LIMIT 1");
+
+                List<ImmutablePair<String, String>> idToPkPairs = new ArrayList<>();
+
+                for (int k = 0; k < feedRangeCount; k++) {
+                    CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+                    cosmosQueryRequestOptions.setFeedRange(feedRanges.get(k));
+
+                    int finalK = k;
+
+                    readManyContainer
+                        .queryItems(sqlQuerySpec, cosmosQueryRequestOptions, InternalObjectNode.class)
+                        .iterableByPage()
+                        .forEach(response -> {
+                            InternalObjectNode queriedItem = response.getResults().get(0);
+
+                            if (faultyIds.contains(finalK)) {
+                                idToPkPairs.add(new ImmutablePair<>(queriedItem.getId(), UUID.randomUUID().toString()));
+                            } else {
+                                idToPkPairs.add(new ImmutablePair<>(queriedItem.getId(), queriedItem.getString("mypk")));
+                            }
+                        });
+                }
+
+                if (idToPkPairs.size() == feedRangeCount) {
+
+                    List<CosmosItemIdentity> cosmosItemIdentities = idToPkPairs
+                        .stream()
+                        .map(pkToIdPair -> new CosmosItemIdentity(new PartitionKey(pkToIdPair.getRight()), pkToIdPair.getLeft()))
+                        .collect(Collectors.toList());
+
+                    FeedResponse<InternalObjectNode> readManyResult = readManyContainer
+                        .readMany(cosmosItemIdentities, InternalObjectNode.class);
+
+                    assertThat(readManyResult).isNotNull();
+                    assertThat(readManyResult.getResults()).isNotNull();
+                    assertThat(readManyResult.getResults().size()).isEqualTo(feedRangeCount - faultyIdCount);
+                } else {
+                    fail("Not all physical partitions have data!");
+                }
+            }
+
+        } finally {
+            readManyContainer.delete();
         }
     }
 

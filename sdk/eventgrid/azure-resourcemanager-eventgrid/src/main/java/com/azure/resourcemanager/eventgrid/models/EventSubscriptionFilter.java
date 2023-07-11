@@ -12,8 +12,7 @@ import java.util.List;
 @Fluent
 public final class EventSubscriptionFilter {
     /*
-     * An optional string to filter events for an event subscription based on a
-     * resource path prefix.
+     * An optional string to filter events for an event subscription based on a resource path prefix.
      * The format of this depends on the publisher of the events.
      * Wildcard characters are not supported in this path.
      */
@@ -21,42 +20,41 @@ public final class EventSubscriptionFilter {
     private String subjectBeginsWith;
 
     /*
-     * An optional string to filter events for an event subscription based on a
-     * resource path suffix.
+     * An optional string to filter events for an event subscription based on a resource path suffix.
      * Wildcard characters are not supported in this path.
      */
     @JsonProperty(value = "subjectEndsWith")
     private String subjectEndsWith;
 
     /*
-     * A list of applicable event types that need to be part of the event
-     * subscription. If it is desired to subscribe to all default event types,
-     * set the IncludedEventTypes to null.
+     * A list of applicable event types that need to be part of the event subscription. If it is desired to subscribe
+     * to all default event types, set the IncludedEventTypes to null.
      */
     @JsonProperty(value = "includedEventTypes")
     private List<String> includedEventTypes;
 
     /*
-     * Specifies if the SubjectBeginsWith and SubjectEndsWith properties of the
-     * filter
+     * Specifies if the SubjectBeginsWith and SubjectEndsWith properties of the filter
      * should be compared in a case sensitive manner.
      */
     @JsonProperty(value = "isSubjectCaseSensitive")
     private Boolean isSubjectCaseSensitive;
 
     /*
-     * Allows advanced filters to be evaluated against an array of values
-     * instead of expecting a singular value.
+     * Allows advanced filters to be evaluated against an array of values instead of expecting a singular value.
      */
     @JsonProperty(value = "enableAdvancedFilteringOnArrays")
     private Boolean enableAdvancedFilteringOnArrays;
 
     /*
-     * An array of advanced filters that are used for filtering event
-     * subscriptions.
+     * An array of advanced filters that are used for filtering event subscriptions.
      */
     @JsonProperty(value = "advancedFilters")
     private List<AdvancedFilter> advancedFilters;
+
+    /** Creates an instance of EventSubscriptionFilter class. */
+    public EventSubscriptionFilter() {
+    }
 
     /**
      * Get the subjectBeginsWith property: An optional string to filter events for an event subscription based on a

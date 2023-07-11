@@ -19,6 +19,7 @@ import java.util.function.Function;
 public final class Providers<TProvider, TInstance> {
     private static final ClientLogger LOGGER = new ClientLogger(Providers.class);
     private final TProvider defaultProvider;
+    private final String defaultProviderName;
     private final Map<String, TProvider> availableProviders;
 
     private final String defaultImplementation;
@@ -46,11 +47,12 @@ public final class Providers<TProvider, TInstance> {
         Iterator<TProvider> it = serviceLoader.iterator();
         if (it.hasNext()) {
             defaultProvider = it.next();
-            String defaultProviderName = defaultProvider.getClass().getName();
+            defaultProviderName = defaultProvider.getClass().getName();
             availableProviders.put(defaultProviderName, defaultProvider);
             LOGGER.verbose("Using {} as the default {}.", defaultProviderName, providerClass.getName());
         } else {
             defaultProvider = null;
+            defaultProviderName = null;
         }
 
         while (it.hasNext()) {
@@ -88,7 +90,9 @@ public final class Providers<TProvider, TInstance> {
     public TInstance create(Function<TProvider, TInstance> createInstance,
                                 TInstance fallbackInstance, Class<? extends TProvider> selectedImplementation) {
         TProvider provider;
+        String implementationName;
         if (selectedImplementation == null && noDefaultImplementation) {
+            implementationName = defaultProviderName;
             provider = defaultProvider;
             if (provider == null) {
                 if (fallbackInstance == null) {
@@ -98,7 +102,7 @@ public final class Providers<TProvider, TInstance> {
                 return fallbackInstance;
             }
         } else {
-            String implementationName = selectedImplementation == null ? defaultImplementation : selectedImplementation.getName();
+            implementationName = selectedImplementation == null ? defaultImplementation : selectedImplementation.getName();
             provider = availableProviders.get(implementationName);
             if (provider == null) {
                 // no fallback here - user requested specific implementation, and it was not found
@@ -106,6 +110,10 @@ public final class Providers<TProvider, TInstance> {
             }
         }
 
-        return createInstance.apply(provider);
+        try {
+            return createInstance.apply(provider);
+        } catch (ClassCastException ex) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(formatNoSpecificProviderErrorMessage(implementationName), ex));
+        }
     }
 }

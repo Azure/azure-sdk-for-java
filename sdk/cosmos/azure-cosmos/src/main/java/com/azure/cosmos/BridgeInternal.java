@@ -9,11 +9,9 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.DatabaseAccount;
-import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.JsonSerializable;
@@ -34,7 +32,6 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
-import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.implementation.query.QueryInfo;
@@ -52,7 +49,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
 
 import java.net.URI;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
@@ -73,11 +69,6 @@ import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 @Warning(value = INTERNAL_USE_ONLY_WARNING)
 public final class BridgeInternal {
     private BridgeInternal() {}
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosDiagnostics createCosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
-        return new CosmosDiagnostics(diagnosticsClientContext);
-    }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Set<String> getRegionsContacted(CosmosDiagnostics cosmosDiagnostics) {
@@ -351,11 +342,6 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static boolean isEnableMultipleWriteLocations(DatabaseAccount account) {
         return account.getEnableMultipleWriteLocations();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosException> Uri getRequestUri(CosmosException cosmosException) {
-        return cosmosException.requestUri;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -695,5 +681,7 @@ public final class BridgeInternal {
         DirectConnectionConfig.initialize();
         CosmosAsyncClient.initialize();
         CosmosDiagnosticsThresholds.initialize();
+        CosmosContainerProactiveInitConfig.initialize();
+        SessionRetryOptions.initialize();
     }
 }

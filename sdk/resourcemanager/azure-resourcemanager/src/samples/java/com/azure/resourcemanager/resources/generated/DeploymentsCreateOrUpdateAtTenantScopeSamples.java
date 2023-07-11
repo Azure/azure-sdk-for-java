@@ -17,7 +17,7 @@ import java.util.Map;
 /** Samples for Deployments CreateOrUpdateAtTenantScope. */
 public final class DeploymentsCreateOrUpdateAtTenantScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/PutDeploymentAtTenant.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PutDeploymentAtTenant.json
      */
     /**
      * Sample code: Create deployment at tenant scope.
@@ -43,7 +43,7 @@ public final class DeploymentsCreateOrUpdateAtTenantScopeSamples {
                                     .createDefaultManagementSerializerAdapter()
                                     .deserialize("{}", Object.class, SerializerEncoding.JSON))
                             .withMode(DeploymentMode.INCREMENTAL))
-                    .withTags(mapOf("tagKey1", "tag-value-1", "tagKey2", "tag-value-2")),
+                    .withTags(mapOf("tagKey1", "fakeTokenPlaceholder", "tagKey2", "fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);
     }
 

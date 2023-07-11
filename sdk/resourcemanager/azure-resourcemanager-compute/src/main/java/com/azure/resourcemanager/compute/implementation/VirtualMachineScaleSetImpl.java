@@ -230,7 +230,7 @@ public class VirtualMachineScaleSetImpl
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .deallocateAsync(this.resourceGroupName(), this.name(), null)
+            .deallocateAsync(this.resourceGroupName(), this.name(), null, null)
             .map(aVoid -> this.refreshAsync())
             .then();
     }

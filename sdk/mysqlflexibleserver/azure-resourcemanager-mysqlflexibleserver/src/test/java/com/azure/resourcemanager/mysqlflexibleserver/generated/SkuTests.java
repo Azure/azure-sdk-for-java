@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Sku model =
-            BinaryData.fromString("{\"name\":\"flnrosfqpteehzz\",\"tier\":\"MemoryOptimized\"}").toObject(Sku.class);
-        Assertions.assertEquals("flnrosfqpteehzz", model.name());
-        Assertions.assertEquals(SkuTier.MEMORY_OPTIMIZED, model.tier());
+        Sku model = BinaryData.fromString("{\"name\":\"hrzayvvtpgvdf\",\"tier\":\"Burstable\"}").toObject(Sku.class);
+        Assertions.assertEquals("hrzayvvtpgvdf", model.name());
+        Assertions.assertEquals(SkuTier.BURSTABLE, model.tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Sku model = new Sku().withName("flnrosfqpteehzz").withTier(SkuTier.MEMORY_OPTIMIZED);
+        Sku model = new Sku().withName("hrzayvvtpgvdf").withTier(SkuTier.BURSTABLE);
         model = BinaryData.fromObject(model).toObject(Sku.class);
-        Assertions.assertEquals("flnrosfqpteehzz", model.name());
-        Assertions.assertEquals(SkuTier.MEMORY_OPTIMIZED, model.tier());
+        Assertions.assertEquals("hrzayvvtpgvdf", model.name());
+        Assertions.assertEquals(SkuTier.BURSTABLE, model.tier());
     }
 }

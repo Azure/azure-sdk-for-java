@@ -8,16 +8,24 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StampKind. */
+/** Kind of environment where app service plan is. */
 public final class StampKind extends ExpandableStringEnum<StampKind> {
-    /** Static value Public for StampKind. */
+    /** App Service Plan is running on a public stamp. */
     public static final StampKind PUBLIC = fromString("Public");
 
-    /** Static value AseV1 for StampKind. */
+    /** App Service Plan is running on an App Service Environment V1. */
     public static final StampKind ASE_V1 = fromString("AseV1");
 
-    /** Static value AseV2 for StampKind. */
+    /** App Service Plan is running on an App Service Environment V2. */
     public static final StampKind ASE_V2 = fromString("AseV2");
+
+    /**
+     * Creates a new instance of StampKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StampKind() {}
 
     /**
      * Creates or finds a StampKind from its string representation.

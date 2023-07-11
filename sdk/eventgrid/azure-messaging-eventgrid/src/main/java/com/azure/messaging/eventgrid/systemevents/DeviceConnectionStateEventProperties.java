@@ -14,19 +14,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class DeviceConnectionStateEventProperties {
     /*
-     * The unique identifier of the device. This case-sensitive string can be
-     * up to 128 characters long, and supports ASCII 7-bit alphanumeric
-     * characters plus the following special characters: - : . + % _ &#35; * ?
-     * ! ( ) , = @ ; $ '.
+     * The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports
+     * ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = @ ; $
+     * '.
      */
     @JsonProperty(value = "deviceId")
     private String deviceId;
 
     /*
-     * The unique identifier of the module. This case-sensitive string can be
-     * up to 128 characters long, and supports ASCII 7-bit alphanumeric
-     * characters plus the following special characters: - : . + % _ &#35; * ?
-     * ! ( ) , = @ ; $ '.
+     * The unique identifier of the module. This case-sensitive string can be up to 128 characters long, and supports
+     * ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = @ ; $
+     * '.
      */
     @JsonProperty(value = "moduleId")
     private String moduleId;
@@ -42,6 +40,9 @@ public class DeviceConnectionStateEventProperties {
      */
     @JsonProperty(value = "deviceConnectionStateEventInfo")
     private DeviceConnectionStateEventInfo deviceConnectionStateEventInfo;
+
+    /** Creates an instance of DeviceConnectionStateEventProperties class. */
+    public DeviceConnectionStateEventProperties() {}
 
     /**
      * Get the deviceId property: The unique identifier of the device. This case-sensitive string can be up to 128

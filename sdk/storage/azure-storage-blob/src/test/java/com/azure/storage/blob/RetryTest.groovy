@@ -34,6 +34,18 @@ class RetryTest extends Specification {
             }).verifyComplete()
     }
 
+    def "Sync retries until success with primary & secondary host scenario"() {
+        setup:
+        RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS, retryTestOptions)
+
+        when:
+        def response = retryTestFactory.sendSync(retryTestURL)
+
+        then:
+        assert response.getStatusCode() == 200
+        assert retryTestFactory.getTryNumber() == 6
+    }
+
     def "Retries until max retries"() {
         setup:
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES, retryTestOptions)
@@ -47,6 +59,7 @@ class RetryTest extends Specification {
                 assert it.getStatusCode() == 503
                 assert retryTestFactory.getTryNumber() == retryTestOptions.getMaxTries()
             }).verifyComplete()
+
     }
 
     def "Retries until max retries with exception"() {
@@ -119,6 +132,7 @@ class RetryTest extends Specification {
                 assert retryTestFactory.getTryNumber() == 3
             }).verifyComplete()
     }
+
 
     def "Retries wrapped network error"() {
         setup:

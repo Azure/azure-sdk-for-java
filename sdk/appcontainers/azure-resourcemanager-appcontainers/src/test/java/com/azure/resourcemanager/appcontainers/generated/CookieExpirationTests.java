@@ -8,27 +8,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.CookieExpiration;
 import com.azure.resourcemanager.appcontainers.models.CookieExpirationConvention;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CookieExpirationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CookieExpiration model =
             BinaryData
-                .fromString("{\"convention\":\"IdentityProviderDerived\",\"timeToExpiration\":\"cftadeh\"}")
+                .fromString("{\"convention\":\"IdentityProviderDerived\",\"timeToExpiration\":\"oq\"}")
                 .toObject(CookieExpiration.class);
         Assertions.assertEquals(CookieExpirationConvention.IDENTITY_PROVIDER_DERIVED, model.convention());
-        Assertions.assertEquals("cftadeh", model.timeToExpiration());
+        Assertions.assertEquals("oq", model.timeToExpiration());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CookieExpiration model =
             new CookieExpiration()
                 .withConvention(CookieExpirationConvention.IDENTITY_PROVIDER_DERIVED)
-                .withTimeToExpiration("cftadeh");
+                .withTimeToExpiration("oq");
         model = BinaryData.fromObject(model).toObject(CookieExpiration.class);
         Assertions.assertEquals(CookieExpirationConvention.IDENTITY_PROVIDER_DERIVED, model.convention());
-        Assertions.assertEquals("cftadeh", model.timeToExpiration());
+        Assertions.assertEquals("oq", model.timeToExpiration());
     }
 }

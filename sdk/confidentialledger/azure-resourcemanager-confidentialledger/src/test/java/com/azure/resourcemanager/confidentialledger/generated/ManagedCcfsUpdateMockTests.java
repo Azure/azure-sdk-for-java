@@ -66,17 +66,19 @@ public final class ManagedCcfsUpdateMockTests {
         manager
             .managedCcfs()
             .update(
-                "axdbabph",
-                "wrqlfktsthsuco",
+                "heun",
+                "mqhgyxzkonocuk",
                 new ManagedCcfInner()
-                    .withLocation("uzyoxaep")
-                    .withTags(mapOf("rhdwbavxbniw", "jancu", "xytxhpzxbz", "jswztsdbpg"))
+                    .withLocation("ihkaetcktvfc")
+                    .withTags(mapOf("jf", "snkymuctq", "fuwutttxf", "ebrjcxe", "hfnljkyq", "jrbirphxepcyv"))
                     .withProperties(
                         new ManagedCcfProperties()
                             .withMemberIdentityCertificates(Arrays.asList())
                             .withDeploymentType(
-                                new DeploymentType().withLanguageRuntime(LanguageRuntime.CPP).withAppSourceUri("ujwb"))
-                            .withNodeCount(1182122396)),
+                                new DeploymentType()
+                                    .withLanguageRuntime(LanguageRuntime.JS)
+                                    .withAppSourceUri("pwvlqdq"))
+                            .withNodeCount(629213684)),
                 com.azure.core.util.Context.NONE);
     }
 

@@ -50,7 +50,7 @@ public class BulkExecutorTest extends BatchTestBase {
     public void afterClass() {
         logger.info("starting ....");
         safeDeleteDatabase(database);
-        safeCloseAsync(client);
+        safeClose(client);
     }
 
     @AfterMethod(groups = { "emulator" })

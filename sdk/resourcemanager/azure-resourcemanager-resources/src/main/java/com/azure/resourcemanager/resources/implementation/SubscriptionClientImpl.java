@@ -134,7 +134,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient implements 
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-01-01";
+        this.apiVersion = "2022-12-01";
         this.subscriptions = new SubscriptionsClientImpl(this);
         this.tenants = new TenantsClientImpl(this);
         this.resourceNames = new ResourceNamesClientImpl(this);

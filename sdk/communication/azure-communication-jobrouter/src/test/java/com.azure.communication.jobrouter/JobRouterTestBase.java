@@ -7,19 +7,14 @@ import com.azure.communication.common.implementation.CommunicationConnectionStri
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.JobQueue;
-import com.azure.communication.jobrouter.models.LabelOperator;
 import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.LongestIdleMode;
-import com.azure.communication.jobrouter.models.RouterJob;
-import com.azure.communication.jobrouter.models.WorkerSelector;
 import com.azure.communication.jobrouter.models.options.CreateDistributionPolicyOptions;
-import com.azure.communication.jobrouter.models.options.CreateJobOptions;
 import com.azure.communication.jobrouter.models.options.CreateQueueOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -28,18 +23,19 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.Configuration;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
 
-class JobRouterTestBase extends TestBase {
+class JobRouterTestBase extends TestProxyTestBase {
     protected static final String JAVA_LIVE_TESTS = "JAVA_LIVE_TESTS";
 
     protected String getConnectionString() {
@@ -50,9 +46,25 @@ class JobRouterTestBase extends TestBase {
         return connectionString;
     }
 
-    <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
-        HttpClient httpClient;
+    protected RouterAdministrationClient getRouterAdministrationClient(HttpClient client) {
+        HttpPipeline httpPipeline = buildHttpPipeline(client);
+        RouterAdministrationClient routerAdministrationClient = new RouterAdministrationClientBuilder()
+            .connectionString(getConnectionString())
+            .pipeline(httpPipeline)
+            .buildClient();
+        return routerAdministrationClient;
+    }
 
+    protected RouterClient getRouterClient(HttpClient client) {
+        HttpPipeline httpPipeline = buildHttpPipeline(client);
+        RouterClient routerClient = new RouterClientBuilder()
+            .connectionString(getConnectionString())
+            .pipeline(httpPipeline)
+            .buildClient();
+        return routerClient;
+    }
+
+    private HttpPipeline buildHttpPipeline(HttpClient httpClient) {
         CommunicationConnectionString connectionString = new CommunicationConnectionString(getConnectionString());
         AzureKeyCredential credential = new AzureKeyCredential(connectionString.getAccessKey());
 
@@ -72,20 +84,23 @@ class JobRouterTestBase extends TestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             httpClient = interceptorManager.getPlaybackClient();
-        } else {
-            httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
+            addMatchers();
         }
-        policies.add(interceptorManager.getRecordPolicy());
+        if (interceptorManager.isRecordMode()) {
+            policies.add(interceptorManager.getRecordPolicy());
+        }
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .build();
 
-        T client;
-        client = clientBuilder.apply(pipeline);
+        return pipeline;
+    }
 
-        return Objects.requireNonNull(client);
+    private void addMatchers() {
+        interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(
+            Arrays.asList("x-ms-hmac-string-to-sign-base64"))));
     }
 
     protected JobQueue createQueue(RouterAdministrationClient routerAdminClient, String queueId, String distributionPolicyId) {
@@ -116,22 +131,5 @@ class JobRouterTestBase extends TestBase {
             .setName(distributionPolicyName);
 
         return routerAdminClient.createDistributionPolicy(createDistributionPolicyOptions);
-    }
-
-    protected RouterJob createJob(RouterClient routerClient, String queueId) {
-        CreateJobOptions createJobOptions = new CreateJobOptions("job-id", "chat-channel", queueId)
-            .setPriority(1)
-            .setChannelReference("12345")
-            .setRequestedWorkerSelectors(
-                new ArrayList<WorkerSelector>() {
-                    {
-                        new WorkerSelector()
-                            .setKey("Some-skill")
-                            .setLabelOperator(LabelOperator.GREATER_THAN)
-                            .setValue(10);
-                    }
-                }
-            );
-        return routerClient.createJob(createJobOptions);
     }
 }

@@ -27,25 +27,6 @@ public final class FluxConfigOperationStatusImpl implements FluxConfigOperationS
         this.serviceManager = serviceManager;
     }
 
-    public OperationStatusResult get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        String operationId) {
-        OperationStatusResultInner inner =
-            this
-                .serviceClient()
-                .get(
-                    resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, operationId);
-        if (inner != null) {
-            return new OperationStatusResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<OperationStatusResult> getWithResponse(
         String resourceGroupName,
         String clusterRp,
@@ -71,6 +52,25 @@ public final class FluxConfigOperationStatusImpl implements FluxConfigOperationS
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new OperationStatusResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult get(
+        String resourceGroupName,
+        String clusterRp,
+        String clusterResourceName,
+        String clusterName,
+        String fluxConfigurationName,
+        String operationId) {
+        OperationStatusResultInner inner =
+            this
+                .serviceClient()
+                .get(
+                    resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, operationId);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
         } else {
             return null;
         }

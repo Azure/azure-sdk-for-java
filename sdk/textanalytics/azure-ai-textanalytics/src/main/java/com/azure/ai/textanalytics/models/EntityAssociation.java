@@ -6,6 +6,8 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 
+import java.util.Collection;
+
 /**
  * The {@link EntityAssociation} model.
  */
@@ -29,5 +31,10 @@ public final class EntityAssociation extends ExpandableStringEnum<EntityAssociat
      */
     public static EntityAssociation fromString(String name) {
         return fromString(name, EntityAssociation.class);
+    }
+
+    /** @return known EntityAssociation values. */
+    public static Collection<EntityAssociation> values() {
+        return values(EntityAssociation.class);
     }
 }

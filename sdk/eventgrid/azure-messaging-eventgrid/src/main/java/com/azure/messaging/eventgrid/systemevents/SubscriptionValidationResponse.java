@@ -15,11 +15,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SubscriptionValidationResponse {
     /*
-     * The validation response sent by the subscriber to Azure Event Grid to
-     * complete the validation of an event subscription.
+     * The validation response sent by the subscriber to Azure Event Grid to complete the validation of an event
+     * subscription.
      */
     @JsonProperty(value = "validationResponse")
     private String validationResponse;
+
+    /** Creates an instance of SubscriptionValidationResponse class. */
+    public SubscriptionValidationResponse() {}
 
     /**
      * Get the validationResponse property: The validation response sent by the subscriber to Azure Event Grid to

@@ -70,7 +70,9 @@ public interface AzureProfileOptionsProvider {
 
         /**
          * Azure Germany
+         * @deprecated AZURE_GERMANY is deprecated. Please use other CloudTypes.
          */
+        @Deprecated
         AZURE_GERMANY,
 
         /**

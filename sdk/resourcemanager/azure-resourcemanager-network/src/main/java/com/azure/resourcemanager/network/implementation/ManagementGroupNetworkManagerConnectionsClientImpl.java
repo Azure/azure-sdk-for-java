@@ -70,8 +70,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
     public interface ManagementGroupNetworkManagerConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Network"
-                + "/networkManagerConnections/{networkManagerConnectionName}")
+            "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Network/networkManagerConnections/{networkManagerConnectionName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkManagerConnectionInner>> createOrUpdate(
@@ -85,8 +84,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Network"
-                + "/networkManagerConnections/{networkManagerConnectionName}")
+            "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Network/networkManagerConnections/{networkManagerConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkManagerConnectionInner>> get(
@@ -99,8 +97,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Network"
-                + "/networkManagerConnections/{networkManagerConnectionName}")
+            "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Network/networkManagerConnections/{networkManagerConnectionName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -113,8 +110,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Network"
-                + "/networkManagerConnections")
+            "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Network/networkManagerConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkManagerConnectionListResult>> list(
@@ -173,7 +169,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -230,7 +226,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -332,7 +328,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter networkManagerConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -379,7 +375,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter networkManagerConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -468,7 +464,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter networkManagerConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -514,7 +510,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter networkManagerConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -602,7 +598,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -651,7 +647,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

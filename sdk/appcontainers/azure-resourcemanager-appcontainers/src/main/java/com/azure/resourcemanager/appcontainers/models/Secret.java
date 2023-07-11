@@ -22,6 +22,19 @@ public final class Secret {
     @JsonProperty(value = "value")
     private String value;
 
+    /*
+     * Resource ID of a managed identity to authenticate with Azure Key Vault, or System to use a system-assigned
+     * identity.
+     */
+    @JsonProperty(value = "identity")
+    private String identity;
+
+    /*
+     * Azure Key Vault URL pointing to the secret referenced by the container app.
+     */
+    @JsonProperty(value = "keyVaultUrl")
+    private String keyVaultUrl;
+
     /** Creates an instance of Secret class. */
     public Secret() {
     }
@@ -63,6 +76,48 @@ public final class Secret {
      */
     public Secret withValue(String value) {
         this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the identity property: Resource ID of a managed identity to authenticate with Azure Key Vault, or System to
+     * use a system-assigned identity.
+     *
+     * @return the identity value.
+     */
+    public String identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Resource ID of a managed identity to authenticate with Azure Key Vault, or System to
+     * use a system-assigned identity.
+     *
+     * @param identity the identity value to set.
+     * @return the Secret object itself.
+     */
+    public Secret withIdentity(String identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the keyVaultUrl property: Azure Key Vault URL pointing to the secret referenced by the container app.
+     *
+     * @return the keyVaultUrl value.
+     */
+    public String keyVaultUrl() {
+        return this.keyVaultUrl;
+    }
+
+    /**
+     * Set the keyVaultUrl property: Azure Key Vault URL pointing to the secret referenced by the container app.
+     *
+     * @param keyVaultUrl the keyVaultUrl value to set.
+     * @return the Secret object itself.
+     */
+    public Secret withKeyVaultUrl(String keyVaultUrl) {
+        this.keyVaultUrl = keyVaultUrl;
         return this;
     }
 

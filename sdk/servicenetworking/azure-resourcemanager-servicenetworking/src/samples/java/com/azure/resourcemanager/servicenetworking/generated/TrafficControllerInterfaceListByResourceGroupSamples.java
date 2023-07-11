@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.servicenetworking.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TrafficControllerInterface ListByResourceGroup. */
 public final class TrafficControllerInterfaceListByResourceGroupSamples {
     /*
@@ -18,6 +16,6 @@ public final class TrafficControllerInterfaceListByResourceGroupSamples {
      */
     public static void getTrafficControllers(
         com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.trafficControllerInterfaces().listByResourceGroup("rg1", Context.NONE);
+        manager.trafficControllerInterfaces().listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

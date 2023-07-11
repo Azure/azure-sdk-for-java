@@ -33,7 +33,7 @@ public final class AzureADAdministratorsListByServerMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"oadsuvar\",\"sid\":\"wdmjsjqbjhhyx\",\"tenantId\":\"wlycoduhpkxkg\",\"identityResourceId\":\"areqna\"},\"id\":\"qugjhkycube\",\"name\":\"dgssofwqmzqal\",\"type\":\"rmnjijpx\"}]}";
+            "{\"value\":[{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"wpn\",\"sid\":\"t\",\"tenantId\":\"nermcl\",\"identityResourceId\":\"lphox\"},\"id\":\"crpab\",\"name\":\"ye\",\"type\":\"sbj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,12 @@ public final class AzureADAdministratorsListByServerMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AzureADAdministrator> response =
-            manager.azureADAdministrators().listByServer("eqidbqfatpx", "lr", com.azure.core.util.Context.NONE);
+            manager.azureADAdministrators().listByServer("ovnotyfjfcnjbkcn", "dhbt", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, response.iterator().next().administratorType());
-        Assertions.assertEquals("oadsuvar", response.iterator().next().login());
-        Assertions.assertEquals("wdmjsjqbjhhyx", response.iterator().next().sid());
-        Assertions.assertEquals("wlycoduhpkxkg", response.iterator().next().tenantId());
-        Assertions.assertEquals("areqna", response.iterator().next().identityResourceId());
+        Assertions.assertEquals("wpn", response.iterator().next().login());
+        Assertions.assertEquals("t", response.iterator().next().sid());
+        Assertions.assertEquals("nermcl", response.iterator().next().tenantId());
+        Assertions.assertEquals("lphox", response.iterator().next().identityResourceId());
     }
 }

@@ -14,14 +14,14 @@ import java.util.Map;
 /** Samples for AvailabilitySets Update. */
 public final class AvailabilitySetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/availabilitySetExamples/AvailabilitySets_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/availabilitySetExamples/AvailabilitySet_Update_MinimumSet_Gen.json
      */
     /**
-     * Sample code: AvailabilitySets_Update_MinimumSet_Gen.
+     * Sample code: AvailabilitySet_Update_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void availabilitySetsUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void availabilitySetUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
@@ -32,14 +32,14 @@ public final class AvailabilitySetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/availabilitySetExamples/AvailabilitySets_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/availabilitySetExamples/AvailabilitySet_Update_MaximumSet_Gen.json
      */
     /**
-     * Sample code: AvailabilitySets_Update_MaximumSet_Gen.
+     * Sample code: AvailabilitySet_Update_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void availabilitySetsUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void availabilitySetUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
@@ -49,7 +49,7 @@ public final class AvailabilitySetsUpdateSamples {
                 "rgcompute",
                 "aaaaaaaaaaaaaaaaaaa",
                 new AvailabilitySetUpdate()
-                    .withTags(mapOf("key2574", "aaaaaaaa"))
+                    .withTags(mapOf("key2574", "fakeTokenPlaceholder"))
                     .withSku(new Sku().withName("DSv3-Type1").withTier("aaa").withCapacity(7L))
                     .withPlatformUpdateDomainCount(20)
                     .withPlatformFaultDomainCount(2)

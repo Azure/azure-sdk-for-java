@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
+import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -63,7 +63,7 @@ public final class ScheduleProperties extends ScheduleUpdateProperties {
 
     /** {@inheritDoc} */
     @Override
-    public ScheduleProperties withState(EnableStatus state) {
+    public ScheduleProperties withState(ScheduleEnableStatus state) {
         super.withState(state);
         return this;
     }

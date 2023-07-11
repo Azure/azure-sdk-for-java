@@ -6,41 +6,40 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.ScheduleUpdateProperties;
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
+import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ScheduleUpdatePropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ScheduleUpdateProperties model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"jxqugjhky\",\"timeZone\":\"beddgssofw\",\"state\":\"Disabled\"}")
+                    "{\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"jkniodko\",\"timeZone\":\"bw\",\"state\":\"Enabled\"}")
                 .toObject(ScheduleUpdateProperties.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("jxqugjhky", model.time());
-        Assertions.assertEquals("beddgssofw", model.timeZone());
-        Assertions.assertEquals(EnableStatus.DISABLED, model.state());
+        Assertions.assertEquals("jkniodko", model.time());
+        Assertions.assertEquals("bw", model.timeZone());
+        Assertions.assertEquals(ScheduleEnableStatus.ENABLED, model.state());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ScheduleUpdateProperties model =
             new ScheduleUpdateProperties()
                 .withType(ScheduledType.STOP_DEV_BOX)
                 .withFrequency(ScheduledFrequency.DAILY)
-                .withTime("jxqugjhky")
-                .withTimeZone("beddgssofw")
-                .withState(EnableStatus.DISABLED);
+                .withTime("jkniodko")
+                .withTimeZone("bw")
+                .withState(ScheduleEnableStatus.ENABLED);
         model = BinaryData.fromObject(model).toObject(ScheduleUpdateProperties.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("jxqugjhky", model.time());
-        Assertions.assertEquals("beddgssofw", model.timeZone());
-        Assertions.assertEquals(EnableStatus.DISABLED, model.state());
+        Assertions.assertEquals("jkniodko", model.time());
+        Assertions.assertEquals("bw", model.timeZone());
+        Assertions.assertEquals(ScheduleEnableStatus.ENABLED, model.state());
     }
 }

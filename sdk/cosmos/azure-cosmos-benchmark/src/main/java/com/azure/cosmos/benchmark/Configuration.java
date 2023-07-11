@@ -116,6 +116,22 @@ public class Configuration {
     @Parameter(names = "-tupleSize", description = "Number of cosmos identity tuples to be queried using readMany")
     private int tupleSize = 1;
 
+    @Parameter(names = "-isProactiveConnectionManagementEnabled", description = "Mode which denotes whether connections are proactively established during warm up.")
+    private String isProactiveConnectionManagementEnabled = String.valueOf(false);
+
+    @Parameter(names = "-isUseUnWarmedUpContainer", description = "Mode which denotes whether to use a container with no warmed up connections. NOTE: " +
+            "To be used when isProactiveConnectionManagementEnabled is set to false and isUseUnWarmedUpContainer is set to true")
+    private String isUseUnWarmedUpContainer = String.valueOf(false);
+
+    @Parameter(names = "-proactiveConnectionRegionsCount", description = "Number of regions where endpoints are to be proactively connected to.")
+    private int proactiveConnectionRegionsCount = 1;
+
+    @Parameter(names = "-minConnectionPoolSizePerEndpoint", description = "Minimum number of connections to establish per endpoint for proactive connection management")
+    private int minConnectionPoolSizePerEndpoint = 0;
+
+    @Parameter(names = "-aggressiveWarmupDuration", description = "The duration for which proactive connections are aggressively established", converter = DurationConverter.class)
+    private Duration aggressiveWarmupDuration = Duration.ZERO;
+
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
         + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
@@ -557,6 +573,26 @@ public class Configuration {
         }
 
         return Duration.ofMillis(this.nonPointLatencyThresholdMs);
+    }
+
+    public boolean isProactiveConnectionManagementEnabled() {
+        return Boolean.parseBoolean(isProactiveConnectionManagementEnabled);
+    }
+
+    public boolean isUseUnWarmedUpContainer() {
+        return Boolean.parseBoolean(isUseUnWarmedUpContainer);
+    }
+
+    public Integer getProactiveConnectionRegionsCount() {
+        return proactiveConnectionRegionsCount;
+    }
+
+    public Duration getAggressiveWarmupDuration() {
+        return aggressiveWarmupDuration;
+    }
+
+    public Integer getMinConnectionPoolSizePerEndpoint() {
+        return minConnectionPoolSizePerEndpoint;
     }
 
     public void tryGetValuesFromSystem() {

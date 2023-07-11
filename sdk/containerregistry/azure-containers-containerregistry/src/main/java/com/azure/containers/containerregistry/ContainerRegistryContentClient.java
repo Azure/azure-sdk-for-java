@@ -25,7 +25,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ServiceResponseException;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.HttpResponse;
@@ -59,7 +58,6 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.ge
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.toGetManifestResponse;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
 import static com.azure.core.util.CoreUtils.bytesToHexString;
 
 /**
@@ -129,7 +127,7 @@ public final class ContainerRegistryContentClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SetManifestResult setManifest(OciImageManifest manifest, String tag) {
         Objects.requireNonNull(manifest, "'manifest' cannot be null.");
-        return setManifestWithResponse(BinaryData.fromObject(manifest), tag, ManifestMediaType.OCI_MANIFEST, Context.NONE).getValue();
+        return setManifestWithResponse(BinaryData.fromObject(manifest), tag, ManifestMediaType.OCI_IMAGE_MANIFEST, Context.NONE).getValue();
     }
 
     /**
@@ -250,7 +248,7 @@ public final class ContainerRegistryContentClient {
      * <pre>
      * GetManifestResult latestResult = contentClient.getManifest&#40;&quot;latest&quot;&#41;;
      * if &#40;ManifestMediaType.DOCKER_MANIFEST.equals&#40;latestResult.getManifestMediaType&#40;&#41;&#41;
-     *     || ManifestMediaType.OCI_MANIFEST.equals&#40;latestResult.getManifestMediaType&#40;&#41;&#41;&#41; &#123;
+     *     || ManifestMediaType.OCI_IMAGE_MANIFEST.equals&#40;latestResult.getManifestMediaType&#40;&#41;&#41;&#41; &#123;
      *     OciImageManifest manifest = latestResult.getManifest&#40;&#41;.toObject&#40;OciImageManifest.class&#41;;
      * &#125; else &#123;
      *     throw new IllegalArgumentException&#40;&quot;Unexpected manifest type: &quot; + latestResult.getManifestMediaType&#40;&#41;&#41;;
@@ -536,10 +534,9 @@ public final class ContainerRegistryContentClient {
             // TODO (limolkova) https://github.com/Azure/azure-sdk-for-java/issues/34400
             context = context.addData("azure-eagerly-read-response", true);
             Response<BinaryData> lastChunk = blobsImpl.getChunkWithResponse(repositoryName, digest, range.toString(), context);
-            validateResponseHeaderDigest(digest, lastChunk.getHeaders());
+            long blobSize = getBlobSize(lastChunk.getHeaders());
             long length = writeChunk(lastChunk, sha256, channel);
 
-            long blobSize = getBlobSize(lastChunk.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
             for (long p = length; p < blobSize; p += CHUNK_SIZE) {
                 range = new HttpRange(p, (long) CHUNK_SIZE);
                 lastChunk = blobsImpl.getChunkWithResponse(repositoryName, digest, range.toString(), context);

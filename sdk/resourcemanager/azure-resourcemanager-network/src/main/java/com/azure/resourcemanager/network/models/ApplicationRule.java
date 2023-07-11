@@ -69,6 +69,12 @@ public final class ApplicationRule extends FirewallPolicyRule {
     @JsonProperty(value = "webCategories")
     private List<String> webCategories;
 
+    /*
+     * List of HTTP/S headers to insert.
+     */
+    @JsonProperty(value = "httpHeadersToInsert")
+    private List<FirewallPolicyHttpHeaderToInsert> httpHeadersToInsert;
+
     /** Creates an instance of ApplicationRule class. */
     public ApplicationRule() {
     }
@@ -253,6 +259,26 @@ public final class ApplicationRule extends FirewallPolicyRule {
         return this;
     }
 
+    /**
+     * Get the httpHeadersToInsert property: List of HTTP/S headers to insert.
+     *
+     * @return the httpHeadersToInsert value.
+     */
+    public List<FirewallPolicyHttpHeaderToInsert> httpHeadersToInsert() {
+        return this.httpHeadersToInsert;
+    }
+
+    /**
+     * Set the httpHeadersToInsert property: List of HTTP/S headers to insert.
+     *
+     * @param httpHeadersToInsert the httpHeadersToInsert value to set.
+     * @return the ApplicationRule object itself.
+     */
+    public ApplicationRule withHttpHeadersToInsert(List<FirewallPolicyHttpHeaderToInsert> httpHeadersToInsert) {
+        this.httpHeadersToInsert = httpHeadersToInsert;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public ApplicationRule withName(String name) {
@@ -277,6 +303,9 @@ public final class ApplicationRule extends FirewallPolicyRule {
         super.validate();
         if (protocols() != null) {
             protocols().forEach(e -> e.validate());
+        }
+        if (httpHeadersToInsert() != null) {
+            httpHeadersToInsert().forEach(e -> e.validate());
         }
     }
 }

@@ -40,7 +40,7 @@ public class TransactionalBatchAsyncContainerTest extends BatchTestBase {
 
     @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeCloseAsync(this.batchClient);
+        safeClose(this.batchClient);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -67,7 +67,7 @@ public class TransactionalBatchAsyncContainerTest extends BatchTestBase {
         assertThat(batchResponse2.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 100)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT * 10)
     public void batchInvalidSessionToken() throws Exception {
         CosmosAsyncContainer container = batchAsyncContainer;
         this.createJsonTestDocs(container);

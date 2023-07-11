@@ -33,16 +33,22 @@ public final class ContainerAppProperties {
     private String environmentId;
 
     /*
-     * Workload profile type to pin for container app execution.
+     * Workload profile name to pin for container app execution.
      */
-    @JsonProperty(value = "workloadProfileType")
-    private String workloadProfileType;
+    @JsonProperty(value = "workloadProfileName")
+    private String workloadProfileName;
 
     /*
      * Name of the latest revision of the Container App.
      */
     @JsonProperty(value = "latestRevisionName", access = JsonProperty.Access.WRITE_ONLY)
     private String latestRevisionName;
+
+    /*
+     * Name of the latest ready revision of the Container App.
+     */
+    @JsonProperty(value = "latestReadyRevisionName", access = JsonProperty.Access.WRITE_ONLY)
+    private String latestReadyRevisionName;
 
     /*
      * Fully Qualified Domain Name of the latest revision of the Container App.
@@ -134,22 +140,22 @@ public final class ContainerAppProperties {
     }
 
     /**
-     * Get the workloadProfileType property: Workload profile type to pin for container app execution.
+     * Get the workloadProfileName property: Workload profile name to pin for container app execution.
      *
-     * @return the workloadProfileType value.
+     * @return the workloadProfileName value.
      */
-    public String workloadProfileType() {
-        return this.workloadProfileType;
+    public String workloadProfileName() {
+        return this.workloadProfileName;
     }
 
     /**
-     * Set the workloadProfileType property: Workload profile type to pin for container app execution.
+     * Set the workloadProfileName property: Workload profile name to pin for container app execution.
      *
-     * @param workloadProfileType the workloadProfileType value to set.
+     * @param workloadProfileName the workloadProfileName value to set.
      * @return the ContainerAppProperties object itself.
      */
-    public ContainerAppProperties withWorkloadProfileType(String workloadProfileType) {
-        this.workloadProfileType = workloadProfileType;
+    public ContainerAppProperties withWorkloadProfileName(String workloadProfileName) {
+        this.workloadProfileName = workloadProfileName;
         return this;
     }
 
@@ -160,6 +166,15 @@ public final class ContainerAppProperties {
      */
     public String latestRevisionName() {
         return this.latestRevisionName;
+    }
+
+    /**
+     * Get the latestReadyRevisionName property: Name of the latest ready revision of the Container App.
+     *
+     * @return the latestReadyRevisionName value.
+     */
+    public String latestReadyRevisionName() {
+        return this.latestReadyRevisionName;
     }
 
     /**

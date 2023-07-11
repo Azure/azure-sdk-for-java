@@ -169,6 +169,12 @@
           "justification": "Skip customized getters on class when serialization and deserialization."
         },
         {
+          "regex": true,
+          "code": "java.annotation.added",
+          "new": "class com.azure.ai.textanalytics.models.HealthcareEntityRelationType",
+          "justification": "Skip JsonCreator annotation on the method fromString when serialization and deserialization."
+        },
+        {
           "code": "java.class.removed",
           "old": "enum com.azure.messaging.eventhubs.checkpointstore.blob.Messages",
           "justification": "Messages class was accidentally made public. Reverting the public change since this should be implementation detail."
@@ -191,9 +197,31 @@
           "justification": "support configuration of Service Bus domain name."
         },
         {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIpConfiguration com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIpConfiguration::withId(java.lang.String)",
+          "justification": "Break by service. 'id' is previously not used in runtime."
+        },
+        {
+          "code": "java.class.noLongerInheritsFromClass",
+          "old": "class com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIpConfiguration",
+          "new": "class com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIpConfiguration",
+          "justification": "Break by service. 'id' is previously not used in runtime. And customer unlikely to use this class as subclass of 'SubResource'."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.compute.models.VirtualMachineScaleSetNetworkConfiguration com.azure.resourcemanager.compute.models.VirtualMachineScaleSetNetworkConfiguration::withId(java.lang.String)",
+          "justification": "Break by service. 'id' is previously not used in runtime."
+        },
+        {
+          "code": "java.class.noLongerInheritsFromClass",
+          "old": "class com.azure.resourcemanager.compute.models.VirtualMachineScaleSetNetworkConfiguration",
+          "new": "class com.azure.resourcemanager.compute.models.VirtualMachineScaleSetNetworkConfiguration",
+          "justification": "Break by service. 'id' is previously not used in runtime. And customer unlikely to use this class as subclass of 'SubResource'."
+        },
+        {
           "code": "java.class.nowFinal",
-          "old:": "class com.azure.resourcemanager.resources.models.Identity",
-          "new": "class com.azure.resourcemanager.resources.models.Identity",
+          "old": "class com.azure.resourcemanager.network.models.ManagedServiceIdentity",
+          "new": "class com.azure.resourcemanager.network.models.ManagedServiceIdentity",
           "justification": "Make the class final. User is unlikely to inherit from this class."
         },
         {
@@ -214,6 +242,39 @@
           "code": "java\\.annotation\\.removed",
           "old": ".*? com\\.azure\\.search\\.documents(\\.indexes)?\\.models.*",
           "justification": "Removing Jackson annotations from Search in transition to stream-style."
+        },
+        {
+          "code": "java.field.removed",
+          "old": "field com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties.AZURE_GERMANY",
+          "justification": "Remove this because AZURE_GERMANY is deprecated."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.security\\.keyvault\\.administration\\.models.*",
+          "justification": "Removing Jackson annotations from KeyVault Administration in transition to stream-style."
+        },
+        {
+          "regex": true,
+          "code" : "java.field.enumConstantOrderChanged",
+          "old" : "field com.mysql.cj.conf.PropertyKey.*",
+          "new" : "field com.mysql.cj.conf.PropertyKey.*",
+          "justification" : "Fix enum constants reordered."
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method int com.mysql.cj.protocol.ServerSession::getOldStatusFlags()",
+          "justification" : "Fix method removed."
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method void com.mysql.cj.protocol.ServerSession::setOldStatusFlags(int)",
+          "justification" : "Fix method removed."
+        },
+        {
+          "regex": true,
+          "code": "java.method.(returnTypeTypeParametersChanged|parameterTypeChanged|returnTypeChanged)",
+          "new": ".* com.azure.security.attestation.*attestTpm.*"
         }
       ]
     }

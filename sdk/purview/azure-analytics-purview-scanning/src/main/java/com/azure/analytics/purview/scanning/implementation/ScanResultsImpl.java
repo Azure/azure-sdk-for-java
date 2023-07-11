@@ -6,6 +6,7 @@ package com.azure.analytics.purview.scanning.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -15,7 +16,11 @@ import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
@@ -59,41 +64,169 @@ public final class ScanResultsImpl {
     public interface ScanResultsService {
         @Put("/datasources/{dataSourceName}/scans/{scanName}/runs/{runId}")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> runScan(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("dataSourceName") String dataSourceName,
                 @PathParam("scanName") String scanName,
                 @PathParam("runId") String runId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Put("/datasources/{dataSourceName}/scans/{scanName}/runs/{runId}")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> runScanSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("dataSourceName") String dataSourceName,
+                @PathParam("scanName") String scanName,
+                @PathParam("runId") String runId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Post("/datasources/{dataSourceName}/scans/{scanName}/runs/{runId}/:cancel")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> cancelScan(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("dataSourceName") String dataSourceName,
                 @PathParam("scanName") String scanName,
                 @PathParam("runId") String runId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/datasources/{dataSourceName}/scans/{scanName}/runs/{runId}/:cancel")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> cancelScanSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("dataSourceName") String dataSourceName,
+                @PathParam("scanName") String scanName,
+                @PathParam("runId") String runId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Get("/datasources/{dataSourceName}/scans/{scanName}/runs")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listScanHistory(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("dataSourceName") String dataSourceName,
                 @PathParam("scanName") String scanName,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/datasources/{dataSourceName}/scans/{scanName}/runs")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listScanHistorySync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("dataSourceName") String dataSourceName,
+                @PathParam("scanName") String scanName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listScanHistoryNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("Endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listScanHistoryNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("Endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -106,28 +239,29 @@ public final class ScanResultsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>scanLevel</td><td>String</td><td>No</td><td>The scanLevel parameter</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>scanLevel</td><td>String</td><td>No</td><td>The scanLevel parameter. Allowed values: "Full", "Incremental".</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     scanResultId: String
-     *     startTime: String
-     *     endTime: String
-     *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
-     *             {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
+     *     scanResultId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled) (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *              (Optional){
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 target: String (Optional)
+     *                 details (Optional): [
      *                     (recursive schema, see above)
      *                 ]
      *             }
@@ -141,11 +275,15 @@ public final class ScanResultsImpl {
      * @param runId The runId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> runScanWithResponseAsync(
             String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.runScan(
@@ -154,6 +292,7 @@ public final class ScanResultsImpl {
                                 scanName,
                                 runId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -166,87 +305,29 @@ public final class ScanResultsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>scanLevel</td><td>String</td><td>No</td><td>The scanLevel parameter</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>scanLevel</td><td>String</td><td>No</td><td>The scanLevel parameter. Allowed values: "Full", "Incremental".</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     scanResultId: String
-     *     startTime: String
-     *     endTime: String
-     *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
-     *             {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
-     *                     (recursive schema, see above)
-     *                 ]
-     *             }
-     *         ]
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param dataSourceName The dataSourceName parameter.
-     * @param scanName The scanName parameter.
-     * @param runId The runId parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> runScanWithResponseAsync(
-            String dataSourceName, String scanName, String runId, RequestOptions requestOptions, Context context) {
-        return service.runScan(
-                this.client.getEndpoint(),
-                dataSourceName,
-                scanName,
-                runId,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Runs the scan.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>scanLevel</td><td>String</td><td>No</td><td>The scanLevel parameter</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     scanResultId: String
-     *     startTime: String
-     *     endTime: String
-     *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
-     *             {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
+     *     scanResultId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled) (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *              (Optional){
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 target: String (Optional)
+     *                 details (Optional): [
      *                     (recursive schema, see above)
      *                 ]
      *             }
@@ -260,43 +341,47 @@ public final class ScanResultsImpl {
      * @param runId The runId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> runScanWithResponse(
             String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
-        return runScanWithResponseAsync(dataSourceName, scanName, runId, requestOptions).block();
+        final String accept = "application/json";
+        return service.runScanSync(
+                this.client.getEndpoint(),
+                dataSourceName,
+                scanName,
+                runId,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Cancels a scan.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     scanResultId: String
-     *     startTime: String
-     *     endTime: String
-     *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
-     *             {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
+     *     scanResultId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled) (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *              (Optional){
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 target: String (Optional)
+     *                 details (Optional): [
      *                     (recursive schema, see above)
      *                 ]
      *             }
@@ -310,11 +395,15 @@ public final class ScanResultsImpl {
      * @param runId The runId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> cancelScanWithResponseAsync(
             String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.cancelScan(
@@ -323,6 +412,7 @@ public final class ScanResultsImpl {
                                 scanName,
                                 runId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -330,90 +420,24 @@ public final class ScanResultsImpl {
     /**
      * Cancels a scan.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     scanResultId: String
-     *     startTime: String
-     *     endTime: String
-     *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
-     *             {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
-     *                     (recursive schema, see above)
-     *                 ]
-     *             }
-     *         ]
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param dataSourceName The dataSourceName parameter.
-     * @param scanName The scanName parameter.
-     * @param runId The runId parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelScanWithResponseAsync(
-            String dataSourceName, String scanName, String runId, RequestOptions requestOptions, Context context) {
-        return service.cancelScan(
-                this.client.getEndpoint(),
-                dataSourceName,
-                scanName,
-                runId,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Cancels a scan.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     scanResultId: String
-     *     startTime: String
-     *     endTime: String
-     *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
-     *             {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
+     *     scanResultId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled) (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *              (Optional){
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 target: String (Optional)
+     *                 details (Optional): [
      *                     (recursive schema, see above)
      *                 ]
      *             }
@@ -427,77 +451,75 @@ public final class ScanResultsImpl {
      * @param runId The runId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cancelScanWithResponse(
             String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
-        return cancelScanWithResponseAsync(dataSourceName, scanName, runId, requestOptions).block();
+        final String accept = "application/json";
+        return service.cancelScanSync(
+                this.client.getEndpoint(),
+                dataSourceName,
+                scanName,
+                runId,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
      * Lists the scan history of a scan.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             parentId: String
-     *             id: String
-     *             resourceId: String
-     *             status: String
-     *             assetsDiscovered: Long
-     *             assetsClassified: Long
-     *             diagnostics: {
-     *                 notifications: [
-     *                     {
-     *                         message: String
-     *                         code: Integer
-     *                     }
-     *                 ]
-     *                 exceptionCountMap: {
-     *                     String: int
-     *                 }
+     *     parentId: String (Optional)
+     *     id: String (Optional)
+     *     resourceId: String (Optional)
+     *     status: String (Optional)
+     *     assetsDiscovered: Long (Optional)
+     *     assetsClassified: Long (Optional)
+     *     diagnostics (Optional): {
+     *         notifications (Optional): [
+     *              (Optional){
+     *                 message: String (Optional)
+     *                 code: Integer (Optional)
      *             }
-     *             startTime: String
-     *             queuedTime: String
-     *             pipelineStartTime: String
-     *             endTime: String
-     *             scanRulesetVersion: Integer
-     *             scanRulesetType: String(Custom/System)
-     *             scanLevelType: String(Full/Incremental)
-     *             errorMessage: String
-     *             error: {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
-     *                     {
-     *                         code: String
-     *                         message: String
-     *                         target: String
-     *                         details: [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                     }
-     *                 ]
-     *             }
-     *             runType: String
-     *             dataSourceType: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI)
+     *         ]
+     *         exceptionCountMap (Optional): {
+     *             String: int (Optional)
      *         }
-     *     ]
-     *     nextLink: String
-     *     count: Long
+     *     }
+     *     startTime: OffsetDateTime (Optional)
+     *     queuedTime: OffsetDateTime (Optional)
+     *     pipelineStartTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     scanRulesetVersion: Integer (Optional)
+     *     scanRulesetType: String(Custom/System) (Optional)
+     *     scanLevelType: String(Full/Incremental) (Optional)
+     *     errorMessage: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *              (Optional){
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         ]
+     *     }
+     *     runType: String (Optional)
+     *     dataSourceType: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI) (Optional)
      * }
      * }</pre>
      *
@@ -505,11 +527,15 @@ public final class ScanResultsImpl {
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listScanHistorySinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listScanHistorySinglePageAsync(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listScanHistory(
@@ -517,6 +543,7 @@ public final class ScanResultsImpl {
                                         dataSourceName,
                                         scanName,
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -533,160 +560,209 @@ public final class ScanResultsImpl {
     /**
      * Lists the scan history of a scan.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             parentId: String
-     *             id: String
-     *             resourceId: String
-     *             status: String
-     *             assetsDiscovered: Long
-     *             assetsClassified: Long
-     *             diagnostics: {
-     *                 notifications: [
-     *                     {
-     *                         message: String
-     *                         code: Integer
-     *                     }
-     *                 ]
-     *                 exceptionCountMap: {
-     *                     String: int
-     *                 }
+     *     parentId: String (Optional)
+     *     id: String (Optional)
+     *     resourceId: String (Optional)
+     *     status: String (Optional)
+     *     assetsDiscovered: Long (Optional)
+     *     assetsClassified: Long (Optional)
+     *     diagnostics (Optional): {
+     *         notifications (Optional): [
+     *              (Optional){
+     *                 message: String (Optional)
+     *                 code: Integer (Optional)
      *             }
-     *             startTime: String
-     *             queuedTime: String
-     *             pipelineStartTime: String
-     *             endTime: String
-     *             scanRulesetVersion: Integer
-     *             scanRulesetType: String(Custom/System)
-     *             scanLevelType: String(Full/Incremental)
-     *             errorMessage: String
-     *             error: {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
-     *                     {
-     *                         code: String
-     *                         message: String
-     *                         target: String
-     *                         details: [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                     }
-     *                 ]
-     *             }
-     *             runType: String
-     *             dataSourceType: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI)
+     *         ]
+     *         exceptionCountMap (Optional): {
+     *             String: int (Optional)
      *         }
-     *     ]
-     *     nextLink: String
-     *     count: Long
+     *     }
+     *     startTime: OffsetDateTime (Optional)
+     *     queuedTime: OffsetDateTime (Optional)
+     *     pipelineStartTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     scanRulesetVersion: Integer (Optional)
+     *     scanRulesetType: String(Custom/System) (Optional)
+     *     scanLevelType: String(Full/Incremental) (Optional)
+     *     errorMessage: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *              (Optional){
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         ]
+     *     }
+     *     runType: String (Optional)
+     *     dataSourceType: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI) (Optional)
      * }
      * }</pre>
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listScanHistoryAsync(
+            String dataSourceName, String scanName, RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listScanHistorySinglePageAsync(dataSourceName, scanName, requestOptions),
+                nextLink -> listScanHistoryNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * Lists the scan history of a scan.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     parentId: String (Optional)
+     *     id: String (Optional)
+     *     resourceId: String (Optional)
+     *     status: String (Optional)
+     *     assetsDiscovered: Long (Optional)
+     *     assetsClassified: Long (Optional)
+     *     diagnostics (Optional): {
+     *         notifications (Optional): [
+     *              (Optional){
+     *                 message: String (Optional)
+     *                 code: Integer (Optional)
+     *             }
+     *         ]
+     *         exceptionCountMap (Optional): {
+     *             String: int (Optional)
+     *         }
+     *     }
+     *     startTime: OffsetDateTime (Optional)
+     *     queuedTime: OffsetDateTime (Optional)
+     *     pipelineStartTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     scanRulesetVersion: Integer (Optional)
+     *     scanRulesetType: String(Custom/System) (Optional)
+     *     scanLevelType: String(Full/Incremental) (Optional)
+     *     errorMessage: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *              (Optional){
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         ]
+     *     }
+     *     runType: String (Optional)
+     *     dataSourceType: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI) (Optional)
+     * }
+     * }</pre>
+     *
+     * @param dataSourceName The dataSourceName parameter.
+     * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listScanHistorySinglePageAsync(
-            String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        return service.listScanHistory(
+    private PagedResponse<BinaryData> listScanHistorySinglePage(
+            String dataSourceName, String scanName, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listScanHistorySync(
                         this.client.getEndpoint(),
                         dataSourceName,
                         scanName,
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     /**
      * Lists the scan history of a scan.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             parentId: String
-     *             id: String
-     *             resourceId: String
-     *             status: String
-     *             assetsDiscovered: Long
-     *             assetsClassified: Long
-     *             diagnostics: {
-     *                 notifications: [
-     *                     {
-     *                         message: String
-     *                         code: Integer
-     *                     }
-     *                 ]
-     *                 exceptionCountMap: {
-     *                     String: int
-     *                 }
+     *     parentId: String (Optional)
+     *     id: String (Optional)
+     *     resourceId: String (Optional)
+     *     status: String (Optional)
+     *     assetsDiscovered: Long (Optional)
+     *     assetsClassified: Long (Optional)
+     *     diagnostics (Optional): {
+     *         notifications (Optional): [
+     *              (Optional){
+     *                 message: String (Optional)
+     *                 code: Integer (Optional)
      *             }
-     *             startTime: String
-     *             queuedTime: String
-     *             pipelineStartTime: String
-     *             endTime: String
-     *             scanRulesetVersion: Integer
-     *             scanRulesetType: String(Custom/System)
-     *             scanLevelType: String(Full/Incremental)
-     *             errorMessage: String
-     *             error: {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
-     *                     {
-     *                         code: String
-     *                         message: String
-     *                         target: String
-     *                         details: [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                     }
-     *                 ]
-     *             }
-     *             runType: String
-     *             dataSourceType: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI)
+     *         ]
+     *         exceptionCountMap (Optional): {
+     *             String: int (Optional)
      *         }
-     *     ]
-     *     nextLink: String
-     *     count: Long
+     *     }
+     *     startTime: OffsetDateTime (Optional)
+     *     queuedTime: OffsetDateTime (Optional)
+     *     pipelineStartTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     scanRulesetVersion: Integer (Optional)
+     *     scanRulesetType: String(Custom/System) (Optional)
+     *     scanLevelType: String(Full/Incremental) (Optional)
+     *     errorMessage: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *              (Optional){
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         ]
+     *     }
+     *     runType: String (Optional)
+     *     dataSourceType: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI) (Optional)
      * }
      * }</pre>
      *
@@ -694,173 +770,22 @@ public final class ScanResultsImpl {
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listScanHistoryAsync(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
-        return new PagedFlux<>(
-                () -> listScanHistorySinglePageAsync(dataSourceName, scanName, requestOptions),
-                nextLink -> listScanHistoryNextSinglePageAsync(nextLink, null));
-    }
-
-    /**
-     * Lists the scan history of a scan.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value: [
-     *         {
-     *             parentId: String
-     *             id: String
-     *             resourceId: String
-     *             status: String
-     *             assetsDiscovered: Long
-     *             assetsClassified: Long
-     *             diagnostics: {
-     *                 notifications: [
-     *                     {
-     *                         message: String
-     *                         code: Integer
-     *                     }
-     *                 ]
-     *                 exceptionCountMap: {
-     *                     String: int
-     *                 }
-     *             }
-     *             startTime: String
-     *             queuedTime: String
-     *             pipelineStartTime: String
-     *             endTime: String
-     *             scanRulesetVersion: Integer
-     *             scanRulesetType: String(Custom/System)
-     *             scanLevelType: String(Full/Incremental)
-     *             errorMessage: String
-     *             error: {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
-     *                     {
-     *                         code: String
-     *                         message: String
-     *                         target: String
-     *                         details: [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                     }
-     *                 ]
-     *             }
-     *             runType: String
-     *             dataSourceType: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI)
-     *         }
-     *     ]
-     *     nextLink: String
-     *     count: Long
-     * }
-     * }</pre>
-     *
-     * @param dataSourceName The dataSourceName parameter.
-     * @param scanName The scanName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listScanHistoryAsync(
-            String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        return new PagedFlux<>(
-                () -> listScanHistorySinglePageAsync(dataSourceName, scanName, requestOptions, context),
-                nextLink -> listScanHistoryNextSinglePageAsync(nextLink, null, context));
-    }
-
-    /**
-     * Lists the scan history of a scan.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value: [
-     *         {
-     *             parentId: String
-     *             id: String
-     *             resourceId: String
-     *             status: String
-     *             assetsDiscovered: Long
-     *             assetsClassified: Long
-     *             diagnostics: {
-     *                 notifications: [
-     *                     {
-     *                         message: String
-     *                         code: Integer
-     *                     }
-     *                 ]
-     *                 exceptionCountMap: {
-     *                     String: int
-     *                 }
-     *             }
-     *             startTime: String
-     *             queuedTime: String
-     *             pipelineStartTime: String
-     *             endTime: String
-     *             scanRulesetVersion: Integer
-     *             scanRulesetType: String(Custom/System)
-     *             scanLevelType: String(Full/Incremental)
-     *             errorMessage: String
-     *             error: {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
-     *                     {
-     *                         code: String
-     *                         message: String
-     *                         target: String
-     *                         details: [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                     }
-     *                 ]
-     *             }
-     *             runType: String
-     *             dataSourceType: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI)
-     *         }
-     *     ]
-     *     nextLink: String
-     *     count: Long
-     * }
-     * }</pre>
-     *
-     * @param dataSourceName The dataSourceName parameter.
-     * @param scanName The scanName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listScanHistory(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
-        return new PagedIterable<>(listScanHistoryAsync(dataSourceName, scanName, requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listScanHistorySinglePage(dataSourceName, scanName, requestOptions),
+                nextLink -> listScanHistoryNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -870,69 +795,68 @@ public final class ScanResultsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             parentId: String
-     *             id: String
-     *             resourceId: String
-     *             status: String
-     *             assetsDiscovered: Long
-     *             assetsClassified: Long
-     *             diagnostics: {
-     *                 notifications: [
-     *                     {
-     *                         message: String
-     *                         code: Integer
-     *                     }
-     *                 ]
-     *                 exceptionCountMap: {
-     *                     String: int
-     *                 }
+     *     parentId: String (Optional)
+     *     id: String (Optional)
+     *     resourceId: String (Optional)
+     *     status: String (Optional)
+     *     assetsDiscovered: Long (Optional)
+     *     assetsClassified: Long (Optional)
+     *     diagnostics (Optional): {
+     *         notifications (Optional): [
+     *              (Optional){
+     *                 message: String (Optional)
+     *                 code: Integer (Optional)
      *             }
-     *             startTime: String
-     *             queuedTime: String
-     *             pipelineStartTime: String
-     *             endTime: String
-     *             scanRulesetVersion: Integer
-     *             scanRulesetType: String(Custom/System)
-     *             scanLevelType: String(Full/Incremental)
-     *             errorMessage: String
-     *             error: {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
-     *                     {
-     *                         code: String
-     *                         message: String
-     *                         target: String
-     *                         details: [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                     }
-     *                 ]
-     *             }
-     *             runType: String
-     *             dataSourceType: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI)
+     *         ]
+     *         exceptionCountMap (Optional): {
+     *             String: int (Optional)
      *         }
-     *     ]
-     *     nextLink: String
-     *     count: Long
+     *     }
+     *     startTime: OffsetDateTime (Optional)
+     *     queuedTime: OffsetDateTime (Optional)
+     *     pipelineStartTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     scanRulesetVersion: Integer (Optional)
+     *     scanRulesetType: String(Custom/System) (Optional)
+     *     scanLevelType: String(Full/Incremental) (Optional)
+     *     errorMessage: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *              (Optional){
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         ]
+     *     }
+     *     runType: String (Optional)
+     *     dataSourceType: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI) (Optional)
      * }
      * }</pre>
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listScanHistoryNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listScanHistoryNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listScanHistoryNext(
-                                        nextLink, this.client.getEndpoint(), requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -951,76 +875,73 @@ public final class ScanResultsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             parentId: String
-     *             id: String
-     *             resourceId: String
-     *             status: String
-     *             assetsDiscovered: Long
-     *             assetsClassified: Long
-     *             diagnostics: {
-     *                 notifications: [
-     *                     {
-     *                         message: String
-     *                         code: Integer
-     *                     }
-     *                 ]
-     *                 exceptionCountMap: {
-     *                     String: int
-     *                 }
+     *     parentId: String (Optional)
+     *     id: String (Optional)
+     *     resourceId: String (Optional)
+     *     status: String (Optional)
+     *     assetsDiscovered: Long (Optional)
+     *     assetsClassified: Long (Optional)
+     *     diagnostics (Optional): {
+     *         notifications (Optional): [
+     *              (Optional){
+     *                 message: String (Optional)
+     *                 code: Integer (Optional)
      *             }
-     *             startTime: String
-     *             queuedTime: String
-     *             pipelineStartTime: String
-     *             endTime: String
-     *             scanRulesetVersion: Integer
-     *             scanRulesetType: String(Custom/System)
-     *             scanLevelType: String(Full/Incremental)
-     *             errorMessage: String
-     *             error: {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
-     *                     {
-     *                         code: String
-     *                         message: String
-     *                         target: String
-     *                         details: [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                     }
-     *                 ]
-     *             }
-     *             runType: String
-     *             dataSourceType: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI)
+     *         ]
+     *         exceptionCountMap (Optional): {
+     *             String: int (Optional)
      *         }
-     *     ]
-     *     nextLink: String
-     *     count: Long
+     *     }
+     *     startTime: OffsetDateTime (Optional)
+     *     queuedTime: OffsetDateTime (Optional)
+     *     pipelineStartTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     scanRulesetVersion: Integer (Optional)
+     *     scanRulesetType: String(Custom/System) (Optional)
+     *     scanLevelType: String(Full/Incremental) (Optional)
+     *     errorMessage: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *              (Optional){
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         ]
+     *     }
+     *     runType: String (Optional)
+     *     dataSourceType: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI) (Optional)
      * }
      * }</pre>
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listScanHistoryNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions, Context context) {
-        return service.listScanHistoryNext(nextLink, this.client.getEndpoint(), requestOptions, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+    private PagedResponse<BinaryData> listScanHistoryNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listScanHistoryNextSync(
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

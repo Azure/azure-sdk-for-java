@@ -78,6 +78,12 @@ public final class VaultProperties {
     private MonitoringSettings monitoringSettings;
 
     /*
+     * Restore Settings of the vault
+     */
+    @JsonProperty(value = "restoreSettings")
+    private RestoreSettings restoreSettings;
+
+    /*
      * The redundancy Settings of a Vault
      */
     @JsonProperty(value = "redundancySettings")
@@ -250,6 +256,26 @@ public final class VaultProperties {
     }
 
     /**
+     * Get the restoreSettings property: Restore Settings of the vault.
+     *
+     * @return the restoreSettings value.
+     */
+    public RestoreSettings restoreSettings() {
+        return this.restoreSettings;
+    }
+
+    /**
+     * Set the restoreSettings property: Restore Settings of the vault.
+     *
+     * @param restoreSettings the restoreSettings value to set.
+     * @return the VaultProperties object itself.
+     */
+    public VaultProperties withRestoreSettings(RestoreSettings restoreSettings) {
+        this.restoreSettings = restoreSettings;
+        return this;
+    }
+
+    /**
      * Get the redundancySettings property: The redundancy Settings of a Vault.
      *
      * @return the redundancySettings value.
@@ -309,6 +335,9 @@ public final class VaultProperties {
         }
         if (monitoringSettings() != null) {
             monitoringSettings().validate();
+        }
+        if (restoreSettings() != null) {
+            restoreSettings().validate();
         }
         if (redundancySettings() != null) {
             redundancySettings().validate();

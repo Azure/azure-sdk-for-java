@@ -8,48 +8,47 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.fluent.models.SourceControlInner;
 import com.azure.resourcemanager.appcontainers.models.GithubActionConfiguration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SourceControlInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SourceControlInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"operationState\":\"Failed\",\"repoUrl\":\"dnfwqzdzg\",\"branch\":\"la\",\"githubActionConfiguration\":{\"contextPath\":\"qlyvijo\",\"image\":\"iv\",\"publishType\":\"oyzunbixxr\",\"os\":\"kvcpwpgclr\",\"runtimeStack\":\"vtsoxf\",\"runtimeVersion\":\"enxpmyyefr\"}},\"id\":\"pdnqqskawaoqvmmb\",\"name\":\"pqfrtqlkz\",\"type\":\"egnitg\"}")
+                    "{\"properties\":{\"operationState\":\"Failed\",\"repoUrl\":\"oj\",\"branch\":\"giflrzpasccbiu\",\"githubActionConfiguration\":{\"contextPath\":\"yjdfqwmky\",\"image\":\"ufdvruz\",\"publishType\":\"zojhpctfnmd\",\"os\":\"tngfdgugeyzihgr\",\"runtimeStack\":\"ui\",\"runtimeVersion\":\"bsnmfpph\"}},\"id\":\"eevy\",\"name\":\"yhsgz\",\"type\":\"czbgomfgbeg\"}")
                 .toObject(SourceControlInner.class);
-        Assertions.assertEquals("dnfwqzdzg", model.repoUrl());
-        Assertions.assertEquals("la", model.branch());
-        Assertions.assertEquals("qlyvijo", model.githubActionConfiguration().contextPath());
-        Assertions.assertEquals("iv", model.githubActionConfiguration().image());
-        Assertions.assertEquals("oyzunbixxr", model.githubActionConfiguration().publishType());
-        Assertions.assertEquals("kvcpwpgclr", model.githubActionConfiguration().os());
-        Assertions.assertEquals("vtsoxf", model.githubActionConfiguration().runtimeStack());
-        Assertions.assertEquals("enxpmyyefr", model.githubActionConfiguration().runtimeVersion());
+        Assertions.assertEquals("oj", model.repoUrl());
+        Assertions.assertEquals("giflrzpasccbiu", model.branch());
+        Assertions.assertEquals("yjdfqwmky", model.githubActionConfiguration().contextPath());
+        Assertions.assertEquals("ufdvruz", model.githubActionConfiguration().image());
+        Assertions.assertEquals("zojhpctfnmd", model.githubActionConfiguration().publishType());
+        Assertions.assertEquals("tngfdgugeyzihgr", model.githubActionConfiguration().os());
+        Assertions.assertEquals("ui", model.githubActionConfiguration().runtimeStack());
+        Assertions.assertEquals("bsnmfpph", model.githubActionConfiguration().runtimeVersion());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SourceControlInner model =
             new SourceControlInner()
-                .withRepoUrl("dnfwqzdzg")
-                .withBranch("la")
+                .withRepoUrl("oj")
+                .withBranch("giflrzpasccbiu")
                 .withGithubActionConfiguration(
                     new GithubActionConfiguration()
-                        .withContextPath("qlyvijo")
-                        .withImage("iv")
-                        .withPublishType("oyzunbixxr")
-                        .withOs("kvcpwpgclr")
-                        .withRuntimeStack("vtsoxf")
-                        .withRuntimeVersion("enxpmyyefr"));
+                        .withContextPath("yjdfqwmky")
+                        .withImage("ufdvruz")
+                        .withPublishType("zojhpctfnmd")
+                        .withOs("tngfdgugeyzihgr")
+                        .withRuntimeStack("ui")
+                        .withRuntimeVersion("bsnmfpph"));
         model = BinaryData.fromObject(model).toObject(SourceControlInner.class);
-        Assertions.assertEquals("dnfwqzdzg", model.repoUrl());
-        Assertions.assertEquals("la", model.branch());
-        Assertions.assertEquals("qlyvijo", model.githubActionConfiguration().contextPath());
-        Assertions.assertEquals("iv", model.githubActionConfiguration().image());
-        Assertions.assertEquals("oyzunbixxr", model.githubActionConfiguration().publishType());
-        Assertions.assertEquals("kvcpwpgclr", model.githubActionConfiguration().os());
-        Assertions.assertEquals("vtsoxf", model.githubActionConfiguration().runtimeStack());
-        Assertions.assertEquals("enxpmyyefr", model.githubActionConfiguration().runtimeVersion());
+        Assertions.assertEquals("oj", model.repoUrl());
+        Assertions.assertEquals("giflrzpasccbiu", model.branch());
+        Assertions.assertEquals("yjdfqwmky", model.githubActionConfiguration().contextPath());
+        Assertions.assertEquals("ufdvruz", model.githubActionConfiguration().image());
+        Assertions.assertEquals("zojhpctfnmd", model.githubActionConfiguration().publishType());
+        Assertions.assertEquals("tngfdgugeyzihgr", model.githubActionConfiguration().os());
+        Assertions.assertEquals("ui", model.githubActionConfiguration().runtimeStack());
+        Assertions.assertEquals("bsnmfpph", model.githubActionConfiguration().runtimeVersion());
     }
 }

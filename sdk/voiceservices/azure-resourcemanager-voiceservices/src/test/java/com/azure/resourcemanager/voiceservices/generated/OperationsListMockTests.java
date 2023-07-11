@@ -12,7 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.voiceservices.VoiceservicesManager;
+import com.azure.resourcemanager.voiceservices.VoiceServicesManager;
 import com.azure.resourcemanager.voiceservices.models.Operation;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -51,8 +51,8 @@ public final class OperationsListMockTests {
                             return Mono.just(httpResponse);
                         }));
 
-        VoiceservicesManager manager =
-            VoiceservicesManager
+        VoiceServicesManager manager =
+            VoiceServicesManager
                 .configure()
                 .withHttpClient(httpClient)
                 .authenticate(

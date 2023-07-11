@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cosmos.generated;
 /** Samples for MongoDBResources DeleteMongoUserDefinition. */
 public final class MongoDBResourcesDeleteMongoUserDefinitionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBMongoDBUserDefinitionDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBMongoDBUserDefinitionDelete.json
      */
     /**
      * Sample code: CosmosDBMongoDBUserDefinitionDelete.

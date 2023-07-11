@@ -15,8 +15,8 @@ import java.util.Collection;
  * Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details.
  */
 public final class ManagedClusterSkuTier extends ExpandableStringEnum<ManagedClusterSkuTier> {
-    /** Static value Paid for ManagedClusterSkuTier. */
-    public static final ManagedClusterSkuTier PAID = fromString("Paid");
+    /** Static value Premium for ManagedClusterSkuTier. */
+    public static final ManagedClusterSkuTier PREMIUM = fromString("Premium");
 
     /** Static value Standard for ManagedClusterSkuTier. */
     public static final ManagedClusterSkuTier STANDARD = fromString("Standard");

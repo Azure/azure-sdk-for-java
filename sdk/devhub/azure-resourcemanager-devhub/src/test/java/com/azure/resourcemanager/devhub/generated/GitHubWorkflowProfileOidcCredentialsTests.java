@@ -7,27 +7,26 @@ package com.azure.resourcemanager.devhub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devhub.models.GitHubWorkflowProfileOidcCredentials;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class GitHubWorkflowProfileOidcCredentialsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         GitHubWorkflowProfileOidcCredentials model =
             BinaryData
-                .fromString("{\"azureClientId\":\"odgmaajrmvdjwz\",\"azureTenantId\":\"ovmclwhijcoejct\"}")
+                .fromString("{\"azureClientId\":\"zvddntwndeicbtwn\",\"azureTenantId\":\"aoqvuh\"}")
                 .toObject(GitHubWorkflowProfileOidcCredentials.class);
-        Assertions.assertEquals("odgmaajrmvdjwz", model.azureClientId());
-        Assertions.assertEquals("ovmclwhijcoejct", model.azureTenantId());
+        Assertions.assertEquals("zvddntwndeicbtwn", model.azureClientId());
+        Assertions.assertEquals("aoqvuh", model.azureTenantId());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         GitHubWorkflowProfileOidcCredentials model =
             new GitHubWorkflowProfileOidcCredentials()
-                .withAzureClientId("odgmaajrmvdjwz")
-                .withAzureTenantId("ovmclwhijcoejct");
+                .withAzureClientId("zvddntwndeicbtwn")
+                .withAzureTenantId("aoqvuh");
         model = BinaryData.fromObject(model).toObject(GitHubWorkflowProfileOidcCredentials.class);
-        Assertions.assertEquals("odgmaajrmvdjwz", model.azureClientId());
-        Assertions.assertEquals("ovmclwhijcoejct", model.azureTenantId());
+        Assertions.assertEquals("zvddntwndeicbtwn", model.azureClientId());
+        Assertions.assertEquals("aoqvuh", model.azureTenantId());
     }
 }

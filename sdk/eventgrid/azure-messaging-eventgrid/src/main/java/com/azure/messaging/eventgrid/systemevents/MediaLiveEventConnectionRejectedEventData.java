@@ -43,6 +43,9 @@ public final class MediaLiveEventConnectionRejectedEventData {
     @JsonProperty(value = "resultCode", access = JsonProperty.Access.WRITE_ONLY)
     private String resultCode;
 
+    /** Creates an instance of MediaLiveEventConnectionRejectedEventData class. */
+    public MediaLiveEventConnectionRejectedEventData() {}
+
     /**
      * Get the ingestUrl property: Gets the ingest URL provided by the live event.
      *

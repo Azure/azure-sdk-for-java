@@ -12,8 +12,8 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class PolicyInsightsPolicyStateDeletedEventData {
     /*
-     * The time that the resource was scanned by Azure Policy in the Universal
-     * ISO 8601 DateTime format yyyy-MM-ddTHH:mm:ss.fffffffZ.
+     * The time that the resource was scanned by Azure Policy in the Universal ISO 8601 DateTime format
+     * yyyy-MM-ddTHH:mm:ss.fffffffZ.
      */
     @JsonProperty(value = "timestamp")
     private OffsetDateTime timestamp;
@@ -31,15 +31,14 @@ public final class PolicyInsightsPolicyStateDeletedEventData {
     private String policyDefinitionId;
 
     /*
-     * The reference ID for the policy definition inside the initiative
-     * definition, if the policy assignment is for an initiative. May be empty.
+     * The reference ID for the policy definition inside the initiative definition, if the policy assignment is for an
+     * initiative. May be empty.
      */
     @JsonProperty(value = "policyDefinitionReferenceId")
     private String policyDefinitionReferenceId;
 
     /*
-     * The compliance state of the resource with respect to the policy
-     * assignment.
+     * The compliance state of the resource with respect to the policy assignment.
      */
     @JsonProperty(value = "complianceState")
     private String complianceState;
@@ -55,6 +54,9 @@ public final class PolicyInsightsPolicyStateDeletedEventData {
      */
     @JsonProperty(value = "complianceReasonCode")
     private String complianceReasonCode;
+
+    /** Creates an instance of PolicyInsightsPolicyStateDeletedEventData class. */
+    public PolicyInsightsPolicyStateDeletedEventData() {}
 
     /**
      * Get the timestamp property: The time that the resource was scanned by Azure Policy in the Universal ISO 8601

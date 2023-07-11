@@ -7,14 +7,14 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for SshPublicKeys ListByResourceGroup. */
 public final class SshPublicKeysListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/sshPublicKeyExamples/SshPublicKeys_ListByResourceGroup_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/sshPublicKeyExamples/SshPublicKey_ListByResourceGroup_MinimumSet_Gen.json
      */
     /**
-     * Sample code: SshPublicKeys_ListByResourceGroup_MinimumSet_Gen.
+     * Sample code: SshPublicKey_ListByResourceGroup_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void sshPublicKeysListByResourceGroupMinimumSetGen(
+    public static void sshPublicKeyListByResourceGroupMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
@@ -25,14 +25,14 @@ public final class SshPublicKeysListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/sshPublicKeyExamples/SshPublicKeys_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/sshPublicKeyExamples/SshPublicKey_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
-     * Sample code: SshPublicKeys_ListByResourceGroup_MaximumSet_Gen.
+     * Sample code: SshPublicKey_ListByResourceGroup_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void sshPublicKeysListByResourceGroupMaximumSetGen(
+    public static void sshPublicKeyListByResourceGroupMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()

@@ -69,7 +69,7 @@ public interface Association {
     AssociationSubnet subnet();
 
     /**
-     * Gets the provisioningState property: Provisioning State.
+     * Gets the provisioningState property: Provisioning State of Traffic Controller Association Resource.
      *
      * @return the provisioningState value.
      */
@@ -204,7 +204,7 @@ public interface Association {
     Association.Update update();
 
     /** The template for Association update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithAssociationType, UpdateStages.WithSubnet {
         /**
          * Executes the update request.
          *
@@ -232,15 +232,25 @@ public interface Association {
              */
             Update withTags(Map<String, String> tags);
         }
-        /** The stage of the Association update allowing to specify properties. */
-        interface WithProperties {
+        /** The stage of the Association update allowing to specify associationType. */
+        interface WithAssociationType {
             /**
-             * Specifies the properties property: The updatable properties of the Association..
+             * Specifies the associationType property: Association Type.
              *
-             * @param properties The updatable properties of the Association.
+             * @param associationType Association Type.
              * @return the next definition stage.
              */
-            Update withProperties(AssociationUpdateProperties properties);
+            Update withAssociationType(AssociationType associationType);
+        }
+        /** The stage of the Association update allowing to specify subnet. */
+        interface WithSubnet {
+            /**
+             * Specifies the subnet property: Association Subnet.
+             *
+             * @param subnet Association Subnet.
+             * @return the next definition stage.
+             */
+            Update withSubnet(AssociationSubnetUpdate subnet);
         }
     }
     /**

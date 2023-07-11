@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
+import com.azure.resourcemanager.devcenter.models.EnvironmentTypeEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.UserRoleAssignmentValue;
@@ -43,7 +43,7 @@ public final class ProjectEnvironmentTypeProperties extends ProjectEnvironmentTy
 
     /** {@inheritDoc} */
     @Override
-    public ProjectEnvironmentTypeProperties withStatus(EnableStatus status) {
+    public ProjectEnvironmentTypeProperties withStatus(EnvironmentTypeEnableStatus status) {
         super.withStatus(status);
         return this;
     }

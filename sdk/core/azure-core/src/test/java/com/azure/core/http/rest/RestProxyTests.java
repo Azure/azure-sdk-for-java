@@ -332,7 +332,7 @@ public class RestProxyTests {
             Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
             Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
             Arguments.of(Named.of("file", BinaryData.fromFile(file)), bytes.length),
-            Arguments.of(Named.of("stream", BinaryData.fromStream(stream)), bytes.length),
+            Arguments.of(Named.of("stream", BinaryData.fromStream(stream, (long) bytes.length)), bytes.length),
             Arguments.of(Named.of("eager flux with length",
                 BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes))).block()), bytes.length),
             Arguments.of(Named.of("lazy flux",

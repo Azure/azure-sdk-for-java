@@ -24,11 +24,7 @@ public final class MediaStreamingContentTypeInternal extends ExpandableStringEnu
         return fromString(name, MediaStreamingContentTypeInternal.class);
     }
 
-    /**
-     * Gets known MediaStreamingContentTypeInternal values.
-     *
-     * @return known MediaStreamingContentTypeInternal values.
-     */
+    /** @return known MediaStreamingContentTypeInternal values. */
     public static Collection<MediaStreamingContentTypeInternal> values() {
         return values(MediaStreamingContentTypeInternal.class);
     }

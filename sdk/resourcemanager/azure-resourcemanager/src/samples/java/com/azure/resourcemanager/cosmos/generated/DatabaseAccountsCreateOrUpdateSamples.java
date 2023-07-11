@@ -11,6 +11,8 @@ import com.azure.resourcemanager.cosmos.models.BackupStorageRedundancy;
 import com.azure.resourcemanager.cosmos.models.Capacity;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
 import com.azure.resourcemanager.cosmos.models.ContinuousModeBackupPolicy;
+import com.azure.resourcemanager.cosmos.models.ContinuousModeProperties;
+import com.azure.resourcemanager.cosmos.models.ContinuousTier;
 import com.azure.resourcemanager.cosmos.models.CorsPolicy;
 import com.azure.resourcemanager.cosmos.models.CreateMode;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters;
@@ -39,7 +41,7 @@ import java.util.Map;
 /** Samples for DatabaseAccounts CreateOrUpdate. */
 public final class DatabaseAccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBRestoreDatabaseAccountCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBRestoreDatabaseAccountCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBRestoreDatabaseAccountCreateUpdate.json.
@@ -77,7 +79,10 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                     .withApiProperties(new ApiProperties().withServerVersion(ServerVersion.THREE_TWO))
                     .withEnableAnalyticalStorage(true)
                     .withCreateMode(CreateMode.RESTORE)
-                    .withBackupPolicy(new ContinuousModeBackupPolicy())
+                    .withBackupPolicy(
+                        new ContinuousModeBackupPolicy()
+                            .withContinuousModeProperties(
+                                new ContinuousModeProperties().withTier(ContinuousTier.CONTINUOUS30DAYS)))
                     .withRestoreParameters(
                         new RestoreParameters()
                             .withRestoreMode(RestoreMode.POINT_IN_TIME)
@@ -98,7 +103,7 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBDatabaseAccountCreateMax.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBDatabaseAccountCreateMax.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMax.
@@ -182,7 +187,7 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBDatabaseAccountCreateMin.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBDatabaseAccountCreateMin.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMin.

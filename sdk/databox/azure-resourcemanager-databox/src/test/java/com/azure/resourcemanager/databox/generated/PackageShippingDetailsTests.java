@@ -13,7 +13,7 @@ public final class PackageShippingDetailsTests {
         PackageShippingDetails model =
             BinaryData
                 .fromString(
-                    "{\"carrierName\":\"dxkqpx\",\"trackingId\":\"ajionpimexgstxg\",\"trackingUrl\":\"odgmaajrmvdjwz\"}")
+                    "{\"trackingUrl\":\"bnbdxkqpxokajion\",\"carrierName\":\"mexgstxgcp\",\"trackingId\":\"gmaajrm\"}")
                 .toObject(PackageShippingDetails.class);
     }
 

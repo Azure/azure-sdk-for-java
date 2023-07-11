@@ -18,7 +18,7 @@ public final class AbstractiveSummary {
     /*
      * The context list of the summary.
      */
-    private IterableStream<SummaryContext> contexts;
+    private IterableStream<AbstractiveSummaryContext> contexts;
 
     static {
         AbstractiveSummaryPropertiesHelper.setAccessor(
@@ -30,7 +30,7 @@ public final class AbstractiveSummary {
 
                 @Override
                 public void setSummaryContexts(AbstractiveSummary abstractiveSummary,
-                    IterableStream<SummaryContext> summaryContexts) {
+                    IterableStream<AbstractiveSummaryContext> summaryContexts) {
                     abstractiveSummary.setContexts(summaryContexts);
                 }
             });
@@ -50,7 +50,7 @@ public final class AbstractiveSummary {
      *
      * @return the contexts value.
      */
-    public IterableStream<SummaryContext> getContexts() {
+    public IterableStream<AbstractiveSummaryContext> getContexts() {
         return this.contexts;
     }
 
@@ -58,7 +58,7 @@ public final class AbstractiveSummary {
         this.text = text;
     }
 
-    private void setContexts(IterableStream<SummaryContext> contexts) {
+    private void setContexts(IterableStream<AbstractiveSummaryContext> contexts) {
         this.contexts = contexts;
     }
 }

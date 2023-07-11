@@ -69,9 +69,22 @@ public class CosmosAsyncDatabase {
 
     /**
      * Reads a database.
+     * Fetch the details and properties of a database based on its unique identifier.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.read -->
+     * <pre>
+     * CosmosAsyncDatabase database = cosmosAsyncClient
+     *     .getDatabase&#40;&quot;&lt;YOUR DATABASE NAME&gt;&quot;&#41;;
+     * database.read&#40;&#41;.subscribe&#40;databaseResponse -&gt; &#123;
+     *         System.out.println&#40;databaseResponse&#41;;
+     *     &#125;,
+     *     throwable -&gt; &#123;
+     *         throwable.printStackTrace&#40;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.read -->
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
-     * successful completion will contain a single cosmos database respone with the
+     * successful completion will contain a single cosmos database response with the
      * read database. In case of failure the {@link Mono} will error.
      *
      * @return an {@link Mono} containing the single cosmos database respone with
@@ -83,9 +96,21 @@ public class CosmosAsyncDatabase {
 
     /**
      * Reads a database.
-     * <p>
+     * Fetch the details and properties of a database based on its unique identifier.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.read -->
+     * <pre>
+     * CosmosAsyncDatabase database = cosmosAsyncClient
+     *     .getDatabase&#40;&quot;&lt;YOUR DATABASE NAME&gt;&quot;&#41;;
+     * database.read&#40;&#41;.subscribe&#40;databaseResponse -&gt; &#123;
+     *         System.out.println&#40;databaseResponse&#41;;
+     *     &#125;,
+     *     throwable -&gt; &#123;
+     *         throwable.printStackTrace&#40;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.read -->
      * After subscription the operation will be performed. The {@link Mono} upon
-     * successful completion will contain a cosmos cosmos database respone with the
+     * successful completion will contain a cosmos database response with the
      * read database. In case of failure the {@link Mono} will error.
      *
      * @param options the request options.
@@ -98,8 +123,19 @@ public class CosmosAsyncDatabase {
     }
 
     /**
-     * Deletes a database.
-     * <p>
+     * Deletes the current Cosmos database.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.delete -->
+     * <pre>
+     * CosmosAsyncDatabase database = cosmosAsyncClient
+     *     .getDatabase&#40;&quot;&lt;YOUR DATABASE NAME&gt;&quot;&#41;;
+     * database.delete&#40;&#41;.subscribe&#40;databaseResponse -&gt; &#123;
+     *         System.out.println&#40;databaseResponse&#41;;
+     *     &#125;,
+     *     throwable -&gt; &#123;
+     *         throwable.printStackTrace&#40;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.delete -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos database response with the
      * deleted database. In case of failure the {@link Mono} will error.
@@ -111,8 +147,19 @@ public class CosmosAsyncDatabase {
     }
 
     /**
-     * Deletes a database.
-     * <p>
+     * Deletes the current Cosmos database while specifying additional request options.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.delete -->
+     * <pre>
+     * CosmosAsyncDatabase database = cosmosAsyncClient
+     *     .getDatabase&#40;&quot;&lt;YOUR DATABASE NAME&gt;&quot;&#41;;
+     * database.delete&#40;&#41;.subscribe&#40;databaseResponse -&gt; &#123;
+     *         System.out.println&#40;databaseResponse&#41;;
+     *     &#125;,
+     *     throwable -&gt; &#123;
+     *         throwable.printStackTrace&#40;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.delete -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos database response with the
      * deleted database. In case of failure the {@link Mono} will error.
@@ -129,7 +176,17 @@ public class CosmosAsyncDatabase {
 
     /**
      * Creates a Cosmos container.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainer -->
+     * <pre>
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
+     * cosmosAsyncDatabase.createContainer&#40;containerProperties&#41;
+     *     .subscribe&#40;
+     *         cosmosContainerResponse -&gt; System.out.println&#40;cosmosContainerResponse&#41;,
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create container: &quot; + throwable&#41;
+     *     &#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainer -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created container. In case of failure the {@link Mono} will error.
@@ -145,7 +202,19 @@ public class CosmosAsyncDatabase {
 
     /**
      * Creates a Cosmos container with custom throughput properties.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerProps -->
+     * <pre>
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
+     * ThroughputProperties throughputProperties =
+     *     ThroughputProperties.createAutoscaledThroughput&#40;autoScaleMaxThroughput&#41;;
+     * cosmosAsyncDatabase.createContainer&#40;containerProperties, throughputProperties&#41;
+     *     .subscribe&#40;
+     *         cosmosContainerResponse -&gt; System.out.println&#40;cosmosContainerResponse&#41;,
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create container: &quot; + throwable&#41;
+     *     &#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerProps -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created container. In case of failure the {@link Mono} will error.
@@ -169,7 +238,22 @@ public class CosmosAsyncDatabase {
 
     /**
      * Creates a container.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerThroughput -->
+     * <pre>
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
      *
+     * cosmosAsyncDatabase.createContainer&#40;
+     *         containerProperties,
+     *         throughput,
+     *         options
+     *     &#41;
+     *     .subscribe&#40;
+     *         cosmosContainerResponse -&gt; System.out.println&#40;cosmosContainerResponse&#41;,
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create container: &quot; + throwable&#41;
+     *     &#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerThroughput -->
      * @param containerProperties the container properties.
      * @param throughputProperties the throughput properties.
      * @param options the request options.
@@ -185,7 +269,17 @@ public class CosmosAsyncDatabase {
 
     /**
      * Creates a Cosmos container.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainer -->
+     * <pre>
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
+     * cosmosAsyncDatabase.createContainer&#40;containerProperties&#41;
+     *     .subscribe&#40;
+     *         cosmosContainerResponse -&gt; System.out.println&#40;cosmosContainerResponse&#41;,
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create container: &quot; + throwable&#41;
+     *     &#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainer -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created container. In case of failure the {@link Mono} will error.
@@ -209,7 +303,22 @@ public class CosmosAsyncDatabase {
 
     /**
      * Creates a Cosmos container.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerThroughput -->
+     * <pre>
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
+     *
+     * cosmosAsyncDatabase.createContainer&#40;
+     *         containerProperties,
+     *         throughput,
+     *         options
+     *     &#41;
+     *     .subscribe&#40;
+     *         cosmosContainerResponse -&gt; System.out.println&#40;cosmosContainerResponse&#41;,
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create container: &quot; + throwable&#41;
+     *     &#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerThroughput -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created container. In case of failure the {@link Mono} will error.
@@ -234,7 +343,21 @@ public class CosmosAsyncDatabase {
 
     /**
      * Creates a Cosmos container.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerPartitionKey -->
+     * <pre>
+     * ThroughputProperties throughputProperties =
+     *     ThroughputProperties.createAutoscaledThroughput&#40;autoscaledThroughput&#41;;
+     * cosmosAsyncDatabase.createContainer&#40;
+     *         containerId,
+     *         partitionKeyPath,
+     *         throughputProperties
+     *     &#41;
+     *     .subscribe&#40;
+     *         cosmosContainerResponse -&gt; System.out.println&#40;cosmosContainerResponse&#41;,
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create container: &quot; + throwable&#41;
+     *     &#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerPartitionKey -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created container. In case of failure the {@link Mono} will error.
@@ -250,7 +373,21 @@ public class CosmosAsyncDatabase {
 
     /**
      * Creates a Cosmos container.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerPartitionKey -->
+     * <pre>
+     * ThroughputProperties throughputProperties =
+     *     ThroughputProperties.createAutoscaledThroughput&#40;autoscaledThroughput&#41;;
+     * cosmosAsyncDatabase.createContainer&#40;
+     *         containerId,
+     *         partitionKeyPath,
+     *         throughputProperties
+     *     &#41;
+     *     .subscribe&#40;
+     *         cosmosContainerResponse -&gt; System.out.println&#40;cosmosContainerResponse&#41;,
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create container: &quot; + throwable&#41;
+     *     &#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerPartitionKey -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created container. In case of failure the {@link Mono} will error.

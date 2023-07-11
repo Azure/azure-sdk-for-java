@@ -35,7 +35,7 @@ public final class CreateCallRequestInternal {
      * The identifier of the source of the call
      */
     @JsonProperty(value = "sourceIdentity")
-    private CommunicationIdentifierModel sourceIdentity;
+    private CommunicationUserIdentifierModel sourceIdentity;
 
     /*
      * A customer set value used to track the answering of a call.
@@ -134,7 +134,7 @@ public final class CreateCallRequestInternal {
      *
      * @return the sourceIdentity value.
      */
-    public CommunicationIdentifierModel getSourceIdentity() {
+    public CommunicationUserIdentifierModel getSourceIdentity() {
         return this.sourceIdentity;
     }
 
@@ -144,7 +144,7 @@ public final class CreateCallRequestInternal {
      * @param sourceIdentity the sourceIdentity value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setSourceIdentity(CommunicationIdentifierModel sourceIdentity) {
+    public CreateCallRequestInternal setSourceIdentity(CommunicationUserIdentifierModel sourceIdentity) {
         this.sourceIdentity = sourceIdentity;
         return this;
     }

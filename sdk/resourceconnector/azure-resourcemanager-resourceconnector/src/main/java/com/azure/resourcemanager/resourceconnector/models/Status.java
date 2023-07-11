@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Status. */
+/** Appliance’s health and state of connection to on-prem. */
 public final class Status extends ExpandableStringEnum<Status> {
     /** Static value WaitingForHeartbeat for Status. */
     public static final Status WAITING_FOR_HEARTBEAT = fromString("WaitingForHeartbeat");
@@ -33,6 +33,33 @@ public final class Status extends ExpandableStringEnum<Status> {
 
     /** Static value PreUpgrade for Status. */
     public static final Status PRE_UPGRADE = fromString("PreUpgrade");
+
+    /** Static value UpgradingKVAIO for Status. */
+    public static final Status UPGRADING_KVAIO = fromString("UpgradingKVAIO");
+
+    /** Static value WaitingForKVAIO for Status. */
+    public static final Status WAITING_FOR_KVAIO = fromString("WaitingForKVAIO");
+
+    /** Static value ImagePending for Status. */
+    public static final Status IMAGE_PENDING = fromString("ImagePending");
+
+    /** Static value ImageProvisioning for Status. */
+    public static final Status IMAGE_PROVISIONING = fromString("ImageProvisioning");
+
+    /** Static value ImageProvisioned for Status. */
+    public static final Status IMAGE_PROVISIONED = fromString("ImageProvisioned");
+
+    /** Static value ImageDownloading for Status. */
+    public static final Status IMAGE_DOWNLOADING = fromString("ImageDownloading");
+
+    /** Static value ImageDownloaded for Status. */
+    public static final Status IMAGE_DOWNLOADED = fromString("ImageDownloaded");
+
+    /** Static value ImageDeprovisioning for Status. */
+    public static final Status IMAGE_DEPROVISIONING = fromString("ImageDeprovisioning");
+
+    /** Static value ImageUnknown for Status. */
+    public static final Status IMAGE_UNKNOWN = fromString("ImageUnknown");
 
     /** Static value UpdatingCloudOperator for Status. */
     public static final Status UPDATING_CLOUD_OPERATOR = fromString("UpdatingCloudOperator");
@@ -64,6 +91,15 @@ public final class Status extends ExpandableStringEnum<Status> {
 
     /** Static value None for Status. */
     public static final Status NONE = fromString("None");
+
+    /**
+     * Creates a new instance of Status value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Status() {
+    }
 
     /**
      * Creates or finds a Status from its string representation.

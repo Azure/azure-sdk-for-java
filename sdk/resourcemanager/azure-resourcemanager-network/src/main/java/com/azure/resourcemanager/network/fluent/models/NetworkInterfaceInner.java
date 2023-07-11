@@ -9,6 +9,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.NetworkInterfaceAuxiliaryMode;
+import com.azure.resourcemanager.network.models.NetworkInterfaceAuxiliarySku;
 import com.azure.resourcemanager.network.models.NetworkInterfaceDnsSettings;
 import com.azure.resourcemanager.network.models.NetworkInterfaceMigrationPhase;
 import com.azure.resourcemanager.network.models.NetworkInterfaceNicType;
@@ -464,6 +465,29 @@ public final class NetworkInterfaceInner extends Resource {
             this.innerProperties = new NetworkInterfacePropertiesFormatInner();
         }
         this.innerProperties().withAuxiliaryMode(auxiliaryMode);
+        return this;
+    }
+
+    /**
+     * Get the auxiliarySku property: Auxiliary sku of Network Interface resource.
+     *
+     * @return the auxiliarySku value.
+     */
+    public NetworkInterfaceAuxiliarySku auxiliarySku() {
+        return this.innerProperties() == null ? null : this.innerProperties().auxiliarySku();
+    }
+
+    /**
+     * Set the auxiliarySku property: Auxiliary sku of Network Interface resource.
+     *
+     * @param auxiliarySku the auxiliarySku value to set.
+     * @return the NetworkInterfaceInner object itself.
+     */
+    public NetworkInterfaceInner withAuxiliarySku(NetworkInterfaceAuxiliarySku auxiliarySku) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfacePropertiesFormatInner();
+        }
+        this.innerProperties().withAuxiliarySku(auxiliarySku);
         return this;
     }
 

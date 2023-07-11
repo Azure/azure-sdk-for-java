@@ -9,16 +9,15 @@ import com.azure.containers.containerregistry.models.GetManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.containers.containerregistry.models.OciImageManifest;
-import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
 import com.azure.containers.containerregistry.models.SetManifestOptions;
 import com.azure.containers.containerregistry.models.SetManifestResult;
+import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
-import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -84,7 +83,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
 
     @BeforeAll
     static void beforeAll() {
-        importImage(TestingHelpers.getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Collections.singletonList("latest"));
+        importImage(TestUtils.getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Collections.singletonList("latest"));
     }
 
     @BeforeEach
@@ -120,7 +119,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         client = getContentClient("oci-artifact", httpClient);
         setManifestPrerequisites();
 
-        SetManifestOptions options  = new SetManifestOptions(BinaryData.fromObject(MANIFEST), ManifestMediaType.OCI_MANIFEST);
+        SetManifestOptions options  = new SetManifestOptions(BinaryData.fromObject(MANIFEST), ManifestMediaType.OCI_IMAGE_MANIFEST);
         SetManifestResult result = client.setManifestWithResponse(options, Context.NONE).getValue();
         assertNotNull(result);
         assertNotNull(result.getDigest());
@@ -242,11 +241,12 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void canUploadHugeBlobInChunks(HttpClient httpClient) throws IOException, InterruptedException {
+        // test is too long for innerloop
         assumeTrue(super.getTestMode() == TestMode.LIVE);
 
         client = getContentClient("oci-artifact", httpClient);
 
-        long size = CHUNK_SIZE * 20;
+        long size = CHUNK_SIZE * 50;
         BinaryData data = BinaryData.fromStream(new TestInputStream(size), size);
         UploadRegistryBlobResult result = client.uploadBlob(data, Context.NONE);
 
@@ -260,6 +260,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void canUploadHugeBlobInChunksAsync(HttpClient httpClient) {
+        // test is too long for innerloop
         assumeTrue(super.getTestMode() == TestMode.LIVE);
 
         asyncClient = getBlobAsyncClient("oci-artifact", httpClient);
@@ -382,6 +383,8 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void getManifestListManifest(HttpClient httpClient) {
+        // TODO (limolkova) enable other modes after https://github.com/Azure/azure-sdk-tools/issues/6194 is released
+        assumeTrue(super.getTestMode() == TestMode.LIVE);
         client = getContentClient(HELLO_WORLD_REPOSITORY_NAME, httpClient);
         ManifestMediaType dockerListType = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
         Response<GetManifestResult> manifestResult = client.getManifestWithResponse("latest", Context.NONE);
@@ -409,6 +412,8 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void getManifestDifferentType(HttpClient httpClient) {
+        // TODO (limolkova) enable other modes after https://github.com/Azure/azure-sdk-tools/issues/6194 is released
+        assumeTrue(super.getTestMode() == TestMode.LIVE);
         client = getContentClient(HELLO_WORLD_REPOSITORY_NAME, httpClient);
 
         // the original content there is docker v2 manifest list
@@ -421,6 +426,8 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void getManifestListManifestAsync(HttpClient httpClient) {
+        // TODO (limolkova) enable other modes after https://github.com/Azure/azure-sdk-tools/issues/6194 is released
+        assumeTrue(super.getTestMode() == TestMode.LIVE);
         asyncClient = getBlobAsyncClient(HELLO_WORLD_REPOSITORY_NAME, httpClient);
         ManifestMediaType dockerListType = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
 
@@ -512,7 +519,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
     }
 
     private ContainerRegistryContentClient getContentClient(String repositoryName, HttpClient httpClient) {
-        return getContentClientBuilder(repositoryName, buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)).buildClient();
+        return getContentClientBuilder(repositoryName, buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)).buildClient();
     }
 
     private ContainerRegistryContentAsyncClient getBlobAsyncClient(String repositoryName, HttpClient httpClient) {

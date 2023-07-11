@@ -69,8 +69,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     public interface AgentPoolsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedclusters/{resourceName}/agentPools/{agentPoolName}/abort")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedclusters/{resourceName}/agentPools/{agentPoolName}/abort")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> abortLatestOperation(
@@ -85,8 +84,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/agentPools")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AgentPoolListResult>> list(
@@ -100,8 +98,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/agentPools/{agentPoolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AgentPoolInner>> get(
@@ -116,8 +113,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/agentPools/{agentPoolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -133,8 +129,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/agentPools/{agentPoolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -149,8 +144,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/agentPools/{agentPoolName}/upgradeProfiles/default")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/upgradeProfiles/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AgentPoolUpgradeProfileInner>> getUpgradeProfile(
@@ -165,8 +159,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/availableAgentPoolVersions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/availableAgentPoolVersions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AgentPoolAvailableVersionsInner>> getAvailableAgentPoolVersions(
@@ -180,8 +173,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/agentPools/{agentPoolName}/upgradeNodeImageVersion")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/upgradeNodeImageVersion")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> upgradeNodeImageVersion(
@@ -245,7 +237,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -304,7 +296,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -535,7 +527,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -595,7 +587,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -720,7 +712,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -776,7 +768,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -884,7 +876,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -950,7 +942,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1189,7 +1181,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1244,7 +1236,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1444,7 +1436,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1500,7 +1492,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1604,7 +1596,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1658,7 +1650,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1771,7 +1763,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1830,7 +1822,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

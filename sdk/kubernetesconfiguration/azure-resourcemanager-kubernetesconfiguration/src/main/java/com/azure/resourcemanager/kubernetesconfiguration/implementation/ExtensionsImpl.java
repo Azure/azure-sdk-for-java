@@ -67,21 +67,6 @@ public final class ExtensionsImpl implements Extensions {
         }
     }
 
-    public Extension get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName) {
-        ExtensionInner inner =
-            this.serviceClient().get(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName);
-        if (inner != null) {
-            return new ExtensionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Extension> getWithResponse(
         String resourceGroupName,
         String clusterRp,
@@ -105,16 +90,19 @@ public final class ExtensionsImpl implements Extensions {
         }
     }
 
-    public void delete(
+    public Extension get(
         String resourceGroupName,
         String clusterRp,
         String clusterResourceName,
         String clusterName,
-        String extensionName,
-        Boolean forceDelete) {
-        this
-            .serviceClient()
-            .delete(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, forceDelete);
+        String extensionName) {
+        ExtensionInner inner =
+            this.serviceClient().get(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName);
+        if (inner != null) {
+            return new ExtensionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public void delete(

@@ -55,8 +55,7 @@ public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesCli
     public interface NameAvailabilitiesService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.VoiceServices/locations/{location}"
-                + "/checkNameAvailability")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.VoiceServices/locations/{location}/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckNameAvailabilityResponseInner>> checkLocal(

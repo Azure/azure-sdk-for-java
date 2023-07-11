@@ -11,11 +11,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.Frontend;
-import com.azure.resourcemanager.servicenetworking.models.FrontendIpAddressVersion;
-import com.azure.resourcemanager.servicenetworking.models.FrontendMode;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -34,7 +31,7 @@ public final class FrontendsInterfacesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"mode\":\"public\",\"ipAddressVersion\":\"IPv4\",\"publicIPAddress\":{\"id\":\"qkpikadrgvtqagnb\"},\"provisioningState\":\"Accepted\"},\"location\":\"ijggmebfsiar\",\"tags\":{\"ttdbhrbnl\":\"rcvpnazzmhjrunmp\",\"xywnytnrsynlqidy\":\"nkxmyskpbhenbtk\",\"axdbabph\":\"yxczfclh\"},\"id\":\"wrqlfktsthsuco\",\"name\":\"mnyyazt\",\"type\":\"bt\"}";
+            "{\"properties\":{\"fqdn\":\"wbavxbniwdj\",\"provisioningState\":\"Accepted\"},\"location\":\"s\",\"tags\":{\"fzab\":\"gnxytxhpzxbz\"},\"id\":\"lcuhxwtctyqiklb\",\"name\":\"ovplw\",\"type\":\"bhvgy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +60,12 @@ public final class FrontendsInterfacesGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Frontend response =
-            manager.frontendsInterfaces().getWithResponse("fbxzpuzycisp", "qzahmgkbrp", "y", Context.NONE).getValue();
+            manager
+                .frontendsInterfaces()
+                .getWithResponse("xibxujwbhqwalm", "zyoxaepdkzjan", "ux", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("ijggmebfsiar", response.location());
-        Assertions.assertEquals("rcvpnazzmhjrunmp", response.tags().get("ttdbhrbnl"));
-        Assertions.assertEquals(FrontendMode.PUBLIC, response.mode());
-        Assertions.assertEquals(FrontendIpAddressVersion.IPV4, response.ipAddressVersion());
-        Assertions.assertEquals("qkpikadrgvtqagnb", response.publicIpAddress().id());
+        Assertions.assertEquals("s", response.location());
+        Assertions.assertEquals("gnxytxhpzxbz", response.tags().get("fzab"));
     }
 }

@@ -146,13 +146,13 @@ public final class ConnectedEnvironmentsImpl implements ConnectedEnvironments {
     }
 
     public ConnectedEnvironment getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String connectedEnvironmentName = Utils.getValueFromIdByName(id, "connectedEnvironments");
         if (connectedEnvironmentName == null) {
@@ -170,13 +170,13 @@ public final class ConnectedEnvironmentsImpl implements ConnectedEnvironments {
     }
 
     public Response<ConnectedEnvironment> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String connectedEnvironmentName = Utils.getValueFromIdByName(id, "connectedEnvironments");
         if (connectedEnvironmentName == null) {
@@ -192,13 +192,13 @@ public final class ConnectedEnvironmentsImpl implements ConnectedEnvironments {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String connectedEnvironmentName = Utils.getValueFromIdByName(id, "connectedEnvironments");
         if (connectedEnvironmentName == null) {
@@ -214,13 +214,13 @@ public final class ConnectedEnvironmentsImpl implements ConnectedEnvironments {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String connectedEnvironmentName = Utils.getValueFromIdByName(id, "connectedEnvironments");
         if (connectedEnvironmentName == null) {

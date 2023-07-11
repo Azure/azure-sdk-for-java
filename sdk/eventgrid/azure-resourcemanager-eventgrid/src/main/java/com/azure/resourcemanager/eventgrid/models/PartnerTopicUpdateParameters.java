@@ -25,6 +25,10 @@ public final class PartnerTopicUpdateParameters {
     @JsonProperty(value = "identity")
     private IdentityInfo identity;
 
+    /** Creates an instance of PartnerTopicUpdateParameters class. */
+    public PartnerTopicUpdateParameters() {
+    }
+
     /**
      * Get the tags property: Tags of the Partner Topic resource.
      *

@@ -10,7 +10,7 @@ import java.util.Map;
 /** Samples for PartnerNamespaces CreateOrUpdate. */
 public final class PartnerNamespacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerNamespaces_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerNamespaces_CreateOrUpdate.json
      */
     /**
      * Sample code: PartnerNamespaces_CreateOrUpdate.
@@ -25,7 +25,7 @@ public final class PartnerNamespacesCreateOrUpdateSamples {
             .withExistingResourceGroup("examplerg")
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
             .withPartnerRegistrationFullyQualifiedId(
-                "/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerRegistrations/ContosoCorpAccount1")
+                "/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerRegistrations/ContosoCorpAccount1")
             .create();
     }
 

@@ -17,6 +17,15 @@ public final class CheckNameAvailabilityReason extends ExpandableStringEnum<Chec
     public static final CheckNameAvailabilityReason ALREADY_EXISTS = fromString("AlreadyExists");
 
     /**
+     * Creates a new instance of CheckNameAvailabilityReason value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CheckNameAvailabilityReason() {
+    }
+
+    /**
      * Creates or finds a CheckNameAvailabilityReason from its string representation.
      *
      * @param name a name to look for.

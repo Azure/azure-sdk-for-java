@@ -38,7 +38,6 @@ import com.azure.core.util.tracing.TracerProvider;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.administration.implementation.KeyVaultSettingsClientImpl;
-import com.azure.security.keyvault.administration.implementation.KeyVaultSettingsClientImplBuilder;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -65,15 +64,14 @@ public final class KeyVaultSettingsClientBuilder implements
     HttpTrait<KeyVaultSettingsClientBuilder>,
     ConfigurationTrait<KeyVaultSettingsClientBuilder> {
 
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultSettingsClientBuilder.class);
     private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
-    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultSettingsClientBuilder.class);
 
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
-    private final KeyVaultSettingsClientImplBuilder implClientBuilder;
     private final List<HttpPipelinePolicy> pipelinePolicies;
     private final Map<String, String> properties;
 
@@ -96,7 +94,6 @@ public final class KeyVaultSettingsClientBuilder implements
         this.httpLogOptions = new HttpLogOptions();
         this.pipelinePolicies = new ArrayList<>();
         this.properties = CoreUtils.getProperties(AZURE_KEY_VAULT_RBAC);
-        this.implClientBuilder = new KeyVaultSettingsClientImplBuilder();
     }
 
     /**
@@ -364,9 +361,10 @@ public final class KeyVaultSettingsClientBuilder implements
      * @return an instance of KeyVaultSettingsClientImpl.
      */
     private KeyVaultSettingsClientImpl buildImplClient() {
-        return implClientBuilder
-            .pipeline((pipeline != null) ? pipeline : createHttpPipeline())
-            .buildClient();
+        HttpPipeline buildPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
+        KeyVaultAdministrationServiceVersion version = (serviceVersion != null)
+            ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
+        return new KeyVaultSettingsClientImpl(buildPipeline, version.getVersion());
     }
 
     private HttpPipeline createHttpPipeline() {

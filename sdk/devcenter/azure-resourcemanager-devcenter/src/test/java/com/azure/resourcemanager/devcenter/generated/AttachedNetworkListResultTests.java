@@ -6,20 +6,19 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.AttachedNetworkListResult;
-import org.junit.jupiter.api.Test;
 
 public final class AttachedNetworkListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AttachedNetworkListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"networkConnectionId\":\"i\",\"networkConnectionLocation\":\"fidfvzw\",\"healthCheckStatus\":\"Failed\",\"domainJoinType\":\"HybridAzureADJoin\"},\"id\":\"mwisdkfthwxmnt\",\"name\":\"i\",\"type\":\"aop\"},{\"properties\":{\"provisioningState\":\"Updating\",\"networkConnectionId\":\"jcmmxdcufufsrp\",\"networkConnectionLocation\":\"zidnsezcxtbzsgfy\",\"healthCheckStatus\":\"Pending\",\"domainJoinType\":\"HybridAzureADJoin\"},\"id\":\"mdwzjeiachboo\",\"name\":\"flnrosfqpteehzz\",\"type\":\"ypyqrimzinp\"}],\"nextLink\":\"wjdk\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"networkConnectionId\":\"dcuf\",\"networkConnectionLocation\":\"srp\",\"healthCheckStatus\":\"Running\",\"domainJoinType\":\"AzureADJoin\"},\"id\":\"sezcxtb\",\"name\":\"sgfyccsnew\",\"type\":\"dwzjeiach\"}],\"nextLink\":\"osfln\"}")
                 .toObject(AttachedNetworkListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AttachedNetworkListResult model = new AttachedNetworkListResult();
         model = BinaryData.fromObject(model).toObject(AttachedNetworkListResult.class);
     }

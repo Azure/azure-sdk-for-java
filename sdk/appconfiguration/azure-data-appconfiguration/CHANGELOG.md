@@ -1,17 +1,59 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.5.0-beta.1 (2023-07-11)
 
 ### Features Added
 
+- Added new feature, `Configuration Setting Snapshot` to the library. You can create, get,
+  update(archive and recover) a snapshot, and list snapshots.
+- Added new APIs to support listing configuration settings by given snapshot name and setting 
+  fields.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Added a new dependency `azure-json`, version `1.0.1`.
+- Upgraded `azure-core` from `1.40.0` to version `1.40.1`.
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
+
+## 1.4.6 (2023-06-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+
+## 1.4.5 (2023-05-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
+## 1.4.4 (2023-04-18)
+
 ### Breaking Changes
 
+- Fixed the bug that multiple authentications coexist per builder. App Configuration client builder should only
+  support single authentication per builder instance.
+- Moved the validation of authentication to client builder's `build()` method.
+
 ### Bugs Fixed
-- Fixed the bug that multiple authentications coexist per builder. App Configuration client builder should only 
-  support single authentication per builder instance. 
-- Moved the validation of authentication to client builder's build method. 
-  
+
+- Fixed a race condition of invalid signature issue by not sharing `Mac` instance in class-level per request operation.
+  `Mac` isn't thread-safe, multiple threads could use it at once.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
 
 ## 1.4.3 (2023-03-16)
 

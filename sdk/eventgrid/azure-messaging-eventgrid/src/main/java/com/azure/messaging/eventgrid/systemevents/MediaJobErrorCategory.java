@@ -7,24 +7,24 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for MediaJobErrorCategory. */
+/** Helps with categorization of errors. */
 public enum MediaJobErrorCategory {
-    /** Enum value Service. */
+    /** The error is service related. */
     SERVICE("Service"),
 
-    /** Enum value Download. */
+    /** The error is download related. */
     DOWNLOAD("Download"),
 
-    /** Enum value Upload. */
+    /** The error is upload related. */
     UPLOAD("Upload"),
 
-    /** Enum value Configuration. */
+    /** The error is configuration related. */
     CONFIGURATION("Configuration"),
 
-    /** Enum value Content. */
+    /** The error is related to data in the input files. */
     CONTENT("Content"),
 
-    /** Enum value Account. */
+    /** The error is related to account information. */
     ACCOUNT("Account");
 
     /** The actual serialized value for a MediaJobErrorCategory instance. */
@@ -42,6 +42,9 @@ public enum MediaJobErrorCategory {
      */
     @JsonCreator
     public static MediaJobErrorCategory fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         MediaJobErrorCategory[] items = MediaJobErrorCategory.values();
         for (MediaJobErrorCategory item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,6 +54,7 @@ public enum MediaJobErrorCategory {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

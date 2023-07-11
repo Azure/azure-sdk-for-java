@@ -478,6 +478,8 @@ class PointWriter(container: CosmosAsyncContainer,
        .getCosmosItemRequestOptionsAccessor
        .setOperationContext(itemOption, operationContextAndListenerTuple)
     }
+
+    ThroughputControlHelper.populateThroughputControlGroupName(itemOption, cosmosWriteConfig.throughputControlConfig)
     itemOption
   }
 

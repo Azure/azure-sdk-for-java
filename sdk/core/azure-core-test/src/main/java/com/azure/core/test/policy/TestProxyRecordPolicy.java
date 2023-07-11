@@ -12,6 +12,7 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.test.models.RecordFilePayload;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
@@ -21,15 +22,17 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import reactor.core.publisher.Mono;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
+import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
 import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 
@@ -42,19 +45,22 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     private static final HttpHeaderName X_RECORDING_ID = HttpHeaderName.fromString("x-recording-id");
     private final HttpClient client;
     private final URL proxyUrl;
+    private final boolean skipRecordingRequestBody;
     private String xRecordingId;
     private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
     private static final List<TestProxySanitizer> DEFAULT_SANITIZERS = loadSanitizers();
+    public static final String RECORD_MODE = "record";
 
     /**
      * Create an instance of {@link TestProxyRecordPolicy} with a list of custom sanitizers.
      *
      * @param httpClient The {@link HttpClient} to use. If none is passed {@link HttpURLConnectionHttpClient} is the default.
-     * @param proxyUrl The {@link URL} for the test proxy instance.
+     * @param skipRecordingRequestBody Flag indicating to skip recording request bodies when tests run in Record mode.
      */
-    public TestProxyRecordPolicy(HttpClient httpClient, URL proxyUrl) {
+    public TestProxyRecordPolicy(HttpClient httpClient, boolean skipRecordingRequestBody) {
         this.client = (httpClient == null ? new HttpURLConnectionHttpClient() : httpClient);
-        this.proxyUrl = proxyUrl;
+        this.skipRecordingRequestBody = skipRecordingRequestBody;
+        this.proxyUrl = TestProxyUtils.getProxyUrl();
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
     }
 
@@ -62,16 +68,33 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      * Starts a recording of test traffic.
      *
      * @param recordFile The name of the file to save the recording to.
+     * @param testClassPath the test class path
+     * @throws RuntimeException Failed to serialize body payload.
      */
-    public void startRecording(String recordFile) {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/record/start", proxyUrl.toString()))
-            .setBody(String.format("{\"x-recording-file\": \"%s\"}", recordFile));
-
+    public void startRecording(File recordFile, Path testClassPath) {
+        String assetJsonPath = getAssetJsonFile(recordFile, testClassPath);
+        HttpRequest request = null;
+        try {
+            request = new HttpRequest(HttpMethod.POST, String.format("%s/record/start", proxyUrl.toString()))
+                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath),
+                    SerializerEncoding.JSON))
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         HttpResponse response = client.sendSync(request, Context.NONE);
 
         this.xRecordingId = response.getHeaderValue(X_RECORDING_ID);
 
         addProxySanitization(this.sanitizers);
+        setDefaultRecordingOptions();
+    }
+
+    private void setDefaultRecordingOptions() {
+        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/SetRecordingOptions", proxyUrl.toString()));
+        request.setBody("{\"HandleRedirects\": false}");
+        request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+        client.sendSync(request, Context.NONE);
     }
 
     /**
@@ -108,22 +131,42 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         }
     }
 
+    /**
+     * Method is invoked before the request is sent.
+     *
+     * @param context The request context.
+     */
+    private void beforeSendingRequest(HttpPipelineCallContext context) {
+        TestProxyUtils.changeHeaders(context.getHttpRequest(), proxyUrl, xRecordingId, RECORD_MODE, skipRecordingRequestBody);
+    }
+
+    /**
+     * Method is invoked after the response is received.
+     *
+     * @param response The response received.
+     * @return The transformed response.
+     */
+    private HttpResponse afterReceivedResponse(HttpResponse response) {
+        TestProxyUtils.checkForTestProxyErrors(response);
+        return TestProxyUtils.resetTestProxyData(response);
+    }
+
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        TestProxyUtils.changeHeaders(context.getHttpRequest(), proxyUrl, xRecordingId, "record");
+        beforeSendingRequest(context);
         HttpResponse response = next.processSync();
-        TestProxyUtils.checkForTestProxyErrors(response);
-        return TestProxyUtils.revertUrl(response);
+        return afterReceivedResponse(response);
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        HttpRequest request = context.getHttpRequest();
-        TestProxyUtils.changeHeaders(request, proxyUrl, xRecordingId, "record");
-        return next.process().map(response -> {
-            TestProxyUtils.checkForTestProxyErrors(response);
-            return TestProxyUtils.revertUrl(response);
-        });
+        return Mono.fromCallable(
+                () -> {
+                    beforeSendingRequest(context);
+                    return next;
+                })
+            .flatMap(ignored -> next.process())
+            .map(this::afterReceivedResponse);
     }
 
     /**

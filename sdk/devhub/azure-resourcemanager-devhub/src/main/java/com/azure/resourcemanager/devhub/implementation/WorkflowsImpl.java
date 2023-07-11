@@ -50,15 +50,6 @@ public final class WorkflowsImpl implements Workflows {
         return Utils.mapPage(inner, inner1 -> new WorkflowImpl(inner1, this.manager()));
     }
 
-    public Workflow getByResourceGroup(String resourceGroupName, String workflowName) {
-        WorkflowInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, workflowName);
-        if (inner != null) {
-            return new WorkflowImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Workflow> getByResourceGroupWithResponse(
         String resourceGroupName, String workflowName, Context context) {
         Response<WorkflowInner> inner =
@@ -74,16 +65,16 @@ public final class WorkflowsImpl implements Workflows {
         }
     }
 
-    public DeleteWorkflowResponse deleteByResourceGroup(String resourceGroupName, String workflowName) {
-        DeleteWorkflowResponseInner inner = this.serviceClient().delete(resourceGroupName, workflowName);
+    public Workflow getByResourceGroup(String resourceGroupName, String workflowName) {
+        WorkflowInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, workflowName);
         if (inner != null) {
-            return new DeleteWorkflowResponseImpl(inner, this.manager());
+            return new WorkflowImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public Response<DeleteWorkflowResponse> deleteWithResponse(
+    public Response<DeleteWorkflowResponse> deleteByResourceGroupWithResponse(
         String resourceGroupName, String workflowName, Context context) {
         Response<DeleteWorkflowResponseInner> inner =
             this.serviceClient().deleteWithResponse(resourceGroupName, workflowName, context);
@@ -93,6 +84,15 @@ public final class WorkflowsImpl implements Workflows {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DeleteWorkflowResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DeleteWorkflowResponse deleteByResourceGroup(String resourceGroupName, String workflowName) {
+        DeleteWorkflowResponseInner inner = this.serviceClient().delete(resourceGroupName, workflowName);
+        if (inner != null) {
+            return new DeleteWorkflowResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -152,7 +152,7 @@ public final class WorkflowsImpl implements Workflows {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, workflowName, Context.NONE).getValue();
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, workflowName, Context.NONE).getValue();
     }
 
     public Response<DeleteWorkflowResponse> deleteByIdWithResponse(String id, Context context) {
@@ -171,7 +171,7 @@ public final class WorkflowsImpl implements Workflows {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, workflowName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, workflowName, context);
     }
 
     private WorkflowsClient serviceClient() {

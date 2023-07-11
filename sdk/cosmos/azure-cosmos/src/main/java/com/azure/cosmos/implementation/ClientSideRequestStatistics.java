@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 public class ClientSideRequestStatistics {
@@ -48,6 +49,9 @@ public class ClientSideRequestStatistics {
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
     private int requestPayloadSizeInBytes = 0;
+    private final String userAgent;
+
+    private double samplingRateSnapshot = 1;
 
     public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
         this.diagnosticsClientConfig = diagnosticsClientContext.getConfig();
@@ -64,6 +68,8 @@ public class ClientSideRequestStatistics {
         this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
         this.retryContext = new RetryContext();
         this.requestPayloadSizeInBytes = 0;
+        this.userAgent = diagnosticsClientContext.getUserAgent();
+        this.samplingRateSnapshot = 1;
     }
 
     public ClientSideRequestStatistics(ClientSideRequestStatistics toBeCloned) {
@@ -83,6 +89,8 @@ public class ClientSideRequestStatistics {
             new SerializationDiagnosticsContext(toBeCloned.serializationDiagnosticsContext);
         this.retryContext = new RetryContext(toBeCloned.retryContext);
         this.requestPayloadSizeInBytes = toBeCloned.requestPayloadSizeInBytes;
+        this.userAgent = toBeCloned.userAgent;
+        this.samplingRateSnapshot = toBeCloned.samplingRateSnapshot;
     }
 
     @JsonIgnore
@@ -202,7 +210,7 @@ public class ClientSideRequestStatistics {
         URI targetEndpoint,
         boolean forceRefresh,
         boolean forceCollectionRoutingMapRefresh) {
-        String identifier = Utils
+        String identifier = UUID
             .randomUUID()
             .toString();
 
@@ -382,7 +390,10 @@ public class ClientSideRequestStatistics {
     }
 
     public void recordContributingPointOperation(ClientSideRequestStatistics other) {
+        this.mergeClientSideRequestStatistics(other);
+    }
 
+    public void mergeClientSideRequestStatistics(ClientSideRequestStatistics other) {
         if (other == null) {
             return;
         }
@@ -457,6 +468,11 @@ public class ClientSideRequestStatistics {
         return responseStatisticsList;
     }
 
+    @JsonIgnore
+    public String getUserAgent() {
+        return this.userAgent;
+    }
+
     public int getMaxResponsePayloadSizeInBytes() {
         if (responseStatisticsList == null || responseStatisticsList.isEmpty()) {
             if (this.gatewayStatistics != null) {
@@ -486,12 +502,22 @@ public class ClientSideRequestStatistics {
         return supplementalResponseStatisticsList;
     }
 
+    public String getActivityId() {
+        return this.activityId;
+    }
+
     public Map<String, AddressResolutionStatistics> getAddressResolutionStatistics() {
         return addressResolutionStatistics;
     }
 
     public GatewayStatistics getGatewayStatistics() {
         return gatewayStatistics;
+    }
+
+    public ClientSideRequestStatistics setSamplingRateSnapshot(double samplingRateSnapshot) {
+        this.samplingRateSnapshot = samplingRateSnapshot;
+
+        return this;
     }
 
     public static class StoreResponseStatistics {
@@ -548,29 +574,6 @@ public class ClientSideRequestStatistics {
         }
     }
 
-    public static class SystemInformation {
-        private String usedMemory;
-        private String availableMemory;
-        private String systemCpuLoad;
-        private int availableProcessors;
-
-        public String getUsedMemory() {
-            return usedMemory;
-        }
-
-        public String getAvailableMemory() {
-            return availableMemory;
-        }
-
-        public String getSystemCpuLoad() {
-            return systemCpuLoad;
-        }
-
-        public int getAvailableProcessors() {
-            return availableProcessors;
-        }
-    }
-
     public static class ClientSideRequestStatisticsSerializer extends StdSerializer<ClientSideRequestStatistics> {
 
         private static final long serialVersionUID = -2746532297176812860L;
@@ -587,7 +590,7 @@ public class ClientSideRequestStatistics {
             Duration duration = statistics
                 .getDuration();
             long requestLatency = duration != null ? duration.toMillis() : 0;
-            generator.writeStringField("userAgent", Utils.getUserAgent());
+            generator.writeStringField("userAgent", statistics.userAgent);
             generator.writeStringField("activityId", statistics.activityId);
             generator.writeNumberField("requestLatencyInMs", requestLatency);
             generator.writeStringField("requestStartTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestStartTimeUTC));
@@ -600,9 +603,10 @@ public class ClientSideRequestStatistics {
             generator.writeObjectField("metadataDiagnosticsContext", statistics.getMetadataDiagnosticsContext());
             generator.writeObjectField("serializationDiagnosticsContext", statistics.getSerializationDiagnosticsContext());
             generator.writeObjectField("gatewayStatistics", statistics.gatewayStatistics);
+            generator.writeObjectField("samplingRateSnapshot", statistics.samplingRateSnapshot);
 
             try {
-                SystemInformation systemInformation = fetchSystemInformation();
+                CosmosDiagnosticsSystemUsageSnapshot systemInformation = fetchSystemInformation();
                 generator.writeObjectField("systemInformation", systemInformation);
             } catch (Exception e) {
                 // Error while evaluating system information, do nothing
@@ -732,20 +736,25 @@ public class ClientSideRequestStatistics {
         public int getResponsePayloadSizeInBytes() { return this.responsePayloadSizeInBytes; }
     }
 
-    public static SystemInformation fetchSystemInformation() {
-        SystemInformation systemInformation = new SystemInformation();
+    public static CosmosDiagnosticsSystemUsageSnapshot fetchSystemInformation() {
         Runtime runtime = Runtime.getRuntime();
         long totalMemory = runtime.totalMemory() / 1024;
         long freeMemory = runtime.freeMemory() / 1024;
         long maxMemory = runtime.maxMemory() / 1024;
-        systemInformation.usedMemory = totalMemory - freeMemory + " KB";
-        systemInformation.availableMemory = (maxMemory - (totalMemory - freeMemory)) + " KB";
-        systemInformation.availableProcessors = runtime.availableProcessors();
+
 
         // TODO: other system related info also can be captured using a similar approach
-        systemInformation.systemCpuLoad = CpuMemoryMonitor
+        String systemCpu = CpuMemoryMonitor
             .getCpuLoad()
             .toString();
-        return systemInformation;
+
+        return ImplementationBridgeHelpers
+            .CosmosDiagnosticsContextHelper
+            .getCosmosDiagnosticsContextAccessor()
+            .createSystemUsageSnapshot(
+                systemCpu,
+                totalMemory - freeMemory + " KB",
+                (maxMemory - (totalMemory - freeMemory)) + " KB",
+                runtime.availableProcessors());
     }
 }

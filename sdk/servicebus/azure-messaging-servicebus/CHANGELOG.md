@@ -1,31 +1,106 @@
 # Release History
 
+## 7.15.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- Fixed `NullPointerException` that happens when session receiver encounters an error and distributed tracing is enabled.
+  ([#35660](https://github.com/Azure/azure-sdk-for-java/issues/35660))
+
+### Other Changes
+
+## 7.15.0-beta.1 (2023-06-13)
+
+### Features Added
+
+- This version takes dependency on the Prefetch reliability redesign in azure-core-amqp 2.9.0-beta.2 and redesigns the non-session Processor to reduce thread switching and address undesired eager disposition.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core-amqp` from `2.8.6` to `2.9.0-beta.2`.
+
+## 7.14.1 (2023-06-07)
+
+### Bugs Fixed
+
+- Fixed `NullPointerException` when ending span when `AmqpException` is thrown, but its `AmqpErrorCondition` is `null`.
+  ([#35299](https://github.com/Azure/azure-sdk-for-java/issues/35299))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.39.0` to `1.40.0`.
+- Upgraded `azure-core-amqp` from `2.8.5` to `2.8.6`.
+- Upgraded `azure-identity` from `1.9.0` to `1.9.1`.
+
+## 7.14.0 (2023-05-15)
+
+### Features Added
+
+- Added `sessionIdleTimeout` method to configure session idle timeout on `ServiceBusSessionProcessorClientBuilder`. After this time has elapsed,
+  the processor will close the session and attempt to process another session. ([#34700](https://github.com/Azure/azure-sdk-for-java/issues/34700))
+
+### Bugs Fixed
+
+- Fixed issue where receiving messages from `ServiceBusSessionReceiverAsyncClient` would never complete. ([#34597](https://github.com/Azure/azure-sdk-for-java/issues/34597))
+- Fixed issue causing some messages to not be returned when calling peek on receiver client. 
+- Fixed the issue of `ServiceBusReceiverClient` recreating the link after closing the client. ([#34664](https://github.com/Azure/azure-sdk-for-java/issues/34664))
+- Fixed a race condition in `ServiceBusReceiverClient` sometimes causing two requests to be sent when peeking or receiving deferred messages.
+  ([#34838](https://github.com/Azure/azure-sdk-for-java/issues/34838))
+- Fixed tracing for renew-lock operation, now it traces individual calls to the broker instead local long-running operation.
+  ([#34813](https://github.com/Azure/azure-sdk-for-java/issues/34813))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.38.0` to `1.39.0`.
+- Upgraded `azure-core-amqp` from `2.8.4` to `2.8.5`.
+- Upgraded `azure-identity` from `1.8.2` to `1.9.0`.
+
 ## 7.13.4 (2023-04-14)
 
 ### Bugs Fixed
-- Added a warning log message to indicate the use of Processor _start_ API after the _stop_ is not recommended. ([34464](https://github.com/Azure/azure-sdk-for-java/issues/34464))
+
+- Added a warning log message to indicate the use of Processor _start_ API after the _stop_ is not recommended. ([#34464](https://github.com/Azure/azure-sdk-for-java/issues/34464))
 - Fixed the issue of not retrying for a new session after the last acquire-session timeout. ([#34314](https://github.com/Azure/azure-sdk-for-java/issues/34314))
 - Replay the terminal error to backing work of sync receive calls that arrive after the inner async client termination. ([#34332](https://github.com/Azure/azure-sdk-for-java/issues/34332))
+
 ## 7.13.3 (2023-03-07)
 
 ### Bugs Fixed
 - Removed delay in acquiring new link after timeout exception in `ServiceBusSessionManager`. ([#32455](https://github.com/Azure/azure-sdk-for-java/issues/32455))
+
 ### Other Changes
+
 #### Dependency Updates
 - Upgraded `azure-core` from `1.36.0` to `1.37.0`.
 - Upgraded `azure-core-amqp` from `2.8.2` to `2.8.3`.
 - Upgraded `azure-identity` from `1.8.0` to `1.8.1`.
-- 
+-
 ## 7.13.2 (2023-02-20)
 
 ### Bugs Fixed
 - Added filter to filter out the closed `ServiceBusReceiveLink` before passing to `ServiceBusReceiveLinkProcessor`. ([#32919](https://github.com/Azure/azure-sdk-for-java/issues/32919))
-- Enabled session processor recovery when broker detaches the link that is waiting to be ACTIVE without an error condition. ([#33313](https://github.com/Azure/azure-sdk-for-java/issues/33313)) 
+- Enabled session processor recovery when broker detaches the link that is waiting to be ACTIVE without an error condition. ([#33313](https://github.com/Azure/azure-sdk-for-java/issues/33313))
 ### Other Changes
 #### Dependency Updates
 - Upgraded `azure-core` from `1.35.0` to `1.36.0`.
 - Upgraded `azure-core-amqp` from `2.8.1` to `2.8.2`.
 - Upgraded `azure-identity` from `1.7.3` to `1.8.0`.
+
+## 7.14.0-beta.1 (2023-01-31)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` to `2.9.0-beta.1`.
+
 ## 7.13.1 (2023-01-20)
 
 ### Bugs Fixed
@@ -251,7 +326,7 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
 
 ## 7.2.1 (2021-05-12)
 ### Fixed
-- Fixed an issue: When 'ServiceBusProcessorClient:maxConcurrentCalls' is set, this will result in SDK cache more 
+- Fixed an issue: When 'ServiceBusProcessorClient:maxConcurrentCalls' is set, this will result in SDK cache more
   messages that are not delivered to the client in time and sometime the client is not able to settle these messages as
   the message lock might expire.
 
@@ -262,13 +337,13 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
 
 ## 7.3.0-beta.1 (2021-04-14)
 ### New Features
-- Adding support for AMQP Data types SEQUENCE and VALUE. It support sending and receiving of only one AMQP Sequence at 
+- Adding support for AMQP Data types SEQUENCE and VALUE. It support sending and receiving of only one AMQP Sequence at
   present. Issue [17614](https://github.com/Azure/azure-sdk-for-java/issues/17614).
 - Adding support for `maxAutoLockRenewDuration()` on `ServiceBusProcessorClientBuilder`.
 
 ## 7.2.0 (2021-04-12)
 ### Bug Fixes
-- Fix issue [19923](https://github.com/Azure/azure-sdk-for-java/issues/19923) for session receiver only: Fix a silent 
+- Fix issue [19923](https://github.com/Azure/azure-sdk-for-java/issues/19923) for session receiver only: Fix a silent
   error 'java.lang.ArithmeticException: long overflow' by not starting 'LockRenewOperation' for each received message.
 - Upgrade to `azure-core-amqp:2.0.4` improves recovery of connection to Service Bus.
 
@@ -300,21 +375,21 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
 
 ## 7.0.1 (2021-01-15)
 ### New Features
-- Improve performance because by upgrading `azure-core-amqp` dependency to `2.0.1`. It Changes AMQP connections from 
+- Improve performance because by upgrading `azure-core-amqp` dependency to `2.0.1`. It Changes AMQP connections from
   sharing the global `Schedulers.single()` to having a `Scheduler.newSingle()` per connection.
 
 ### Bug Fixes
-- Fix issue [18351](https://github.com/Azure/azure-sdk-for-java/issues/18351): Getting 'NullPointerException' When calling 
-  'ServiceBusAdministrationAsyncClient#getSubscriptionRuntimeProperties()' for the topic where user has only listen 
+- Fix issue [18351](https://github.com/Azure/azure-sdk-for-java/issues/18351): Getting 'NullPointerException' When calling
+  'ServiceBusAdministrationAsyncClient#getSubscriptionRuntimeProperties()' for the topic where user has only listen
   (and not manage) permission.
-- Fix issue [18122](https://github.com/Azure/azure-sdk-for-java/issues/18435): A session-based Message receiver does not 
+- Fix issue [18122](https://github.com/Azure/azure-sdk-for-java/issues/18435): A session-based Message receiver does not
   receive messages sent after 60s gap from the last message sent. This happens if there is only one active session in
   Service Bus entity.
 - Fix issue [18536](https://github.com/Azure/azure-sdk-for-java/issues/18536): The 'ServiceBusAdministrationClient.deleteSubscription()'
   is not synchronous.
 
 ### Other Changes
-#### Dependency Updates   
+#### Dependency Updates
 - Upgraded `azure-core` dependency to `1.12.0`.
 - Upgraded `azure-core-amqp` dependency to `2.0.1`.
 
@@ -323,65 +398,65 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
 ### New Features
 - Exposing enum 'ServiceBusFailureReason' in 'ServiceBusException' which contains a set of well-known reasons for an
   Service Bus operation failure.
-- Added 'BinaryData' support to  'ServiceBusReceivedMessage' and 'ServiceBusMessage'. It provides an easy abstraction 
+- Added 'BinaryData' support to  'ServiceBusReceivedMessage' and 'ServiceBusMessage'. It provides an easy abstraction
   over many different ways that binary data can be represented. It also provides support for serialize and deserialize
   Object.
-- Introducing 'ServiceBusProcessorClient': It provides a push-based mechanism that invokes the message processing 
-  callback when a message is received or the error handler when an error occurs when receiving messages. It supports 
+- Introducing 'ServiceBusProcessorClient': It provides a push-based mechanism that invokes the message processing
+  callback when a message is received or the error handler when an error occurs when receiving messages. It supports
   auto-settlement of messages by default.
 
 ### Breaking Changes
-- Renamed all the 'peekMessageAt()' API to 'peekMessage()' in 'ServiceBusReceiverAsyncClient' and 
+- Renamed all the 'peekMessageAt()' API to 'peekMessage()' in 'ServiceBusReceiverAsyncClient' and
   'ServiceBusReceiverClient'.
 - Rename 'getAmqpAnnotatedMessage()' to 'getRawAmqpMessage()' in 'ServiceBusReceivedMessage' and 'ServiceBusMessage'.
 
 ### Bug Fixes
-- Set the default 'prefetch' to 0 instead of 1 in both 'RECEIVE_AND_DELETE' and 'PEEK_LOCK' mode. User can set this 
+- Set the default 'prefetch' to 0 instead of 1 in both 'RECEIVE_AND_DELETE' and 'PEEK_LOCK' mode. User can set this
   value in builder.
 
 ### Known issues
-- Can not resolve `BinaryData` or `NoClassDefFoundError` 
+- Can not resolve `BinaryData` or `NoClassDefFoundError`
   NoClassDefFoundError When using `azure-messaging-servicebus:7.0.0` and other Azure SDKs in the same pom.xml file.
   Check [here][known-issue-binarydata-notfound] for more details.
 
 ### Other Changes
-#### Dependency Updates   
+#### Dependency Updates
 - Upgraded `azure-core` dependency to `1.11.0`.
 - Upgraded `azure-core-amqp` dependency to `2.0.0`.
-  
+
 ## 7.0.0-beta.7 (2020-11-06)
 ### New Features
-- Added automatic message and session lock renewal feature on the receiver clients. By default, this will be done 
+- Added automatic message and session lock renewal feature on the receiver clients. By default, this will be done
   for 5 minutes.
-- Added auto complete feature to the async receiver clients. Once the client completes executing the user provided 
-  callback for a message, the message will be completed. If the user provided callback throws an error, the message 
-  will be abandoned. This feature is enabled by default and can be disabled by calling `disableAutoComplete()` on 
-  builder. 
-- An intermediate `ServiceBusSessionReceiverClient` is introduced to act as the factory which can then be used to accept 
+- Added auto complete feature to the async receiver clients. Once the client completes executing the user provided
+  callback for a message, the message will be completed. If the user provided callback throws an error, the message
+  will be abandoned. This feature is enabled by default and can be disabled by calling `disableAutoComplete()` on
+  builder.
+- An intermediate `ServiceBusSessionReceiverClient` is introduced to act as the factory which can then be used to accept
   sessions from the service. Accepting a session would give you the familiar receiver client tied to a single session.
-- Added `ServiceBusProcessorClient` which takes your callbacks to process messages and errors in an infinite loop. This 
-  also supports working with sessions where you can provide the maximum number of sessions to work with concurrently. 
+- Added `ServiceBusProcessorClient` which takes your callbacks to process messages and errors in an infinite loop. This
+  also supports working with sessions where you can provide the maximum number of sessions to work with concurrently.
   When the client no longer receives any messages from one session, it rolls over to the next available session.
 - Added `BinaryData` in `ServiceBusReceivedMessage` and `ServiceBusMessage`. `BinaryData` is convenience wrapper over
   byte array and provides object serialization functionality.
-- Added `ServicebusReceiverException` and `ServiceBusErrorSource` to provide better handling of errors while receiving 
+- Added `ServicebusReceiverException` and `ServiceBusErrorSource` to provide better handling of errors while receiving
   messages.
 
 ### Breaking Changes
-- Changed `receiveMessages` API to return `ServiceBusReceivedMessage` instead of ServiceBusReceivedMessageContext in 
+- Changed `receiveMessages` API to return `ServiceBusReceivedMessage` instead of ServiceBusReceivedMessageContext in
   `ServiceBusReceiverAsyncClient` and `ServiceBusReceiverClient`.
-- Removed `SendVia` option from `ServiceBusClientBuilder`. See issue for more detail 
+- Removed `SendVia` option from `ServiceBusClientBuilder`. See issue for more detail
   [16942](https://github.com/Azure/azure-sdk-for-java/pull/16942).
-- Removed `sessionId` setting from `ServiceBusSessionReceiverClientBuilder` as creating receiver clients bound to a 
-  single session is now a feature in the new intermediate clients `ServiceBusSessionReceiverClient` and 
+- Removed `sessionId` setting from `ServiceBusSessionReceiverClientBuilder` as creating receiver clients bound to a
+  single session is now a feature in the new intermediate clients `ServiceBusSessionReceiverClient` and
   `ServiceBusSessionReceiverAsyncClient`.
-- Moved the `maxConcurrentSessions` setting from `ServiceBusSessionReceiverClientBuilder` to 
-  `ServiceBusSessionProcessorClientBuilder` as the feature of receiving messages from multiple sessions is moved from 
+- Moved the `maxConcurrentSessions` setting from `ServiceBusSessionReceiverClientBuilder` to
+  `ServiceBusSessionProcessorClientBuilder` as the feature of receiving messages from multiple sessions is moved from
   the receiver client to the new `ServiceBusSessionProcessorClient`.
 - Renamed `tryAdd` to `tryAddMessage` in `ServiceBusMessageBatch`.
-- Removed `sessionId` specific methods from `ServiceBusReceiverAsyncClient` and `ServiceBusReceiverClient` because now 
-  receiver client is always tied to one session. 
-  
+- Removed `sessionId` specific methods from `ServiceBusReceiverAsyncClient` and `ServiceBusReceiverClient` because now
+  receiver client is always tied to one session.
+
 ### Bug Fixes
 - `ServiceBusAdministrationClient`: Fixes serialization bug for creating and deserializing rules.
 
@@ -404,7 +479,7 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
 - Add ability to authenticate using SAS.
 - Add support for `AuthorizationRules` during management operations.
 - Rename `ServiceBusManagementClient` to `ServiceBusAdministrationClient`.
-- Remove `ServiceBusDeadletterReceiverBuilder` and replaced with `SubQueue` type to access transfer deadletter and 
+- Remove `ServiceBusDeadletterReceiverBuilder` and replaced with `SubQueue` type to access transfer deadletter and
   deadletter queue.
 - Remove settlement operations that take `String lockToken`, replaced with `ServiceBusReceivedMessage`.
 

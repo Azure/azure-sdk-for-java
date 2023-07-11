@@ -30,6 +30,7 @@ public class FileParallelUploadOptions {
     private String permissions;
     private String umask;
     private DataLakeRequestConditions requestConditions;
+    private String encryptionContext;
 
     /**
      * Constructs a new {@code FileParallelUploadOptions}.
@@ -265,6 +266,27 @@ public class FileParallelUploadOptions {
      */
     public FileParallelUploadOptions setRequestConditions(DataLakeRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
+    }
+
+    /**
+     * Encryption context that is set on the file.
+     *
+     * @return Encryption context that is set on the file.
+     */
+    public String getEncryptionContext() {
+        return encryptionContext;
+    }
+
+    /**
+     * Optional encryption context that can be set on the file. Encryption context is intended to store metadata that
+     * can be used to decrypt the blob.
+     *
+     * @param encryptionContext the encryption context to be set on the file.
+     * @return The updated options.
+     */
+    public FileParallelUploadOptions setEncryptionContext(String encryptionContext) {
+        this.encryptionContext = encryptionContext;
         return this;
     }
 

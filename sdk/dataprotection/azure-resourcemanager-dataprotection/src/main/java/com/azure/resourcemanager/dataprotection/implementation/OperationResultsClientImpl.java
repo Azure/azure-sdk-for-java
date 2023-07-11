@@ -23,7 +23,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.dataprotection.fluent.OperationResultsClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.OperationJobExtendedInfoInner;
 import com.azure.resourcemanager.dataprotection.models.OperationResultsGetResponse;
-import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OperationResultsClient. */
@@ -54,14 +53,13 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
     public interface OperationResultsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DataProtection/locations/{location}/operationResults"
-                + "/{operationId}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.DataProtection/locations/{location}/operationResults/{operationId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<OperationResultsGetResponse> get(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") UUID subscriptionId,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("operationId") String operationId,
             @PathParam("location") String location,
             @HeaderParam("Accept") String accept,

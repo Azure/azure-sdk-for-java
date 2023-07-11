@@ -11,6 +11,7 @@ import com.azure.resourcemanager.recoveryservices.models.InfrastructureEncryptio
 import com.azure.resourcemanager.recoveryservices.models.MonitoringSettings;
 import com.azure.resourcemanager.recoveryservices.models.PublicNetworkAccess;
 import com.azure.resourcemanager.recoveryservices.models.ResourceIdentityType;
+import com.azure.resourcemanager.recoveryservices.models.RestoreSettings;
 import com.azure.resourcemanager.recoveryservices.models.SecuritySettings;
 import com.azure.resourcemanager.recoveryservices.models.Sku;
 import com.azure.resourcemanager.recoveryservices.models.SkuName;
@@ -30,68 +31,67 @@ public final class VaultInnerTests {
         VaultInner model =
             BinaryData
                 .fromString(
-                    "{\"identity\":{\"principalId\":\"tyxolniwpwc\",\"tenantId\":\"jfkgiawxk\",\"type\":\"SystemAssigned,"
-                        + " UserAssigned\",\"userAssignedIdentities\":{\"hejkotynqgou\":{\"principalId\":\"wckbasyypnd\",\"clientId\":\"sgcbac\"},\"gakeqsr\":{\"principalId\":\"ndlik\",\"clientId\":\"qkgfgibma\"}}},\"properties\":{\"provisioningState\":\"zqqedq\",\"upgradeDetails\":{\"operationId\":\"ciqfou\",\"startTimeUtc\":\"2021-02-10T20:24:35Z\",\"lastUpdatedTimeUtc\":\"2021-03-13T18:03:58Z\",\"endTimeUtc\":\"2021-12-07T12:50:46Z\",\"status\":\"Upgraded\",\"message\":\"dmgloug\",\"triggerType\":\"ForcedUpgrade\",\"upgradedResourceId\":\"tmut\",\"previousResourceId\":\"qktapspwgcuert\"},\"privateEndpointConnections\":[{\"id\":\"o\",\"name\":\"whbmd\",\"type\":\"bjf\",\"location\":\"gmbmbexppbh\"},{\"id\":\"qrolfpf\",\"name\":\"lgbquxig\",\"type\":\"jgzjaoyfhrtx\",\"location\":\"n\"}],\"privateEndpointStateForBackup\":\"Enabled\",\"privateEndpointStateForSiteRecovery\":\"None\",\"encryption\":{\"infrastructureEncryption\":\"Enabled\"},\"moveDetails\":{\"operationId\":\"vfqawrlyxwjkcpr\",\"startTimeUtc\":\"2021-01-11T19:42:09Z\",\"completionTimeUtc\":\"2021-07-05T02:07:11Z\",\"sourceResourceId\":\"jvtbvpyss\",\"targetResourceId\":\"nruj\"},\"moveState\":\"PrepareFailed\",\"backupStorageVersion\":\"V2\",\"publicNetworkAccess\":\"Enabled\",\"monitoringSettings\":{},\"redundancySettings\":{\"standardTierStorageRedundancy\":\"ZoneRedundant\",\"crossRegionRestore\":\"Disabled\"},\"securitySettings\":{}},\"sku\":{\"name\":\"Standard\",\"tier\":\"tnwu\",\"family\":\"gazxuf\",\"size\":\"uckyf\",\"capacity\":\"rfidfvzwdz\"},\"etag\":\"ymwisdkft\",\"location\":\"wxmnteiwao\",\"tags\":{\"pymzidnsezcxtbzs\":\"mijcmmxdcufufs\"},\"id\":\"fycc\",\"name\":\"newmdwzjeiachbo\",\"type\":\"sflnrosfqp\"}")
+                    "{\"identity\":{\"principalId\":\"tyhxhurokft\",\"tenantId\":\"olniwpwcukjf\",\"type\":\"None\",\"userAssignedIdentities\":{\"dhsgcba\":{\"principalId\":\"xklrypl\",\"clientId\":\"kbasyypn\"},\"yqkgfg\":{\"principalId\":\"hejkotynqgou\",\"clientId\":\"ndlik\"}}},\"properties\":{\"provisioningState\":\"adgakeqsrxybz\",\"upgradeDetails\":{\"operationId\":\"dqytbciqfouflmm\",\"startTimeUtc\":\"2021-12-07T12:50:46Z\",\"lastUpdatedTimeUtc\":\"2021-02-23T09:34:26Z\",\"endTimeUtc\":\"2021-11-15T12:40:24Z\",\"status\":\"InProgress\",\"message\":\"ougpbkwt\",\"triggerType\":\"ForcedUpgrade\",\"upgradedResourceId\":\"uqktap\",\"previousResourceId\":\"wgcu\"},\"privateEndpointConnections\":[{\"id\":\"mkdo\",\"name\":\"whbmd\",\"type\":\"bjf\",\"location\":\"gmbmbexppbh\"},{\"id\":\"qrolfpf\",\"name\":\"lgbquxig\",\"type\":\"jgzjaoyfhrtx\",\"location\":\"n\"},{\"id\":\"kujysvlejuvfq\",\"name\":\"lyxwjkcprbnwbx\",\"type\":\"vtb\",\"location\":\"ysszdnrujqguh\"},{\"id\":\"ouqfprwz\",\"name\":\"g\",\"type\":\"tnwu\",\"location\":\"gazxuf\"}],\"privateEndpointStateForBackup\":\"None\",\"privateEndpointStateForSiteRecovery\":\"None\",\"encryption\":{\"infrastructureEncryption\":\"Disabled\"},\"moveDetails\":{\"operationId\":\"dfvzwdzuhty\",\"startTimeUtc\":\"2021-11-17T17:09:54Z\",\"completionTimeUtc\":\"2021-04-25T02:46:04Z\",\"sourceResourceId\":\"fthwxmnteiwa\",\"targetResourceId\":\"vkmijcmmxdcuf\"},\"moveState\":\"Failure\",\"backupStorageVersion\":\"V2\",\"publicNetworkAccess\":\"Disabled\",\"monitoringSettings\":{},\"restoreSettings\":{},\"redundancySettings\":{\"standardTierStorageRedundancy\":\"LocallyRedundant\",\"crossRegionRestore\":\"Disabled\"},\"securitySettings\":{}},\"sku\":{\"name\":\"Standard\",\"tier\":\"yc\",\"family\":\"newmdwzjeiachbo\",\"size\":\"flnrosfqpteehzz\",\"capacity\":\"pyqr\"},\"etag\":\"inpvswjdkirsoodq\",\"location\":\"hc\",\"tags\":{\"dsoifiyipj\":\"ohjtckw\",\"norcjxvsnbyxqab\":\"sqwpgrjb\"},\"id\":\"mocpc\",\"name\":\"shurzafbljjgpbto\",\"type\":\"c\"}")
                 .toObject(VaultInner.class);
-        Assertions.assertEquals("wxmnteiwao", model.location());
-        Assertions.assertEquals("mijcmmxdcufufs", model.tags().get("pymzidnsezcxtbzs"));
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("hc", model.location());
+        Assertions.assertEquals("ohjtckw", model.tags().get("dsoifiyipj"));
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
         Assertions
             .assertEquals(
-                InfrastructureEncryptionState.ENABLED, model.properties().encryption().infrastructureEncryption());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.properties().publicNetworkAccess());
+                InfrastructureEncryptionState.DISABLED, model.properties().encryption().infrastructureEncryption());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.properties().publicNetworkAccess());
         Assertions.assertEquals(SkuName.STANDARD, model.sku().name());
-        Assertions.assertEquals("tnwu", model.sku().tier());
-        Assertions.assertEquals("gazxuf", model.sku().family());
-        Assertions.assertEquals("uckyf", model.sku().size());
-        Assertions.assertEquals("rfidfvzwdz", model.sku().capacity());
-        Assertions.assertEquals("ymwisdkft", model.etag());
+        Assertions.assertEquals("yc", model.sku().tier());
+        Assertions.assertEquals("newmdwzjeiachbo", model.sku().family());
+        Assertions.assertEquals("flnrosfqpteehzz", model.sku().size());
+        Assertions.assertEquals("pyqr", model.sku().capacity());
+        Assertions.assertEquals("inpvswjdkirsoodq", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VaultInner model =
             new VaultInner()
-                .withLocation("wxmnteiwao")
-                .withTags(mapOf("pymzidnsezcxtbzs", "mijcmmxdcufufs"))
+                .withLocation("hc")
+                .withTags(mapOf("dsoifiyipj", "ohjtckw", "norcjxvsnbyxqab", "sqwpgrjb"))
                 .withIdentity(
                     new IdentityData()
-                        .withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf("hejkotynqgou", new UserIdentity(), "gakeqsr", new UserIdentity())))
+                        .withType(ResourceIdentityType.NONE)
+                        .withUserAssignedIdentities(mapOf("dhsgcba", new UserIdentity(), "yqkgfg", new UserIdentity())))
                 .withProperties(
                     new VaultProperties()
                         .withUpgradeDetails(new UpgradeDetails())
                         .withEncryption(
                             new VaultPropertiesEncryption()
-                                .withInfrastructureEncryption(InfrastructureEncryptionState.ENABLED))
+                                .withInfrastructureEncryption(InfrastructureEncryptionState.DISABLED))
                         .withMoveDetails(new VaultPropertiesMoveDetails())
-                        .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                        .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
                         .withMonitoringSettings(new MonitoringSettings())
+                        .withRestoreSettings(new RestoreSettings())
                         .withRedundancySettings(new VaultPropertiesRedundancySettings())
                         .withSecuritySettings(new SecuritySettings()))
                 .withSku(
                     new Sku()
                         .withName(SkuName.STANDARD)
-                        .withTier("tnwu")
-                        .withFamily("gazxuf")
-                        .withSize("uckyf")
-                        .withCapacity("rfidfvzwdz"))
-                .withEtag("ymwisdkft");
+                        .withTier("yc")
+                        .withFamily("newmdwzjeiachbo")
+                        .withSize("flnrosfqpteehzz")
+                        .withCapacity("pyqr"))
+                .withEtag("inpvswjdkirsoodq");
         model = BinaryData.fromObject(model).toObject(VaultInner.class);
-        Assertions.assertEquals("wxmnteiwao", model.location());
-        Assertions.assertEquals("mijcmmxdcufufs", model.tags().get("pymzidnsezcxtbzs"));
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("hc", model.location());
+        Assertions.assertEquals("ohjtckw", model.tags().get("dsoifiyipj"));
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
         Assertions
             .assertEquals(
-                InfrastructureEncryptionState.ENABLED, model.properties().encryption().infrastructureEncryption());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.properties().publicNetworkAccess());
+                InfrastructureEncryptionState.DISABLED, model.properties().encryption().infrastructureEncryption());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.properties().publicNetworkAccess());
         Assertions.assertEquals(SkuName.STANDARD, model.sku().name());
-        Assertions.assertEquals("tnwu", model.sku().tier());
-        Assertions.assertEquals("gazxuf", model.sku().family());
-        Assertions.assertEquals("uckyf", model.sku().size());
-        Assertions.assertEquals("rfidfvzwdz", model.sku().capacity());
-        Assertions.assertEquals("ymwisdkft", model.etag());
+        Assertions.assertEquals("yc", model.sku().tier());
+        Assertions.assertEquals("newmdwzjeiachbo", model.sku().family());
+        Assertions.assertEquals("flnrosfqpteehzz", model.sku().size());
+        Assertions.assertEquals("pyqr", model.sku().capacity());
+        Assertions.assertEquals("inpvswjdkirsoodq", model.etag());
     }
 
     @SuppressWarnings("unchecked")

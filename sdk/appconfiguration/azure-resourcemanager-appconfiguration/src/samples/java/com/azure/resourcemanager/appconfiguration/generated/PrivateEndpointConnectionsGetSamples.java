@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appconfiguration.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Get. */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2022-05-01/examples/ConfigurationStoresGetPrivateEndpointConnection.json
+     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/ConfigurationStoresGetPrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_GetConnection.
@@ -20,6 +18,6 @@ public final class PrivateEndpointConnectionsGetSamples {
         com.azure.resourcemanager.appconfiguration.AppConfigurationManager manager) {
         manager
             .privateEndpointConnections()
-            .getWithResponse("myResourceGroup", "contoso", "myConnection", Context.NONE);
+            .getWithResponse("myResourceGroup", "contoso", "myConnection", com.azure.core.util.Context.NONE);
     }
 }

@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Factory that returns the corresponding {@link SamplePartitionProcessor}.
  */
-class SampleEventProcessorFactory implements IEventProcessorFactory<SamplePartitionProcessor> {
+public class SampleEventProcessorFactory implements IEventProcessorFactory<SamplePartitionProcessor> {
     private final ConcurrentHashMap<String, SamplePartitionProcessor> processorMap;
 
     /**
@@ -19,7 +19,7 @@ class SampleEventProcessorFactory implements IEventProcessorFactory<SamplePartit
      *
      * @param processorMap The available partition processors to use.
      */
-    SampleEventProcessorFactory(ConcurrentHashMap<String, SamplePartitionProcessor> processorMap) {
+    public SampleEventProcessorFactory(ConcurrentHashMap<String, SamplePartitionProcessor> processorMap) {
         this.processorMap = processorMap;
     }
 

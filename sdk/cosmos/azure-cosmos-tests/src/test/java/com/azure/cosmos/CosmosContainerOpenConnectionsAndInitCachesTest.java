@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
@@ -100,8 +101,8 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
             this.directCosmosAsyncContainer.delete().block();
         }
 
-        safeCloseAsync(directCosmosAsyncClient);
-        safeCloseAsync(gatewayCosmosAsyncClient);
+        safeClose(directCosmosAsyncClient);
+        safeClose(gatewayCosmosAsyncClient);
         safeCloseSyncClient(directCosmosClient);
         safeCloseSyncClient(gatewayCosmosClient);
     }
@@ -149,7 +150,6 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         Set<String> endpoints = ConcurrentHashMap.newKeySet();
 
         // Using the following way to get all the unique service endpoints
-        // For openConnectionsAndInitCaches, the global is open at most 1 connection for each service endpoint
         asyncContainer.read()
                 .flatMap(containerResponse -> {
                     return rxDocumentClient
@@ -180,8 +180,8 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
 
         assertThat(provider.count()).isEqualTo(endpoints.size());
 
-        // Validate for each RntbdServiceEndpoint, one channel is being opened
-        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isEqualTo(1));
+        // Validate for each RntbdServiceEndpoint, is at least Configs.getMinConnectionPoolSizePerEndpoint()) channel is being opened
+        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isGreaterThanOrEqualTo(Configs.getMinConnectionPoolSizePerEndpoint()));
 
         // Test for real document requests, it will not open new channels
         for (int i = 0; i < 5; i++) {
@@ -191,7 +191,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
                 directCosmosContainer.createItem(TestObject.create());
             }
         }
-        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isEqualTo(1));
+        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isGreaterThanOrEqualTo(Configs.getMinConnectionPoolSizePerEndpoint()));
     }
 
     @Test(groups = {"simple"}, dataProvider = "useAsyncParameterProvider")

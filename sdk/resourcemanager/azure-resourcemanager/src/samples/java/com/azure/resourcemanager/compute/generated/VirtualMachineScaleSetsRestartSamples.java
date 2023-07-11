@@ -10,14 +10,14 @@ import java.util.Arrays;
 /** Samples for VirtualMachineScaleSets Restart. */
 public final class VirtualMachineScaleSetsRestartSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Restart_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Restart_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_Restart_MaximumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_Restart_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsRestartMaximumSetGen(
+    public static void virtualMachineScaleSetRestartMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
@@ -32,14 +32,14 @@ public final class VirtualMachineScaleSetsRestartSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Restart_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Restart_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_Restart_MinimumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_Restart_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsRestartMinimumSetGen(
+    public static void virtualMachineScaleSetRestartMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()

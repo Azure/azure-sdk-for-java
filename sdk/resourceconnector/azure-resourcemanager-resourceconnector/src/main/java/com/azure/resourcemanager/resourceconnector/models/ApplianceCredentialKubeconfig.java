@@ -22,6 +22,10 @@ public final class ApplianceCredentialKubeconfig {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
+    /** Creates an instance of ApplianceCredentialKubeconfig class. */
+    public ApplianceCredentialKubeconfig() {
+    }
+
     /**
      * Get the name property: Name which contains the role of the kubeconfig.
      *

@@ -53,7 +53,7 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     private String licenseType;
 
     /*
-     * Specifies the billing related details of a Azure Spot VMSS. <br><br>Minimum api-version: 2019-03-01.
+     * Specifies the billing related details of a Azure Spot VMSS. Minimum api-version: 2019-03-01.
      */
     @JsonProperty(value = "billingProfile")
     private BillingProfile billingProfile;
@@ -72,7 +72,7 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     private String userData;
 
     /*
-     * Specifies the hardware profile related details of a scale set. <br><br>Minimum api-version: 2021-11-01.
+     * Specifies the hardware profile related details of a scale set. Minimum api-version: 2021-11-01.
      */
     @JsonProperty(value = "hardwareProfile")
     private VirtualMachineScaleSetHardwareProfile hardwareProfile;
@@ -225,8 +225,8 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Get the billingProfile property: Specifies the billing related details of a Azure Spot VMSS.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2019-03-01.
+     * Get the billingProfile property: Specifies the billing related details of a Azure Spot VMSS. Minimum api-version:
+     * 2019-03-01.
      *
      * @return the billingProfile value.
      */
@@ -235,8 +235,8 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Set the billingProfile property: Specifies the billing related details of a Azure Spot VMSS.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2019-03-01.
+     * Set the billingProfile property: Specifies the billing related details of a Azure Spot VMSS. Minimum api-version:
+     * 2019-03-01.
      *
      * @param billingProfile the billingProfile value to set.
      * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
@@ -290,8 +290,8 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Get the hardwareProfile property: Specifies the hardware profile related details of a scale set.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
+     * Get the hardwareProfile property: Specifies the hardware profile related details of a scale set. Minimum
+     * api-version: 2021-11-01.
      *
      * @return the hardwareProfile value.
      */
@@ -300,8 +300,8 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Set the hardwareProfile property: Specifies the hardware profile related details of a scale set.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
+     * Set the hardwareProfile property: Specifies the hardware profile related details of a scale set. Minimum
+     * api-version: 2021-11-01.
      *
      * @param hardwareProfile the hardwareProfile value to set.
      * @return the VirtualMachineScaleSetUpdateVMProfile object itself.

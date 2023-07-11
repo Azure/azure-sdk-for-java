@@ -48,8 +48,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         int maxItemCount,
         boolean isSplitHandlingDisabled,
         OperationContextAndListenerTuple operationContext) {
-
-        super(executeFunc, true, top, maxItemCount, operationContext);
+        super(executeFunc, true, top, maxItemCount, operationContext, null);
 
         checkNotNull(client, "Argument 'client' must not be null.");
         checkNotNull(createRequestFunc, "Argument 'createRequestFunc' must not be null.");

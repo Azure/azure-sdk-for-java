@@ -11,7 +11,6 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringJoiner;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -78,11 +77,14 @@ public class RecordingRedactor {
      * @return the redacted content
      */
     public String redact(String redactableString) {
-        String redactedString = redactableString;
-        for (Function<String, String> redactor : recordingRedactors) {
-            redactedString = redactor.apply(redactedString);
+        if (CoreUtils.isNullOrEmpty(redactableString)) {
+            return redactableString;
         }
-        return redactedString;
+
+        for (Function<String, String> redactor : recordingRedactors) {
+            redactableString = redactor.apply(redactableString);
+        }
+        return redactableString;
     }
 
     private static List<Function<String, String>> loadRedactor() {
@@ -124,8 +126,10 @@ public class RecordingRedactor {
     private static String redactUserDelegationKey(String content) {
         if (content.contains("<UserDelegationKey>")) {
             content = redactionReplacement(content, DELEGATIONKEY_KEY_PATTERN.matcher(content), REDACTED_UTF_8);
-            content = redactionReplacement(content, DELEGATIONKEY_CLIENTID_PATTERN.matcher(content), UUID.randomUUID().toString());
-            content = redactionReplacement(content, DELEGATIONKEY_TENANTID_PATTERN.matcher(content), UUID.randomUUID().toString());
+            content = redactionReplacement(content, DELEGATIONKEY_CLIENTID_PATTERN.matcher(content),
+                CoreUtils.randomUuid().toString());
+            content = redactionReplacement(content, DELEGATIONKEY_TENANTID_PATTERN.matcher(content),
+                CoreUtils.randomUuid().toString());
         }
 
         return content;

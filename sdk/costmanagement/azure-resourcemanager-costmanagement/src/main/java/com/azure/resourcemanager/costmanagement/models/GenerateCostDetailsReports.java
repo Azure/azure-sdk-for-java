@@ -17,7 +17,8 @@ public interface GenerateCostDetailsReports {
      * operation will provide a 202 response with a 'Location' header if the operation is still in progress. Once the
      * report generation operation completes, the polling endpoint will provide a 200 response along with details on the
      * report blob(s) that are available for download. The details on the file(s) available for download will be
-     * available in the polling response body.
+     * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
+     * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
      *
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
      *     details, see https://aka.ms/costmgmt/scopes.
@@ -38,7 +39,8 @@ public interface GenerateCostDetailsReports {
      * operation will provide a 202 response with a 'Location' header if the operation is still in progress. Once the
      * report generation operation completes, the polling endpoint will provide a 200 response along with details on the
      * report blob(s) that are available for download. The details on the file(s) available for download will be
-     * available in the polling response body.
+     * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
+     * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
      *
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
      *     details, see https://aka.ms/costmgmt/scopes.

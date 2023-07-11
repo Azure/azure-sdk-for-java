@@ -56,6 +56,6 @@ public final class ManagedCcfsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.managedCcfs().delete("xywnytnrsynlqidy", "yxczfclh", com.azure.core.util.Context.NONE);
+        manager.managedCcfs().delete("qnwvlrya", "w", com.azure.core.util.Context.NONE);
     }
 }

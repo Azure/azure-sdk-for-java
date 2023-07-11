@@ -85,37 +85,14 @@ import java.util.Map;
 /** Samples for VirtualMachineScaleSetVMs Update. */
 public final class VirtualMachineScaleSetVMsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Update_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSetVMs_Update_MinimumSet_Gen.
+     * Sample code: VirtualMachineScaleSetVM_Update_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetVMsUpdateMinimumSetGen(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getVirtualMachineScaleSetVMs()
-            .update(
-                "rgcompute",
-                "aaaaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaaaaaa",
-                new VirtualMachineScaleSetVMInner().withLocation("westus"),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Update_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: VirtualMachineScaleSetVMs_Update_MaximumSet_Gen.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void virtualMachineScaleSetVMsUpdateMaximumSetGen(
+    public static void virtualMachineScaleSetVMUpdateMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
@@ -374,7 +351,6 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                                 Arrays
                                     .asList(
                                         new VirtualMachineScaleSetNetworkConfiguration()
-                                            .withId("aaaaaaaa")
                                             .withName("vmsstestnetconfig5415")
                                             .withPrimary(true)
                                             .withEnableAcceleratedNetworking(true)
@@ -390,7 +366,6 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                                                 Arrays
                                                     .asList(
                                                         new VirtualMachineScaleSetIpConfiguration()
-                                                            .withId("aaaaaaaaa")
                                                             .withName("vmsstestnetconfig9693")
                                                             .withSubnet(
                                                                 new ApiEntityReference()
@@ -462,6 +437,29 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                             .withProtectFromScaleIn(true)
                             .withProtectFromScaleSetActions(true))
                     .withUserData("RXhhbXBsZSBVc2VyRGF0YQ=="),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Update_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: VirtualMachineScaleSetVM_Update_MinimumSet_Gen.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void virtualMachineScaleSetVMUpdateMinimumSetGen(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMs()
+            .update(
+                "rgcompute",
+                "aaaaaaaaaaaaaaaaaa",
+                "aaaaaaaaaaaaaaaaaaaa",
+                new VirtualMachineScaleSetVMInner().withLocation("westus"),
                 com.azure.core.util.Context.NONE);
     }
 

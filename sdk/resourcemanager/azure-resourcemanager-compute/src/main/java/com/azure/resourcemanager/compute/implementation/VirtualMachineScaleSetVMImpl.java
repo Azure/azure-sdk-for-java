@@ -47,6 +47,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -589,6 +590,11 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public VirtualMachineScaleSetVMNetworkProfileConfiguration networkProfileConfiguration() {
         return this.innerModel().networkProfileConfiguration();
+    }
+
+    @Override
+    public OffsetDateTime timeCreated() {
+        return this.innerModel().timeCreated();
     }
 
     private void clearCachedRelatedResources() {

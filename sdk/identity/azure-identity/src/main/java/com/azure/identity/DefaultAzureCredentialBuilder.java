@@ -15,6 +15,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
@@ -220,22 +221,27 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     /**
      * Specifies a {@link Duration} timeout for developer credentials (such as Azure CLI) that rely on separate process
      * invocations.
-     * @param processTimeout The {@link Duration} to wait.
+     * @param credentialProcessTimeout The {@link Duration} to wait.
      * @return An updated instance of this builder with the timeout specified.
      */
-    public DefaultAzureCredentialBuilder processTimeout(Duration processTimeout) {
-        this.identityClientOptions.setProcessTimeout(processTimeout);
+    public DefaultAzureCredentialBuilder credentialProcessTimeout(Duration credentialProcessTimeout) {
+        Objects.requireNonNull(credentialProcessTimeout);
+        this.identityClientOptions.setCredentialProcessTimeout(credentialProcessTimeout);
         return this;
     }
 
     /**
-     * Disable instance discovery. Instance discovery is acquiring metadata about an authority from https://login.microsoft.com
-     * to validate that authority. This may need to be disabled in private cloud or ADFS scenarios.
+     * Disables the setting which determines whether or not instance discovery is performed when attempting to
+     * authenticate. This will completely disable both instance discovery and authority validation.
+     * This functionality is intended for use in scenarios where the metadata endpoint cannot be reached, such as in
+     * private clouds or Azure Stack. The process of instance discovery entails retrieving authority metadata from
+     * https://login.microsoft.com/ to validate the authority. By utilizing this API, the validation of the authority
+     * is disabled. As a result, it is crucial to ensure that the configured authority host is valid and trustworthy.
      *
      * @return An updated instance of this builder with instance discovery disabled.
      */
     public DefaultAzureCredentialBuilder disableInstanceDiscovery() {
-        this.identityClientOptions.disableInstanceDisovery();
+        this.identityClientOptions.disableInstanceDiscovery();
         return this;
     }
 
@@ -269,12 +275,12 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         output.add(new EnvironmentCredential(identityClientOptions.clone()));
         output.add(getWorkloadIdentityCredential());
         output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, identityClientOptions.clone()));
-        output.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
         output.add(new SharedTokenCacheCredential(null, IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID,
             tenantId, identityClientOptions.clone()));
         output.add(new IntelliJCredential(tenantId, identityClientOptions.clone()));
         output.add(new AzureCliCredential(tenantId, identityClientOptions.clone()));
         output.add(new AzurePowerShellCredential(tenantId, identityClientOptions.clone()));
+        output.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
         return output;
     }
 
@@ -289,7 +295,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         if (!CoreUtils.isNullOrEmpty(azureAuthorityHost)) {
             identityClientOptions.setAuthorityHost(azureAuthorityHost);
         }
-        return new WorkloadIdentityCredential(null, clientId, null,
+        return new WorkloadIdentityCredential(tenantId, clientId, null,
                 identityClientOptions.clone());
     }
 }

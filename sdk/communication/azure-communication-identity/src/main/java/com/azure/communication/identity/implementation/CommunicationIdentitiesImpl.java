@@ -66,10 +66,30 @@ public final class CommunicationIdentitiesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/identities")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Response<CommunicationIdentityAccessTokenResult> createSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") CommunicationIdentityCreateRequest body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Delete("/identities/{id}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> delete(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Delete("/identities/{id}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Response<Void> deleteSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
@@ -86,6 +106,16 @@ public final class CommunicationIdentitiesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/identities/{id}/:revokeAccessTokens")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Response<Void> revokeAccessTokensSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Post("/teamsUser/:exchangeAccessToken")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
@@ -96,10 +126,31 @@ public final class CommunicationIdentitiesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/teamsUser/:exchangeAccessToken")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Response<CommunicationIdentityAccessToken> exchangeTeamsUserAccessTokenSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") GetTokenForTeamsUserOptions body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Post("/identities/{id}/:issueAccessToken")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<CommunicationIdentityAccessToken>> issueAccessToken(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("id") String id,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") CommunicationIdentityAccessTokenRequest body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/identities/{id}/:issueAccessToken")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Response<CommunicationIdentityAccessToken> issueAccessTokenSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
@@ -193,7 +244,8 @@ public final class CommunicationIdentitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationIdentityAccessTokenResult> createWithResponse(
             CommunicationIdentityCreateRequest body, Context context) {
-        return createWithResponseAsync(body, context).block();
+        final String accept = "application/json";
+        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -284,7 +336,8 @@ public final class CommunicationIdentitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String id, Context context) {
-        return deleteWithResponseAsync(id, context).block();
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -375,7 +428,9 @@ public final class CommunicationIdentitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> revokeAccessTokensWithResponse(String id, Context context) {
-        return revokeAccessTokensWithResponseAsync(id, context).block();
+        final String accept = "application/json";
+        return service.revokeAccessTokensSync(
+                this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -477,7 +532,9 @@ public final class CommunicationIdentitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationIdentityAccessToken> exchangeTeamsUserAccessTokenWithResponse(
             GetTokenForTeamsUserOptions body, Context context) {
-        return exchangeTeamsUserAccessTokenWithResponseAsync(body, context).block();
+        final String accept = "application/json";
+        return service.exchangeTeamsUserAccessTokenSync(
+                this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -581,7 +638,9 @@ public final class CommunicationIdentitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationIdentityAccessToken> issueAccessTokenWithResponse(
             String id, CommunicationIdentityAccessTokenRequest body, Context context) {
-        return issueAccessTokenWithResponseAsync(id, body, context).block();
+        final String accept = "application/json";
+        return service.issueAccessTokenSync(
+                this.client.getEndpoint(), id, this.client.getApiVersion(), body, accept, context);
     }
 
     /**

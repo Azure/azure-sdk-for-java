@@ -6,33 +6,31 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.BillingMeterProperties;
-import com.azure.resourcemanager.appcontainers.models.Category;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BillingMeterPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         BillingMeterProperties model =
             BinaryData
                 .fromString(
-                    "{\"category\":\"PremiumSkuGeneralPurpose\",\"meterType\":\"eqocljmygvk\",\"displayName\":\"kjjeokbz\"}")
+                    "{\"category\":\"fqweykhmene\",\"meterType\":\"yexfwh\",\"displayName\":\"cibvyvdcsitynn\"}")
                 .toObject(BillingMeterProperties.class);
-        Assertions.assertEquals(Category.PREMIUM_SKU_GENERAL_PURPOSE, model.category());
-        Assertions.assertEquals("eqocljmygvk", model.meterType());
-        Assertions.assertEquals("kjjeokbz", model.displayName());
+        Assertions.assertEquals("fqweykhmene", model.category());
+        Assertions.assertEquals("yexfwh", model.meterType());
+        Assertions.assertEquals("cibvyvdcsitynn", model.displayName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         BillingMeterProperties model =
             new BillingMeterProperties()
-                .withCategory(Category.PREMIUM_SKU_GENERAL_PURPOSE)
-                .withMeterType("eqocljmygvk")
-                .withDisplayName("kjjeokbz");
+                .withCategory("fqweykhmene")
+                .withMeterType("yexfwh")
+                .withDisplayName("cibvyvdcsitynn");
         model = BinaryData.fromObject(model).toObject(BillingMeterProperties.class);
-        Assertions.assertEquals(Category.PREMIUM_SKU_GENERAL_PURPOSE, model.category());
-        Assertions.assertEquals("eqocljmygvk", model.meterType());
-        Assertions.assertEquals("kjjeokbz", model.displayName());
+        Assertions.assertEquals("fqweykhmene", model.category());
+        Assertions.assertEquals("yexfwh", model.meterType());
+        Assertions.assertEquals("cibvyvdcsitynn", model.displayName());
     }
 }

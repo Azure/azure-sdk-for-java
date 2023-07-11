@@ -21,6 +21,10 @@ public final class DynamicDeliveryAttributeMapping extends DeliveryAttributeMapp
     @JsonProperty(value = "properties")
     private DynamicDeliveryAttributeMappingProperties innerProperties;
 
+    /** Creates an instance of DynamicDeliveryAttributeMapping class. */
+    public DynamicDeliveryAttributeMapping() {
+    }
+
     /**
      * Get the innerProperties property: Properties of dynamic delivery attribute mapping.
      *

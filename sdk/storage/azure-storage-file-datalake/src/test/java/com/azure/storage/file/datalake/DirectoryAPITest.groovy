@@ -2544,6 +2544,18 @@ class DirectoryAPITest extends APISpec {
         dc.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_06_12")
+    def "Get properties owner group permissions"() {
+        when:
+        def response = dc.getPropertiesWithResponse(null, null, null)
+        def properties = response.getValue()
+
+        then:
+        properties.getOwner() != null
+        properties.getGroup() != null
+        properties.getPermissions() != null
+    }
+
     @Unroll
     def "Get properties AC"() {
         setup:

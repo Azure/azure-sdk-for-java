@@ -107,7 +107,7 @@ public class UniqueIndexTest extends TestSuiteBase {
         collection.createItem(doc3).block();
     }
 
-    @Test(groups = { "long" }, timeOut = TIMEOUT * 1000)
+    @Test(groups = { "long" }, timeOut = TIMEOUT * 10)
     public void replaceAndDeleteWithUniqueIndex() throws Exception {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();

@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An NS record. */
 @Fluent
 public final class NsRecord {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NsRecord.class);
-
     /*
      * The name server name for this NS record.
      */
     @JsonProperty(value = "nsdname")
     private String nsdname;
+
+    /** Creates an instance of NsRecord class. */
+    public NsRecord() {
+    }
 
     /**
      * Get the nsdname property: The name server name for this NS record.

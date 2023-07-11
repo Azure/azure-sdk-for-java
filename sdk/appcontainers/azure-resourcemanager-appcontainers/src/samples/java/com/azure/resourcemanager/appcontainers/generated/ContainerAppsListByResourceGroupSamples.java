@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ContainerApps ListByResourceGroup. */
 public final class ContainerAppsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ContainerApps_ListByResourceGroup.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ContainerApps_ListByResourceGroup.json
      */
     /**
      * Sample code: List Container Apps by resource group.
@@ -18,6 +16,6 @@ public final class ContainerAppsListByResourceGroupSamples {
      */
     public static void listContainerAppsByResourceGroup(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.containerApps().listByResourceGroup("rg", Context.NONE);
+        manager.containerApps().listByResourceGroup("rg", com.azure.core.util.Context.NONE);
     }
 }

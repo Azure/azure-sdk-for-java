@@ -17,6 +17,15 @@ public final class HibernateSupport extends ExpandableStringEnum<HibernateSuppor
     public static final HibernateSupport ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of HibernateSupport value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HibernateSupport() {
+    }
+
+    /**
      * Creates or finds a HibernateSupport from its string representation.
      *
      * @param name a name to look for.

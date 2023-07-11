@@ -14,7 +14,7 @@ import com.azure.resourcemanager.appcontainers.models.UnauthenticatedClientActio
 /** Samples for ContainerAppsAuthConfigs CreateOrUpdate. */
 public final class ContainerAppsAuthConfigsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/AuthConfigs_CreateOrUpdate.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/AuthConfigs_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update Container App AuthConfig.
@@ -35,7 +35,9 @@ public final class ContainerAppsAuthConfigsCreateOrUpdateSamples {
                     .withFacebook(
                         new Facebook()
                             .withRegistration(
-                                new AppRegistration().withAppId("123").withAppSecretSettingName("facebook-secret"))))
+                                new AppRegistration()
+                                    .withAppId("123")
+                                    .withAppSecretSettingName("fakeTokenPlaceholder"))))
             .create();
     }
 }

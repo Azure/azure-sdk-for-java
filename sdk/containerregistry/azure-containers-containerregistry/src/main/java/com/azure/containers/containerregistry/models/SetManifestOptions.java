@@ -24,7 +24,7 @@ public final class SetManifestOptions {
     public SetManifestOptions(OciImageManifest ociImageManifest) {
         Objects.requireNonNull(ociImageManifest, "'ociManifest' can't be null.");
         this.manifest = BinaryData.fromObject(ociImageManifest);
-        this.mediaType = ManifestMediaType.OCI_MANIFEST;
+        this.mediaType = ManifestMediaType.OCI_IMAGE_MANIFEST;
     }
 
     /**

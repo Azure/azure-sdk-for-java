@@ -10,7 +10,7 @@ import java.util.Arrays;
 /** Samples for Endpoints PurgeContent. */
 public final class EndpointsPurgeContentSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorPurgeContent.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorPurgeContent.json
      */
     /**
      * Sample code: Purge content from Front Door.

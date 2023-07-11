@@ -14,19 +14,9 @@ import com.azure.resourcemanager.eventgrid.fluent.models.VerifiedPartnerInner;
 /** An instance of this class provides access to all the operations defined in VerifiedPartnersClient. */
 public interface VerifiedPartnersClient {
     /**
-     * Get properties of a verified partner.
+     * Get a verified partner.
      *
-     * @param verifiedPartnerName Name of the verified partner.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a verified partner.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VerifiedPartnerInner get(String verifiedPartnerName);
-
-    /**
-     * Get properties of a verified partner.
+     * <p>Get properties of a verified partner.
      *
      * @param verifiedPartnerName Name of the verified partner.
      * @param context The context to associate with this operation.
@@ -39,7 +29,23 @@ public interface VerifiedPartnersClient {
     Response<VerifiedPartnerInner> getWithResponse(String verifiedPartnerName, Context context);
 
     /**
-     * Get a list of all verified partners.
+     * Get a verified partner.
+     *
+     * <p>Get properties of a verified partner.
+     *
+     * @param verifiedPartnerName Name of the verified partner.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a verified partner.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VerifiedPartnerInner get(String verifiedPartnerName);
+
+    /**
+     * List all verified partners.
+     *
+     * <p>Get a list of all verified partners.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -49,7 +55,9 @@ public interface VerifiedPartnersClient {
     PagedIterable<VerifiedPartnerInner> list();
 
     /**
-     * Get a list of all verified partners.
+     * List all verified partners.
+     *
+     * <p>Get a list of all verified partners.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'

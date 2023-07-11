@@ -492,7 +492,7 @@ public class StoreReaderTest {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
 
-        request.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        request.requestContext = new DocumentServiceRequestContext();
         request.requestContext.timeoutHelper = Mockito.mock(TimeoutHelper.class);
         request.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId("12");
         request.requestContext.requestChargeTracker = new RequestChargeTracker();
@@ -523,7 +523,7 @@ public class StoreReaderTest {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
 
-        request.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        request.requestContext = new DocumentServiceRequestContext();
         request.requestContext.timeoutHelper = Mockito.mock(TimeoutHelper.class);
         request.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId("12");
         request.requestContext.requestChargeTracker = new RequestChargeTracker();
@@ -550,7 +550,7 @@ public class StoreReaderTest {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
 
-        request.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        request.requestContext = new DocumentServiceRequestContext();
         request.requestContext.timeoutHelper = Mockito.mock(TimeoutHelper.class);
         Mockito.doReturn(true).when(request.requestContext.timeoutHelper).isElapsed();
         request.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId("12");
@@ -580,7 +580,7 @@ public class StoreReaderTest {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
 
-        request.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        request.requestContext = new DocumentServiceRequestContext();
         request.requestContext.timeoutHelper = Mockito.mock(TimeoutHelper.class);
         request.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId("12");
         request.requestContext.requestChargeTracker = new RequestChargeTracker();
@@ -617,7 +617,7 @@ public class StoreReaderTest {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
 
-        request.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        request.requestContext = new DocumentServiceRequestContext();
         request.requestContext.timeoutHelper = Mockito.mock(TimeoutHelper.class);
         Mockito.doReturn(true).when(request.requestContext.timeoutHelper).isElapsed();
         request.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId("12");
@@ -776,7 +776,7 @@ public class StoreReaderTest {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
 
-        request.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        request.requestContext = new DocumentServiceRequestContext();
         request.requestContext.timeoutHelper = Mockito.mock(TimeoutHelper.class);
         request.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId("12");
 
@@ -890,7 +890,11 @@ public class StoreReaderTest {
         dsr.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId("1");
 
         try {
-            storeReader.readMultipleReplicaAsync(dsr, true, 3, true, true, ReadMode.Strong).subscribe();
+            storeReader.readMultipleReplicaAsync(dsr, true, 3, true, true, ReadMode.Strong)
+                       .onErrorResume(throwable -> {
+                           // ignore the exception
+                           return Mono.empty();
+                       }).subscribe();
         } catch (Exception e) {
             // catch any exceptions here
         }

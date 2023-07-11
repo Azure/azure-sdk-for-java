@@ -31,7 +31,7 @@ import com.azure.identity.implementation.util.ValidationUtil;
  *
  * <!-- src_embed com.azure.identity.credential.workloadidentitycredential.construct -->
  * <pre>
- * TokenCredential onBehalfOfCredential = new WorkloadIdentityCredentialBuilder&#40;&#41;
+ * TokenCredential workloadIdentityCredential = new WorkloadIdentityCredentialBuilder&#40;&#41;
  *     .clientId&#40;&quot;&lt;clientID&gt;&quot;&#41;
  *     .tenantId&#40;&quot;&lt;tenantID&gt;&quot;&#41;
  *     .tokenFilePath&#40;&quot;&lt;token-file-path&gt;&quot;&#41;
@@ -72,6 +72,6 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
         ValidationUtil.validate(this.getClass().getSimpleName(), LOGGER, "Client ID", clientId,
             "Tenant ID", tenantId, "Service Token File Path", tokenFilePath);
 
-        return new WorkloadIdentityCredential(clientId, tenantId, tokenFilePath, identityClientOptions.clone());
+        return new WorkloadIdentityCredential(tenantId, clientId, tokenFilePath, identityClientOptions.clone());
     }
 }

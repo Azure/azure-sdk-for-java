@@ -309,7 +309,7 @@ public class JdkHttpClientTests {
         HttpClient client = new JdkHttpClientProvider().createInstance();
 
         InputStream requestBody = new ByteArrayInputStream(SHORT_BODY);
-        BinaryData body = BinaryData.fromStream(requestBody);
+        BinaryData body = BinaryData.fromStream(requestBody, (long) SHORT_BODY.length);
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(local, "/post"))
             .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(SHORT_BODY.length))
             .setBody(body);
@@ -438,6 +438,16 @@ public class JdkHttpClientTests {
             .verify(Duration.ofSeconds(60));
     }
 
+    @Test
+    public void testIOExceptionInWriteBodyTo() throws IOException {
+        HttpClient client = new JdkHttpClientProvider().createInstance();
+
+        assertThrows(IOException.class, () -> {
+            JdkHttpResponseSync response = (JdkHttpResponseSync) doRequestSync(client, "/long");
+            response.writeBodyTo(new ThrowingWritableByteChannel());
+        });
+    }
+
     private Mono<HttpResponse> getResponse(String path) {
         HttpClient client = new JdkHttpClientBuilder().build();
         return doRequest(client, path);
@@ -497,5 +507,31 @@ public class JdkHttpClientTests {
         outputStream.write(body);
         outputStream.close();
         return tempFile;
+    }
+
+    private static final class ThrowingWritableByteChannel implements WritableByteChannel {
+        private boolean open = true;
+        int writeCount = 0;
+
+        @Override
+        public int write(ByteBuffer src) throws IOException {
+            if (writeCount++ < 3) {
+                int remaining = src.remaining();
+                src.position(src.position() + remaining);
+                return remaining;
+            } else {
+                throw new IOException();
+            }
+        }
+
+        @Override
+        public boolean isOpen() {
+            return open;
+        }
+
+        @Override
+        public void close() throws IOException {
+            open = false;
+        }
     }
 }

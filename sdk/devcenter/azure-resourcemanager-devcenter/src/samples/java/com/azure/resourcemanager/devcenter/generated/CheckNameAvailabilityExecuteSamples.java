@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.models.CheckNameAvailabilityRequest;
 
 /** Samples for CheckNameAvailability Execute. */
 public final class CheckNameAvailabilityExecuteSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/CheckNameAvailability.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/CheckNameAvailability.json
      */
     /**
      * Sample code: NameAvailability.
@@ -22,6 +21,6 @@ public final class CheckNameAvailabilityExecuteSamples {
             .checkNameAvailabilities()
             .executeWithResponse(
                 new CheckNameAvailabilityRequest().withName("name1").withType("Microsoft.DevCenter/devcenters"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

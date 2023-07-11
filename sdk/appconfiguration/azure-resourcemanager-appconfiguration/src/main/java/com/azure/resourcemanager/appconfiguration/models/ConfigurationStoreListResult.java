@@ -24,6 +24,10 @@ public final class ConfigurationStoreListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ConfigurationStoreListResult class. */
+    public ConfigurationStoreListResult() {
+    }
+
     /**
      * Get the value property: The collection value.
      *

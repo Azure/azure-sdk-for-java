@@ -50,6 +50,10 @@ public final class DeletedConfigurationStoreProperties {
     @JsonProperty(value = "purgeProtectionEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean purgeProtectionEnabled;
 
+    /** Creates an instance of DeletedConfigurationStoreProperties class. */
+    public DeletedConfigurationStoreProperties() {
+    }
+
     /**
      * Get the configurationStoreId property: The resource id of the original configuration store.
      *

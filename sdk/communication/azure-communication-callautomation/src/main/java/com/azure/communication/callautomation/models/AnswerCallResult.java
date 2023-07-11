@@ -5,11 +5,13 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.callautomation.CallConnection;
 import com.azure.communication.callautomation.CallConnectionAsync;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The result of answering a call
  */
-public class AnswerCallResult extends CallResult {
+@Immutable
+public final class AnswerCallResult extends CallResult {
 
     /**
      * Constructor

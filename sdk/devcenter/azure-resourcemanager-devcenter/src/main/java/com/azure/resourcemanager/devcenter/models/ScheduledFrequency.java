@@ -14,6 +14,15 @@ public final class ScheduledFrequency extends ExpandableStringEnum<ScheduledFreq
     public static final ScheduledFrequency DAILY = fromString("Daily");
 
     /**
+     * Creates a new instance of ScheduledFrequency value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScheduledFrequency() {
+    }
+
+    /**
      * Creates or finds a ScheduledFrequency from its string representation.
      *
      * @param name a name to look for.

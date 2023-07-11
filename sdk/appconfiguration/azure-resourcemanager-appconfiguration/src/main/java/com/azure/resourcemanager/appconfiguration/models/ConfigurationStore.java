@@ -492,17 +492,6 @@ public interface ConfigurationStore {
      * Regenerates an access key for the specified configuration store.
      *
      * @param regenerateKeyParameters The parameters for regenerating an access key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an API key used for authenticating with a configuration store endpoint.
-     */
-    ApiKey regenerateKey(RegenerateKeyParameters regenerateKeyParameters);
-
-    /**
-     * Regenerates an access key for the specified configuration store.
-     *
-     * @param regenerateKeyParameters The parameters for regenerating an access key.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -510,4 +499,15 @@ public interface ConfigurationStore {
      * @return an API key used for authenticating with a configuration store endpoint along with {@link Response}.
      */
     Response<ApiKey> regenerateKeyWithResponse(RegenerateKeyParameters regenerateKeyParameters, Context context);
+
+    /**
+     * Regenerates an access key for the specified configuration store.
+     *
+     * @param regenerateKeyParameters The parameters for regenerating an access key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an API key used for authenticating with a configuration store endpoint.
+     */
+    ApiKey regenerateKey(RegenerateKeyParameters regenerateKeyParameters);
 }

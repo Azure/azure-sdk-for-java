@@ -27,6 +27,10 @@ pr:
 # boolean for each library. Note: AdditionalModules are never to have
 # parameter entries as those are not releasing libraries.
 parameters:
+- name: release_azurespringdatacosmos
+  displayName: 'azure-spring-data-cosmos'
+  type: boolean
+  default: true
 - name: release_springcloudazurecore
   displayName: 'spring-cloud-azure-core'
   type: boolean
@@ -117,6 +121,10 @@ parameters:
   default: true
 - name: release_springcloudazurestartereventhubs
   displayName: 'spring-cloud-azure-starter-eventhubs'
+  type: boolean
+  default: true
+- name: release_springcloudazurestartereventgrid
+  displayName: 'spring-cloud-azure-starter-eventgrid'
   type: boolean
   default: true
 - name: release_springcloudazurestarterkeyvault
@@ -230,6 +238,10 @@ extends:
     ServiceDirectory: spring
     EnableBatchRelease: true
     Artifacts:
+      - name: azure-spring-data-cosmos
+        groupId: com.azure
+        safeName: azurespringdatacosmos
+        releaseInBatch: ${{ parameters.release_azurespringdatacosmos }}
       - name: spring-cloud-azure-core
         groupId: com.azure.spring
         safeName: springcloudazurecore
@@ -384,6 +396,14 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestartereventhubs }}
+      - name: spring-cloud-azure-starter-eventgrid
+        groupId: com.azure.spring
+        safeName: springcloudazurestartereventgrid
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazurestartereventgrid }}
       - name: spring-cloud-azure-starter-keyvault
         groupId: com.azure.spring
         safeName: springcloudazurestarterkeyvault

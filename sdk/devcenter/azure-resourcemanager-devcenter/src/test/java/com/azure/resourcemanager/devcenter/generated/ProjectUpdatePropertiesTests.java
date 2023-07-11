@@ -7,25 +7,30 @@ package com.azure.resourcemanager.devcenter.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.ProjectUpdateProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProjectUpdatePropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProjectUpdateProperties model =
             BinaryData
-                .fromString("{\"devCenterId\":\"l\",\"description\":\"uvfqawrlyxwj\"}")
+                .fromString(
+                    "{\"devCenterId\":\"kujysvlejuvfq\",\"description\":\"rlyxwjkcprbnw\",\"maxDevBoxesPerUser\":1500151010}")
                 .toObject(ProjectUpdateProperties.class);
-        Assertions.assertEquals("l", model.devCenterId());
-        Assertions.assertEquals("uvfqawrlyxwj", model.description());
+        Assertions.assertEquals("kujysvlejuvfq", model.devCenterId());
+        Assertions.assertEquals("rlyxwjkcprbnw", model.description());
+        Assertions.assertEquals(1500151010, model.maxDevBoxesPerUser());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProjectUpdateProperties model =
-            new ProjectUpdateProperties().withDevCenterId("l").withDescription("uvfqawrlyxwj");
+            new ProjectUpdateProperties()
+                .withDevCenterId("kujysvlejuvfq")
+                .withDescription("rlyxwjkcprbnw")
+                .withMaxDevBoxesPerUser(1500151010);
         model = BinaryData.fromObject(model).toObject(ProjectUpdateProperties.class);
-        Assertions.assertEquals("l", model.devCenterId());
-        Assertions.assertEquals("uvfqawrlyxwj", model.description());
+        Assertions.assertEquals("kujysvlejuvfq", model.devCenterId());
+        Assertions.assertEquals("rlyxwjkcprbnw", model.description());
+        Assertions.assertEquals(1500151010, model.maxDevBoxesPerUser());
     }
 }

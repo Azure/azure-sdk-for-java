@@ -12,10 +12,11 @@ import com.azure.core.util.logging.ClientLogger;
  */
 @Immutable
 public final class KeyVaultSetting {
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultSetting.class);
+
     private final String name;
     private final Object value;
     private final KeyVaultSettingType type;
-    private final ClientLogger logger = new ClientLogger(KeyVaultSetting.class);
 
     /**
      * Creates a new {@link KeyVaultSetting setting}  with the with the specified details.
@@ -25,7 +26,7 @@ public final class KeyVaultSetting {
      */
     public KeyVaultSetting(String name, boolean value) {
         if (CoreUtils.isNullOrEmpty(name)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("The 'name' parameter cannot be null or empty"));
         }
 
@@ -50,7 +51,7 @@ public final class KeyVaultSetting {
      */
     public boolean asBoolean() {
         if (type != KeyVaultSettingType.BOOLEAN) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new UnsupportedOperationException(String.format("Cannot get setting value as %s from setting value of "
                     + "type %s", KeyVaultSettingType.BOOLEAN, this.getType())));
         }

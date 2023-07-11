@@ -9,31 +9,30 @@ import com.azure.resourcemanager.devcenter.models.EnvironmentRole;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.Test;
 
 public final class ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignmentTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment model =
             BinaryData
                 .fromString(
-                    "{\"roles\":{\"notyfjfcnjbkcn\":{\"roleName\":\"vlxotogtwrupqsx\",\"description\":\"micykvceoveilo\"},\"phoxus\":{\"roleName\":\"hbttkphyw\",\"description\":\"vjtoqnermclfp\"},\"wfqkquj\":{\"roleName\":\"pabgyeps\",\"description\":\"tazqugxywpmueefj\"},\"yudxytlmoy\":{\"roleName\":\"suyonobglaocq\",\"description\":\"ccm\"}}}")
+                    "{\"roles\":{\"azqugxywpmueefj\":{\"roleName\":\"ermclfplphoxuscr\",\"description\":\"bgyepsbj\"},\"tcc\":{\"roleName\":\"fqkquj\",\"description\":\"suyonobglaocq\"},\"hl\":{\"roleName\":\"yudxytlmoy\",\"description\":\"vwfudwpzntxhd\"},\"ca\":{\"roleName\":\"jbhckfrlhr\",\"description\":\"bkyvp\"}}}")
                 .toObject(ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment model =
             new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment()
                 .withRoles(
                     mapOf(
-                        "notyfjfcnjbkcn",
+                        "azqugxywpmueefj",
                         new EnvironmentRole(),
-                        "phoxus",
+                        "tcc",
                         new EnvironmentRole(),
-                        "wfqkquj",
+                        "hl",
                         new EnvironmentRole(),
-                        "yudxytlmoy",
+                        "ca",
                         new EnvironmentRole()));
         model =
             BinaryData.fromObject(model).toObject(ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment.class);

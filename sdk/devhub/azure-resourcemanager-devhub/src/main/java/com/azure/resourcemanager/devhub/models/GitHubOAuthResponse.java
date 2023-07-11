@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devhub.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.devhub.fluent.models.GitHubOAuthResponseInner;
 
 /** An immutable client-side representation of GitHubOAuthResponse. */
@@ -28,6 +29,13 @@ public interface GitHubOAuthResponse {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the username property: user making request.

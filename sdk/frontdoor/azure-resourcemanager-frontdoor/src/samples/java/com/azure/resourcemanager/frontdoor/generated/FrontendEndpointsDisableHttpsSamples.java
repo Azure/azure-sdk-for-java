@@ -7,7 +7,7 @@ package com.azure.resourcemanager.frontdoor.generated;
 /** Samples for FrontendEndpoints DisableHttps. */
 public final class FrontendEndpointsDisableHttpsSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorDisableHttps.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorDisableHttps.json
      */
     /**
      * Sample code: FrontendEndpoints_DisableHttps.

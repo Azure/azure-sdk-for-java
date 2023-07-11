@@ -12,8 +12,10 @@ import com.azure.core.util.metrics.LongGauge;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.common.InstrumentationScopeInfo;
 import io.opentelemetry.sdk.metrics.SdkMeterProvider;
 import io.opentelemetry.sdk.resources.Resource;
@@ -45,6 +47,7 @@ public class MetricsTests {
     private InMemoryMetricReader sdkMeterReader;
     private TestClock testClock;
     private SdkMeterProvider sdkMeterProvider;
+    private OpenTelemetry openTelemetry;
 
     @BeforeEach
     public void beforeEach() {
@@ -56,6 +59,8 @@ public class MetricsTests {
             .setResource(RESOURCE)
             .registerMetricReader(sdkMeterReader)
             .build();
+
+        openTelemetry = OpenTelemetrySdk.builder().setMeterProvider(sdkMeterProvider).build();
     }
 
     @AfterEach
@@ -65,7 +70,7 @@ public class MetricsTests {
 
     @Test
     public void basicHistogram() {
-        Meter meter = MeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, new OpenTelemetryMetricsOptions().setProvider(sdkMeterProvider));
+        Meter meter = MeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, new OpenTelemetryMetricsOptions().setOpenTelemetry(openTelemetry));
         assertTrue(meter.isEnabled());
         DoubleHistogram histogram = meter.createDoubleHistogram("az.sdk.test-histogram", "important metric", null);
         assertTrue(histogram.isEnabled());
@@ -100,7 +105,7 @@ public class MetricsTests {
     public void disabledMetric() {
         MetricsOptions options = new OpenTelemetryMetricsOptions()
             .setEnabled(false)
-            .setProvider(sdkMeterProvider);
+            .setOpenTelemetry(openTelemetry);
         Meter meter = MeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, options);
         assertFalse(meter.isEnabled());
         DoubleHistogram histogram = meter
@@ -114,7 +119,7 @@ public class MetricsTests {
 
     @Test
     public void noopOTelMeterProvider() {
-        MetricsOptions options = new OpenTelemetryMetricsOptions().setProvider(io.opentelemetry.api.metrics.MeterProvider.noop());
+        MetricsOptions options = new OpenTelemetryMetricsOptions().setOpenTelemetry(OpenTelemetry.noop());
         Meter meter = MeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, options);
         assertFalse(meter.isEnabled());
 
@@ -130,7 +135,7 @@ public class MetricsTests {
     @Test
     public void histogramWithAttributes() {
         DoubleHistogram histogram = MeterProvider.getDefaultProvider()
-            .createMeter("az.sdk-name", "1.0.0-beta.1", new OpenTelemetryMetricsOptions().setProvider(sdkMeterProvider))
+            .createMeter("az.sdk-name", "1.0.0-beta.1", new OpenTelemetryMetricsOptions().setOpenTelemetry(openTelemetry))
             .createDoubleHistogram("az.sdk.test-histogram", "important metric", "ms");
 
         histogram.record(42, METRIC_ATTRIBUTES, Context.NONE);
@@ -165,7 +170,7 @@ public class MetricsTests {
     @Test
     public void histogramWithDifferentAttributes() {
         DoubleHistogram histogram = MeterProvider.getDefaultProvider()
-            .createMeter("az.sdk-name", "1.0.0-beta.1", new OpenTelemetryMetricsOptions().setProvider(sdkMeterProvider))
+            .createMeter("az.sdk-name", "1.0.0-beta.1", new OpenTelemetryMetricsOptions().setOpenTelemetry(openTelemetry))
             .createDoubleHistogram("az.sdk.test-histogram", "important metric", "ms");
 
         TelemetryAttributes attributes1 = new OpenTelemetryAttributes(Collections.singletonMap("key1", "value1"));
@@ -206,7 +211,7 @@ public class MetricsTests {
     @Test
     public void basicCounter() {
         LongCounter longCounter = MeterProvider.getDefaultProvider()
-            .createMeter("az.sdk-name", "1.0.0-beta.1", new OpenTelemetryMetricsOptions().setProvider(sdkMeterProvider))
+            .createMeter("az.sdk-name", "1.0.0-beta.1", new OpenTelemetryMetricsOptions().setOpenTelemetry(openTelemetry))
             .createLongCounter("az.sdk.test-counter", "important metric", "bytes");
 
         longCounter.add(42, METRIC_ATTRIBUTES, Context.NONE);
@@ -237,7 +242,7 @@ public class MetricsTests {
     @Test
     public void basicUpDownCounter() {
         LongCounter longCounter = MeterProvider.getDefaultProvider()
-            .createMeter("az.sdk-name", "1.0.0-beta.1", new OpenTelemetryMetricsOptions().setProvider(sdkMeterProvider))
+            .createMeter("az.sdk-name", "1.0.0-beta.1", new OpenTelemetryMetricsOptions().setOpenTelemetry(openTelemetry))
             .createLongUpDownCounter("az.sdk.test-counter", "important metric", "bytes");
 
         longCounter.add(1, METRIC_ATTRIBUTES, Context.NONE);
@@ -283,7 +288,7 @@ public class MetricsTests {
             .build();
 
         LongCounter longCounter = MeterProvider.getDefaultProvider()
-            .createMeter("az.sdk-name", "1.0.0-beta.1", new OpenTelemetryMetricsOptions().setProvider(sdkMeterProvider))
+            .createMeter("az.sdk-name", "1.0.0-beta.1", new OpenTelemetryMetricsOptions().setOpenTelemetry(openTelemetry))
             .createLongCounter("az.sdk.test-counter", "important metric", "bytes");
 
         longCounter.add(42, attributes, Context.NONE);
@@ -315,7 +320,7 @@ public class MetricsTests {
     @Test
     public void multipleMetersSameName() {
         Meter meter = MeterProvider.getDefaultProvider()
-            .createMeter("az.sdk-name", "1.0.0-beta.1", new OpenTelemetryMetricsOptions().setProvider(sdkMeterProvider));
+            .createMeter("az.sdk-name", "1.0.0-beta.1", new OpenTelemetryMetricsOptions().setOpenTelemetry(openTelemetry));
 
         DoubleHistogram histogram1 = meter.createDoubleHistogram("az.sdk.test-histogram", "important metric", "ms");
         DoubleHistogram histogram2 = meter.createDoubleHistogram("az.sdk.test-histogram", "important metric", "ms");
@@ -373,7 +378,7 @@ public class MetricsTests {
 
     @Test
     public void basicGauge() {
-        Meter meter = MeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, new OpenTelemetryMetricsOptions().setProvider(sdkMeterProvider));
+        Meter meter = MeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, new OpenTelemetryMetricsOptions().setOpenTelemetry(openTelemetry));
         LongGauge gauge = meter.createLongGauge("az.sdk.test-gauge", "important metric", null);
         assertTrue(gauge.isEnabled());
 
@@ -402,7 +407,7 @@ public class MetricsTests {
 
     @Test
     public void gaugeMultiple() throws Exception {
-        Meter meter = MeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, new OpenTelemetryMetricsOptions().setProvider(sdkMeterProvider));
+        Meter meter = MeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, new OpenTelemetryMetricsOptions().setOpenTelemetry(openTelemetry));
         LongGauge gauge = meter.createLongGauge("az.sdk.test-gauge", "important metric", null);
         assertTrue(gauge.isEnabled());
 

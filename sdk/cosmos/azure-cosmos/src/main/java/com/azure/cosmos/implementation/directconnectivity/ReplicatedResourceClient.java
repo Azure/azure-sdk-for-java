@@ -3,15 +3,18 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.AvailabilityStrategy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.SessionRetryOptions;
+import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ISessionContainer;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Quadruple;
 import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
@@ -19,12 +22,16 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -47,6 +54,7 @@ public class ReplicatedResourceClient {
     private final boolean enableReadRequestsFallback;
     private final GatewayServiceConfigurationReader serviceConfigReader;
     private final Configs configs;
+    private final SessionRetryOptions sessionRetryOptions;
 
     public ReplicatedResourceClient(
             DiagnosticsClientContext diagnosticsClientContext,
@@ -57,7 +65,8 @@ public class ReplicatedResourceClient {
             GatewayServiceConfigurationReader serviceConfigReader,
             IAuthorizationTokenProvider authorizationTokenProvider,
             boolean enableReadRequestsFallback,
-            boolean useMultipleWriteLocations) {
+            boolean useMultipleWriteLocations,
+            SessionRetryOptions sessionRetryOptions) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.configs = configs;
         this.protocol = configs.getProtocol();
@@ -68,6 +77,7 @@ public class ReplicatedResourceClient {
 
         this.transportClient = transportClient;
         this.serviceConfigReader = serviceConfigReader;
+        this.sessionRetryOptions = sessionRetryOptions;
 
         this.consistencyReader = new ConsistencyReader(diagnosticsClientContext,
             configs,
@@ -75,15 +85,18 @@ public class ReplicatedResourceClient {
             sessionContainer,
             transportClient,
             serviceConfigReader,
-            authorizationTokenProvider);
+            authorizationTokenProvider,
+            sessionRetryOptions);
         this.consistencyWriter = new ConsistencyWriter(diagnosticsClientContext,
             this.addressSelector,
             sessionContainer,
             transportClient,
             authorizationTokenProvider,
             serviceConfigReader,
-            useMultipleWriteLocations);
+            useMultipleWriteLocations,
+            sessionRetryOptions);
         this.enableReadRequestsFallback = enableReadRequestsFallback;
+
     }
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
@@ -111,9 +124,13 @@ public class ReplicatedResourceClient {
                     forceRefreshAndTimeout.getValue3().toString());
             documentServiceRequest.getHeaders().put(HttpConstants.HttpHeaders.REMAINING_TIME_IN_MS_ON_CLIENT_REQUEST,
                     Long.toString(forceRefreshAndTimeout.getValue2().toMillis()));
-            return invokeAsync(request, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
-                        forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0());
 
+            if (shouldSpeculate(request)){
+                logger.debug("Speculating request {}", request.getOperationType());
+                return getStoreResponseMonoWithSpeculation(request, forceRefreshAndTimeout);
+            }
+
+            return getStoreResponseMono(request, forceRefreshAndTimeout);
         };
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> funcDelegate = (
                 Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) -> {
@@ -122,41 +139,7 @@ public class ReplicatedResourceClient {
             } else {
                 return mainFuncDelegate.apply(forceRefreshAndTimeout, request);
             }
-
         };
-
-        Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> inBackoffFuncDelegate = null;
-
-        // we will enable fallback to other regions if the following conditions are met:
-        // 1. request is a read operation AND
-        // 2. enableReadRequestsFallback is set to true. (can only ever be true if
-        // direct mode, on client)
-        if (request.isReadOnlyRequest() && this.enableReadRequestsFallback) {
-            if (request.requestContext.cosmosDiagnostics == null) {
-                request.requestContext.cosmosDiagnostics = request.createCosmosDiagnostics();
-            }
-            RxDocumentServiceRequest freshRequest = request.clone();
-            inBackoffFuncDelegate = (Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) -> {
-                RxDocumentServiceRequest readRequestClone = freshRequest.clone();
-
-                if (prepareRequestAsyncDelegate != null) {
-                    return prepareRequestAsyncDelegate.apply(readRequestClone).flatMap(responseReq -> {
-                        logger.trace("Executing inBackoffAlternateCallbackMethod on readRegionIndex {}", forceRefreshAndTimeout.getValue3());
-                        responseReq.requestContext.routeToLocation(forceRefreshAndTimeout.getValue3(), true);
-                        return invokeAsync(responseReq, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
-                                forceRefreshAndTimeout.getValue1(),
-                                forceRefreshAndTimeout.getValue0());
-                    });
-                } else {
-                    logger.trace("Executing inBackoffAlternateCallbackMethod on readRegionIndex {}", forceRefreshAndTimeout.getValue3());
-                    readRequestClone.requestContext.routeToLocation(forceRefreshAndTimeout.getValue3(), true);
-                    return invokeAsync(readRequestClone, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
-                            forceRefreshAndTimeout.getValue1(),
-                            forceRefreshAndTimeout.getValue0());
-                }
-
-            };
-        }
 
         int retryTimeout = this.serviceConfigReader.getDefaultConsistencyLevel() == ConsistencyLevel.STRONG ?
                 ReplicatedResourceClient.STRONG_GONE_AND_RETRY_WITH_RETRY_TIMEOUT_SECONDS :
@@ -165,11 +148,90 @@ public class ReplicatedResourceClient {
         return BackoffRetryUtility.executeAsync(
             funcDelegate,
             new GoneAndRetryWithRetryPolicy(request, retryTimeout),
-            inBackoffFuncDelegate,
+            null,
             Duration.ofSeconds(
                 ReplicatedResourceClient.MIN_BACKOFF_FOR_FAILLING_BACK_TO_OTHER_REGIONS_FOR_READ_REQUESTS_IN_SECONDS),
             request,
             addressSelector);
+    }
+
+    private Mono<StoreResponse> getStoreResponseMonoWithSpeculation(RxDocumentServiceRequest request, Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {
+        CosmosEndToEndOperationLatencyPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
+        AvailabilityStrategy strategy = config.getAvailabilityStrategy();
+        List<Mono<StoreResponse>> monoList = new ArrayList<>();
+        List<RxDocumentServiceRequest> requestList = new ArrayList<>();
+
+        if (strategy instanceof ThresholdBasedAvailabilityStrategy) {
+            List<URI> effectiveEndpoints = getApplicableEndPoints(request);
+            if (effectiveEndpoints != null) {
+                effectiveEndpoints
+                    .forEach(locationURI -> {
+                        if (locationURI != null) {
+                            RxDocumentServiceRequest newRequest = request.clone();
+                            newRequest.requestContext.routeToLocation(locationURI);
+                            requestList.add(newRequest);
+                            if (monoList.isEmpty()) {
+                                monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout));
+                            } else {
+                                monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout)
+                                    .delaySubscription(((ThresholdBasedAvailabilityStrategy) strategy).getThreshold()
+                                        .plus(((ThresholdBasedAvailabilityStrategy) strategy)
+                                            .getThresholdStep().multipliedBy(monoList.size() - 1))));
+                            }
+                        }
+                    });
+            }
+        }
+
+        // If the above conditions are not met, then we will just return the original request
+        if (monoList.isEmpty()) {
+            monoList.add(getStoreResponseMono(request, forceRefreshAndTimeout));
+        }
+
+        return Mono.firstWithValue(monoList);
+    }
+
+    private List<URI> getApplicableEndPoints(RxDocumentServiceRequest request) {
+        if (request.isReadOnlyRequest()) {
+            return this.transportClient.getGlobalEndpointManager().getApplicableReadEndpoints(request);
+        } else if (request.getOperationType().isWriteOperation()) {
+            return this.transportClient.getGlobalEndpointManager().getApplicableWriteEndpoints(request);
+        }
+        return null;
+    }
+
+    private boolean shouldSpeculate(RxDocumentServiceRequest request) {
+        if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() == null) {
+            return false;
+        }
+        if (request.getResourceType() != ResourceType.Document) {
+            return false;
+        }
+
+        if (request.getOperationType().isWriteOperation() && !request.getNonIdempotentWriteRetriesEnabled()) {
+            return false;
+        }
+
+        CosmosEndToEndOperationLatencyPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
+
+        if (config == null || !config.isEnabled()) {
+            return false;
+        }
+
+        return config.getAvailabilityStrategy() != null;
+    }
+
+    private Mono<StoreResponse> getStoreResponseMono(RxDocumentServiceRequest request, Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {
+        return invokeAsync(request, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
+            forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0());
+    }
+
+    public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.transportClient.recordOpenConnectionsAndInitCachesCompleted(cosmosContainerIdentities);
+    }
+
+    public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.transportClient.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
     }
 
     private Mono<StoreResponse> invokeAsync(RxDocumentServiceRequest request, TimeoutHelper timeout,
@@ -191,8 +253,8 @@ public class ReplicatedResourceClient {
         }
     }
 
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
-        return this.addressSelector.openConnectionsAndInitCaches(proactiveContainerInitConfig);
+    public Flux<Void> submitOpenConnectionTasksAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        return this.addressSelector.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig);
     }
 
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {

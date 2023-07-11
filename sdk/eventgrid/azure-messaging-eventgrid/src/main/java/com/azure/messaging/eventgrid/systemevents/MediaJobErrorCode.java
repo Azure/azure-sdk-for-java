@@ -7,36 +7,60 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for MediaJobErrorCode. */
+/** Error code describing the error. */
 public enum MediaJobErrorCode {
-    /** Enum value ServiceError. */
+    /** Fatal service error, please contact support. */
     SERVICE_ERROR("ServiceError"),
 
-    /** Enum value ServiceTransientError. */
+    /** Transient error, please retry, if retry is unsuccessful, please contact support. */
     SERVICE_TRANSIENT_ERROR("ServiceTransientError"),
 
-    /** Enum value DownloadNotAccessible. */
+    /**
+     * While trying to download the input files, the files were not accessible, please check the availability of the
+     * source.
+     */
     DOWNLOAD_NOT_ACCESSIBLE("DownloadNotAccessible"),
 
-    /** Enum value DownloadTransientError. */
+    /**
+     * While trying to download the input files, there was an issue during transfer (storage service, network errors),
+     * see details and check your source.
+     */
     DOWNLOAD_TRANSIENT_ERROR("DownloadTransientError"),
 
-    /** Enum value UploadNotAccessible. */
+    /**
+     * While trying to upload the output files, the destination was not reachable, please check the availability of the
+     * destination.
+     */
     UPLOAD_NOT_ACCESSIBLE("UploadNotAccessible"),
 
-    /** Enum value UploadTransientError. */
+    /**
+     * While trying to upload the output files, there was an issue during transfer (storage service, network errors),
+     * see details and check your destination.
+     */
     UPLOAD_TRANSIENT_ERROR("UploadTransientError"),
 
-    /** Enum value ConfigurationUnsupported. */
+    /**
+     * There was a problem with the combination of input files and the configuration settings applied, fix the
+     * configuration settings and retry with the same input, or change input to match the configuration.
+     */
     CONFIGURATION_UNSUPPORTED("ConfigurationUnsupported"),
 
-    /** Enum value ContentMalformed. */
+    /**
+     * There was a problem with the input content (for example: zero byte files, or corrupt/non-decodable files), check
+     * the input files.
+     */
     CONTENT_MALFORMED("ContentMalformed"),
 
-    /** Enum value ContentUnsupported. */
+    /**
+     * There was a problem with the format of the input (not valid media file, or an unsupported file/codec), check the
+     * validity of the input files.
+     */
     CONTENT_UNSUPPORTED("ContentUnsupported"),
 
-    /** Enum value IdentityUnsupported. */
+    /**
+     * There is an error verifying to the account identity. Check and fix the identity configurations and retry. If
+     * unsuccessful, please contact support.
+     */
     IDENTITY_UNSUPPORTED("IdentityUnsupported");
 
     /** The actual serialized value for a MediaJobErrorCode instance. */
@@ -54,6 +78,9 @@ public enum MediaJobErrorCode {
      */
     @JsonCreator
     public static MediaJobErrorCode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         MediaJobErrorCode[] items = MediaJobErrorCode.values();
         for (MediaJobErrorCode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -63,6 +90,7 @@ public enum MediaJobErrorCode {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

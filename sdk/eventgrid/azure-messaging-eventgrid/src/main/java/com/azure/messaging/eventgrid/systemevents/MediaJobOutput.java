@@ -46,6 +46,9 @@ public class MediaJobOutput {
     @JsonProperty(value = "state", required = true)
     private MediaJobState state;
 
+    /** Creates an instance of MediaJobOutput class. */
+    public MediaJobOutput() {}
+
     /**
      * Get the error property: Gets the Job output error.
      *

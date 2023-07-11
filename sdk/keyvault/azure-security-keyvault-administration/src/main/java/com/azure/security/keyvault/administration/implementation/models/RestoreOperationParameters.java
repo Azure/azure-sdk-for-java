@@ -4,26 +4,38 @@
 
 package com.azure.security.keyvault.administration.implementation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** The RestoreOperationParameters model. */
-@Fluent
-public final class RestoreOperationParameters {
+@Immutable
+public final class RestoreOperationParameters implements JsonSerializable<RestoreOperationParameters> {
     /*
      * The sasTokenParameters property.
      */
-    @JsonProperty(value = "sasTokenParameters", required = true)
-    private SASTokenParameter sasTokenParameters;
+    private final SASTokenParameter sasTokenParameters;
 
     /*
      * The Folder name of the blob where the previous successful full backup was stored
      */
-    @JsonProperty(value = "folderToRestore", required = true)
-    private String folderToRestore;
+    private final String folderToRestore;
 
-    /** Creates an instance of RestoreOperationParameters class. */
-    public RestoreOperationParameters() {}
+    /**
+     * Creates an instance of RestoreOperationParameters class.
+     *
+     * @param sasTokenParameters the sasTokenParameters value to set.
+     * @param folderToRestore the folderToRestore value to set.
+     */
+    public RestoreOperationParameters(SASTokenParameter sasTokenParameters, String folderToRestore) {
+        this.sasTokenParameters = sasTokenParameters;
+        this.folderToRestore = folderToRestore;
+    }
 
     /**
      * Get the sasTokenParameters property: The sasTokenParameters property.
@@ -32,17 +44,6 @@ public final class RestoreOperationParameters {
      */
     public SASTokenParameter getSasTokenParameters() {
         return this.sasTokenParameters;
-    }
-
-    /**
-     * Set the sasTokenParameters property: The sasTokenParameters property.
-     *
-     * @param sasTokenParameters the sasTokenParameters value to set.
-     * @return the RestoreOperationParameters object itself.
-     */
-    public RestoreOperationParameters setSasTokenParameters(SASTokenParameter sasTokenParameters) {
-        this.sasTokenParameters = sasTokenParameters;
-        return this;
     }
 
     /**
@@ -55,15 +56,60 @@ public final class RestoreOperationParameters {
         return this.folderToRestore;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sasTokenParameters", this.sasTokenParameters);
+        jsonWriter.writeStringField("folderToRestore", this.folderToRestore);
+        return jsonWriter.writeEndObject();
+    }
+
     /**
-     * Set the folderToRestore property: The Folder name of the blob where the previous successful full backup was
-     * stored.
+     * Reads an instance of RestoreOperationParameters from the JsonReader.
      *
-     * @param folderToRestore the folderToRestore value to set.
-     * @return the RestoreOperationParameters object itself.
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestoreOperationParameters if the JsonReader was pointing to an instance of it, or null if
+     *     it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RestoreOperationParameters.
      */
-    public RestoreOperationParameters setFolderToRestore(String folderToRestore) {
-        this.folderToRestore = folderToRestore;
-        return this;
+    public static RestoreOperationParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean sasTokenParametersFound = false;
+                    SASTokenParameter sasTokenParameters = null;
+                    boolean folderToRestoreFound = false;
+                    String folderToRestore = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("sasTokenParameters".equals(fieldName)) {
+                            sasTokenParameters = SASTokenParameter.fromJson(reader);
+                            sasTokenParametersFound = true;
+                        } else if ("folderToRestore".equals(fieldName)) {
+                            folderToRestore = reader.getString();
+                            folderToRestoreFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (sasTokenParametersFound && folderToRestoreFound) {
+                        RestoreOperationParameters deserializedRestoreOperationParameters =
+                                new RestoreOperationParameters(sasTokenParameters, folderToRestore);
+
+                        return deserializedRestoreOperationParameters;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!sasTokenParametersFound) {
+                        missingProperties.add("sasTokenParameters");
+                    }
+                    if (!folderToRestoreFound) {
+                        missingProperties.add("folderToRestore");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

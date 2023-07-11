@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A TXT record. */
 @Fluent
 public final class TxtRecord {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TxtRecord.class);
-
     /*
      * The text value of this TXT record.
      */
     @JsonProperty(value = "value")
     private List<String> value;
+
+    /** Creates an instance of TxtRecord class. */
+    public TxtRecord() {
+    }
 
     /**
      * Get the value property: The text value of this TXT record.

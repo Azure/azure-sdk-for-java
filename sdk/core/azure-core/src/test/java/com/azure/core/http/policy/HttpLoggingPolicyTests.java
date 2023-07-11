@@ -283,7 +283,7 @@ public class HttpLoggingPolicyTests {
         return Stream.of(
             Arguments.of(BinaryData.fromBytes(data), data, data.length),
 
-            Arguments.of(BinaryData.fromStream(new ByteArrayInputStream(data)), data, data.length)
+            Arguments.of(BinaryData.fromStream(new ByteArrayInputStream(data), (long) data.length), data, data.length)
         );
     }
 

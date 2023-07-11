@@ -12,8 +12,8 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
 import com.azure.resourcemanager.devcenter.models.Schedule;
+import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
 import java.nio.ByteBuffer;
@@ -34,7 +34,7 @@ public final class SchedulesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"z\",\"timeZone\":\"hokvbwnh\",\"state\":\"Enabled\"},\"id\":\"gehgppi\",\"name\":\"ifhpf\",\"type\":\"oajvgcxtxjcs\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"qhvseufuq\",\"timeZone\":\"xpdlcgqlsis\",\"state\":\"Enabled\"},\"id\":\"rddga\",\"name\":\"quhiosrsjuivf\",\"type\":\"disyirnxz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,20 +65,20 @@ public final class SchedulesCreateOrUpdateMockTests {
         Schedule response =
             manager
                 .schedules()
-                .define("xgccknfnw")
-                .withExistingPool("b", "svgjrwhryvy", "ytdc")
+                .define("ijddtvqc")
+                .withExistingPool("mwmdxmebwjscjpa", "lxveabfqx", "mwmqtibx")
                 .withTypePropertiesType(ScheduledType.STOP_DEV_BOX)
                 .withFrequency(ScheduledFrequency.DAILY)
-                .withTime("dhttzaefedxihchr")
-                .withTimeZone("k")
-                .withState(EnableStatus.DISABLED)
-                .withTop(1304888190)
+                .withTime("kmr")
+                .withTimeZone("eekpndz")
+                .withState(ScheduleEnableStatus.DISABLED)
+                .withTop(203387229)
                 .create();
 
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, response.typePropertiesType());
         Assertions.assertEquals(ScheduledFrequency.DAILY, response.frequency());
-        Assertions.assertEquals("z", response.time());
-        Assertions.assertEquals("hokvbwnh", response.timeZone());
-        Assertions.assertEquals(EnableStatus.ENABLED, response.state());
+        Assertions.assertEquals("qhvseufuq", response.time());
+        Assertions.assertEquals("xpdlcgqlsis", response.timeZone());
+        Assertions.assertEquals(ScheduleEnableStatus.ENABLED, response.state());
     }
 }

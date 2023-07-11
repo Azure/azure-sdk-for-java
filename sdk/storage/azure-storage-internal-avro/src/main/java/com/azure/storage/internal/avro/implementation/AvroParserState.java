@@ -22,8 +22,8 @@ import java.util.Stack;
  */
 public class AvroParserState {
 
-    private Stack<AvroSchema> stack;
-    private List<ByteBuffer> cache;
+    private final Stack<AvroSchema> stack;
+    private final List<ByteBuffer> cache;
     private long size;
     private long sourceOffset; /* Keeps track of number of bytes read from the source. */
 
@@ -42,6 +42,14 @@ public class AvroParserState {
         this.cache = new LinkedList<>();
         this.size = 0;
         this.sourceOffset = sourceOffset;
+    }
+
+    List<ByteBuffer> getCache() {
+        return cache;
+    }
+
+    long getSize() {
+        return size;
     }
 
     /**

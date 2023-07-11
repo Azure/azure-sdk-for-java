@@ -22,6 +22,10 @@ public final class Scope {
     @JsonProperty(value = "namespace")
     private ScopeNamespace namespace;
 
+    /** Creates an instance of Scope class. */
+    public Scope() {
+    }
+
     /**
      * Get the cluster property: Specifies that the scope of the extension is Cluster.
      *

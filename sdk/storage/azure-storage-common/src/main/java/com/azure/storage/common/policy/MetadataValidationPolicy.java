@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.CoreUtils;
@@ -26,6 +27,12 @@ public class MetadataValidationPolicy implements HttpPipelinePolicy {
     // Header constant X_MS_META doesn't include the '-' in 'x-ms-meta-' (it is 'x-ms-meta')
     private static final String X_MS_META = Constants.HeaderConstants.X_MS_META + "-";
     private static final int X_MS_META_LENGTH = X_MS_META.length();
+
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        validateMetadataHeaders(context.getHttpRequest().getHeaders());
+        return next.processSync();
+    }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {

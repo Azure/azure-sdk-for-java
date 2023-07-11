@@ -15,23 +15,23 @@ public final class ServerBackupInnerTests {
         ServerBackupInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"backupType\":\"hq\",\"completedTime\":\"2021-08-01T15:29:09Z\",\"source\":\"xpyb\"},\"id\":\"m\",\"name\":\"hmtzopbsphrup\",\"type\":\"dgs\"}")
+                    "{\"properties\":{\"backupType\":\"ouajpsqucmpoyf\",\"completedTime\":\"2021-02-06T21:08:58Z\",\"source\":\"gknygjofjddeqs\"},\"id\":\"eupewnwreitjz\",\"name\":\"flusarhmof\",\"type\":\"qhsmyurkdtml\"}")
                 .toObject(ServerBackupInner.class);
-        Assertions.assertEquals("hq", model.backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-01T15:29:09Z"), model.completedTime());
-        Assertions.assertEquals("xpyb", model.source());
+        Assertions.assertEquals("ouajpsqucmpoyf", model.backupType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-06T21:08:58Z"), model.completedTime());
+        Assertions.assertEquals("gknygjofjddeqs", model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServerBackupInner model =
             new ServerBackupInner()
-                .withBackupType("hq")
-                .withCompletedTime(OffsetDateTime.parse("2021-08-01T15:29:09Z"))
-                .withSource("xpyb");
+                .withBackupType("ouajpsqucmpoyf")
+                .withCompletedTime(OffsetDateTime.parse("2021-02-06T21:08:58Z"))
+                .withSource("gknygjofjddeqs");
         model = BinaryData.fromObject(model).toObject(ServerBackupInner.class);
-        Assertions.assertEquals("hq", model.backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-01T15:29:09Z"), model.completedTime());
-        Assertions.assertEquals("xpyb", model.source());
+        Assertions.assertEquals("ouajpsqucmpoyf", model.backupType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-06T21:08:58Z"), model.completedTime());
+        Assertions.assertEquals("gknygjofjddeqs", model.source());
     }
 }

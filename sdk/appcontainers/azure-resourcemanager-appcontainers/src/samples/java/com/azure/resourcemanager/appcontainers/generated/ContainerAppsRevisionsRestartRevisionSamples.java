@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ContainerAppsRevisions RestartRevision. */
 public final class ContainerAppsRevisionsRestartRevisionSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/Revisions_Restart.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/Revisions_Restart.json
      */
     /**
      * Sample code: Restart Container App's revision.
@@ -20,6 +18,7 @@ public final class ContainerAppsRevisionsRestartRevisionSamples {
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         manager
             .containerAppsRevisions()
-            .restartRevisionWithResponse("rg", "testStaticSite0", "testcontainerApp0-pjxhsye", Context.NONE);
+            .restartRevisionWithResponse(
+                "rg", "testStaticSite0", "testcontainerApp0-pjxhsye", com.azure.core.util.Context.NONE);
     }
 }

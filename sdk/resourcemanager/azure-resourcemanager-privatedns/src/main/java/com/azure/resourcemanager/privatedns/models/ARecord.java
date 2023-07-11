@@ -16,6 +16,10 @@ public final class ARecord {
     @JsonProperty(value = "ipv4Address")
     private String ipv4Address;
 
+    /** Creates an instance of ARecord class. */
+    public ARecord() {
+    }
+
     /**
      * Get the ipv4Address property: The IPv4 address of this A record.
      *

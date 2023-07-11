@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20230406.1
+      ref: refs/tags/azure-sdk-build-tools_20230613.1
 
 parameters:
 - name: Artifacts
@@ -27,6 +27,12 @@ parameters:
 - name: UseEsrpRelease
   type: boolean
   default: true
+- name: MatrixFilters
+  type: object
+  default: []
+- name: LanguageFilter
+  type: object
+  default: []
 
 variables:
   - template: /eng/pipelines/templates/variables/globals.yml
@@ -55,6 +61,7 @@ stages:
             GenerateVMJobs: true
         MatrixFilters:
           - TestFromSource=^$|false
+          - ${{ parameters.MatrixFilters }}
         MatrixReplace:
           - AZURE_TEST.*=.*/
         BuildParallelization: 1
@@ -72,6 +79,9 @@ stages:
             Path: eng/pipelines/templates/stages/cosmos-emulator-matrix.json
             Selection: all
             GenerateVMJobs: true
+        MatrixFilters:
+          - ${{ parameters.LanguageFilter }}
+          - ${{ parameters.MatrixFilters }}
         AdditionalParameters:
           BuildParallelization: 1
           DisableAzureResourceCreation: true
@@ -90,7 +100,7 @@ stages:
           PreSteps:
           - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml
             parameters:
-              StartParameters: '/noexplorer /noui /enablepreview /EnableSqlComputeEndpoint /disableratelimiting /partitioncount=50 /consistency=Strong'
+              StartParameters: '/noexplorer /noui /enablepreview /EnableSqlComputeEndpoint /SqlComputePort=9999 /disableratelimiting /partitioncount=50 /consistency=Strong'
           - powershell: |
               $Key = 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
               $password = ConvertTo-SecureString -String $Key -Force -AsPlainText

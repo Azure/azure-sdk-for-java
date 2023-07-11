@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.throughputControl.config;
 
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.models.PriorityLevel;
 
 public class LocalThroughputControlGroup extends ThroughputControlGroupInternal {
 
@@ -12,8 +13,9 @@ public class LocalThroughputControlGroup extends ThroughputControlGroupInternal 
         CosmosAsyncContainer targetContainer,
         Integer targetThroughput,
         Double targetThroughputThreshold,
+        PriorityLevel priorityLevel,
         boolean isDefault,
         boolean continueOnInitError) {
-        super (groupName, targetContainer, targetThroughput, targetThroughputThreshold, isDefault, continueOnInitError);
+        super (groupName, targetContainer, targetThroughput, targetThroughputThreshold, priorityLevel, isDefault, continueOnInitError);
     }
 }

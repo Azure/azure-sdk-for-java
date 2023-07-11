@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for EventSubscriptions ListGlobalByResourceGroupForTopicType. */
 public final class EventSubscriptionsListGlobalByResourceGroupForTopicTypeSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/EventSubscriptions_ListGlobalByResourceGroupForTopicType.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_ListGlobalByResourceGroupForTopicType.json
      */
     /**
      * Sample code: EventSubscriptions_ListGlobalByResourceGroupForTopicType.
@@ -21,6 +19,6 @@ public final class EventSubscriptionsListGlobalByResourceGroupForTopicTypeSample
         manager
             .eventSubscriptions()
             .listGlobalByResourceGroupForTopicType(
-                "examplerg", "Microsoft.Resources.ResourceGroups", null, null, Context.NONE);
+                "examplerg", "Microsoft.Resources.ResourceGroups", null, null, com.azure.core.util.Context.NONE);
     }
 }

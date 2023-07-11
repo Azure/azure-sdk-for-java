@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appconfiguration.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -15,52 +14,6 @@ import com.azure.resourcemanager.appconfiguration.fluent.models.KeyValueInner;
 
 /** An instance of this class provides access to all the operations defined in KeyValuesClient. */
 public interface KeyValuesClient {
-    /**
-     * Lists the key-values for a given configuration store.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list key-values as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<KeyValueInner> listByConfigurationStore(String resourceGroupName, String configStoreName);
-
-    /**
-     * Lists the key-values for a given configuration store.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list key-values as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<KeyValueInner> listByConfigurationStore(
-        String resourceGroupName, String configStoreName, String skipToken, Context context);
-
-    /**
-     * Gets the properties of the specified key-value.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified key-value.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    KeyValueInner get(String resourceGroupName, String configStoreName, String keyValueName);
-
     /**
      * Gets the properties of the specified key-value.
      *
@@ -79,7 +32,7 @@ public interface KeyValuesClient {
         String resourceGroupName, String configStoreName, String keyValueName, Context context);
 
     /**
-     * Creates a key-value.
+     * Gets the properties of the specified key-value.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
@@ -88,10 +41,10 @@ public interface KeyValuesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the key-value resource along with all resource properties.
+     * @return the properties of the specified key-value.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    KeyValueInner createOrUpdate(String resourceGroupName, String configStoreName, String keyValueName);
+    KeyValueInner get(String resourceGroupName, String configStoreName, String keyValueName);
 
     /**
      * Creates a key-value.
@@ -114,6 +67,21 @@ public interface KeyValuesClient {
         String keyValueName,
         KeyValueInner keyValueParameters,
         Context context);
+
+    /**
+     * Creates a key-value.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param configStoreName The name of the configuration store.
+     * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
+     *     optional.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the key-value resource along with all resource properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    KeyValueInner createOrUpdate(String resourceGroupName, String configStoreName, String keyValueName);
 
     /**
      * Deletes a key-value.

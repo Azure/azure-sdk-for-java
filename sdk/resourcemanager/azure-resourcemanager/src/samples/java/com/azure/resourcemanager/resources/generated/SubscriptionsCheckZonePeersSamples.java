@@ -10,7 +10,7 @@ import java.util.Arrays;
 /** Samples for Subscriptions CheckZonePeers. */
 public final class SubscriptionsCheckZonePeersSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/PostCheckZonePeers.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/PostCheckZonePeers.json
      */
     /**
      * Sample code: GetLogicalZoneMapping.
@@ -24,7 +24,7 @@ public final class SubscriptionsCheckZonePeersSamples {
             .subscriptionClient()
             .getSubscriptions()
             .checkZonePeersWithResponse(
-                "00000000-0000-0000-0000-00000000000000",
+                "8d65815f-a5b6-402f-9298-045155da7d74",
                 new CheckZonePeersRequest()
                     .withLocation("eastus")
                     .withSubscriptionIds(Arrays.asList("subscriptions/11111111-1111-1111-1111-111111111111")),

@@ -51,7 +51,7 @@ To enable Azure SDK tracing, add the latest `com.azure:azure-core-tracing-opente
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opentelemetry</artifactId>
-  <version>1.0.0-beta.34</version>
+  <version>1.0.0-beta.37</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -78,9 +78,10 @@ SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
     .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
     .build();
 
-// Pass OpenTelemetry tracerProvider to TracingOptions.
+OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
+// Pass OpenTelemetry container to TracingOptions.
 TracingOptions customTracingOptions = new OpenTelemetryTracingOptions()
-    .setProvider(tracerProvider);
+    .setOpenTelemetry(openTelemetry);
 
 // configure Azure Client to use customTracingOptions - it will use tracerProvider
 // to create tracers

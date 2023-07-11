@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about the deadletter destination with resource identity. */
 @Fluent
-public class DeadLetterWithResourceIdentity {
+public final class DeadLetterWithResourceIdentity {
     /*
      * The identity to use when dead-lettering events.
      */
@@ -17,14 +17,16 @@ public class DeadLetterWithResourceIdentity {
     private EventSubscriptionIdentity identity;
 
     /*
-     * Information about the destination where events have to be delivered for
-     * the event subscription.
-     * Uses the managed identity setup on the parent resource (namely, topic or
-     * domain) to acquire the authentication tokens being used during delivery
-     * / dead-lettering.
+     * Information about the destination where events have to be delivered for the event subscription.
+     * Uses the managed identity setup on the parent resource (namely, topic or domain) to acquire the authentication
+     * tokens being used during delivery / dead-lettering.
      */
     @JsonProperty(value = "deadLetterDestination")
     private DeadLetterDestination deadLetterDestination;
+
+    /** Creates an instance of DeadLetterWithResourceIdentity class. */
+    public DeadLetterWithResourceIdentity() {
+    }
 
     /**
      * Get the identity property: The identity to use when dead-lettering events.

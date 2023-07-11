@@ -146,7 +146,9 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestProxyTestBase {
             .configuration(Configuration.getGlobalConfiguration())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-        interceptorManager.addSanitizers(getEmailSanitizers());
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(getEmailSanitizers());
+        }
         if (interceptorManager.isPlaybackMode()) {
             clientBuilder.credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"));
         } else {
@@ -176,7 +178,9 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestProxyTestBase {
             .endpoint(endpoint)
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .serviceVersion(serviceVersion);
-        interceptorManager.addSanitizers(getEmailSanitizers());
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(getEmailSanitizers());
+        }
         if (interceptorManager.isRecordMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (interceptorManager.isPlaybackMode()) {

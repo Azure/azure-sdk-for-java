@@ -215,7 +215,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
 
         AtomicInteger numberOfRequestsWithForceRefreshHeader = new AtomicInteger(0);
         try {
-            validateSuccess(createObservable, validator, TIMEOUT * 1000);
+            validateSuccess(createObservable, validator, TIMEOUT * 10);
         }
         catch(Exception someError)
         {
@@ -360,7 +360,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
 
         while (allowedNumberOfFailures > 0) {
             try {
-                validateSuccess(createObservable, validator, TIMEOUT * 1000);
+                validateSuccess(createObservable, validator, TIMEOUT * 10);
                 return;
             } catch (AssertionError error) {
                 logger.info(error.toString());
@@ -377,7 +377,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
         }
 
         try {
-            validateSuccess(createObservable, validator, TIMEOUT * 1000);
+            validateSuccess(createObservable, validator, TIMEOUT * 10);
         } catch (Exception someError) {
             logger.error(someError.toString());
 

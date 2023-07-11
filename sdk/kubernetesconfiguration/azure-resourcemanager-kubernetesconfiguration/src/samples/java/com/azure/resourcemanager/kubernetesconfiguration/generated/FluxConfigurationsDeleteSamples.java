@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.kubernetesconfiguration.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for FluxConfigurations Delete. */
 public final class FluxConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/DeleteFluxConfiguration.json
+     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/DeleteFluxConfiguration.json
      */
     /**
      * Sample code: Delete Flux Configuration.
@@ -27,6 +25,6 @@ public final class FluxConfigurationsDeleteSamples {
                 "clusterName1",
                 "srs-fluxconfig",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

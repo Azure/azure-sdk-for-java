@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for FirewallPolicies UpdateTags. */
 public final class FirewallPoliciesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/FirewallPolicyPatch.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/FirewallPolicyPatch.json
      */
     /**
      * Sample code: Update FirewallPolicy Tags.

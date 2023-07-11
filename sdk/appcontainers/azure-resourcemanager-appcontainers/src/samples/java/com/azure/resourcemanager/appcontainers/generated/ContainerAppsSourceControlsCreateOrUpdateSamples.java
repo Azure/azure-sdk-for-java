@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appcontainers.models.RegistryInfo;
 /** Samples for ContainerAppsSourceControls CreateOrUpdate. */
 public final class ContainerAppsSourceControlsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/SourceControls_CreateOrUpdate.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/SourceControls_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update Container App SourceControl.
@@ -32,11 +32,11 @@ public final class ContainerAppsSourceControlsCreateOrUpdateSamples {
                         new RegistryInfo()
                             .withRegistryUrl("xwang971reg.azurecr.io")
                             .withRegistryUsername("xwang971reg")
-                            .withRegistryPassword("<registrypassword>"))
+                            .withRegistryPassword("fakeTokenPlaceholder"))
                     .withAzureCredentials(
                         new AzureCredentials()
                             .withClientId("<clientid>")
-                            .withClientSecret("<clientsecret>")
+                            .withClientSecret("fakeTokenPlaceholder")
                             .withTenantId("<tenantid>"))
                     .withContextPath("./")
                     .withImage("image/tag"))

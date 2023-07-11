@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedEnvironments Delete. */
 public final class ManagedEnvironmentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ManagedEnvironments_Delete.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ManagedEnvironments_Delete.json
      */
     /**
      * Sample code: Delete environment by name.
@@ -18,6 +16,6 @@ public final class ManagedEnvironmentsDeleteSamples {
      */
     public static void deleteEnvironmentByName(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.managedEnvironments().delete("examplerg", "examplekenv", Context.NONE);
+        manager.managedEnvironments().delete("examplerg", "examplekenv", com.azure.core.util.Context.NONE);
     }
 }

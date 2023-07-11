@@ -6,10 +6,12 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.eventgrid.models.DataResidencyBoundary;
+import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
+import com.azure.resourcemanager.eventgrid.models.TlsVersion;
 import com.azure.resourcemanager.eventgrid.models.TopicProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -36,17 +38,27 @@ public final class TopicProperties {
     private String endpoint;
 
     /*
-     * This determines the format that Event Grid should expect for incoming
-     * events published to the topic.
+     * Event Type Information for the user topic. This information is provided by the publisher and can be used by the
+     * subscriber to view different types of events that are published.
+     */
+    @JsonProperty(value = "eventTypeInfo")
+    private EventTypeInfo eventTypeInfo;
+
+    /*
+     * Minimum TLS version of the publisher allowed to publish to this topic
+     */
+    @JsonProperty(value = "minimumTlsVersionAllowed")
+    private TlsVersion minimumTlsVersionAllowed;
+
+    /*
+     * This determines the format that Event Grid should expect for incoming events published to the topic.
      */
     @JsonProperty(value = "inputSchema")
     private InputSchema inputSchema;
 
     /*
-     * This enables publishing using custom event schemas. An
-     * InputSchemaMapping can be specified to map various properties of a
-     * source schema to various required properties of the EventGridEvent
-     * schema.
+     * This enables publishing using custom event schemas. An InputSchemaMapping can be specified to map various
+     * properties of a source schema to various required properties of the EventGridEvent schema.
      */
     @JsonProperty(value = "inputSchemaMapping")
     private InputSchemaMapping inputSchemaMapping;
@@ -58,26 +70,23 @@ public final class TopicProperties {
     private String metricResourceId;
 
     /*
-     * This determines if traffic is allowed over public network. By default it
-     * is enabled.
+     * This determines if traffic is allowed over public network. By default it is enabled.
      * You can further restrict to specific IPs by configuring <seealso
-     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicProperties.InboundIpRules"
-     * />
+     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicProperties.InboundIpRules" />
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * This can be used to restrict traffic from specific IPs instead of all
-     * IPs. Note: These are considered only if PublicNetworkAccess is enabled.
+     * This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if
+     * PublicNetworkAccess is enabled.
      */
     @JsonProperty(value = "inboundIpRules")
     private List<InboundIpRule> inboundIpRules;
 
     /*
-     * This boolean is used to enable or disable local auth. Default value is
-     * false. When the property is set to true, only AAD token will be used to
-     * authenticate if user is allowed to publish to the topic.
+     * This boolean is used to enable or disable local auth. Default value is false. When the property is set to true,
+     * only AAD token will be used to authenticate if user is allowed to publish to the topic.
      */
     @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
@@ -87,6 +96,10 @@ public final class TopicProperties {
      */
     @JsonProperty(value = "dataResidencyBoundary")
     private DataResidencyBoundary dataResidencyBoundary;
+
+    /** Creates an instance of TopicProperties class. */
+    public TopicProperties() {
+    }
 
     /**
      * Get the privateEndpointConnections property: The privateEndpointConnections property.
@@ -113,6 +126,48 @@ public final class TopicProperties {
      */
     public String endpoint() {
         return this.endpoint;
+    }
+
+    /**
+     * Get the eventTypeInfo property: Event Type Information for the user topic. This information is provided by the
+     * publisher and can be used by the subscriber to view different types of events that are published.
+     *
+     * @return the eventTypeInfo value.
+     */
+    public EventTypeInfo eventTypeInfo() {
+        return this.eventTypeInfo;
+    }
+
+    /**
+     * Set the eventTypeInfo property: Event Type Information for the user topic. This information is provided by the
+     * publisher and can be used by the subscriber to view different types of events that are published.
+     *
+     * @param eventTypeInfo the eventTypeInfo value to set.
+     * @return the TopicProperties object itself.
+     */
+    public TopicProperties withEventTypeInfo(EventTypeInfo eventTypeInfo) {
+        this.eventTypeInfo = eventTypeInfo;
+        return this;
+    }
+
+    /**
+     * Get the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this topic.
+     *
+     * @return the minimumTlsVersionAllowed value.
+     */
+    public TlsVersion minimumTlsVersionAllowed() {
+        return this.minimumTlsVersionAllowed;
+    }
+
+    /**
+     * Set the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this topic.
+     *
+     * @param minimumTlsVersionAllowed the minimumTlsVersionAllowed value to set.
+     * @return the TopicProperties object itself.
+     */
+    public TopicProperties withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed) {
+        this.minimumTlsVersionAllowed = minimumTlsVersionAllowed;
+        return this;
     }
 
     /**
@@ -268,6 +323,9 @@ public final class TopicProperties {
     public void validate() {
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (eventTypeInfo() != null) {
+            eventTypeInfo().validate();
         }
         if (inputSchemaMapping() != null) {
             inputSchemaMapping().validate();

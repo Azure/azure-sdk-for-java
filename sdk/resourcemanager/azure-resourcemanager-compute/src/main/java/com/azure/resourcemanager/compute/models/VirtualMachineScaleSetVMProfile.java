@@ -35,7 +35,7 @@ public final class VirtualMachineScaleSetVMProfile {
     private SecurityProfile securityProfile;
 
     /*
-     * Specifies the boot diagnostic settings state. <br><br>Minimum api-version: 2015-06-15.
+     * Specifies the boot diagnostic settings state. Minimum api-version: 2015-06-15.
      */
     @JsonProperty(value = "diagnosticsProfile")
     private DiagnosticsProfile diagnosticsProfile;
@@ -60,23 +60,22 @@ public final class VirtualMachineScaleSetVMProfile {
     private String licenseType;
 
     /*
-     * Specifies the priority for the virtual machines in the scale set. <br><br>Minimum api-version:
-     * 2017-10-30-preview
+     * Specifies the priority for the virtual machines in the scale set. Minimum api-version: 2017-10-30-preview.
      */
     @JsonProperty(value = "priority")
     private VirtualMachinePriorityTypes priority;
 
     /*
-     * Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot scale set. <br><br>For Azure
-     * Spot virtual machines, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2019-03-01.
-     * <br><br>For Azure Spot scale sets, both 'Deallocate' and 'Delete' are supported and the minimum api-version is
+     * Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot scale set. For Azure Spot
+     * virtual machines, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2019-03-01. For
+     * Azure Spot scale sets, both 'Deallocate' and 'Delete' are supported and the minimum api-version is
      * 2017-10-30-preview.
      */
     @JsonProperty(value = "evictionPolicy")
     private VirtualMachineEvictionPolicyTypes evictionPolicy;
 
     /*
-     * Specifies the billing related details of a Azure Spot VMSS. <br><br>Minimum api-version: 2019-03-01.
+     * Specifies the billing related details of a Azure Spot VMSS. Minimum api-version: 2019-03-01.
      */
     @JsonProperty(value = "billingProfile")
     private BillingProfile billingProfile;
@@ -89,13 +88,13 @@ public final class VirtualMachineScaleSetVMProfile {
 
     /*
      * UserData for the virtual machines in the scale set, which must be base-64 encoded. Customer should not pass any
-     * secrets in here. <br><br>Minimum api-version: 2021-03-01
+     * secrets in here. Minimum api-version: 2021-03-01.
      */
     @JsonProperty(value = "userData")
     private String userData;
 
     /*
-     * Specifies the capacity reservation related details of a scale set. <br><br>Minimum api-version: 2021-04-01.
+     * Specifies the capacity reservation related details of a scale set. Minimum api-version: 2021-04-01.
      */
     @JsonProperty(value = "capacityReservation")
     private CapacityReservationProfile capacityReservation;
@@ -107,7 +106,7 @@ public final class VirtualMachineScaleSetVMProfile {
     private ApplicationProfile applicationProfile;
 
     /*
-     * Specifies the hardware profile related details of a scale set. <br><br>Minimum api-version: 2021-11-01.
+     * Specifies the hardware profile related details of a scale set. Minimum api-version: 2021-11-01.
      */
     @JsonProperty(value = "hardwareProfile")
     private VirtualMachineScaleSetHardwareProfile hardwareProfile;
@@ -118,6 +117,13 @@ public final class VirtualMachineScaleSetVMProfile {
      */
     @JsonProperty(value = "serviceArtifactReference")
     private ServiceArtifactReference serviceArtifactReference;
+
+    /*
+     * Specifies the security posture to be used for all virtual machines in the scale set. Minimum api-version:
+     * 2023-03-01
+     */
+    @JsonProperty(value = "securityPostureReference")
+    private SecurityPostureReference securityPostureReference;
 
     /** Creates an instance of VirtualMachineScaleSetVMProfile class. */
     public VirtualMachineScaleSetVMProfile() {
@@ -208,8 +214,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Get the diagnosticsProfile property: Specifies the boot diagnostic settings state. &lt;br&gt;&lt;br&gt;Minimum
-     * api-version: 2015-06-15.
+     * Get the diagnosticsProfile property: Specifies the boot diagnostic settings state. Minimum api-version:
+     * 2015-06-15.
      *
      * @return the diagnosticsProfile value.
      */
@@ -218,8 +224,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Set the diagnosticsProfile property: Specifies the boot diagnostic settings state. &lt;br&gt;&lt;br&gt;Minimum
-     * api-version: 2015-06-15.
+     * Set the diagnosticsProfile property: Specifies the boot diagnostic settings state. Minimum api-version:
+     * 2015-06-15.
      *
      * @param diagnosticsProfile the diagnosticsProfile value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -289,8 +295,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Get the priority property: Specifies the priority for the virtual machines in the scale set.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2017-10-30-preview.
+     * Get the priority property: Specifies the priority for the virtual machines in the scale set. Minimum api-version:
+     * 2017-10-30-preview.
      *
      * @return the priority value.
      */
@@ -299,8 +305,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Set the priority property: Specifies the priority for the virtual machines in the scale set.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2017-10-30-preview.
+     * Set the priority property: Specifies the priority for the virtual machines in the scale set. Minimum api-version:
+     * 2017-10-30-preview.
      *
      * @param priority the priority value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -312,9 +318,9 @@ public final class VirtualMachineScaleSetVMProfile {
 
     /**
      * Get the evictionPolicy property: Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot
-     * scale set. &lt;br&gt;&lt;br&gt;For Azure Spot virtual machines, both 'Deallocate' and 'Delete' are supported and
-     * the minimum api-version is 2019-03-01. &lt;br&gt;&lt;br&gt;For Azure Spot scale sets, both 'Deallocate' and
-     * 'Delete' are supported and the minimum api-version is 2017-10-30-preview.
+     * scale set. For Azure Spot virtual machines, both 'Deallocate' and 'Delete' are supported and the minimum
+     * api-version is 2019-03-01. For Azure Spot scale sets, both 'Deallocate' and 'Delete' are supported and the
+     * minimum api-version is 2017-10-30-preview.
      *
      * @return the evictionPolicy value.
      */
@@ -324,9 +330,9 @@ public final class VirtualMachineScaleSetVMProfile {
 
     /**
      * Set the evictionPolicy property: Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot
-     * scale set. &lt;br&gt;&lt;br&gt;For Azure Spot virtual machines, both 'Deallocate' and 'Delete' are supported and
-     * the minimum api-version is 2019-03-01. &lt;br&gt;&lt;br&gt;For Azure Spot scale sets, both 'Deallocate' and
-     * 'Delete' are supported and the minimum api-version is 2017-10-30-preview.
+     * scale set. For Azure Spot virtual machines, both 'Deallocate' and 'Delete' are supported and the minimum
+     * api-version is 2019-03-01. For Azure Spot scale sets, both 'Deallocate' and 'Delete' are supported and the
+     * minimum api-version is 2017-10-30-preview.
      *
      * @param evictionPolicy the evictionPolicy value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -337,8 +343,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Get the billingProfile property: Specifies the billing related details of a Azure Spot VMSS.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2019-03-01.
+     * Get the billingProfile property: Specifies the billing related details of a Azure Spot VMSS. Minimum api-version:
+     * 2019-03-01.
      *
      * @return the billingProfile value.
      */
@@ -347,8 +353,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Set the billingProfile property: Specifies the billing related details of a Azure Spot VMSS.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2019-03-01.
+     * Set the billingProfile property: Specifies the billing related details of a Azure Spot VMSS. Minimum api-version:
+     * 2019-03-01.
      *
      * @param billingProfile the billingProfile value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -380,7 +386,7 @@ public final class VirtualMachineScaleSetVMProfile {
 
     /**
      * Get the userData property: UserData for the virtual machines in the scale set, which must be base-64 encoded.
-     * Customer should not pass any secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
+     * Customer should not pass any secrets in here. Minimum api-version: 2021-03-01.
      *
      * @return the userData value.
      */
@@ -390,7 +396,7 @@ public final class VirtualMachineScaleSetVMProfile {
 
     /**
      * Set the userData property: UserData for the virtual machines in the scale set, which must be base-64 encoded.
-     * Customer should not pass any secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
+     * Customer should not pass any secrets in here. Minimum api-version: 2021-03-01.
      *
      * @param userData the userData value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -401,8 +407,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Get the capacityReservation property: Specifies the capacity reservation related details of a scale set.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-04-01.
+     * Get the capacityReservation property: Specifies the capacity reservation related details of a scale set. Minimum
+     * api-version: 2021-04-01.
      *
      * @return the capacityReservation value.
      */
@@ -411,8 +417,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Set the capacityReservation property: Specifies the capacity reservation related details of a scale set.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-04-01.
+     * Set the capacityReservation property: Specifies the capacity reservation related details of a scale set. Minimum
+     * api-version: 2021-04-01.
      *
      * @param capacityReservation the capacityReservation value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -445,8 +451,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Get the hardwareProfile property: Specifies the hardware profile related details of a scale set.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
+     * Get the hardwareProfile property: Specifies the hardware profile related details of a scale set. Minimum
+     * api-version: 2021-11-01.
      *
      * @return the hardwareProfile value.
      */
@@ -455,8 +461,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Set the hardwareProfile property: Specifies the hardware profile related details of a scale set.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
+     * Set the hardwareProfile property: Specifies the hardware profile related details of a scale set. Minimum
+     * api-version: 2021-11-01.
      *
      * @param hardwareProfile the hardwareProfile value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -488,6 +494,29 @@ public final class VirtualMachineScaleSetVMProfile {
     public VirtualMachineScaleSetVMProfile withServiceArtifactReference(
         ServiceArtifactReference serviceArtifactReference) {
         this.serviceArtifactReference = serviceArtifactReference;
+        return this;
+    }
+
+    /**
+     * Get the securityPostureReference property: Specifies the security posture to be used for all virtual machines in
+     * the scale set. Minimum api-version: 2023-03-01.
+     *
+     * @return the securityPostureReference value.
+     */
+    public SecurityPostureReference securityPostureReference() {
+        return this.securityPostureReference;
+    }
+
+    /**
+     * Set the securityPostureReference property: Specifies the security posture to be used for all virtual machines in
+     * the scale set. Minimum api-version: 2023-03-01.
+     *
+     * @param securityPostureReference the securityPostureReference value to set.
+     * @return the VirtualMachineScaleSetVMProfile object itself.
+     */
+    public VirtualMachineScaleSetVMProfile withSecurityPostureReference(
+        SecurityPostureReference securityPostureReference) {
+        this.securityPostureReference = securityPostureReference;
         return this;
     }
 
@@ -532,6 +561,9 @@ public final class VirtualMachineScaleSetVMProfile {
         }
         if (serviceArtifactReference() != null) {
             serviceArtifactReference().validate();
+        }
+        if (securityPostureReference() != null) {
+            securityPostureReference().validate();
         }
     }
 }

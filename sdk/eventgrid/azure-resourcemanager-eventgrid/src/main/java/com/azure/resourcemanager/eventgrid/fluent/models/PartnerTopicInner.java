@@ -37,6 +37,10 @@ public final class PartnerTopicInner extends Resource {
     @JsonProperty(value = "identity")
     private IdentityInfo identity;
 
+    /** Creates an instance of PartnerTopicInner class. */
+    public PartnerTopicInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the Partner Topic.
      *

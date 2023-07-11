@@ -7,7 +7,7 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
 /** Samples for FirewallRules CreateOrUpdate. */
 public final class FirewallRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/FirewallRuleCreate.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Firewall/preview/2021-12-01-preview/examples/FirewallRuleCreate.json
      */
     /**
      * Sample code: Create a firewall rule.

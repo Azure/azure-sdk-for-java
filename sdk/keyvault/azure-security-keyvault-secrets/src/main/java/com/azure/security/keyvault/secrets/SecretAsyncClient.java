@@ -50,7 +50,8 @@ import static com.azure.core.util.FluxUtil.withContext;
 @ServiceClient(builder = SecretClientBuilder.class, isAsync = true,
     serviceInterfaces = SecretClientImpl.SecretService.class)
 public final class SecretAsyncClient {
-    private final ClientLogger logger = new ClientLogger(SecretAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SecretAsyncClient.class);
+
     private final SecretClientImpl implClient;
 
     /**
@@ -118,7 +119,7 @@ public final class SecretAsyncClient {
         try {
             return setSecretWithResponse(secret).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -150,7 +151,7 @@ public final class SecretAsyncClient {
             return withContext(context ->
                 implClient.setSecretWithResponseAsync(name, value, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -191,7 +192,7 @@ public final class SecretAsyncClient {
         try {
             return withContext(context -> implClient.setSecretWithResponseAsync(secret, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -221,7 +222,7 @@ public final class SecretAsyncClient {
         try {
             return getSecretWithResponse(name, "").flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -260,7 +261,7 @@ public final class SecretAsyncClient {
         try {
             return getSecretWithResponse(name, version).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -298,7 +299,7 @@ public final class SecretAsyncClient {
         try {
             return withContext(context -> implClient.getSecretWithResponseAsync(name, version, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -343,7 +344,7 @@ public final class SecretAsyncClient {
         try {
             return updateSecretPropertiesWithResponse(secretProperties).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -390,7 +391,7 @@ public final class SecretAsyncClient {
             return withContext(context ->
                 implClient.updateSecretPropertiesWithResponseAsync(secretProperties, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -450,7 +451,7 @@ public final class SecretAsyncClient {
         try {
             return getDeletedSecretWithResponse(name).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -482,7 +483,7 @@ public final class SecretAsyncClient {
         try {
             return withContext(context -> implClient.getDeletedSecretWithResponseAsync(name, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -513,7 +514,7 @@ public final class SecretAsyncClient {
         try {
             return purgeDeletedSecretWithResponse(name).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -543,7 +544,7 @@ public final class SecretAsyncClient {
         try {
             return withContext(context -> implClient.purgeDeletedSecretWithResponseAsync(name, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -602,7 +603,7 @@ public final class SecretAsyncClient {
         try {
             return backupSecretWithResponse(name).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -633,7 +634,7 @@ public final class SecretAsyncClient {
         try {
             return withContext(context -> implClient.backupSecretWithResponseAsync(name, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -664,7 +665,7 @@ public final class SecretAsyncClient {
         try {
             return restoreSecretBackupWithResponse(backup).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -696,7 +697,7 @@ public final class SecretAsyncClient {
         try {
             return withContext(context -> implClient.restoreSecretBackupWithResponseAsync(backup, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -728,7 +729,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretProperties> listPropertiesOfSecrets() {
-        return implClient.listPropertiesOfSecrets();
+        return implClient.listPropertiesOfSecretsAsync();
     }
 
     /**
@@ -751,7 +752,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedSecret> listDeletedSecrets() {
-        return implClient.listDeletedSecrets();
+        return implClient.listDeletedSecretsAsync();
     }
 
     /**
@@ -783,6 +784,6 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretProperties> listPropertiesOfSecretVersions(String name) {
-        return implClient.listPropertiesOfSecretVersions(name);
+        return implClient.listPropertiesOfSecretVersionsAsync(name);
     }
 }

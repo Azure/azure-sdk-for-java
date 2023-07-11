@@ -40,13 +40,24 @@ Select the latest Azure Databricks runtime version which supports Spark 3.0 or h
 
     ![image](./media/attach-cluster-o.jpg)
 
-* In the `CosmosDBLiveSingleContainerMigration` notebook, replace the references to Cosmos DB account URI, key, source database/container, target database/container, and target container partition key values as approprate that are contained within each cell (see comments in each cell for guidance). Then you are ready to click "Run all":
+* Locate the below, and enter/replace the highlighted fields for Cosmos DB account URI, key, region, source database/container, target database/container, and target container partition key values as approprate. Then you are ready to click "Run all":
 
     ![image](./media/run-notebook-o.jpg)
 
 * As long as everything has been configured correctly, all cells should run in sequence. The final cell, which is writing data received from the source container's [change feed](https://docs.microsoft.com/azure/cosmos-db/change-feed) to the target container, will run continually. It will process all historic data from the beginning of the source container's change feed record, as well as any new changes that occur. It will not stop unless there is an error, or the notebook is explictly stopped. 
 
     ![image](./media/streaming-o.jpg)
+
+
+## Synthetic partition key (optional)
+
+* The `CosmosDBLiveSingleContainerMigration` notebook contains code which will map existing field(s) to a different partition key in the target container, or create a new [synthetic partition key](https://learn.microsoft.com/azure/cosmos-db/nosql/synthetic-partition-keys). To enable this, first locate the following cell.
+
+    ![image](./media/synthetic-pk.jpg)
+
+* Edit the `syntheticPKValue` variable so it concatenates values from the existing document as required. Change `_syntheticPK` to be the name of target partition key (this can be an existing field, or a new field in the case of synthetic partition key). Then, enable the transformation by un-commenting the code in the following cell:
+
+    ![image](./media/synthetic-pk-enable.jpg)
 
 ## Validation
 

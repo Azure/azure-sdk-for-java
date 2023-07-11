@@ -29,15 +29,6 @@ public final class PartnerConfigurationsImpl implements PartnerConfigurations {
         this.serviceManager = serviceManager;
     }
 
-    public PartnerConfiguration getByResourceGroup(String resourceGroupName) {
-        PartnerConfigurationInner inner = this.serviceClient().getByResourceGroup(resourceGroupName);
-        if (inner != null) {
-            return new PartnerConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PartnerConfiguration> getByResourceGroupWithResponse(String resourceGroupName, Context context) {
         Response<PartnerConfigurationInner> inner =
             this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, context);
@@ -47,6 +38,15 @@ public final class PartnerConfigurationsImpl implements PartnerConfigurations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PartnerConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PartnerConfiguration getByResourceGroup(String resourceGroupName) {
+        PartnerConfigurationInner inner = this.serviceClient().getByResourceGroup(resourceGroupName);
+        if (inner != null) {
+            return new PartnerConfigurationImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -127,15 +127,6 @@ public final class PartnerConfigurationsImpl implements PartnerConfigurations {
         return Utils.mapPage(inner, inner1 -> new PartnerConfigurationImpl(inner1, this.manager()));
     }
 
-    public PartnerConfiguration authorizePartner(String resourceGroupName, Partner partnerInfo) {
-        PartnerConfigurationInner inner = this.serviceClient().authorizePartner(resourceGroupName, partnerInfo);
-        if (inner != null) {
-            return new PartnerConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PartnerConfiguration> authorizePartnerWithResponse(
         String resourceGroupName, Partner partnerInfo, Context context) {
         Response<PartnerConfigurationInner> inner =
@@ -151,8 +142,8 @@ public final class PartnerConfigurationsImpl implements PartnerConfigurations {
         }
     }
 
-    public PartnerConfiguration unauthorizePartner(String resourceGroupName, Partner partnerInfo) {
-        PartnerConfigurationInner inner = this.serviceClient().unauthorizePartner(resourceGroupName, partnerInfo);
+    public PartnerConfiguration authorizePartner(String resourceGroupName, Partner partnerInfo) {
+        PartnerConfigurationInner inner = this.serviceClient().authorizePartner(resourceGroupName, partnerInfo);
         if (inner != null) {
             return new PartnerConfigurationImpl(inner, this.manager());
         } else {
@@ -170,6 +161,15 @@ public final class PartnerConfigurationsImpl implements PartnerConfigurations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PartnerConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PartnerConfiguration unauthorizePartner(String resourceGroupName, Partner partnerInfo) {
+        PartnerConfigurationInner inner = this.serviceClient().unauthorizePartner(resourceGroupName, partnerInfo);
+        if (inner != null) {
+            return new PartnerConfigurationImpl(inner, this.manager());
         } else {
             return null;
         }

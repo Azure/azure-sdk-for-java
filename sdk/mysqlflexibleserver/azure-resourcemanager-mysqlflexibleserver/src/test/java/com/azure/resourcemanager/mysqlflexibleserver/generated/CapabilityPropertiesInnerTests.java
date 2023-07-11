@@ -13,7 +13,7 @@ public final class CapabilityPropertiesInnerTests {
         CapabilityPropertiesInner model =
             BinaryData
                 .fromString(
-                    "{\"zone\":\"gual\",\"supportedHAMode\":[\"xhejjzzvdud\",\"wdslfhotwmcy\",\"pwlbjnpg\"],\"supportedGeoBackupRegions\":[\"tadehxnltyfsopp\",\"suesnzw\",\"ej\",\"avo\"],\"supportedFlexibleServerEditions\":[{\"name\":\"mohctb\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[]},{\"name\":\"dndnvow\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[]},{\"name\":\"wdkcglhsl\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[]}]}")
+                    "{\"zone\":\"u\",\"supportedHAMode\":[\"hfuiuaodsfc\",\"kvxod\",\"uozmyzydagfua\",\"bezy\"],\"supportedGeoBackupRegions\":[\"kktwhrdxw\",\"ywqsmbsurexim\",\"ryocfsfksymdd\"],\"supportedFlexibleServerEditions\":[{\"name\":\"i\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[]}]}")
                 .toObject(CapabilityPropertiesInner.class);
     }
 

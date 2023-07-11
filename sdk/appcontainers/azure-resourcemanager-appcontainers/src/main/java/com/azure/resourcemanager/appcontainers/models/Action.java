@@ -17,6 +17,15 @@ public final class Action extends ExpandableStringEnum<Action> {
     public static final Action DENY = fromString("Deny");
 
     /**
+     * Creates a new instance of Action value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Action() {
+    }
+
+    /**
      * Creates or finds a Action from its string representation.
      *
      * @param name a name to look for.

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.39.0-beta.1 (Unreleased)
+## 1.42.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,67 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.41.0 (2023-07-06)
+
+### Features Added
+
+- Added a `KeyCredential` to support key-based auth.
+- `AzureKeyCredential` now to extends from `KeyCredential`.
+
+### Bugs Fixed
+
+- Fixed a bug where `PagedIterable.mapPage` would result in a `NullPointerException`. ([#35123](https://github.com/Azure/azure-sdk-for-java/pull/35123))
+
+## 1.40.0 (2023-06-02)
+
+### Features Added
+
+- Added `TracingOptions` configurations allowing to pick a specific `TracerProvider` implementation if several are resolved by `ServiceLoader`. 
+- Added `MetricsOptions` configurations allowing to pick a specific `MeterProvider` implementation if several are resolved by `ServiceLoader`.
+- Added `CoreUtils.randomUuid` to replace usage of `UUID.randomUUID`. In some cases `UUID.randomUUID` used a blocking 
+  call whereas `CoreUtils.randomUuid` should never block. ([#34790](https://github.com/Azure/azure-sdk-for-java/pull/34790))
+- Added support for prefixes in `AzureKeyCredentialPolicy`. ([#35010](https://github.com/Azure/azure-sdk-for-java/pull/35010))
+- Added the ability to configure a backoff strategy for `FluxUtil.createRetriableDownloadFlux`. Previous retries 
+  wouldn't backoff which could result in requests being sent to a service already at capacity and throttling. ([#35035](https://github.com/Azure/azure-sdk-for-java/pull/35035))
+
+### Bugs Fixed
+
+- Fixed a bug where a known length wasn't passed to `BinaryData.fromStream` resulting it being handled as a 
+  non-replayable `BinaryData`. ([#34851](https://github.com/Azure/azure-sdk-for-java/pull/34851))
+- Changed the design of how `AsynchronousByteChannel`s were written to limit chances of race conditions between the
+  writer thread and the Reactor thread handling `onComplete` and `onError` events. This results in more consistent 
+  behavior at the cost of lower throughput, which will be investigated in future releases. ([#35004](https://github.com/Azure/azure-sdk-for-java/pull/35004))
+
+### Other Changes
+
+- Changed how `ResponseError` is deserialized to support cases where the JSON wrapped the `ResponseError` with an 
+  `error` property. ([#35052](https://github.com/Azure/azure-sdk-for-java/pull/35052))
+
+### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.27` to `3.4.29`.
+
+## 1.39.0 (2023-05-04)
+
+### Features Added
+
+- Added `HttpHeaders.setAllHttpHeaders(HttpHeaders)` to provide a way to efficiently combine two `HttpHeaders`.
+- Added `CoreUtils.parseQueryParameters` to efficient parse query parameters without array overhead found with `String.split`.
+
+### Breaking Changes
+
+- Deprecated `String`-based APIs on `HttpHeaders`, `HttpRequest`, `HttpResponse`, and `RequestOptions`. Use 
+  `HttpHeaderName`-based APIs instead as they provide better performance.
+
+### Bugs Fixed
+
+- Fixed an edge case when parsing query parameters without a value (`key&key2=value2`). ([#34459](https://github.com/Azure/azure-sdk-for-java/pull/34459))
+
+### Other Changes
+
+- Changed how handling supporting multiple versions of Jackson happens internally to reduce usage of reflection. ([#34468](https://github.com/Azure/azure-sdk-for-java/pull/34468))
+- Improved request and response body logging to reduce memory allocations.
 
 ## 1.38.0 (2023-04-07)
 

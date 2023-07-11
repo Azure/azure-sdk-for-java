@@ -617,4 +617,64 @@ directive:
     $.description = "The Put Blob from URL operation creates a new Block Blob where the contents of the blob are read from a given URL.  This API is supported beginning with the 2020-04-08 version. Partial updates are not supported with Put Blob from URL; the content of an existing blob is overwritten with the content of the new blob.  To perform partial updates to a block blob's contents using a source URL, use the Put Block from URL API in conjunction with Put Block List.";
 ```
 
+### Rename ListBlobsIncludeItem Enums to be underscore cased
+```yaml
+directive:
+  - from: swagger-document
+    where: $.parameters.ListBlobsInclude
+    transform: >
+      $.items["x-ms-enum"].values = [
+        {
+          "value": "copy",
+          "name": "copy",
+          "description": ""
+        },
+        {
+          "value": "deleted",
+          "name": "deleted",
+          "description": ""
+        },
+        {
+          "value": "metadata",
+          "name": "metadata",
+          "description": ""
+        },
+        {
+          "value": "snapshots",
+          "name": "snapshots",
+          "description": ""
+        },
+        {
+          "value": "uncommittedblobs",
+          "name": "uncommittedblobs",
+          "description": ""
+        },
+        {
+          "value": "versions",
+          "name": "versions",
+          "description": ""
+        },
+        {
+          "value": "tags",
+          "name": "tags",
+          "description": ""
+        },
+        {
+          "value": "immutabilitypolicy",
+          "name": "immutability_policy",
+          "description": ""
+        },
+        {
+          "value": "legalhold",
+          "name": "legal_hold",
+          "description": ""
+        },
+        {
+          "value": "deletedwithversions",
+          "name": "deleted_with_versions",
+          "description": ""
+        }
+      ];
+```
+
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)

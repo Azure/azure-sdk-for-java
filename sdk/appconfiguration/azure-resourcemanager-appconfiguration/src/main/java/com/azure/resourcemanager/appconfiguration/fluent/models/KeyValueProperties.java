@@ -15,16 +15,14 @@ import java.util.Map;
 public final class KeyValueProperties {
     /*
      * The primary identifier of a key-value.
-     * The key is used in unison with the label to uniquely identify a
-     * key-value.
+     * The key is used in unison with the label to uniquely identify a key-value.
      */
     @JsonProperty(value = "key", access = JsonProperty.Access.WRITE_ONLY)
     private String key;
 
     /*
      * A value used to group key-values.
-     * The label is used in unison with the key to uniquely identify a
-     * key-value.
+     * The label is used in unison with the key to uniquely identify a key-value.
      */
     @JsonProperty(value = "label", access = JsonProperty.Access.WRITE_ONLY)
     private String label;
@@ -37,22 +35,19 @@ public final class KeyValueProperties {
 
     /*
      * The content type of the key-value's value.
-     * Providing a proper content-type can enable transformations of values
-     * when they are retrieved by applications.
+     * Providing a proper content-type can enable transformations of values when they are retrieved by applications.
      */
     @JsonProperty(value = "contentType")
     private String contentType;
 
     /*
-     * An ETag indicating the state of a key-value within a configuration
-     * store.
+     * An ETag indicating the state of a key-value within a configuration store.
      */
     @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
-     * The last time a modifying operation was performed on the given
-     * key-value.
+     * The last time a modifying operation was performed on the given key-value.
      */
     @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
@@ -65,12 +60,15 @@ public final class KeyValueProperties {
     private Boolean locked;
 
     /*
-     * A dictionary of tags that can help identify what a key-value may be
-     * applicable for.
+     * A dictionary of tags that can help identify what a key-value may be applicable for.
      */
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of KeyValueProperties class. */
+    public KeyValueProperties() {
+    }
 
     /**
      * Get the key property: The primary identifier of a key-value. The key is used in unison with the label to uniquely

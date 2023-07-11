@@ -90,6 +90,9 @@ public final class ResourceDeleteCancelEventData {
 
     static final ClientLogger LOGGER = new ClientLogger(ResourceDeleteCancelEventData.class);
 
+    /** Creates an instance of ResourceDeleteCancelEventData class. */
+    public ResourceDeleteCancelEventData() {}
+
     /**
      * Get the tenantId property: The tenant ID of the resource.
      *

@@ -26,6 +26,9 @@ public final class DeviceTwinInfoX509Thumbprint {
     @JsonProperty(value = "secondaryThumbprint")
     private String secondaryThumbprint;
 
+    /** Creates an instance of DeviceTwinInfoX509Thumbprint class. */
+    public DeviceTwinInfoX509Thumbprint() {}
+
     /**
      * Get the primaryThumbprint property: Primary thumbprint for the x509 certificate.
      *

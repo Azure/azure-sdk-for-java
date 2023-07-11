@@ -10,6 +10,37 @@
 
 ### Other Changes
 
+## 4.5.3 (2023-06-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+
+## 4.5.2 (2023-05-23)
+
+### Other Changes
+- Migrate Test recordings to assets repo.
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
+## 4.5.1 (2023-04-20)
+
+### Other Changes
+
+- Test proxy server migration.
+- Made all logger instances static.
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+
 ## 4.5.0 (2023-03-18)
 
 ### Features Added

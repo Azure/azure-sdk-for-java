@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.throughputControl.config;
 
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.PriorityLevel;
 
 import java.util.Objects;
 
@@ -20,12 +21,14 @@ public abstract class ThroughputControlGroupInternal {
     private final CosmosAsyncContainer targetContainer;
     private final Integer targetThroughput;
     private final Double targetThroughputThreshold;
+    private PriorityLevel priorityLevel;
 
     public ThroughputControlGroupInternal(
         String groupName,
         CosmosAsyncContainer targetContainer,
         Integer targetThroughput,
         Double targetThroughputThreshold,
+        PriorityLevel priorityLevel,
         boolean isDefault,
         boolean continueOnInitError) {
 
@@ -40,6 +43,7 @@ public abstract class ThroughputControlGroupInternal {
         this.targetContainer = targetContainer;
         this.targetThroughput = targetThroughput;
         this.targetThroughputThreshold = targetThroughputThreshold;
+        this.priorityLevel = priorityLevel;
         this.isDefault = isDefault;
         this.continueOnInitError = continueOnInitError;
 
@@ -52,10 +56,10 @@ public abstract class ThroughputControlGroupInternal {
         this.id = String.format(
             "%s/%s",
             this.idPrefix,
-            getThroughputIdSuffix(targetThroughput, targetThroughputThreshold));
+            getThroughputIdSuffix(targetThroughput, targetThroughputThreshold, priorityLevel));
     }
 
-    public static String getThroughputIdSuffix(Integer throughput, Double throughputThreshold) {
+    public static String getThroughputIdSuffix(Integer throughput, Double throughputThreshold, PriorityLevel priorityLevel) {
         StringBuilder sb = new StringBuilder();
         if (throughput != null) {
             sb.append("t-");
@@ -71,6 +75,17 @@ public abstract class ThroughputControlGroupInternal {
         if (throughputThreshold != null) {
             sb.append("tt-");
             sb.append(throughputThreshold);
+
+            if (priorityLevel == null) {
+                return sb.toString();
+            }
+
+            sb.append("_");
+        }
+
+        if (priorityLevel != null) {
+            sb.append("p-");
+            sb.append(priorityLevel);
         }
 
         return sb.toString();
@@ -150,6 +165,17 @@ public abstract class ThroughputControlGroupInternal {
         return this.id;
     }
 
+    /**
+     * Get the priority level of the throughput control group used for priority based throttling in the backend
+     *
+     * By default, it is null.
+     *
+     * @return the priority level.
+     */
+    public PriorityLevel getPriorityLevel() {
+        return this.priorityLevel;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) {
@@ -166,7 +192,8 @@ public abstract class ThroughputControlGroupInternal {
                 && this.isDefault == that.isDefault
                 && this.continueOnInitError == that.continueOnInitError
                 && Objects.equals(this.targetThroughput, that.targetThroughput)
-                && Objects.equals(this.targetThroughputThreshold, that.targetThroughputThreshold);
+                && Objects.equals(this.targetThroughputThreshold, that.targetThroughputThreshold)
+                && Objects.equals(this.priorityLevel, that.priorityLevel);
     }
 
     public boolean hasSameIdentity(Object other) {
@@ -193,6 +220,7 @@ public abstract class ThroughputControlGroupInternal {
         hash = (hash * 397) ^ Boolean.hashCode(this.continueOnInitError);
         hash = (hash * 397) ^ (this.targetThroughput == null ? 0 : Integer.hashCode(this.targetThroughput));
         hash = (hash * 397) ^ (this.targetThroughputThreshold == null ? 0 : Double.hashCode(this.targetThroughputThreshold));
+        hash = (hash * 397) ^ (this.priorityLevel == null ? 0 : this.priorityLevel.hashCode());
         return hash;
     }
 }

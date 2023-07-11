@@ -9,35 +9,26 @@ import com.azure.resourcemanager.appcontainers.models.CertificatePatch;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CertificatePatchTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CertificatePatch model =
             BinaryData
                 .fromString(
-                    "{\"tags\":{\"jc\":\"gkbugrjqct\",\"cuplcplcwkhih\":\"isofieypefojyqd\",\"cjhfgmvecactxmw\":\"hlhzdsqtzbsrgno\",\"ovekqvgqouwi\":\"teyowclu\"}}")
+                    "{\"tags\":{\"flz\":\"ukgri\",\"qzahmgkbrp\":\"fbxzpuzycisp\",\"hibnuqqkpika\":\"y\",\"buynhijggm\":\"rgvtqag\"}}")
                 .toObject(CertificatePatch.class);
-        Assertions.assertEquals("gkbugrjqct", model.tags().get("jc"));
+        Assertions.assertEquals("ukgri", model.tags().get("flz"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CertificatePatch model =
             new CertificatePatch()
                 .withTags(
-                    mapOf(
-                        "jc",
-                        "gkbugrjqct",
-                        "cuplcplcwkhih",
-                        "isofieypefojyqd",
-                        "cjhfgmvecactxmw",
-                        "hlhzdsqtzbsrgno",
-                        "ovekqvgqouwi",
-                        "teyowclu"));
+                    mapOf("flz", "ukgri", "qzahmgkbrp", "fbxzpuzycisp", "hibnuqqkpika", "y", "buynhijggm", "rgvtqag"));
         model = BinaryData.fromObject(model).toObject(CertificatePatch.class);
-        Assertions.assertEquals("gkbugrjqct", model.tags().get("jc"));
+        Assertions.assertEquals("ukgri", model.tags().get("flz"));
     }
 
     @SuppressWarnings("unchecked")

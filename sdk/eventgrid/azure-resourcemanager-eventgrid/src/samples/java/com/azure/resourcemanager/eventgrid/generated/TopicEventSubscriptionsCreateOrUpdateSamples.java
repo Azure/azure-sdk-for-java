@@ -10,7 +10,7 @@ import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestin
 /** Samples for TopicEventSubscriptions CreateOrUpdate. */
 public final class TopicEventSubscriptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/TopicEventSubscriptions_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/TopicEventSubscriptions_CreateOrUpdate.json
      */
     /**
      * Sample code: TopicEventSubscriptions_CreateOrUpdate.

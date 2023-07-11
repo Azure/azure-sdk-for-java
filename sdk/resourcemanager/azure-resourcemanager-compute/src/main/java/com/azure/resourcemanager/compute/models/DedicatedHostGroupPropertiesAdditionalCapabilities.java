@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Enables or disables a capability on the dedicated host group.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01. */
+/** Enables or disables a capability on the dedicated host group. Minimum api-version: 2022-03-01. */
 @Fluent
 public final class DedicatedHostGroupPropertiesAdditionalCapabilities {
     /*
@@ -15,8 +15,8 @@ public final class DedicatedHostGroupPropertiesAdditionalCapabilities {
      * the Dedicated Host Group. For the Virtual Machines to be UltraSSD Enabled, UltraSSDEnabled flag for the resource
      * needs to be set true as well. The value is defaulted to 'false' when not provided. Please refer to
      * https://docs.microsoft.com/en-us/azure/virtual-machines/disks-enable-ultra-ssd for more details on Ultra SSD
-     * feature. <br><br>NOTE: The ultraSSDEnabled setting can only be enabled for Host Groups that are created as
-     * zonal. <br><br>Minimum api-version: 2022-03-01.
+     * feature. **Note:** The ultraSSDEnabled setting can only be enabled for Host Groups that are created as zonal.
+     * Minimum api-version: 2022-03-01.
      */
     @JsonProperty(value = "ultraSSDEnabled")
     private Boolean ultraSsdEnabled;
@@ -30,8 +30,8 @@ public final class DedicatedHostGroupPropertiesAdditionalCapabilities {
      * Machines on Dedicated Hosts of the Dedicated Host Group. For the Virtual Machines to be UltraSSD Enabled,
      * UltraSSDEnabled flag for the resource needs to be set true as well. The value is defaulted to 'false' when not
      * provided. Please refer to https://docs.microsoft.com/en-us/azure/virtual-machines/disks-enable-ultra-ssd for more
-     * details on Ultra SSD feature. &lt;br&gt;&lt;br&gt;NOTE: The ultraSSDEnabled setting can only be enabled for Host
-     * Groups that are created as zonal. &lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     * details on Ultra SSD feature. **Note:** The ultraSSDEnabled setting can only be enabled for Host Groups that are
+     * created as zonal. Minimum api-version: 2022-03-01.
      *
      * @return the ultraSsdEnabled value.
      */
@@ -44,8 +44,8 @@ public final class DedicatedHostGroupPropertiesAdditionalCapabilities {
      * Machines on Dedicated Hosts of the Dedicated Host Group. For the Virtual Machines to be UltraSSD Enabled,
      * UltraSSDEnabled flag for the resource needs to be set true as well. The value is defaulted to 'false' when not
      * provided. Please refer to https://docs.microsoft.com/en-us/azure/virtual-machines/disks-enable-ultra-ssd for more
-     * details on Ultra SSD feature. &lt;br&gt;&lt;br&gt;NOTE: The ultraSSDEnabled setting can only be enabled for Host
-     * Groups that are created as zonal. &lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     * details on Ultra SSD feature. **Note:** The ultraSSDEnabled setting can only be enabled for Host Groups that are
+     * created as zonal. Minimum api-version: 2022-03-01.
      *
      * @param ultraSsdEnabled the ultraSsdEnabled value to set.
      * @return the DedicatedHostGroupPropertiesAdditionalCapabilities object itself.

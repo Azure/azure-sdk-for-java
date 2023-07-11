@@ -12,7 +12,7 @@ import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisException;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
-import io.lettuce.core.api.sync.RedisStringCommands;
+import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.protocol.ProtocolVersion;
 import io.lettuce.core.ClientOptions;
@@ -26,12 +26,14 @@ public class HandleReauthentication {
 
         // Fetch an AAD token to be used for authentication. This token will be used as the password.
         // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
-        TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+        TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
         AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 
         // Host Name, Port, Username and Azure AD Token are required here.
         // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
-        RedisClient client = createLettuceRedisClient("<HOST_NAME>", 6380, "<USERNAME>", accessToken);
+        String hostName = "<HOST_NAME>";
+        String userName = "<USERNAME>";
+        RedisClient client = createLettuceRedisClient(hostName, 6380, userName, accessToken);
         StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
 
         int maxTries = 3;
@@ -39,7 +41,7 @@ public class HandleReauthentication {
 
         while (i < maxTries) {
             // Create the connection, in this case we're using a sync connection, but you can create async / reactive connections as needed.
-            RedisStringCommands<String, String> sync = connection.sync();
+            RedisCommands<String, String> sync = connection.sync();
             try {
                 sync.set("Az:testKey", "testVal");
                 System.out.println(sync.get("Az:testKey"));
@@ -52,7 +54,7 @@ public class HandleReauthentication {
 
                 if (!connection.isOpen()) {
                     // Recreate the client with a fresh token non-expired token as password for authentication.
-                    client = createLettuceRedisClient("<HOST_NAME>", 6380, "USERNAME", getAccessToken(defaultAzureCredential, trc));
+                    client = createLettuceRedisClient(hostName, 6380, userName, getAccessToken(defaultAzureCredential, trc));
                     connection = client.connect(StringCodec.UTF8);
                     sync = connection.sync();
                 }

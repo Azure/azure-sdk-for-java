@@ -15,7 +15,7 @@ import java.io.IOException;
 /** Samples for Deployments CreateOrUpdateAtManagementGroupScope. */
 public final class DeploymentsCreateOrUpdateAtManagementGroupScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/PutDeploymentAtManagementGroup.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PutDeploymentAtManagementGroup.json
      */
     /**
      * Sample code: Create deployment at management group scope.

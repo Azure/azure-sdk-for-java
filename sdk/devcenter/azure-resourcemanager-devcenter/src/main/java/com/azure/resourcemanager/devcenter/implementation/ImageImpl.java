@@ -6,6 +6,7 @@ package com.azure.resourcemanager.devcenter.implementation;
 
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.devcenter.fluent.models.ImageInner;
+import com.azure.resourcemanager.devcenter.models.HibernateSupport;
 import com.azure.resourcemanager.devcenter.models.Image;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.RecommendedMachineConfiguration;
@@ -58,6 +59,10 @@ public final class ImageImpl implements Image {
 
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public HibernateSupport hibernateSupport() {
+        return this.innerModel().hibernateSupport();
     }
 
     public ImageInner innerModel() {

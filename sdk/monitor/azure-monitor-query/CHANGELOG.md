@@ -1,5 +1,46 @@
 # Release History
 
+## 1.3.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.2.1 (2023-06-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+
+## 1.2.0 (2023-05-09)
+
+### Features Added
+
+- Added `queryResource` methods to `LogsQueryClient` and `LogsQueryAsyncClient` to support querying logs using Azure resource ID.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+
+## 1.1.3 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+
 ## 1.2.0-beta.1 (2023-04-12)
 
 ### Features Added

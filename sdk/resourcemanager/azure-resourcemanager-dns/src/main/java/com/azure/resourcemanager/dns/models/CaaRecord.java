@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A CAA record. */
 @Fluent
 public final class CaaRecord {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CaaRecord.class);
-
     /*
      * The flags for this CAA record as an integer between 0 and 255.
      */
@@ -31,6 +27,10 @@ public final class CaaRecord {
      */
     @JsonProperty(value = "value")
     private String value;
+
+    /** Creates an instance of CaaRecord class. */
+    public CaaRecord() {
+    }
 
     /**
      * Get the flags property: The flags for this CAA record as an integer between 0 and 255.

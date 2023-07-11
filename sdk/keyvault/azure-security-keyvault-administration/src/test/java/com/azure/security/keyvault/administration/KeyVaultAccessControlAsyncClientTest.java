@@ -26,13 +26,13 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
     private KeyVaultAccessControlAsyncClient asyncClient;
 
     private void getClient(HttpClient httpClient, boolean forCleanup) {
-        asyncClient = getClientBuilder(buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
-            : httpClient), forCleanup).buildAsyncClient();
+        asyncClient = getClientBuilder(buildAsyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), forCleanup)
+            .buildAsyncClient();
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest((ignored1, ignored2) -> false)
             .assertAsync()
             .build();
     }

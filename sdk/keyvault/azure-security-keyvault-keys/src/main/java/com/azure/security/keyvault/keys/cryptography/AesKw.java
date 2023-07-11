@@ -17,11 +17,13 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 
 abstract class AesKw extends LocalKeyWrapAlgorithm {
+    private static final ClientLogger LOGGER = new ClientLogger(AesKw.class);
+
     static final int BLOCK_SIZE_IN_BITS = 64;
+    static final String CIPHER_NAME = "AESWrap";
     static final byte[] DEFAULT_IV =
         new byte[]{(byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6,
             (byte) 0xA6};
-    static final String CIPHER_NAME = "AESWrap";
 
     static class AesKwDecryptor implements ICryptoTransform {
         final Cipher cipher;
@@ -86,8 +88,6 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
 
     }
 
-    private final ClientLogger logger = new ClientLogger(AesKw.class);
-
     protected AesKw(String name) {
         super(name);
     }
@@ -122,22 +122,22 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
         InvalidAlgorithmParameterException {
 
         if (key == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("key"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("key"));
         }
 
         if (key.length != 128 >> 3 && key.length != 192 >> 3 && key.length != 256 >> 3) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("key length must be 128, 192 or 256 bits"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("key length must be 128, 192 or 256 bits"));
         }
 
         if (iv != null) {
             // iv length must be 64 bits
             if (iv.length != BLOCK_SIZE_IN_BITS >> 3) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                     "iv length must be %s bits", BLOCK_SIZE_IN_BITS)));
             }
             // iv cannot be specified with the default provider
             if (provider == null) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                     "user specified iv is not supported with the default provider"));
             }
         }
@@ -176,22 +176,22 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
         InvalidAlgorithmParameterException {
 
         if (key == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("key"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("key"));
         }
 
         if (key.length != 128 >> 3 && key.length != 192 >> 3 && key.length != 256 >> 3) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("key length must be 128, 192 or 256 bits"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("key length must be 128, 192 or 256 bits"));
         }
 
         if (iv != null) {
             // iv length must be 64 bits
             if (iv.length != BLOCK_SIZE_IN_BITS >> 3) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                     "iv length must be %s bits", BLOCK_SIZE_IN_BITS)));
             }
             // iv cannot be specified with the default provider
             if (provider == null) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                     "user specified iv is not supported with the default provider"));
             }
         }

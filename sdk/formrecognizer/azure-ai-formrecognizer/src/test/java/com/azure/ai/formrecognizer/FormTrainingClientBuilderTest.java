@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests for Form Training client builder
  */
 public class FormTrainingClientBuilderTest extends TestProxyTestBase {
-    private static final String FORM_JPG = "Form_1.jpg";
+    private static final String TEST_FILE = URL_TEST_FILE_FORMAT + "Form_1.jpg";
 
     /**
      * Test client builder with invalid API key
@@ -197,7 +197,7 @@ public class FormTrainingClientBuilderTest extends TestProxyTestBase {
             getEndpoint(), credential);
         // Update to valid key
         credential.update(getApiKey());
-        testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + FORM_JPG);
+        testRunner.apply(clientBuilder).accept(TEST_FILE);
     }
 
     void clientBuilderWithNullServiceVersionRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
@@ -206,7 +206,7 @@ public class FormTrainingClientBuilderTest extends TestProxyTestBase {
             createClientBuilder(httpClient, serviceVersion, getEndpoint(), new AzureKeyCredential(getApiKey()))
                 .retryPolicy(new RetryPolicy())
                 .serviceVersion(null);
-        testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + FORM_JPG);
+        testRunner.apply(clientBuilder).accept(TEST_FILE);
     }
 
     void clientBuilderWithDefaultPipelineRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
@@ -215,7 +215,7 @@ public class FormTrainingClientBuilderTest extends TestProxyTestBase {
             createClientBuilder(httpClient, serviceVersion, getEndpoint(), new AzureKeyCredential(getApiKey()))
                 .configuration(Configuration.getGlobalConfiguration())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-        testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + FORM_JPG);
+        testRunner.apply(clientBuilder).accept(TEST_FILE);
     }
 
     String getEndpoint() {

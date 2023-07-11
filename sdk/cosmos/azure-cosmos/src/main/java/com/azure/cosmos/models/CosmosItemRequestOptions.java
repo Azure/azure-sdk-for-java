@@ -5,9 +5,11 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 
 import java.time.Duration;
@@ -39,6 +41,8 @@ public class CosmosItemRequestOptions {
     private CosmosDiagnosticsThresholds thresholds;
     private Boolean nonIdempotentWriteRetriesEnabled;
     private boolean useTrackingIds;
+    private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
+    private List<String> excludeRegions;
 
     /**
      * copy constructor
@@ -59,6 +63,8 @@ public class CosmosItemRequestOptions {
         operationContextAndListenerTuple = options.operationContextAndListenerTuple;
         nonIdempotentWriteRetriesEnabled = options.nonIdempotentWriteRetriesEnabled;
         useTrackingIds = options.useTrackingIds;
+        endToEndOperationLatencyPolicyConfig = options.endToEndOperationLatencyPolicyConfig;
+        excludeRegions = options.excludeRegions;
         if (options.customOptions != null) {
             this.customOptions = new HashMap<>(options.customOptions);
         }
@@ -286,6 +292,15 @@ public class CosmosItemRequestOptions {
     }
 
     /**
+     * Gets the {@link CosmosEndToEndOperationLatencyPolicyConfig} defined
+     *
+     * @return the {@link CosmosEndToEndOperationLatencyPolicyConfig}
+     */
+    CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndOperationLatencyPolicyConfig() {
+        return endToEndOperationLatencyPolicyConfig;
+    }
+
+    /**
      * Enables automatic retries for write operations even when the SDK can't
      * guarantee that they are idempotent. This is an override of the
      * {@link CosmosClientBuilder#setNonIdempotentWriteRetryPolicy(boolean, boolean)} behavior for a specific request/operation.
@@ -351,6 +366,43 @@ public class CosmosItemRequestOptions {
     }
 
     /**
+     * Sets the {@link CosmosEndToEndOperationLatencyPolicyConfig} to be used for the request. If the config is already set
+     * on the client, then this will override the client level config for this request
+     *
+     * @param endToEndOperationLatencyPolicyConfig the {@link CosmosEndToEndOperationLatencyPolicyConfig}
+     * @return {@link CosmosItemRequestOptions}
+     */
+    public CosmosItemRequestOptions setCosmosEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
+        this.endToEndOperationLatencyPolicyConfig = endToEndOperationLatencyPolicyConfig;
+        return this;
+    }
+
+    /**
+     * List of regions to exclude for the request/retries. Example "East US" or "East US, West US"
+     * These regions will be excluded from the preferred regions list
+     *
+     * @param excludeRegions list of regions
+     * @return the {@link CosmosItemRequestOptions}
+     */
+    public CosmosItemRequestOptions setExcludedRegions(List<String> excludeRegions) {
+        this.excludeRegions = excludeRegions;
+        return this;
+    }
+
+    /**
+     * Gets the list of regions to be excluded for the request/retries. These regions are excluded
+     * from the preferred region list.
+     *
+     * @return a list of excluded regions
+     * */
+    public List<String> getExcludedRegions() {
+        if (this.excludeRegions == null) {
+            return null;
+        }
+        return UnmodifiableList.unmodifiableList(this.excludeRegions);
+    }
+
+    /**
      * Gets the partition key
      *
      * @return the partition key
@@ -388,6 +440,8 @@ public class CosmosItemRequestOptions {
         if (this.nonIdempotentWriteRetriesEnabled != null) {
             requestOptions.setNonIdempotentWriteRetriesEnabled(this.nonIdempotentWriteRetriesEnabled);
         }
+        requestOptions.setCosmosEndToEndLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
+        requestOptions.setExcludeRegions(excludeRegions);
         if(this.customOptions != null) {
             for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {
                 requestOptions.setHeader(entry.getKey(), entry.getValue());

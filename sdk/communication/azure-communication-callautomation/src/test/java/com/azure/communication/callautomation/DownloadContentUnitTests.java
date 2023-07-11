@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Collections;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -49,8 +48,7 @@ public class DownloadContentUnitTests {
     @Test
     public void downloadToWithResponse() throws IOException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        Response<Void> response = callRecording.downloadToWithResponse(AMS_ENDPOINT, stream, null, Context.NONE);
-        assertEquals(200, response.getStatusCode());
+        callRecording.downloadTo(AMS_ENDPOINT, stream, null, Context.NONE);
         Reader reader = new InputStreamReader(new ByteArrayInputStream(stream.toByteArray()));
         BufferedReader b = new BufferedReader(reader);
         assertEquals(CONTENT, b.readLine());

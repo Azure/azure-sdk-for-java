@@ -18,21 +18,9 @@ import com.azure.resourcemanager.eventgrid.models.ChannelUpdateParameters;
 /** An instance of this class provides access to all the operations defined in ChannelsClient. */
 public interface ChannelsClient {
     /**
-     * Get properties of a channel.
+     * Get a channel.
      *
-     * @param resourceGroupName The name of the resource group within the partners subscription.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param channelName Name of the channel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a channel.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ChannelInner get(String resourceGroupName, String partnerNamespaceName, String channelName);
-
-    /**
-     * Get properties of a channel.
+     * <p>Get properties of a channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -48,23 +36,25 @@ public interface ChannelsClient {
         String resourceGroupName, String partnerNamespaceName, String channelName, Context context);
 
     /**
-     * Synchronously creates or updates a new channel with the specified parameters.
+     * Get a channel.
+     *
+     * <p>Get properties of a channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
      * @param channelName Name of the channel.
-     * @param channelInfo Channel information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return channel info.
+     * @return properties of a channel.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ChannelInner createOrUpdate(
-        String resourceGroupName, String partnerNamespaceName, String channelName, ChannelInner channelInfo);
+    ChannelInner get(String resourceGroupName, String partnerNamespaceName, String channelName);
 
     /**
-     * Synchronously creates or updates a new channel with the specified parameters.
+     * Create or update a channel.
+     *
+     * <p>Synchronously creates or updates a new channel with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -85,7 +75,27 @@ public interface ChannelsClient {
         Context context);
 
     /**
-     * Delete an existing channel.
+     * Create or update a channel.
+     *
+     * <p>Synchronously creates or updates a new channel with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the partners subscription.
+     * @param partnerNamespaceName Name of the partner namespace.
+     * @param channelName Name of the channel.
+     * @param channelInfo Channel information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return channel info.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ChannelInner createOrUpdate(
+        String resourceGroupName, String partnerNamespaceName, String channelName, ChannelInner channelInfo);
+
+    /**
+     * Delete a channel.
+     *
+     * <p>Delete an existing channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -100,7 +110,9 @@ public interface ChannelsClient {
         String resourceGroupName, String partnerNamespaceName, String channelName);
 
     /**
-     * Delete an existing channel.
+     * Delete a channel.
+     *
+     * <p>Delete an existing channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -116,7 +128,9 @@ public interface ChannelsClient {
         String resourceGroupName, String partnerNamespaceName, String channelName, Context context);
 
     /**
-     * Delete an existing channel.
+     * Delete a channel.
+     *
+     * <p>Delete an existing channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -129,7 +143,9 @@ public interface ChannelsClient {
     void delete(String resourceGroupName, String partnerNamespaceName, String channelName);
 
     /**
-     * Delete an existing channel.
+     * Delete a channel.
+     *
+     * <p>Delete an existing channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -143,25 +159,9 @@ public interface ChannelsClient {
     void delete(String resourceGroupName, String partnerNamespaceName, String channelName, Context context);
 
     /**
-     * Synchronously updates a channel with the specified parameters.
+     * Update a Channel.
      *
-     * @param resourceGroupName The name of the resource group within the partners subscription.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param channelName Name of the channel.
-     * @param channelUpdateParameters Channel update information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(
-        String resourceGroupName,
-        String partnerNamespaceName,
-        String channelName,
-        ChannelUpdateParameters channelUpdateParameters);
-
-    /**
-     * Synchronously updates a channel with the specified parameters.
+     * <p>Synchronously updates a channel with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -182,7 +182,29 @@ public interface ChannelsClient {
         Context context);
 
     /**
-     * List all the channels in a partner namespace.
+     * Update a Channel.
+     *
+     * <p>Synchronously updates a channel with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the partners subscription.
+     * @param partnerNamespaceName Name of the partner namespace.
+     * @param channelName Name of the channel.
+     * @param channelUpdateParameters Channel update information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void update(
+        String resourceGroupName,
+        String partnerNamespaceName,
+        String channelName,
+        ChannelUpdateParameters channelUpdateParameters);
+
+    /**
+     * List channels.
+     *
+     * <p>List all the channels in a partner namespace.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -195,7 +217,9 @@ public interface ChannelsClient {
     PagedIterable<ChannelInner> listByPartnerNamespace(String resourceGroupName, String partnerNamespaceName);
 
     /**
-     * List all the channels in a partner namespace.
+     * List channels.
+     *
+     * <p>List all the channels in a partner namespace.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -218,21 +242,9 @@ public interface ChannelsClient {
         String resourceGroupName, String partnerNamespaceName, String filter, Integer top, Context context);
 
     /**
-     * Get the full endpoint URL of a partner destination channel.
+     * Get full URL of partner destination channel.
      *
-     * @param resourceGroupName The name of the resource group within the partners subscription.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param channelName Name of the Channel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL of a partner destination channel.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    EventSubscriptionFullUrlInner getFullUrl(String resourceGroupName, String partnerNamespaceName, String channelName);
-
-    /**
-     * Get the full endpoint URL of a partner destination channel.
+     * <p>Get the full endpoint URL of a partner destination channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -246,4 +258,20 @@ public interface ChannelsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<EventSubscriptionFullUrlInner> getFullUrlWithResponse(
         String resourceGroupName, String partnerNamespaceName, String channelName, Context context);
+
+    /**
+     * Get full URL of partner destination channel.
+     *
+     * <p>Get the full endpoint URL of a partner destination channel.
+     *
+     * @param resourceGroupName The name of the resource group within the partners subscription.
+     * @param partnerNamespaceName Name of the partner namespace.
+     * @param channelName Name of the Channel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL of a partner destination channel.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EventSubscriptionFullUrlInner getFullUrl(String resourceGroupName, String partnerNamespaceName, String channelName);
 }

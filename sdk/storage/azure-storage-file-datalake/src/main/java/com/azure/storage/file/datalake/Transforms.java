@@ -43,6 +43,7 @@ import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.StaticWebsite;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.file.datalake.implementation.models.BlobItemInternal;
 import com.azure.storage.file.datalake.implementation.models.BlobPrefix;
@@ -93,6 +94,7 @@ import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
+import com.azure.storage.file.datalake.options.DataLakeFileOutputStreamOptions;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
@@ -118,6 +120,9 @@ class Transforms {
     private static final long EPOCH_CONVERSION;
 
     public static final HttpHeaderName X_MS_ENCRYPTION_CONTEXT = HttpHeaderName.fromString("x-ms-encryption-context");
+    public static final HttpHeaderName X_MS_OWNER = HttpHeaderName.fromString("x-ms-owner");
+    public static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
+    public static final HttpHeaderName X_MS_PERMISSIONS = HttpHeaderName.fromString("x-ms-permissions");
 
     static {
         // https://docs.oracle.com/javase/8/docs/api/java/util/Date.html#getTime--
@@ -306,12 +311,12 @@ class Transforms {
         return toPathProperties(properties, null);
     }
 
-    static PathProperties toPathProperties(BlobProperties properties, String encryptionContext) {
+    static PathProperties toPathProperties(BlobProperties properties, Response<?> r) {
         if (properties == null) {
             return null;
         } else {
-            PathProperties pathProperties = new PathProperties(properties.getCreationTime(), properties.getLastModified(), properties.getETag(),
-                properties.getBlobSize(), properties.getContentType(), properties.getContentMd5(),
+            PathProperties pathProperties = new PathProperties(properties.getCreationTime(), properties.getLastModified(),
+                properties.getETag(), properties.getBlobSize(), properties.getContentType(), properties.getContentMd5(),
                 properties.getContentEncoding(), properties.getContentDisposition(), properties.getContentLanguage(),
                 properties.getCacheControl(), Transforms.toDataLakeLeaseStatusType(properties.getLeaseStatus()),
                 Transforms.toDataLakeLeaseStateType(properties.getLeaseState()),
@@ -323,17 +328,19 @@ class Transforms {
                 Transforms.toDataLakeArchiveStatus(properties.getArchiveStatus()), properties.getEncryptionKeySha256(),
                 properties.getAccessTierChangeTime(), properties.getMetadata(), properties.getExpiresOn());
 
-            return AccessorUtility.getPathPropertiesAccessor().setPathProperties(pathProperties, properties.getEncryptionScope(), encryptionContext);
+            if (r == null) {
+                return pathProperties;
+            } else {
+                String encryptionContext = r.getHeaders().getValue(X_MS_ENCRYPTION_CONTEXT);
+                String owner = r.getHeaders().getValue(X_MS_OWNER);
+                String group = r.getHeaders().getValue(X_MS_GROUP);
+                String permissions = r.getHeaders().getValue(X_MS_PERMISSIONS);
+
+                return AccessorUtility.getPathPropertiesAccessor().setPathProperties(pathProperties,
+                    properties.getEncryptionScope(), encryptionContext, owner, group, permissions);
+            }
         }
     }
-
-    static String getEncryptionContext(Response<?> r) {
-        if (r == null) {
-            return null;
-        }
-        return r.getHeaders().getValue(X_MS_ENCRYPTION_CONTEXT);
-    }
-
 
     static FileSystemItem toFileSystemItem(BlobContainerItem blobContainerItem) {
         if (blobContainerItem == null) {
@@ -420,7 +427,7 @@ class Transforms {
             return null;
         }
         return new FileReadAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(), r.getValue(),
-            Transforms.toPathReadHeaders(r.getDeserializedHeaders(), getEncryptionContext(r)));
+            Transforms.toPathReadHeaders(r.getDeserializedHeaders(), r.getHeaders().getValue(X_MS_ENCRYPTION_CONTEXT)));
     }
 
     private static FileReadHeaders toPathReadHeaders(BlobDownloadHeaders h, String encryptionContext) {
@@ -883,5 +890,18 @@ class Transforms {
         return new BlobContainerEncryptionScope()
             .setDefaultEncryptionScope(fileSystemEncryptionScope.getDefaultEncryptionScope())
             .setEncryptionScopeOverridePrevented(fileSystemEncryptionScope.isEncryptionScopeOverridePrevented());
+    }
+
+    static BlockBlobOutputStreamOptions toBlockBlobOutputStreamOptions(DataLakeFileOutputStreamOptions options) {
+        if (options == null) {
+            return null;
+        }
+        return new BlockBlobOutputStreamOptions()
+            .setParallelTransferOptions(options.getParallelTransferOptions())
+            .setHeaders(toBlobHttpHeaders(options.getHeaders()))
+            .setMetadata(options.getMetadata())
+            .setTags(options.getTags())
+            .setTier(options.getAccessTier())
+            .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()));
     }
 }

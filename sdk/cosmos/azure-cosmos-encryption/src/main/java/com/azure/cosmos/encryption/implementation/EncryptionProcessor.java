@@ -415,7 +415,13 @@ public class EncryptionProcessor {
             }
         } else if (propertyValueHolder.isArray()) {
             ArrayNode arrayNode = (ArrayNode) propertyValueHolder;
-            if (arrayNode.elements().next().isObject() || arrayNode.elements().next().isArray()) {
+            Iterator<JsonNode> checkArrayIterator = arrayNode.elements();
+            boolean hasElements = checkArrayIterator.hasNext();
+            if (hasElements) {
+                JsonNode nextNode = checkArrayIterator.next();
+                hasElements &= nextNode.isObject() || nextNode.isArray();
+            }
+            if (hasElements) {
                 for (Iterator<JsonNode> arrayIterator = arrayNode.elements(); arrayIterator.hasNext(); ) {
                     JsonNode nodeInArray = arrayIterator.next();
                     if (nodeInArray.isArray()) {
@@ -564,7 +570,13 @@ public class EncryptionProcessor {
             }
         } else if (propertyValueHolder.isArray()) {
             ArrayNode arrayNode = (ArrayNode) propertyValueHolder;
-            if (arrayNode.elements().next().isObject() || arrayNode.elements().next().isArray()) {
+            Iterator<JsonNode> checkArrayIterator = arrayNode.elements();
+            boolean hasElements = checkArrayIterator.hasNext();
+            if (hasElements) {
+                JsonNode nextNode = checkArrayIterator.next();
+                hasElements &= nextNode.isObject() || nextNode.isArray();
+            }
+            if (hasElements) {
                 for (Iterator<JsonNode> arrayIterator = arrayNode.elements(); arrayIterator.hasNext(); ) {
                     JsonNode nodeInArray = arrayIterator.next();
                     if (nodeInArray.isArray()) {
@@ -594,7 +606,6 @@ public class EncryptionProcessor {
                     arrayNode.add(encryptedValue);
                 }
             }
-
         } else {
             decryptAndSerializeValue(encryptionSettings, (ObjectNode) objectNode, propertyValueHolder, propertyName);
         }

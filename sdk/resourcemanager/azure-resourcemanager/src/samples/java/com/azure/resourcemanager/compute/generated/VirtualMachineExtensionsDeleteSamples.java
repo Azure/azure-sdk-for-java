@@ -7,14 +7,14 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for VirtualMachineExtensions Delete. */
 public final class VirtualMachineExtensionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachineExtensions_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachineExtension_Delete_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineExtensions_Delete_MaximumSet_Gen.
+     * Sample code: VirtualMachineExtension_Delete_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineExtensionsDeleteMaximumSetGen(
+    public static void virtualMachineExtensionDeleteMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
@@ -25,14 +25,14 @@ public final class VirtualMachineExtensionsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachineExtensions_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachineExtension_Delete_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineExtensions_Delete_MinimumSet_Gen.
+     * Sample code: VirtualMachineExtension_Delete_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineExtensionsDeleteMinimumSetGen(
+    public static void virtualMachineExtensionDeleteMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()

@@ -50,4 +50,6 @@ public class RMResources {
     public static final String InvalidResourceUrlQuery = "The value %s specified  for query %s is invalid.";
     public static final String PartitionKeyRangeIdAbsentInContext = "PartitionKeyRangeId is absent in the context.";
     public static final String EncryptionKeyProviderNotConfigured = "Encryption Key Provider is not configured";
+    public static final String OperationCancelled = "Request cancelled by client after reaching timeout specified in end-end timeout policy";
+
 }

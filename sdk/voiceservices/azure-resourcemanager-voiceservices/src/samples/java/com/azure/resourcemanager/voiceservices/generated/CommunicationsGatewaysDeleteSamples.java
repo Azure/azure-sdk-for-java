@@ -12,10 +12,10 @@ public final class CommunicationsGatewaysDeleteSamples {
     /**
      * Sample code: DeleteCommunicationsGatewayResource.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
     public static void deleteCommunicationsGatewayResource(
-        com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager.communicationsGateways().delete("testrg", "myname", com.azure.core.util.Context.NONE);
     }
 }

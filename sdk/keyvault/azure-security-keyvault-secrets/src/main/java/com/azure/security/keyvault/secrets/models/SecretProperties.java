@@ -26,7 +26,7 @@ import java.util.Objects;
  */
 @Fluent
 public class SecretProperties {
-    private final ClientLogger logger = new ClientLogger(SecretProperties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SecretProperties.class);
 
     /**
      * The secret id.
@@ -338,7 +338,7 @@ public class SecretProperties {
                 this.version = (tokens.length >= 4 ? tokens[3] : null);
             } catch (MalformedURLException e) {
                 // Should never come here.
-                logger.error("Received Malformed Secret Id URL from KV Service");
+                LOGGER.error("Received Malformed Secret Id URL from KV Service");
             }
         }
     }

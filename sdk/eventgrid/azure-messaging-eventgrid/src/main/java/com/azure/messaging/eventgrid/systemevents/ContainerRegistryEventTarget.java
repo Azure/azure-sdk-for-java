@@ -23,8 +23,7 @@ public final class ContainerRegistryEventTarget {
     private Long size;
 
     /*
-     * The digest of the content, as defined by the Registry V2 HTTP API
-     * Specification.
+     * The digest of the content, as defined by the Registry V2 HTTP API Specification.
      */
     @JsonProperty(value = "digest")
     private String digest;
@@ -52,6 +51,9 @@ public final class ContainerRegistryEventTarget {
      */
     @JsonProperty(value = "tag")
     private String tag;
+
+    /** Creates an instance of ContainerRegistryEventTarget class. */
+    public ContainerRegistryEventTarget() {}
 
     /**
      * Get the mediaType property: The MIME type of the referenced object.

@@ -29,15 +29,6 @@ public final class DomainsImpl implements Domains {
         this.serviceManager = serviceManager;
     }
 
-    public Domain getByResourceGroup(String resourceGroupName, String domainName) {
-        DomainInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, domainName);
-        if (inner != null) {
-            return new DomainImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Domain> getByResourceGroupWithResponse(
         String resourceGroupName, String domainName, Context context) {
         Response<DomainInner> inner =
@@ -48,6 +39,15 @@ public final class DomainsImpl implements Domains {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DomainImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Domain getByResourceGroup(String resourceGroupName, String domainName) {
+        DomainInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, domainName);
+        if (inner != null) {
+            return new DomainImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -83,15 +83,6 @@ public final class DomainsImpl implements Domains {
         return Utils.mapPage(inner, inner1 -> new DomainImpl(inner1, this.manager()));
     }
 
-    public DomainSharedAccessKeys listSharedAccessKeys(String resourceGroupName, String domainName) {
-        DomainSharedAccessKeysInner inner = this.serviceClient().listSharedAccessKeys(resourceGroupName, domainName);
-        if (inner != null) {
-            return new DomainSharedAccessKeysImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DomainSharedAccessKeys> listSharedAccessKeysWithResponse(
         String resourceGroupName, String domainName, Context context) {
         Response<DomainSharedAccessKeysInner> inner =
@@ -107,10 +98,8 @@ public final class DomainsImpl implements Domains {
         }
     }
 
-    public DomainSharedAccessKeys regenerateKey(
-        String resourceGroupName, String domainName, DomainRegenerateKeyRequest regenerateKeyRequest) {
-        DomainSharedAccessKeysInner inner =
-            this.serviceClient().regenerateKey(resourceGroupName, domainName, regenerateKeyRequest);
+    public DomainSharedAccessKeys listSharedAccessKeys(String resourceGroupName, String domainName) {
+        DomainSharedAccessKeysInner inner = this.serviceClient().listSharedAccessKeys(resourceGroupName, domainName);
         if (inner != null) {
             return new DomainSharedAccessKeysImpl(inner, this.manager());
         } else {
@@ -130,6 +119,17 @@ public final class DomainsImpl implements Domains {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DomainSharedAccessKeysImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DomainSharedAccessKeys regenerateKey(
+        String resourceGroupName, String domainName, DomainRegenerateKeyRequest regenerateKeyRequest) {
+        DomainSharedAccessKeysInner inner =
+            this.serviceClient().regenerateKey(resourceGroupName, domainName, regenerateKeyRequest);
+        if (inner != null) {
+            return new DomainSharedAccessKeysImpl(inner, this.manager());
         } else {
             return null;
         }

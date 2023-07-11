@@ -15,7 +15,7 @@ import java.io.IOException;
 /** Samples for Deployments WhatIfAtManagementGroupScope. */
 public final class DeploymentsWhatIfAtManagementGroupScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/PostDeploymentWhatIfOnManagementGroup.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PostDeploymentWhatIfOnManagementGroup.json
      */
     /**
      * Sample code: Predict template changes at management group scope.
@@ -36,7 +36,7 @@ public final class DeploymentsWhatIfAtManagementGroupScopeSamples {
                     .withLocation("eastus")
                     .withProperties(
                         new DeploymentWhatIfProperties()
-                            .withTemplateLink(new TemplateLink())
+                            .withTemplateLink(new TemplateLink().withUri("https://example.com/exampleTemplate.json"))
                             .withParameters(
                                 SerializerFactory
                                     .createDefaultManagementSerializerAdapter()

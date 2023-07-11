@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class CallTransferFailed extends CallAutomationEventBase {
     /*
-     * Contains the resulting SIP code/sub-code and message from NGC services.
+     * Contains the resulting SIP code, sub-code and message.
      */
     @JsonProperty(value = "resultInformation")
     private final ResultInformation resultInformation;
@@ -20,7 +20,7 @@ public final class CallTransferFailed extends CallAutomationEventBase {
     }
 
     /**
-     * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.
+     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
      *
      * @return the resultInformation value.
      */

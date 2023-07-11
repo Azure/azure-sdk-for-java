@@ -4,10 +4,6 @@ package com.azure.security.keyvault.administration;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.administration.models.KeyVaultPermission;
@@ -24,25 +20,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdministrationClientTestBase {
-    protected final String servicePrincipalId =
-        Configuration.getGlobalConfiguration().get("CLIENT_OBJECTID", "aed295e0-2ae7-4c2a-9abc-813f0ca233d3");
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultAccessControlClientTestBase.class);
 
-    protected KeyVaultAccessControlClientBuilder getClientBuilder(HttpClient httpClient, boolean forCleanup) {
-        List<HttpPipelinePolicy> policies = getPolicies();
+    protected final String servicePrincipalId =
+        Configuration.getGlobalConfiguration().get("CLIENT_OBJECTID", "aed295e0-2ae7-4c2a-9abc-813f0ca233d3");
 
-        if (getTestMode() == TestMode.RECORD && !forCleanup) {
-            policies.add(interceptorManager.getRecordPolicy());
-        }
-
-        HttpPipeline httpPipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .build();
-
+    KeyVaultAccessControlClientBuilder getClientBuilder(HttpClient httpClient, boolean forCleanup) {
         return new KeyVaultAccessControlClientBuilder()
             .vaultUrl(getEndpoint())
-            .pipeline(httpPipeline);
+            .pipeline(getPipeline(httpClient, forCleanup));
     }
 
     @Test

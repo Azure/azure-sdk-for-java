@@ -6,20 +6,19 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.HealthCheck;
-import org.junit.jupiter.api.Test;
 
 public final class HealthCheckTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         HealthCheck model =
             BinaryData
                 .fromString(
-                    "{\"status\":\"Passed\",\"displayName\":\"zqhof\",\"startDateTime\":\"2021-05-05T04:42:21Z\",\"endDateTime\":\"2021-11-16T17:43:34Z\",\"errorType\":\"u\",\"recommendedAction\":\"hxicslfaoqz\",\"additionalDetails\":\"yylhalnswhccsp\"}")
+                    "{\"status\":\"Running\",\"displayName\":\"krribdeibqi\",\"startDateTime\":\"2021-08-10T16:45:38Z\",\"endDateTime\":\"2021-09-05T16:00:20Z\",\"errorType\":\"xndzwm\",\"recommendedAction\":\"efajpj\",\"additionalDetails\":\"wkqnyhg\"}")
                 .toObject(HealthCheck.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         HealthCheck model = new HealthCheck();
         model = BinaryData.fromObject(model).toObject(HealthCheck.class);
     }

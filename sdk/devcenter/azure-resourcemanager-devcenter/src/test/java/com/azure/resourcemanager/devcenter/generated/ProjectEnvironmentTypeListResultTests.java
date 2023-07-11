@@ -6,20 +6,19 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypeListResult;
-import org.junit.jupiter.api.Test;
 
 public final class ProjectEnvironmentTypeListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProjectEnvironmentTypeListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"RolloutInProgress\",\"deploymentTargetId\":\"ewrmjmwvvjektc\",\"status\":\"Enabled\",\"userRoleAssignments\":{}},\"tags\":{\"ylihkaetckt\":\"rsffrzpwvlqdqgbi\"},\"identity\":{\"principalId\":\"c5356d2b-50a9-4bce-aa69-bd5136611e36\",\"tenantId\":\"81fe2a9f-4a52-4893-a099-bf77790a6267\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"nkymuctqhjfbebrj\",\"id\":\"erfuwuttt\",\"name\":\"fvjrbirphxepcy\",\"type\":\"ahfn\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"deploymentTargetId\":\"xjvuujqgidokg\",\"status\":\"Disabled\",\"userRoleAssignments\":{}},\"tags\":{\"jeszzhbijhtxfv\":\"vcltbgsncgh\"},\"identity\":{\"principalId\":\"617ea177-add2-4ead-8c99-52f164d43527\",\"tenantId\":\"06f279f7-934a-45bb-b1b8-228e412f0dd6\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"nehmpvecx\",\"id\":\"debfqkkrbmpukgri\",\"name\":\"flz\",\"type\":\"fbxzpuzycisp\"}],\"nextLink\":\"zahmgkbrpyydhibn\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"deploymentTargetId\":\"fkbey\",\"status\":\"Disabled\",\"userRoleAssignments\":{}},\"tags\":{\"jektcxsenh\":\"wv\",\"rzpwvlqdqgbiq\":\"lrsf\",\"vf\":\"lihkaetcktvfc\",\"xerf\":\"nkymuctqhjfbebrj\"},\"identity\":{\"principalId\":\"79044b94-1fc7-4fa6-bd54-7365aa8307a9\",\"tenantId\":\"6503dbf2-1c28-4fa5-90a8-c70cc9b27e3a\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"fvjrbirphxepcy\",\"id\":\"hfnljkyq\",\"name\":\"j\",\"type\":\"uujqgidokgjljyo\"},{\"properties\":{\"provisioningState\":\"RolloutInProgress\",\"deploymentTargetId\":\"tbgsncghkj\",\"status\":\"Enabled\",\"userRoleAssignments\":{}},\"tags\":{\"mpvecxgodebfqk\":\"jhtxfvgxbfsmxne\",\"flz\":\"rbmpukgri\"},\"identity\":{\"principalId\":\"e8810a7b-c439-4189-8aa7-830378c0ea7e\",\"tenantId\":\"067bce9e-5709-4714-b336-fcf2c3bd6cca\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"zycispn\",\"id\":\"ahmgkbrp\",\"name\":\"y\",\"type\":\"hibnuqqkpika\"},{\"properties\":{\"provisioningState\":\"Running\",\"deploymentTargetId\":\"qagnbuyn\",\"status\":\"Disabled\",\"userRoleAssignments\":{}},\"tags\":{\"arbu\":\"bfs\"},\"identity\":{\"principalId\":\"06425e45-8270-4590-9be0-40235ec07ed5\",\"tenantId\":\"452c69b0-a45e-408a-b406-4754e61ccf1a\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"zzmhjrunmpxttd\",\"id\":\"rbnlankxmyskp\",\"name\":\"henbtkcxywnytn\",\"type\":\"synlqidybyxczfc\"}],\"nextLink\":\"aaxdbabphlwrq\"}")
                 .toObject(ProjectEnvironmentTypeListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProjectEnvironmentTypeListResult model = new ProjectEnvironmentTypeListResult();
         model = BinaryData.fromObject(model).toObject(ProjectEnvironmentTypeListResult.class);
     }

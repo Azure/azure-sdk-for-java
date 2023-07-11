@@ -34,6 +34,10 @@ public final class SrvRecord {
     @JsonProperty(value = "target")
     private String target;
 
+    /** Creates an instance of SrvRecord class. */
+    public SrvRecord() {
+    }
+
     /**
      * Get the priority property: The priority value for this SRV record.
      *

@@ -31,7 +31,7 @@ public final class CheckNameAvailabilitiesExecuteWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"message\":\"crkvcikhnv\",\"nameAvailable\":false,\"reason\":\"gxqquezik\"}";
+        String responseStr = "{\"message\":\"eptra\",\"nameAvailable\":false,\"reason\":\"zwl\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,13 @@ public final class CheckNameAvailabilitiesExecuteWithResponseMockTests {
             manager
                 .checkNameAvailabilities()
                 .executeWithResponse(
-                    "ncvokotllxdyhg",
-                    new NameAvailabilityRequest().withName("y").withType("ogjltdtbnnhad"),
+                    "xiilivpdtiirqt",
+                    new NameAvailabilityRequest().withName("qoaxoruzfgs").withType("yfxrx"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("crkvcikhnv", response.message());
+        Assertions.assertEquals("eptra", response.message());
         Assertions.assertEquals(false, response.nameAvailable());
-        Assertions.assertEquals("gxqquezik", response.reason());
+        Assertions.assertEquals("zwl", response.reason());
     }
 }

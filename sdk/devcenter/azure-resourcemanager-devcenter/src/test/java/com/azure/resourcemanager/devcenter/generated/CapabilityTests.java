@@ -6,17 +6,16 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.Capability;
-import org.junit.jupiter.api.Test;
 
 public final class CapabilityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         Capability model =
-            BinaryData.fromString("{\"name\":\"nqxwbp\",\"value\":\"ulpiuj\"}").toObject(Capability.class);
+            BinaryData.fromString("{\"name\":\"ljphuopxodl\",\"value\":\"ynt\"}").toObject(Capability.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Capability model = new Capability();
         model = BinaryData.fromObject(model).toObject(Capability.class);
     }

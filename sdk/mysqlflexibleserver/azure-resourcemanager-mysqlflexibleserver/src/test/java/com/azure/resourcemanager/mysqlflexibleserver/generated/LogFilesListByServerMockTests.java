@@ -32,7 +32,7 @@ public final class LogFilesListByServerMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"sizeInKB\":8335274886610479577,\"createdTime\":\"2021-01-02T23:27:33Z\",\"type\":\"bpkkpwdre\",\"lastModifiedTime\":\"2021-09-12T16:04:39Z\",\"url\":\"vq\"},\"id\":\"vljxywsu\",\"name\":\"syrsndsytgadgvra\",\"type\":\"aeneqnzarrwl\"}]}";
+            "{\"value\":[{\"properties\":{\"sizeInKB\":2787297702458911120,\"createdTime\":\"2021-01-04T11:20:29Z\",\"type\":\"wneaiv\",\"lastModifiedTime\":\"2021-02-14T15:05:44Z\",\"url\":\"elpcirelsfeaenwa\"},\"id\":\"atklddxbjhwuaa\",\"name\":\"oz\",\"type\":\"osphyoul\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,13 +61,13 @@ public final class LogFilesListByServerMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<LogFile> response =
-            manager.logFiles().listByServer("afnn", "lpichk", com.azure.core.util.Context.NONE);
+            manager.logFiles().listByServer("mszkkfo", "rey", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(8335274886610479577L, response.iterator().next().sizeInKB());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-02T23:27:33Z"), response.iterator().next().createdTime());
-        Assertions.assertEquals("bpkkpwdre", response.iterator().next().typePropertiesType());
+        Assertions.assertEquals(2787297702458911120L, response.iterator().next().sizeInKB());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-04T11:20:29Z"), response.iterator().next().createdTime());
+        Assertions.assertEquals("wneaiv", response.iterator().next().typePropertiesType());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-09-12T16:04:39Z"), response.iterator().next().lastModifiedTime());
-        Assertions.assertEquals("vq", response.iterator().next().url());
+            .assertEquals(OffsetDateTime.parse("2021-02-14T15:05:44Z"), response.iterator().next().lastModifiedTime());
+        Assertions.assertEquals("elpcirelsfeaenwa", response.iterator().next().url());
     }
 }

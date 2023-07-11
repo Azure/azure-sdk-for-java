@@ -3,13 +3,10 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.core.annotation.Fluent;
-
 /**
  * The options for creating a call.
  */
-@Fluent
-public class RedirectCallOptions {
+public final class RedirectCallOptions {
     /**
      * The incoming call context.
      */
@@ -18,17 +15,17 @@ public class RedirectCallOptions {
     /**
      * Information of target of being redirected to.
      */
-    private final CallInvite targetCallInvite;
+    private final CallInvite targetParticipant;
 
     /**
      * Constructor
      *
      * @param incomingCallContext The incoming call context.
-     * @param targetCallInvite Information of target of being redirected to.
+     * @param targetParticipant Information of target of being redirected to.
      */
-    public RedirectCallOptions(String incomingCallContext, CallInvite targetCallInvite) {
+    public RedirectCallOptions(String incomingCallContext, CallInvite targetParticipant) {
         this.incomingCallContext = incomingCallContext;
-        this.targetCallInvite = targetCallInvite;
+        this.targetParticipant = targetParticipant;
     }
 
     /**
@@ -44,7 +41,7 @@ public class RedirectCallOptions {
      * Information of target of being redirected to
      * @return the callInvite to redirect target
      */
-    public CallInvite getTargetCallInvite() {
-        return targetCallInvite;
+    public CallInvite getTargetParticipant() {
+        return targetParticipant;
     }
 }

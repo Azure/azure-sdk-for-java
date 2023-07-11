@@ -5,7 +5,6 @@ package com.azure.communication.rooms.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RoomParticipant model. */
 @Fluent
@@ -16,18 +15,43 @@ public final class RoomParticipant {
      * model must be interpreted as a union: Apart from rawId, at most one
      * further property may be set.
      */
-    @JsonProperty(value = "communicationIdentifier", required = true)
-    private CommunicationIdentifier communicationIdentifier;
+    private final CommunicationIdentifier communicationIdentifier;
 
     /*
      * The Role of a room participant.
      */
-    @JsonProperty(value = "role")
-    private RoleType role;
+    private ParticipantRole role;
 
     /**
-     * Get the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
-     * is, for example, a phone number or an Azure communication user. This model must be interpreted as a union: Apart
+     * Default constructor for Room Participant. Default role is Attendee
+     *
+     * @param communicationIdentifier The communication identifier.
+     */
+    public RoomParticipant(CommunicationIdentifier communicationIdentifier) {
+        this.communicationIdentifier = communicationIdentifier;
+        this.role = ParticipantRole.ATTENDEE;
+    }
+
+       /**
+     * Set the role property: The role of a room participant. The default value is Attendee.
+     *
+     * @param role the role value to set.
+     * @return the RoomParticipant object itself.
+     */
+    public RoomParticipant setRole(ParticipantRole role) {
+        if (role == null) {
+            this.role = ParticipantRole.ATTENDEE;
+        } else {
+            this.role = role;
+        }
+        return this;
+    }
+
+    /**
+     * Get the communicationIdentifier property: Identifies a participant in Azure
+     * Communication services. A participant
+     * is, for example, a phone number or an Azure communication user. This model
+     * must be interpreted as a union: Apart
      * from rawId, at most one further property may be set.
      *
      * @return the communicationIdentifier value.
@@ -37,35 +61,11 @@ public final class RoomParticipant {
     }
 
     /**
-     * Set the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
-     * is, for example, a phone number or an Azure communication user. This model must be interpreted as a union: Apart
-     * from rawId, at most one further property may be set.
-     *
-     * @param communicationIdentifier the communicationIdentifier value to set.
-     * @return the RoomParticipant object itself.
-     */
-    public  RoomParticipant setCommunicationIdentifier(CommunicationIdentifier communicationIdentifier) {
-        this.communicationIdentifier = communicationIdentifier;
-        return this;
-    }
-
-    /**
      * Get the role property: The Role of a room participant.
      *
      * @return the role value.
      */
-    public RoleType getRole() {
+    public ParticipantRole getRole() {
         return this.role;
-    }
-
-    /**
-     * Set the role property: The Role of a room participant.
-     *
-     * @param role the role value to set.
-     * @return the RoomParticipant object itself.
-     */
-    public RoomParticipant setRole(RoleType role) {
-        this.role = role;
-        return this;
     }
 }

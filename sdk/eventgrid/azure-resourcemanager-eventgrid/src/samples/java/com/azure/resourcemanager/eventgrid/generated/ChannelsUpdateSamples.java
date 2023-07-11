@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.models.ChannelUpdateParameters;
 import java.time.OffsetDateTime;
 
 /** Samples for Channels Update. */
 public final class ChannelsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/Channels_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Channels_Update.json
      */
     /**
      * Sample code: Channels_Update.
@@ -27,6 +26,6 @@ public final class ChannelsUpdateSamples {
                 "exampleChannelName1",
                 new ChannelUpdateParameters()
                     .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2022-03-23T23:06:11.785Z")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

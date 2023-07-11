@@ -56,6 +56,15 @@ public interface Channel {
     PartnerTopicInfo partnerTopicInfo();
 
     /**
+     * Gets the partnerDestinationInfo property: This property should be populated when channelType is
+     * PartnerDestination and represents information about the partner destination resource corresponding to the
+     * channel.
+     *
+     * @return the partnerDestinationInfo value.
+     */
+    PartnerDestinationInfo partnerDestinationInfo();
+
+    /**
      * Gets the messageForActivation property: Context or helpful message that can be used during the approval process
      * by the subscriber.
      *
@@ -126,6 +135,7 @@ public interface Channel {
         interface WithCreate
             extends DefinitionStages.WithChannelType,
                 DefinitionStages.WithPartnerTopicInfo,
+                DefinitionStages.WithPartnerDestinationInfo,
                 DefinitionStages.WithMessageForActivation,
                 DefinitionStages.WithProvisioningState,
                 DefinitionStages.WithReadinessState,
@@ -167,6 +177,19 @@ public interface Channel {
              * @return the next definition stage.
              */
             WithCreate withPartnerTopicInfo(PartnerTopicInfo partnerTopicInfo);
+        }
+        /** The stage of the Channel definition allowing to specify partnerDestinationInfo. */
+        interface WithPartnerDestinationInfo {
+            /**
+             * Specifies the partnerDestinationInfo property: This property should be populated when channelType is
+             * PartnerDestination and represents information about the partner destination resource corresponding to the
+             * channel..
+             *
+             * @param partnerDestinationInfo This property should be populated when channelType is PartnerDestination
+             *     and represents information about the partner destination resource corresponding to the channel.
+             * @return the next definition stage.
+             */
+            WithCreate withPartnerDestinationInfo(PartnerDestinationInfo partnerDestinationInfo);
         }
         /** The stage of the Channel definition allowing to specify messageForActivation. */
         interface WithMessageForActivation {
@@ -226,6 +249,7 @@ public interface Channel {
     interface Update
         extends UpdateStages.WithChannelType,
             UpdateStages.WithPartnerTopicInfo,
+            UpdateStages.WithPartnerDestinationInfo,
             UpdateStages.WithMessageForActivation,
             UpdateStages.WithProvisioningState,
             UpdateStages.WithReadinessState,
@@ -269,6 +293,19 @@ public interface Channel {
              * @return the next definition stage.
              */
             Update withPartnerTopicInfo(PartnerTopicInfo partnerTopicInfo);
+        }
+        /** The stage of the Channel update allowing to specify partnerDestinationInfo. */
+        interface WithPartnerDestinationInfo {
+            /**
+             * Specifies the partnerDestinationInfo property: This property should be populated when channelType is
+             * PartnerDestination and represents information about the partner destination resource corresponding to the
+             * channel..
+             *
+             * @param partnerDestinationInfo This property should be populated when channelType is PartnerDestination
+             *     and represents information about the partner destination resource corresponding to the channel.
+             * @return the next definition stage.
+             */
+            Update withPartnerDestinationInfo(PartnerDestinationInfo partnerDestinationInfo);
         }
         /** The stage of the Channel update allowing to specify messageForActivation. */
         interface WithMessageForActivation {
@@ -333,16 +370,9 @@ public interface Channel {
     Channel refresh(Context context);
 
     /**
-     * Get the full endpoint URL of a partner destination channel.
+     * Get full URL of partner destination channel.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL of a partner destination channel.
-     */
-    EventSubscriptionFullUrl getFullUrl();
-
-    /**
-     * Get the full endpoint URL of a partner destination channel.
+     * <p>Get the full endpoint URL of a partner destination channel.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -351,4 +381,15 @@ public interface Channel {
      * @return the full endpoint URL of a partner destination channel along with {@link Response}.
      */
     Response<EventSubscriptionFullUrl> getFullUrlWithResponse(Context context);
+
+    /**
+     * Get full URL of partner destination channel.
+     *
+     * <p>Get the full endpoint URL of a partner destination channel.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL of a partner destination channel.
+     */
+    EventSubscriptionFullUrl getFullUrl();
 }

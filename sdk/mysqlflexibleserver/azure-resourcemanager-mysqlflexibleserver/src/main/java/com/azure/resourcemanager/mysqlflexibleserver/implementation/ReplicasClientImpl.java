@@ -57,8 +57,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
     public interface ReplicasService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL"
-                + "/flexibleServers/{serverName}/replicas")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/replicas")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerListResult>> listByServer(
@@ -112,6 +111,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
+        final String apiVersion = "2022-09-30-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -119,7 +119,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
                     service
                         .listByServer(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             serverName,
@@ -170,12 +170,13 @@ public final class ReplicasClientImpl implements ReplicasClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
+        final String apiVersion = "2022-09-30-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByServer(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 serverName,

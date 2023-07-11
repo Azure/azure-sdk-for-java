@@ -25,6 +25,10 @@ public final class SystemTopicUpdateParameters {
     @JsonProperty(value = "identity")
     private IdentityInfo identity;
 
+    /** Creates an instance of SystemTopicUpdateParameters class. */
+    public SystemTopicUpdateParameters() {
+    }
+
     /**
      * Get the tags property: Tags of the system topic.
      *

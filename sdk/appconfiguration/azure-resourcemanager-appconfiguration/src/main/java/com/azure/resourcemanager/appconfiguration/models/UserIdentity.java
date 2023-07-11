@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A resource identity that is managed by the user of the service. */
 @Immutable
-public class UserIdentity {
+public final class UserIdentity {
     /*
      * The principal ID of the user-assigned identity.
      */
@@ -21,6 +21,10 @@ public class UserIdentity {
      */
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
+
+    /** Creates an instance of UserIdentity class. */
+    public UserIdentity() {
+    }
 
     /**
      * Get the principalId property: The principal ID of the user-assigned identity.

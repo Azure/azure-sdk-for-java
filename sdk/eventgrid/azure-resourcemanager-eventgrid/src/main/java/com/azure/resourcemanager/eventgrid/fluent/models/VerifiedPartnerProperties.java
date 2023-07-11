@@ -38,10 +38,20 @@ public final class VerifiedPartnerProperties {
     private PartnerDetails partnerTopicDetails;
 
     /*
+     * Details of the partner destination scenario.
+     */
+    @JsonProperty(value = "partnerDestinationDetails")
+    private PartnerDetails partnerDestinationDetails;
+
+    /*
      * Provisioning state of the verified partner.
      */
     @JsonProperty(value = "provisioningState")
     private VerifiedPartnerProvisioningState provisioningState;
+
+    /** Creates an instance of VerifiedPartnerProperties class. */
+    public VerifiedPartnerProperties() {
+    }
 
     /**
      * Get the partnerRegistrationImmutableId property: ImmutableId of the corresponding partner registration.
@@ -124,6 +134,26 @@ public final class VerifiedPartnerProperties {
     }
 
     /**
+     * Get the partnerDestinationDetails property: Details of the partner destination scenario.
+     *
+     * @return the partnerDestinationDetails value.
+     */
+    public PartnerDetails partnerDestinationDetails() {
+        return this.partnerDestinationDetails;
+    }
+
+    /**
+     * Set the partnerDestinationDetails property: Details of the partner destination scenario.
+     *
+     * @param partnerDestinationDetails the partnerDestinationDetails value to set.
+     * @return the VerifiedPartnerProperties object itself.
+     */
+    public VerifiedPartnerProperties withPartnerDestinationDetails(PartnerDetails partnerDestinationDetails) {
+        this.partnerDestinationDetails = partnerDestinationDetails;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the verified partner.
      *
      * @return the provisioningState value.
@@ -151,6 +181,9 @@ public final class VerifiedPartnerProperties {
     public void validate() {
         if (partnerTopicDetails() != null) {
             partnerTopicDetails().validate();
+        }
+        if (partnerDestinationDetails() != null) {
+            partnerDestinationDetails().validate();
         }
     }
 }

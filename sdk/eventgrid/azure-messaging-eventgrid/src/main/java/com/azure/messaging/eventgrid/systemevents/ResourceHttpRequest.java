@@ -34,6 +34,9 @@ public final class ResourceHttpRequest {
     @JsonProperty(value = "url")
     private String url;
 
+    /** Creates an instance of ResourceHttpRequest class. */
+    public ResourceHttpRequest() {}
+
     /**
      * Get the clientRequestId property: The client request ID.
      *

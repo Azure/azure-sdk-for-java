@@ -43,6 +43,9 @@ public final class MediaLiveEventEncoderDisconnectedEventData {
     @JsonProperty(value = "resultCode", access = JsonProperty.Access.WRITE_ONLY)
     private String resultCode;
 
+    /** Creates an instance of MediaLiveEventEncoderDisconnectedEventData class. */
+    public MediaLiveEventEncoderDisconnectedEventData() {}
+
     /**
      * Get the ingestUrl property: Gets the ingest URL provided by the live event.
      *

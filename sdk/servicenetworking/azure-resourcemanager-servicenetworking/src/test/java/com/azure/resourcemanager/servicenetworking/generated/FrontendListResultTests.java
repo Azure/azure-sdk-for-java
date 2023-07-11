@@ -6,54 +6,55 @@ package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicenetworking.fluent.models.FrontendInner;
-import com.azure.resourcemanager.servicenetworking.models.FrontendIpAddressVersion;
 import com.azure.resourcemanager.servicenetworking.models.FrontendListResult;
-import com.azure.resourcemanager.servicenetworking.models.FrontendMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class FrontendListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         FrontendListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"mode\":\"public\",\"ipAddressVersion\":\"IPv4\",\"provisioningState\":\"Failed\"},\"location\":\"kyfi\",\"tags\":{\"zwdzuh\":\"idf\",\"wxmnteiwao\":\"ymwisdkft\"},\"id\":\"vkmijcmmxdcuf\",\"name\":\"fsrpymzidnse\",\"type\":\"cxtbzsg\"},{\"properties\":{\"mode\":\"public\",\"ipAddressVersion\":\"IPv6\",\"provisioningState\":\"Failed\"},\"location\":\"wzjeiach\",\"tags\":{\"eeh\":\"sflnrosfqp\",\"swjdkirso\":\"zvypyqrimzinp\"},\"id\":\"dqxhcrmnohjtckwh\",\"name\":\"soifiyipjxsqw\",\"type\":\"gr\"}],\"nextLink\":\"znorcj\"}")
+                    "{\"value\":[{\"properties\":{\"fqdn\":\"nohjt\",\"provisioningState\":\"Accepted\"},\"location\":\"dsoifiyipj\",\"tags\":{\"cjxvsnbyxqab\":\"wpgrjbzno\",\"shurzafbljjgpbto\":\"mocpc\",\"mkljavb\":\"c\"},\"id\":\"idtqajzyu\",\"name\":\"pku\",\"type\":\"jkrlkhbzhfepg\"},{\"properties\":{\"fqdn\":\"e\",\"provisioningState\":\"Provisioning\"},\"location\":\"c\",\"tags\":{\"bcsglumma\":\"paierh\"},\"id\":\"tjaodxobnb\",\"name\":\"xkqpxo\",\"type\":\"ajionpimexgstxg\"},{\"properties\":{\"fqdn\":\"dg\",\"provisioningState\":\"Succeeded\"},\"location\":\"r\",\"tags\":{\"vmclw\":\"jwzrl\",\"aqsqsycbkbfk\":\"ijcoejctb\"},\"id\":\"ukdkexxppofmxa\",\"name\":\"c\",\"type\":\"jpgd\"},{\"properties\":{\"fqdn\":\"c\",\"provisioningState\":\"Failed\"},\"location\":\"vpmouexhdzxib\",\"tags\":{\"eic\":\"jnxqbzvddntwn\",\"cyddglmjthjqk\":\"twnpzaoqvuhrhcf\",\"ciwqvhk\":\"pyeicxm\"},\"id\":\"ixuigdtopbobj\",\"name\":\"ghmewuam\",\"type\":\"uhrzayvvt\"}],\"nextLink\":\"vdfgiotk\"}")
                 .toObject(FrontendListResult.class);
-        Assertions.assertEquals("kyfi", model.value().get(0).location());
-        Assertions.assertEquals("idf", model.value().get(0).tags().get("zwdzuh"));
-        Assertions.assertEquals(FrontendMode.PUBLIC, model.value().get(0).mode());
-        Assertions.assertEquals(FrontendIpAddressVersion.IPV4, model.value().get(0).ipAddressVersion());
-        Assertions.assertEquals("znorcj", model.nextLink());
+        Assertions.assertEquals("dsoifiyipj", model.value().get(0).location());
+        Assertions.assertEquals("wpgrjbzno", model.value().get(0).tags().get("cjxvsnbyxqab"));
+        Assertions.assertEquals("vdfgiotk", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         FrontendListResult model =
             new FrontendListResult()
                 .withValue(
                     Arrays
                         .asList(
                             new FrontendInner()
-                                .withLocation("kyfi")
-                                .withTags(mapOf("zwdzuh", "idf", "wxmnteiwao", "ymwisdkft"))
-                                .withMode(FrontendMode.PUBLIC)
-                                .withIpAddressVersion(FrontendIpAddressVersion.IPV4),
+                                .withLocation("dsoifiyipj")
+                                .withTags(
+                                    mapOf("cjxvsnbyxqab", "wpgrjbzno", "shurzafbljjgpbto", "mocpc", "mkljavb", "c")),
+                            new FrontendInner().withLocation("c").withTags(mapOf("bcsglumma", "paierh")),
                             new FrontendInner()
-                                .withLocation("wzjeiach")
-                                .withTags(mapOf("eeh", "sflnrosfqp", "swjdkirso", "zvypyqrimzinp"))
-                                .withMode(FrontendMode.PUBLIC)
-                                .withIpAddressVersion(FrontendIpAddressVersion.IPV6)))
-                .withNextLink("znorcj");
+                                .withLocation("r")
+                                .withTags(mapOf("vmclw", "jwzrl", "aqsqsycbkbfk", "ijcoejctb")),
+                            new FrontendInner()
+                                .withLocation("vpmouexhdzxib")
+                                .withTags(
+                                    mapOf(
+                                        "eic",
+                                        "jnxqbzvddntwn",
+                                        "cyddglmjthjqk",
+                                        "twnpzaoqvuhrhcf",
+                                        "ciwqvhk",
+                                        "pyeicxm"))))
+                .withNextLink("vdfgiotk");
         model = BinaryData.fromObject(model).toObject(FrontendListResult.class);
-        Assertions.assertEquals("kyfi", model.value().get(0).location());
-        Assertions.assertEquals("idf", model.value().get(0).tags().get("zwdzuh"));
-        Assertions.assertEquals(FrontendMode.PUBLIC, model.value().get(0).mode());
-        Assertions.assertEquals(FrontendIpAddressVersion.IPV4, model.value().get(0).ipAddressVersion());
-        Assertions.assertEquals("znorcj", model.nextLink());
+        Assertions.assertEquals("dsoifiyipj", model.value().get(0).location());
+        Assertions.assertEquals("wpgrjbzno", model.value().get(0).tags().get("cjxvsnbyxqab"));
+        Assertions.assertEquals("vdfgiotk", model.nextLink());
     }
 
     @SuppressWarnings("unchecked")

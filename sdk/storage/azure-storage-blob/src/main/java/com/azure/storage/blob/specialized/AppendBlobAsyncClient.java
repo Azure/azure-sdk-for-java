@@ -71,13 +71,33 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
+     * @deprecated use {@link AppendBlobAsyncClient#getMaxAppendBlockBytes()}.
      */
+    @Deprecated
     public static final int MAX_APPEND_BLOCK_BYTES = 4 * Constants.MB;
 
     /**
      * Indicates the maximum number of blocks allowed in an append blob.
+     * @deprecated use {@link AppendBlobAsyncClient#getMaxBlocks()}.
      */
+    @Deprecated
     public static final int MAX_BLOCKS = 50000;
+
+    /**
+     * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
+     */
+    static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW = 4 * Constants.MB;
+
+    /**
+     * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
+     * For versions 2022-11-02 and above.
+     */
+    static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE = 100 * Constants.MB;
+
+    /**
+     * Indicates the maximum number of blocks allowed in an append blob.
+     */
+    static final int MAX_APPEND_BLOCKS = 50000;
 
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
@@ -364,6 +384,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
+     * For service versions 2022-11-02 and later, the max block size is 100 MB. For previous versions, the max block
+     * size is 4 MB. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlock#Flux-long -->
@@ -389,6 +413,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * For service versions 2022-11-02 and later, the max block size is 100 MB. For previous versions, the max block
+     * size is 4 MB. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -642,5 +670,28 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             requestConditions.getIfNoneMatch(), requestConditions.getAppendPosition(),
             context)
             .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Get the max number of append block bytes based on service version being used. Service versions 2022-11-02 and
+     * above support uploading block bytes up to 100MB, all older service versions support up to 4MB.
+     *
+     * @return the max number of block bytes that can be uploaded based on service version.
+     */
+    public int getMaxAppendBlockBytes() {
+        if (getServiceVersion().ordinal() < BlobServiceVersion.V2022_11_02.ordinal()) {
+            return MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW;
+        } else {
+            return MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE;
+        }
+    }
+
+    /**
+     * Get the maximum number of blocks allowed in an append blob.
+     *
+     * @return the max number of blocks that can be uploaded in an append blob.
+     */
+    public int getMaxBlocks() {
+        return MAX_APPEND_BLOCKS;
     }
 }

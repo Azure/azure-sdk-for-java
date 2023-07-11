@@ -7,7 +7,7 @@ package com.azure.resourcemanager.qumulo.generated;
 /** Samples for FileSystems GetByResourceGroup. */
 public final class FileSystemsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/FileSystems_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Get_MaximumSet_Gen.
@@ -22,7 +22,7 @@ public final class FileSystemsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/FileSystems_Get_MinimumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Get_MinimumSet_Gen.

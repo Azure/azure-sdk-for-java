@@ -5,11 +5,13 @@ package com.azure.security.keyvault.keys;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -52,5 +54,17 @@ public final class TestUtils {
         public Mono<AccessToken> getToken(TokenRequestContext request) {
             return Mono.just(new AccessToken("TestAccessToken", OffsetDateTime.now().plusHours(1)));
         }
+    }
+
+    public static HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertSync()
+            .build();
+    }
+
+    public static HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertAsync()
+            .build();
     }
 }

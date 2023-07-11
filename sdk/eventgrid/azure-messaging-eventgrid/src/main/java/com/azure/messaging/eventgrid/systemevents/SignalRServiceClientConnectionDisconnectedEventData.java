@@ -43,6 +43,9 @@ public final class SignalRServiceClientConnectionDisconnectedEventData {
     @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
+    /** Creates an instance of SignalRServiceClientConnectionDisconnectedEventData class. */
+    public SignalRServiceClientConnectionDisconnectedEventData() {}
+
     /**
      * Get the timestamp property: The time at which the event occurred.
      *

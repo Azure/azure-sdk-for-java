@@ -12,7 +12,7 @@ import java.util.List;
 
 /** Describes a virtual machine scale set network profile's network configurations. */
 @Fluent
-public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResource {
+public final class VirtualMachineScaleSetUpdateNetworkConfiguration {
     /*
      * The network configuration name.
      */
@@ -58,13 +58,6 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
      */
     private VirtualMachineScaleSetUpdateNetworkConfigurationProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VirtualMachineScaleSetUpdateNetworkConfiguration withId(String id) {
-        super.withId(id);
-        return this;
     }
 
     /**

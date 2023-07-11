@@ -25,11 +25,7 @@ public final class MediaStreamingTransportTypeInternal
         return fromString(name, MediaStreamingTransportTypeInternal.class);
     }
 
-    /**
-     * Gets known MediaStreamingTransportTypeInternal values.
-     *
-     * @return known MediaStreamingTransportTypeInternal values.
-     */
+    /** @return known MediaStreamingTransportTypeInternal values. */
     public static Collection<MediaStreamingTransportTypeInternal> values() {
         return values(MediaStreamingTransportTypeInternal.class);
     }

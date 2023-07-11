@@ -9,7 +9,7 @@
     "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"": "TCP",
     "Session": "",
     "ubuntu": "",
-    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enablePartitionMerge = $true }": "",
+    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }": "",
     "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }": "",
     "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }": "",
     "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enablePartitionMerge = $true }": "",
@@ -42,7 +42,7 @@
       "ACCOUNT_CONSISTENCY": "Session",
       "PROTOCOLS": "[\"Tcp\"]",
       "ProfileFlag": [ "-Pfast", "-Pdirect" ],
-      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enablePartitionMerge = $true }",
+      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       }

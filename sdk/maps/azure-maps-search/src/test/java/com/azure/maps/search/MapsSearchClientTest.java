@@ -37,7 +37,6 @@ import com.azure.maps.search.models.SearchPointOfInterestCategoryOptions;
 import com.azure.maps.search.models.SearchPointOfInterestOptions;
 import com.azure.maps.search.models.SearchStructuredAddressOptions;
 import com.azure.maps.search.models.StructuredAddress;
-import com.nimbusds.jose.shaded.json.parser.ParseException;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -56,7 +55,7 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testGetMultiPolygons(HttpClient httpClient, MapsSearchServiceVersion serviceVersion)
-            throws IOException, ParseException {
+            throws IOException {
         client = getMapsSearchClient(httpClient, serviceVersion);
         List<String> geometryIds = Arrays.asList("8bceafe8-3d98-4445-b29b-fd81d3e9adf5",
                 "00005858-5800-1200-0000-0000773694ca");
@@ -428,7 +427,7 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
                 new SearchInsideGeometryOptions("coffee", obj));
         SearchAddressResult expectedResult = TestUtils.getExpectedSearchInsideGeometryCollection();
         validateSearchInsideGeometry(expectedResult, actualResult);
-    } 
+    }
 
     // Test search inside geometry with response
     // Case 1: 200

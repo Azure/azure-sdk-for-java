@@ -92,6 +92,8 @@ public class ProxyReceiveTest extends IntegrationTestBase {
             .queueName(queueName)
             .buildAsyncClient();
 
+        toClose(sender);
+
         final ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
@@ -100,6 +102,8 @@ public class ProxyReceiveTest extends IntegrationTestBase {
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .queueName(queueName)
             .buildAsyncClient();
+
+        toClose(receiver);
 
         // Act & Assert
         try {

@@ -15,13 +15,13 @@ public final class AzureADAdministratorInnerTests {
         AzureADAdministratorInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"qidybyx\",\"sid\":\"fclhaaxdbabphlwr\",\"tenantId\":\"fkts\",\"identityResourceId\":\"sucocmnyyazttbtw\"},\"id\":\"qpuedckzywbiex\",\"name\":\"fey\",\"type\":\"eaxib\"}")
+                    "{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"uv\",\"sid\":\"xpyb\",\"tenantId\":\"m\",\"identityResourceId\":\"mtz\"},\"id\":\"bsphrupidgsybbe\",\"name\":\"hphoycm\",\"type\":\"xaobhdxbmtqioqjz\"}")
                 .toObject(AzureADAdministratorInner.class);
         Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, model.administratorType());
-        Assertions.assertEquals("qidybyx", model.login());
-        Assertions.assertEquals("fclhaaxdbabphlwr", model.sid());
-        Assertions.assertEquals("fkts", model.tenantId());
-        Assertions.assertEquals("sucocmnyyazttbtw", model.identityResourceId());
+        Assertions.assertEquals("uv", model.login());
+        Assertions.assertEquals("xpyb", model.sid());
+        Assertions.assertEquals("m", model.tenantId());
+        Assertions.assertEquals("mtz", model.identityResourceId());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,15 +29,15 @@ public final class AzureADAdministratorInnerTests {
         AzureADAdministratorInner model =
             new AzureADAdministratorInner()
                 .withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
-                .withLogin("qidybyx")
-                .withSid("fclhaaxdbabphlwr")
-                .withTenantId("fkts")
-                .withIdentityResourceId("sucocmnyyazttbtw");
+                .withLogin("uv")
+                .withSid("xpyb")
+                .withTenantId("m")
+                .withIdentityResourceId("mtz");
         model = BinaryData.fromObject(model).toObject(AzureADAdministratorInner.class);
         Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, model.administratorType());
-        Assertions.assertEquals("qidybyx", model.login());
-        Assertions.assertEquals("fclhaaxdbabphlwr", model.sid());
-        Assertions.assertEquals("fkts", model.tenantId());
-        Assertions.assertEquals("sucocmnyyazttbtw", model.identityResourceId());
+        Assertions.assertEquals("uv", model.login());
+        Assertions.assertEquals("xpyb", model.sid());
+        Assertions.assertEquals("m", model.tenantId());
+        Assertions.assertEquals("mtz", model.identityResourceId());
     }
 }

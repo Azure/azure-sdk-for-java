@@ -7,6 +7,10 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.implementation.util.EnvironmentConfiguration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.metrics.Meter;
+import com.azure.core.util.metrics.MeterProvider;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -159,10 +163,37 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_TRACING_DISABLED = "AZURE_TRACING_DISABLED";
 
     /**
+     * Sets the name of the {@link TracerProvider} implementation that should be used to construct instances of
+     * {@link Tracer}.
+     * <p>
+     * The name must be the full class name, e.g. {@code com.azure.core.tracing.opentelemetry.OpenTelemetryTracerProvider} and not
+     * {@code OpenTelemetryTracerProvider}.
+     * <p>
+     * If the value isn't set or is an empty string the first {@link TracerProvider} resolved by {@link java.util.ServiceLoader} will be
+     * used to create an instance of {@link Tracer}. If the value is set and doesn't match any
+     * {@link TracerProvider} resolved by {@link java.util.ServiceLoader} an {@link IllegalStateException} will be thrown when
+     * attempting to create an instance of {@link TracerProvider}.
+     */
+    public static final String PROPERTY_AZURE_TRACING_IMPLEMENTATION = "AZURE_TRACING_IMPLEMENTATION";
+
+    /**
      * Disables metrics.
      */
     public static final String PROPERTY_AZURE_METRICS_DISABLED = "AZURE_METRICS_DISABLED";
 
+    /**
+     * Sets the name of the {@link MeterProvider} implementation that should be used to construct instances of
+     * {@link Meter}.
+     * <p>
+     * The name must be the full class name, e.g. {@code com.azure.core.tracing.opentelemetry.OpenTelemetryMeterProvider} and not
+     * {@code OpenTelemetryMeterProvider}.
+     * <p>
+     * If the value isn't set or is an empty string the first {@link MeterProvider} resolved by {@link java.util.ServiceLoader} will be
+     * used to create an instance of {@link Meter}. If the value is set and doesn't match any
+     * {@link MeterProvider} resolved by {@link java.util.ServiceLoader} an {@link IllegalStateException} will be thrown when
+     * attempting to create an instance of {@link MeterProvider}.
+     */
+    public static final String PROPERTY_AZURE_METRICS_IMPLEMENTATION = "AZURE_METRICS_IMPLEMENTATION";
 
     /**
      * Sets the default number of times a request will be retried, if it passes the conditions for retrying, before it
@@ -206,9 +237,9 @@ public class Configuration implements Cloneable {
      * {@code NettyAsyncHttpClientProvider}, to disambiguate multiple providers with the same name but from different
      * packages.
      * <p>
-     * If the value isn't set or is an empty string the first {@link HttpClientProvider} found on the class path will be
+     * If the value isn't set or is an empty string the first {@link HttpClientProvider} resolved by {@link java.util.ServiceLoader} will be
      * used to create an instance of {@link HttpClient}. If the value is set and doesn't match any
-     * {@link HttpClientProvider} found on the class path an {@link IllegalStateException} will be thrown when
+     * {@link HttpClientProvider} resolved by {@link java.util.ServiceLoader} an {@link IllegalStateException} will be thrown when
      * attempting to create an instance of {@link HttpClient}.
      */
     public static final String PROPERTY_AZURE_HTTP_CLIENT_IMPLEMENTATION = "AZURE_HTTP_CLIENT_IMPLEMENTATION";

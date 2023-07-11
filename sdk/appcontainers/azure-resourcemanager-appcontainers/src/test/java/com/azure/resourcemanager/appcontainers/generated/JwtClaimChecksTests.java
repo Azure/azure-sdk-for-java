@@ -8,28 +8,28 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.JwtClaimChecks;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class JwtClaimChecksTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         JwtClaimChecks model =
             BinaryData
                 .fromString(
-                    "{\"allowedGroups\":[\"qpteeh\",\"zvypyqrimzinp\"],\"allowedClientApplications\":[\"jdkirsoodqx\"]}")
+                    "{\"allowedGroups\":[\"gxsabkyq\",\"uujitcjc\"],\"allowedClientApplications\":[\"evndh\",\"rwpdappdsbdkvwrw\",\"feusnhut\",\"eltmrldhugjzzdat\"]}")
                 .toObject(JwtClaimChecks.class);
-        Assertions.assertEquals("qpteeh", model.allowedGroups().get(0));
-        Assertions.assertEquals("jdkirsoodqx", model.allowedClientApplications().get(0));
+        Assertions.assertEquals("gxsabkyq", model.allowedGroups().get(0));
+        Assertions.assertEquals("evndh", model.allowedClientApplications().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         JwtClaimChecks model =
             new JwtClaimChecks()
-                .withAllowedGroups(Arrays.asList("qpteeh", "zvypyqrimzinp"))
-                .withAllowedClientApplications(Arrays.asList("jdkirsoodqx"));
+                .withAllowedGroups(Arrays.asList("gxsabkyq", "uujitcjc"))
+                .withAllowedClientApplications(
+                    Arrays.asList("evndh", "rwpdappdsbdkvwrw", "feusnhut", "eltmrldhugjzzdat"));
         model = BinaryData.fromObject(model).toObject(JwtClaimChecks.class);
-        Assertions.assertEquals("qpteeh", model.allowedGroups().get(0));
-        Assertions.assertEquals("jdkirsoodqx", model.allowedClientApplications().get(0));
+        Assertions.assertEquals("gxsabkyq", model.allowedGroups().get(0));
+        Assertions.assertEquals("evndh", model.allowedClientApplications().get(0));
     }
 }

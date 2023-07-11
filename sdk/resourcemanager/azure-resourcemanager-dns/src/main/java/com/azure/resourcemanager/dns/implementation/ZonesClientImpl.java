@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.dns.fluent.ZonesClient;
@@ -47,8 +46,6 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in ZonesClient. */
 public final class ZonesClientImpl
     implements InnerSupportsGet<ZoneInner>, InnerSupportsListing<ZoneInner>, InnerSupportsDelete<Void>, ZonesClient {
-    private final ClientLogger logger = new ClientLogger(ZonesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ZonesService service;
 
@@ -71,11 +68,10 @@ public final class ZonesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "DnsManagementClientZ")
-    private interface ZonesService {
+    public interface ZonesService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones"
-                + "/{zoneName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ZoneInner>> createOrUpdate(
@@ -92,8 +88,7 @@ public final class ZonesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones"
-                + "/{zoneName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -108,8 +103,7 @@ public final class ZonesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones"
-                + "/{zoneName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ZoneInner>> getByResourceGroup(
@@ -123,8 +117,7 @@ public final class ZonesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones"
-                + "/{zoneName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ZoneInner>> update(
@@ -197,7 +190,7 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS zone.
+     * @return describes a DNS zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ZoneInner>> createOrUpdateWithResponseAsync(
@@ -259,7 +252,7 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS zone.
+     * @return describes a DNS zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ZoneInner>> createOrUpdateWithResponseAsync(
@@ -315,27 +308,17 @@ public final class ZonesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the
-     *     last-seen etag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone.
-     *     Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS zone.
+     * @return describes a DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ZoneInner> createOrUpdateAsync(
-        String resourceGroupName, String zoneName, ZoneInner parameters, String ifMatch, String ifNoneMatch) {
+    public Mono<ZoneInner> createOrUpdateAsync(String resourceGroupName, String zoneName, ZoneInner parameters) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch)
-            .flatMap(
-                (Response<ZoneInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -344,24 +327,26 @@ public final class ZonesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
+     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the
+     *     last-seen etag value to prevent accidentally overwriting any concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone.
+     *     Other values will be ignored.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS zone.
+     * @return describes a DNS zone along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ZoneInner> createOrUpdateAsync(String resourceGroupName, String zoneName, ZoneInner parameters) {
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
-        return createOrUpdateWithResponseAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch)
-            .flatMap(
-                (Response<ZoneInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Response<ZoneInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String zoneName,
+        ZoneInner parameters,
+        String ifMatch,
+        String ifNoneMatch,
+        Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch, context)
+            .block();
     }
 
     /**
@@ -379,35 +364,8 @@ public final class ZonesClientImpl
     public ZoneInner createOrUpdate(String resourceGroupName, String zoneName, ZoneInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return createOrUpdateAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch).block();
-    }
-
-    /**
-     * Creates or updates a DNS zone. Does not modify DNS records within the zone.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the DNS zone (without a terminating dot).
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the
-     *     last-seen etag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone.
-     *     Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS zone.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ZoneInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String zoneName,
-        ZoneInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch, context)
-            .block();
+        return createOrUpdateWithResponse(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -420,7 +378,7 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -472,7 +430,7 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -520,11 +478,31 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String zoneName, String ifMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, zoneName, ifMatch);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String zoneName) {
+        final String ifMatch = null;
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, zoneName, ifMatch);
         return this
             .client
@@ -543,7 +521,7 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -560,16 +538,15 @@ public final class ZonesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
-     * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen
-     *     etag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String zoneName, String ifMatch) {
-        return beginDeleteAsync(resourceGroupName, zoneName, ifMatch).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String zoneName) {
+        final String ifMatch = null;
+        return this.beginDeleteAsync(resourceGroupName, zoneName, ifMatch).getSyncPoller();
     }
 
     /**
@@ -583,12 +560,12 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String zoneName, String ifMatch, Context context) {
-        return beginDeleteAsync(resourceGroupName, zoneName, ifMatch, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, zoneName, ifMatch, context).getSyncPoller();
     }
 
     /**
@@ -601,7 +578,7 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String zoneName, String ifMatch) {
@@ -618,7 +595,7 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String zoneName) {
@@ -639,29 +616,13 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String zoneName, String ifMatch, Context context) {
         return beginDeleteAsync(resourceGroupName, zoneName, ifMatch, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the DNS zone (without a terminating dot).
-     * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen
-     *     etag value to prevent accidentally deleting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String zoneName, String ifMatch) {
-        deleteAsync(resourceGroupName, zoneName, ifMatch).block();
     }
 
     /**
@@ -704,7 +665,7 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DNS zone.
+     * @return a DNS zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ZoneInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String zoneName) {
@@ -752,7 +713,7 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DNS zone.
+     * @return a DNS zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ZoneInner>> getByResourceGroupWithResponseAsync(
@@ -797,19 +758,29 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DNS zone.
+     * @return a DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ZoneInner> getByResourceGroupAsync(String resourceGroupName, String zoneName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, zoneName)
-            .flatMap(
-                (Response<ZoneInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a DNS zone. Retrieves the zone properties, but not the record sets within the zone.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a DNS zone along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ZoneInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String zoneName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, zoneName, context).block();
     }
 
     /**
@@ -824,24 +795,7 @@ public final class ZonesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ZoneInner getByResourceGroup(String resourceGroupName, String zoneName) {
-        return getByResourceGroupAsync(resourceGroupName, zoneName).block();
-    }
-
-    /**
-     * Gets a DNS zone. Retrieves the zone properties, but not the record sets within the zone.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the DNS zone (without a terminating dot).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DNS zone.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ZoneInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String zoneName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, zoneName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, zoneName, Context.NONE).getValue();
     }
 
     /**
@@ -855,7 +809,7 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS zone.
+     * @return describes a DNS zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ZoneInner>> updateWithResponseAsync(
@@ -914,7 +868,7 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS zone.
+     * @return describes a DNS zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ZoneInner>> updateWithResponseAsync(
@@ -964,25 +918,16 @@ public final class ZonesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the
-     *     last-seen etag value to prevent accidentally overwriting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS zone.
+     * @return describes a DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ZoneInner> updateAsync(
-        String resourceGroupName, String zoneName, ZoneUpdate parameters, String ifMatch) {
+    public Mono<ZoneInner> updateAsync(String resourceGroupName, String zoneName, ZoneUpdate parameters) {
+        final String ifMatch = null;
         return updateWithResponseAsync(resourceGroupName, zoneName, parameters, ifMatch)
-            .flatMap(
-                (Response<ZoneInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -991,23 +936,18 @@ public final class ZonesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the Update operation.
+     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the
+     *     last-seen etag value to prevent accidentally overwriting any concurrent changes.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS zone.
+     * @return describes a DNS zone along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ZoneInner> updateAsync(String resourceGroupName, String zoneName, ZoneUpdate parameters) {
-        final String ifMatch = null;
-        return updateWithResponseAsync(resourceGroupName, zoneName, parameters, ifMatch)
-            .flatMap(
-                (Response<ZoneInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Response<ZoneInner> updateWithResponse(
+        String resourceGroupName, String zoneName, ZoneUpdate parameters, String ifMatch, Context context) {
+        return updateWithResponseAsync(resourceGroupName, zoneName, parameters, ifMatch, context).block();
     }
 
     /**
@@ -1024,27 +964,7 @@ public final class ZonesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ZoneInner update(String resourceGroupName, String zoneName, ZoneUpdate parameters) {
         final String ifMatch = null;
-        return updateAsync(resourceGroupName, zoneName, parameters, ifMatch).block();
-    }
-
-    /**
-     * Updates a DNS zone. Does not modify DNS records within the zone.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param zoneName The name of the DNS zone (without a terminating dot).
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the
-     *     last-seen etag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS zone.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ZoneInner> updateWithResponse(
-        String resourceGroupName, String zoneName, ZoneUpdate parameters, String ifMatch, Context context) {
-        return updateWithResponseAsync(resourceGroupName, zoneName, parameters, ifMatch, context).block();
+        return updateWithResponse(resourceGroupName, zoneName, parameters, ifMatch, Context.NONE).getValue();
     }
 
     /**
@@ -1055,7 +975,8 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a Zone List or ListAll operation.
+     * @return the response to a Zone List or ListAll operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ZoneInner>> listByResourceGroupSinglePageAsync(String resourceGroupName, Integer top) {
@@ -1109,7 +1030,8 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a Zone List or ListAll operation.
+     * @return the response to a Zone List or ListAll operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ZoneInner>> listByResourceGroupSinglePageAsync(
@@ -1160,7 +1082,7 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a Zone List or ListAll operation.
+     * @return the response to a Zone List or ListAll operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ZoneInner> listByResourceGroupAsync(String resourceGroupName, Integer top) {
@@ -1176,7 +1098,7 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a Zone List or ListAll operation.
+     * @return the response to a Zone List or ListAll operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ZoneInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1195,7 +1117,7 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a Zone List or ListAll operation.
+     * @return the response to a Zone List or ListAll operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ZoneInner> listByResourceGroupAsync(String resourceGroupName, Integer top, Context context) {
@@ -1211,7 +1133,7 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a Zone List or ListAll operation.
+     * @return the response to a Zone List or ListAll operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ZoneInner> listByResourceGroup(String resourceGroupName) {
@@ -1228,7 +1150,7 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a Zone List or ListAll operation.
+     * @return the response to a Zone List or ListAll operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ZoneInner> listByResourceGroup(String resourceGroupName, Integer top, Context context) {
@@ -1242,7 +1164,8 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a Zone List or ListAll operation.
+     * @return the response to a Zone List or ListAll operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ZoneInner>> listSinglePageAsync(Integer top) {
@@ -1290,7 +1213,8 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a Zone List or ListAll operation.
+     * @return the response to a Zone List or ListAll operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ZoneInner>> listSinglePageAsync(Integer top, Context context) {
@@ -1334,7 +1258,7 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a Zone List or ListAll operation.
+     * @return the response to a Zone List or ListAll operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ZoneInner> listAsync(Integer top) {
@@ -1346,7 +1270,7 @@ public final class ZonesClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a Zone List or ListAll operation.
+     * @return the response to a Zone List or ListAll operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ZoneInner> listAsync() {
@@ -1362,7 +1286,7 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a Zone List or ListAll operation.
+     * @return the response to a Zone List or ListAll operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ZoneInner> listAsync(Integer top, Context context) {
@@ -1375,7 +1299,7 @@ public final class ZonesClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a Zone List or ListAll operation.
+     * @return the response to a Zone List or ListAll operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ZoneInner> list() {
@@ -1391,7 +1315,7 @@ public final class ZonesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a Zone List or ListAll operation.
+     * @return the response to a Zone List or ListAll operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ZoneInner> list(Integer top, Context context) {
@@ -1401,11 +1325,13 @@ public final class ZonesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a Zone List or ListAll operation.
+     * @return the response to a Zone List or ListAll operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ZoneInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1437,12 +1363,14 @@ public final class ZonesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a Zone List or ListAll operation.
+     * @return the response to a Zone List or ListAll operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ZoneInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
@@ -1473,11 +1401,13 @@ public final class ZonesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a Zone List or ListAll operation.
+     * @return the response to a Zone List or ListAll operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ZoneInner>> listNextSinglePageAsync(String nextLink) {
@@ -1508,12 +1438,14 @@ public final class ZonesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a Zone List or ListAll operation.
+     * @return the response to a Zone List or ListAll operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ZoneInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -111,7 +111,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
                     if (pkRangeList.size() > 1) {
                         // Split: More than two children spanning the pkRange
-                        return Mono.just(new FeedRangeGoneSplitHandler(lease, pkRangeList, this.leaseManager));
+                        return Mono.just(new FeedRangeGoneSplitHandler(lease, pkRangeList, this.leaseManager, this.changeFeedProcessorOptions.getMaxScaleCount()));
                     }
 
                     // Merge

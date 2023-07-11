@@ -3,7 +3,6 @@
 
 package com.azure.core.serializer.json.jackson.implementation;
 
-import com.azure.core.implementation.SemanticVersion;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Identity for the resource. */
 @Fluent
-public class Identity {
+public final class Identity {
     /*
      * The principal ID of resource identity.
      */
@@ -27,6 +27,10 @@ public class Identity {
      */
     @JsonProperty(value = "type")
     private ResourceIdentityType type;
+
+    /** Creates an instance of Identity class. */
+    public Identity() {
+    }
 
     /**
      * Get the principalId property: The principal ID of resource identity.

@@ -15,18 +15,23 @@ public final class ConfigurationPropertiesTests {
         ConfigurationProperties model =
             BinaryData
                 .fromString(
-                    "{\"value\":\"nzwuxzd\",\"description\":\"a\",\"defaultValue\":\"lhmwhfpmrqobm\",\"dataType\":\"kknryrtihf\",\"allowedValues\":\"ijbpzvgnwzsymgl\",\"source\":\"user-override\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"True\"}")
+                    "{\"value\":\"wjzrnfygxgisp\",\"currentValue\":\"vtz\",\"description\":\"ufubl\",\"documentationLink\":\"fxqeof\",\"defaultValue\":\"e\",\"dataType\":\"hqjbasvmsmj\",\"allowedValues\":\"lngsntnbybkzgcwr\",\"source\":\"user-override\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"True\"}")
                 .toObject(ConfigurationProperties.class);
-        Assertions.assertEquals("nzwuxzd", model.value());
+        Assertions.assertEquals("wjzrnfygxgisp", model.value());
+        Assertions.assertEquals("vtz", model.currentValue());
         Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConfigurationProperties model =
-            new ConfigurationProperties().withValue("nzwuxzd").withSource(ConfigurationSource.USER_OVERRIDE);
+            new ConfigurationProperties()
+                .withValue("wjzrnfygxgisp")
+                .withCurrentValue("vtz")
+                .withSource(ConfigurationSource.USER_OVERRIDE);
         model = BinaryData.fromObject(model).toObject(ConfigurationProperties.class);
-        Assertions.assertEquals("nzwuxzd", model.value());
+        Assertions.assertEquals("wjzrnfygxgisp", model.value());
+        Assertions.assertEquals("vtz", model.currentValue());
         Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, model.source());
     }
 }

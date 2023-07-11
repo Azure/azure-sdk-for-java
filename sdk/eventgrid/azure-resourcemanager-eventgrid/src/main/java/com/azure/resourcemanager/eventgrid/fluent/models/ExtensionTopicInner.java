@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ExtensionTopicInner extends ProxyResource {
     /*
-     * Properties of the extension topic
+     * Properties of the extension topic.
      */
     @JsonProperty(value = "properties")
     private ExtensionTopicProperties innerProperties;
@@ -23,6 +23,10 @@ public final class ExtensionTopicInner extends ProxyResource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of ExtensionTopicInner class. */
+    public ExtensionTopicInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the extension topic.

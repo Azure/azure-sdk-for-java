@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/Operations_List.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -17,6 +15,6 @@ public final class OperationsListSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void operationsList(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

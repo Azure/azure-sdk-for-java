@@ -35,6 +35,9 @@ public final class AcsChatParticipantAddedToThreadEventData extends AcsChatEvent
     @JsonProperty(value = "version")
     private Long version;
 
+    /** Creates an instance of AcsChatParticipantAddedToThreadEventData class. */
+    public AcsChatParticipantAddedToThreadEventData() {}
+
     /**
      * Get the time property: The time at which the user was added to the thread.
      *

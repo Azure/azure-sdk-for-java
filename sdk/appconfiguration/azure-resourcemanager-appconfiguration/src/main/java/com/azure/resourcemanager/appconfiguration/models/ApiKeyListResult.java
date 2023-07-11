@@ -24,6 +24,10 @@ public final class ApiKeyListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ApiKeyListResult class. */
+    public ApiKeyListResult() {
+    }
+
     /**
      * Get the value property: The collection value.
      *

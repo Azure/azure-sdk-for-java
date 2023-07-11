@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.appcontainers.implementation;
 
 import com.azure.resourcemanager.appcontainers.fluent.models.DaprSecretsCollectionInner;
+import com.azure.resourcemanager.appcontainers.models.DaprSecret;
 import com.azure.resourcemanager.appcontainers.models.DaprSecretsCollection;
-import com.azure.resourcemanager.appcontainers.models.Secret;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,8 +22,8 @@ public final class DaprSecretsCollectionImpl implements DaprSecretsCollection {
         this.serviceManager = serviceManager;
     }
 
-    public List<Secret> value() {
-        List<Secret> inner = this.innerModel().value();
+    public List<DaprSecret> value() {
+        List<DaprSecret> inner = this.innerModel().value();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {

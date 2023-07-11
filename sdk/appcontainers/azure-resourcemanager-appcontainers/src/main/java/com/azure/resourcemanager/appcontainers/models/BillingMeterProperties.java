@@ -11,10 +11,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class BillingMeterProperties {
     /*
-     * Used to map workload profile types to billing meter.
+     * Used to categorize billing meters.
      */
     @JsonProperty(value = "category")
-    private Category category;
+    private String category;
 
     /*
      * Billing meter type.
@@ -33,21 +33,21 @@ public final class BillingMeterProperties {
     }
 
     /**
-     * Get the category property: Used to map workload profile types to billing meter.
+     * Get the category property: Used to categorize billing meters.
      *
      * @return the category value.
      */
-    public Category category() {
+    public String category() {
         return this.category;
     }
 
     /**
-     * Set the category property: Used to map workload profile types to billing meter.
+     * Set the category property: Used to categorize billing meters.
      *
      * @param category the category value to set.
      * @return the BillingMeterProperties object itself.
      */
-    public BillingMeterProperties withCategory(Category category) {
+    public BillingMeterProperties withCategory(String category) {
         this.category = category;
         return this;
     }

@@ -12,15 +12,14 @@ import java.util.Map;
 /** Samples for RestorePointCollections Update. */
 public final class RestorePointCollectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/restorePointExamples/RestorePointCollections_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/restorePointExamples/RestorePointCollection_Update_MaximumSet_Gen.json
      */
     /**
-     * Sample code: RestorePointCollections_Update_MaximumSet_Gen.
+     * Sample code: RestorePointCollection_Update_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void restorePointCollectionsUpdateMaximumSetGen(
-        com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void restorePointCollectionUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
@@ -30,7 +29,7 @@ public final class RestorePointCollectionsUpdateSamples {
                 "rgcompute",
                 "aaaaaaaaaaaaaaaaaaaa",
                 new RestorePointCollectionUpdate()
-                    .withTags(mapOf("key8536", "aaaaaaaaaaaaaaaaaaa"))
+                    .withTags(mapOf("key8536", "fakeTokenPlaceholder"))
                     .withSource(
                         new RestorePointCollectionSourceProperties()
                             .withId(
@@ -39,15 +38,14 @@ public final class RestorePointCollectionsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/restorePointExamples/RestorePointCollections_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/restorePointExamples/RestorePointCollection_Update_MinimumSet_Gen.json
      */
     /**
-     * Sample code: RestorePointCollections_Update_MinimumSet_Gen.
+     * Sample code: RestorePointCollection_Update_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void restorePointCollectionsUpdateMinimumSetGen(
-        com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void restorePointCollectionUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()

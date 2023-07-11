@@ -6,6 +6,7 @@ package com.azure.core.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.jackson.ObjectMapperShim;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
@@ -30,7 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  *
@@ -297,7 +297,7 @@ public final class CloudEvent {
             }
         }
         this.dataContentType = dataContentType;
-        this.id = UUID.randomUUID().toString();
+        this.id = CoreUtils.randomUuid().toString();
         this.specVersion = CloudEvent.SPEC_VERSION;
         this.binaryData = data;
     }

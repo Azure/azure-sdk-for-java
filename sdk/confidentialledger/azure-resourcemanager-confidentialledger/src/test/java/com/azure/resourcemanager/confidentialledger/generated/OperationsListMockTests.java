@@ -32,7 +32,7 @@ public final class OperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"nfnbacfionlebxe\",\"isDataAction\":false,\"display\":{\"provider\":\"xdpnqbqq\",\"resource\":\"rjfeallnwsubisnj\",\"operation\":\"pmng\",\"description\":\"scxaq\"}}]}";
+            "{\"value\":[{\"name\":\"iwqvhkh\",\"isDataAction\":true,\"display\":{\"provider\":\"dtopbob\",\"resource\":\"ghmewuam\",\"operation\":\"hrzayvvtpgvdf\",\"description\":\"otkftutqxlngx\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,11 +63,11 @@ public final class OperationsListMockTests {
         PagedIterable<ResourceProviderOperationDefinition> response =
             manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nfnbacfionlebxe", response.iterator().next().name());
-        Assertions.assertEquals(false, response.iterator().next().isDataAction());
-        Assertions.assertEquals("xdpnqbqq", response.iterator().next().display().provider());
-        Assertions.assertEquals("rjfeallnwsubisnj", response.iterator().next().display().resource());
-        Assertions.assertEquals("pmng", response.iterator().next().display().operation());
-        Assertions.assertEquals("scxaq", response.iterator().next().display().description());
+        Assertions.assertEquals("iwqvhkh", response.iterator().next().name());
+        Assertions.assertEquals(true, response.iterator().next().isDataAction());
+        Assertions.assertEquals("dtopbob", response.iterator().next().display().provider());
+        Assertions.assertEquals("ghmewuam", response.iterator().next().display().resource());
+        Assertions.assertEquals("hrzayvvtpgvdf", response.iterator().next().display().operation());
+        Assertions.assertEquals("otkftutqxlngx", response.iterator().next().display().description());
     }
 }

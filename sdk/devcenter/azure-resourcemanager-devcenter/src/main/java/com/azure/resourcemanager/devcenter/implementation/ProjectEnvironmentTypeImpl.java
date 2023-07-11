@@ -8,7 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.ProjectEnvironmentTypeInner;
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
+import com.azure.resourcemanager.devcenter.models.EnvironmentTypeEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentType;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypeUpdate;
@@ -65,7 +65,7 @@ public final class ProjectEnvironmentTypeImpl
         return this.innerModel().deploymentTargetId();
     }
 
-    public EnableStatus status() {
+    public EnvironmentTypeEnableStatus status() {
         return this.innerModel().status();
     }
 
@@ -238,7 +238,7 @@ public final class ProjectEnvironmentTypeImpl
         }
     }
 
-    public ProjectEnvironmentTypeImpl withStatus(EnableStatus status) {
+    public ProjectEnvironmentTypeImpl withStatus(EnvironmentTypeEnableStatus status) {
         if (isInCreateMode()) {
             this.innerModel().withStatus(status);
             return this;

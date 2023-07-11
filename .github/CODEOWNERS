@@ -46,6 +46,8 @@
 /sdk/spring/spring-cloud-azure-appconfiguration-config*/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 /sdk/spring/spring-cloud-azure-feature-management*/   @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 /sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+# PRLabel: %azure-spring
+/sdk/spring/azure-spring-data-cosmos/                @kushagraThapar @FabianMeiswinkel @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan @aayush3011 @simorenoh @fangjian0423 @jeet1995 @Pilchie
 
 
 # PRLabel: %Attestation
@@ -54,19 +56,19 @@
 /sdk/attestation/azure-resourcemanager-attestation/  @azure-sdk-write-attestation @anilba06 @gkostal
 
 # PRLabel: %Batch
-/sdk/batch/                                          @gingi @paterasMSFT @dpwatrous
+/sdk/batch/                                          @jingjlii @ljiaqi1998 @JJJessieWang @dpwatrous @NickKouds
 
 # PRLabel: %Communication
 /sdk/communication/
 
 # PRLabel: %Communication - Calling Server
-/sdk/communication/sdk/communication/azure-communication-callingserver/ @minwoolee-msft
+/sdk/communication/azure-communication-callingserver/ @minwoolee-msft
 
 # PRLabel: %Communication - Call Automation
-/sdk/communication/sdk/communication/azure-communication-callautomation/ @juntuchen-msft @cochi2
+/sdk/communication/azure-communication-callautomation/ @juntuchen-msft @cochi2
 
 # PRLabel: %Communication - Chat
-/sdk/communication/sdk/communication/azure-communication-chat/ @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+/sdk/communication/azure-communication-chat/ @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
 
 # PRLabel: %Communication - Identity
 /sdk/communication/azure-communication-identity/     @Azure/acs-identity-sdk @AikoBB @maximrytych-ms @mjafferi-msft
@@ -75,16 +77,16 @@
 /sdk/communication/azure-communication-common/       @Azure/acs-identity-sdk @AikoBB @maximrytych-ms @mjafferi-msft
 
 # PRLabel: %Communication - Network Traversal
-/sdk/communication/sdk/communication/azure-communication-networktraversal/ @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+/sdk/communication/azure-communication-networktraversal/ @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
 
 # PRLabel: %Communication - Phone Numbers
 /sdk/communication/azure-communication-phonenumbers/ @miguhern @whisper6284 @RoyHerrod @danielav7
 
 # PRLabel: %Communication - SMS
-/sdk/communication/azure-communication-sms/          @RoyHerrod @arifibrahim4
+/sdk/communication/azure-communication-sms/          @DimaKolomiiets @ozgurcivi-msft @gfeitosa-msft @besh2014 @phermanov-msft @ilyapaliakou-msft
 
 # PRLabel: %Communication - Resource Manager
-/sdk/communication/sdk/communication/azure-resourcemanager-communication/
+/sdk/communication/azure-resourcemanager-communication/
 
 # PRLabel: %Communication - Rooms
 /sdk/communication/azure-communication-rooms/       @minnieliu @paolamvhz @alexokun @Mrayyan @shwali-msft @allchiang-msft @mikehang-msft
@@ -103,10 +105,6 @@
 
 # PRLabel: %Cosmos
 /sdk/cosmos/                                         @kushagraThapar @FabianMeiswinkel @kirankumarkolli @xinlian12 @milismsft @aayush3011 @simorenoh @jeet1995 @Pilchie
-# PRLabel: %azure-spring
-/sdk/cosmos/azure-spring-data-cosmos/                @kushagraThapar @FabianMeiswinkel @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan @aayush3011 @simorenoh @fangjian0423 @jeet1995 @Pilchie
-# PRLabel: %azure-spring
-/sdk/cosmos/azure-spring-data-cosmos-test/           @kushagraThapar @FabianMeiswinkel @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan @aayush3011 @simorenoh @fangjian0423 @jeet1995 @Pilchie
 
 # PRLabel: %Load Testing
 /sdk/loadtesting/                                    @Harshan01 @abranj1219
@@ -159,6 +157,9 @@
 # PRLabel:  %Monitor - Exporter
 /sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti
 
+# PRLabel:  %Monitor - Spring native
+/sdk/monitor/azure-monitor-spring-native/            @jeanbisutti @trask @ramthi @heyams
+
 # PRLabel:  %Monitor
 /sdk/monitor/azure-monitor-query*/                   @srnagar @lmolkova @jairmyree
 
@@ -166,7 +167,10 @@
 /sdk/monitor/azure-monitor-ingestion*/               @srnagar @lmolkova @jairmyree
 
 # PRLabel: %Mixed Reality Authentication
-/sdk/mixedreality/azure-mixedreality-authentication/ @craigktreasure
+/sdk/mixedreality/azure-mixedreality-authentication/ @RamonArguelles
+
+# PRLabel: %Open AI
+/sdk/openai/azure-ai-openai/                         @brandom-msft @jpalvarezl @mssfang
 
 # PRLabel: %Remote Rendering
 /sdk/remoterendering/                                @MichaelZp0 @ChristopherManthei
@@ -184,7 +188,7 @@
 /sdk/servicebus/microsoft-azure-servicebus/          @shankarsama @yvgopal
 
 # PRLabel: %Storage
-/sdk/storage/                                        @ibrahimrabab @jaschrep-msft @alzimmermsft
+/sdk/storage/                                        @ibrahimrabab @alzimmermsft @seanmcc-msft
 
 # PRLabel: %Tables
 /sdk/tables/                                         @jairmyree @vcolin7
@@ -193,7 +197,7 @@
 /sdk/template/                                       @hallipr @weshaggard @JimSuplizio
 
 # PRLabel: %Cognitive - Text Analytics
-/sdk/textanalytics/                                  @samvaity @mssfang
+/sdk/textanalytics/                                  @samvaity @mssfang @quentinRobinson @wangyuantao
 
 # PRLabel: %Azure SDK Tools
 /sdk/tools/                                          @srnagar @jonathangiles

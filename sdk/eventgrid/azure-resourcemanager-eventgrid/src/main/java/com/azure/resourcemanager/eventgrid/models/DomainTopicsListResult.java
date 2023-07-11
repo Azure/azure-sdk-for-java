@@ -24,6 +24,10 @@ public final class DomainTopicsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DomainTopicsListResult class. */
+    public DomainTopicsListResult() {
+    }
+
     /**
      * Get the value property: A collection of Domain Topics.
      *

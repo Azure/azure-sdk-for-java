@@ -15,18 +15,18 @@ public final class HighAvailabilityTests {
         HighAvailability model =
             BinaryData
                 .fromString(
-                    "{\"mode\":\"SameZone\",\"state\":\"Healthy\",\"standbyAvailabilityZone\":\"abnmocpcyshu\"}")
+                    "{\"mode\":\"Disabled\",\"state\":\"Healthy\",\"standbyAvailabilityZone\":\"vynhzgpphrcg\"}")
                 .toObject(HighAvailability.class);
-        Assertions.assertEquals(HighAvailabilityMode.SAME_ZONE, model.mode());
-        Assertions.assertEquals("abnmocpcyshu", model.standbyAvailabilityZone());
+        Assertions.assertEquals(HighAvailabilityMode.DISABLED, model.mode());
+        Assertions.assertEquals("vynhzgpphrcg", model.standbyAvailabilityZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HighAvailability model =
-            new HighAvailability().withMode(HighAvailabilityMode.SAME_ZONE).withStandbyAvailabilityZone("abnmocpcyshu");
+            new HighAvailability().withMode(HighAvailabilityMode.DISABLED).withStandbyAvailabilityZone("vynhzgpphrcg");
         model = BinaryData.fromObject(model).toObject(HighAvailability.class);
-        Assertions.assertEquals(HighAvailabilityMode.SAME_ZONE, model.mode());
-        Assertions.assertEquals("abnmocpcyshu", model.standbyAvailabilityZone());
+        Assertions.assertEquals(HighAvailabilityMode.DISABLED, model.mode());
+        Assertions.assertEquals("vynhzgpphrcg", model.standbyAvailabilityZone());
     }
 }

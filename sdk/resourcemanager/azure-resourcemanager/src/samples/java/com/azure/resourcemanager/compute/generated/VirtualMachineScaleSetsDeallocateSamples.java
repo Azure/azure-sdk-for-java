@@ -10,32 +10,14 @@ import java.util.Arrays;
 /** Samples for VirtualMachineScaleSets Deallocate. */
 public final class VirtualMachineScaleSetsDeallocateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Deallocate_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Deallocate_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_Deallocate_MinimumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_Deallocate_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsDeallocateMinimumSetGen(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getVirtualMachineScaleSets()
-            .deallocate("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Deallocate_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: VirtualMachineScaleSets_Deallocate_MaximumSet_Gen.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void virtualMachineScaleSetsDeallocateMaximumSetGen(
+    public static void virtualMachineScaleSetDeallocateMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
@@ -45,7 +27,26 @@ public final class VirtualMachineScaleSetsDeallocateSamples {
             .deallocate(
                 "rgcompute",
                 "aaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                true,
                 new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaa")),
                 com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Deallocate_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: VirtualMachineScaleSet_Deallocate_MinimumSet_Gen.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void virtualMachineScaleSetDeallocateMinimumSetGen(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .deallocate("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaa", null, null, com.azure.core.util.Context.NONE);
     }
 }

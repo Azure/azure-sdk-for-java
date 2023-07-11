@@ -26,6 +26,15 @@ public final class ImageValidationStatus extends ExpandableStringEnum<ImageValid
     public static final ImageValidationStatus TIMED_OUT = fromString("TimedOut");
 
     /**
+     * Creates a new instance of ImageValidationStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ImageValidationStatus() {
+    }
+
+    /**
      * Creates or finds a ImageValidationStatus from its string representation.
      *
      * @param name a name to look for.

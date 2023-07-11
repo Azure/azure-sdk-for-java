@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.privatedns.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.privatedns.models.RecordType;
 
 /** Samples for RecordSets Get. */
@@ -23,7 +22,8 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("resourceGroup1", "0.0.127.in-addr.arpa", RecordType.PTR, "1", Context.NONE);
+            .getWithResponse(
+                "resourceGroup1", "0.0.127.in-addr.arpa", RecordType.PTR, "1", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -40,7 +40,8 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.MX, "recordMX", Context.NONE);
+            .getWithResponse(
+                "resourceGroup1", "privatezone1.com", RecordType.MX, "recordMX", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -57,7 +58,8 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.AAAA, "recordAAAA", Context.NONE);
+            .getWithResponse(
+                "resourceGroup1", "privatezone1.com", RecordType.AAAA, "recordAAAA", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -74,7 +76,8 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.SOA, "@", Context.NONE);
+            .getWithResponse(
+                "resourceGroup1", "privatezone1.com", RecordType.SOA, "@", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -91,7 +94,8 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.SRV, "recordSRV", Context.NONE);
+            .getWithResponse(
+                "resourceGroup1", "privatezone1.com", RecordType.SRV, "recordSRV", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -108,7 +112,8 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.A, "recordA", Context.NONE);
+            .getWithResponse(
+                "resourceGroup1", "privatezone1.com", RecordType.A, "recordA", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -125,7 +130,12 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.CNAME, "recordCNAME", Context.NONE);
+            .getWithResponse(
+                "resourceGroup1",
+                "privatezone1.com",
+                RecordType.CNAME,
+                "recordCNAME",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -142,6 +152,7 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.TXT, "recordTXT", Context.NONE);
+            .getWithResponse(
+                "resourceGroup1", "privatezone1.com", RecordType.TXT, "recordTXT", com.azure.core.util.Context.NONE);
     }
 }

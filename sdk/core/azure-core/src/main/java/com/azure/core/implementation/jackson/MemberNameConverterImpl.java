@@ -5,20 +5,20 @@ package com.azure.core.implementation.jackson;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.serializer.MemberNameConverter;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.cfg.MapperConfig;
+import com.fasterxml.jackson.databind.cfg.PackageVersion;
 import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
 import com.fasterxml.jackson.databind.introspect.AnnotatedClassResolver;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
 import com.fasterxml.jackson.databind.util.BeanUtil;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
@@ -30,51 +30,13 @@ import java.lang.reflect.Modifier;
 final class MemberNameConverterImpl implements MemberNameConverter {
     private static final ClientLogger LOGGER = new ClientLogger(MemberNameConverterImpl.class);
 
-    private static final String ACCESSOR_NAMING_STRATEGY =
-        "com.fasterxml.jackson.databind.introspect.AccessorNamingStrategy";
-    private static final String ACCESSOR_NAMING_STRATEGY_PROVIDER = ACCESSOR_NAMING_STRATEGY + "$Provider";
-    private static final MethodHandle GET_ACCESSOR_NAMING;
-    private static final MethodHandle FOR_POJO;
-    private static final MethodHandle FIND_NAME_FOR_IS_GETTER;
-    private static final MethodHandle FIND_NAME_FOR_REGULAR_GETTER;
-    static final boolean USE_REFLECTION_FOR_MEMBER_NAME;
-
     private final ObjectMapper mapper;
-
-    static {
-        MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
-
-        MethodHandle getAccessorNaming = null;
-        MethodHandle forPojo = null;
-        MethodHandle findNameForIsGetter = null;
-        MethodHandle findNameForRegularGetter = null;
-        boolean useReflectionForMemberName = false;
-
-        try {
-            Class<?> accessorNamingStrategyClass = Class.forName(ACCESSOR_NAMING_STRATEGY);
-            Class<?> accessorNamingStrategyProviderClass = Class.forName(ACCESSOR_NAMING_STRATEGY_PROVIDER);
-            getAccessorNaming = publicLookup.unreflect(MapperConfig.class.getDeclaredMethod("getAccessorNaming"));
-            forPojo = publicLookup.unreflect(accessorNamingStrategyProviderClass.getDeclaredMethod("forPOJO",
-                MapperConfig.class, AnnotatedClass.class));
-            findNameForIsGetter = publicLookup.unreflect(accessorNamingStrategyClass.getDeclaredMethod(
-                "findNameForIsGetter", AnnotatedMethod.class, String.class));
-            findNameForRegularGetter = publicLookup.unreflect(accessorNamingStrategyClass.getDeclaredMethod(
-                "findNameForRegularGetter", AnnotatedMethod.class, String.class));
-            useReflectionForMemberName = true;
-        } catch (LinkageError | ReflectiveOperationException ex) {
-            LOGGER.verbose("Failed to retrieve MethodHandles used to get naming strategy. Falling back to BeanUtils. "
-                + "Please consider updating your Jackson dependencies to at least version 2.12", ex);
-        }
-
-        GET_ACCESSOR_NAMING = getAccessorNaming;
-        FOR_POJO = forPojo;
-        FIND_NAME_FOR_IS_GETTER = findNameForIsGetter;
-        FIND_NAME_FOR_REGULAR_GETTER = findNameForRegularGetter;
-        USE_REFLECTION_FOR_MEMBER_NAME = useReflectionForMemberName;
-    }
+    final boolean useJackson212;
+    private boolean jackson212IsSafe = true;
 
     MemberNameConverterImpl(ObjectMapper mapper) {
         this.mapper = mapper;
+        this.useJackson212 = PackageVersion.VERSION.getMinorVersion() >= 12;
     }
 
     @Override
@@ -161,12 +123,21 @@ final class MemberNameConverterImpl implements MemberNameConverter {
         AnnotatedClass annotatedClass = AnnotatedClassResolver.resolve(config,
             mapper.constructType(method.getDeclaringClass()), null);
 
-        AnnotatedMethod annotatedMethod = new AnnotatedMethod(null, method, null, null);
+        AnnotatedMethod annotatedMethod = annotatedClass.findMethod(method.getName(), method.getParameterTypes());
         String annotatedMethodName = annotatedMethod.getName();
 
         String name = null;
-        if (USE_REFLECTION_FOR_MEMBER_NAME) {
-            name = removePrefixWithReflection(config, annotatedClass, annotatedMethod, annotatedMethodName);
+        if (useJackson212 && jackson212IsSafe) {
+            try {
+                name = JacksonDatabind212.removePrefix(config, annotatedClass, annotatedMethod, annotatedMethodName);
+            } catch (Throwable ex) {
+                if (ex instanceof LinkageError) {
+                    jackson212IsSafe = false;
+                    LOGGER.log(LogLevel.VERBOSE, JacksonVersion::getHelpInfo, ex);
+                }
+
+                throw ex;
+            }
         }
 
         if (name == null) {
@@ -174,26 +145,6 @@ final class MemberNameConverterImpl implements MemberNameConverter {
         }
 
         return name;
-    }
-
-    private static String removePrefixWithReflection(MapperConfig<?> config, AnnotatedClass annotatedClass,
-        AnnotatedMethod method, String methodName) {
-        try {
-            Object accessorNamingStrategy = FOR_POJO.invoke(GET_ACCESSOR_NAMING.invoke(config), config, annotatedClass);
-            String name = (String) FIND_NAME_FOR_IS_GETTER.invoke(accessorNamingStrategy, method, methodName);
-            if (name == null) {
-                name = (String) FIND_NAME_FOR_REGULAR_GETTER.invoke(accessorNamingStrategy, method, methodName);
-            }
-
-            return name;
-        } catch (Throwable ex) {
-            if (ex instanceof Error) {
-                throw (Error) ex;
-            }
-
-            LOGGER.verbose("Failed to find member name with AccessorNamingStrategy, returning null.", ex);
-            return null;
-        }
     }
 
     @SuppressWarnings("deprecation")

@@ -59,6 +59,9 @@ public final class EventGridEvent {
     @JsonProperty(value = "dataVersion", required = true)
     private String dataVersion;
 
+    /** Creates an instance of EventGridEvent class. */
+    public EventGridEvent() {}
+
     /**
      * Get the id property: An unique identifier for the event.
      *

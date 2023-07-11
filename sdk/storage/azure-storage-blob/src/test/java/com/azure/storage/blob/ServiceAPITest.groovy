@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.BlobAnalyticsLogging
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
 import com.azure.storage.blob.models.BlobCorsRule
+import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobMetrics
 import com.azure.storage.blob.models.BlobRetentionPolicy
 import com.azure.storage.blob.models.BlobServiceProperties
@@ -28,12 +29,15 @@ import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.options.FindBlobsOptions
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
+import com.azure.storage.common.policy.ServiceTimeoutPolicy
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.core.publisher.Mono
@@ -1202,6 +1206,31 @@ class ServiceAPITest extends APISpec {
         // Confirming the behavior of the api when the container is in the deleting state.
         // After delete has been called once but before it has been garbage collected
         response2.getStatusCode() == 202
+    }
+
+    @LiveOnly
+    def "Service timeout policy"() {
+        setup:
+        def serviceClient = new BlobServiceClientBuilder()
+            .endpoint(environment.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+            .addPolicy(new ServiceTimeoutPolicy(Duration.ofSeconds(1)))
+            .buildClient()
+
+        def blobContainerClient = serviceClient.getBlobContainerClient(generateContainerName())
+        blobContainerClient.createIfNotExists()
+        def blobClient = blobContainerClient.getBlobClient(generateBlobName())
+
+        // testing with large dataset that is guaranteed to take longer than the specified timeout (1 second)
+        def randomData = getRandomByteArray(256 * Constants.MB)
+        def input = new ByteArrayInputStream(randomData)
+
+        when:
+        blobClient.uploadWithResponse(new BlobParallelUploadOptions(input), null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.OPERATION_TIMED_OUT
     }
 
 //    def "Rename blob container"() {

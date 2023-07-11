@@ -13,7 +13,7 @@ stages:
           SubscriptionConfigurations:
             - $(sub-config-azure-cloud-test-resources)
             - $(sub-config-cosmos-azure-cloud-test-resources)
-      Clouds: 'Cosmos_Public'
+      Clouds: 'Cosmos_Public_Integration'
       MatrixConfigs:
         - Name: Cosmos_live_test
           Path: sdk/cosmos/platform-matrix.json
@@ -39,7 +39,7 @@ stages:
 
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
-      TestName: 'Integration'
+      TestName: 'Spring_Data_Cosmos_Integration'
       CloudConfig:
         Public:
           SubscriptionConfigurations:
@@ -47,38 +47,16 @@ stages:
             - $(sub-config-cosmos-azure-cloud-test-resources)
       MatrixConfigs:
         - Name: Cosmos_live_test_integration
-          Path: sdk/cosmos/integration-matrix.json
+          Path: sdk/spring/cosmos-integration-matrix.json
           Selection: all
           GenerateVMJobs: true
-      ServiceDirectory: cosmos
+      ServiceDirectory: spring
+      TestResourceDirectories:
+        - spring/spring-cloud-azure-integration-tests/test-resources/cosmos-spring
       Artifacts:
-        - name: azure-spring-data-cosmos-test
+        - name: azure-spring-data-cosmos
           groupId: com.azure
-          safeName: azurespringdatacosmostest
-      TimeoutInMinutes: 90
-      PreSteps:
-        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-      TestGoals: 'clean verify'
-      TestOptions: '$(ProfileFlag)'
-
-  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-    parameters:
-      TestName: 'FaultInjection'
-      CloudConfig:
-        Public:
-          SubscriptionConfigurations:
-            - $(sub-config-azure-cloud-test-resources)
-            - $(sub-config-cosmos-azure-cloud-test-resources)
-      MatrixConfigs:
-        - Name: Cosmos_faultInjection_live_test
-          Path: sdk/cosmos/platform-matrix.json
-          Selection: all
-          GenerateVMJobs: true
-      ServiceDirectory: cosmos
-      Artifacts:
-        - name: azure-cosmos-test
-          groupId: com.azure
-          safeName: azurecosmosfaultinjectiontest
+          safeName: azurespringdatacosmos
       TimeoutInMinutes: 90
       PreSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml

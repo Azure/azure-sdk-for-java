@@ -14,26 +14,26 @@ public final class ClientDiscoveryDisplayTests {
         ClientDiscoveryDisplay model =
             BinaryData
                 .fromString(
-                    "{\"provider\":\"qn\",\"resource\":\"oczvy\",\"operation\":\"qrvkdv\",\"description\":\"llr\"}")
+                    "{\"provider\":\"sllr\",\"resource\":\"vdfwatkpn\",\"operation\":\"lexxbczwtru\",\"description\":\"qzbqjvsov\"}")
                 .toObject(ClientDiscoveryDisplay.class);
-        Assertions.assertEquals("qn", model.provider());
-        Assertions.assertEquals("oczvy", model.resource());
-        Assertions.assertEquals("qrvkdv", model.operation());
-        Assertions.assertEquals("llr", model.description());
+        Assertions.assertEquals("sllr", model.provider());
+        Assertions.assertEquals("vdfwatkpn", model.resource());
+        Assertions.assertEquals("lexxbczwtru", model.operation());
+        Assertions.assertEquals("qzbqjvsov", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClientDiscoveryDisplay model =
             new ClientDiscoveryDisplay()
-                .withProvider("qn")
-                .withResource("oczvy")
-                .withOperation("qrvkdv")
-                .withDescription("llr");
+                .withProvider("sllr")
+                .withResource("vdfwatkpn")
+                .withOperation("lexxbczwtru")
+                .withDescription("qzbqjvsov");
         model = BinaryData.fromObject(model).toObject(ClientDiscoveryDisplay.class);
-        Assertions.assertEquals("qn", model.provider());
-        Assertions.assertEquals("oczvy", model.resource());
-        Assertions.assertEquals("qrvkdv", model.operation());
-        Assertions.assertEquals("llr", model.description());
+        Assertions.assertEquals("sllr", model.provider());
+        Assertions.assertEquals("vdfwatkpn", model.resource());
+        Assertions.assertEquals("lexxbczwtru", model.operation());
+        Assertions.assertEquals("qzbqjvsov", model.description());
     }
 }

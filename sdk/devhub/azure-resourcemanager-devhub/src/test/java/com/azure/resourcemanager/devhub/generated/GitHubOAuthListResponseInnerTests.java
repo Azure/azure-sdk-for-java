@@ -9,25 +9,29 @@ import com.azure.resourcemanager.devhub.fluent.models.GitHubOAuthListResponseInn
 import com.azure.resourcemanager.devhub.fluent.models.GitHubOAuthResponseInner;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class GitHubOAuthListResponseInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         GitHubOAuthListResponseInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"username\":\"rkxvdum\"},\"id\":\"grtfwvu\",\"name\":\"xgaudccs\",\"type\":\"h\"}]}")
+                    "{\"value\":[{\"properties\":{\"username\":\"cs\"},\"id\":\"s\",\"name\":\"cnyejhkryhtnapcz\",\"type\":\"lokjyemkk\"},{\"properties\":{\"username\":\"pjoxzjnch\"},\"id\":\"jspodmailzyde\",\"name\":\"o\",\"type\":\"wyahuxinpmqnja\"},{\"properties\":{\"username\":\"xj\"},\"id\":\"r\",\"name\":\"zvcputegjvwmfda\",\"type\":\"scmdvpjhulsuu\"}]}")
                 .toObject(GitHubOAuthListResponseInner.class);
-        Assertions.assertEquals("rkxvdum", model.value().get(0).username());
+        Assertions.assertEquals("cs", model.value().get(0).username());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         GitHubOAuthListResponseInner model =
             new GitHubOAuthListResponseInner()
-                .withValue(Arrays.asList(new GitHubOAuthResponseInner().withUsername("rkxvdum")));
+                .withValue(
+                    Arrays
+                        .asList(
+                            new GitHubOAuthResponseInner().withUsername("cs"),
+                            new GitHubOAuthResponseInner().withUsername("pjoxzjnch"),
+                            new GitHubOAuthResponseInner().withUsername("xj")));
         model = BinaryData.fromObject(model).toObject(GitHubOAuthListResponseInner.class);
-        Assertions.assertEquals("rkxvdum", model.value().get(0).username());
+        Assertions.assertEquals("cs", model.value().get(0).username());
     }
 }

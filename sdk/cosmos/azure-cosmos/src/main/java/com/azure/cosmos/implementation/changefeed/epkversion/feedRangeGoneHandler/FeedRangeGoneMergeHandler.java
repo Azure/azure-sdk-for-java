@@ -43,4 +43,11 @@ public class FeedRangeGoneMergeHandler implements FeedRangeGoneHandler {
     public boolean shouldDeleteCurrentLease() {
         return this.removeCurrentLease.get();
     }
+
+    @Override
+    public boolean shouldSkipDirectLeaseAssignment() {
+        // For merge, the same lease will be reused,
+        // so the current instance can acquire ownership of the lease right away
+        return false;
+    }
 }

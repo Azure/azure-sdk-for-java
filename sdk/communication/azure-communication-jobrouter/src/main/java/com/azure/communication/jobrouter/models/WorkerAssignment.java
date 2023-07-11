@@ -6,6 +6,7 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
 /** The assignment for a worker to a job. */

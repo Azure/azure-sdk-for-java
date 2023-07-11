@@ -52,6 +52,28 @@ steps:
       AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
+  - task: PythonScript@0
+    displayName: 'Update external dependency versions'
+    inputs:
+      scriptPath: 'eng/versioning/update_versions.py'
+      arguments: '--update-type external_dependency --build-type client --sr --vo $(VersionOverrides)'
+    condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
+
+  - task: Maven@3
+    displayName: 'Re-build for version override run'
+    inputs:
+      mavenPomFile: pom.xml
+      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} -pl $(ProjectList)
+      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: $(JavaTestVersion)
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      goals: 'install'
+    env:
+      AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
+    condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
+
   - task: Maven@3
     displayName: 'Run tests'
     inputs:

@@ -62,7 +62,8 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = KeyClientBuilder.class, isAsync = true, serviceInterfaces = KeyClientImpl.KeyService.class)
 public final class KeyAsyncClient {
-    private final ClientLogger logger = new ClientLogger(KeyAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KeyAsyncClient.class);
+
     private final KeyClientImpl implClient;
 
     /**
@@ -167,7 +168,7 @@ public final class KeyAsyncClient {
             return withContext(context ->
                 implClient.createKeyWithResponseAsync(name, keyType, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -214,7 +215,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.createKeyWithResponseAsync(createKeyOptions, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -265,7 +266,7 @@ public final class KeyAsyncClient {
         try {
             return createKeyWithResponse(createKeyOptions).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -318,7 +319,7 @@ public final class KeyAsyncClient {
         try {
             return createRsaKeyWithResponse(createRsaKeyOptions).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -371,7 +372,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.createRsaKeyWithResponseAsync(createRsaKeyOptions, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -424,7 +425,7 @@ public final class KeyAsyncClient {
         try {
             return createEcKeyWithResponse(createEcKeyOptions).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -479,7 +480,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.createEcKeyWithResponseAsync(createEcKeyOptions, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -528,7 +529,7 @@ public final class KeyAsyncClient {
         try {
             return createOctKeyWithResponse(createOctKeyOptions).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -578,7 +579,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.createOctKeyWithResponseAsync(createOctKeyOptions, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -614,7 +615,7 @@ public final class KeyAsyncClient {
             return withContext(context ->
                 implClient.importKeyWithResponseAsync(name, keyMaterial, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -659,7 +660,7 @@ public final class KeyAsyncClient {
         try {
             return importKeyWithResponse(importKeyOptions).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -705,7 +706,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.importKeyWithResponseAsync(importKeyOptions, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -745,7 +746,7 @@ public final class KeyAsyncClient {
         try {
             return getKeyWithResponse(name, version).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -786,7 +787,7 @@ public final class KeyAsyncClient {
             return withContext(context ->
                 implClient.getKeyWithResponseAsync(name, version == null ? "" : version, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -821,7 +822,7 @@ public final class KeyAsyncClient {
         try {
             return getKeyWithResponse(name, "").flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -873,7 +874,7 @@ public final class KeyAsyncClient {
             return withContext(context ->
                 implClient.updateKeyPropertiesWithResponseAsync(keyProperties, context, keyOperations));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -922,7 +923,7 @@ public final class KeyAsyncClient {
         try {
             return updateKeyPropertiesWithResponse(keyProperties, keyOperations).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -990,7 +991,7 @@ public final class KeyAsyncClient {
         try {
             return getDeletedKeyWithResponse(name).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1023,7 +1024,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.getDeletedKeyWithResponseAsync(name, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1055,7 +1056,7 @@ public final class KeyAsyncClient {
         try {
             return purgeDeletedKeyWithResponse(name).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1088,7 +1089,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.purgeDeletedKeyWithResponseAsync(name, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1161,7 +1162,7 @@ public final class KeyAsyncClient {
         try {
             return backupKeyWithResponse(name).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1203,7 +1204,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.backupKeyWithResponseAsync(name, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1245,7 +1246,7 @@ public final class KeyAsyncClient {
         try {
             return restoreKeyBackupWithResponse(backup).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1288,7 +1289,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.restoreKeyBackupWithResponseAsync(backup, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1320,7 +1321,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyProperties> listPropertiesOfKeys() {
-        return implClient.listPropertiesOfKeys();
+        return implClient.listPropertiesOfKeysAsync();
     }
 
     /**
@@ -1345,7 +1346,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedKey> listDeletedKeys() {
-        return implClient.listDeletedKeys();
+        return implClient.listDeletedKeysAsync();
     }
 
     /**
@@ -1380,7 +1381,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyProperties> listPropertiesOfKeyVersions(String name) {
-        return implClient.listPropertiesOfKeyVersions(name);
+        return implClient.listPropertiesOfKeyVersionsAsync(name);
     }
 
     /**
@@ -1408,7 +1409,7 @@ public final class KeyAsyncClient {
             return withContext(context ->
                 implClient.getRandomBytesWithResponseAsync(count, context).flatMap(FluxUtil::toMono));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1437,7 +1438,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.getRandomBytesWithResponseAsync(count, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1473,7 +1474,7 @@ public final class KeyAsyncClient {
             return releaseKeyWithResponse(name, "", targetAttestationToken, new ReleaseKeyOptions())
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1512,7 +1513,7 @@ public final class KeyAsyncClient {
             return releaseKeyWithResponse(name, version, targetAttestationToken, new ReleaseKeyOptions())
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1563,7 +1564,7 @@ public final class KeyAsyncClient {
                 implClient.releaseKeyWithResponseAsync(name, version, targetAttestationToken, releaseKeyOptions,
                     context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1595,7 +1596,7 @@ public final class KeyAsyncClient {
         try {
             return rotateKeyWithResponse(name).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1630,7 +1631,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.rotateKeyWithResponseAsync(name, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1662,7 +1663,7 @@ public final class KeyAsyncClient {
         try {
             return getKeyRotationPolicyWithResponse(keyName).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1697,7 +1698,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.getKeyRotationPolicyWithResponseAsync(keyName, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1743,7 +1744,7 @@ public final class KeyAsyncClient {
         try {
             return updateKeyRotationPolicyWithResponse(keyName, keyRotationPolicy).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1794,7 +1795,7 @@ public final class KeyAsyncClient {
             return withContext(context ->
                 implClient.updateKeyRotationPolicyWithResponseAsync(keyName, keyRotationPolicy, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 }

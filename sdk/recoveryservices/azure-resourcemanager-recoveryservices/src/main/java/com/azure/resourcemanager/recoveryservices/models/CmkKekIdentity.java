@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The details of the identity used for CMK. */
 @Fluent
-public class CmkKekIdentity {
+public final class CmkKekIdentity {
     /*
      * Indicate that system assigned identity should be used. Mutually exclusive with 'userAssignedIdentity' field
      */

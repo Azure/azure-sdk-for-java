@@ -7,20 +7,19 @@ package com.azure.resourcemanager.devcenter.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.OperationInner;
 import com.azure.resourcemanager.devcenter.models.OperationDisplay;
-import org.junit.jupiter.api.Test;
 
 public final class OperationInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationInner model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"v\",\"isDataAction\":true,\"display\":{\"provider\":\"fsubcgjbirxbpy\",\"resource\":\"rfbjf\",\"operation\":\"w\",\"description\":\"otftpvjzbexilz\"},\"origin\":\"user\",\"actionType\":\"Internal\"}")
+                    "{\"name\":\"igynduhavhqlk\",\"isDataAction\":false,\"display\":{\"provider\":\"qolbgyc\",\"resource\":\"iertgccymvaolp\",\"operation\":\"lqlfm\",\"description\":\"n\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}")
                 .toObject(OperationInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationInner model = new OperationInner().withDisplay(new OperationDisplay());
         model = BinaryData.fromObject(model).toObject(OperationInner.class);
     }

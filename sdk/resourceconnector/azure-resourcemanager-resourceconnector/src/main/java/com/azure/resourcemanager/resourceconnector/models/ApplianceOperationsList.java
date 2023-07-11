@@ -25,6 +25,10 @@ public final class ApplianceOperationsList {
     @JsonProperty(value = "value", required = true)
     private List<ApplianceOperationInner> value;
 
+    /** Creates an instance of ApplianceOperationsList class. */
+    public ApplianceOperationsList() {
+    }
+
     /**
      * Get the nextLink property: Next page of operations.
      *

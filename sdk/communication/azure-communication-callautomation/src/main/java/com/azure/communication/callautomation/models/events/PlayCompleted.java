@@ -8,9 +8,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PlayCompleted model. */
 @Immutable
-public final class PlayCompleted extends CallAutomationEventWithReasonCodeBase {
+public final class PlayCompleted extends CallAutomationEventBaseWithReasonCode {
     /*
-     * Contains the resulting SIP code/sub-code and message from NGC services.
+     * Contains the resulting SIP code, sub-code and message.
      */
     @JsonProperty(value = "resultInformation")
     private final ResultInformation resultInformation;
@@ -20,7 +20,7 @@ public final class PlayCompleted extends CallAutomationEventWithReasonCodeBase {
     }
 
     /**
-     * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.
+     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
      *
      * @return the resultInformation value.
      */

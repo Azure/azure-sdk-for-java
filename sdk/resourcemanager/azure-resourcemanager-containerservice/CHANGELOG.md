@@ -1,6 +1,6 @@
 # Release History
 
-## 2.26.0-beta.1 (Unreleased)
+## 2.29.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,37 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.28.0 (2023-06-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-05-01`.
+
+## 2.27.0 (2023-05-25)
+
+### Breaking Changes
+
+- The property `dockerBridgeCidr` in class `KubernetesCluster` has no effect since 2019.
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-04-01`.
+
+## 2.26.0 (2023-04-21)
+
+### Breaking Changes
+
+- Removed field `BASIC` from class `ManagedClusterSkuName`.
+- Removed field `PAID` from class `ManagedClusterSkuTier`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-03-01`.
 
 ## 2.25.0 (2023-03-24)
 

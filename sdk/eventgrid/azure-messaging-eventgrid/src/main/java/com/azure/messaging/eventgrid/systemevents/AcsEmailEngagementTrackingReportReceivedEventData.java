@@ -50,6 +50,9 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData {
     @JsonProperty(value = "engagementType")
     private AcsUserEngagement engagement;
 
+    /** Creates an instance of AcsEmailEngagementTrackingReportReceivedEventData class. */
+    public AcsEmailEngagementTrackingReportReceivedEventData() {}
+
     /**
      * Get the sender property: The Sender Email Address.
      *

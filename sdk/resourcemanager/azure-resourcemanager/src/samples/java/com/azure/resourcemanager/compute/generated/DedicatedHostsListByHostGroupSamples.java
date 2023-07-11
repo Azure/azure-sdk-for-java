@@ -7,15 +7,14 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for DedicatedHosts ListByHostGroup. */
 public final class DedicatedHostsListByHostGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHosts_ListByHostGroup_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHost_ListByHostGroup_MaximumSet_Gen.json
      */
     /**
-     * Sample code: DedicatedHosts_ListByHostGroup_MaximumSet_Gen.
+     * Sample code: DedicatedHost_ListByHostGroup_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void dedicatedHostsListByHostGroupMaximumSetGen(
-        com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void dedicatedHostListByHostGroupMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
@@ -25,15 +24,14 @@ public final class DedicatedHostsListByHostGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHosts_ListByHostGroup_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHost_ListByHostGroup_MinimumSet_Gen.json
      */
     /**
-     * Sample code: DedicatedHosts_ListByHostGroup_MinimumSet_Gen.
+     * Sample code: DedicatedHost_ListByHostGroup_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void dedicatedHostsListByHostGroupMinimumSetGen(
-        com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void dedicatedHostListByHostGroupMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()

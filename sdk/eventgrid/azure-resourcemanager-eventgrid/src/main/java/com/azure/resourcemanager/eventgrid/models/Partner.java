@@ -25,18 +25,19 @@ public final class Partner {
     private String partnerName;
 
     /*
-     * Expiration time of the partner authorization. If this timer expires, any
-     * request from this partner to create, update or delete resources in
-     * subscriber's
-     * context will fail. If specified, the allowed values are between 1 to the
-     * value of defaultMaximumExpirationTimeInDays specified in
-     * PartnerConfiguration.
-     * If not specified, the default value will be the value of
-     * defaultMaximumExpirationTimeInDays specified in PartnerConfiguration or
-     * 7 if this value is not specified.
+     * Expiration time of the partner authorization. If this timer expires, any request from this partner to create,
+     * update or delete resources in subscriber's
+     * context will fail. If specified, the allowed values are between 1 to the value of
+     * defaultMaximumExpirationTimeInDays specified in PartnerConfiguration.
+     * If not specified, the default value will be the value of defaultMaximumExpirationTimeInDays specified in
+     * PartnerConfiguration or 7 if this value is not specified.
      */
     @JsonProperty(value = "authorizationExpirationTimeInUtc")
     private OffsetDateTime authorizationExpirationTimeInUtc;
+
+    /** Creates an instance of Partner class. */
+    public Partner() {
+    }
 
     /**
      * Get the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.

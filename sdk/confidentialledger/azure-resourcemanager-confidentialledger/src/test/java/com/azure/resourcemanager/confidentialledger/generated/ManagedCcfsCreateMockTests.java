@@ -37,7 +37,7 @@ public final class ManagedCcfsCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"appName\":\"shsfwxosowzxcu\",\"appUri\":\"cjooxdjebwpucwwf\",\"identityServiceUri\":\"vbvmeu\",\"memberIdentityCertificates\":[],\"deploymentType\":{\"languageRuntime\":\"JS\",\"appSourceUri\":\"ce\"},\"provisioningState\":\"Succeeded\",\"nodeCount\":745513484},\"location\":\"wjue\",\"tags\":{\"xnrj\":\"wmcdytdxwi\"},\"id\":\"wgqwgxhn\",\"name\":\"skxfbk\",\"type\":\"y\"}";
+            "{\"properties\":{\"appName\":\"phoxus\",\"appUri\":\"pabgyeps\",\"identityServiceUri\":\"tazqugxywpmueefj\",\"memberIdentityCertificates\":[],\"deploymentType\":{\"languageRuntime\":\"CPP\",\"appSourceUri\":\"jidsuyonobglaoc\"},\"provisioningState\":\"Succeeded\",\"nodeCount\":1581079817},\"location\":\"g\",\"tags\":{\"lmoyrx\":\"xy\"},\"id\":\"wfudwpzntxhdzhl\",\"name\":\"qj\",\"type\":\"hckfrlhrx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,25 +68,34 @@ public final class ManagedCcfsCreateMockTests {
         ManagedCcf response =
             manager
                 .managedCcfs()
-                .define("b")
-                .withRegion("rhahvljuahaquhcd")
-                .withExistingResourceGroup("uzbpzkafku")
-                .withTags(mapOf("rcrgvx", "ualaexqpvfadmw", "fmisg", "vgomz"))
+                .define("fpl")
+                .withRegion("smtxpsieb")
+                .withExistingResourceGroup("svmkfssxquk")
+                .withTags(
+                    mapOf(
+                        "tldwkyzxuutk",
+                        "vpesapskrdqmhjjd",
+                        "togt",
+                        "cwscwsvlx",
+                        "vce",
+                        "rupqsxvnmicy",
+                        "ovnotyfjfcnjbkcn",
+                        "vei"))
                 .withProperties(
                     new ManagedCcfProperties()
                         .withMemberIdentityCertificates(Arrays.asList())
                         .withDeploymentType(
                             new DeploymentType()
                                 .withLanguageRuntime(LanguageRuntime.CPP)
-                                .withAppSourceUri("emaofmxagkvt"))
-                        .withNodeCount(683816537))
+                                .withAppSourceUri("baumnyqupedeoj"))
+                        .withNodeCount(996509936))
                 .create();
 
-        Assertions.assertEquals("wjue", response.location());
-        Assertions.assertEquals("wmcdytdxwi", response.tags().get("xnrj"));
-        Assertions.assertEquals(LanguageRuntime.JS, response.properties().deploymentType().languageRuntime());
-        Assertions.assertEquals("ce", response.properties().deploymentType().appSourceUri());
-        Assertions.assertEquals(745513484, response.properties().nodeCount());
+        Assertions.assertEquals("g", response.location());
+        Assertions.assertEquals("xy", response.tags().get("lmoyrx"));
+        Assertions.assertEquals(LanguageRuntime.CPP, response.properties().deploymentType().languageRuntime());
+        Assertions.assertEquals("jidsuyonobglaoc", response.properties().deploymentType().appSourceUri());
+        Assertions.assertEquals(1581079817, response.properties().nodeCount());
     }
 
     @SuppressWarnings("unchecked")

@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
  * The options for creating a p2p call.
  */
 @Fluent
-public class CreateCallOptions {
+public final class CreateCallOptions {
     /**
      * Call invitee information.
      */
@@ -23,7 +23,7 @@ public class CreateCallOptions {
     /*
      * The endpoint URL of the Azure Cognitive Services resource attached
      */
-    private String azureCognitiveServicesEndpointUrl;
+    private String azureCognitiveServicesUrl;
 
     /**
      * A customer set value used to track the answering of a call.
@@ -38,11 +38,11 @@ public class CreateCallOptions {
     /**
      * Constructor
      * @param callInvite Call invitee information.
-     * @param callbackUri The call back URI.
+     * @param callbackUrl The call back URI.
      */
-    public CreateCallOptions(CallInvite callInvite, String callbackUri) {
+    public CreateCallOptions(CallInvite callInvite, String callbackUrl) {
         this.callInvite = callInvite;
-        this.callbackUrl = callbackUri;
+        this.callbackUrl = callbackUrl;
     }
 
     /**
@@ -51,19 +51,19 @@ public class CreateCallOptions {
      *
      * @return the azureCognitiveServicesEndpointUrl value.
      */
-    public String getAzureCognitiveServicesEndpointUrl() {
-        return azureCognitiveServicesEndpointUrl;
+    public String getAzureCognitiveServicesUrl() {
+        return azureCognitiveServicesUrl;
     }
 
     /**
      * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
      * attached.
      *
-     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @param azureCognitiveServicesUrl the azureCognitiveServicesEndpointUrl value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public CreateCallOptions setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
-        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
+    public CreateCallOptions setAzureCognitiveServicesUrl(String azureCognitiveServicesUrl) {
+        this.azureCognitiveServicesUrl = azureCognitiveServicesUrl;
         return this;
     }
 

@@ -17,6 +17,10 @@ public class AzureJdbcPasswordlessProperties implements PasswordlessProperties {
 
     private static final String JDBC_SCOPE_AZURE = "https://ossrdbms-aad.database.windows.net/.default";
     private static final String JDBC_SCOPE_AZURE_CHINA = "https://ossrdbms-aad.database.chinacloudapi.cn/.default";
+    /**
+     * @deprecated AZURE_GERMANY is deprecated. Please use other JDBC scopes.
+     */
+    @Deprecated
     private static final String JDBC_SCOPE_AZURE_GERMANY = "https://ossrdbms-aad.database.cloudapi.de/.default";
     private static final String JDBC_SCOPE_AZURE_US_GOVERNMENT = "https://ossrdbms-aad.database.usgovcloudapi.net/.default";
 
@@ -24,7 +28,6 @@ public class AzureJdbcPasswordlessProperties implements PasswordlessProperties {
         {
             put(CloudType.AZURE, JDBC_SCOPE_AZURE);
             put(CloudType.AZURE_CHINA, JDBC_SCOPE_AZURE_CHINA);
-            put(CloudType.AZURE_GERMANY, JDBC_SCOPE_AZURE_GERMANY);
             put(CloudType.AZURE_US_GOVERNMENT, JDBC_SCOPE_AZURE_US_GOVERNMENT);
         }
     };

@@ -30,15 +30,15 @@ public class ImageDisk {
     private String blobUri;
 
     /*
-     * Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly**
-     * <br><br> **ReadWrite** <br><br> Default: **None for Standard storage. ReadOnly for Premium storage**
+     * Specifies the caching requirements. Possible values are: **None,** **ReadOnly,** **ReadWrite.** The default
+     * values are: **None for Standard storage. ReadOnly for Premium storage.**
      */
     @JsonProperty(value = "caching")
     private CachingTypes caching;
 
     /*
      * Specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk
-     * in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
+     * in a virtual machine image. This value cannot be larger than 1023 GB.
      */
     @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
@@ -121,9 +121,8 @@ public class ImageDisk {
     }
 
     /**
-     * Get the caching property: Specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are:
-     * &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite**
-     * &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**.
+     * Get the caching property: Specifies the caching requirements. Possible values are: **None,** **ReadOnly,**
+     * **ReadWrite.** The default values are: **None for Standard storage. ReadOnly for Premium storage.**.
      *
      * @return the caching value.
      */
@@ -132,9 +131,8 @@ public class ImageDisk {
     }
 
     /**
-     * Set the caching property: Specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are:
-     * &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite**
-     * &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**.
+     * Set the caching property: Specifies the caching requirements. Possible values are: **None,** **ReadOnly,**
+     * **ReadWrite.** The default values are: **None for Standard storage. ReadOnly for Premium storage.**.
      *
      * @param caching the caching value to set.
      * @return the ImageDisk object itself.
@@ -146,8 +144,7 @@ public class ImageDisk {
 
     /**
      * Get the diskSizeGB property: Specifies the size of empty data disks in gigabytes. This element can be used to
-     * overwrite the name of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be larger than
-     * 1023 GB.
+     * overwrite the name of the disk in a virtual machine image. This value cannot be larger than 1023 GB.
      *
      * @return the diskSizeGB value.
      */
@@ -157,8 +154,7 @@ public class ImageDisk {
 
     /**
      * Set the diskSizeGB property: Specifies the size of empty data disks in gigabytes. This element can be used to
-     * overwrite the name of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be larger than
-     * 1023 GB.
+     * overwrite the name of the disk in a virtual machine image. This value cannot be larger than 1023 GB.
      *
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the ImageDisk object itself.

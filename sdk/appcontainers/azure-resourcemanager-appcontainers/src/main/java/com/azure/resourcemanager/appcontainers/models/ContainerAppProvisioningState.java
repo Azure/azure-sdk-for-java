@@ -26,6 +26,15 @@ public final class ContainerAppProvisioningState extends ExpandableStringEnum<Co
     public static final ContainerAppProvisioningState DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of ContainerAppProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContainerAppProvisioningState() {
+    }
+
+    /**
      * Creates or finds a ContainerAppProvisioningState from its string representation.
      *
      * @param name a name to look for.

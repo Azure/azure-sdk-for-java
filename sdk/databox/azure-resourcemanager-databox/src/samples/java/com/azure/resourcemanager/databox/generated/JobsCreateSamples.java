@@ -31,7 +31,7 @@ import java.util.Map;
 /** Samples for Jobs Create. */
 public final class JobsCreateSamples {
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2021-03-01/examples/JobsCreateDevicePassword.json
+     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreateDevicePassword.json
      */
     /**
      * Sample code: JobsCreateDevicePassword.
@@ -41,28 +41,28 @@ public final class JobsCreateSamples {
     public static void jobsCreateDevicePassword(com.azure.resourcemanager.databox.DataBoxManager manager) {
         manager
             .jobs()
-            .define("SdkJob9640")
+            .define("TestJobName1")
             .withRegion("westus")
-            .withExistingResourceGroup("SdkRg7478")
+            .withExistingResourceGroup("YourResourceGroupName")
             .withSku(new Sku().withName(SkuName.DATA_BOX))
             .withTransferType(TransferType.IMPORT_TO_AZURE)
             .withDetails(
                 new DataBoxJobDetails()
                     .withContactDetails(
                         new ContactDetails()
-                            .withContactName("Public SDK Test")
-                            .withPhone("1234567890")
-                            .withPhoneExtension("1234")
-                            .withEmailList(Arrays.asList("testing@microsoft.com")))
+                            .withContactName("XXXX XXXX")
+                            .withPhone("0000000000")
+                            .withPhoneExtension("")
+                            .withEmailList(Arrays.asList("xxxx@xxxx.xxx")))
                     .withShippingAddress(
                         new ShippingAddress()
-                            .withStreetAddress1("16 TOWNSEND ST")
-                            .withStreetAddress2("Unit 1")
-                            .withCity("San Francisco")
-                            .withStateOrProvince("CA")
-                            .withCountry("US")
+                            .withStreetAddress1("XXXX XXXX")
+                            .withStreetAddress2("XXXX XXXX")
+                            .withCity("XXXX XXXX")
+                            .withStateOrProvince("XX")
+                            .withCountry("XX")
                             .withPostalCode("fakeTokenPlaceholder")
-                            .withCompanyName("Microsoft")
+                            .withCompanyName("XXXX XXXX")
                             .withAddressType(AddressType.COMMERCIAL))
                     .withDataImportDetails(
                         Arrays
@@ -72,13 +72,13 @@ public final class JobsCreateSamples {
                                         new StorageAccountDetails()
                                             .withSharePassword("fakeTokenPlaceholder")
                                             .withStorageAccountId(
-                                                "/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/databoxbvt1/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount2"))))
+                                                "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"))))
                     .withDevicePassword("fakeTokenPlaceholder"))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2021-03-01/examples/JobsCreate.json
+     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreate.json
      */
     /**
      * Sample code: JobsCreate.
@@ -88,28 +88,28 @@ public final class JobsCreateSamples {
     public static void jobsCreate(com.azure.resourcemanager.databox.DataBoxManager manager) {
         manager
             .jobs()
-            .define("SdkJob952")
+            .define("TestJobName1")
             .withRegion("westus")
-            .withExistingResourceGroup("SdkRg5154")
+            .withExistingResourceGroup("YourResourceGroupName")
             .withSku(new Sku().withName(SkuName.DATA_BOX))
             .withTransferType(TransferType.IMPORT_TO_AZURE)
             .withDetails(
                 new DataBoxJobDetails()
                     .withContactDetails(
                         new ContactDetails()
-                            .withContactName("Public SDK Test")
-                            .withPhone("1234567890")
-                            .withPhoneExtension("1234")
-                            .withEmailList(Arrays.asList("testing@microsoft.com")))
+                            .withContactName("XXXX XXXX")
+                            .withPhone("0000000000")
+                            .withPhoneExtension("")
+                            .withEmailList(Arrays.asList("xxxx@xxxx.xxx")))
                     .withShippingAddress(
                         new ShippingAddress()
-                            .withStreetAddress1("16 TOWNSEND ST")
-                            .withStreetAddress2("Unit 1")
-                            .withCity("San Francisco")
-                            .withStateOrProvince("CA")
-                            .withCountry("US")
+                            .withStreetAddress1("XXXX XXXX")
+                            .withStreetAddress2("XXXX XXXX")
+                            .withCity("XXXX XXXX")
+                            .withStateOrProvince("XX")
+                            .withCountry("XX")
                             .withPostalCode("fakeTokenPlaceholder")
-                            .withCompanyName("Microsoft")
+                            .withCompanyName("XXXX XXXX")
                             .withAddressType(AddressType.COMMERCIAL))
                     .withDataImportDetails(
                         Arrays
@@ -118,12 +118,12 @@ public final class JobsCreateSamples {
                                     .withAccountDetails(
                                         new StorageAccountDetails()
                                             .withStorageAccountId(
-                                                "/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/databoxbvt/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount")))))
+                                                "/subscriptions/YourSubscriptionId/resourcegroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName")))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2021-03-01/examples/JobsCreateDoubleEncryption.json
+     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreateDoubleEncryption.json
      */
     /**
      * Sample code: JobsCreateDoubleEncryption.
@@ -133,28 +133,28 @@ public final class JobsCreateSamples {
     public static void jobsCreateDoubleEncryption(com.azure.resourcemanager.databox.DataBoxManager manager) {
         manager
             .jobs()
-            .define("SdkJob6599")
+            .define("TestJobName1")
             .withRegion("westus")
-            .withExistingResourceGroup("SdkRg608")
+            .withExistingResourceGroup("YourResourceGroupName")
             .withSku(new Sku().withName(SkuName.DATA_BOX))
             .withTransferType(TransferType.IMPORT_TO_AZURE)
             .withDetails(
                 new DataBoxJobDetails()
                     .withContactDetails(
                         new ContactDetails()
-                            .withContactName("Public SDK Test")
-                            .withPhone("1234567890")
-                            .withPhoneExtension("1234")
-                            .withEmailList(Arrays.asList("testing@microsoft.com")))
+                            .withContactName("XXXX XXXX")
+                            .withPhone("0000000000")
+                            .withPhoneExtension("")
+                            .withEmailList(Arrays.asList("xxxx@xxxx.xxx")))
                     .withShippingAddress(
                         new ShippingAddress()
-                            .withStreetAddress1("16 TOWNSEND ST")
-                            .withStreetAddress2("Unit 1")
-                            .withCity("San Francisco")
-                            .withStateOrProvince("CA")
-                            .withCountry("US")
+                            .withStreetAddress1("XXXX XXXX")
+                            .withStreetAddress2("XXXX XXXX")
+                            .withCity("XXXX XXXX")
+                            .withStateOrProvince("XX")
+                            .withCountry("XX")
                             .withPostalCode("fakeTokenPlaceholder")
-                            .withCompanyName("Microsoft")
+                            .withCompanyName("XXXX XXXX")
                             .withAddressType(AddressType.COMMERCIAL))
                     .withDataImportDetails(
                         Arrays
@@ -163,7 +163,7 @@ public final class JobsCreateSamples {
                                     .withAccountDetails(
                                         new StorageAccountDetails()
                                             .withStorageAccountId(
-                                                "/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/databoxbvt/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount"))))
+                                                "/subscriptions/YourSubscriptionId/resourcegroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"))))
                     .withPreferences(
                         new Preferences()
                             .withEncryptionPreferences(
@@ -172,7 +172,7 @@ public final class JobsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2021-03-01/examples/JobsCreateWithUserAssignedIdentity.json
+     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreateWithUserAssignedIdentity.json
      */
     /**
      * Sample code: JobsCreateWithUserAssignedIdentity.
@@ -182,9 +182,9 @@ public final class JobsCreateSamples {
     public static void jobsCreateWithUserAssignedIdentity(com.azure.resourcemanager.databox.DataBoxManager manager) {
         manager
             .jobs()
-            .define("SdkJob5337")
+            .define("TestJobName1")
             .withRegion("westus")
-            .withExistingResourceGroup("SdkRg7552")
+            .withExistingResourceGroup("YourResourceGroupName")
             .withSku(new Sku().withName(SkuName.DATA_BOX))
             .withTransferType(TransferType.IMPORT_TO_AZURE)
             .withIdentity(
@@ -192,25 +192,25 @@ public final class JobsCreateSamples {
                     .withType("UserAssigned")
                     .withUserAssignedIdentities(
                         mapOf(
-                            "/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sdkIdentity",
+                            "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testIdentity",
                             new UserAssignedIdentity())))
             .withDetails(
                 new DataBoxJobDetails()
                     .withContactDetails(
                         new ContactDetails()
-                            .withContactName("Public SDK Test")
-                            .withPhone("1234567890")
-                            .withPhoneExtension("1234")
-                            .withEmailList(Arrays.asList("testing@microsoft.com")))
+                            .withContactName("XXXX XXXX")
+                            .withPhone("0000000000")
+                            .withPhoneExtension("")
+                            .withEmailList(Arrays.asList("xxxx@xxxx.xxx")))
                     .withShippingAddress(
                         new ShippingAddress()
-                            .withStreetAddress1("16 TOWNSEND ST")
-                            .withStreetAddress2("Unit 1")
-                            .withCity("San Francisco")
-                            .withStateOrProvince("CA")
-                            .withCountry("US")
+                            .withStreetAddress1("XXXX XXXX")
+                            .withStreetAddress2("XXXX XXXX")
+                            .withCity("XXXX XXXX")
+                            .withStateOrProvince("XX")
+                            .withCountry("XX")
                             .withPostalCode("fakeTokenPlaceholder")
-                            .withCompanyName("Microsoft")
+                            .withCompanyName("XXXX XXXX")
                             .withAddressType(AddressType.COMMERCIAL))
                     .withDataImportDetails(
                         Arrays
@@ -219,12 +219,12 @@ public final class JobsCreateSamples {
                                     .withAccountDetails(
                                         new StorageAccountDetails()
                                             .withStorageAccountId(
-                                                "/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/databoxbvt1/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount2")))))
+                                                "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName")))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2021-03-01/examples/JobsCreateExport.json
+     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreateExport.json
      */
     /**
      * Sample code: JobsCreateExport.
@@ -234,28 +234,28 @@ public final class JobsCreateSamples {
     public static void jobsCreateExport(com.azure.resourcemanager.databox.DataBoxManager manager) {
         manager
             .jobs()
-            .define("SdkJob6429")
+            .define("TestJobName1")
             .withRegion("westus")
-            .withExistingResourceGroup("SdkRg8091")
+            .withExistingResourceGroup("YourResourceGroupName")
             .withSku(new Sku().withName(SkuName.DATA_BOX))
             .withTransferType(TransferType.EXPORT_FROM_AZURE)
             .withDetails(
                 new DataBoxJobDetails()
                     .withContactDetails(
                         new ContactDetails()
-                            .withContactName("Public SDK Test")
-                            .withPhone("1234567890")
-                            .withPhoneExtension("1234")
-                            .withEmailList(Arrays.asList("testing@microsoft.com")))
+                            .withContactName("XXXX XXXX")
+                            .withPhone("0000000000")
+                            .withPhoneExtension("")
+                            .withEmailList(Arrays.asList("xxxx@xxxx.xxx")))
                     .withShippingAddress(
                         new ShippingAddress()
-                            .withStreetAddress1("16 TOWNSEND ST")
-                            .withStreetAddress2("Unit 1")
-                            .withCity("San Francisco")
-                            .withStateOrProvince("CA")
-                            .withCountry("US")
+                            .withStreetAddress1("XXXX XXXX")
+                            .withStreetAddress2("XXXX XXXX")
+                            .withCity("XXXX XXXX")
+                            .withStateOrProvince("XX")
+                            .withCountry("XX")
                             .withPostalCode("fakeTokenPlaceholder")
-                            .withCompanyName("Microsoft")
+                            .withCompanyName("XXXX XXXX")
                             .withAddressType(AddressType.COMMERCIAL))
                     .withDataExportDetails(
                         Arrays
@@ -274,7 +274,7 @@ public final class JobsCreateSamples {
                                     .withAccountDetails(
                                         new StorageAccountDetails()
                                             .withStorageAccountId(
-                                                "/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.Storage/storageAccounts/aaaaaa2")))))
+                                                "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName")))))
             .create();
     }
 

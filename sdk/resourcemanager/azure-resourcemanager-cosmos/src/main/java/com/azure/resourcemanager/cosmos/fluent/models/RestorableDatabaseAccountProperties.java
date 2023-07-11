@@ -33,6 +33,12 @@ public final class RestorableDatabaseAccountProperties {
     private OffsetDateTime deletionTime;
 
     /*
+     * The least recent time at which the database account can be restored to (ISO-8601 format).
+     */
+    @JsonProperty(value = "oldestRestorableTime")
+    private OffsetDateTime oldestRestorableTime;
+
+    /*
      * The API type of the restorable database account.
      */
     @JsonProperty(value = "apiType", access = JsonProperty.Access.WRITE_ONLY)
@@ -107,6 +113,28 @@ public final class RestorableDatabaseAccountProperties {
      */
     public RestorableDatabaseAccountProperties withDeletionTime(OffsetDateTime deletionTime) {
         this.deletionTime = deletionTime;
+        return this;
+    }
+
+    /**
+     * Get the oldestRestorableTime property: The least recent time at which the database account can be restored to
+     * (ISO-8601 format).
+     *
+     * @return the oldestRestorableTime value.
+     */
+    public OffsetDateTime oldestRestorableTime() {
+        return this.oldestRestorableTime;
+    }
+
+    /**
+     * Set the oldestRestorableTime property: The least recent time at which the database account can be restored to
+     * (ISO-8601 format).
+     *
+     * @param oldestRestorableTime the oldestRestorableTime value to set.
+     * @return the RestorableDatabaseAccountProperties object itself.
+     */
+    public RestorableDatabaseAccountProperties withOldestRestorableTime(OffsetDateTime oldestRestorableTime) {
+        this.oldestRestorableTime = oldestRestorableTime;
         return this;
     }
 

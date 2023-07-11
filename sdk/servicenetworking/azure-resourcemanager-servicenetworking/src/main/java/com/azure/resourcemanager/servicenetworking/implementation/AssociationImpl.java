@@ -10,9 +10,9 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicenetworking.fluent.models.AssociationInner;
 import com.azure.resourcemanager.servicenetworking.models.Association;
 import com.azure.resourcemanager.servicenetworking.models.AssociationSubnet;
+import com.azure.resourcemanager.servicenetworking.models.AssociationSubnetUpdate;
 import com.azure.resourcemanager.servicenetworking.models.AssociationType;
 import com.azure.resourcemanager.servicenetworking.models.AssociationUpdate;
-import com.azure.resourcemanager.servicenetworking.models.AssociationUpdateProperties;
 import com.azure.resourcemanager.servicenetworking.models.ProvisioningState;
 import java.util.Collections;
 import java.util.Map;
@@ -200,8 +200,13 @@ public final class AssociationImpl implements Association, Association.Definitio
     }
 
     public AssociationImpl withAssociationType(AssociationType associationType) {
-        this.innerModel().withAssociationType(associationType);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withAssociationType(associationType);
+            return this;
+        } else {
+            this.updateProperties.withAssociationType(associationType);
+            return this;
+        }
     }
 
     public AssociationImpl withSubnet(AssociationSubnet subnet) {
@@ -209,8 +214,8 @@ public final class AssociationImpl implements Association, Association.Definitio
         return this;
     }
 
-    public AssociationImpl withProperties(AssociationUpdateProperties properties) {
-        this.updateProperties.withProperties(properties);
+    public AssociationImpl withSubnet(AssociationSubnetUpdate subnet) {
+        this.updateProperties.withSubnet(subnet);
         return this;
     }
 

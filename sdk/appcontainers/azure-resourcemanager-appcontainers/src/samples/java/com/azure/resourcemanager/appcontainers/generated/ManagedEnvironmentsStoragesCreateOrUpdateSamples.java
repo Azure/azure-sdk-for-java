@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentStorageP
 /** Samples for ManagedEnvironmentsStorages CreateOrUpdate. */
 public final class ManagedEnvironmentsStoragesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ManagedEnvironmentsStorages_CreateOrUpdate.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ManagedEnvironmentsStorages_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update environments storage.
@@ -29,7 +29,7 @@ public final class ManagedEnvironmentsStoragesCreateOrUpdateSamples {
                     .withAzureFile(
                         new AzureFileProperties()
                             .withAccountName("account1")
-                            .withAccountKey("key")
+                            .withAccountKey("fakeTokenPlaceholder")
                             .withAccessMode(AccessMode.READ_ONLY)
                             .withShareName("share1")))
             .create();

@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.PoolInner;
+import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of Pool. */
@@ -55,6 +56,22 @@ public interface Pool {
     SystemData systemData();
 
     /**
+     * Gets the healthStatus property: Overall health status of the Pool. Indicates whether or not the Pool is available
+     * to create Dev Boxes.
+     *
+     * @return the healthStatus value.
+     */
+    HealthStatus healthStatus();
+
+    /**
+     * Gets the healthStatusDetails property: Details on the Pool health status to help diagnose issues. This is only
+     * populated when the pool status indicates the pool is in a non-healthy state.
+     *
+     * @return the healthStatusDetails value.
+     */
+    List<HealthStatusDetail> healthStatusDetails();
+
+    /**
      * Gets the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
@@ -90,6 +107,13 @@ public interface Pool {
      * @return the localAdministrator value.
      */
     LocalAdminStatus localAdministrator();
+
+    /**
+     * Gets the stopOnDisconnect property: Stop on disconnect configuration settings for Dev Boxes created in this pool.
+     *
+     * @return the stopOnDisconnect value.
+     */
+    StopOnDisconnectConfiguration stopOnDisconnect();
 
     /**
      * Gets the region of the resource.
@@ -169,7 +193,8 @@ public interface Pool {
                 DefinitionStages.WithDevBoxDefinitionName,
                 DefinitionStages.WithNetworkConnectionName,
                 DefinitionStages.WithLicenseType,
-                DefinitionStages.WithLocalAdministrator {
+                DefinitionStages.WithLocalAdministrator,
+                DefinitionStages.WithStopOnDisconnect {
             /**
              * Executes the create request.
              *
@@ -240,6 +265,17 @@ public interface Pool {
              */
             WithCreate withLocalAdministrator(LocalAdminStatus localAdministrator);
         }
+        /** The stage of the Pool definition allowing to specify stopOnDisconnect. */
+        interface WithStopOnDisconnect {
+            /**
+             * Specifies the stopOnDisconnect property: Stop on disconnect configuration settings for Dev Boxes created
+             * in this pool..
+             *
+             * @param stopOnDisconnect Stop on disconnect configuration settings for Dev Boxes created in this pool.
+             * @return the next definition stage.
+             */
+            WithCreate withStopOnDisconnect(StopOnDisconnectConfiguration stopOnDisconnect);
+        }
     }
     /**
      * Begins update for the Pool resource.
@@ -254,7 +290,8 @@ public interface Pool {
             UpdateStages.WithDevBoxDefinitionName,
             UpdateStages.WithNetworkConnectionName,
             UpdateStages.WithLicenseType,
-            UpdateStages.WithLocalAdministrator {
+            UpdateStages.WithLocalAdministrator,
+            UpdateStages.WithStopOnDisconnect {
         /**
          * Executes the update request.
          *
@@ -327,6 +364,17 @@ public interface Pool {
              */
             Update withLocalAdministrator(LocalAdminStatus localAdministrator);
         }
+        /** The stage of the Pool update allowing to specify stopOnDisconnect. */
+        interface WithStopOnDisconnect {
+            /**
+             * Specifies the stopOnDisconnect property: Stop on disconnect configuration settings for Dev Boxes created
+             * in this pool..
+             *
+             * @param stopOnDisconnect Stop on disconnect configuration settings for Dev Boxes created in this pool.
+             * @return the next definition stage.
+             */
+            Update withStopOnDisconnect(StopOnDisconnectConfiguration stopOnDisconnect);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.
@@ -342,4 +390,22 @@ public interface Pool {
      * @return the refreshed resource.
      */
     Pool refresh(Context context);
+
+    /**
+     * Triggers a refresh of the pool status.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void runHealthChecks();
+
+    /**
+     * Triggers a refresh of the pool status.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void runHealthChecks(Context context);
 }

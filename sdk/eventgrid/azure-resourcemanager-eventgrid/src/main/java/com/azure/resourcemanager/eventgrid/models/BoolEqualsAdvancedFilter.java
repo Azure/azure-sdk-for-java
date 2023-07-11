@@ -20,6 +20,10 @@ public final class BoolEqualsAdvancedFilter extends AdvancedFilter {
     @JsonProperty(value = "value")
     private Boolean value;
 
+    /** Creates an instance of BoolEqualsAdvancedFilter class. */
+    public BoolEqualsAdvancedFilter() {
+    }
+
     /**
      * Get the value property: The boolean filter value.
      *

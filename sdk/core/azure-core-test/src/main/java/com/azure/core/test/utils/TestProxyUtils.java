@@ -16,6 +16,7 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
@@ -35,12 +36,14 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
 import static com.azure.core.test.models.TestProxySanitizerType.HEADER;
+import static com.azure.core.test.policy.TestProxyRecordPolicy.RECORD_MODE;
 
 /**
  * Utility functions for interaction with the test proxy.
  */
 public class TestProxyUtils {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyUtils.class);
+    private static final HttpHeaderName X_RECORDING_SKIP = HttpHeaderName.fromString("x-recording-skip");
 
     private static final List<String> JSON_PROPERTIES_TO_REDACT
         = new ArrayList<String>(
@@ -50,7 +53,6 @@ public class TestProxyUtils {
     private static final Map<String, String> HEADER_KEY_REGEX_TO_REDACT = new HashMap<String, String>() {{
             put("Operation-Location", URL_REGEX);
             put("operation-location", URL_REGEX);
-            put("Location", URL_REGEX);
             }};
 
     private static final List<String> BODY_REGEX_TO_REDACT
@@ -77,6 +79,8 @@ public class TestProxyUtils {
     private static final HttpHeaderName X_ABSTRACTION_IDENTIFIER =
         HttpHeaderName.fromString("x-abstraction-identifier");
 
+    private static volatile URL proxyUrl;
+
     /**
      * Adds headers required for communication with the test proxy.
      *
@@ -84,9 +88,10 @@ public class TestProxyUtils {
      * @param proxyUrl The {@link URL} the proxy lives at.
      * @param xRecordingId The x-recording-id value for the current session.
      * @param mode The current test proxy mode.
+     * @param skipRecordingRequestBody Flag indicating to skip recording request bodies when tests run in Record mode.
      * @throws RuntimeException Construction of one of the URLs failed.
      */
-    public static void changeHeaders(HttpRequest request, URL proxyUrl, String xRecordingId, String mode) {
+    public static void changeHeaders(HttpRequest request, URL proxyUrl, String xRecordingId, String mode, boolean skipRecordingRequestBody) {
         HttpHeader upstreamUri = request.getHeaders().get(X_RECORDING_UPSTREAM_BASE_URI);
 
         UrlBuilder proxyUrlBuilder = UrlBuilder.parse(request.getUrl());
@@ -108,6 +113,9 @@ public class TestProxyUtils {
                 headers.set(X_RECORDING_UPSTREAM_BASE_URI, originalUrl.toString());
                 headers.set(X_RECORDING_MODE, mode);
                 headers.set(X_RECORDING_ID, xRecordingId);
+                if (mode.equals(RECORD_MODE) && skipRecordingRequestBody) {
+                    headers.set(X_RECORDING_SKIP, "request-body");
+                }
             }
 
             request.setUrl(proxyUrlBuilder.toUrl());
@@ -117,17 +125,38 @@ public class TestProxyUtils {
     }
 
     /**
+     * Get the assets json file path if it exists.
+     * @param recordFile the record/playback file
+     * @param testClassPath the test class path
+     * @return the assets json file path if it exists.
+     */
+    public static String getAssetJsonFile(File recordFile, Path testClassPath) {
+        if (assetJsonFileExists(testClassPath)) {
+            // subpath removes nodes "src/test/resources/session-records"
+            return Paths.get(recordFile.toPath().subpath(0, 3).toString(), "assets.json").toString();
+        } else {
+            return null;
+        }
+    }
+
+    private static boolean assetJsonFileExists(Path testClassPath) {
+        return Files.exists(Paths.get(String.valueOf(TestUtils.getRepoRootResolveUntil(testClassPath, "target")),
+            "assets.json"));
+    }
+
+    /**
      * Sets the response URL back to the original URL before returning it through the pipeline.
      * @param response The {@link HttpResponse} to modify.
      * @return The modified response.
      * @throws RuntimeException Construction of one of the URLs failed.
      */
-    public static HttpResponse revertUrl(HttpResponse response) {
+    public static HttpResponse resetTestProxyData(HttpResponse response) {
+        HttpRequest responseRequest = response.getRequest();
+        HttpHeaders requestHeaders = responseRequest.getHeaders();
         try {
-            URL originalUrl = UrlBuilder.parse(response.getRequest().getHeaders()
-                .getValue(X_RECORDING_UPSTREAM_BASE_URI))
+            URL originalUrl = UrlBuilder.parse(requestHeaders.getValue(X_RECORDING_UPSTREAM_BASE_URI))
                 .toUrl();
-            UrlBuilder currentUrl = UrlBuilder.parse(response.getRequest().getUrl());
+            UrlBuilder currentUrl = UrlBuilder.parse(responseRequest.getUrl());
             currentUrl.setScheme(originalUrl.getProtocol());
             currentUrl.setHost(originalUrl.getHost());
             int port = originalUrl.getPort();
@@ -136,7 +165,12 @@ public class TestProxyUtils {
             } else {
                 currentUrl.setPort(port);
             }
-            response.getRequest().setUrl(currentUrl.toUrl());
+            responseRequest.setUrl(currentUrl.toUrl());
+
+            requestHeaders.remove(X_RECORDING_UPSTREAM_BASE_URI);
+            requestHeaders.remove(X_RECORDING_MODE);
+            requestHeaders.remove(X_RECORDING_SKIP);
+            requestHeaders.remove(X_RECORDING_ID);
             return response;
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
@@ -181,32 +215,42 @@ public class TestProxyUtils {
 
     /**
      * Finds the test proxy version in the source tree.
+     * @param testClassPath the test class path
      * @return The version string to use.
      * @throws RuntimeException The eng folder could not be located in the repo.
      * @throws UncheckedIOException The version file could not be read properly.
      */
-    public static String getTestProxyVersion() {
-        Path path = TestUtils.getRecordFolder().toPath();
-        Path candidate = null;
-        while (path != null) {
-            candidate = path.resolve("eng");
-            if (Files.exists(candidate)) {
-                break;
-            }
-            path = path.getParent();
-        }
-        if (path == null) {
-            throw new RuntimeException("Could not locate eng folder");
-        }
-        Path versionFile =  Paths.get("common", "testproxy", "target_version.txt");
-        candidate = candidate.resolve(versionFile);
+    public static String getTestProxyVersion(Path testClassPath) {
+        Path rootPath = TestUtils.getRepoRootResolveUntil(testClassPath, "eng");
+        Path versionFile =  Paths.get("eng", "common", "testproxy", "target_version.txt");
+        rootPath = rootPath.resolve(versionFile);
         try {
-            return Files.readAllLines(candidate).get(0).replace(System.getProperty("line.separator"), "");
+            return Files.readAllLines(rootPath).get(0).replace(System.getProperty("line.separator"), "");
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
+    /**
+     * Gets the current URL for the test proxy.
+     * @return The {@link URL} location of the test proxy.
+     * @throws RuntimeException The URL could not be constructed.
+     */
+    public static URL getProxyUrl() {
+        if (proxyUrl != null) {
+            return proxyUrl;
+        }
+        UrlBuilder builder = new UrlBuilder();
+        builder.setHost("localhost");
+        builder.setScheme("http");
+        builder.setPort(5000);
+        try {
+            proxyUrl = builder.toUrl();
+            return proxyUrl;
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * Registers the default set of sanitizers for sanitizing request and responses
@@ -359,6 +403,21 @@ public class TestProxyUtils {
             request.setHeader(X_ABSTRACTION_IDENTIFIER, matcherType);
             return request;
         }).collect(Collectors.toList());
+    }
+
+    /**
+     * Set comparing bodies to false when running in playback and RecordWithoutRequestBody is set for the test.
+     * @return the HttpRequest for setting compare bodies matcher to false.
+     */
+    public static HttpRequest setCompareBodiesMatcher() {
+        String requestBody = createCustomMatcherRequestBody(new CustomMatcher().setComparingBodies(false));
+        HttpRequest request =
+            new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", proxyUrl.toString())).setBody(
+                requestBody);
+
+        request.setHeader(X_ABSTRACTION_IDENTIFIER,
+            TestProxyRequestMatcher.TestProxyRequestMatcherType.CUSTOM.getName());
+        return request;
     }
 
     private static TestProxySanitizer addDefaultUrlSanitizer() {

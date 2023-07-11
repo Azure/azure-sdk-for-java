@@ -30,15 +30,6 @@ public final class ChannelsImpl implements Channels {
         this.serviceManager = serviceManager;
     }
 
-    public Channel get(String resourceGroupName, String partnerNamespaceName, String channelName) {
-        ChannelInner inner = this.serviceClient().get(resourceGroupName, partnerNamespaceName, channelName);
-        if (inner != null) {
-            return new ChannelImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Channel> getWithResponse(
         String resourceGroupName, String partnerNamespaceName, String channelName, Context context) {
         Response<ChannelInner> inner =
@@ -54,20 +45,21 @@ public final class ChannelsImpl implements Channels {
         }
     }
 
+    public Channel get(String resourceGroupName, String partnerNamespaceName, String channelName) {
+        ChannelInner inner = this.serviceClient().get(resourceGroupName, partnerNamespaceName, channelName);
+        if (inner != null) {
+            return new ChannelImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String partnerNamespaceName, String channelName) {
         this.serviceClient().delete(resourceGroupName, partnerNamespaceName, channelName);
     }
 
     public void delete(String resourceGroupName, String partnerNamespaceName, String channelName, Context context) {
         this.serviceClient().delete(resourceGroupName, partnerNamespaceName, channelName, context);
-    }
-
-    public void update(
-        String resourceGroupName,
-        String partnerNamespaceName,
-        String channelName,
-        ChannelUpdateParameters channelUpdateParameters) {
-        this.serviceClient().update(resourceGroupName, partnerNamespaceName, channelName, channelUpdateParameters);
     }
 
     public Response<Void> updateWithResponse(
@@ -79,6 +71,14 @@ public final class ChannelsImpl implements Channels {
         return this
             .serviceClient()
             .updateWithResponse(resourceGroupName, partnerNamespaceName, channelName, channelUpdateParameters, context);
+    }
+
+    public void update(
+        String resourceGroupName,
+        String partnerNamespaceName,
+        String channelName,
+        ChannelUpdateParameters channelUpdateParameters) {
+        this.serviceClient().update(resourceGroupName, partnerNamespaceName, channelName, channelUpdateParameters);
     }
 
     public PagedIterable<Channel> listByPartnerNamespace(String resourceGroupName, String partnerNamespaceName) {
@@ -94,17 +94,6 @@ public final class ChannelsImpl implements Channels {
         return Utils.mapPage(inner, inner1 -> new ChannelImpl(inner1, this.manager()));
     }
 
-    public EventSubscriptionFullUrl getFullUrl(
-        String resourceGroupName, String partnerNamespaceName, String channelName) {
-        EventSubscriptionFullUrlInner inner =
-            this.serviceClient().getFullUrl(resourceGroupName, partnerNamespaceName, channelName);
-        if (inner != null) {
-            return new EventSubscriptionFullUrlImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<EventSubscriptionFullUrl> getFullUrlWithResponse(
         String resourceGroupName, String partnerNamespaceName, String channelName, Context context) {
         Response<EventSubscriptionFullUrlInner> inner =
@@ -115,6 +104,17 @@ public final class ChannelsImpl implements Channels {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new EventSubscriptionFullUrlImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public EventSubscriptionFullUrl getFullUrl(
+        String resourceGroupName, String partnerNamespaceName, String channelName) {
+        EventSubscriptionFullUrlInner inner =
+            this.serviceClient().getFullUrl(resourceGroupName, partnerNamespaceName, channelName);
+        if (inner != null) {
+            return new EventSubscriptionFullUrlImpl(inner, this.manager());
         } else {
             return null;
         }

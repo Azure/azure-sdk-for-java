@@ -11,19 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of Domains. */
 public interface Domains {
     /**
-     * Get properties of a domain.
+     * Get a domain.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a domain.
-     */
-    Domain getByResourceGroup(String resourceGroupName, String domainName);
-
-    /**
-     * Get properties of a domain.
+     * <p>Get properties of a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -36,7 +26,23 @@ public interface Domains {
     Response<Domain> getByResourceGroupWithResponse(String resourceGroupName, String domainName, Context context);
 
     /**
-     * Delete existing domain.
+     * Get a domain.
+     *
+     * <p>Get properties of a domain.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a domain.
+     */
+    Domain getByResourceGroup(String resourceGroupName, String domainName);
+
+    /**
+     * Delete a domain.
+     *
+     * <p>Delete existing domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -47,7 +53,9 @@ public interface Domains {
     void deleteByResourceGroup(String resourceGroupName, String domainName);
 
     /**
-     * Delete existing domain.
+     * Delete a domain.
+     *
+     * <p>Delete existing domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -59,7 +67,9 @@ public interface Domains {
     void delete(String resourceGroupName, String domainName, Context context);
 
     /**
-     * List all the domains under an Azure subscription.
+     * List domains under an Azure subscription.
+     *
+     * <p>List all the domains under an Azure subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -68,7 +78,9 @@ public interface Domains {
     PagedIterable<Domain> list();
 
     /**
-     * List all the domains under an Azure subscription.
+     * List domains under an Azure subscription.
+     *
+     * <p>List all the domains under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -87,7 +99,9 @@ public interface Domains {
     PagedIterable<Domain> list(String filter, Integer top, Context context);
 
     /**
-     * List all the domains under a resource group.
+     * List domains under a resource group.
+     *
+     * <p>List all the domains under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -98,7 +112,9 @@ public interface Domains {
     PagedIterable<Domain> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List all the domains under a resource group.
+     * List domains under a resource group.
+     *
+     * <p>List all the domains under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -118,19 +134,9 @@ public interface Domains {
     PagedIterable<Domain> listByResourceGroup(String resourceGroupName, String filter, Integer top, Context context);
 
     /**
-     * List the two keys used to publish to a domain.
+     * List keys for a domain.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Domain.
-     */
-    DomainSharedAccessKeys listSharedAccessKeys(String resourceGroupName, String domainName);
-
-    /**
-     * List the two keys used to publish to a domain.
+     * <p>List the two keys used to publish to a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -144,21 +150,23 @@ public interface Domains {
         String resourceGroupName, String domainName, Context context);
 
     /**
-     * Regenerate a shared access key for a domain.
+     * List keys for a domain.
+     *
+     * <p>List the two keys used to publish to a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
-     * @param regenerateKeyRequest Request body to regenerate key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shared access keys of the Domain.
      */
-    DomainSharedAccessKeys regenerateKey(
-        String resourceGroupName, String domainName, DomainRegenerateKeyRequest regenerateKeyRequest);
+    DomainSharedAccessKeys listSharedAccessKeys(String resourceGroupName, String domainName);
 
     /**
-     * Regenerate a shared access key for a domain.
+     * Regenerate key for a domain.
+     *
+     * <p>Regenerate a shared access key for a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -173,7 +181,25 @@ public interface Domains {
         String resourceGroupName, String domainName, DomainRegenerateKeyRequest regenerateKeyRequest, Context context);
 
     /**
-     * Get properties of a domain.
+     * Regenerate key for a domain.
+     *
+     * <p>Regenerate a shared access key for a domain.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the domain.
+     * @param regenerateKeyRequest Request body to regenerate key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Domain.
+     */
+    DomainSharedAccessKeys regenerateKey(
+        String resourceGroupName, String domainName, DomainRegenerateKeyRequest regenerateKeyRequest);
+
+    /**
+     * Get a domain.
+     *
+     * <p>Get properties of a domain.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -184,7 +210,9 @@ public interface Domains {
     Domain getById(String id);
 
     /**
-     * Get properties of a domain.
+     * Get a domain.
+     *
+     * <p>Get properties of a domain.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -196,7 +224,9 @@ public interface Domains {
     Response<Domain> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete existing domain.
+     * Delete a domain.
+     *
+     * <p>Delete existing domain.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,7 +236,9 @@ public interface Domains {
     void deleteById(String id);
 
     /**
-     * Delete existing domain.
+     * Delete a domain.
+     *
+     * <p>Delete existing domain.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

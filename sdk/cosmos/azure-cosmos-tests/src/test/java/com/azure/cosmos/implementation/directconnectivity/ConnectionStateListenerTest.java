@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.RequestR
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.SslContextUtils;
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.TcpServer;
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.TcpServerFactory;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConnectionStateListener;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConnectionStateListenerMetrics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
@@ -114,7 +115,7 @@ public class ConnectionStateListenerTest {
         try {
             client.invokeResourceOperationAsync(targetUri, req).block();
         } catch (Exception e) {
-            logger.info("expected failed request with reason {}", e);
+            //  no op here
         }
 
         if (markUnhealthy) {
@@ -137,10 +138,12 @@ public class ConnectionStateListenerTest {
     @Test(groups = { "unit" }, dataProvider = "connectionStateListenerExceptionProvider")
     public void connectionStateListenerOnException(Exception exception, boolean canHandle) {
         RntbdEndpoint endpointMock = Mockito.mock(RntbdEndpoint.class);
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessorMock = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
 
         Uri testRequestUri = new Uri("http://127.0.0.1:1");
         testRequestUri.setConnected();
-        RntbdConnectionStateListener connectionStateListener = new RntbdConnectionStateListener(endpointMock);
+        RntbdConnectionStateListener connectionStateListener = new RntbdConnectionStateListener(endpointMock, proactiveOpenConnectionsProcessorMock);
+
         connectionStateListener.onBeforeSendRequest(testRequestUri);
         connectionStateListener.onException(exception);
         RntbdConnectionStateListenerMetrics metrics = connectionStateListener.getMetrics();

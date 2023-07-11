@@ -103,7 +103,8 @@ public class ConsistencyWriterTest {
                 transportClientWrapper.transportClient,
                 authorizationTokenProvider,
                 serviceConfigReader,
-                false);
+                false,
+                null);
 
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         RxDocumentServiceRequest dsr = mockDocumentServiceRequest(clientContext);
@@ -151,7 +152,8 @@ public class ConsistencyWriterTest {
             transportClientWrapper.transportClient,
             authorizationTokenProvider,
             serviceConfigReader,
-            false);
+            false,
+            null);
 
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         RxDocumentServiceRequest dsr = mockDocumentServiceRequest(clientContext);
@@ -298,12 +300,14 @@ public class ConsistencyWriterTest {
             transportClientWrapper.transportClient,
             authorizationTokenProvider,
             serviceConfigReader,
-            false);
+            false,
+            null);
 
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         RxDocumentServiceRequest dsr = mockDocumentServiceRequest(clientContext);
 
-        consistencyWriter.writeAsync(dsr, timeoutHelper, false).subscribe();
+        //  do nothing
+        consistencyWriter.writeAsync(dsr, timeoutHelper, false).onErrorResume(Mono::error).subscribe();
 
         String cosmosDiagnostics = dsr.requestContext.cosmosDiagnostics.toString();
         assertThat(cosmosDiagnostics).containsOnlyOnce("storeResult");
@@ -378,7 +382,8 @@ public class ConsistencyWriterTest {
                 transportClient,
                 authorizationTokenProvider,
                 serviceConfigReader,
-                useMultipleWriteLocation);
+                useMultipleWriteLocation,
+                null);
     }
 
     public static <T> void validateError(Mono<T> single,

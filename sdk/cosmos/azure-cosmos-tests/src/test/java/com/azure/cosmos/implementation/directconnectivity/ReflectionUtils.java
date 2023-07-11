@@ -31,6 +31,7 @@ import com.azure.cosmos.implementation.clienttelemetry.AzureVMMetadata;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -185,6 +186,11 @@ public class ReflectionUtils {
 
     public static void setClientTelemetryConfig(CosmosAsyncClient cosmosAsyncClient, CosmosClientTelemetryConfig cfg){
         set(cosmosAsyncClient, cfg, "clientTelemetryConfig");
+        AsyncDocumentClient asyncClient = get(
+            AsyncDocumentClient.class, cosmosAsyncClient, "asyncDocumentClient");
+        if (asyncClient instanceof RxDocumentClientImpl) {
+            set(((RxDocumentClientImpl)asyncClient), cfg, "clientTelemetryConfig");
+        }
     }
 
     public static ConnectionPolicy getConnectionPolicy(CosmosClientBuilder cosmosClientBuilder){
@@ -297,6 +303,15 @@ public class ReflectionUtils {
 
     public static RntbdEndpoint.Provider getRntbdEndpointProvider(RntbdTransportClient rntbdTransportClient) {
         return get(RntbdEndpoint.Provider.class, rntbdTransportClient, "endpointProvider");
+    }
+
+    public static ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor(RntbdTransportClient rntbdTransportClient) {
+        return get(ProactiveOpenConnectionsProcessor.class, rntbdTransportClient, "proactiveOpenConnectionsProcessor");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Set<String> getAddressUrisAsStringUnderOpenConnectionsAndInitCachesFlow(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
+        return get(Set.class, proactiveOpenConnectionsProcessor, "addressUrisUnderOpenConnectionsAndInitCaches");
     }
 
     @SuppressWarnings("unchecked")

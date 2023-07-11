@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.Image;
 import java.nio.ByteBuffer;
@@ -31,7 +30,7 @@ public final class ImagesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"rvkwc\",\"publisher\":\"ql\",\"offer\":\"x\",\"sku\":\"czheyd\",\"recommendedMachineConfiguration\":{},\"provisioningState\":\"NotSpecified\"},\"id\":\"xmaehvbbxu\",\"name\":\"iplt\",\"type\":\"n\"}";
+            "{\"properties\":{\"description\":\"uo\",\"publisher\":\"inyflnorwmduvwp\",\"offer\":\"vxwmygd\",\"sku\":\"gpqch\",\"recommendedMachineConfiguration\":{},\"provisioningState\":\"Creating\",\"hibernateSupport\":\"Enabled\"},\"id\":\"crxgibb\",\"name\":\"axconfozauo\",\"type\":\"sukokwbqplhl\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +59,9 @@ public final class ImagesGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Image response =
-            manager.images().getWithResponse("zuo", "ejwcwwqiok", "ssxmojms", "p", Context.NONE).getValue();
+            manager
+                .images()
+                .getWithResponse("neekulfg", "lqubkwdlen", "d", "utujba", com.azure.core.util.Context.NONE)
+                .getValue();
     }
 }

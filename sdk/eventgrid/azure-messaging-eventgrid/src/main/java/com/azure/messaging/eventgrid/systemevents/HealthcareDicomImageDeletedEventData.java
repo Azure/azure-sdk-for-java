@@ -11,6 +11,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class HealthcareDicomImageDeletedEventData {
     /*
+     * Data partition name
+     */
+    @JsonProperty(value = "partitionName")
+    private String partitionName;
+
+    /*
      * Unique identifier for the Study
      */
     @JsonProperty(value = "imageStudyInstanceUid")
@@ -35,11 +41,34 @@ public final class HealthcareDicomImageDeletedEventData {
     private String serviceHostName;
 
     /*
-     * Sequence number of the DICOM Service within Azure Health Data Services.
-     * It is unique for every image creation and deletion within the service.
+     * Sequence number of the DICOM Service within Azure Health Data Services. It is unique for every image creation
+     * and deletion within the service.
      */
     @JsonProperty(value = "sequenceNumber")
     private Long sequenceNumber;
+
+    /** Creates an instance of HealthcareDicomImageDeletedEventData class. */
+    public HealthcareDicomImageDeletedEventData() {}
+
+    /**
+     * Get the partitionName property: Data partition name.
+     *
+     * @return the partitionName value.
+     */
+    public String getPartitionName() {
+        return this.partitionName;
+    }
+
+    /**
+     * Set the partitionName property: Data partition name.
+     *
+     * @param partitionName the partitionName value to set.
+     * @return the HealthcareDicomImageDeletedEventData object itself.
+     */
+    public HealthcareDicomImageDeletedEventData setPartitionName(String partitionName) {
+        this.partitionName = partitionName;
+        return this;
+    }
 
     /**
      * Get the imageStudyInstanceUid property: Unique identifier for the Study.

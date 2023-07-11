@@ -29,7 +29,7 @@ public class TriggerCrudTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 100)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10)
     public void createTrigger() throws Exception {
 
         // create a trigger

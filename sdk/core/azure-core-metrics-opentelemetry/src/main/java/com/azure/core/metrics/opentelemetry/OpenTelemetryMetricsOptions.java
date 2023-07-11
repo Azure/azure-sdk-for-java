@@ -4,6 +4,7 @@
 package com.azure.core.metrics.opentelemetry;
 
 import com.azure.core.util.MetricsOptions;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.metrics.MeterProvider;
 
 /**
@@ -16,6 +17,7 @@ public class OpenTelemetryMetricsOptions extends MetricsOptions {
      * Creates an instance of {@link OpenTelemetryMetricsOptions}.
      */
     public OpenTelemetryMetricsOptions() {
+        super(OpenTelemetryMeterProvider.class);
     }
 
     /**
@@ -24,7 +26,7 @@ public class OpenTelemetryMetricsOptions extends MetricsOptions {
      *
      * @return the value of implementation-specific metric provider, {@code null} by default.
      */
-    public MeterProvider getProvider() {
+    MeterProvider getOpenTelemetryProvider() {
         return provider;
     }
 
@@ -32,11 +34,11 @@ public class OpenTelemetryMetricsOptions extends MetricsOptions {
      * Sets implementation-specific state containing all configuration needed for the implementation such as OpenTelemetry MeterProvider.
      * Check out OpenTelemetry Metrics plugin documentation for the details and examples.
      *
-     * @param provider Instance of {@link MeterProvider}
+     * @param openTelemetry Instance of {@link OpenTelemetry} container
      * @return the updated {@code MetricsOptions} object.
      */
-    public OpenTelemetryMetricsOptions setProvider(MeterProvider provider) {
-        this.provider = provider;
+    public OpenTelemetryMetricsOptions setOpenTelemetry(OpenTelemetry openTelemetry) {
+        this.provider = openTelemetry.getMeterProvider();
         return this;
     }
 

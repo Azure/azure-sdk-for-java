@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Topics ListEventTypes. */
 public final class TopicsListEventTypesSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/Topics_ListEventTypes.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Topics_ListEventTypes.json
      */
     /**
      * Sample code: Topics_ListEventTypes.
@@ -19,6 +17,11 @@ public final class TopicsListEventTypesSamples {
     public static void topicsListEventTypes(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
         manager
             .topics()
-            .listEventTypes("examplerg", "Microsoft.Storage", "storageAccounts", "ExampleStorageAccount", Context.NONE);
+            .listEventTypes(
+                "examplerg",
+                "Microsoft.Storage",
+                "storageAccounts",
+                "ExampleStorageAccount",
+                com.azure.core.util.Context.NONE);
     }
 }

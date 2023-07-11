@@ -207,26 +207,26 @@ public final class EventSubscriptionImpl
         return this;
     }
 
-    public DeliveryAttributeListResult getDeliveryAttributes() {
-        return serviceManager
-            .topicEventSubscriptions()
-            .getDeliveryAttributes(resourceGroupName, topicName, eventSubscriptionName);
-    }
-
     public Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(Context context) {
         return serviceManager
             .topicEventSubscriptions()
             .getDeliveryAttributesWithResponse(resourceGroupName, topicName, eventSubscriptionName, context);
     }
 
-    public EventSubscriptionFullUrl getFullUrl() {
-        return serviceManager.topicEventSubscriptions().getFullUrl(resourceGroupName, topicName, eventSubscriptionName);
+    public DeliveryAttributeListResult getDeliveryAttributes() {
+        return serviceManager
+            .topicEventSubscriptions()
+            .getDeliveryAttributes(resourceGroupName, topicName, eventSubscriptionName);
     }
 
     public Response<EventSubscriptionFullUrl> getFullUrlWithResponse(Context context) {
         return serviceManager
             .topicEventSubscriptions()
             .getFullUrlWithResponse(resourceGroupName, topicName, eventSubscriptionName, context);
+    }
+
+    public EventSubscriptionFullUrl getFullUrl() {
+        return serviceManager.topicEventSubscriptions().getFullUrl(resourceGroupName, topicName, eventSubscriptionName);
     }
 
     public EventSubscriptionImpl withDestination(EventSubscriptionDestination destination) {

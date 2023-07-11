@@ -27,6 +27,10 @@ public final class PartnerNamespaceUpdateParameters {
     @JsonProperty(value = "properties")
     private PartnerNamespaceUpdateParameterProperties innerProperties;
 
+    /** Creates an instance of PartnerNamespaceUpdateParameters class. */
+    public PartnerNamespaceUpdateParameters() {
+    }
+
     /**
      * Get the tags property: Tags of the Partner Namespace.
      *
@@ -59,8 +63,7 @@ public final class PartnerNamespaceUpdateParameters {
     /**
      * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
      * enabled. You can further restrict to specific IPs by configuring &lt;seealso
-     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceUpdateParameterProperties"
-         + ".InboundIpRules"
+     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceUpdateParameterProperties.InboundIpRules"
      * /&gt;.
      *
      * @return the publicNetworkAccess value.
@@ -72,8 +75,7 @@ public final class PartnerNamespaceUpdateParameters {
     /**
      * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
      * enabled. You can further restrict to specific IPs by configuring &lt;seealso
-     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceUpdateParameterProperties"
-         + ".InboundIpRules"
+     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceUpdateParameterProperties.InboundIpRules"
      * /&gt;.
      *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
@@ -109,6 +111,31 @@ public final class PartnerNamespaceUpdateParameters {
             this.innerProperties = new PartnerNamespaceUpdateParameterProperties();
         }
         this.innerProperties().withInboundIpRules(inboundIpRules);
+        return this;
+    }
+
+    /**
+     * Get the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
+     * domain.
+     *
+     * @return the minimumTlsVersionAllowed value.
+     */
+    public TlsVersion minimumTlsVersionAllowed() {
+        return this.innerProperties() == null ? null : this.innerProperties().minimumTlsVersionAllowed();
+    }
+
+    /**
+     * Set the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
+     * domain.
+     *
+     * @param minimumTlsVersionAllowed the minimumTlsVersionAllowed value to set.
+     * @return the PartnerNamespaceUpdateParameters object itself.
+     */
+    public PartnerNamespaceUpdateParameters withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PartnerNamespaceUpdateParameterProperties();
+        }
+        this.innerProperties().withMinimumTlsVersionAllowed(minimumTlsVersionAllowed);
         return this;
     }
 

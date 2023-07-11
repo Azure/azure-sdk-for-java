@@ -59,7 +59,7 @@ public class VirtualMachineScaleSetsImpl
 
     @Override
     public Mono<Void> deallocateAsync(String groupName, String name) {
-        return this.inner().deallocateAsync(groupName, name, null);
+        return this.inner().deallocateAsync(groupName, name, null, null);
     }
 
     @Override

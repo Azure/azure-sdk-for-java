@@ -66,8 +66,7 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
     public interface ApplicationGatewayWafDynamicManifestsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}"
-                + "/applicationGatewayWafDynamicManifests")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/applicationGatewayWafDynamicManifests")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationGatewayWafDynamicManifestResultList>> get(
@@ -116,7 +115,7 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -170,7 +169,7 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

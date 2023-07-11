@@ -20,6 +20,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.ResponseError;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -299,7 +300,6 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    @Disabled("Until file available on github main")
     public void analyzeReceiptFromUrlMultiPage(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         urlRunner(receiptUrl -> {
@@ -1604,9 +1604,9 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         }, INVOICE_PDF);
     }
 
+    @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/34365")
     public void testClassifyAnalyzeFromUrl(HttpClient httpClient,
                                            DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
@@ -1629,6 +1629,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         });
 
         if (documentClassifierDetails.get() != null) {
+            String classifierId = documentClassifierDetails.get().getClassifierId();
             dataRunner((data, dataLength) -> {
                 SyncPoller<OperationResult, AnalyzeResult>
                     syncPoller
@@ -1637,15 +1638,15 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                     .setPollInterval(durationTestMode);
                 AnalyzeResult analyzeResult = syncPoller.getFinalResult();
                 Assertions.assertNotNull(analyzeResult);
-                Assertions.assertTrue(analyzeResult.getContent().contains("This is a xlsx example."));
-                Assertions.assertEquals(2, analyzeResult.getDocuments().size());
+                Assertions.assertEquals(3, analyzeResult.getDocuments().size());
+                Assertions.assertEquals(analyzeResult.getModelId(), classifierId);
             }, IRS_1040);
         }
     }
 
+    @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/34365")
     public void testClassifyAnalyze(HttpClient httpClient,
                                     DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
@@ -1668,6 +1669,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         });
 
         if (documentClassifierDetails.get() != null) {
+            String classifierId = documentClassifierDetails.get().getClassifierId();
             dataRunner((data, dataLength) -> {
                 SyncPoller<OperationResult, AnalyzeResult>
                     syncPoller
@@ -1676,7 +1678,8 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                     .setPollInterval(durationTestMode);
                 AnalyzeResult analyzeResult = syncPoller.getFinalResult();
                 Assertions.assertNotNull(analyzeResult);
-                Assertions.assertEquals(2, analyzeResult.getDocuments().size());
+                Assertions.assertEquals(3, analyzeResult.getDocuments().size());
+                Assertions.assertEquals(analyzeResult.getModelId(), classifierId);
             }, IRS_1040);
         }
     }

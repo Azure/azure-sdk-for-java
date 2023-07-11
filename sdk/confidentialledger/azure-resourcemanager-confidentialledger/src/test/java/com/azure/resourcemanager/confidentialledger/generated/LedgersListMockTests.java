@@ -34,7 +34,7 @@ public final class LedgersListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"runningState\":\"Paused\",\"properties\":{\"ledgerName\":\"pnpulexxbczwtru\",\"ledgerUri\":\"qzbqjvsov\",\"identityServiceUri\":\"okacspk\",\"ledgerInternalNamespace\":\"hzdobpxjmflbvvnc\",\"ledgerType\":\"Private\",\"provisioningState\":\"Succeeded\",\"aadBasedSecurityPrincipals\":[],\"certBasedSecurityPrincipals\":[]},\"tags\":{\"yjr\":\"eduugi\"},\"location\":\"imjm\",\"id\":\"f\",\"name\":\"y\",\"type\":\"osvexcsonpclhoc\"}]}";
+            "{\"value\":[{\"properties\":{\"ledgerName\":\"dwxdndnv\",\"ledgerUri\":\"gujjugwdkcglh\",\"identityServiceUri\":\"azjdyggd\",\"ledgerInternalNamespace\":\"ixhbkuofqweykhm\",\"runningState\":\"Paused\",\"ledgerType\":\"Private\",\"provisioningState\":\"Unknown\",\"aadBasedSecurityPrincipals\":[],\"certBasedSecurityPrincipals\":[]},\"location\":\"bcibvyvdcsitynn\",\"tags\":{\"eypvhezrkg\":\"dectehfiqsc\",\"sle\":\"hcjrefovgmk\",\"cattpngjcrcczsq\":\"yvxyqjp\",\"mdajv\":\"jh\"},\"id\":\"ysou\",\"name\":\"q\",\"type\":\"canoaeupf\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,11 +63,11 @@ public final class LedgersListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ConfidentialLedger> response =
-            manager.ledgers().list("fqrvkdvjsllrmvvd", com.azure.core.util.Context.NONE);
+            manager.ledgers().list("xzdmohctb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("imjm", response.iterator().next().location());
-        Assertions.assertEquals(RunningState.PAUSED, response.iterator().next().runningState());
+        Assertions.assertEquals("bcibvyvdcsitynn", response.iterator().next().location());
+        Assertions.assertEquals("dectehfiqsc", response.iterator().next().tags().get("eypvhezrkg"));
+        Assertions.assertEquals(RunningState.PAUSED, response.iterator().next().properties().runningState());
         Assertions.assertEquals(LedgerType.PRIVATE, response.iterator().next().properties().ledgerType());
-        Assertions.assertEquals("eduugi", response.iterator().next().tags().get("yjr"));
     }
 }

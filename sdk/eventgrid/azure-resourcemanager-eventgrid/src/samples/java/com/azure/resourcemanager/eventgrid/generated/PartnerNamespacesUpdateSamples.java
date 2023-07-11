@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespace;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for PartnerNamespaces Update. */
 public final class PartnerNamespacesUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerNamespaces_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerNamespaces_Update.json
      */
     /**
      * Sample code: PartnerNamespaces_Update.
@@ -23,7 +22,8 @@ public final class PartnerNamespacesUpdateSamples {
         PartnerNamespace resource =
             manager
                 .partnerNamespaces()
-                .getByResourceGroupWithResponse("examplerg", "examplePartnerNamespaceName1", Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "examplerg", "examplePartnerNamespaceName1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("tag1", "value1")).apply();
     }

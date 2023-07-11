@@ -8,20 +8,23 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.AllowedAudiencesValidation;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AllowedAudiencesValidationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AllowedAudiencesValidation model =
-            BinaryData.fromString("{\"allowedAudiences\":[\"m\"]}").toObject(AllowedAudiencesValidation.class);
-        Assertions.assertEquals("m", model.allowedAudiences().get(0));
+            BinaryData
+                .fromString("{\"allowedAudiences\":[\"rbnwbxgjvtbvpy\",\"szdnr\",\"jq\",\"uhmuouqfprwzwbn\"]}")
+                .toObject(AllowedAudiencesValidation.class);
+        Assertions.assertEquals("rbnwbxgjvtbvpy", model.allowedAudiences().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        AllowedAudiencesValidation model = new AllowedAudiencesValidation().withAllowedAudiences(Arrays.asList("m"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AllowedAudiencesValidation model =
+            new AllowedAudiencesValidation()
+                .withAllowedAudiences(Arrays.asList("rbnwbxgjvtbvpy", "szdnr", "jq", "uhmuouqfprwzwbn"));
         model = BinaryData.fromObject(model).toObject(AllowedAudiencesValidation.class);
-        Assertions.assertEquals("m", model.allowedAudiences().get(0));
+        Assertions.assertEquals("rbnwbxgjvtbvpy", model.allowedAudiences().get(0));
     }
 }

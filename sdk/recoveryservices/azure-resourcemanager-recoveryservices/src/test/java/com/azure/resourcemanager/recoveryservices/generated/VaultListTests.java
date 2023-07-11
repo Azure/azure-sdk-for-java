@@ -24,18 +24,18 @@ public final class VaultListTests {
         VaultList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"identity\":{\"principalId\":\"fygxgispemvtzfk\",\"tenantId\":\"ubljofxqe\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"qjhqjbas\",\"privateEndpointConnections\":[],\"privateEndpointStateForBackup\":\"None\",\"privateEndpointStateForSiteRecovery\":\"None\",\"moveState\":\"PrepareTimedout\",\"backupStorageVersion\":\"Unassigned\",\"publicNetworkAccess\":\"Disabled\"},\"sku\":{\"name\":\"Standard\",\"tier\":\"wrwclxxwrljd\",\"family\":\"skcqvkocrcjd\",\"size\":\"tnhxbn\",\"capacity\":\"iksqr\"},\"etag\":\"sainqpjwnzl\",\"location\":\"jfm\",\"tags\":{\"ujitcjcz\":\"ebvmgxsabkyqd\",\"dkvwrwjfe\":\"zevndhkrwpdappds\",\"je\":\"snhu\"},\"id\":\"tmrldhugjzzdatq\",\"name\":\"hocdgeab\",\"type\":\"gphuticndvka\"}],\"nextLink\":\"wyiftyhxhur\"}")
+                    "{\"value\":[{\"identity\":{\"principalId\":\"fygxgispemvtzfk\",\"tenantId\":\"ubljofxqe\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"qjhqjbas\",\"privateEndpointConnections\":[],\"privateEndpointStateForBackup\":\"None\",\"privateEndpointStateForSiteRecovery\":\"None\",\"moveState\":\"PrepareTimedout\",\"backupStorageVersion\":\"Unassigned\",\"publicNetworkAccess\":\"Disabled\"},\"sku\":{\"name\":\"RS0\",\"tier\":\"rwclxxwrljdo\",\"family\":\"kcqvkocrc\",\"size\":\"kwt\",\"capacity\":\"xbnjbiksq\"},\"etag\":\"ssainqpjwnzll\",\"location\":\"fmppe\",\"tags\":{\"yqduujit\":\"mgxsab\",\"rwpdappdsbdkvwrw\":\"jczdzevndh\"},\"id\":\"feusnhut\",\"name\":\"eltmrldhugjzzdat\",\"type\":\"xhocdgeablgphuti\"}],\"nextLink\":\"dvkaozw\"}")
                 .toObject(VaultList.class);
-        Assertions.assertEquals("jfm", model.value().get(0).location());
-        Assertions.assertEquals("ebvmgxsabkyqd", model.value().get(0).tags().get("ujitcjcz"));
+        Assertions.assertEquals("fmppe", model.value().get(0).location());
+        Assertions.assertEquals("mgxsab", model.value().get(0).tags().get("yqduujit"));
         Assertions.assertEquals(ResourceIdentityType.NONE, model.value().get(0).identity().type());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.value().get(0).properties().publicNetworkAccess());
-        Assertions.assertEquals(SkuName.STANDARD, model.value().get(0).sku().name());
-        Assertions.assertEquals("wrwclxxwrljd", model.value().get(0).sku().tier());
-        Assertions.assertEquals("skcqvkocrcjd", model.value().get(0).sku().family());
-        Assertions.assertEquals("tnhxbn", model.value().get(0).sku().size());
-        Assertions.assertEquals("iksqr", model.value().get(0).sku().capacity());
-        Assertions.assertEquals("sainqpjwnzl", model.value().get(0).etag());
+        Assertions.assertEquals(SkuName.RS0, model.value().get(0).sku().name());
+        Assertions.assertEquals("rwclxxwrljdo", model.value().get(0).sku().tier());
+        Assertions.assertEquals("kcqvkocrc", model.value().get(0).sku().family());
+        Assertions.assertEquals("kwt", model.value().get(0).sku().size());
+        Assertions.assertEquals("xbnjbiksq", model.value().get(0).sku().capacity());
+        Assertions.assertEquals("ssainqpjwnzll", model.value().get(0).etag());
     }
 
     @org.junit.jupiter.api.Test
@@ -46,9 +46,8 @@ public final class VaultListTests {
                     Arrays
                         .asList(
                             new VaultInner()
-                                .withLocation("jfm")
-                                .withTags(
-                                    mapOf("ujitcjcz", "ebvmgxsabkyqd", "dkvwrwjfe", "zevndhkrwpdappds", "je", "snhu"))
+                                .withLocation("fmppe")
+                                .withTags(mapOf("yqduujit", "mgxsab", "rwpdappdsbdkvwrw", "jczdzevndh"))
                                 .withIdentity(
                                     new IdentityData()
                                         .withType(ResourceIdentityType.NONE)
@@ -57,23 +56,23 @@ public final class VaultListTests {
                                     new VaultProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
                                 .withSku(
                                     new Sku()
-                                        .withName(SkuName.STANDARD)
-                                        .withTier("wrwclxxwrljd")
-                                        .withFamily("skcqvkocrcjd")
-                                        .withSize("tnhxbn")
-                                        .withCapacity("iksqr"))
-                                .withEtag("sainqpjwnzl")));
+                                        .withName(SkuName.RS0)
+                                        .withTier("rwclxxwrljdo")
+                                        .withFamily("kcqvkocrc")
+                                        .withSize("kwt")
+                                        .withCapacity("xbnjbiksq"))
+                                .withEtag("ssainqpjwnzll")));
         model = BinaryData.fromObject(model).toObject(VaultList.class);
-        Assertions.assertEquals("jfm", model.value().get(0).location());
-        Assertions.assertEquals("ebvmgxsabkyqd", model.value().get(0).tags().get("ujitcjcz"));
+        Assertions.assertEquals("fmppe", model.value().get(0).location());
+        Assertions.assertEquals("mgxsab", model.value().get(0).tags().get("yqduujit"));
         Assertions.assertEquals(ResourceIdentityType.NONE, model.value().get(0).identity().type());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.value().get(0).properties().publicNetworkAccess());
-        Assertions.assertEquals(SkuName.STANDARD, model.value().get(0).sku().name());
-        Assertions.assertEquals("wrwclxxwrljd", model.value().get(0).sku().tier());
-        Assertions.assertEquals("skcqvkocrcjd", model.value().get(0).sku().family());
-        Assertions.assertEquals("tnhxbn", model.value().get(0).sku().size());
-        Assertions.assertEquals("iksqr", model.value().get(0).sku().capacity());
-        Assertions.assertEquals("sainqpjwnzl", model.value().get(0).etag());
+        Assertions.assertEquals(SkuName.RS0, model.value().get(0).sku().name());
+        Assertions.assertEquals("rwclxxwrljdo", model.value().get(0).sku().tier());
+        Assertions.assertEquals("kcqvkocrc", model.value().get(0).sku().family());
+        Assertions.assertEquals("kwt", model.value().get(0).sku().size());
+        Assertions.assertEquals("xbnjbiksq", model.value().get(0).sku().capacity());
+        Assertions.assertEquals("ssainqpjwnzll", model.value().get(0).etag());
     }
 
     @SuppressWarnings("unchecked")

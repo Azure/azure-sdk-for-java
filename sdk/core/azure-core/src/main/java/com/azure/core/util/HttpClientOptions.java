@@ -372,16 +372,12 @@ public final class HttpClientOptions extends ClientOptions {
     }
 
     /**
-     * Sets the name of the {@link HttpClientProvider} implementation that should be used to construct an instance of
+     * Sets the type of the {@link HttpClientProvider} implementation that should be used to construct an instance of
      * {@link HttpClient}.
-     * <p>
-     * The name must be the full class name, ex {@code com.azure.core.http.netty.NettyAsyncHttpClientProvider} and not
-     * {@code NettyAsyncHttpClientProvider}, to disambiguate multiple providers with the same name but from different
-     * packages.
-     * <p>
-     * If the value isn't set or is an empty string the first {@link HttpClientProvider} found on the class path will
+     *
+     * If the value isn't set or is an empty string the first {@link HttpClientProvider} resolved by {@link java.util.ServiceLoader} will
      * be used to create an instance of {@link HttpClient}. If the value is set and doesn't match any
-     * {@link HttpClientProvider} found on the class path an {@link IllegalStateException} will be thrown when
+     * {@link HttpClientProvider} resolved by {@link java.util.ServiceLoader} an {@link IllegalStateException} will be thrown when
      * attempting to create an instance of {@link HttpClient}.
      *
      * @param httpClientProvider The {@link HttpClientProvider} implementation used to create an instance of
@@ -394,17 +390,8 @@ public final class HttpClientOptions extends ClientOptions {
     }
 
     /**
-     * Sets name of the {@link HttpClientProvider} implementation that should be used to construct an instance of
+     * Gets type of the {@link HttpClientProvider} implementation that should be used to construct an instance of
      * {@link HttpClient}.
-     * <p>
-     * The name must be the full class name, ex {@code com.azure.core.http.netty.NettyAsyncHttpClientProvider} and not
-     * {@code NettyAsyncHttpClientProvider}, to disambiguate multiple providers with the same name but from different
-     * packages.
-     * <p>
-     * If the value isn't set or is an empty string the first {@link HttpClientProvider} found on the class path will
-     * be used to create an instance of {@link HttpClient}. If the value is set and doesn't match any
-     * {@link HttpClientProvider} found on the class path an {@link IllegalStateException} will be thrown when
-     * attempting to create an instance of {@link HttpClient}.
      *
      * @return The {@link HttpClientProvider} implementation used to create an instance of {@link HttpClient}.
      */

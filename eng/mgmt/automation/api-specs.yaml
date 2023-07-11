@@ -49,6 +49,8 @@ eventhub:
   suffix: generated
 graphservicesprod:
   service: graphservices
+help:
+  service: selfhelp
 hybridaks:
   service: hybridcontainerservice
 keyvault:
@@ -71,8 +73,12 @@ newrelic:
   service: newrelicobservability
 operationalinsights:
   service: loganalytics
+paloaltonetworks:
+  suffix: ngfw
 postgresql:
   service: postgresqlflexibleserver
+postgresqlhsc:
+  service: cosmosdbforpostgresql
 privatedns:
   suffix: generated
 redis:

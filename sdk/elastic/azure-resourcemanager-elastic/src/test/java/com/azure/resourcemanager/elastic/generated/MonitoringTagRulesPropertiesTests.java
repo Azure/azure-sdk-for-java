@@ -19,14 +19,14 @@ public final class MonitoringTagRulesPropertiesTests {
         MonitoringTagRulesProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"Failed\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":false,\"sendActivityLogs\":true,\"filteringTags\":[{\"name\":\"pbtoqcjmkl\",\"value\":\"vbqid\",\"action\":\"Include\"}]}}")
+                    "{\"provisioningState\":\"Deleting\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":false,\"sendActivityLogs\":false,\"filteringTags\":[{\"name\":\"tqajzyulpkudjkrl\",\"value\":\"bzhfepgzgqexz\",\"action\":\"Include\"},{\"name\":\"scpai\",\"value\":\"hhbcsglummajtjao\",\"action\":\"Exclude\"},{\"name\":\"nbdxk\",\"value\":\"xo\",\"action\":\"Exclude\"}]}}")
                 .toObject(MonitoringTagRulesProperties.class);
-        Assertions.assertEquals(ProvisioningState.FAILED, model.provisioningState());
+        Assertions.assertEquals(ProvisioningState.DELETING, model.provisioningState());
         Assertions.assertEquals(false, model.logRules().sendAadLogs());
         Assertions.assertEquals(false, model.logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(true, model.logRules().sendActivityLogs());
-        Assertions.assertEquals("pbtoqcjmkl", model.logRules().filteringTags().get(0).name());
-        Assertions.assertEquals("vbqid", model.logRules().filteringTags().get(0).value());
+        Assertions.assertEquals(false, model.logRules().sendActivityLogs());
+        Assertions.assertEquals("tqajzyulpkudjkrl", model.logRules().filteringTags().get(0).name());
+        Assertions.assertEquals("bzhfepgzgqexz", model.logRules().filteringTags().get(0).value());
         Assertions.assertEquals(TagAction.INCLUDE, model.logRules().filteringTags().get(0).action());
     }
 
@@ -34,26 +34,34 @@ public final class MonitoringTagRulesPropertiesTests {
     public void testSerialize() throws Exception {
         MonitoringTagRulesProperties model =
             new MonitoringTagRulesProperties()
-                .withProvisioningState(ProvisioningState.FAILED)
+                .withProvisioningState(ProvisioningState.DELETING)
                 .withLogRules(
                     new LogRules()
                         .withSendAadLogs(false)
                         .withSendSubscriptionLogs(false)
-                        .withSendActivityLogs(true)
+                        .withSendActivityLogs(false)
                         .withFilteringTags(
                             Arrays
                                 .asList(
                                     new FilteringTag()
-                                        .withName("pbtoqcjmkl")
-                                        .withValue("vbqid")
-                                        .withAction(TagAction.INCLUDE))));
+                                        .withName("tqajzyulpkudjkrl")
+                                        .withValue("bzhfepgzgqexz")
+                                        .withAction(TagAction.INCLUDE),
+                                    new FilteringTag()
+                                        .withName("scpai")
+                                        .withValue("hhbcsglummajtjao")
+                                        .withAction(TagAction.EXCLUDE),
+                                    new FilteringTag()
+                                        .withName("nbdxk")
+                                        .withValue("xo")
+                                        .withAction(TagAction.EXCLUDE))));
         model = BinaryData.fromObject(model).toObject(MonitoringTagRulesProperties.class);
-        Assertions.assertEquals(ProvisioningState.FAILED, model.provisioningState());
+        Assertions.assertEquals(ProvisioningState.DELETING, model.provisioningState());
         Assertions.assertEquals(false, model.logRules().sendAadLogs());
         Assertions.assertEquals(false, model.logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(true, model.logRules().sendActivityLogs());
-        Assertions.assertEquals("pbtoqcjmkl", model.logRules().filteringTags().get(0).name());
-        Assertions.assertEquals("vbqid", model.logRules().filteringTags().get(0).value());
+        Assertions.assertEquals(false, model.logRules().sendActivityLogs());
+        Assertions.assertEquals("tqajzyulpkudjkrl", model.logRules().filteringTags().get(0).name());
+        Assertions.assertEquals("bzhfepgzgqexz", model.logRules().filteringTags().get(0).value());
         Assertions.assertEquals(TagAction.INCLUDE, model.logRules().filteringTags().get(0).action());
     }
 }

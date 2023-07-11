@@ -42,6 +42,9 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
     @JsonProperty(value = "tag")
     private String tag;
 
+    /** Creates an instance of AcsSmsDeliveryReportReceivedEventData class. */
+    public AcsSmsDeliveryReportReceivedEventData() {}
+
     /**
      * Get the deliveryStatus property: Status of Delivery.
      *

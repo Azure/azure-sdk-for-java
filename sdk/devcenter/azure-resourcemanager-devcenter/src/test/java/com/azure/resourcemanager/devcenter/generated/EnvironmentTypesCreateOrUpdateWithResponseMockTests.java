@@ -33,7 +33,7 @@ public final class EnvironmentTypesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Updating\"},\"tags\":{\"atnwxyiopi\":\"azivjlfrqttbajl\",\"vscx\":\"kqqfk\",\"mloazuru\":\"dmligovibrxk\"},\"id\":\"bgo\",\"name\":\"rb\",\"type\":\"eoybfhjxakvvjgs\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"tags\":{\"ajlyjtlvofqzhv\":\"ogtqxepnylbf\",\"fmo\":\"cib\",\"dwxf\":\"uxrkjp\",\"rkambt\":\"wiivwzjbhyzsx\"},\"id\":\"egv\",\"name\":\"nvuqeqvldspa\",\"type\":\"tjb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,12 +64,12 @@ public final class EnvironmentTypesCreateOrUpdateWithResponseMockTests {
         EnvironmentType response =
             manager
                 .environmentTypes()
-                .define("cgxxlxs")
-                .withExistingDevcenter("msksbp", "mlqoljx")
-                .withTags(mapOf("vwlyoup", "zqzdw", "kfm", "gfbkjubdyh", "ktlahbqa", "nsgowzfttst", "gzukxitmm", "tx"))
+                .define("g")
+                .withExistingDevcenter("qbmfpjbabwidf", "xsspuunnoxyhk")
+                .withTags(mapOf("djvlpj", "pfhoqcaaewdao"))
                 .create();
 
-        Assertions.assertEquals("azivjlfrqttbajl", response.tags().get("atnwxyiopi"));
+        Assertions.assertEquals("ogtqxepnylbf", response.tags().get("ajlyjtlvofqzhv"));
     }
 
     @SuppressWarnings("unchecked")

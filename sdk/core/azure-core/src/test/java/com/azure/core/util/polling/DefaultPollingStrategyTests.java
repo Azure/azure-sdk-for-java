@@ -52,7 +52,7 @@ public class DefaultPollingStrategyTests {
         HttpClient httpClient = getHttpClient(mockPollUrl, finalResultUrl, pollRequest, lastContext);
 
         // PollingStrategy with context = Context.NONE
-        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
+        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofMillis(1),
             activationOperation::get, new DefaultPollingStrategy<>(createPipeline(httpClient), null, null),
             POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
 
@@ -64,7 +64,7 @@ public class DefaultPollingStrategyTests {
 
         // PollingStrategy with context
         final Context context = new Context("key", "value");
-        pollerFlux = PollerFlux.create(Duration.ofSeconds(1), activationOperation::get,
+        pollerFlux = PollerFlux.create(Duration.ofMillis(1), activationOperation::get,
             new DefaultPollingStrategy<>(createPipeline(httpClient), null, context), POLL_RESULT_TYPE_REFERENCE,
             POLL_RESULT_TYPE_REFERENCE);
 
@@ -74,7 +74,7 @@ public class DefaultPollingStrategyTests {
             .verifyComplete();
         Assertions.assertEquals("value", lastContext.get().getData("key").orElse(null));
 
-        pollerFlux = PollerFlux.create(Duration.ofSeconds(1), activationOperation::get,
+        pollerFlux = PollerFlux.create(Duration.ofMillis(1), activationOperation::get,
             new DefaultPollingStrategy<>(createPipeline(httpClient), null, Context.NONE), POLL_RESULT_TYPE_REFERENCE,
             POLL_RESULT_TYPE_REFERENCE);
 

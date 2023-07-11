@@ -60,6 +60,10 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
         return this.innerModel().identity();
     }
 
+    public String managedBy() {
+        return this.innerModel().managedBy();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
     }
@@ -76,12 +80,16 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
         return this.innerModel().environmentId();
     }
 
-    public String workloadProfileType() {
-        return this.innerModel().workloadProfileType();
+    public String workloadProfileName() {
+        return this.innerModel().workloadProfileName();
     }
 
     public String latestRevisionName() {
         return this.innerModel().latestRevisionName();
+    }
+
+    public String latestReadyRevisionName() {
+        return this.innerModel().latestReadyRevisionName();
     }
 
     public String latestRevisionFqdn() {
@@ -175,7 +183,7 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
             serviceManager
                 .serviceClient()
                 .getContainerApps()
-                .createOrUpdate(resourceGroupName, containerAppName, this.innerModel(), Context.NONE);
+                .update(resourceGroupName, containerAppName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -184,7 +192,7 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
             serviceManager
                 .serviceClient()
                 .getContainerApps()
-                .createOrUpdate(resourceGroupName, containerAppName, this.innerModel(), context);
+                .update(resourceGroupName, containerAppName, this.innerModel(), context);
         return this;
     }
 
@@ -268,6 +276,11 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
         return this;
     }
 
+    public ContainerAppImpl withManagedBy(String managedBy) {
+        this.innerModel().withManagedBy(managedBy);
+        return this;
+    }
+
     public ContainerAppImpl withManagedEnvironmentId(String managedEnvironmentId) {
         this.innerModel().withManagedEnvironmentId(managedEnvironmentId);
         return this;
@@ -278,8 +291,8 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
         return this;
     }
 
-    public ContainerAppImpl withWorkloadProfileType(String workloadProfileType) {
-        this.innerModel().withWorkloadProfileType(workloadProfileType);
+    public ContainerAppImpl withWorkloadProfileName(String workloadProfileName) {
+        this.innerModel().withWorkloadProfileName(workloadProfileName);
         return this;
     }
 

@@ -343,6 +343,54 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
+     * Get the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs within
+     * the same VMSS Flex instance.
+     *
+     * @return the priorityMixPolicy value.
+     */
+    public PriorityMixPolicy priorityMixPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().priorityMixPolicy();
+    }
+
+    /**
+     * Set the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs within
+     * the same VMSS Flex instance.
+     *
+     * @param priorityMixPolicy the priorityMixPolicy value to set.
+     * @return the VirtualMachineScaleSetUpdate object itself.
+     */
+    public VirtualMachineScaleSetUpdate withPriorityMixPolicy(PriorityMixPolicy priorityMixPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateProperties();
+        }
+        this.innerProperties().withPriorityMixPolicy(priorityMixPolicy);
+        return this;
+    }
+
+    /**
+     * Get the spotRestorePolicy property: Specifies the Spot Restore properties for the virtual machine scale set.
+     *
+     * @return the spotRestorePolicy value.
+     */
+    public SpotRestorePolicy spotRestorePolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().spotRestorePolicy();
+    }
+
+    /**
+     * Set the spotRestorePolicy property: Specifies the Spot Restore properties for the virtual machine scale set.
+     *
+     * @param spotRestorePolicy the spotRestorePolicy value to set.
+     * @return the VirtualMachineScaleSetUpdate object itself.
+     */
+    public VirtualMachineScaleSetUpdate withSpotRestorePolicy(SpotRestorePolicy spotRestorePolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateProperties();
+        }
+        this.innerProperties().withSpotRestorePolicy(spotRestorePolicy);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

@@ -71,7 +71,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppConfigurationMana")
-    private interface ConfigurationStoresService {
+    public interface ConfigurationStoresService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/configurationStores")
         @ExpectedResponses({200})
@@ -86,8 +86,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration"
-                + "/configurationStores")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConfigurationStoreListResult>> listByResourceGroup(
@@ -101,8 +100,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration"
-                + "/configurationStores/{configStoreName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConfigurationStoreInner>> getByResourceGroup(
@@ -116,8 +114,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration"
-                + "/configurationStores/{configStoreName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -132,8 +129,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration"
-                + "/configurationStores/{configStoreName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -147,8 +143,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration"
-                + "/configurationStores/{configStoreName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -163,8 +158,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration"
-                + "/configurationStores/{configStoreName}/listKeys")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/listKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApiKeyListResult>> listKeys(
@@ -179,8 +173,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration"
-                + "/configurationStores/{configStoreName}/regenerateKey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/regenerateKey")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApiKeyInner>> regenerateKey(
@@ -206,8 +199,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/locations/{location}"
-                + "/deletedConfigurationStores/{configStoreName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/locations/{location}/deletedConfigurationStores/{configStoreName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeletedConfigurationStoreInner>> getDeleted(
@@ -221,8 +213,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/locations/{location}"
-                + "/deletedConfigurationStores/{configStoreName}/purge")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/locations/{location}/deletedConfigurationStores/{configStoreName}/purge")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> purgeDeleted(
@@ -772,21 +763,6 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified configuration store.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationStoreInner getByResourceGroup(String resourceGroupName, String configStoreName) {
-        return getByResourceGroupAsync(resourceGroupName, configStoreName).block();
-    }
-
-    /**
-     * Gets the properties of the specified configuration store.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -797,6 +773,21 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     public Response<ConfigurationStoreInner> getByResourceGroupWithResponse(
         String resourceGroupName, String configStoreName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, configStoreName, context).block();
+    }
+
+    /**
+     * Gets the properties of the specified configuration store.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param configStoreName The name of the configuration store.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified configuration store.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationStoreInner getByResourceGroup(String resourceGroupName, String configStoreName) {
+        return getByResourceGroupWithResponse(resourceGroupName, configStoreName, Context.NONE).getValue();
     }
 
     /**
@@ -991,7 +982,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginCreate(
         String resourceGroupName, String configStoreName, ConfigurationStoreInner configStoreCreationParameters) {
-        return beginCreateAsync(resourceGroupName, configStoreName, configStoreCreationParameters).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, configStoreName, configStoreCreationParameters).getSyncPoller();
     }
 
     /**
@@ -1012,7 +1003,8 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         String configStoreName,
         ConfigurationStoreInner configStoreCreationParameters,
         Context context) {
-        return beginCreateAsync(resourceGroupName, configStoreName, configStoreCreationParameters, context)
+        return this
+            .beginCreateAsync(resourceGroupName, configStoreName, configStoreCreationParameters, context)
             .getSyncPoller();
     }
 
@@ -1243,7 +1235,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName) {
-        return beginDeleteAsync(resourceGroupName, configStoreName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, configStoreName).getSyncPoller();
     }
 
     /**
@@ -1260,7 +1252,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String configStoreName, Context context) {
-        return beginDeleteAsync(resourceGroupName, configStoreName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, configStoreName, context).getSyncPoller();
     }
 
     /**
@@ -1525,7 +1517,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         String resourceGroupName,
         String configStoreName,
         ConfigurationStoreUpdateParameters configStoreUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, configStoreName, configStoreUpdateParameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, configStoreName, configStoreUpdateParameters).getSyncPoller();
     }
 
     /**
@@ -1546,7 +1538,8 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         String configStoreName,
         ConfigurationStoreUpdateParameters configStoreUpdateParameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, configStoreName, configStoreUpdateParameters, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, configStoreName, configStoreUpdateParameters, context)
             .getSyncPoller();
     }
 
@@ -1998,23 +1991,6 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param regenerateKeyParameters The parameters for regenerating an access key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an API key used for authenticating with a configuration store endpoint.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiKeyInner regenerateKey(
-        String resourceGroupName, String configStoreName, RegenerateKeyParameters regenerateKeyParameters) {
-        return regenerateKeyAsync(resourceGroupName, configStoreName, regenerateKeyParameters).block();
-    }
-
-    /**
-     * Regenerates an access key for the specified configuration store.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param regenerateKeyParameters The parameters for regenerating an access key.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2029,6 +2005,24 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         Context context) {
         return regenerateKeyWithResponseAsync(resourceGroupName, configStoreName, regenerateKeyParameters, context)
             .block();
+    }
+
+    /**
+     * Regenerates an access key for the specified configuration store.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param configStoreName The name of the configuration store.
+     * @param regenerateKeyParameters The parameters for regenerating an access key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an API key used for authenticating with a configuration store endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApiKeyInner regenerateKey(
+        String resourceGroupName, String configStoreName, RegenerateKeyParameters regenerateKeyParameters) {
+        return regenerateKeyWithResponse(resourceGroupName, configStoreName, regenerateKeyParameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -2294,21 +2288,6 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      *
      * @param location The location in which uniqueness will be verified.
      * @param configStoreName The name of the configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted Azure app configuration store.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeletedConfigurationStoreInner getDeleted(String location, String configStoreName) {
-        return getDeletedAsync(location, configStoreName).block();
-    }
-
-    /**
-     * Gets a deleted Azure app configuration store.
-     *
-     * @param location The location in which uniqueness will be verified.
-     * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2319,6 +2298,21 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     public Response<DeletedConfigurationStoreInner> getDeletedWithResponse(
         String location, String configStoreName, Context context) {
         return getDeletedWithResponseAsync(location, configStoreName, context).block();
+    }
+
+    /**
+     * Gets a deleted Azure app configuration store.
+     *
+     * @param location The location in which uniqueness will be verified.
+     * @param configStoreName The name of the configuration store.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deleted Azure app configuration store.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeletedConfigurationStoreInner getDeleted(String location, String configStoreName) {
+        return getDeletedWithResponse(location, configStoreName, Context.NONE).getValue();
     }
 
     /**
@@ -2466,7 +2460,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String location, String configStoreName) {
-        return beginPurgeDeletedAsync(location, configStoreName).getSyncPoller();
+        return this.beginPurgeDeletedAsync(location, configStoreName).getSyncPoller();
     }
 
     /**
@@ -2483,7 +2477,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(
         String location, String configStoreName, Context context) {
-        return beginPurgeDeletedAsync(location, configStoreName, context).getSyncPoller();
+        return this.beginPurgeDeletedAsync(location, configStoreName, context).getSyncPoller();
     }
 
     /**
@@ -2551,7 +2545,8 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2587,7 +2582,8 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2624,7 +2620,8 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2661,7 +2658,8 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2699,7 +2697,8 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2735,7 +2734,8 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2772,7 +2772,8 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2808,7 +2809,8 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

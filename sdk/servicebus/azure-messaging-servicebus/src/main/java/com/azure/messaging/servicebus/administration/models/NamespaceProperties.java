@@ -7,7 +7,6 @@ package com.azure.messaging.servicebus.administration.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import java.time.OffsetDateTime;
 
 /** The metadata related to a Service Bus namespace. */

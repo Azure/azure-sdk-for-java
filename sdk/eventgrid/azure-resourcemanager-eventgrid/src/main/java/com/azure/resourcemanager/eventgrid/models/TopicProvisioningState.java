@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TopicProvisioningState. */
+/** Provisioning state of the topic. */
 public final class TopicProvisioningState extends ExpandableStringEnum<TopicProvisioningState> {
     /** Static value Creating for TopicProvisioningState. */
     public static final TopicProvisioningState CREATING = fromString("Creating");
@@ -27,6 +27,15 @@ public final class TopicProvisioningState extends ExpandableStringEnum<TopicProv
 
     /** Static value Failed for TopicProvisioningState. */
     public static final TopicProvisioningState FAILED = fromString("Failed");
+
+    /**
+     * Creates a new instance of TopicProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TopicProvisioningState() {
+    }
 
     /**
      * Creates or finds a TopicProvisioningState from its string representation.

@@ -16,17 +16,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -38,7 +34,7 @@ public class TracerUnderTest implements Tracer {
     private final static Logger LOGGER = LoggerFactory.getLogger(TracerUnderTest.class);
     private final static ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
-    private final ConcurrentLinkedDeque<SpanRecord> spanStack = new ConcurrentLinkedDeque();
+    private final ConcurrentLinkedDeque<SpanRecord> spanStack = new ConcurrentLinkedDeque<>();
     private SpanRecord currentSpan = null;
     SpanKind kind = SpanKind.INTERNAL;
 

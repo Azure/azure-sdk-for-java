@@ -89,20 +89,16 @@ public class ProxySendTest extends IntegrationTestBase {
             .sender()
             .queueName(queueName)
             .buildAsyncClient();
+        toClose(sender);
+        // Act & Assert
+        StepVerifier.create(sender.createMessageBatch()
+            .flatMap(batch -> {
+                for (int i = 0; i < messages.size(); i++) {
+                    Assertions.assertTrue(batch.tryAddMessage(messages.get(i)), "Unable to add message: " + i);
+                }
 
-        try {
-            // Act & Assert
-            StepVerifier.create(sender.createMessageBatch()
-                .flatMap(batch -> {
-                    for (int i = 0; i < messages.size(); i++) {
-                        Assertions.assertTrue(batch.tryAddMessage(messages.get(i)), "Unable to add message: " + i);
-                    }
-
-                    return sender.sendMessages(batch);
-                }))
-                .verifyComplete();
-        } finally {
-            dispose(sender);
-        }
+                return sender.sendMessages(batch);
+            }))
+            .verifyComplete();
     }
 }

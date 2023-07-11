@@ -50,11 +50,11 @@ public interface ManagedEnvironment {
     Map<String, String> tags();
 
     /**
-     * Gets the sku property: SKU properties of the Environment.
+     * Gets the kind property: Kind of the Environment.
      *
-     * @return the sku value.
+     * @return the kind value.
      */
-    EnvironmentSkuProperties sku();
+    String kind();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -151,6 +151,29 @@ public interface ManagedEnvironment {
     List<WorkloadProfile> workloadProfiles();
 
     /**
+     * Gets the kedaConfiguration property: The configuration of Keda component.
+     *
+     * @return the kedaConfiguration value.
+     */
+    KedaConfiguration kedaConfiguration();
+
+    /**
+     * Gets the daprConfiguration property: The configuration of Dapr component.
+     *
+     * @return the daprConfiguration value.
+     */
+    DaprConfiguration daprConfiguration();
+
+    /**
+     * Gets the infrastructureResourceGroup property: Name of the platform-managed resource group created for the
+     * Managed Environment to host infrastructure resources. If a subnet ID is provided, this resource group will be
+     * created in the same subscription as the subnet.
+     *
+     * @return the infrastructureResourceGroup value.
+     */
+    String infrastructureResourceGroup();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -224,14 +247,17 @@ public interface ManagedEnvironment {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
-                DefinitionStages.WithSku,
+                DefinitionStages.WithKind,
                 DefinitionStages.WithDaprAIInstrumentationKey,
                 DefinitionStages.WithDaprAIConnectionString,
                 DefinitionStages.WithVnetConfiguration,
                 DefinitionStages.WithAppLogsConfiguration,
                 DefinitionStages.WithZoneRedundant,
                 DefinitionStages.WithCustomDomainConfiguration,
-                DefinitionStages.WithWorkloadProfiles {
+                DefinitionStages.WithWorkloadProfiles,
+                DefinitionStages.WithKedaConfiguration,
+                DefinitionStages.WithDaprConfiguration,
+                DefinitionStages.WithInfrastructureResourceGroup {
             /**
              * Executes the create request.
              *
@@ -257,15 +283,15 @@ public interface ManagedEnvironment {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the ManagedEnvironment definition allowing to specify sku. */
-        interface WithSku {
+        /** The stage of the ManagedEnvironment definition allowing to specify kind. */
+        interface WithKind {
             /**
-             * Specifies the sku property: SKU properties of the Environment..
+             * Specifies the kind property: Kind of the Environment..
              *
-             * @param sku SKU properties of the Environment.
+             * @param kind Kind of the Environment.
              * @return the next definition stage.
              */
-            WithCreate withSku(EnvironmentSkuProperties sku);
+            WithCreate withKind(String kind);
         }
         /** The stage of the ManagedEnvironment definition allowing to specify daprAIInstrumentationKey. */
         interface WithDaprAIInstrumentationKey {
@@ -343,6 +369,40 @@ public interface ManagedEnvironment {
              */
             WithCreate withWorkloadProfiles(List<WorkloadProfile> workloadProfiles);
         }
+        /** The stage of the ManagedEnvironment definition allowing to specify kedaConfiguration. */
+        interface WithKedaConfiguration {
+            /**
+             * Specifies the kedaConfiguration property: The configuration of Keda component..
+             *
+             * @param kedaConfiguration The configuration of Keda component.
+             * @return the next definition stage.
+             */
+            WithCreate withKedaConfiguration(KedaConfiguration kedaConfiguration);
+        }
+        /** The stage of the ManagedEnvironment definition allowing to specify daprConfiguration. */
+        interface WithDaprConfiguration {
+            /**
+             * Specifies the daprConfiguration property: The configuration of Dapr component..
+             *
+             * @param daprConfiguration The configuration of Dapr component.
+             * @return the next definition stage.
+             */
+            WithCreate withDaprConfiguration(DaprConfiguration daprConfiguration);
+        }
+        /** The stage of the ManagedEnvironment definition allowing to specify infrastructureResourceGroup. */
+        interface WithInfrastructureResourceGroup {
+            /**
+             * Specifies the infrastructureResourceGroup property: Name of the platform-managed resource group created
+             * for the Managed Environment to host infrastructure resources. If a subnet ID is provided, this resource
+             * group will be created in the same subscription as the subnet..
+             *
+             * @param infrastructureResourceGroup Name of the platform-managed resource group created for the Managed
+             *     Environment to host infrastructure resources. If a subnet ID is provided, this resource group will be
+             *     created in the same subscription as the subnet.
+             * @return the next definition stage.
+             */
+            WithCreate withInfrastructureResourceGroup(String infrastructureResourceGroup);
+        }
     }
     /**
      * Begins update for the ManagedEnvironment resource.
@@ -354,13 +414,15 @@ public interface ManagedEnvironment {
     /** The template for ManagedEnvironment update. */
     interface Update
         extends UpdateStages.WithTags,
-            UpdateStages.WithSku,
+            UpdateStages.WithKind,
             UpdateStages.WithDaprAIInstrumentationKey,
             UpdateStages.WithDaprAIConnectionString,
             UpdateStages.WithVnetConfiguration,
             UpdateStages.WithAppLogsConfiguration,
             UpdateStages.WithCustomDomainConfiguration,
-            UpdateStages.WithWorkloadProfiles {
+            UpdateStages.WithWorkloadProfiles,
+            UpdateStages.WithKedaConfiguration,
+            UpdateStages.WithDaprConfiguration {
         /**
          * Executes the update request.
          *
@@ -388,15 +450,15 @@ public interface ManagedEnvironment {
              */
             Update withTags(Map<String, String> tags);
         }
-        /** The stage of the ManagedEnvironment update allowing to specify sku. */
-        interface WithSku {
+        /** The stage of the ManagedEnvironment update allowing to specify kind. */
+        interface WithKind {
             /**
-             * Specifies the sku property: SKU properties of the Environment..
+             * Specifies the kind property: Kind of the Environment..
              *
-             * @param sku SKU properties of the Environment.
+             * @param kind Kind of the Environment.
              * @return the next definition stage.
              */
-            Update withSku(EnvironmentSkuProperties sku);
+            Update withKind(String kind);
         }
         /** The stage of the ManagedEnvironment update allowing to specify daprAIInstrumentationKey. */
         interface WithDaprAIInstrumentationKey {
@@ -463,6 +525,26 @@ public interface ManagedEnvironment {
              * @return the next definition stage.
              */
             Update withWorkloadProfiles(List<WorkloadProfile> workloadProfiles);
+        }
+        /** The stage of the ManagedEnvironment update allowing to specify kedaConfiguration. */
+        interface WithKedaConfiguration {
+            /**
+             * Specifies the kedaConfiguration property: The configuration of Keda component..
+             *
+             * @param kedaConfiguration The configuration of Keda component.
+             * @return the next definition stage.
+             */
+            Update withKedaConfiguration(KedaConfiguration kedaConfiguration);
+        }
+        /** The stage of the ManagedEnvironment update allowing to specify daprConfiguration. */
+        interface WithDaprConfiguration {
+            /**
+             * Specifies the daprConfiguration property: The configuration of Dapr component..
+             *
+             * @param daprConfiguration The configuration of Dapr component.
+             * @return the next definition stage.
+             */
+            Update withDaprConfiguration(DaprConfiguration daprConfiguration);
         }
     }
     /**

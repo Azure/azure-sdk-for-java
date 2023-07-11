@@ -480,7 +480,8 @@ public interface Server {
             UpdateStages.WithHighAvailability,
             UpdateStages.WithMaintenanceWindow,
             UpdateStages.WithReplicationRole,
-            UpdateStages.WithDataEncryption {
+            UpdateStages.WithDataEncryption,
+            UpdateStages.WithNetwork {
         /**
          * Executes the update request.
          *
@@ -608,6 +609,16 @@ public interface Server {
              */
             Update withDataEncryption(DataEncryption dataEncryption);
         }
+        /** The stage of the Server update allowing to specify network. */
+        interface WithNetwork {
+            /**
+             * Specifies the network property: Network related properties of a server.
+             *
+             * @param network Network related properties of a server.
+             * @return the next definition stage.
+             */
+            Update withNetwork(Network network);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.
@@ -698,4 +709,25 @@ public interface Server {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void stop(Context context);
+
+    /**
+     * Resets GTID on a server.
+     *
+     * @param parameters The required parameters for resetting GTID on a server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resetGtid(ServerGtidSetParameter parameters);
+
+    /**
+     * Resets GTID on a server.
+     *
+     * @param parameters The required parameters for resetting GTID on a server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resetGtid(ServerGtidSetParameter parameters, Context context);
 }

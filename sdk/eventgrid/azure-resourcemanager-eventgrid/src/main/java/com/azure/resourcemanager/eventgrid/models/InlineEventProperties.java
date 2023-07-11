@@ -34,6 +34,10 @@ public final class InlineEventProperties {
     @JsonProperty(value = "dataSchemaUrl")
     private String dataSchemaUrl;
 
+    /** Creates an instance of InlineEventProperties class. */
+    public InlineEventProperties() {
+    }
+
     /**
      * Get the description property: The description for the inline event.
      *

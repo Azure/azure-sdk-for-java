@@ -6,9 +6,13 @@ package com.azure.resourcemanager.devhub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.devhub.models.Acr;
+import com.azure.resourcemanager.devhub.models.AuthorizationStatus;
 import com.azure.resourcemanager.devhub.models.DeploymentProperties;
+import com.azure.resourcemanager.devhub.models.DockerfileGenerationMode;
+import com.azure.resourcemanager.devhub.models.GenerationLanguage;
+import com.azure.resourcemanager.devhub.models.GenerationManifestType;
 import com.azure.resourcemanager.devhub.models.GitHubWorkflowProfileOidcCredentials;
-import com.azure.resourcemanager.devhub.models.ManifestType;
+import com.azure.resourcemanager.devhub.models.ManifestGenerationMode;
 import com.azure.resourcemanager.devhub.models.PullRequestStatus;
 import com.azure.resourcemanager.devhub.models.WorkflowRun;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -22,6 +26,18 @@ public final class WorkflowProperties {
     @JsonProperty(value = "githubWorkflowProfile")
     private GitHubWorkflowProfile innerGithubWorkflowProfile;
 
+    /*
+     * Artifact Generation Properties
+     *
+     * Properties for generating artifacts like dockerfile and manifests.
+     */
+    @JsonProperty(value = "artifactGenerationProperties")
+    private ArtifactGenerationProperties innerArtifactGenerationProperties;
+
+    /** Creates an instance of WorkflowProperties class. */
+    public WorkflowProperties() {
+    }
+
     /**
      * Get the innerGithubWorkflowProfile property: Profile of a github workflow.
      *
@@ -29,6 +45,17 @@ public final class WorkflowProperties {
      */
     private GitHubWorkflowProfile innerGithubWorkflowProfile() {
         return this.innerGithubWorkflowProfile;
+    }
+
+    /**
+     * Get the innerArtifactGenerationProperties property: Artifact Generation Properties
+     *
+     * <p>Properties for generating artifacts like dockerfile and manifests.
+     *
+     * @return the innerArtifactGenerationProperties value.
+     */
+    private ArtifactGenerationProperties innerArtifactGenerationProperties() {
+        return this.innerArtifactGenerationProperties;
     }
 
     /**
@@ -340,25 +367,340 @@ public final class WorkflowProperties {
     }
 
     /**
-     * Get the authStatus property: Determines the type of manifests within the repository.
+     * Get the authStatus property: Determines the authorization status of requests.
      *
      * @return the authStatus value.
      */
-    public ManifestType authStatus() {
+    public AuthorizationStatus authStatus() {
         return this.innerGithubWorkflowProfile() == null ? null : this.innerGithubWorkflowProfile().authStatus();
     }
 
     /**
-     * Set the authStatus property: Determines the type of manifests within the repository.
+     * Get the generationLanguage property: The programming language used.
      *
-     * @param authStatus the authStatus value to set.
+     * @return the generationLanguage value.
+     */
+    public GenerationLanguage generationLanguage() {
+        return this.innerArtifactGenerationProperties() == null
+            ? null
+            : this.innerArtifactGenerationProperties().generationLanguage();
+    }
+
+    /**
+     * Set the generationLanguage property: The programming language used.
+     *
+     * @param generationLanguage the generationLanguage value to set.
      * @return the WorkflowProperties object itself.
      */
-    public WorkflowProperties withAuthStatus(ManifestType authStatus) {
-        if (this.innerGithubWorkflowProfile() == null) {
-            this.innerGithubWorkflowProfile = new GitHubWorkflowProfile();
+    public WorkflowProperties withGenerationLanguage(GenerationLanguage generationLanguage) {
+        if (this.innerArtifactGenerationProperties() == null) {
+            this.innerArtifactGenerationProperties = new ArtifactGenerationProperties();
         }
-        this.innerGithubWorkflowProfile().withAuthStatus(authStatus);
+        this.innerArtifactGenerationProperties().withGenerationLanguage(generationLanguage);
+        return this;
+    }
+
+    /**
+     * Get the languageVersion property: The version of the language image used for execution in the generated
+     * dockerfile.
+     *
+     * @return the languageVersion value.
+     */
+    public String languageVersion() {
+        return this.innerArtifactGenerationProperties() == null
+            ? null
+            : this.innerArtifactGenerationProperties().languageVersion();
+    }
+
+    /**
+     * Set the languageVersion property: The version of the language image used for execution in the generated
+     * dockerfile.
+     *
+     * @param languageVersion the languageVersion value to set.
+     * @return the WorkflowProperties object itself.
+     */
+    public WorkflowProperties withLanguageVersion(String languageVersion) {
+        if (this.innerArtifactGenerationProperties() == null) {
+            this.innerArtifactGenerationProperties = new ArtifactGenerationProperties();
+        }
+        this.innerArtifactGenerationProperties().withLanguageVersion(languageVersion);
+        return this;
+    }
+
+    /**
+     * Get the builderVersion property: The version of the language image used for building the code in the generated
+     * dockerfile.
+     *
+     * @return the builderVersion value.
+     */
+    public String builderVersion() {
+        return this.innerArtifactGenerationProperties() == null
+            ? null
+            : this.innerArtifactGenerationProperties().builderVersion();
+    }
+
+    /**
+     * Set the builderVersion property: The version of the language image used for building the code in the generated
+     * dockerfile.
+     *
+     * @param builderVersion the builderVersion value to set.
+     * @return the WorkflowProperties object itself.
+     */
+    public WorkflowProperties withBuilderVersion(String builderVersion) {
+        if (this.innerArtifactGenerationProperties() == null) {
+            this.innerArtifactGenerationProperties = new ArtifactGenerationProperties();
+        }
+        this.innerArtifactGenerationProperties().withBuilderVersion(builderVersion);
+        return this;
+    }
+
+    /**
+     * Get the port property: The port the application is exposed on.
+     *
+     * @return the port value.
+     */
+    public String port() {
+        return this.innerArtifactGenerationProperties() == null
+            ? null
+            : this.innerArtifactGenerationProperties().port();
+    }
+
+    /**
+     * Set the port property: The port the application is exposed on.
+     *
+     * @param port the port value to set.
+     * @return the WorkflowProperties object itself.
+     */
+    public WorkflowProperties withPort(String port) {
+        if (this.innerArtifactGenerationProperties() == null) {
+            this.innerArtifactGenerationProperties = new ArtifactGenerationProperties();
+        }
+        this.innerArtifactGenerationProperties().withPort(port);
+        return this;
+    }
+
+    /**
+     * Get the appName property: The name of the app.
+     *
+     * @return the appName value.
+     */
+    public String appName() {
+        return this.innerArtifactGenerationProperties() == null
+            ? null
+            : this.innerArtifactGenerationProperties().appName();
+    }
+
+    /**
+     * Set the appName property: The name of the app.
+     *
+     * @param appName the appName value to set.
+     * @return the WorkflowProperties object itself.
+     */
+    public WorkflowProperties withAppName(String appName) {
+        if (this.innerArtifactGenerationProperties() == null) {
+            this.innerArtifactGenerationProperties = new ArtifactGenerationProperties();
+        }
+        this.innerArtifactGenerationProperties().withAppName(appName);
+        return this;
+    }
+
+    /**
+     * Get the dockerfileOutputDirectory property: The directory to output the generated Dockerfile to.
+     *
+     * @return the dockerfileOutputDirectory value.
+     */
+    public String dockerfileOutputDirectory() {
+        return this.innerArtifactGenerationProperties() == null
+            ? null
+            : this.innerArtifactGenerationProperties().dockerfileOutputDirectory();
+    }
+
+    /**
+     * Set the dockerfileOutputDirectory property: The directory to output the generated Dockerfile to.
+     *
+     * @param dockerfileOutputDirectory the dockerfileOutputDirectory value to set.
+     * @return the WorkflowProperties object itself.
+     */
+    public WorkflowProperties withDockerfileOutputDirectory(String dockerfileOutputDirectory) {
+        if (this.innerArtifactGenerationProperties() == null) {
+            this.innerArtifactGenerationProperties = new ArtifactGenerationProperties();
+        }
+        this.innerArtifactGenerationProperties().withDockerfileOutputDirectory(dockerfileOutputDirectory);
+        return this;
+    }
+
+    /**
+     * Get the manifestOutputDirectory property: The directory to output the generated manifests to.
+     *
+     * @return the manifestOutputDirectory value.
+     */
+    public String manifestOutputDirectory() {
+        return this.innerArtifactGenerationProperties() == null
+            ? null
+            : this.innerArtifactGenerationProperties().manifestOutputDirectory();
+    }
+
+    /**
+     * Set the manifestOutputDirectory property: The directory to output the generated manifests to.
+     *
+     * @param manifestOutputDirectory the manifestOutputDirectory value to set.
+     * @return the WorkflowProperties object itself.
+     */
+    public WorkflowProperties withManifestOutputDirectory(String manifestOutputDirectory) {
+        if (this.innerArtifactGenerationProperties() == null) {
+            this.innerArtifactGenerationProperties = new ArtifactGenerationProperties();
+        }
+        this.innerArtifactGenerationProperties().withManifestOutputDirectory(manifestOutputDirectory);
+        return this;
+    }
+
+    /**
+     * Get the dockerfileGenerationMode property: The mode of generation to be used for generating Dockerfiles.
+     *
+     * @return the dockerfileGenerationMode value.
+     */
+    public DockerfileGenerationMode dockerfileGenerationMode() {
+        return this.innerArtifactGenerationProperties() == null
+            ? null
+            : this.innerArtifactGenerationProperties().dockerfileGenerationMode();
+    }
+
+    /**
+     * Set the dockerfileGenerationMode property: The mode of generation to be used for generating Dockerfiles.
+     *
+     * @param dockerfileGenerationMode the dockerfileGenerationMode value to set.
+     * @return the WorkflowProperties object itself.
+     */
+    public WorkflowProperties withDockerfileGenerationMode(DockerfileGenerationMode dockerfileGenerationMode) {
+        if (this.innerArtifactGenerationProperties() == null) {
+            this.innerArtifactGenerationProperties = new ArtifactGenerationProperties();
+        }
+        this.innerArtifactGenerationProperties().withDockerfileGenerationMode(dockerfileGenerationMode);
+        return this;
+    }
+
+    /**
+     * Get the manifestGenerationMode property: The mode of generation to be used for generating Manifest.
+     *
+     * @return the manifestGenerationMode value.
+     */
+    public ManifestGenerationMode manifestGenerationMode() {
+        return this.innerArtifactGenerationProperties() == null
+            ? null
+            : this.innerArtifactGenerationProperties().manifestGenerationMode();
+    }
+
+    /**
+     * Set the manifestGenerationMode property: The mode of generation to be used for generating Manifest.
+     *
+     * @param manifestGenerationMode the manifestGenerationMode value to set.
+     * @return the WorkflowProperties object itself.
+     */
+    public WorkflowProperties withManifestGenerationMode(ManifestGenerationMode manifestGenerationMode) {
+        if (this.innerArtifactGenerationProperties() == null) {
+            this.innerArtifactGenerationProperties = new ArtifactGenerationProperties();
+        }
+        this.innerArtifactGenerationProperties().withManifestGenerationMode(manifestGenerationMode);
+        return this;
+    }
+
+    /**
+     * Get the manifestType property: Determines the type of manifests to be generated.
+     *
+     * @return the manifestType value.
+     */
+    public GenerationManifestType manifestType() {
+        return this.innerArtifactGenerationProperties() == null
+            ? null
+            : this.innerArtifactGenerationProperties().manifestType();
+    }
+
+    /**
+     * Set the manifestType property: Determines the type of manifests to be generated.
+     *
+     * @param manifestType the manifestType value to set.
+     * @return the WorkflowProperties object itself.
+     */
+    public WorkflowProperties withManifestType(GenerationManifestType manifestType) {
+        if (this.innerArtifactGenerationProperties() == null) {
+            this.innerArtifactGenerationProperties = new ArtifactGenerationProperties();
+        }
+        this.innerArtifactGenerationProperties().withManifestType(manifestType);
+        return this;
+    }
+
+    /**
+     * Get the imageName property: The name of the image to be generated.
+     *
+     * @return the imageName value.
+     */
+    public String imageName() {
+        return this.innerArtifactGenerationProperties() == null
+            ? null
+            : this.innerArtifactGenerationProperties().imageName();
+    }
+
+    /**
+     * Set the imageName property: The name of the image to be generated.
+     *
+     * @param imageName the imageName value to set.
+     * @return the WorkflowProperties object itself.
+     */
+    public WorkflowProperties withImageName(String imageName) {
+        if (this.innerArtifactGenerationProperties() == null) {
+            this.innerArtifactGenerationProperties = new ArtifactGenerationProperties();
+        }
+        this.innerArtifactGenerationProperties().withImageName(imageName);
+        return this;
+    }
+
+    /**
+     * Get the namespace property: The namespace to deploy the application to.
+     *
+     * @return the namespace value.
+     */
+    public String namespaceArtifactGenerationPropertiesNamespace() {
+        return this.innerArtifactGenerationProperties() == null
+            ? null
+            : this.innerArtifactGenerationProperties().namespace();
+    }
+
+    /**
+     * Set the namespace property: The namespace to deploy the application to.
+     *
+     * @param namespace the namespace value to set.
+     * @return the WorkflowProperties object itself.
+     */
+    public WorkflowProperties withNamespaceArtifactGenerationPropertiesNamespace(String namespace) {
+        if (this.innerArtifactGenerationProperties() == null) {
+            this.innerArtifactGenerationProperties = new ArtifactGenerationProperties();
+        }
+        this.innerArtifactGenerationProperties().withNamespace(namespace);
+        return this;
+    }
+
+    /**
+     * Get the imageTag property: The tag to apply to the generated image.
+     *
+     * @return the imageTag value.
+     */
+    public String imageTag() {
+        return this.innerArtifactGenerationProperties() == null
+            ? null
+            : this.innerArtifactGenerationProperties().imageTag();
+    }
+
+    /**
+     * Set the imageTag property: The tag to apply to the generated image.
+     *
+     * @param imageTag the imageTag value to set.
+     * @return the WorkflowProperties object itself.
+     */
+    public WorkflowProperties withImageTag(String imageTag) {
+        if (this.innerArtifactGenerationProperties() == null) {
+            this.innerArtifactGenerationProperties = new ArtifactGenerationProperties();
+        }
+        this.innerArtifactGenerationProperties().withImageTag(imageTag);
         return this;
     }
 
@@ -370,6 +712,9 @@ public final class WorkflowProperties {
     public void validate() {
         if (innerGithubWorkflowProfile() != null) {
             innerGithubWorkflowProfile().validate();
+        }
+        if (innerArtifactGenerationProperties() != null) {
+            innerArtifactGenerationProperties().validate();
         }
     }
 }

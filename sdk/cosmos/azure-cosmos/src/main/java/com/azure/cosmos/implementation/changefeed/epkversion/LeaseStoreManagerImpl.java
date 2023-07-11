@@ -142,11 +142,21 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
 
     @Override
     public Mono<Lease> createLeaseIfNotExist(String leaseToken, String continuationToken) {
+        return this.createLeaseIfNotExist(leaseToken, continuationToken, null);
+    }
+
+    @Override
+    public Mono<Lease> createLeaseIfNotExist(String leaseToken, String continuationToken, Map<String, String> properties) {
         throw new UnsupportedOperationException("partition key based leases are not supported for Change Feed V1 wire format");
     }
 
     @Override
     public Mono<Lease> createLeaseIfNotExist(FeedRangeEpkImpl feedRange, String continuationToken) {
+        return this.createLeaseIfNotExist(feedRange, continuationToken, null);
+    }
+
+    @Override
+    public Mono<Lease> createLeaseIfNotExist(FeedRangeEpkImpl feedRange, String continuationToken, Map<String, String> properties) {
         checkNotNull(feedRange, "Argument 'feedRanges' should not be null");
 
         String leaseToken = feedRange.getRange().getMin() + "-" + feedRange.getRange().getMax();
@@ -157,33 +167,34 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
             .withId(leaseDocId)
             .withLeaseToken(leaseToken)
             .withFeedRange(feedRange)
-            .withContinuationToken(continuationToken);
+            .withContinuationToken(continuationToken)
+            .withProperties(properties);
 
         return this.leaseDocumentClient.createItem(this.settings.getLeaseCollectionLink(), documentServiceLease, null, false)
-                                       .onErrorResume( ex -> {
-                                           if (ex instanceof CosmosException) {
-                                               CosmosException e = (CosmosException) ex;
-                                               if (Exceptions.isConflict(e)) {
-                                                   logger.info("Some other host created lease for {}.", leaseToken);
-                                                   return Mono.empty();
-                                               }
-                                           }
+            .onErrorResume( ex -> {
+                if (ex instanceof CosmosException) {
+                    CosmosException e = (CosmosException) ex;
+                    if (Exceptions.isConflict(e)) {
+                        logger.info("Some other host created lease for {}.", leaseToken);
+                        return Mono.empty();
+                    }
+                }
 
-                                           return Mono.error(ex);
-                                       })
-                                       .map(documentResourceResponse -> {
-                                           if (documentResourceResponse == null) {
-                                               return null;
-                                           }
+                return Mono.error(ex);
+            })
+            .map(documentResourceResponse -> {
+                if (documentResourceResponse == null) {
+                    return null;
+                }
 
-                                           InternalObjectNode document = BridgeInternal.getProperties(documentResourceResponse);
+                InternalObjectNode document = BridgeInternal.getProperties(documentResourceResponse);
 
-                                           return documentServiceLease
-                                               .withId(document.getId())
-                                               .withETag(document.getETag())
-                                               .withTs(ModelBridgeInternal.getStringFromJsonSerializable(document,
-                                                   Constants.Properties.LAST_MODIFIED));
-                                       });
+                return documentServiceLease
+                    .withId(document.getId())
+                    .withETag(document.getETag())
+                    .withTs(ModelBridgeInternal.getStringFromJsonSerializable(document,
+                        Constants.Properties.LAST_MODIFIED));
+            });
     }
 
     @Override

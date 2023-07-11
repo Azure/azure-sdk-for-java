@@ -34,7 +34,7 @@ public final class FrontDoorsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"resourceState\":\"Deleting\",\"provisioningState\":\"fblcq\",\"cname\":\"ubgq\",\"frontdoorId\":\"rtalmet\",\"rulesEngines\":[],\"friendlyName\":\"dslqxihhrmooizqs\",\"routingRules\":[],\"loadBalancingSettings\":[],\"healthProbeSettings\":[],\"backendPools\":[],\"frontendEndpoints\":[],\"backendPoolsSettings\":{\"enforceCertificateNameCheck\":\"Enabled\",\"sendRecvTimeoutSeconds\":372291046},\"enabledState\":\"Disabled\"},\"location\":\"o\",\"tags\":{\"rqnkkzjcjbtr\":\"joxslhvnhla\",\"eitpkxztmo\":\"aehvvibrxjjstoq\"},\"id\":\"bklftidgfcwqmpim\",\"name\":\"qxzhem\",\"type\":\"yhohujswtwkozzwc\"}]}";
+            "{\"value\":[{\"properties\":{\"resourceState\":\"Enabled\",\"provisioningState\":\"yhwzdgiruj\",\"cname\":\"bomvzzbtdcqv\",\"frontdoorId\":\"iyujviylwdshfs\",\"rulesEngines\":[],\"extendedProperties\":{\"rymsgaojfmw\":\"ye\"},\"friendlyName\":\"otmrfhir\",\"routingRules\":[],\"loadBalancingSettings\":[],\"healthProbeSettings\":[],\"backendPools\":[],\"frontendEndpoints\":[],\"backendPoolsSettings\":{\"enforceCertificateNameCheck\":\"Enabled\",\"sendRecvTimeoutSeconds\":1383298252},\"enabledState\":\"Enabled\"},\"location\":\"hxacpqjlihhyu\",\"tags\":{\"wdgzxulucv\":\"kasdvlm\",\"urisjnhnytxifqj\":\"amrsreuzv\",\"esutrgjupauutpw\":\"gxmrhublwp\",\"jqgwzp\":\"qhih\"},\"id\":\"fqntcyp\",\"name\":\"xjvfoimwksl\",\"type\":\"rcizjxvyd\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,14 +64,14 @@ public final class FrontDoorsListMockTests {
 
         PagedIterable<FrontDoor> response = manager.frontDoors().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("o", response.iterator().next().location());
-        Assertions.assertEquals("joxslhvnhla", response.iterator().next().tags().get("rqnkkzjcjbtr"));
-        Assertions.assertEquals("dslqxihhrmooizqs", response.iterator().next().friendlyName());
+        Assertions.assertEquals("hxacpqjlihhyu", response.iterator().next().location());
+        Assertions.assertEquals("kasdvlm", response.iterator().next().tags().get("wdgzxulucv"));
+        Assertions.assertEquals("otmrfhir", response.iterator().next().friendlyName());
         Assertions
             .assertEquals(
                 EnforceCertificateNameCheckEnabledState.ENABLED,
                 response.iterator().next().backendPoolsSettings().enforceCertificateNameCheck());
-        Assertions.assertEquals(372291046, response.iterator().next().backendPoolsSettings().sendRecvTimeoutSeconds());
-        Assertions.assertEquals(FrontDoorEnabledState.DISABLED, response.iterator().next().enabledState());
+        Assertions.assertEquals(1383298252, response.iterator().next().backendPoolsSettings().sendRecvTimeoutSeconds());
+        Assertions.assertEquals(FrontDoorEnabledState.ENABLED, response.iterator().next().enabledState());
     }
 }

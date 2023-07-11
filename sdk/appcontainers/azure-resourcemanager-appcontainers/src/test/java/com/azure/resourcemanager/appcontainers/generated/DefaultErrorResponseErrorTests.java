@@ -6,17 +6,16 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseError;
-import org.junit.jupiter.api.Test;
 
 public final class DefaultErrorResponseErrorTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DefaultErrorResponseError model =
-            BinaryData.fromString("{\"innererror\":\"ofqweykhmenevfye\"}").toObject(DefaultErrorResponseError.class);
+            BinaryData.fromString("{\"innererror\":\"stxgc\"}").toObject(DefaultErrorResponseError.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DefaultErrorResponseError model = new DefaultErrorResponseError();
         model = BinaryData.fromObject(model).toObject(DefaultErrorResponseError.class);
     }

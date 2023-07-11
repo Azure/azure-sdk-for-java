@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedEnvironmentsStorages List. */
 public final class ManagedEnvironmentsStoragesListSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ManagedEnvironmentsStorages_List.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ManagedEnvironmentsStorages_List.json
      */
     /**
      * Sample code: List environments storages by subscription.
@@ -18,6 +16,8 @@ public final class ManagedEnvironmentsStoragesListSamples {
      */
     public static void listEnvironmentsStoragesBySubscription(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.managedEnvironmentsStorages().listWithResponse("examplerg", "managedEnv", Context.NONE);
+        manager
+            .managedEnvironmentsStorages()
+            .listWithResponse("examplerg", "managedEnv", com.azure.core.util.Context.NONE);
     }
 }

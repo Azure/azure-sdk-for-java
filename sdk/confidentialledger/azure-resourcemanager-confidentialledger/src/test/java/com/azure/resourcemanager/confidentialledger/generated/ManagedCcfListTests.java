@@ -19,12 +19,12 @@ public final class ManagedCcfListTests {
         ManagedCcfList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"appName\":\"joghmewuama\",\"appUri\":\"rzayv\",\"identityServiceUri\":\"pgvdf\",\"memberIdentityCertificates\":[],\"provisioningState\":\"Deleting\",\"nodeCount\":1659633182},\"location\":\"tqxln\",\"tags\":{\"xdqmidtthzrvqdra\":\"efgugnxk\",\"skanyk\":\"hjybigehoqfbo\",\"nhzgpphrcgyn\":\"zlcuiywgqywgndrv\"},\"id\":\"ocpecfvmmco\",\"name\":\"fsxlzevgbmqjqa\",\"type\":\"c\"}],\"nextLink\":\"mivkwlzuvcc\"}")
+                    "{\"value\":[{\"properties\":{\"appName\":\"wu\",\"appUri\":\"gazxuf\",\"identityServiceUri\":\"uckyf\",\"memberIdentityCertificates\":[],\"provisioningState\":\"Canceled\",\"nodeCount\":534635279},\"location\":\"zwdzuh\",\"tags\":{\"wxmnteiwao\":\"wisdkft\",\"fsrpymzidnse\":\"vkmijcmmxdcuf\",\"yc\":\"cxtbzsg\",\"mdwzjeiachboo\":\"sne\"},\"id\":\"flnrosfqpteehzz\",\"name\":\"ypyqrimzinp\",\"type\":\"swjdkirso\"},{\"properties\":{\"appName\":\"xhcr\",\"appUri\":\"ohjtckw\",\"identityServiceUri\":\"soifiyipjxsqw\",\"memberIdentityCertificates\":[],\"provisioningState\":\"Unknown\",\"nodeCount\":1837885218},\"location\":\"rcjxvsnbyxqabn\",\"tags\":{\"zafb\":\"pcyshu\"},\"id\":\"jjgpb\",\"name\":\"oq\",\"type\":\"jmkljavbqidtqajz\"},{\"properties\":{\"appName\":\"pku\",\"appUri\":\"krlkhbzhfepg\",\"identityServiceUri\":\"qex\",\"memberIdentityCertificates\":[],\"provisioningState\":\"Succeeded\",\"nodeCount\":149734817},\"location\":\"aierhhb\",\"tags\":{\"mmajtjaodx\":\"l\"},\"id\":\"bnbdxkqpxokajion\",\"name\":\"imexgstxgcpodgma\",\"type\":\"jrmvdjwzrlo\"},{\"properties\":{\"appName\":\"lwhijcoejctbzaq\",\"appUri\":\"sycbkbfk\",\"identityServiceUri\":\"kdkexxp\",\"memberIdentityCertificates\":[],\"provisioningState\":\"Creating\",\"nodeCount\":159547648},\"location\":\"fjpgddtocjjxhvp\",\"tags\":{\"xibqeojnx\":\"exhd\",\"dntwndeicbtw\":\"bzv\"},\"id\":\"pzaoqvuhr\",\"name\":\"cffcyddglmj\",\"type\":\"hjq\"}],\"nextLink\":\"pyeicxm\"}")
                 .toObject(ManagedCcfList.class);
-        Assertions.assertEquals("tqxln", model.value().get(0).location());
-        Assertions.assertEquals("efgugnxk", model.value().get(0).tags().get("xdqmidtthzrvqdra"));
-        Assertions.assertEquals(1659633182, model.value().get(0).properties().nodeCount());
-        Assertions.assertEquals("mivkwlzuvcc", model.nextLink());
+        Assertions.assertEquals("zwdzuh", model.value().get(0).location());
+        Assertions.assertEquals("wisdkft", model.value().get(0).tags().get("wxmnteiwao"));
+        Assertions.assertEquals(534635279, model.value().get(0).properties().nodeCount());
+        Assertions.assertEquals("pyeicxm", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -35,25 +35,48 @@ public final class ManagedCcfListTests {
                     Arrays
                         .asList(
                             new ManagedCcfInner()
-                                .withLocation("tqxln")
+                                .withLocation("zwdzuh")
                                 .withTags(
                                     mapOf(
-                                        "xdqmidtthzrvqdra",
-                                        "efgugnxk",
-                                        "skanyk",
-                                        "hjybigehoqfbo",
-                                        "nhzgpphrcgyn",
-                                        "zlcuiywgqywgndrv"))
+                                        "wxmnteiwao",
+                                        "wisdkft",
+                                        "fsrpymzidnse",
+                                        "vkmijcmmxdcuf",
+                                        "yc",
+                                        "cxtbzsg",
+                                        "mdwzjeiachboo",
+                                        "sne"))
                                 .withProperties(
                                     new ManagedCcfProperties()
                                         .withMemberIdentityCertificates(Arrays.asList())
-                                        .withNodeCount(1659633182))))
-                .withNextLink("mivkwlzuvcc");
+                                        .withNodeCount(534635279)),
+                            new ManagedCcfInner()
+                                .withLocation("rcjxvsnbyxqabn")
+                                .withTags(mapOf("zafb", "pcyshu"))
+                                .withProperties(
+                                    new ManagedCcfProperties()
+                                        .withMemberIdentityCertificates(Arrays.asList())
+                                        .withNodeCount(1837885218)),
+                            new ManagedCcfInner()
+                                .withLocation("aierhhb")
+                                .withTags(mapOf("mmajtjaodx", "l"))
+                                .withProperties(
+                                    new ManagedCcfProperties()
+                                        .withMemberIdentityCertificates(Arrays.asList())
+                                        .withNodeCount(149734817)),
+                            new ManagedCcfInner()
+                                .withLocation("fjpgddtocjjxhvp")
+                                .withTags(mapOf("xibqeojnx", "exhd", "dntwndeicbtw", "bzv"))
+                                .withProperties(
+                                    new ManagedCcfProperties()
+                                        .withMemberIdentityCertificates(Arrays.asList())
+                                        .withNodeCount(159547648))))
+                .withNextLink("pyeicxm");
         model = BinaryData.fromObject(model).toObject(ManagedCcfList.class);
-        Assertions.assertEquals("tqxln", model.value().get(0).location());
-        Assertions.assertEquals("efgugnxk", model.value().get(0).tags().get("xdqmidtthzrvqdra"));
-        Assertions.assertEquals(1659633182, model.value().get(0).properties().nodeCount());
-        Assertions.assertEquals("mivkwlzuvcc", model.nextLink());
+        Assertions.assertEquals("zwdzuh", model.value().get(0).location());
+        Assertions.assertEquals("wisdkft", model.value().get(0).tags().get("wxmnteiwao"));
+        Assertions.assertEquals(534635279, model.value().get(0).properties().nodeCount());
+        Assertions.assertEquals("pyeicxm", model.nextLink());
     }
 
     @SuppressWarnings("unchecked")

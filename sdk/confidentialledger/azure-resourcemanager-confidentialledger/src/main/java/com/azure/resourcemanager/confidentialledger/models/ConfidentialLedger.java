@@ -41,11 +41,11 @@ public interface ConfidentialLedger {
     String location();
 
     /**
-     * Gets the runningState property: Object representing RunningState for Ledger.
+     * Gets the tags property: Resource tags.
      *
-     * @return the runningState value.
+     * @return the tags value.
      */
-    RunningState runningState();
+    Map<String, String> tags();
 
     /**
      * Gets the properties property: LedgerProperties
@@ -62,13 +62,6 @@ public interface ConfidentialLedger {
      * @return the systemData value.
      */
     SystemData systemData();
-
-    /**
-     * Gets the tags property: Additional tags for Confidential Ledger.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
 
     /**
      * Gets the region of the resource.
@@ -142,8 +135,7 @@ public interface ConfidentialLedger {
          * The stage of the ConfidentialLedger definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithRunningState, DefinitionStages.WithProperties {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              *
@@ -162,22 +154,12 @@ public interface ConfidentialLedger {
         /** The stage of the ConfidentialLedger definition allowing to specify tags. */
         interface WithTags {
             /**
-             * Specifies the tags property: Additional tags for Confidential Ledger.
+             * Specifies the tags property: Resource tags..
              *
-             * @param tags Additional tags for Confidential Ledger.
+             * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-        /** The stage of the ConfidentialLedger definition allowing to specify runningState. */
-        interface WithRunningState {
-            /**
-             * Specifies the runningState property: Object representing RunningState for Ledger..
-             *
-             * @param runningState Object representing RunningState for Ledger.
-             * @return the next definition stage.
-             */
-            WithCreate withRunningState(RunningState runningState);
         }
         /** The stage of the ConfidentialLedger definition allowing to specify properties. */
         interface WithProperties {
@@ -201,7 +183,7 @@ public interface ConfidentialLedger {
     ConfidentialLedger.Update update();
 
     /** The template for ConfidentialLedger update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithRunningState, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
         /**
          * Executes the update request.
          *
@@ -222,22 +204,12 @@ public interface ConfidentialLedger {
         /** The stage of the ConfidentialLedger update allowing to specify tags. */
         interface WithTags {
             /**
-             * Specifies the tags property: Additional tags for Confidential Ledger.
+             * Specifies the tags property: Resource tags..
              *
-             * @param tags Additional tags for Confidential Ledger.
+             * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
-        }
-        /** The stage of the ConfidentialLedger update allowing to specify runningState. */
-        interface WithRunningState {
-            /**
-             * Specifies the runningState property: Object representing RunningState for Ledger..
-             *
-             * @param runningState Object representing RunningState for Ledger.
-             * @return the next definition stage.
-             */
-            Update withRunningState(RunningState runningState);
         }
         /** The stage of the ConfidentialLedger update allowing to specify properties. */
         interface WithProperties {

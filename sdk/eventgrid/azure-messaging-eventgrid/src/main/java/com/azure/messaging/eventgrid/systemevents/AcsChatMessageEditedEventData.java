@@ -30,6 +30,9 @@ public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBase
     @JsonProperty(value = "editTime")
     private OffsetDateTime editTime;
 
+    /** Creates an instance of AcsChatMessageEditedEventData class. */
+    public AcsChatMessageEditedEventData() {}
+
     /**
      * Get the messageBody property: The body of the chat message.
      *

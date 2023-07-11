@@ -5,10 +5,15 @@ package com.azure.core.implementation;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.policy.ExponentialBackoff;
+import com.azure.core.http.policy.FixedDelay;
+import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,10 +31,10 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.AbstractMap;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -47,6 +52,7 @@ public final class ImplUtils {
 
     private static final Charset UTF_32BE = Charset.forName("UTF-32BE");
     private static final Charset UTF_32LE = Charset.forName("UTF-32LE");
+    private static final ClientLogger LOGGER = new ClientLogger(ImplUtils.class);
     private static final byte ZERO = (byte) 0x00;
     private static final byte BB = (byte) 0xBB;
     private static final byte BF = (byte) 0xBF;
@@ -204,20 +210,16 @@ public final class ImplUtils {
         return result;
     }
 
-    public static Iterator<Map.Entry<String, String>> parseQueryParameters(String queryParameters) {
-        return (CoreUtils.isNullOrEmpty(queryParameters))
-            ? Collections.emptyIterator()
-            : new QueryParameterIterator(queryParameters);
-    }
-
-    private static final class QueryParameterIterator implements Iterator<Map.Entry<String, String>> {
+    public static final class QueryParameterIterator implements Iterator<Map.Entry<String, String>> {
         private final String queryParameters;
+        private final int queryParametersLength;
 
         private boolean done = false;
         private int position;
 
-        QueryParameterIterator(String queryParameters) {
+        public QueryParameterIterator(String queryParameters) {
             this.queryParameters = queryParameters;
+            this.queryParametersLength = queryParameters.length();
 
             // If the URL query begins with '?' the first possible start of a query parameter key is the
             // second character in the query.
@@ -235,10 +237,27 @@ public final class ImplUtils {
                 throw new NoSuchElementException();
             }
 
-            int nextPosition = queryParameters.indexOf('=', position);
+            int nextPosition = position;
+            char c;
+            while (nextPosition < queryParametersLength) {
+                // Next position can either be '=' or '&' as a query parameter may not have a '=', ex 'key&key2=value'.
+                c = queryParameters.charAt(nextPosition);
+                if (c == '=') {
+                    break;
+                } else if (c == '&') {
+                    String key = queryParameters.substring(position, nextPosition);
 
-            if (nextPosition == -1) {
-                // Query parameters completed with a key only 'https://example.com?param'
+                    // Position is set to nextPosition + 1 to skip over the '&'
+                    position = nextPosition + 1;
+
+                    return new AbstractMap.SimpleImmutableEntry<>(key, "");
+                }
+
+                nextPosition++;
+            }
+
+            if (nextPosition == queryParametersLength) {
+                // Query parameters completed.
                 done = true;
                 return new AbstractMap.SimpleImmutableEntry<>(queryParameters.substring(position), "");
             }
@@ -333,6 +352,36 @@ public final class ImplUtils {
     @SuppressWarnings("deprecation")
     public static URL createUrl(String urlString) throws MalformedURLException {
         return new URL(urlString);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> Class<? extends T> getClassByName(String className) {
+        Objects.requireNonNull("'className' cannot be null");
+        try {
+            return (Class<? extends T>) Class.forName(className, false, ImplUtils.class.getClassLoader());
+        } catch (ClassNotFoundException e) {
+            String message = String.format("Class `%s` is not found on the classpath.", className);
+            throw LOGGER.logExceptionAsError(new RuntimeException(message, e));
+        }
+    }
+
+    /**
+     * Converts the {@link RetryOptions} into a {@link RetryStrategy} so it can be more easily consumed.
+     *
+     * @param retryOptions The retry options.
+     * @return The retry strategy based on the retry options.
+     */
+    public static RetryStrategy getRetryStrategyFromOptions(RetryOptions retryOptions) {
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+
+        if (retryOptions.getExponentialBackoffOptions() != null) {
+            return new ExponentialBackoff(retryOptions.getExponentialBackoffOptions());
+        } else if (retryOptions.getFixedDelayOptions() != null) {
+            return new FixedDelay(retryOptions.getFixedDelayOptions());
+        } else {
+            // This should never happen.
+            throw new IllegalArgumentException("'retryOptions' didn't define any retry strategy options");
+        }
     }
 
     private ImplUtils() {

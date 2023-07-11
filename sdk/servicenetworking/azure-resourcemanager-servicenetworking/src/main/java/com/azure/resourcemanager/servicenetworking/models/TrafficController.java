@@ -190,7 +190,7 @@ public interface TrafficController {
     TrafficController.Update update();
 
     /** The template for TrafficController update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
          *
@@ -217,16 +217,6 @@ public interface TrafficController {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
-        }
-        /** The stage of the TrafficController update allowing to specify properties. */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: The updatable properties of the TrafficController..
-             *
-             * @param properties The updatable properties of the TrafficController.
-             * @return the next definition stage.
-             */
-            Update withProperties(Object properties);
         }
     }
     /**

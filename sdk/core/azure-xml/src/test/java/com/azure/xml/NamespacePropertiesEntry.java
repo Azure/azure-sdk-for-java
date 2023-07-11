@@ -7,6 +7,8 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import java.time.OffsetDateTime;
 
+import static com.azure.xml.AzureXmlTestUtils.getRootElementName;
+
 public class NamespacePropertiesEntry implements XmlSerializable<NamespacePropertiesEntry> {
     private String id;
     private String title;
@@ -137,7 +139,12 @@ public class NamespacePropertiesEntry implements XmlSerializable<NamespaceProper
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("entry");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        xmlWriter.writeStartElement(getRootElementName(rootElementName, "entry"));
         xmlWriter.writeNamespace("http://www.w3.org/2005/Atom");
         xmlWriter.writeStringElement("id", id);
         xmlWriter.writeStringElement("title", title);
@@ -150,57 +157,47 @@ public class NamespacePropertiesEntry implements XmlSerializable<NamespaceProper
     }
 
     public static NamespacePropertiesEntry fromXml(XmlReader xmlReader) throws XMLStreamException {
-        if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
-            // Since NamespacePropertiesEntry only cares about XML elements use nextElement()
-            xmlReader.nextElement();
-        }
+        return fromXml(xmlReader, null);
+    }
 
-        if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
-            throw new IllegalStateException("Illegal start of XML deserialization. "
-                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken." + xmlReader.currentToken() + "'.");
-        }
+    public static NamespacePropertiesEntry fromXml(XmlReader xmlReader, String rootElementName)
+        throws XMLStreamException {
+        return xmlReader.readObject("http://www.w3.org/2005/Atom", getRootElementName(rootElementName, "entry"),
+            reader -> {
+                String id = null;
+                String title = null;
+                OffsetDateTime updated = null;
+                ResponseAuthor author = null;
+                ResponseLink link = null;
+                NamespacePropertiesEntryContent content = null;
 
-        QName qName = xmlReader.getElementName();
-        if (!"entry".equals(qName.getLocalPart())
-            || !"http://www.w3.org/2005/Atom".equals(qName.getNamespaceURI())) {
-            throw new IllegalStateException("Expected XML element to be 'entry' in namespace "
-                + "'http://www.w3.org/2005/Atom' but it was: "
-                + "{'" + qName.getNamespaceURI() + "'}'" + qName.getLocalPart() + "'.");
-        }
+                while (xmlReader.nextElement() != XmlToken.END_ELEMENT) {
+                    QName qName = xmlReader.getElementName();
+                    String localPart = qName.getLocalPart();
+                    String namespaceUri = qName.getNamespaceURI();
 
-        String id = null;
-        String title = null;
-        OffsetDateTime updated = null;
-        ResponseAuthor author = null;
-        ResponseLink link = null;
-        NamespacePropertiesEntryContent content = null;
+                    if ("id".equals(localPart) && "http://www.w3.org/2005/Atom".equals(namespaceUri)) {
+                        id = xmlReader.getStringElement();
+                    } else if ("title".equals(localPart)) {
+                        title = xmlReader.getStringElement();
+                    } else if ("updated".equals(localPart) && "http://www.w3.org/2005/Atom".equals(namespaceUri)) {
+                        updated = OffsetDateTime.parse(xmlReader.getStringElement());
+                    } else if ("author".equals(localPart) && "http://www.w3.org/2005/Atom".equals(namespaceUri)) {
+                        author = ResponseAuthor.fromXml(xmlReader);
+                    } else if ("link".equals(localPart) && "http://www.w3.org/2005/Atom".equals(namespaceUri)) {
+                        link = ResponseLink.fromXml(xmlReader);
+                    } else if ("content".equals(localPart) && "http://www.w3.org/2005/Atom".equals(namespaceUri)) {
+                        content = NamespacePropertiesEntryContent.fromXml(xmlReader);
+                    }
+                }
 
-        while (xmlReader.nextElement() != XmlToken.END_ELEMENT) {
-            qName = xmlReader.getElementName();
-            String localPart = qName.getLocalPart();
-            String namespaceUri = qName.getNamespaceURI();
-
-            if ("id".equals(localPart) && "http://www.w3.org/2005/Atom".equals(namespaceUri)) {
-                id = xmlReader.getStringElement();
-            } else if ("title".equals(localPart)) {
-                title = xmlReader.getStringElement();
-            } else if ("updated".equals(localPart) && "http://www.w3.org/2005/Atom".equals(namespaceUri)) {
-                updated = OffsetDateTime.parse(xmlReader.getStringElement());
-            } else if ("author".equals(localPart) && "http://www.w3.org/2005/Atom".equals(namespaceUri)) {
-                author = ResponseAuthor.fromXml(xmlReader);
-            } else if ("link".equals(localPart) && "http://www.w3.org/2005/Atom".equals(namespaceUri)) {
-                link = ResponseLink.fromXml(xmlReader);
-            } else if ("content".equals(localPart) && "http://www.w3.org/2005/Atom".equals(namespaceUri)) {
-                content = NamespacePropertiesEntryContent.fromXml(xmlReader);
-            }
-        }
-
-        return new NamespacePropertiesEntry()
-            .setId(id)
-            .setTitle(title)
-            .setUpdated(updated)
-            .setAuthor(author)
-            .setLink(link)
-            .setContent(content);
+                return new NamespacePropertiesEntry()
+                    .setId(id)
+                    .setTitle(title)
+                    .setUpdated(updated)
+                    .setAuthor(author)
+                    .setLink(link)
+                    .setContent(content);
+            });
     }
 }

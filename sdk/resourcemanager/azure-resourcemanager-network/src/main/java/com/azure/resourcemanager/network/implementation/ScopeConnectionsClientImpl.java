@@ -61,8 +61,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
     public interface ScopeConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkManagers/{networkManagerName}/scopeConnections/{scopeConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/scopeConnections/{scopeConnectionName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ScopeConnectionInner>> createOrUpdate(
@@ -78,8 +77,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkManagers/{networkManagerName}/scopeConnections/{scopeConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/scopeConnections/{scopeConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ScopeConnectionInner>> get(
@@ -94,8 +92,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkManagers/{networkManagerName}/scopeConnections/{scopeConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/scopeConnections/{scopeConnectionName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -110,8 +107,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkManagers/{networkManagerName}/scopeConnections")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/scopeConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ScopeConnectionListResult>> list(
@@ -183,7 +179,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -251,7 +247,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -376,7 +372,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter scopeConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -434,7 +430,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter scopeConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -539,7 +535,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter scopeConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -596,7 +592,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter scopeConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -699,7 +695,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -766,7 +762,7 @@ public final class ScopeConnectionsClientImpl implements ScopeConnectionsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

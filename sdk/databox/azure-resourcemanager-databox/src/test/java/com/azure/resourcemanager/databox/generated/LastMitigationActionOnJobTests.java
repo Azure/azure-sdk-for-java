@@ -16,23 +16,23 @@ public final class LastMitigationActionOnJobTests {
         LastMitigationActionOnJob model =
             BinaryData
                 .fromString(
-                    "{\"actionDateTimeInUtc\":\"2021-11-04T06:11:04Z\",\"isPerformedByCustomer\":true,\"customerResolution\":\"MoveToCleanUpDevice\"}")
+                    "{\"actionDateTimeInUtc\":\"2021-04-14T04:20:05Z\",\"isPerformedByCustomer\":false,\"customerResolution\":\"Resume\"}")
                 .toObject(LastMitigationActionOnJob.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-04T06:11:04Z"), model.actionDateTimeInUtc());
-        Assertions.assertEquals(true, model.isPerformedByCustomer());
-        Assertions.assertEquals(CustomerResolutionCode.MOVE_TO_CLEAN_UP_DEVICE, model.customerResolution());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T04:20:05Z"), model.actionDateTimeInUtc());
+        Assertions.assertEquals(false, model.isPerformedByCustomer());
+        Assertions.assertEquals(CustomerResolutionCode.RESUME, model.customerResolution());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LastMitigationActionOnJob model =
             new LastMitigationActionOnJob()
-                .withActionDateTimeInUtc(OffsetDateTime.parse("2021-11-04T06:11:04Z"))
-                .withIsPerformedByCustomer(true)
-                .withCustomerResolution(CustomerResolutionCode.MOVE_TO_CLEAN_UP_DEVICE);
+                .withActionDateTimeInUtc(OffsetDateTime.parse("2021-04-14T04:20:05Z"))
+                .withIsPerformedByCustomer(false)
+                .withCustomerResolution(CustomerResolutionCode.RESUME);
         model = BinaryData.fromObject(model).toObject(LastMitigationActionOnJob.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-04T06:11:04Z"), model.actionDateTimeInUtc());
-        Assertions.assertEquals(true, model.isPerformedByCustomer());
-        Assertions.assertEquals(CustomerResolutionCode.MOVE_TO_CLEAN_UP_DEVICE, model.customerResolution());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T04:20:05Z"), model.actionDateTimeInUtc());
+        Assertions.assertEquals(false, model.isPerformedByCustomer());
+        Assertions.assertEquals(CustomerResolutionCode.RESUME, model.customerResolution());
     }
 }

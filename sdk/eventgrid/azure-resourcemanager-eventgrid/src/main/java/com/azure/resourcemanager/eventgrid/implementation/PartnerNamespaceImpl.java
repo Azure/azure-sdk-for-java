@@ -19,6 +19,7 @@ import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceUpdateParamete
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicRoutingMode;
 import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
+import com.azure.resourcemanager.eventgrid.models.TlsVersion;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +80,10 @@ public final class PartnerNamespaceImpl
 
     public String partnerRegistrationFullyQualifiedId() {
         return this.innerModel().partnerRegistrationFullyQualifiedId();
+    }
+
+    public TlsVersion minimumTlsVersionAllowed() {
+        return this.innerModel().minimumTlsVersionAllowed();
     }
 
     public String endpoint() {
@@ -212,20 +217,14 @@ public final class PartnerNamespaceImpl
         return this;
     }
 
-    public PartnerNamespaceSharedAccessKeys listSharedAccessKeys() {
-        return serviceManager.partnerNamespaces().listSharedAccessKeys(resourceGroupName, partnerNamespaceName);
-    }
-
     public Response<PartnerNamespaceSharedAccessKeys> listSharedAccessKeysWithResponse(Context context) {
         return serviceManager
             .partnerNamespaces()
             .listSharedAccessKeysWithResponse(resourceGroupName, partnerNamespaceName, context);
     }
 
-    public PartnerNamespaceSharedAccessKeys regenerateKey(PartnerNamespaceRegenerateKeyRequest regenerateKeyRequest) {
-        return serviceManager
-            .partnerNamespaces()
-            .regenerateKey(resourceGroupName, partnerNamespaceName, regenerateKeyRequest);
+    public PartnerNamespaceSharedAccessKeys listSharedAccessKeys() {
+        return serviceManager.partnerNamespaces().listSharedAccessKeys(resourceGroupName, partnerNamespaceName);
     }
 
     public Response<PartnerNamespaceSharedAccessKeys> regenerateKeyWithResponse(
@@ -233,6 +232,12 @@ public final class PartnerNamespaceImpl
         return serviceManager
             .partnerNamespaces()
             .regenerateKeyWithResponse(resourceGroupName, partnerNamespaceName, regenerateKeyRequest, context);
+    }
+
+    public PartnerNamespaceSharedAccessKeys regenerateKey(PartnerNamespaceRegenerateKeyRequest regenerateKeyRequest) {
+        return serviceManager
+            .partnerNamespaces()
+            .regenerateKey(resourceGroupName, partnerNamespaceName, regenerateKeyRequest);
     }
 
     public PartnerNamespaceImpl withRegion(Region location) {
@@ -258,6 +263,16 @@ public final class PartnerNamespaceImpl
     public PartnerNamespaceImpl withPartnerRegistrationFullyQualifiedId(String partnerRegistrationFullyQualifiedId) {
         this.innerModel().withPartnerRegistrationFullyQualifiedId(partnerRegistrationFullyQualifiedId);
         return this;
+    }
+
+    public PartnerNamespaceImpl withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed) {
+        if (isInCreateMode()) {
+            this.innerModel().withMinimumTlsVersionAllowed(minimumTlsVersionAllowed);
+            return this;
+        } else {
+            this.updatePartnerNamespaceUpdateParameters.withMinimumTlsVersionAllowed(minimumTlsVersionAllowed);
+            return this;
+        }
     }
 
     public PartnerNamespaceImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {

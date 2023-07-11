@@ -14,33 +14,33 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ContainerServiceNewKubernetesVersionAvailableEventData {
     /*
-     * The highest PATCH Kubernetes version for the highest MINOR version
-     * supported by ManagedCluster resource
+     * The highest PATCH Kubernetes version for the highest MINOR version supported by ManagedCluster resource
      */
     @JsonProperty(value = "latestSupportedKubernetesVersion")
     private String latestSupportedKubernetesVersion;
 
     /*
-     * The highest PATCH Kubernetes version for the MINOR version considered
-     * stable for the ManagedCluster resource
+     * The highest PATCH Kubernetes version for the MINOR version considered stable for the ManagedCluster resource
      */
     @JsonProperty(value = "latestStableKubernetesVersion")
     private String latestStableKubernetesVersion;
 
     /*
-     * The highest PATCH Kubernetes version for the lowest applicable MINOR
-     * version available for the ManagedCluster resource
+     * The highest PATCH Kubernetes version for the lowest applicable MINOR version available for the ManagedCluster
+     * resource
      */
     @JsonProperty(value = "lowestMinorKubernetesVersion")
     private String lowestMinorKubernetesVersion;
 
     /*
-     * The highest PATCH Kubernetes version considered preview for the
-     * ManagedCluster resource. There might not be any version in preview at
-     * the time of publishing the event
+     * The highest PATCH Kubernetes version considered preview for the ManagedCluster resource. There might not be any
+     * version in preview at the time of publishing the event
      */
     @JsonProperty(value = "latestPreviewKubernetesVersion")
     private String latestPreviewKubernetesVersion;
+
+    /** Creates an instance of ContainerServiceNewKubernetesVersionAvailableEventData class. */
+    public ContainerServiceNewKubernetesVersionAvailableEventData() {}
 
     /**
      * Get the latestSupportedKubernetesVersion property: The highest PATCH Kubernetes version for the highest MINOR

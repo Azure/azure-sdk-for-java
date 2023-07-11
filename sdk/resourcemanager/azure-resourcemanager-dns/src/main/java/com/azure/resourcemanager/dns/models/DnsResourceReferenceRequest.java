@@ -6,22 +6,22 @@ package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dns.fluent.models.DnsResourceReferenceRequestProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents the properties of the Dns Resource Reference Request. */
 @Fluent
 public final class DnsResourceReferenceRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DnsResourceReferenceRequest.class);
-
     /*
      * The properties of the Resource Reference Request.
      */
     @JsonProperty(value = "properties")
     private DnsResourceReferenceRequestProperties innerProperties;
+
+    /** Creates an instance of DnsResourceReferenceRequest class. */
+    public DnsResourceReferenceRequest() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the Resource Reference Request.

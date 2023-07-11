@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ActionsRequired. */
+/** Any action that is required beyond basic workflow (approve/ reject/ disconnect). */
 public final class ActionsRequired extends ExpandableStringEnum<ActionsRequired> {
     /** Static value None for ActionsRequired. */
     public static final ActionsRequired NONE = fromString("None");
 
     /** Static value Recreate for ActionsRequired. */
     public static final ActionsRequired RECREATE = fromString("Recreate");
+
+    /**
+     * Creates a new instance of ActionsRequired value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ActionsRequired() {
+    }
 
     /**
      * Creates or finds a ActionsRequired from its string representation.

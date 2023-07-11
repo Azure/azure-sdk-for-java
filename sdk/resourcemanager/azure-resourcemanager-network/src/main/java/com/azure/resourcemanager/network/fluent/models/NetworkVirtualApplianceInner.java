@@ -11,6 +11,7 @@ import com.azure.resourcemanager.network.models.DelegationProperties;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.PartnerManagedResourceProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.VirtualApplianceAdditionalNicProperties;
 import com.azure.resourcemanager.network.models.VirtualApplianceNicProperties;
 import com.azure.resourcemanager.network.models.VirtualApplianceSkuProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -302,12 +303,45 @@ public final class NetworkVirtualApplianceInner extends Resource {
     }
 
     /**
+     * Get the additionalNics property: Details required for Additional Network Interface.
+     *
+     * @return the additionalNics value.
+     */
+    public List<VirtualApplianceAdditionalNicProperties> additionalNics() {
+        return this.innerProperties() == null ? null : this.innerProperties().additionalNics();
+    }
+
+    /**
+     * Set the additionalNics property: Details required for Additional Network Interface.
+     *
+     * @param additionalNics the additionalNics value to set.
+     * @return the NetworkVirtualApplianceInner object itself.
+     */
+    public NetworkVirtualApplianceInner withAdditionalNics(
+        List<VirtualApplianceAdditionalNicProperties> additionalNics) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkVirtualAppliancePropertiesFormat();
+        }
+        this.innerProperties().withAdditionalNics(additionalNics);
+        return this;
+    }
+
+    /**
      * Get the virtualApplianceSites property: List of references to VirtualApplianceSite.
      *
      * @return the virtualApplianceSites value.
      */
     public List<SubResource> virtualApplianceSites() {
         return this.innerProperties() == null ? null : this.innerProperties().virtualApplianceSites();
+    }
+
+    /**
+     * Get the virtualApplianceConnections property: List of references to VirtualApplianceConnections.
+     *
+     * @return the virtualApplianceConnections value.
+     */
+    public List<SubResource> virtualApplianceConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualApplianceConnections();
     }
 
     /**

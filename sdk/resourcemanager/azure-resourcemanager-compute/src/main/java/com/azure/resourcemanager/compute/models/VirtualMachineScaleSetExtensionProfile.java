@@ -21,7 +21,7 @@ public final class VirtualMachineScaleSetExtensionProfile {
     /*
      * Specifies the time alloted for all extensions to start. The time duration should be between 15 minutes and 120
      * minutes (inclusive) and should be specified in ISO 8601 format. The default value is 90 minutes (PT1H30M).
-     * <br><br> Minimum api-version: 2020-06-01
+     * Minimum api-version: 2020-06-01.
      */
     @JsonProperty(value = "extensionsTimeBudget")
     private String extensionsTimeBudget;
@@ -54,7 +54,7 @@ public final class VirtualMachineScaleSetExtensionProfile {
     /**
      * Get the extensionsTimeBudget property: Specifies the time alloted for all extensions to start. The time duration
      * should be between 15 minutes and 120 minutes (inclusive) and should be specified in ISO 8601 format. The default
-     * value is 90 minutes (PT1H30M). &lt;br&gt;&lt;br&gt; Minimum api-version: 2020-06-01.
+     * value is 90 minutes (PT1H30M). Minimum api-version: 2020-06-01.
      *
      * @return the extensionsTimeBudget value.
      */
@@ -65,7 +65,7 @@ public final class VirtualMachineScaleSetExtensionProfile {
     /**
      * Set the extensionsTimeBudget property: Specifies the time alloted for all extensions to start. The time duration
      * should be between 15 minutes and 120 minutes (inclusive) and should be specified in ISO 8601 format. The default
-     * value is 90 minutes (PT1H30M). &lt;br&gt;&lt;br&gt; Minimum api-version: 2020-06-01.
+     * value is 90 minutes (PT1H30M). Minimum api-version: 2020-06-01.
      *
      * @param extensionsTimeBudget the extensionsTimeBudget value to set.
      * @return the VirtualMachineScaleSetExtensionProfile object itself.

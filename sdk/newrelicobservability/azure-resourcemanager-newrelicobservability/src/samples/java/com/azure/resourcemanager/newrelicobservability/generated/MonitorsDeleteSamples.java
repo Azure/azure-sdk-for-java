@@ -16,7 +16,13 @@ public final class MonitorsDeleteSamples {
      */
     public static void monitorsDeleteMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().delete("rgopenapi", null, "ipxmlcbonyxtolzejcjshkmlron", com.azure.core.util.Context.NONE);
+        manager
+            .monitors()
+            .delete(
+                "rgopenapi",
+                "ruxvg@xqkmdhrnoo.hlmbpm",
+                "ipxmlcbonyxtolzejcjshkmlron",
+                com.azure.core.util.Context.NONE);
     }
 
     /*

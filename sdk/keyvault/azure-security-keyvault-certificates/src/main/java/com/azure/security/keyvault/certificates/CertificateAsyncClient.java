@@ -66,7 +66,8 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = CertificateClientBuilder.class, isAsync = true, serviceInterfaces = CertificateClientImpl.CertificateService.class)
 public final class CertificateAsyncClient {
-    private final ClientLogger logger = new ClientLogger(CertificateAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CertificateAsyncClient.class);
+
     private final CertificateClientImpl implClient;
 
     /**
@@ -127,7 +128,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
-        return implClient.beginCreateCertificate(certificateName, policy, isEnabled, tags);
+        return implClient.beginCreateCertificateAsync(certificateName, policy, isEnabled, tags);
     }
 
     /**
@@ -187,7 +188,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
-        return implClient.getCertificateOperation(certificateName);
+        return implClient.getCertificateOperationAsync(certificateName);
     }
 
     /**
@@ -218,7 +219,7 @@ public final class CertificateAsyncClient {
             return withContext(context -> implClient.getCertificateWithResponseAsync(certificateName, "",
                 context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -250,7 +251,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.getCertificateWithResponseAsync(certificateName, "", context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -285,7 +286,7 @@ public final class CertificateAsyncClient {
             return withContext(context -> implClient.getCertificateVersionWithResponseAsync(certificateName, version == null ? "" : version,
                 context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -318,7 +319,7 @@ public final class CertificateAsyncClient {
             return withContext(context -> implClient.getCertificateVersionWithResponseAsync(certificateName, version == null ? "" : version,
                 context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -357,7 +358,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.updateCertificatePropertiesWithResponseAsync(properties, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -397,7 +398,7 @@ public final class CertificateAsyncClient {
             return withContext(context -> implClient.updateCertificatePropertiesWithResponseAsync(properties,
                 context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -428,7 +429,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DeletedCertificate, Void> beginDeleteCertificate(String certificateName) {
-        return implClient.beginDeleteCertificate(certificateName);
+        return implClient.beginDeleteCertificateAsync(certificateName);
     }
 
     /**
@@ -460,7 +461,7 @@ public final class CertificateAsyncClient {
             return withContext(context -> implClient.getDeletedCertificateWithResponseAsync(certificateName, context))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -493,7 +494,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.getDeletedCertificateWithResponseAsync(certificateName, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -524,7 +525,7 @@ public final class CertificateAsyncClient {
         try {
             return purgeDeletedCertificateWithResponse(certificateName).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -555,7 +556,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.purgeDeletedCertificateWithResponseAsync(certificateName, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -586,7 +587,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName) {
-        return implClient.beginRecoverDeletedCertificate(certificateName);
+        return implClient.beginRecoverDeletedCertificateAsync(certificateName);
     }
 
     /**
@@ -616,7 +617,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.backupCertificateWithResponseAsync(certificateName, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -648,7 +649,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.backupCertificateWithResponseAsync(certificateName, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -679,7 +680,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.restoreCertificateBackupWithResponseAsync(backup, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -710,7 +711,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.restoreCertificateBackupWithResponseAsync(backup, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -739,7 +740,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateProperties> listPropertiesOfCertificates(boolean includePending) {
-        return implClient.listPropertiesOfCertificates(includePending);
+        return implClient.listPropertiesOfCertificatesAsync(includePending);
     }
 
     /**
@@ -766,11 +767,11 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateProperties> listPropertiesOfCertificates() {
-        return implClient.listPropertiesOfCertificates();
+        return implClient.listPropertiesOfCertificatesAsync();
     }
 
     PagedFlux<CertificateProperties> listPropertiesOfCertificates(boolean includePending, Context context) {
-        return implClient.listPropertiesOfCertificates(includePending, context);
+        return implClient.listPropertiesOfCertificatesAsync(includePending, context);
     }
 
 
@@ -796,7 +797,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedCertificate> listDeletedCertificates() {
-        return implClient.listDeletedCertificates();
+        return implClient.listDeletedCertificatesAsync();
     }
 
     /**
@@ -822,11 +823,11 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedCertificate> listDeletedCertificates(boolean includePending) {
-        return implClient.listDeletedCertificates(includePending);
+        return implClient.listDeletedCertificatesAsync(includePending);
     }
 
     PagedFlux<DeletedCertificate> listDeletedCertificates(Boolean includePending, Context context) {
-        return implClient.listDeletedCertificates(includePending, context);
+        return implClient.listDeletedCertificatesAsync(includePending, context);
     }
 
     /**
@@ -856,11 +857,11 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName) {
-        return implClient.listPropertiesOfCertificateVersions(certificateName);
+        return implClient.listPropertiesOfCertificateVersionsAsync(certificateName);
     }
 
     PagedFlux<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName, Context context) {
-        return implClient.listPropertiesOfCertificateVersions(certificateName, context);
+        return implClient.listPropertiesOfCertificateVersionsAsync(certificateName, context);
     }
 
     /**
@@ -892,7 +893,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.mergeCertificateWithResponseAsync(mergeCertificateOptions, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -925,7 +926,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.mergeCertificateWithResponseAsync(mergeCertificateOptions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -957,7 +958,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.getCertificatePolicyWithResponseAsync(certificateName, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -988,7 +989,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.getCertificatePolicyWithResponseAsync(certificateName, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1028,7 +1029,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.updateCertificatePolicyWithResponseAsync(certificateName, policy, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1069,7 +1070,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.updateCertificatePolicyWithResponseAsync(certificateName, policy, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1106,7 +1107,7 @@ public final class CertificateAsyncClient {
             return withContext(context -> implClient.createIssuerWithResponseAsync(issuer, context))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1143,7 +1144,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.createIssuerWithResponseAsync(issuer, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1175,7 +1176,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.getIssuerWithResponseAsync(issuerName, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1208,7 +1209,7 @@ public final class CertificateAsyncClient {
             return withContext(context -> implClient.getIssuerWithResponseAsync(issuerName, context))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1239,7 +1240,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.deleteIssuerWithResponseAsync(issuerName, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1271,7 +1272,7 @@ public final class CertificateAsyncClient {
             return withContext(context -> implClient.deleteIssuerWithResponseAsync(issuerName, context))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1298,7 +1299,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IssuerProperties> listPropertiesOfIssuers() {
-        return implClient.listPropertiesOfIssuers();
+        return implClient.listPropertiesOfIssuersAsync();
     }
 
     /**
@@ -1338,7 +1339,7 @@ public final class CertificateAsyncClient {
             return withContext(context -> implClient.updateIssuerWithResponseAsync(issuer, context))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1377,7 +1378,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.updateIssuerWithResponseAsync(issuer, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1405,7 +1406,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateContact> setContacts(List<CertificateContact> contacts) {
-        return implClient.setContacts(contacts);
+        return implClient.setContactsAsync(contacts);
     }
 
 
@@ -1428,7 +1429,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateContact> listContacts() {
-        return implClient.listContacts();
+        return implClient.listContactsAsync();
     }
 
     /**
@@ -1450,7 +1451,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateContact> deleteContacts() {
-        return implClient.deleteContacts();
+        return implClient.deleteContactsAsync();
     }
 
     /**
@@ -1479,7 +1480,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.deleteCertificateOperationWithResponseAsync(certificateName, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1509,7 +1510,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.deleteCertificateOperationWithResponseAsync(certificateName, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1538,7 +1539,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.cancelCertificateOperationWithResponseAsync(certificateName, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1567,7 +1568,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.cancelCertificateOperationWithResponseAsync(certificateName, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1600,7 +1601,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.importCertificateWithResponseAsync(importCertificateOptions, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1631,7 +1632,7 @@ public final class CertificateAsyncClient {
         try {
             return withContext(context -> implClient.importCertificateWithResponseAsync(importCertificateOptions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 }

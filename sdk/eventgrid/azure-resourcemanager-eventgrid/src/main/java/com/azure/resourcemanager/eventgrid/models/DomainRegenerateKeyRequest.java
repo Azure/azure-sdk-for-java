@@ -17,6 +17,10 @@ public final class DomainRegenerateKeyRequest {
     @JsonProperty(value = "keyName", required = true)
     private String keyName;
 
+    /** Creates an instance of DomainRegenerateKeyRequest class. */
+    public DomainRegenerateKeyRequest() {
+    }
+
     /**
      * Get the keyName property: Key name to regenerate key1 or key2.
      *

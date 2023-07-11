@@ -13,7 +13,7 @@ import java.util.List;
 public final class CapacityReservationUtilization {
     /*
      * The value provides the current capacity of the VM size which was reserved successfully and for which the
-     * customer is getting billed.<br><br>Minimum api-version: 2022-08-01.
+     * customer is getting billed. Minimum api-version: 2022-08-01.
      */
     @JsonProperty(value = "currentCapacity", access = JsonProperty.Access.WRITE_ONLY)
     private Integer currentCapacity;
@@ -30,7 +30,7 @@ public final class CapacityReservationUtilization {
 
     /**
      * Get the currentCapacity property: The value provides the current capacity of the VM size which was reserved
-     * successfully and for which the customer is getting billed.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-08-01.
+     * successfully and for which the customer is getting billed. Minimum api-version: 2022-08-01.
      *
      * @return the currentCapacity value.
      */

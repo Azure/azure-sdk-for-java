@@ -48,7 +48,7 @@ public class Utils {
     public static final String ANALYZE_MODE = "analyze";
     public static final String GENERATE_MODE = "generate";
     public  static final Pattern COMMANDLINE_REGEX = Pattern.compile("-(.*)=(.*)");
-    public static final List<String> EXCLUSION_LIST = Arrays.asList("azure-spring-data-cosmos", "azure-spring-data-cosmos-test", "azure-core-test", "azure-sdk-all", "azure-sdk-parent", "azure-client-sdk-parent");
+    public static final List<String> EXCLUSION_LIST = Arrays.asList("azure-spring-data-cosmos", "azure-core-test", "azure-sdk-all", "azure-sdk-parent", "azure-client-sdk-parent");
     public static final Pattern SDK_DEPENDENCY_PATTERN = Pattern.compile("com.azure:(.+);(.+);(.+)");
     public static final String BASE_AZURE_GROUPID = "com.azure";
     public static final String AZURE_TEST_LIBRARY_IDENTIFIER = "-test";

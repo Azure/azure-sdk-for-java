@@ -63,7 +63,8 @@ public class CallAutomationLiveTestBase extends TestBase {
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("value")
         .add("rawId")
-        .add("id");
+        .add("id")
+        .add("callbackUri");
     protected static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
         Pattern.CASE_INSENSITIVE);

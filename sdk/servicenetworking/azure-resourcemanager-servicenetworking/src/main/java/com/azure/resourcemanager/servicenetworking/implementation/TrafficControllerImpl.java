@@ -212,11 +212,6 @@ public final class TrafficControllerImpl
         }
     }
 
-    public TrafficControllerImpl withProperties(Object properties) {
-        this.updateProperties.withProperties(properties);
-        return this;
-    }
-
     private boolean isInCreateMode() {
         return this.innerModel().id() == null;
     }

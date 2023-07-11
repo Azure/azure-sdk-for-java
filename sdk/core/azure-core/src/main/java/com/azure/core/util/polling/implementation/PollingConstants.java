@@ -30,6 +30,12 @@ public final class PollingConstants {
      */
     public static final String RESOURCE_LOCATION = "resourceLocation";
     /**
+     * The key for storing the initial resource data in the polling context.
+     * <p>
+     * At present, it is only used in OperationLocationPollingStrategy from azure-core-experimental.
+     */
+    public static final String INITIAL_RESOURCE_RESPONSE_BODY = "initialResourceResponseBody";
+    /**
      * The header used for sending the time in seconds to wait until next poll.
      */
     public static final String RETRY_AFTER = "Retry-After";

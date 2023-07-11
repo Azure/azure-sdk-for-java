@@ -6,20 +6,19 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.ProjectListResult;
-import org.junit.jupiter.api.Test;
 
 public final class ProjectListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProjectListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"StorageProvisioningFailed\",\"devCenterUri\":\"rgqjbpfzfsinzg\",\"devCenterId\":\"cjrwzoxxjtfellu\",\"description\":\"zitonpeqfpjkjl\"},\"location\":\"fpdvhpfxxypi\",\"tags\":{\"inuvamiheogn\":\"mayhuybbkpodepoo\",\"usivye\":\"rxzxtheo\",\"nfygxgispemvtz\":\"cciqihnhungbwjz\"},\"id\":\"kufubljo\",\"name\":\"xqeofjaeqjhqjba\",\"type\":\"v\"},{\"properties\":{\"provisioningState\":\"Creating\",\"devCenterUri\":\"ulngsntn\",\"devCenterId\":\"bkzgcwrwclx\",\"description\":\"rljdouskcqv\"},\"location\":\"cr\",\"tags\":{\"hxbnjbiksqrg\":\"kwt\"},\"id\":\"ssainqpjwnzll\",\"name\":\"fmppe\",\"type\":\"bvmgxsabkyqduuji\"},{\"properties\":{\"provisioningState\":\"Updating\",\"devCenterUri\":\"dzevndhkrw\",\"devCenterId\":\"appd\",\"description\":\"dkvwrwjfe\"},\"location\":\"nhutjeltmrldhugj\",\"tags\":{\"dgeablgphu\":\"atqxho\",\"xhurok\":\"icndvkaozwyifty\",\"kjfkg\":\"tyxolniwpwc\",\"plwckbas\":\"awxklr\"},\"id\":\"ypnddhsgcb\",\"name\":\"cph\",\"type\":\"jkot\"}],\"nextLink\":\"qgoulznd\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"StorageProvisioningFailed\",\"devCenterUri\":\"rgqjbpfzfsinzg\",\"devCenterId\":\"cjrwzoxxjtfellu\",\"description\":\"zitonpeqfpjkjl\",\"maxDevBoxesPerUser\":864037829},\"location\":\"dvhpfxxypininm\",\"tags\":{\"oginuvamiheognar\":\"uybbkpodep\"},\"id\":\"zxtheotusivyevcc\",\"name\":\"qi\",\"type\":\"nhungbw\"},{\"properties\":{\"provisioningState\":\"TransientFailure\",\"devCenterUri\":\"ygxgispemvtz\",\"devCenterId\":\"ufubl\",\"description\":\"fxqeof\",\"maxDevBoxesPerUser\":56034680},\"location\":\"jhqjbasvmsmjqul\",\"tags\":{\"wrwclxxwrljd\":\"ntnbybkzg\",\"kwt\":\"uskcqvkocrcj\",\"ssainqpjwnzll\":\"hxbnjbiksqrg\"},\"id\":\"fmppe\",\"name\":\"bvmgxsabkyqduuji\",\"type\":\"c\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"devCenterUri\":\"evndh\",\"devCenterId\":\"wpdappdsbdkv\",\"description\":\"wjfeusnhutjel\",\"maxDevBoxesPerUser\":391471833},\"location\":\"dhugjzzdatqxhocd\",\"tags\":{\"vkaozwyiftyhxhur\":\"blgphuticn\",\"tyxolniwpwc\":\"k\",\"awxklr\":\"kjfkg\",\"ypnddhsgcb\":\"plwckbas\"},\"id\":\"cph\",\"name\":\"jkot\",\"type\":\"nqgoulzndli\"}],\"nextLink\":\"yqkgfg\"}")
                 .toObject(ProjectListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProjectListResult model = new ProjectListResult();
         model = BinaryData.fromObject(model).toObject(ProjectListResult.class);
     }

@@ -27,6 +27,10 @@ public final class VerifiedPartnerInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of VerifiedPartnerInner class. */
+    public VerifiedPartnerInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the verified partner.
      *
@@ -134,6 +138,29 @@ public final class VerifiedPartnerInner extends ProxyResource {
             this.innerProperties = new VerifiedPartnerProperties();
         }
         this.innerProperties().withPartnerTopicDetails(partnerTopicDetails);
+        return this;
+    }
+
+    /**
+     * Get the partnerDestinationDetails property: Details of the partner destination scenario.
+     *
+     * @return the partnerDestinationDetails value.
+     */
+    public PartnerDetails partnerDestinationDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerDestinationDetails();
+    }
+
+    /**
+     * Set the partnerDestinationDetails property: Details of the partner destination scenario.
+     *
+     * @param partnerDestinationDetails the partnerDestinationDetails value to set.
+     * @return the VerifiedPartnerInner object itself.
+     */
+    public VerifiedPartnerInner withPartnerDestinationDetails(PartnerDetails partnerDestinationDetails) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VerifiedPartnerProperties();
+        }
+        this.innerProperties().withPartnerDestinationDetails(partnerDestinationDetails);
         return this;
     }
 

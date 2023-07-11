@@ -104,7 +104,7 @@ class AzureServiceBusAutoConfigurationTests extends AbstractAzureServiceConfigur
     @Test
     void configureServiceBusDomainNameOverrideGlobalDefault() {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
-        azureProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
+        azureProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
 
         this.contextRunner
                 .withBean("azureProperties", AzureGlobalProperties.class, () -> azureProperties)
@@ -114,8 +114,8 @@ class AzureServiceBusAutoConfigurationTests extends AbstractAzureServiceConfigur
                 .run(context -> {
                     assertThat(context).hasSingleBean(AzureServiceBusProperties.class);
                     final AzureServiceBusProperties properties = context.getBean(AzureServiceBusProperties.class);
-                    assertThat(properties.getProfile().getCloudType()).isEqualTo(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
-                    assertThat(properties.getProfile().getEnvironment().getServiceBusDomainName()).isEqualTo(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName());
+                    assertThat(properties.getProfile().getCloudType()).isEqualTo(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
+                    assertThat(properties.getProfile().getEnvironment().getServiceBusDomainName()).isEqualTo(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName());
                     assertThat(properties.getDomainName()).isEqualTo(AzureEnvironmentProperties.AZURE_CHINA.getServiceBusDomainName());
                 });
     }

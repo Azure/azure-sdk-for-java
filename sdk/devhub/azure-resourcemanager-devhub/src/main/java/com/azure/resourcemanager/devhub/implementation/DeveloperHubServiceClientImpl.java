@@ -168,7 +168,7 @@ public final class DeveloperHubServiceClientImpl implements DeveloperHubServiceC
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-04-01-preview";
+        this.apiVersion = "2022-10-11-preview";
         this.operations = new OperationsClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.workflows = new WorkflowsClientImpl(this);

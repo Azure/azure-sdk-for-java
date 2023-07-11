@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-import com.azure.resourcemanager.appcontainers.fluent.models.DaprComponentInner;
 import com.azure.resourcemanager.appcontainers.models.DaprMetadata;
 import com.azure.resourcemanager.appcontainers.models.Secret;
 import java.util.Arrays;
@@ -13,7 +11,7 @@ import java.util.Arrays;
 /** Samples for ConnectedEnvironmentsDaprComponents CreateOrUpdate. */
 public final class ConnectedEnvironmentsDaprComponentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ConnectedEnvironmentsDaprComponents_CreateOrUpdate.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ConnectedEnvironmentsDaprComponents_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update dapr component.
@@ -24,24 +22,21 @@ public final class ConnectedEnvironmentsDaprComponentsCreateOrUpdateSamples {
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         manager
             .connectedEnvironmentsDaprComponents()
-            .createOrUpdateWithResponse(
-                "examplerg",
-                "myenvironment",
-                "reddog",
-                new DaprComponentInner()
-                    .withComponentType("state.azure.cosmosdb")
-                    .withVersion("v1")
-                    .withIgnoreErrors(false)
-                    .withInitTimeout("50s")
-                    .withSecrets(Arrays.asList(new Secret().withName("masterkey").withValue("keyvalue")))
-                    .withMetadata(
-                        Arrays
-                            .asList(
-                                new DaprMetadata().withName("url").withValue("<COSMOS-URL>"),
-                                new DaprMetadata().withName("database").withValue("itemsDB"),
-                                new DaprMetadata().withName("collection").withValue("items"),
-                                new DaprMetadata().withName("masterkey").withSecretRef("masterkey")))
-                    .withScopes(Arrays.asList("container-app-1", "container-app-2")),
-                Context.NONE);
+            .define("reddog")
+            .withExistingConnectedEnvironment("examplerg", "myenvironment")
+            .withComponentType("state.azure.cosmosdb")
+            .withVersion("v1")
+            .withIgnoreErrors(false)
+            .withInitTimeout("50s")
+            .withSecrets(Arrays.asList(new Secret().withName("masterkey").withValue("keyvalue")))
+            .withMetadata(
+                Arrays
+                    .asList(
+                        new DaprMetadata().withName("url").withValue("<COSMOS-URL>"),
+                        new DaprMetadata().withName("database").withValue("itemsDB"),
+                        new DaprMetadata().withName("collection").withValue("items"),
+                        new DaprMetadata().withName("masterkey").withSecretRef("fakeTokenPlaceholder")))
+            .withScopes(Arrays.asList("container-app-1", "container-app-2"))
+            .create();
     }
 }

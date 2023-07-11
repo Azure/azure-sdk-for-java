@@ -50,7 +50,7 @@ public final class BillingMetersClientImpl implements BillingMetersClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerAppsApiClie")
-    private interface BillingMetersService {
+    public interface BillingMetersService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.App/locations/{location}/billingMeters")
         @ExpectedResponses({200})

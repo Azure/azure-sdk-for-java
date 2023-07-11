@@ -18,7 +18,7 @@ public final class DevCenterProperties {
     private ProvisioningState provisioningState;
 
     /*
-     * The URI of the resource.
+     * The URI of the Dev Center.
      */
     @JsonProperty(value = "devCenterUri", access = JsonProperty.Access.WRITE_ONLY)
     private String devCenterUri;
@@ -37,7 +37,7 @@ public final class DevCenterProperties {
     }
 
     /**
-     * Get the devCenterUri property: The URI of the resource.
+     * Get the devCenterUri property: The URI of the Dev Center.
      *
      * @return the devCenterUri value.
      */

@@ -6,20 +6,19 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.SkuListResult;
-import org.junit.jupiter.api.Test;
 
 public final class SkuListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SkuListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"resourceType\":\"flrwd\",\"locations\":[\"lxyjr\",\"sag\"],\"capabilities\":[],\"name\":\"nihgwqapnedg\",\"tier\":\"Premium\",\"size\":\"kcvqvpke\",\"family\":\"cvdrhvoodsot\",\"capacity\":1862615744},{\"resourceType\":\"dopcjwvnh\",\"locations\":[\"wmgxcxrsl\"],\"capabilities\":[],\"name\":\"twuoegrpkhjwni\",\"tier\":\"Standard\",\"size\":\"uicpd\",\"family\":\"kzzlvmbmpaxmodf\",\"capacity\":843823748},{\"resourceType\":\"yw\",\"locations\":[\"fvmwy\",\"rfouyftaakcpw\",\"yzvqt\"],\"capabilities\":[],\"name\":\"bexkpzksmondj\",\"tier\":\"Premium\",\"size\":\"vypomgkopkwho\",\"family\":\"pajqgxysm\",\"capacity\":1907336189}],\"nextLink\":\"qfqvmkc\"}")
+                    "{\"value\":[{\"resourceType\":\"zvqtmnubexkp\",\"locations\":[\"mond\",\"mquxvypo\"],\"capabilities\":[],\"name\":\"opkwhojv\",\"tier\":\"Free\",\"size\":\"gxysmocmbqfqvm\",\"family\":\"xozap\",\"capacity\":1382848835},{\"resourceType\":\"xprglyatddc\",\"locations\":[\"cuejrjxgci\",\"ibrhosxsdqr\",\"zoymibmrqyibahw\"],\"capabilities\":[],\"name\":\"szdtmhrkwof\",\"tier\":\"Standard\",\"size\":\"qacpiex\",\"family\":\"tg\",\"capacity\":670183300},{\"resourceType\":\"oenwashr\",\"locations\":[\"kcnqxwbpo\",\"ulpiuj\"],\"capabilities\":[],\"name\":\"sipqii\",\"tier\":\"Free\",\"size\":\"qerpqlpqwcc\",\"family\":\"qgbdbuta\",\"capacity\":1020158274}],\"nextLink\":\"tkuwhhmhykojo\"}")
                 .toObject(SkuListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuListResult model = new SkuListResult();
         model = BinaryData.fromObject(model).toObject(SkuListResult.class);
     }

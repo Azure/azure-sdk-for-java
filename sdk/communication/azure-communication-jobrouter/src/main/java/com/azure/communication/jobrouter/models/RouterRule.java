@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  *
  * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input. DirectMapRule:
  * A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline expression rules.
- * AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function.
+ * AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule: A rule providing a
+ * binding to a webserver following OAuth2.0 authentication protocol.
  */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -26,9 +27,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "direct-map-rule", value = DirectMapRule.class),
     @JsonSubTypes.Type(name = "expression-rule", value = ExpressionRule.class),
     @JsonSubTypes.Type(name = "azure-function-rule", value = FunctionRule.class),
-    @JsonSubTypes.Type(name = "static-rule", value = StaticRule.class)
+    @JsonSubTypes.Type(name = "static-rule", value = StaticRule.class),
+    @JsonSubTypes.Type(name = "webhook-rule", value = WebhookRule.class)
 })
 @Immutable
-public abstract class RouterRule {
-
-}
+public abstract class RouterRule {}

@@ -41,6 +41,10 @@ public final class PartnerConfigurationInner extends ProxyResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of PartnerConfigurationInner class. */
+    public PartnerConfigurationInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the partner configuration.
      *

@@ -10,7 +10,7 @@ import java.util.UUID;
 
 /** User assigned identity properties. */
 @Immutable
-public class UserAssignedIdentity {
+public final class UserAssignedIdentity {
     /*
      * The principal ID of the assigned identity.
      */

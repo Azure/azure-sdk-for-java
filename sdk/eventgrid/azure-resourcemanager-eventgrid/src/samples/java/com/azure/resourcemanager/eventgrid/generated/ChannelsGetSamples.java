@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Channels Get. */
 public final class ChannelsGetSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/Channels_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Channels_Get.json
      */
     /**
      * Sample code: Channels_Get.
@@ -19,6 +17,7 @@ public final class ChannelsGetSamples {
     public static void channelsGet(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
         manager
             .channels()
-            .getWithResponse("examplerg", "examplePartnerNamespaceName1", "exampleChannelName1", Context.NONE);
+            .getWithResponse(
+                "examplerg", "examplePartnerNamespaceName1", "exampleChannelName1", com.azure.core.util.Context.NONE);
     }
 }

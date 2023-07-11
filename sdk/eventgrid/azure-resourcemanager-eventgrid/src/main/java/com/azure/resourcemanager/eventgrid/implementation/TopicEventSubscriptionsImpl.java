@@ -32,17 +32,6 @@ public final class TopicEventSubscriptionsImpl implements TopicEventSubscription
         this.serviceManager = serviceManager;
     }
 
-    public DeliveryAttributeListResult getDeliveryAttributes(
-        String resourceGroupName, String topicName, String eventSubscriptionName) {
-        DeliveryAttributeListResultInner inner =
-            this.serviceClient().getDeliveryAttributes(resourceGroupName, topicName, eventSubscriptionName);
-        if (inner != null) {
-            return new DeliveryAttributeListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(
         String resourceGroupName, String topicName, String eventSubscriptionName, Context context) {
         Response<DeliveryAttributeListResultInner> inner =
@@ -60,10 +49,12 @@ public final class TopicEventSubscriptionsImpl implements TopicEventSubscription
         }
     }
 
-    public EventSubscription get(String resourceGroupName, String topicName, String eventSubscriptionName) {
-        EventSubscriptionInner inner = this.serviceClient().get(resourceGroupName, topicName, eventSubscriptionName);
+    public DeliveryAttributeListResult getDeliveryAttributes(
+        String resourceGroupName, String topicName, String eventSubscriptionName) {
+        DeliveryAttributeListResultInner inner =
+            this.serviceClient().getDeliveryAttributes(resourceGroupName, topicName, eventSubscriptionName);
         if (inner != null) {
-            return new EventSubscriptionImpl(inner, this.manager());
+            return new DeliveryAttributeListResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -84,23 +75,21 @@ public final class TopicEventSubscriptionsImpl implements TopicEventSubscription
         }
     }
 
+    public EventSubscription get(String resourceGroupName, String topicName, String eventSubscriptionName) {
+        EventSubscriptionInner inner = this.serviceClient().get(resourceGroupName, topicName, eventSubscriptionName);
+        if (inner != null) {
+            return new EventSubscriptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String topicName, String eventSubscriptionName) {
         this.serviceClient().delete(resourceGroupName, topicName, eventSubscriptionName);
     }
 
     public void delete(String resourceGroupName, String topicName, String eventSubscriptionName, Context context) {
         this.serviceClient().delete(resourceGroupName, topicName, eventSubscriptionName, context);
-    }
-
-    public EventSubscriptionFullUrl getFullUrl(
-        String resourceGroupName, String topicName, String eventSubscriptionName) {
-        EventSubscriptionFullUrlInner inner =
-            this.serviceClient().getFullUrl(resourceGroupName, topicName, eventSubscriptionName);
-        if (inner != null) {
-            return new EventSubscriptionFullUrlImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<EventSubscriptionFullUrl> getFullUrlWithResponse(
@@ -113,6 +102,17 @@ public final class TopicEventSubscriptionsImpl implements TopicEventSubscription
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new EventSubscriptionFullUrlImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public EventSubscriptionFullUrl getFullUrl(
+        String resourceGroupName, String topicName, String eventSubscriptionName) {
+        EventSubscriptionFullUrlInner inner =
+            this.serviceClient().getFullUrl(resourceGroupName, topicName, eventSubscriptionName);
+        if (inner != null) {
+            return new EventSubscriptionFullUrlImpl(inner, this.manager());
         } else {
             return null;
         }

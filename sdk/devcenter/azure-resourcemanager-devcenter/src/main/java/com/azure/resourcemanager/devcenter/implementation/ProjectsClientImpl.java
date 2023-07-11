@@ -93,8 +93,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects"
-                + "/{projectName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProjectInner>> getByResourceGroup(
@@ -108,8 +107,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects"
-                + "/{projectName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -124,8 +122,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects"
-                + "/{projectName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -140,8 +137,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects"
-                + "/{projectName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -842,7 +838,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProjectInner>, ProjectInner> beginCreateOrUpdate(
         String resourceGroupName, String projectName, ProjectInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, projectName, body).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, projectName, body).getSyncPoller();
     }
 
     /**
@@ -860,7 +856,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProjectInner>, ProjectInner> beginCreateOrUpdate(
         String resourceGroupName, String projectName, ProjectInner body, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, projectName, body, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, projectName, body, context).getSyncPoller();
     }
 
     /**
@@ -1101,7 +1097,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProjectInner>, ProjectInner> beginUpdate(
         String resourceGroupName, String projectName, ProjectUpdate body) {
-        return beginUpdateAsync(resourceGroupName, projectName, body).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, projectName, body).getSyncPoller();
     }
 
     /**
@@ -1119,7 +1115,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProjectInner>, ProjectInner> beginUpdate(
         String resourceGroupName, String projectName, ProjectUpdate body, Context context) {
-        return beginUpdateAsync(resourceGroupName, projectName, body, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, projectName, body, context).getSyncPoller();
     }
 
     /**
@@ -1338,7 +1334,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String projectName) {
-        return beginDeleteAsync(resourceGroupName, projectName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, projectName).getSyncPoller();
     }
 
     /**
@@ -1355,7 +1351,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String projectName, Context context) {
-        return beginDeleteAsync(resourceGroupName, projectName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, projectName, context).getSyncPoller();
     }
 
     /**

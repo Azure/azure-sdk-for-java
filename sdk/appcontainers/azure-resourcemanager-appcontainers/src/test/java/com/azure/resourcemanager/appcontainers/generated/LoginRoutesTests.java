@@ -7,19 +7,18 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.LoginRoutes;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class LoginRoutesTests {
-    @Test
-    public void testDeserialize() {
-        LoginRoutes model = BinaryData.fromString("{\"logoutEndpoint\":\"ynpwlbj\"}").toObject(LoginRoutes.class);
-        Assertions.assertEquals("ynpwlbj", model.logoutEndpoint());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        LoginRoutes model = BinaryData.fromString("{\"logoutEndpoint\":\"j\"}").toObject(LoginRoutes.class);
+        Assertions.assertEquals("j", model.logoutEndpoint());
     }
 
-    @Test
-    public void testSerialize() {
-        LoginRoutes model = new LoginRoutes().withLogoutEndpoint("ynpwlbj");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        LoginRoutes model = new LoginRoutes().withLogoutEndpoint("j");
         model = BinaryData.fromObject(model).toObject(LoginRoutes.class);
-        Assertions.assertEquals("ynpwlbj", model.logoutEndpoint());
+        Assertions.assertEquals("j", model.logoutEndpoint());
     }
 }

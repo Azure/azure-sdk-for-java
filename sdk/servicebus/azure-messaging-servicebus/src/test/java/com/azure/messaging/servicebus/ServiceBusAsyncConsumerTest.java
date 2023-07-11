@@ -33,6 +33,7 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 import java.util.function.Function;
 
+import static com.azure.messaging.servicebus.ReceiverOptions.createNamedSessionOptions;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -117,8 +118,8 @@ class ServiceBusAsyncConsumerTest {
         final int prefetch = 10;
         final Duration maxAutoLockRenewDuration = Duration.ofSeconds(0);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, prefetch,
-            maxAutoLockRenewDuration, false, "sessionId", null);
+        final ReceiverOptions receiverOptions = createNamedSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, prefetch,
+            maxAutoLockRenewDuration, false, "sessionId");
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
             receiverOptions);
@@ -164,8 +165,8 @@ class ServiceBusAsyncConsumerTest {
         final Duration maxAutoLockRenewDuration = Duration.ofSeconds(40);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
         final String lockToken = UUID.randomUUID().toString();
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, prefetch,
-            maxAutoLockRenewDuration, false, "sessionId", null);
+        final ReceiverOptions receiverOptions = createNamedSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, prefetch,
+            maxAutoLockRenewDuration, false, "sessionId");
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
             receiverOptions);
@@ -204,8 +205,8 @@ class ServiceBusAsyncConsumerTest {
         final Duration maxAutoLockRenewDuration = Duration.ofSeconds(40);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
         final String lockToken = UUID.randomUUID().toString();
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, prefetch,
-            maxAutoLockRenewDuration, false, "sessionId", null);
+        final ReceiverOptions receiverOptions = createNamedSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, prefetch,
+            maxAutoLockRenewDuration, false, "sessionId");
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
             receiverOptions);

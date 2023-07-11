@@ -11,19 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of SystemTopics. */
 public interface SystemTopics {
     /**
-     * Get properties of a system topic.
+     * Get a system topic.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param systemTopicName Name of the system topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a system topic.
-     */
-    SystemTopic getByResourceGroup(String resourceGroupName, String systemTopicName);
-
-    /**
-     * Get properties of a system topic.
+     * <p>Get properties of a system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -37,7 +27,23 @@ public interface SystemTopics {
         String resourceGroupName, String systemTopicName, Context context);
 
     /**
-     * Delete existing system topic.
+     * Get a system topic.
+     *
+     * <p>Get properties of a system topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param systemTopicName Name of the system topic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a system topic.
+     */
+    SystemTopic getByResourceGroup(String resourceGroupName, String systemTopicName);
+
+    /**
+     * Delete a system topic.
+     *
+     * <p>Delete existing system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -48,7 +54,9 @@ public interface SystemTopics {
     void deleteByResourceGroup(String resourceGroupName, String systemTopicName);
 
     /**
-     * Delete existing system topic.
+     * Delete a system topic.
+     *
+     * <p>Delete existing system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -60,7 +68,9 @@ public interface SystemTopics {
     void delete(String resourceGroupName, String systemTopicName, Context context);
 
     /**
-     * List all the system topics under an Azure subscription.
+     * List system topics under an Azure subscription.
+     *
+     * <p>List all the system topics under an Azure subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -69,7 +79,9 @@ public interface SystemTopics {
     PagedIterable<SystemTopic> list();
 
     /**
-     * List all the system topics under an Azure subscription.
+     * List system topics under an Azure subscription.
+     *
+     * <p>List all the system topics under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -88,7 +100,9 @@ public interface SystemTopics {
     PagedIterable<SystemTopic> list(String filter, Integer top, Context context);
 
     /**
-     * List all the system topics under a resource group.
+     * List system topics under a resource group.
+     *
+     * <p>List all the system topics under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -99,7 +113,9 @@ public interface SystemTopics {
     PagedIterable<SystemTopic> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List all the system topics under a resource group.
+     * List system topics under a resource group.
+     *
+     * <p>List all the system topics under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -120,7 +136,9 @@ public interface SystemTopics {
         String resourceGroupName, String filter, Integer top, Context context);
 
     /**
-     * Get properties of a system topic.
+     * Get a system topic.
+     *
+     * <p>Get properties of a system topic.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -131,7 +149,9 @@ public interface SystemTopics {
     SystemTopic getById(String id);
 
     /**
-     * Get properties of a system topic.
+     * Get a system topic.
+     *
+     * <p>Get properties of a system topic.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -143,7 +163,9 @@ public interface SystemTopics {
     Response<SystemTopic> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete existing system topic.
+     * Delete a system topic.
+     *
+     * <p>Delete existing system topic.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,7 +175,9 @@ public interface SystemTopics {
     void deleteById(String id);
 
     /**
-     * Delete existing system topic.
+     * Delete a system topic.
+     *
+     * <p>Delete existing system topic.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

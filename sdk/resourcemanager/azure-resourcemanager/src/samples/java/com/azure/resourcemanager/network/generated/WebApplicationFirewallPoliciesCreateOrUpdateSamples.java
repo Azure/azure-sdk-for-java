@@ -6,9 +6,13 @@ package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.fluent.models.WebApplicationFirewallPolicyInner;
 import com.azure.resourcemanager.network.models.ActionType;
+import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallRateLimitDuration;
+import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallUserSessionVariable;
 import com.azure.resourcemanager.network.models.ExclusionManagedRule;
 import com.azure.resourcemanager.network.models.ExclusionManagedRuleGroup;
 import com.azure.resourcemanager.network.models.ExclusionManagedRuleSet;
+import com.azure.resourcemanager.network.models.GroupByUserSession;
+import com.azure.resourcemanager.network.models.GroupByVariable;
 import com.azure.resourcemanager.network.models.ManagedRuleEnabledState;
 import com.azure.resourcemanager.network.models.ManagedRuleGroupOverride;
 import com.azure.resourcemanager.network.models.ManagedRuleOverride;
@@ -19,17 +23,24 @@ import com.azure.resourcemanager.network.models.MatchVariable;
 import com.azure.resourcemanager.network.models.OwaspCrsExclusionEntry;
 import com.azure.resourcemanager.network.models.OwaspCrsExclusionEntryMatchVariable;
 import com.azure.resourcemanager.network.models.OwaspCrsExclusionEntrySelectorMatchOperator;
+import com.azure.resourcemanager.network.models.PolicySettings;
+import com.azure.resourcemanager.network.models.PolicySettingsLogScrubbing;
+import com.azure.resourcemanager.network.models.ScrubbingRuleEntryMatchOperator;
+import com.azure.resourcemanager.network.models.ScrubbingRuleEntryMatchVariable;
+import com.azure.resourcemanager.network.models.ScrubbingRuleEntryState;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallAction;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallCustomRule;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallMatchVariable;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallOperator;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallRuleType;
+import com.azure.resourcemanager.network.models.WebApplicationFirewallScrubbingRules;
+import com.azure.resourcemanager.network.models.WebApplicationFirewallScrubbingState;
 import java.util.Arrays;
 
 /** Samples for WebApplicationFirewallPolicies CreateOrUpdate. */
 public final class WebApplicationFirewallPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/WafPolicyCreateOrUpdate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/WafPolicyCreateOrUpdate.json
      */
     /**
      * Sample code: Creates or updates a WAF policy within a resource group.
@@ -48,6 +59,27 @@ public final class WebApplicationFirewallPoliciesCreateOrUpdateSamples {
                 "Policy1",
                 new WebApplicationFirewallPolicyInner()
                     .withLocation("WestUs")
+                    .withPolicySettings(
+                        new PolicySettings()
+                            .withLogScrubbing(
+                                new PolicySettingsLogScrubbing()
+                                    .withState(WebApplicationFirewallScrubbingState.ENABLED)
+                                    .withScrubbingRules(
+                                        Arrays
+                                            .asList(
+                                                new WebApplicationFirewallScrubbingRules()
+                                                    .withMatchVariable(
+                                                        ScrubbingRuleEntryMatchVariable.REQUEST_ARG_NAMES)
+                                                    .withSelectorMatchOperator(ScrubbingRuleEntryMatchOperator.EQUALS)
+                                                    .withSelector("test")
+                                                    .withState(ScrubbingRuleEntryState.ENABLED),
+                                                new WebApplicationFirewallScrubbingRules()
+                                                    .withMatchVariable(
+                                                        ScrubbingRuleEntryMatchVariable.REQUEST_IPADDRESS)
+                                                    .withSelectorMatchOperator(
+                                                        ScrubbingRuleEntryMatchOperator.EQUALS_ANY)
+                                                    .withSelector("*")
+                                                    .withState(ScrubbingRuleEntryState.ENABLED)))))
                     .withCustomRules(
                         Arrays
                             .asList(
@@ -97,6 +129,38 @@ public final class WebApplicationFirewallPoliciesCreateOrUpdateSamples {
                                                                     .withSelector("UserAgent")))
                                                     .withOperator(WebApplicationFirewallOperator.CONTAINS)
                                                     .withMatchValues(Arrays.asList("Windows"))))
+                                    .withAction(WebApplicationFirewallAction.BLOCK),
+                                new WebApplicationFirewallCustomRule()
+                                    .withName("RateLimitRule3")
+                                    .withPriority(3)
+                                    .withRateLimitDuration(ApplicationGatewayFirewallRateLimitDuration.ONE_MIN)
+                                    .withRateLimitThreshold(10)
+                                    .withRuleType(WebApplicationFirewallRuleType.RATE_LIMIT_RULE)
+                                    .withMatchConditions(
+                                        Arrays
+                                            .asList(
+                                                new MatchCondition()
+                                                    .withMatchVariables(
+                                                        Arrays
+                                                            .asList(
+                                                                new MatchVariable()
+                                                                    .withVariableName(
+                                                                        WebApplicationFirewallMatchVariable
+                                                                            .REMOTE_ADDR)))
+                                                    .withOperator(WebApplicationFirewallOperator.IPMATCH)
+                                                    .withNegationConditon(true)
+                                                    .withMatchValues(Arrays.asList("192.168.1.0/24", "10.0.0.0/24"))))
+                                    .withGroupByUserSession(
+                                        Arrays
+                                            .asList(
+                                                new GroupByUserSession()
+                                                    .withGroupByVariables(
+                                                        Arrays
+                                                            .asList(
+                                                                new GroupByVariable()
+                                                                    .withVariableName(
+                                                                        ApplicationGatewayFirewallUserSessionVariable
+                                                                            .CLIENT_ADDR)))))
                                     .withAction(WebApplicationFirewallAction.BLOCK)))
                     .withManagedRules(
                         new ManagedRulesDefinition()

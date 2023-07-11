@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.servicenetworking.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TrafficControllerInterface Delete. */
 public final class TrafficControllerInterfaceDeleteSamples {
     /*
@@ -18,6 +16,6 @@ public final class TrafficControllerInterfaceDeleteSamples {
      */
     public static void deleteTrafficController(
         com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.trafficControllerInterfaces().delete("rg1", "TC1", Context.NONE);
+        manager.trafficControllerInterfaces().delete("rg1", "tc1", com.azure.core.util.Context.NONE);
     }
 }

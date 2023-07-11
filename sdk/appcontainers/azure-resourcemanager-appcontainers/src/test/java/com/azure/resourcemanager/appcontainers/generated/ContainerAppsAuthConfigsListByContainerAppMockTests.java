@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.AuthConfig;
 import com.azure.resourcemanager.appcontainers.models.UnauthenticatedClientActionV2;
@@ -34,7 +33,7 @@ public final class ContainerAppsAuthConfigsListByContainerAppMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"platform\":{\"enabled\":false,\"runtimeVersion\":\"vz\"},\"globalValidation\":{\"unauthenticatedClientAction\":\"RedirectToLoginPage\",\"redirectToProvider\":\"fbzdixzmqpnoda\",\"excludedPaths\":[]},\"identityProviders\":{\"customOpenIdConnectProviders\":{}},\"login\":{\"preserveUrlFragmentsForLogins\":false,\"allowedExternalRedirectUrls\":[]},\"httpSettings\":{\"requireHttps\":false}},\"id\":\"atutmzlbiojlvfhr\",\"name\":\"bpneqvcwwyyurm\",\"type\":\"chpp\"}]}";
+            "{\"value\":[{\"properties\":{\"platform\":{\"enabled\":false,\"runtimeVersion\":\"xhcmavmqfoudo\"},\"globalValidation\":{\"unauthenticatedClientAction\":\"Return401\",\"redirectToProvider\":\"yprotwyp\",\"excludedPaths\":[]},\"identityProviders\":{\"customOpenIdConnectProviders\":{}},\"login\":{\"preserveUrlFragmentsForLogins\":false,\"allowedExternalRedirectUrls\":[]},\"httpSettings\":{\"requireHttps\":false}},\"id\":\"mdtzfjltfvnzc\",\"name\":\"jtotpvopvpbd\",\"type\":\"zq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,15 +62,15 @@ public final class ContainerAppsAuthConfigsListByContainerAppMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AuthConfig> response =
-            manager.containerAppsAuthConfigs().listByContainerApp("fezrx", "czurtlei", Context.NONE);
+            manager.containerAppsAuthConfigs().listByContainerApp("bnn", "stgnl", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(false, response.iterator().next().platform().enabled());
-        Assertions.assertEquals("vz", response.iterator().next().platform().runtimeVersion());
+        Assertions.assertEquals("xhcmavmqfoudo", response.iterator().next().platform().runtimeVersion());
         Assertions
             .assertEquals(
-                UnauthenticatedClientActionV2.REDIRECT_TO_LOGIN_PAGE,
+                UnauthenticatedClientActionV2.RETURN401,
                 response.iterator().next().globalValidation().unauthenticatedClientAction());
-        Assertions.assertEquals("fbzdixzmqpnoda", response.iterator().next().globalValidation().redirectToProvider());
+        Assertions.assertEquals("yprotwyp", response.iterator().next().globalValidation().redirectToProvider());
         Assertions.assertEquals(false, response.iterator().next().login().preserveUrlFragmentsForLogins());
         Assertions.assertEquals(false, response.iterator().next().httpSettings().requireHttps());
     }

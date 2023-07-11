@@ -6,6 +6,7 @@ package com.azure.core.tracing.opentelemetry;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.TracingLink;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.Span;
@@ -19,6 +20,7 @@ import io.opentelemetry.api.trace.TraceId;
 import io.opentelemetry.api.trace.TraceState;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.testing.exporter.InMemorySpanExporter;
 import io.opentelemetry.sdk.trace.IdGenerator;
 import io.opentelemetry.sdk.trace.ReadableSpan;
@@ -93,6 +95,8 @@ public class OpenTelemetryTracerTest {
     private Context tracingContext;
     private Span parentSpan;
     private SdkTracerProvider tracerProvider;
+    private OpenTelemetry openTelemetry;
+
     private final HashMap<String, Object> expectedAttributeMap = new HashMap<String, Object>() {
         {
             put("messaging.destination.name", ENTITY_PATH_VALUE);
@@ -109,6 +113,8 @@ public class OpenTelemetryTracerTest {
                 .addSpanProcessor(spanProcessor)
                 .build();
 
+        openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
+
         tracer = tracerProvider.get("test");
         // Start user parent span.
         parentSpan = tracer.spanBuilder(METHOD_NAME)
@@ -118,7 +124,7 @@ public class OpenTelemetryTracerTest {
         // Add parent span to tracingContext
         tracingContext = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan));
         openTelemetryTracer = new OpenTelemetryTracer("test", null, AZ_NAMESPACE_VALUE,
-            new OpenTelemetryTracingOptions().setProvider(tracerProvider));
+            new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry));
     }
 
     @AfterEach
@@ -218,7 +224,7 @@ public class OpenTelemetryTracerTest {
     public void fallbackToAzNamespaceFromContext() {
         // Arrange
         OpenTelemetryTracer noAzTracer = new OpenTelemetryTracer("test", null, null,
-            new OpenTelemetryTracingOptions().setProvider(tracerProvider));
+            new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry));
 
         // Act
         final Context span = noAzTracer.start(METHOD_NAME, new Context("az.namespace", "foo"));
@@ -1006,7 +1012,7 @@ public class OpenTelemetryTracerTest {
         }
     }
 
-    private static Stream<Arguments> spanKinds() {
+    public static Stream<Arguments> spanKinds() {
         return Stream.of(
             Arguments.of(com.azure.core.util.tracing.SpanKind.INTERNAL, com.azure.core.util.tracing.SpanKind.INTERNAL, true),
             Arguments.of(com.azure.core.util.tracing.SpanKind.CLIENT, com.azure.core.util.tracing.SpanKind.CLIENT, false),

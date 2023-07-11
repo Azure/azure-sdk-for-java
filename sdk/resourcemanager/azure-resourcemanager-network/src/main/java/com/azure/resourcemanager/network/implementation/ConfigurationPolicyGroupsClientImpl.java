@@ -68,9 +68,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
     public interface ConfigurationPolicyGroupsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/vpnServerConfigurations/{vpnServerConfigurationName}/configurationPolicyGroups"
-                + "/{configurationPolicyGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnServerConfigurations/{vpnServerConfigurationName}/configurationPolicyGroups/{configurationPolicyGroupName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -87,9 +85,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/vpnServerConfigurations/{vpnServerConfigurationName}/configurationPolicyGroups"
-                + "/{configurationPolicyGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnServerConfigurations/{vpnServerConfigurationName}/configurationPolicyGroups/{configurationPolicyGroupName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -104,9 +100,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/vpnServerConfigurations/{vpnServerConfigurationName}/configurationPolicyGroups"
-                + "/{configurationPolicyGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnServerConfigurations/{vpnServerConfigurationName}/configurationPolicyGroups/{configurationPolicyGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VpnServerConfigurationPolicyGroupInner>> get(
@@ -121,8 +115,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/vpnServerConfigurations/{vpnServerConfigurationName}/configurationPolicyGroups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnServerConfigurations/{vpnServerConfigurationName}/configurationPolicyGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVpnServerConfigurationPolicyGroupsResult>> listByVpnServerConfiguration(
@@ -201,7 +194,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
         } else {
             vpnServerConfigurationPolicyGroupParameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -278,7 +271,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
         } else {
             vpnServerConfigurationPolicyGroupParameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -589,7 +582,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
                     new IllegalArgumentException(
                         "Parameter configurationPolicyGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -653,7 +646,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
                     new IllegalArgumentException(
                         "Parameter configurationPolicyGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -880,7 +873,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
                     new IllegalArgumentException(
                         "Parameter configurationPolicyGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -945,7 +938,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
                     new IllegalArgumentException(
                         "Parameter configurationPolicyGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1056,7 +1049,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1119,7 +1112,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -13,7 +13,7 @@ public final class DataBoxHeavyAccountCopyLogDetailsTests {
         DataBoxHeavyAccountCopyLogDetails model =
             BinaryData
                 .fromString(
-                    "{\"copyLogDetailsType\":\"DataBoxHeavy\",\"accountName\":\"wncwzzhxgktrmg\",\"copyLogLink\":[\"apkteoellwptfdyg\",\"fqbuaceopzf\",\"rhhuaopppcqeqx\"],\"copyVerboseLogLink\":[\"dahzxctobg\"]}")
+                    "{\"copyLogDetailsType\":\"DataBoxHeavy\",\"accountName\":\"tohqkvpuvksgp\",\"copyLogLink\":[\"kn\",\"n\",\"synljphuopxodl\",\"iyntorzihle\"],\"copyVerboseLogLink\":[\"swsrms\",\"yzrpzbchckqqzq\",\"ox\"]}")
                 .toObject(DataBoxHeavyAccountCopyLogDetails.class);
     }
 

@@ -36,7 +36,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext = new DocumentServiceRequestContext();
 
         Mono<ShouldRetryResult> shouldRetry =
                 renameCollectionAwareClientRetryPolicy.shouldRetry(exception);
@@ -61,7 +61,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
                 , retryPolicyFactory.getRequestPolicy());
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        request.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        request.requestContext = new DocumentServiceRequestContext();
         renameCollectionAwareClientRetryPolicy.onBeforeSendRequest(request);
 
         NotFoundException notFoundException = new NotFoundException();
@@ -87,7 +87,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
                 , retryPolicyFactory.getRequestPolicy());
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        request.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        request.requestContext = new DocumentServiceRequestContext();
         request.requestContext.resolvedCollectionRid = "rid_0";
         renameCollectionAwareClientRetryPolicy.onBeforeSendRequest(request);
 
@@ -124,7 +124,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
                 , retryPolicyFactory.getRequestPolicy());
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        request.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        request.requestContext = new DocumentServiceRequestContext();
         renameCollectionAwareClientRetryPolicy.onBeforeSendRequest(request);
 
         Mono<ShouldRetryResult> singleShouldRetry = renameCollectionAwareClientRetryPolicy

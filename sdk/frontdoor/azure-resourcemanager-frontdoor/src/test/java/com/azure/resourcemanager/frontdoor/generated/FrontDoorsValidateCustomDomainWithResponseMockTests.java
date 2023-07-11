@@ -30,7 +30,7 @@ public final class FrontDoorsValidateCustomDomainWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"customDomainValidated\":false,\"reason\":\"msjnygqdnfw\",\"message\":\"dzgtil\"}";
+        String responseStr = "{\"customDomainValidated\":true,\"reason\":\"agohbuff\",\"message\":\"rqemvvhmxt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class FrontDoorsValidateCustomDomainWithResponseMockTests {
             manager
                 .frontDoors()
                 .validateCustomDomainWithResponse(
-                    "yihsasbhudypohyu",
-                    "ms",
-                    new ValidateCustomDomainInput().withHostname("ynsqyrpfoobr"),
+                    "qgzsles",
+                    "cbhernntiewdj",
+                    new ValidateCustomDomainInput().withHostname("vbquwr"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
     }

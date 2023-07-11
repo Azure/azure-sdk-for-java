@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.AbstractMap.SimpleEntry;
 
-import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -37,7 +36,7 @@ public class MockHttpClient extends NoOpHttpClient {
             responses.remove(entry);
             HttpResponse response = CallAutomationUnitTestBase.generateMockResponse(entry.getKey(), request, entry.getValue());
             if (entry.getKey().startsWith(THROW_TEST_EXCEPTION)) {
-                return Mono.error(ErrorConstructorProxy.create(new HttpResponseException("Mock error", response)));
+                return Mono.error(new HttpResponseException("Mock error", response));
             }
 
             return Mono.just(CallAutomationUnitTestBase.generateMockResponse(entry.getKey(), request, entry.getValue()));

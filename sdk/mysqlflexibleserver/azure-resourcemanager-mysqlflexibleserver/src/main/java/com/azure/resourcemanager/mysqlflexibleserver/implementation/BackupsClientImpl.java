@@ -58,8 +58,7 @@ public final class BackupsClientImpl implements BackupsClient {
     public interface BackupsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL"
-                + "/flexibleServers/{serverName}/backups/{backupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/backups/{backupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerBackupInner>> put(
@@ -74,8 +73,7 @@ public final class BackupsClientImpl implements BackupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL"
-                + "/flexibleServers/{serverName}/backups/{backupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/backups/{backupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerBackupInner>> get(
@@ -90,8 +88,7 @@ public final class BackupsClientImpl implements BackupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL"
-                + "/flexibleServers/{serverName}/backups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/backups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerBackupListResult>> listByServer(
@@ -150,6 +147,7 @@ public final class BackupsClientImpl implements BackupsClient {
         if (backupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
         }
+        final String apiVersion = "2022-09-30-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -157,7 +155,7 @@ public final class BackupsClientImpl implements BackupsClient {
                     service
                         .put(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             serverName,
@@ -204,12 +202,13 @@ public final class BackupsClientImpl implements BackupsClient {
         if (backupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
         }
+        final String apiVersion = "2022-09-30-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .put(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 serverName,
@@ -305,6 +304,7 @@ public final class BackupsClientImpl implements BackupsClient {
         if (backupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
         }
+        final String apiVersion = "2022-09-30-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -312,7 +312,7 @@ public final class BackupsClientImpl implements BackupsClient {
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             serverName,
@@ -359,12 +359,13 @@ public final class BackupsClientImpl implements BackupsClient {
         if (backupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
         }
+        final String apiVersion = "2022-09-30-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 serverName,
@@ -456,6 +457,7 @@ public final class BackupsClientImpl implements BackupsClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
+        final String apiVersion = "2022-09-30-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -463,7 +465,7 @@ public final class BackupsClientImpl implements BackupsClient {
                     service
                         .listByServer(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             serverName,
@@ -514,12 +516,13 @@ public final class BackupsClientImpl implements BackupsClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
+        final String apiVersion = "2022-09-30-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByServer(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 serverName,

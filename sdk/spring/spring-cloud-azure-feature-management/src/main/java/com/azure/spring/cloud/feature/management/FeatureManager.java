@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,9 +51,9 @@ public class FeatureManager {
     }
 
     /**
-     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter
-     * returns true it returns true. If no filter returns true, it returns false. If there are no
-     * filters, it returns true. If feature isn't found it returns false.
+     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter returns true it
+     * returns true. If no filter returns true, it returns false. If there are no filters, it returns true. If feature
+     * isn't found it returns false.
      *
      * @param feature Feature being checked.
      * @return state of the feature
@@ -63,9 +64,9 @@ public class FeatureManager {
     }
 
     /**
-     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter
-     * returns true it returns true. If no filter returns true, it returns false. If there are no
-     * filters, it returns true. If feature isn't found it returns false.
+     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter returns true it
+     * returns true. If no filter returns true, it returns false. If there are no filters, it returns true. If feature
+     * isn't found it returns false.
      *
      * @param feature Feature being checked.
      * @return state of the feature
@@ -93,9 +94,16 @@ public class FeatureManager {
             return false;
         }
 
-        return featureItem.getEnabledFor().values().stream().filter(Objects::nonNull)
-            .filter(featureFilter -> featureFilter.getName() != null)
-            .anyMatch(featureFilter -> isFeatureOn(featureFilter, feature));
+        Stream<FeatureFilterEvaluationContext> filters = featureItem.getEnabledFor().values().stream()
+            .filter(Objects::nonNull).filter(featureFilter -> featureFilter.getName() != null);
+
+        // All Filters must be true
+        if (featureItem.getRequirementType().equals("All")) {
+            return filters.allMatch(featureFilter -> isFeatureOn(featureFilter, feature));
+        }
+
+        // Any Filter must be true
+        return filters.anyMatch(featureFilter -> isFeatureOn(featureFilter, feature));
     }
 
     private boolean isFeatureOn(FeatureFilterEvaluationContext filter, String feature) {

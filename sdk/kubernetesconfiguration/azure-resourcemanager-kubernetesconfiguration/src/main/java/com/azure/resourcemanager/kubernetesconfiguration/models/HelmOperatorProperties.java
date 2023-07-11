@@ -22,6 +22,10 @@ public final class HelmOperatorProperties {
     @JsonProperty(value = "chartValues")
     private String chartValues;
 
+    /** Creates an instance of HelmOperatorProperties class. */
+    public HelmOperatorProperties() {
+    }
+
     /**
      * Get the chartVersion property: Version of the operator Helm chart.
      *

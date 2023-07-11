@@ -56,8 +56,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
     public interface ResolvePrivateLinkServiceIdsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/resolvePrivateLinkServiceId")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/resolvePrivateLinkServiceId")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourceInner>> post(
@@ -110,7 +109,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -168,7 +167,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -1,14 +1,46 @@
 # Release History
 
-## 2.26.0-beta.1 (Unreleased)
+## 2.29.0-beta.1 (Unreleased)
 
 ### Features Added
+
+- Supported `withContainerSize` for `FunctionApp`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.28.0 (2023-06-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.27.0 (2023-05-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.26.1 (2023-04-25)
+
+### Breaking Changes
+
+- Changed to use AAD Auth for Kudu deployment.
+
+## 2.26.0 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.25.0 (2023-03-24)
 

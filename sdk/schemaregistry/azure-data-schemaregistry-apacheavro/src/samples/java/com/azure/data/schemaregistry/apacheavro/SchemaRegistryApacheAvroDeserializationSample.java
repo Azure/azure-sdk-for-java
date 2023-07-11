@@ -5,16 +5,13 @@ package com.azure.data.schemaregistry.apacheavro;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.models.MessageContent;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
 import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard;
 import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCardSuit;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-
-import java.io.IOException;
-import java.io.UncheckedIOException;
+import com.azure.messaging.eventhubs.EventData;
 
 /**
  * Sample application to demonstrate deserializing data into a strongly-typed object using Schema Registry-based Avro
@@ -35,33 +32,43 @@ public class SchemaRegistryApacheAvroDeserializationSample {
             .fullyQualifiedNamespace("{schema-registry-endpoint}")
             .buildAsyncClient();
 
-        // Create the encoder instance by configuring it with the schema registry client and
-        // enabling auto registering of new schemas
-        SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializerBuilder()
+        // Create the serializer instance by configuring it with the schema registry client
+        SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaRegistryClient(schemaRegistryAsyncClient)
             .schemaGroup("{schema-group}")
             .avroSpecificReader(true)
-            .autoRegisterSchemas(true)
             .buildSerializer();
 
-        // Get serialized avro data to deserialize into strongly-typed object.
-        MessageContent inputStream = getMessageToDeserialize();
-        PlayingCard deserializedObject = encoder.deserialize(inputStream,
+        // Get an EventData to deserialize.  EventData extends from MessageContent, so the serializer knows where
+        // to set the body and content-type which points to the schema in Schema Registry.
+        EventData eventData = getEventDataToDeserialize(serializer);
+
+        PlayingCard deserializedObject = serializer.deserialize(eventData,
+            TypeReference.createInstance(PlayingCard.class));
+
+        // If customers are not using Event Hubs, they can also serialize their data using a class that extends from
+        // MessageContent.
+        MessageContent message = getMessageToDeserialize(serializer);
+
+        PlayingCard deserializedMessage = serializer.deserialize(message,
             TypeReference.createInstance(PlayingCard.class));
     }
 
-    private static MessageContent getMessageToDeserialize() {
+    private static MessageContent getMessageToDeserialize(SchemaRegistryApacheAvroSerializer serializer) {
         PlayingCard playingCard = new PlayingCard();
         playingCard.setCardValue(5);
         playingCard.setIsFaceCard(false);
         playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
 
-        try {
-            return new MessageContent()
-                .setBodyAsBinaryData(BinaryData.fromBytes(playingCard.toByteBuffer().array()))
-                .setContentType("avro/binary+schema_id");
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        return serializer.serialize(playingCard, TypeReference.createInstance(MessageContent.class));
+    }
+
+    private static EventData getEventDataToDeserialize(SchemaRegistryApacheAvroSerializer serializer) {
+        PlayingCard playingCard = new PlayingCard();
+        playingCard.setCardValue(5);
+        playingCard.setIsFaceCard(false);
+        playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
+
+        return serializer.serialize(playingCard, TypeReference.createInstance(EventData.class));
     }
 }

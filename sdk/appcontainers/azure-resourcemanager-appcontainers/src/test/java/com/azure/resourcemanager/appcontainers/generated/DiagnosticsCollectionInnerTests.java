@@ -9,20 +9,19 @@ import com.azure.resourcemanager.appcontainers.fluent.models.DiagnosticsCollecti
 import com.azure.resourcemanager.appcontainers.fluent.models.DiagnosticsInner;
 import com.azure.resourcemanager.appcontainers.models.DiagnosticsProperties;
 import java.util.Arrays;
-import org.junit.jupiter.api.Test;
 
 public final class DiagnosticsCollectionInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DiagnosticsCollectionInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"dataset\":[]},\"id\":\"ojgcyzt\",\"name\":\"fmznba\",\"type\":\"qphchqnrnrpxehuw\"}],\"nextLink\":\"k\"}")
+                    "{\"value\":[{\"properties\":{\"dataset\":[]},\"id\":\"bylyrfgia\",\"name\":\"tcojocqwo\",\"type\":\"fnzjvusfzldm\"}],\"nextLink\":\"uxylfsbtkadpy\"}")
                 .toObject(DiagnosticsCollectionInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DiagnosticsCollectionInner model =
             new DiagnosticsCollectionInner()
                 .withValue(

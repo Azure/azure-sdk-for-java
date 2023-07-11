@@ -12,8 +12,7 @@ public final class VaultPropertiesRedundancySettingsTests {
     public void testDeserialize() throws Exception {
         VaultPropertiesRedundancySettings model =
             BinaryData
-                .fromString(
-                    "{\"standardTierStorageRedundancy\":\"LocallyRedundant\",\"crossRegionRestore\":\"Disabled\"}")
+                .fromString("{\"standardTierStorageRedundancy\":\"ZoneRedundant\",\"crossRegionRestore\":\"Disabled\"}")
                 .toObject(VaultPropertiesRedundancySettings.class);
     }
 

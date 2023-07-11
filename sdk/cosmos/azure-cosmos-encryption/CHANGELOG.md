@@ -1,6 +1,27 @@
 ## Release History
 
-### 2.0.0-beta.1 (Unreleased)
+### 2.3.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 2.2.0 (2023-06-09)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.46.0`.
+
+### 2.1.0 (2023-05-12)
+#### Bugs Fixed
+* Fixed an issue where empty array causes `NoSuchElementException` in `EncryptionProcessor` - See [PR 34847](https://github.com/Azure/azure-sdk-for-java/pull/34847)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.45.0`.
+
+### 2.0.0 (2023-04-25)
 
 #### Features Added
 * Added support for allowing partition key path and id to be part of client encryption policy - See [PR 33648](https://github.com/Azure/azure-sdk-for-java/pull/33648)
@@ -141,5 +162,5 @@
 
 ### 1.0.0-beta.1 (2021-04-06)
 #### New Features
-* Added Azure Cosmos encryption used for encrypting data with user provided key before saving into CosmosDB and decrypting it when reading back from the database.
+* Added Azure Cosmos encryption used for encrypting data with user provided key before saving into Cosmos DB and decrypting it when reading back from the database.
 

@@ -6,7 +6,7 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.core.util.ExpandableStringEnum;
 
 /** Defines values for ReasonCode. */
-public class ReasonCode extends ExpandableStringEnum<ReasonCode> {
+public final class ReasonCode extends ExpandableStringEnum<ReasonCode> {
     /** Reason code names for the Recognize operation */
     public static class Recognize extends ExpandableStringEnum<ReasonCode> {
         /** Action failed, initial silence timeout reached. */

@@ -19,11 +19,11 @@ public final class NameAvailabilitiesImpl implements NameAvailabilities {
 
     private final NameAvailabilitiesClient innerClient;
 
-    private final com.azure.resourcemanager.voiceservices.VoiceservicesManager serviceManager;
+    private final com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager;
 
     public NameAvailabilitiesImpl(
         NameAvailabilitiesClient innerClient,
-        com.azure.resourcemanager.voiceservices.VoiceservicesManager serviceManager) {
+        com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -56,7 +56,7 @@ public final class NameAvailabilitiesImpl implements NameAvailabilities {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.voiceservices.VoiceservicesManager manager() {
+    private com.azure.resourcemanager.voiceservices.VoiceServicesManager manager() {
         return this.serviceManager;
     }
 }

@@ -6,20 +6,19 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.ImageVersionListResult;
-import org.junit.jupiter.api.Test;
 
 public final class ImageVersionListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ImageVersionListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"name\":\"v\",\"publishedDate\":\"2021-10-15T07:07:10Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":1894973970,\"provisioningState\":\"Created\"},\"id\":\"otwmcyn\",\"name\":\"wlbjnpgacftade\",\"type\":\"xnltyfsoppu\"},{\"properties\":{\"name\":\"snzwd\",\"publishedDate\":\"2021-03-20T11:41:09Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":1996811861,\"provisioningState\":\"Failed\"},\"id\":\"mohctb\",\"name\":\"vudwx\",\"type\":\"ndnvo\"}],\"nextLink\":\"ujjugwdkcglh\"}")
+                    "{\"value\":[{\"properties\":{\"name\":\"xdpnqbqq\",\"publishedDate\":\"2021-06-06T00:18:07Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":1993000932,\"provisioningState\":\"Deleted\"},\"id\":\"sub\",\"name\":\"snjampmng\",\"type\":\"zscxaqwo\"},{\"properties\":{\"name\":\"cbonqvpk\",\"publishedDate\":\"2021-04-29T10:14:13Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":396203358,\"provisioningState\":\"Updating\"},\"id\":\"ipheoflokeyyien\",\"name\":\"bdlwtgrhpdjpj\",\"type\":\"masxazjpqyegu\"}],\"nextLink\":\"hb\"}")
                 .toObject(ImageVersionListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ImageVersionListResult model = new ImageVersionListResult();
         model = BinaryData.fromObject(model).toObject(ImageVersionListResult.class);
     }

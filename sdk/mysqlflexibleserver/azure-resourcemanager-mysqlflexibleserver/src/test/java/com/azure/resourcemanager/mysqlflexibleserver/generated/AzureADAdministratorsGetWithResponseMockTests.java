@@ -33,7 +33,7 @@ public final class AzureADAdministratorsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"rvxaglrvimjwosy\",\"sid\":\"itc\",\"tenantId\":\"fcktqumiekke\",\"identityResourceId\":\"ikh\"},\"id\":\"fjhdg\",\"name\":\"gge\",\"type\":\"dunyg\"}";
+            "{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"esap\",\"sid\":\"rdqmhjjdhtldwkyz\",\"tenantId\":\"utknc\",\"identityResourceId\":\"cwsvlxotog\"},\"id\":\"rupqsxvnmicy\",\"name\":\"vce\",\"type\":\"vei\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,16 +65,13 @@ public final class AzureADAdministratorsGetWithResponseMockTests {
             manager
                 .azureADAdministrators()
                 .getWithResponse(
-                    "lsfeaenwabfatkld",
-                    "xbjhwuaanozjosph",
-                    AdministratorName.ACTIVE_DIRECTORY,
-                    com.azure.core.util.Context.NONE)
+                    "ped", "ojnabckhsmtxpsie", AdministratorName.ACTIVE_DIRECTORY, com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, response.administratorType());
-        Assertions.assertEquals("rvxaglrvimjwosy", response.login());
-        Assertions.assertEquals("itc", response.sid());
-        Assertions.assertEquals("fcktqumiekke", response.tenantId());
-        Assertions.assertEquals("ikh", response.identityResourceId());
+        Assertions.assertEquals("esap", response.login());
+        Assertions.assertEquals("rdqmhjjdhtldwkyz", response.sid());
+        Assertions.assertEquals("utknc", response.tenantId());
+        Assertions.assertEquals("cwsvlxotog", response.identityResourceId());
     }
 }

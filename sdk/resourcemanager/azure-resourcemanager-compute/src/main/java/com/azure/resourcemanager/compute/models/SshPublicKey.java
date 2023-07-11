@@ -21,7 +21,7 @@ public final class SshPublicKey {
 
     /*
      * SSH public key certificate used to authenticate with the VM through ssh. The key needs to be at least 2048-bit
-     * and in ssh-rsa format. <br><br> For creating ssh keys, see [Create SSH keys on Linux and Mac for Linux VMs in
+     * and in ssh-rsa format. For creating ssh keys, see [Create SSH keys on Linux and Mac for Linux VMs in
      * Azure]https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
      */
     @JsonProperty(value = "keyData")
@@ -55,9 +55,8 @@ public final class SshPublicKey {
 
     /**
      * Get the keyData property: SSH public key certificate used to authenticate with the VM through ssh. The key needs
-     * to be at least 2048-bit and in ssh-rsa format. &lt;br&gt;&lt;br&gt; For creating ssh keys, see [Create SSH keys
-     * on Linux and Mac for Linux VMs in
-     * Azure]https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
+     * to be at least 2048-bit and in ssh-rsa format. For creating ssh keys, see [Create SSH keys on Linux and Mac for
+     * Linux VMs in Azure]https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
      *
      * @return the keyData value.
      */
@@ -67,9 +66,8 @@ public final class SshPublicKey {
 
     /**
      * Set the keyData property: SSH public key certificate used to authenticate with the VM through ssh. The key needs
-     * to be at least 2048-bit and in ssh-rsa format. &lt;br&gt;&lt;br&gt; For creating ssh keys, see [Create SSH keys
-     * on Linux and Mac for Linux VMs in
-     * Azure]https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
+     * to be at least 2048-bit and in ssh-rsa format. For creating ssh keys, see [Create SSH keys on Linux and Mac for
+     * Linux VMs in Azure]https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
      *
      * @param keyData the keyData value to set.
      * @return the SshPublicKey object itself.

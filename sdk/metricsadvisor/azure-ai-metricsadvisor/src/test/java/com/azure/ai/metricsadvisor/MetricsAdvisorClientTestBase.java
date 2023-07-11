@@ -58,29 +58,35 @@ public abstract class MetricsAdvisorClientTestBase extends TestProxyTestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
 
-        interceptorManager.addSanitizers(getEmailSanitizers());
         if (useKeyCredential) {
-            if (interceptorManager.isPlaybackMode()) {
-                builder.credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"));
-                // setting bodiless matcher to "exclude" matching request bodies with UUID's
-                interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(), new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-api-key"))));
-            } else if (interceptorManager.isRecordMode()) {
+            if (!interceptorManager.isPlaybackMode()) {
+                if (interceptorManager.isRecordMode()) {
+                    builder.addPolicy(interceptorManager.getRecordPolicy());
+                }
                 builder
                     .credential(new MetricsAdvisorKeyCredential(
                         Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_SUBSCRIPTION_KEY"),
-                        Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_API_KEY")))
-                    .addPolicy(interceptorManager.getRecordPolicy());
+                        Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_API_KEY")));
+
+            } else {
+                builder.credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"));
+                // setting bodiless matcher to "exclude" matching request bodies with UUID's
+                interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(), new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-api-key"))));
             }
         } else {
-            if (interceptorManager.isPlaybackMode()) {
-                builder.credential(new MockTokenCredential());
-                // setting bodiless matcher to "exclude" matching request bodies with UUID's
-                interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
-            } else if (interceptorManager.isRecordMode()) {
+            if (!interceptorManager.isPlaybackMode()) {
+                if (interceptorManager.isRecordMode()) {
+                    builder.addPolicy(interceptorManager.getRecordPolicy());
+                }
                 builder
-                    .credential(new DefaultAzureCredentialBuilder().build())
-                    .addPolicy(interceptorManager.getRecordPolicy());
+                    .credential(new DefaultAzureCredentialBuilder().build());
+            } else {
+                builder.credential(new MockTokenCredential());
+                interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
             }
+        }
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(getEmailSanitizers());
         }
         return builder;
     }

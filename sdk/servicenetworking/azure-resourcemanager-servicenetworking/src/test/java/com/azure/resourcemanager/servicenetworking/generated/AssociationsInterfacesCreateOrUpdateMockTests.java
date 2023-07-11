@@ -35,7 +35,7 @@ public final class AssociationsInterfacesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"nmmqhgyxzkon\"},\"provisioningState\":\"Succeeded\"},\"location\":\"oklyaxuconuq\",\"tags\":{\"rmjmwvvjektc\":\"kbeype\",\"frzpwvlqdqgb\":\"senhwlrs\"},\"id\":\"qylihkaetckt\",\"name\":\"fcivfsnkym\",\"type\":\"ctq\"}";
+            "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"ibnuqqkpik\"},\"provisioningState\":\"Succeeded\"},\"location\":\"vtq\",\"tags\":{\"bfs\":\"buynhijggm\"},\"id\":\"arbu\",\"name\":\"rcvpnazzmhjrunmp\",\"type\":\"ttdbhrbnl\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,18 +66,18 @@ public final class AssociationsInterfacesCreateOrUpdateMockTests {
         Association response =
             manager
                 .associationsInterfaces()
-                .define("jttgzf")
-                .withRegion("pbuxwgipwhon")
-                .withExistingTrafficController("ydnfyhxdeoejz", "cwif")
-                .withTags(mapOf("injep", "gshwankixz", "iyqzrnk", "ttmrywnuzoqf"))
+                .define("jrbirphxepcyv")
+                .withRegion("ok")
+                .withExistingTrafficController("ebrjcxe", "fuwutttxf")
+                .withTags(mapOf("gsncghkjeszz", "jyoxgvclt", "mxnehmp", "bijhtxfvgxbf", "godebfqkkrbmpu", "ec"))
                 .withAssociationType(AssociationType.SUBNETS)
-                .withSubnet(new AssociationSubnet().withId("cbkhajdeyeamdph"))
+                .withSubnet(new AssociationSubnet().withId("ljkyqxjvuuj"))
                 .create();
 
-        Assertions.assertEquals("oklyaxuconuq", response.location());
-        Assertions.assertEquals("kbeype", response.tags().get("rmjmwvvjektc"));
+        Assertions.assertEquals("vtq", response.location());
+        Assertions.assertEquals("buynhijggm", response.tags().get("bfs"));
         Assertions.assertEquals(AssociationType.SUBNETS, response.associationType());
-        Assertions.assertEquals("nmmqhgyxzkon", response.subnet().id());
+        Assertions.assertEquals("ibnuqqkpik", response.subnet().id());
     }
 
     @SuppressWarnings("unchecked")

@@ -19,6 +19,7 @@ import com.azure.core.http.okhttp.implementation.OkHttpProgressReportingRequestB
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
+import com.azure.core.implementation.util.ByteBufferContent;
 import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.implementation.util.SerializableContent;
@@ -170,7 +171,8 @@ class OkHttpAsyncHttpClient implements HttpClient {
 
         if (content instanceof ByteArrayContent
             || content instanceof StringContent
-            || content instanceof SerializableContent) {
+            || content instanceof SerializableContent
+            || content instanceof ByteBufferContent) {
             return RequestBody.create(content.toBytes(), mediaType);
         } else {
             long effectiveContentLength = getRequestContentLength(content, headers);

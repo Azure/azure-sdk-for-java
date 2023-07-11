@@ -12,4 +12,5 @@ import reactor.core.publisher.Flux;
 public interface FeedRangeGoneHandler {
     Flux<Lease> handlePartitionGone();
     boolean shouldDeleteCurrentLease();
+    boolean shouldSkipDirectLeaseAssignment();
 }

@@ -24,13 +24,13 @@ public class HandleReauthentication {
 
         // Fetch an Azure AD token to be used for authentication. This token will be used as the password.
         // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
-        TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+        TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
         AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 
         // Create Redisson Client
         // Host Name, Port, Username and Azure AD Token are required here.
         // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
-        RedissonClient redisson = createRedissonClient("redis://<HOST_NAME>:6380", "<USERNAME>", accessToken);
+        RedissonClient redisson = createRedissonClient("rediss://<HOST_NAME>:6380", "<USERNAME>", accessToken);
 
         int maxTries = 3;
         int i = 0;
@@ -53,7 +53,7 @@ public class HandleReauthentication {
 
                 if (redisson.isShutdown()) {
                     // Recreate the client with a fresh token non-expired token as password for authentication.
-                    redisson = createRedissonClient("redis://<HOST_NAME>:6380", "<USERNAME>", getAccessToken(defaultAzureCredential, trc));
+                    redisson = createRedissonClient("rediss://<HOST_NAME>:6380", "<USERNAME>", getAccessToken(defaultAzureCredential, trc));
                 }
             } catch (Exception e) {
                 // Handle Exception as required

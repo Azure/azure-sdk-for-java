@@ -378,7 +378,7 @@ public final class ContainerRegistryContentClientBuilder implements
             return httpPipeline;
         }
 
-        return UtilsImpl.buildHttpPipeline(
+        return UtilsImpl.buildClientPipeline(
             this.clientOptions,
             this.httpLogOptions,
             this.configuration,

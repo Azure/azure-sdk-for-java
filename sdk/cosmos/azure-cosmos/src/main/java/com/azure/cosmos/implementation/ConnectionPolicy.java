@@ -47,6 +47,9 @@ public final class ConnectionPolicy {
     private int ioThreadCountPerCoreFactor;
     private int ioThreadPriority;
     private boolean tcpHealthCheckTimeoutDetectionEnabled;
+    private int minConnectionPoolSizePerEndpoint;
+    private int openConnectionsConcurrency;
+    private int aggressiveWarmupConcurrency;
 
     /**
      * Constructor.
@@ -93,6 +96,11 @@ public final class ConnectionPolicy {
                 .DirectConnectionConfigHelper
                 .getDirectConnectionConfigAccessor()
                 .isHealthCheckTimeoutDetectionEnabled(directConnectionConfig);
+        this.minConnectionPoolSizePerEndpoint =
+                ImplementationBridgeHelpers
+                        .DirectConnectionConfigHelper
+                        .getDirectConnectionConfigAccessor()
+                        .getMinConnectionPoolSizePerEndpoint(directConnectionConfig);
     }
 
     private ConnectionPolicy() {
@@ -104,6 +112,9 @@ public final class ConnectionPolicy {
         this.userAgentSuffix = "";
         this.ioThreadPriority = Thread.NORM_PRIORITY;
         this.tcpHealthCheckTimeoutDetectionEnabled = true;
+        this.minConnectionPoolSizePerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
+        this.openConnectionsConcurrency = Configs.getOpenConnectionsConcurrency();
+        this.aggressiveWarmupConcurrency = Configs.getAggressiveWarmupConcurrency();
     }
 
     /**
@@ -574,6 +585,10 @@ public final class ConnectionPolicy {
         return this;
     }
 
+    public int getMinConnectionPoolSizePerEndpoint() {
+        return minConnectionPoolSizePerEndpoint;
+    }
+
     @Override
     public String toString() {
         return "ConnectionPolicy{" +
@@ -599,6 +614,9 @@ public final class ConnectionPolicy {
             ", ioThreadPriority=" + ioThreadPriority +
             ", ioThreadCountPerCoreFactor=" + ioThreadCountPerCoreFactor +
             ", tcpHealthCheckTimeoutDetectionEnabled=" + tcpHealthCheckTimeoutDetectionEnabled +
+            ", minConnectionPoolSizePerEndpoint=" + minConnectionPoolSizePerEndpoint +
+            ", openConnectionsConcurrency=" + openConnectionsConcurrency +
+            ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
             '}';
     }
 }

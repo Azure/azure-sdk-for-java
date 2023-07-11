@@ -6,6 +6,7 @@ package com.azure.security.keyvault.administration;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
@@ -38,9 +39,9 @@ import static com.azure.core.util.FluxUtil.monoError;
 @ServiceClient(builder = KeyVaultSettingsClientBuilder.class, isAsync = true, serviceInterfaces =
     KeyVaultSettingsClientImpl.KeyVaultSettingsClientService.class)
 public final class KeyVaultSettingsAsyncClient {
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultSettingsAsyncClient.class);
     private final String vaultUrl;
     private final KeyVaultSettingsClientImpl implClient;
-    private final ClientLogger logger = new ClientLogger(KeyVaultSettingsAsyncClient.class);
 
     /**
      * Creates a {@link KeyVaultSettingsAsyncClient} that uses a {@link KeyVaultSettingsClientImpl} to service requests.
@@ -51,6 +52,15 @@ public final class KeyVaultSettingsAsyncClient {
     KeyVaultSettingsAsyncClient(String vaultUrl, KeyVaultSettingsClientImpl implClient) {
         this.vaultUrl = vaultUrl;
         this.implClient = implClient;
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return this.implClient.getHttpPipeline();
     }
 
     /**
@@ -91,13 +101,13 @@ public final class KeyVaultSettingsAsyncClient {
             }
 
             return implClient.updateSettingAsync(vaultUrl, setting.getName(), settingValue)
-                .doOnRequest(ignored -> logger.verbose("Updating account setting - {}", setting.getName()))
-                .doOnSuccess(response -> logger.verbose("Updated account setting - {}", setting.getName()))
-                .doOnError(error -> logger.warning("Failed updating account setting - {}", setting.getName(), error))
+                .doOnRequest(ignored -> LOGGER.verbose("Updating account setting - {}", setting.getName()))
+                .doOnSuccess(response -> LOGGER.verbose("Updated account setting - {}", setting.getName()))
+                .doOnError(error -> LOGGER.warning("Failed updating account setting - {}", setting.getName(), error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(KeyVaultSettingsAsyncClient::transformToKeyVaultSetting);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -140,13 +150,13 @@ public final class KeyVaultSettingsAsyncClient {
             }
 
             return implClient.updateSettingWithResponseAsync(vaultUrl, setting.getName(), settingValue)
-                .doOnRequest(ignored -> logger.verbose("Updating account setting - {}", setting.getName()))
-                .doOnSuccess(response -> logger.verbose("Updated account setting - {}", setting.getName()))
-                .doOnError(error -> logger.warning("Failed updating account setting - {}", setting.getName(), error))
+                .doOnRequest(ignored -> LOGGER.verbose("Updating account setting - {}", setting.getName()))
+                .doOnSuccess(response -> LOGGER.verbose("Updated account setting - {}", setting.getName()))
+                .doOnError(error -> LOGGER.warning("Failed updating account setting - {}", setting.getName(), error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(response -> new SimpleResponse<>(response, transformToKeyVaultSetting(response.getValue())));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -175,13 +185,13 @@ public final class KeyVaultSettingsAsyncClient {
     public Mono<KeyVaultSetting> getSetting(String name) {
         try {
             return implClient.getSettingAsync(vaultUrl, name)
-                .doOnRequest(ignored -> logger.verbose("Retrieving account setting - {}", name))
-                .doOnSuccess(response -> logger.verbose("Retrieved account setting - {}", name))
-                .doOnError(error -> logger.warning("Failed retrieving account setting - {}", name, error))
+                .doOnRequest(ignored -> LOGGER.verbose("Retrieving account setting - {}", name))
+                .doOnSuccess(response -> LOGGER.verbose("Retrieved account setting - {}", name))
+                .doOnError(error -> LOGGER.warning("Failed retrieving account setting - {}", name, error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(KeyVaultSettingsAsyncClient::transformToKeyVaultSetting);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -212,13 +222,13 @@ public final class KeyVaultSettingsAsyncClient {
     public Mono<Response<KeyVaultSetting>> getSettingWithResponse(String name) {
         try {
             return implClient.getSettingWithResponseAsync(vaultUrl, name)
-                .doOnRequest(ignored -> logger.verbose("Retrieving account setting - {}", name))
-                .doOnSuccess(response -> logger.verbose("Retrieved account setting - {}", name))
-                .doOnError(error -> logger.warning("Failed retrieving account setting - {}", name, error))
+                .doOnRequest(ignored -> LOGGER.verbose("Retrieving account setting - {}", name))
+                .doOnSuccess(response -> LOGGER.verbose("Retrieved account setting - {}", name))
+                .doOnError(error -> LOGGER.warning("Failed retrieving account setting - {}", name, error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(response -> new SimpleResponse<>(response, transformToKeyVaultSetting(response.getValue())));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -247,9 +257,9 @@ public final class KeyVaultSettingsAsyncClient {
     public Mono<KeyVaultGetSettingsResult> getSettings() {
         try {
             return implClient.getSettingsAsync(vaultUrl)
-                .doOnRequest(ignored -> logger.verbose("Listing account settings"))
-                .doOnSuccess(response -> logger.verbose("Listed account settings successfully"))
-                .doOnError(error -> logger.warning("Failed retrieving account settings", error))
+                .doOnRequest(ignored -> LOGGER.verbose("Listing account settings"))
+                .doOnSuccess(response -> LOGGER.verbose("Listed account settings successfully"))
+                .doOnError(error -> LOGGER.warning("Failed retrieving account settings", error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(settingsListResult -> {
                     List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
@@ -260,7 +270,7 @@ public final class KeyVaultSettingsAsyncClient {
                     return new KeyVaultGetSettingsResult(keyVaultSettings);
                 });
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -296,9 +306,9 @@ public final class KeyVaultSettingsAsyncClient {
     public Mono<Response<KeyVaultGetSettingsResult>> getSettingsWithResponse() {
         try {
             return implClient.getSettingsWithResponseAsync(vaultUrl)
-                .doOnRequest(ignored -> logger.verbose("Listing account settings"))
-                .doOnSuccess(response -> logger.verbose("Listed account settings successfully"))
-                .doOnError(error -> logger.warning("Failed retrieving account settings", error))
+                .doOnRequest(ignored -> LOGGER.verbose("Listing account settings"))
+                .doOnSuccess(response -> LOGGER.verbose("Listed account settings successfully"))
+                .doOnError(error -> LOGGER.warning("Failed retrieving account settings", error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(response -> {
                     List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
@@ -309,7 +319,7 @@ public final class KeyVaultSettingsAsyncClient {
                     return new SimpleResponse<>(response, new KeyVaultGetSettingsResult(keyVaultSettings));
                 });
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 

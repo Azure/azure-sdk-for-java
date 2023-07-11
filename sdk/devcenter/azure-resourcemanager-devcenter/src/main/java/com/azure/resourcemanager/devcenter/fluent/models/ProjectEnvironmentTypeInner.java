@@ -7,7 +7,7 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
+import com.azure.resourcemanager.devcenter.models.EnvironmentTypeEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
@@ -171,7 +171,7 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
      *
      * @return the status value.
      */
-    public EnableStatus status() {
+    public EnvironmentTypeEnableStatus status() {
         return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
@@ -181,7 +181,7 @@ public final class ProjectEnvironmentTypeInner extends ProxyResource {
      * @param status the status value to set.
      * @return the ProjectEnvironmentTypeInner object itself.
      */
-    public ProjectEnvironmentTypeInner withStatus(EnableStatus status) {
+    public ProjectEnvironmentTypeInner withStatus(EnvironmentTypeEnableStatus status) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ProjectEnvironmentTypeProperties();
         }

@@ -3,10 +3,13 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanContext;
@@ -23,7 +26,7 @@ import io.opentelemetry.sdk.trace.data.LinkData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.junit.jupiter.api.parallel.Isolated;
+import reactor.core.Disposable;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
@@ -49,11 +52,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@Isolated
 @Execution(ExecutionMode.SAME_THREAD)
 public class TracingIntegrationTests extends IntegrationTestBase {
+    private ClientOptions clientOptions;
     private TestSpanProcessor spanProcessor;
-    private List<AutoCloseable> toClose = new ArrayList<>();
     private ServiceBusSenderAsyncClient sender;
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusReceiverClient receiverSync;
@@ -65,35 +67,37 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        GlobalOpenTelemetry.resetForTest();
         spanProcessor = new TestSpanProcessor(getFullyQualifiedDomainName(), getQueueName(0));
-        OpenTelemetrySdk.builder()
-            .setTracerProvider(
-                SdkTracerProvider.builder()
-                    .addSpanProcessor(spanProcessor)
-                    .build())
-            .buildAndRegisterGlobal();
+        OpenTelemetryTracingOptions tracingOptions = new OpenTelemetryTracingOptions()
+            .setOpenTelemetry(OpenTelemetrySdk.builder()
+                .setTracerProvider(
+                    SdkTracerProvider.builder()
+                        .addSpanProcessor(spanProcessor)
+                        .build())
+                .build());
+        clientOptions = new ClientOptions().setTracingOptions(tracingOptions);
 
-        sender = new ServiceBusClientBuilder()
+        sender = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
+            .clientOptions(clientOptions)
             .sender()
             .queueName(getQueueName(0))
-            .buildAsyncClient();
+            .buildAsyncClient());
 
-        receiver = new ServiceBusClientBuilder()
+        receiver = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
+            .clientOptions(clientOptions)
+            .receiver()
+            .maxAutoLockRenewDuration(Duration.ZERO)
+            .queueName(getQueueName(0))
+            .buildAsyncClient(false, false));
+
+        receiverSync = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
+            .clientOptions(clientOptions)
             .receiver()
             .queueName(getQueueName(0))
-            .buildAsyncClient(false, false);
-
-        receiverSync = new ServiceBusClientBuilder()
-            .connectionString(getConnectionString())
-            .receiver()
-            .queueName(getQueueName(0))
-            .buildClient();
-        toClose.add(sender);
-        toClose.add(receiver);
-        toClose.add(receiverSync);
+            .buildClient());
 
         StepVerifier.setDefaultTimeout(TIMEOUT);
     }
@@ -102,16 +106,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     protected void afterTest() {
         GlobalOpenTelemetry.resetForTest();
         sharedBuilder = null;
-
-        if (processor != null) {
-            toClose.add(processor);
-        }
-
-        try {
-            dispose(toClose.toArray(new AutoCloseable[0]));
-        } catch (Exception e) {
-            logger.warning("Error disposing resources.", e);
-        }
     }
 
     @Test
@@ -126,7 +120,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         spanProcessor.notifyIfCondition(processedFound, s -> s.getName().equals("ServiceBus.process"));
 
         List<ServiceBusReceivedMessage> received = new ArrayList<>();
-        receiver.receiveMessages()
+        Disposable subscription = receiver.receiveMessages()
             .take(2)
             .doOnNext(msg -> {
                 received.add(msg);
@@ -139,7 +133,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 receiver.complete(msg).block();
             })
             .subscribe();
-
+        toClose(subscription);
         assertTrue(processedFound.await(20, TimeUnit.SECONDS));
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
@@ -164,6 +158,88 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
+    public void receiveAndRenewLockWithDuration() throws InterruptedException {
+        ServiceBusMessage message = new ServiceBusMessage(CONTENTS_BYTES);
+        StepVerifier.create(sender.sendMessage(message)).verifyComplete();
+
+        CountDownLatch processedFound = new CountDownLatch(1);
+        spanProcessor.notifyIfCondition(processedFound, s -> s.getName().equals("ServiceBus.process"));
+
+        StepVerifier.create(receiver.receiveMessages()
+            .next()
+            .flatMap(msg -> receiver.renewMessageLock(msg, Duration.ofSeconds(10))
+                    .thenReturn(msg)))
+            .assertNext(msg -> {
+                List<ReadableSpan> spans = spanProcessor.getEndedSpans();
+
+                List<ReadableSpan> processed = findSpans(spans, "ServiceBus.process");
+                assertConsumerSpan(processed.get(0), msg, "ServiceBus.process");
+
+                List<ReadableSpan> renewLock = findSpans(spans, "ServiceBus.renewMessageLock");
+                assertClientSpan(renewLock.get(0), Collections.singletonList(msg), "ServiceBus.renewMessageLock", null);
+            })
+            .verifyComplete();
+        assertTrue(processedFound.await(20, TimeUnit.SECONDS));
+    }
+
+    @Test
+    public void receiveAndRenewSessionLockWithDuration() throws InterruptedException {
+        String sessionId = "10";
+        ServiceBusMessage message = new ServiceBusMessage(CONTENTS_BYTES)
+            .setSessionId(sessionId);
+
+        OpenTelemetry otel = configureOTel(getFullyQualifiedDomainName(), getSessionQueueName(0));
+        sender = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
+            .clientOptions(new ClientOptions().setTracingOptions(new OpenTelemetryTracingOptions().setOpenTelemetry(otel)))
+            .sender()
+            .queueName(getSessionQueueName(0))
+            .buildAsyncClient());
+
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
+            .clientOptions(new ClientOptions().setTracingOptions(new OpenTelemetryTracingOptions().setOpenTelemetry(otel)))
+            .sessionReceiver()
+            .disableAutoComplete()
+            .queueName(getSessionQueueName(0))
+            .buildAsyncClient());
+
+        StepVerifier.create(sender.sendMessage(message)).verifyComplete();
+
+        CountDownLatch processedFound = new CountDownLatch(1);
+        spanProcessor.notifyIfCondition(processedFound, s -> s.getName().equals("ServiceBus.process"));
+
+        AtomicReference<ServiceBusReceivedMessage> received = new AtomicReference<>();
+        StepVerifier.create(
+            sessionReceiver
+                .acceptSession(sessionId)
+                .flatMapMany(rec -> rec
+                    .renewSessionLock()
+                    .then(rec.receiveMessages().next())))
+            .assertNext(msg -> {
+                received.set(msg);
+                logger.atInfo()
+                    .addKeyValue("lockedUntil", msg.getLockedUntil())
+                    .addKeyValue("sessionId", msg.getSessionId())
+                    .log("message received");
+            })
+            .verifyComplete();
+
+        assertTrue(processedFound.await(20, TimeUnit.SECONDS));
+
+        List<ReadableSpan> spans = spanProcessor.getEndedSpans();
+
+        List<ReadableSpan> processed = findSpans(spans, "ServiceBus.process");
+        assertConsumerSpan(processed.get(0), received.get(), "ServiceBus.process");
+
+        List<ReadableSpan> acceptSession = findSpans(spans, "ServiceBus.acceptSession");
+        assertClientSpan(acceptSession.get(0), Collections.emptyList(), "ServiceBus.acceptSession", null);
+
+        List<ReadableSpan> renewLock = findSpans(spans, "ServiceBus.renewSessionLock");
+        assertClientSpan(renewLock.get(0), Collections.emptyList(), "ServiceBus.renewSessionLock", null);
+    }
+
+    @Test
     public void receiveCheckSubscribe() throws InterruptedException {
         ServiceBusMessage message1 = new ServiceBusMessage(CONTENTS_BYTES);
         ServiceBusMessage message2 = new ServiceBusMessage(CONTENTS_BYTES);
@@ -175,7 +251,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         spanProcessor.notifyIfCondition(processedFound, s -> s.getName().equals("ServiceBus.process"));
 
         List<ServiceBusReceivedMessage> received = new ArrayList<>();
-        receiver.receiveMessages()
+        Disposable subscription = receiver.receiveMessages()
             .take(2)
             .subscribe(msg -> {
                 received.add(msg);
@@ -187,7 +263,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 assertFalse(((ReadableSpan) Span.current()).hasEnded());
                 receiver.complete(msg).block();
             });
-
+        toClose(subscription);
         assertTrue(processedFound.await(20, TimeUnit.SECONDS));
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
@@ -258,13 +334,13 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch processedFound = new CountDownLatch(messageCount);
         spanProcessor.notifyIfCondition(processedFound, span -> span.getName().equals("ServiceBus.process"));
 
-        ServiceBusReceiverAsyncClient receiverAutoComplete = new ServiceBusClientBuilder()
+        ServiceBusReceiverAsyncClient receiverAutoComplete = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
+            .clientOptions(clientOptions)
             .receiver()
             .queueName(getQueueName(0))
-            .buildAsyncClient();
+            .buildAsyncClient());
 
-        toClose.add(receiverAutoComplete);
         StepVerifier.create(
                 receiverAutoComplete.receiveMessages()
                 .take(messageCount)
@@ -297,7 +373,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void sendPeekRenewLockAndDefer() throws InterruptedException {
+    public void sendReceiveRenewLockAndDefer() throws InterruptedException {
         String traceId = IdGenerator.random().generateTraceId();
         String traceparent = "00-" + traceId + "-" + IdGenerator.random().generateSpanId() + "-01";
         ServiceBusMessage message = new ServiceBusMessage(CONTENTS_BYTES);
@@ -308,9 +384,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         CountDownLatch latch = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(latch, s -> s.getName().equals("ServiceBus.process") && s.getSpanContext().getTraceId().equals(traceId));
-        receiver.receiveMessages()
+        toClose(receiver.receiveMessages()
             .skipUntil(m -> traceparent.equals(m.getApplicationProperties().get("traceparent")))
-            .flatMap(m -> receiver.renewMessageLock(m, Duration.ofSeconds(1)).thenReturn(m))
+            .flatMap(m -> receiver.renewMessageLock(m).thenReturn(m))
             .flatMap(m -> receiver.defer(m, new DeferOptions()).thenReturn(m))
             .flatMap(m -> receiver.receiveDeferredMessage(m.getSequenceNumber()).thenReturn(m))
             .subscribe(m -> {
@@ -318,8 +394,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     receivedMessage.compareAndSet(null, m);
                     latch.countDown();
                 }
-            });
-
+            }));
         assertTrue(latch.await(50, TimeUnit.SECONDS));
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
@@ -419,6 +494,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .assertNext(receivedMessage -> {
                 ReadableSpan received = findSpans(spanProcessor.getEndedSpans(), "ServiceBus.peekMessage").get(0);
                 if (receivedMessage.getApplicationProperties().containsKey("traceparent")) {
+                    logger.atInfo()
+                        .addKeyValue("traceparent", receivedMessage.getApplicationProperties().get("traceparent"))
+                        .log("span should have link");
                     assertClientSpan(received, Collections.singletonList(receivedMessage), "ServiceBus.peekMessage", "receive");
                 } else {
                     assertEquals("ServiceBus.peekMessage", received.getName());
@@ -460,8 +538,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         AtomicReference<Span> currentInProcess = new AtomicReference<>();
         AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
-        processor = new ServiceBusClientBuilder()
+        processor = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
+            .clientOptions(clientOptions)
             .processor()
             .queueName(getQueueName(0))
             .processMessage(mc -> {
@@ -470,12 +549,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     receivedMessage.compareAndSet(null, mc.getMessage());
                 }
             })
-            .processError(e -> {
-                fail("unexpected error", e.getException());
-            })
-            .buildProcessorClient();
+            .processError(e -> fail("unexpected error", e.getException()))
+            .buildProcessorClient());
 
-        toClose.add(() -> processor.stop());
+        toClose((AutoCloseable) () -> processor.stop());
         processor.start();
         assertTrue(completedFound.await(20, TimeUnit.SECONDS));
         processor.stop();
@@ -512,18 +589,23 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                             .setMessageId(UUID.randomUUID().toString()));
                     }
                 })
-                .flatMap(batch -> sender.sendMessages(batch)))
+                .flatMap(batch -> {
+                    logMessages(batch.getMessages(), sender.getEntityPath(), "sending");
+                    return sender.sendMessages(batch);
+                }))
             .verifyComplete();
 
         CountDownLatch processedFound = new CountDownLatch(10);
         spanProcessor.notifyIfCondition(processedFound, span -> span.getName().equals("ServiceBus.process"));
 
-        processor = new ServiceBusClientBuilder()
+        processor = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
+            .clientOptions(clientOptions)
             .processor()
             .queueName(getQueueName(0))
             .maxConcurrentCalls(10)
             .processMessage(mc -> {
+                logMessage(mc.getMessage(), processor.getQueueName(), "processing");
                 String traceparent = (String) mc.getMessage().getApplicationProperties().get("traceparent");
                 String traceId = Span.current().getSpanContext().getTraceId();
 
@@ -532,8 +614,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 assertFalse(((ReadableSpan) Span.current()).hasEnded());
             })
             .processError(e -> fail("unexpected error", e.getException()))
-            .buildProcessorClient();
-        toClose.add(() -> processor.stop());
+            .buildProcessorClient());
+        toClose((AutoCloseable) () -> processor.stop());
         processor.start();
         assertTrue(processedFound.await(10, TimeUnit.SECONDS));
         processor.stop();
@@ -563,8 +645,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch completedFound = new CountDownLatch(messageCount);
         spanProcessor.notifyIfCondition(completedFound, span -> span.getName().equals("ServiceBus.complete"));
 
-        processor = new ServiceBusClientBuilder()
+        processor = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
+            .clientOptions(clientOptions)
             .processor()
             .queueName(getQueueName(0))
             .maxConcurrentCalls(messageCount)
@@ -578,8 +661,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 mc.complete();
             })
             .processError(e -> fail("unexpected error", e.getException()))
-            .buildProcessorClient();
-        toClose.add(() -> processor.stop());
+            .buildProcessorClient());
+        toClose((AutoCloseable) () -> processor.stop());
         processor.start();
         assertTrue(completedFound.await(20, TimeUnit.SECONDS));
         processor.stop();
@@ -611,8 +694,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             "ServiceBus.process".equals(span.getName()) && span.getParentSpanContext().getSpanId().equals(message1SpanId));
 
         AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
-        processor = new ServiceBusClientBuilder()
+        processor = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
+            .clientOptions(clientOptions)
             .processor()
             .queueName(getQueueName(0))
             .processMessage(mc -> {
@@ -622,8 +706,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 }
             })
             .processError(e -> { })
-            .buildProcessorClient();
-        toClose.add(() -> processor.stop());
+            .buildProcessorClient());
+        toClose((AutoCloseable) () -> processor.stop());
         processor.start();
         assertTrue(messageProcessed.await(10, TimeUnit.SECONDS));
         processor.stop();
@@ -747,7 +831,17 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .collect(Collectors.toList());
     }
 
+    private OpenTelemetry configureOTel(String namespace, String entityName) {
+        GlobalOpenTelemetry.resetForTest();
+        spanProcessor = new TestSpanProcessor(namespace, entityName);
+        return OpenTelemetrySdk.builder().setTracerProvider(
+            SdkTracerProvider.builder()
+                .addSpanProcessor(spanProcessor)
+                .build()).build();
+    }
+
     static class TestSpanProcessor implements SpanProcessor {
+        private static final ClientLogger LOGGER = new ClientLogger(TestSpanProcessor.class);
         private final ConcurrentLinkedDeque<ReadableSpan> spans = new ConcurrentLinkedDeque<>();
         private final String entityName;
         private final String namespace;
@@ -773,6 +867,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         @Override
         public void onEnd(ReadableSpan readableSpan) {
+            LOGGER.info(readableSpan.toString());
             assertEquals("Microsoft.ServiceBus", readableSpan.getAttribute(AttributeKey.stringKey("az.namespace")));
             assertEquals("servicebus", readableSpan.getAttribute(AttributeKey.stringKey("messaging.system")));
             assertEquals(entityName, readableSpan.getAttribute(AttributeKey.stringKey("messaging.destination.name")));

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Provider. */
+/** Information about the connected appliance. */
 public final class Provider extends ExpandableStringEnum<Provider> {
     /** Static value VMWare for Provider. */
     public static final Provider VMWARE = fromString("VMWare");
@@ -24,6 +24,15 @@ public final class Provider extends ExpandableStringEnum<Provider> {
 
     /** Static value OpenStack for Provider. */
     public static final Provider OPEN_STACK = fromString("OpenStack");
+
+    /**
+     * Creates a new instance of Provider value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Provider() {
+    }
 
     /**
      * Creates or finds a Provider from its string representation.

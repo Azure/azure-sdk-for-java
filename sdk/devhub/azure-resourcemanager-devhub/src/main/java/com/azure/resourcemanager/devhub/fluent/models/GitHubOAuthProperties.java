@@ -16,6 +16,10 @@ public final class GitHubOAuthProperties {
     @JsonProperty(value = "username")
     private String username;
 
+    /** Creates an instance of GitHubOAuthProperties class. */
+    public GitHubOAuthProperties() {
+    }
+
     /**
      * Get the username property: user making request.
      *

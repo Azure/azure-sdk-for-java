@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.dns.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.dns.models.RecordType;
 
 /** Samples for RecordSets Delete. */
@@ -23,7 +22,7 @@ public final class RecordSetsDeleteSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse("rg1", "zone1", "record1", RecordType.A, null, Context.NONE);
+            .deleteWithResponse("rg1", "zone1", "record1", RecordType.A, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -40,7 +39,7 @@ public final class RecordSetsDeleteSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse("rg1", "zone1", "record1", RecordType.AAAA, null, Context.NONE);
+            .deleteWithResponse("rg1", "zone1", "record1", RecordType.AAAA, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -57,7 +56,7 @@ public final class RecordSetsDeleteSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse("rg1", "zone1", "record1", RecordType.TXT, null, Context.NONE);
+            .deleteWithResponse("rg1", "zone1", "record1", RecordType.TXT, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -74,7 +73,8 @@ public final class RecordSetsDeleteSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse("rg1", "0.0.127.in-addr.arpa", "1", RecordType.PTR, null, Context.NONE);
+            .deleteWithResponse(
+                "rg1", "0.0.127.in-addr.arpa", "1", RecordType.PTR, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -91,7 +91,7 @@ public final class RecordSetsDeleteSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse("rg1", "zone1", "record1", RecordType.SRV, null, Context.NONE);
+            .deleteWithResponse("rg1", "zone1", "record1", RecordType.SRV, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -108,7 +108,7 @@ public final class RecordSetsDeleteSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse("rg1", "zone1", "record1", RecordType.A, null, Context.NONE);
+            .deleteWithResponse("rg1", "zone1", "record1", RecordType.A, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -125,7 +125,7 @@ public final class RecordSetsDeleteSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse("rg1", "zone1", "record1", RecordType.CAA, null, Context.NONE);
+            .deleteWithResponse("rg1", "zone1", "record1", RecordType.CAA, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -142,7 +142,7 @@ public final class RecordSetsDeleteSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse("rg1", "zone1", "record1", RecordType.A, null, Context.NONE);
+            .deleteWithResponse("rg1", "zone1", "record1", RecordType.A, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -159,6 +159,6 @@ public final class RecordSetsDeleteSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse("rg1", "zone1", "record1", RecordType.A, null, Context.NONE);
+            .deleteWithResponse("rg1", "zone1", "record1", RecordType.A, null, com.azure.core.util.Context.NONE);
     }
 }

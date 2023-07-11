@@ -32,7 +32,7 @@ import java.util.Arrays;
 /** Samples for Policies CreateOrUpdate. */
 public final class PoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-11-01/examples/WafPolicyCreateOrUpdate.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2022-05-01/examples/WafPolicyCreateOrUpdate.json
      */
     /**
      * Sample code: Creates specific policy.

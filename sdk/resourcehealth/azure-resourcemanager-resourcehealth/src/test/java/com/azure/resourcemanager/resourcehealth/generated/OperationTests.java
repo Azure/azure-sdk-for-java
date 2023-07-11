@@ -8,39 +8,38 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resourcehealth.models.Operation;
 import com.azure.resourcemanager.resourcehealth.models.OperationDisplay;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         Operation model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"qex\",\"display\":{\"provider\":\"c\",\"resource\":\"c\",\"operation\":\"ierhhbcsglummaj\",\"description\":\"aodxo\"}}")
+                    "{\"name\":\"btoqcjmkljavbqid\",\"display\":{\"provider\":\"jzyulpk\",\"resource\":\"jkrlkhbzhfepg\",\"operation\":\"qex\",\"description\":\"ocxscpaierhhbcs\"}}")
                 .toObject(Operation.class);
-        Assertions.assertEquals("qex", model.name());
-        Assertions.assertEquals("c", model.display().provider());
-        Assertions.assertEquals("c", model.display().resource());
-        Assertions.assertEquals("ierhhbcsglummaj", model.display().operation());
-        Assertions.assertEquals("aodxo", model.display().description());
+        Assertions.assertEquals("btoqcjmkljavbqid", model.name());
+        Assertions.assertEquals("jzyulpk", model.display().provider());
+        Assertions.assertEquals("jkrlkhbzhfepg", model.display().resource());
+        Assertions.assertEquals("qex", model.display().operation());
+        Assertions.assertEquals("ocxscpaierhhbcs", model.display().description());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Operation model =
             new Operation()
-                .withName("qex")
+                .withName("btoqcjmkljavbqid")
                 .withDisplay(
                     new OperationDisplay()
-                        .withProvider("c")
-                        .withResource("c")
-                        .withOperation("ierhhbcsglummaj")
-                        .withDescription("aodxo"));
+                        .withProvider("jzyulpk")
+                        .withResource("jkrlkhbzhfepg")
+                        .withOperation("qex")
+                        .withDescription("ocxscpaierhhbcs"));
         model = BinaryData.fromObject(model).toObject(Operation.class);
-        Assertions.assertEquals("qex", model.name());
-        Assertions.assertEquals("c", model.display().provider());
-        Assertions.assertEquals("c", model.display().resource());
-        Assertions.assertEquals("ierhhbcsglummaj", model.display().operation());
-        Assertions.assertEquals("aodxo", model.display().description());
+        Assertions.assertEquals("btoqcjmkljavbqid", model.name());
+        Assertions.assertEquals("jzyulpk", model.display().provider());
+        Assertions.assertEquals("jkrlkhbzhfepg", model.display().resource());
+        Assertions.assertEquals("qex", model.display().operation());
+        Assertions.assertEquals("ocxscpaierhhbcs", model.display().description());
     }
 }

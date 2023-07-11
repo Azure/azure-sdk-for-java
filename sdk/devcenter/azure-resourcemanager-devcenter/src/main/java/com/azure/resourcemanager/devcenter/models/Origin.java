@@ -23,6 +23,15 @@ public final class Origin extends ExpandableStringEnum<Origin> {
     public static final Origin USER_SYSTEM = fromString("user,system");
 
     /**
+     * Creates a new instance of Origin value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Origin() {
+    }
+
+    /**
      * Creates or finds a Origin from its string representation.
      *
      * @param name a name to look for.

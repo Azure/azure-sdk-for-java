@@ -14,6 +14,15 @@ public final class ExtendedLocationTypes extends ExpandableStringEnum<ExtendedLo
     public static final ExtendedLocationTypes CUSTOM_LOCATION = fromString("CustomLocation");
 
     /**
+     * Creates a new instance of ExtendedLocationTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExtendedLocationTypes() {
+    }
+
+    /**
      * Creates or finds a ExtendedLocationTypes from its string representation.
      *
      * @param name a name to look for.

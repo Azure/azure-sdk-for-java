@@ -6,20 +6,17 @@ package com.azure.messaging.servicebus.implementation.instrumentation;
 import com.azure.core.util.Context;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
-import java.util.concurrent.atomic.AtomicLong;
-
-import static com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer.REACTOR_PARENT_TRACE_CONTEXT_KEY;
 
 /**
  * Contains convenience methods to instrument specific calls with traces and metrics.
  */
-public class ServiceBusReceiverInstrumentation {
+public final class ServiceBusReceiverInstrumentation {
     private final ServiceBusMeter meter;
     private final ServiceBusTracer tracer;
 
@@ -46,7 +43,7 @@ public class ServiceBusReceiverInstrumentation {
      * Reports consumer lag metric.
      */
     public Context instrumentProcess(String name, ServiceBusReceivedMessage message, Context parent) {
-        if (!tracer.isEnabled() && !meter.isConsumerLagEnabled()) {
+        if (message == null || (!tracer.isEnabled() && !meter.isConsumerLagEnabled())) {
             return parent;
         }
 
@@ -61,18 +58,21 @@ public class ServiceBusReceiverInstrumentation {
      */
     public <T> Mono<T> instrumentSettlement(Mono<T> publisher, ServiceBusReceivedMessage message, Context messageContext, DispositionStatus status) {
         if (tracer.isEnabled() || meter.isSettlementEnabled()) {
-            AtomicLong startTime = new AtomicLong();
-            return publisher
-                .doOnEach(signal -> {
-                    Context span = signal.getContextView().getOrDefault(REACTOR_PARENT_TRACE_CONTEXT_KEY, Context.NONE);
-                    meter.reportSettlement(startTime.get(), message.getSequenceNumber(), status, signal.getThrowable(), span);
-                    tracer.endSpan(signal.getThrowable(), span, null);
-                })
-                .contextWrite(ctx -> {
-                    startTime.set(Instant.now().toEpochMilli());
-                    return ctx.put(REACTOR_PARENT_TRACE_CONTEXT_KEY, tracer.startSpanWithLink(getSettlementSpanName(status), ServiceBusTracer.OperationName.SETTLE,
-                        message, messageContext, messageContext));
-                });
+            return Mono.defer(() -> {
+                long startTime = Instant.now().toEpochMilli();
+                Context span = tracer.startSpanWithLink(getSettlementSpanName(status), ServiceBusTracer.OperationName.SETTLE,
+                    message, messageContext);
+                return publisher
+                    .doOnEach(signal -> {
+                        meter.reportSettlement(startTime, message.getSequenceNumber(), status, signal.getThrowable(), false, span);
+                        tracer.endSpan(signal.getThrowable(), span, null);
+                    })
+                    .doOnCancel(() -> {
+                        meter.reportSettlement(startTime, message.getSequenceNumber(), status, null, true, span);
+                        tracer.cancelSpan(span);
+
+                    });
+            });
         }
 
         return publisher;

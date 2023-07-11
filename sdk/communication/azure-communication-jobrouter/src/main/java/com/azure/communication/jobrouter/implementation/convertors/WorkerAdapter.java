@@ -50,8 +50,8 @@ public class WorkerAdapter {
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : null;
 
         Map<String, QueueAssignment> queueAssignmentsMap = updateWorkerOptions.getQueueAssignments();
-        Map<String, Object> queueAssignments = queueAssignmentsMap.entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
+        Map<String, Object> queueAssignments = queueAssignmentsMap != null ? queueAssignmentsMap.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue())) : null;
         return new RouterWorker()
             .setLabels(labels)
             .setTags(updateWorkerOptions.getTags())

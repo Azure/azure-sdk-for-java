@@ -26,7 +26,7 @@ public final class RestorePointProperties {
     /*
      * Gets the details of the VM captured at the time of the restore point creation.
      */
-    @JsonProperty(value = "sourceMetadata", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "sourceMetadata")
     private RestorePointSourceMetadata sourceMetadata;
 
     /*
@@ -93,6 +93,17 @@ public final class RestorePointProperties {
      */
     public RestorePointSourceMetadata sourceMetadata() {
         return this.sourceMetadata;
+    }
+
+    /**
+     * Set the sourceMetadata property: Gets the details of the VM captured at the time of the restore point creation.
+     *
+     * @param sourceMetadata the sourceMetadata value to set.
+     * @return the RestorePointProperties object itself.
+     */
+    public RestorePointProperties withSourceMetadata(RestorePointSourceMetadata sourceMetadata) {
+        this.sourceMetadata = sourceMetadata;
+        return this;
     }
 
     /**

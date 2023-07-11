@@ -38,6 +38,18 @@ public class ThroughputSettingsResource {
     @JsonProperty(value = "offerReplacePending", access = JsonProperty.Access.WRITE_ONLY)
     private String offerReplacePending;
 
+    /*
+     * The offer throughput value to instantly scale up without triggering splits
+     */
+    @JsonProperty(value = "instantMaximumThroughput", access = JsonProperty.Access.WRITE_ONLY)
+    private String instantMaximumThroughput;
+
+    /*
+     * The maximum throughput value or the maximum maxThroughput value (for autoscale) that can be specified
+     */
+    @JsonProperty(value = "softAllowedMaximumThroughput", access = JsonProperty.Access.WRITE_ONLY)
+    private String softAllowedMaximumThroughput;
+
     /** Creates an instance of ThroughputSettingsResource class. */
     public ThroughputSettingsResource() {
     }
@@ -102,6 +114,26 @@ public class ThroughputSettingsResource {
      */
     public String offerReplacePending() {
         return this.offerReplacePending;
+    }
+
+    /**
+     * Get the instantMaximumThroughput property: The offer throughput value to instantly scale up without triggering
+     * splits.
+     *
+     * @return the instantMaximumThroughput value.
+     */
+    public String instantMaximumThroughput() {
+        return this.instantMaximumThroughput;
+    }
+
+    /**
+     * Get the softAllowedMaximumThroughput property: The maximum throughput value or the maximum maxThroughput value
+     * (for autoscale) that can be specified.
+     *
+     * @return the softAllowedMaximumThroughput value.
+     */
+    public String softAllowedMaximumThroughput() {
+        return this.softAllowedMaximumThroughput;
     }
 
     /**

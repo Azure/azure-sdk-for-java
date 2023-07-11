@@ -52,11 +52,10 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.UP
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getBlobSize;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.getContentLength;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getLocation;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.toGetManifestResponse;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
 import static com.azure.core.util.CoreUtils.bytesToHexString;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -133,7 +132,7 @@ public final class ContainerRegistryContentAsyncClient {
             return monoError(LOGGER, new NullPointerException("'manifest' can't be null."));
         }
 
-        return withContext(context -> setManifestWithResponse(BinaryData.fromObject(manifest), tag, ManifestMediaType.OCI_MANIFEST, context))
+        return withContext(context -> setManifestWithResponse(BinaryData.fromObject(manifest), tag, ManifestMediaType.OCI_IMAGE_MANIFEST, context))
             .flatMap(FluxUtil::toMono);
     }
 
@@ -240,7 +239,7 @@ public final class ContainerRegistryContentAsyncClient {
      * <pre>
      * contentClient.getManifest&#40;&quot;latest&quot;&#41;
      *     .doOnNext&#40;downloadResult -&gt; &#123;
-     *         if &#40;ManifestMediaType.OCI_MANIFEST.equals&#40;downloadResult.getManifestMediaType&#40;&#41;&#41;
+     *         if &#40;ManifestMediaType.OCI_IMAGE_MANIFEST.equals&#40;downloadResult.getManifestMediaType&#40;&#41;&#41;
      *             || ManifestMediaType.DOCKER_MANIFEST.equals&#40;downloadResult.getManifestMediaType&#40;&#41;&#41;&#41; &#123;
      *             OciImageManifest manifest = downloadResult.getManifest&#40;&#41;.toObject&#40;OciImageManifest.class&#41;;
      *             System.out.println&#40;&quot;Got OCI manifest&quot;&#41;;
@@ -274,7 +273,7 @@ public final class ContainerRegistryContentAsyncClient {
      * contentClient.getManifestWithResponse&#40;&quot;latest&quot;&#41;
      *     .doOnNext&#40;response -&gt; &#123;
      *         GetManifestResult manifestResult = response.getValue&#40;&#41;;
-     *         if &#40;ManifestMediaType.OCI_MANIFEST.equals&#40;manifestResult.getManifestMediaType&#40;&#41;&#41;
+     *         if &#40;ManifestMediaType.OCI_IMAGE_MANIFEST.equals&#40;manifestResult.getManifestMediaType&#40;&#41;&#41;
      *             || ManifestMediaType.DOCKER_MANIFEST.equals&#40;manifestResult.getManifestMediaType&#40;&#41;&#41;&#41; &#123;
      *             OciImageManifest manifest = manifestResult.getManifest&#40;&#41;.toObject&#40;OciImageManifest.class&#41;;
      *             System.out.println&#40;&quot;Got OCI manifest&quot;&#41;;
@@ -425,7 +424,7 @@ public final class ContainerRegistryContentAsyncClient {
             .createManifestWithResponseAsync(
                 repositoryName,
                 tagOrDigest,
-                Flux.just(data),
+                BinaryData.fromByteBuffer(data),
                 data.remaining(),
                 manifestMediaType.toString(),
                 context)
@@ -507,12 +506,12 @@ public final class ContainerRegistryContentAsyncClient {
 
     private Flux<ResponseBase<ContainerRegistryBlobsGetChunkHeaders, BinaryData>> getAllChunks(
         ResponseBase<ContainerRegistryBlobsGetChunkHeaders, BinaryData> firstResponse, String digest, Context context) {
-        validateResponseHeaderDigest(digest, firstResponse.getHeaders());
-
-        long blobSize = getBlobSize(firstResponse.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
+        long blobSize = getBlobSize(firstResponse.getHeaders());
         List<Mono<ResponseBase<ContainerRegistryBlobsGetChunkHeaders, BinaryData>>> others = new ArrayList<>();
         others.add(Mono.just(firstResponse));
-        for (long p = firstResponse.getValue().getLength(); p < blobSize; p += CHUNK_SIZE) {
+
+        long contentLength = getContentLength(firstResponse.getHeaders().get(HttpHeaderName.CONTENT_LENGTH));
+        for (long p = contentLength; p < blobSize; p += CHUNK_SIZE) {
             HttpRange range = new HttpRange(p, (long) CHUNK_SIZE);
             others.add(blobsImpl.getChunkWithResponseAsync(repositoryName, digest, range.toString(), context));
         }

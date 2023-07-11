@@ -7,30 +7,29 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.DiagnosticDataTableResponseColumn;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DiagnosticDataTableResponseColumnTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DiagnosticDataTableResponseColumn model =
             BinaryData
-                .fromString("{\"columnName\":\"orbteoy\",\"dataType\":\"hjxa\",\"columnType\":\"vjgsl\"}")
+                .fromString("{\"columnName\":\"na\",\"dataType\":\"ybbjjidjksyx\",\"columnType\":\"xvxevblbjednljla\"}")
                 .toObject(DiagnosticDataTableResponseColumn.class);
-        Assertions.assertEquals("orbteoy", model.columnName());
-        Assertions.assertEquals("hjxa", model.dataType());
-        Assertions.assertEquals("vjgsl", model.columnType());
+        Assertions.assertEquals("na", model.columnName());
+        Assertions.assertEquals("ybbjjidjksyx", model.dataType());
+        Assertions.assertEquals("xvxevblbjednljla", model.columnType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DiagnosticDataTableResponseColumn model =
             new DiagnosticDataTableResponseColumn()
-                .withColumnName("orbteoy")
-                .withDataType("hjxa")
-                .withColumnType("vjgsl");
+                .withColumnName("na")
+                .withDataType("ybbjjidjksyx")
+                .withColumnType("xvxevblbjednljla");
         model = BinaryData.fromObject(model).toObject(DiagnosticDataTableResponseColumn.class);
-        Assertions.assertEquals("orbteoy", model.columnName());
-        Assertions.assertEquals("hjxa", model.dataType());
-        Assertions.assertEquals("vjgsl", model.columnType());
+        Assertions.assertEquals("na", model.columnName());
+        Assertions.assertEquals("ybbjjidjksyx", model.dataType());
+        Assertions.assertEquals("xvxevblbjednljla", model.columnType());
     }
 }

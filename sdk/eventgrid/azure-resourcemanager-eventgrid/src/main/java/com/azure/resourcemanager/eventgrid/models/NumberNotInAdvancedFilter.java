@@ -21,6 +21,10 @@ public final class NumberNotInAdvancedFilter extends AdvancedFilter {
     @JsonProperty(value = "values")
     private List<Double> values;
 
+    /** Creates an instance of NumberNotInAdvancedFilter class. */
+    public NumberNotInAdvancedFilter() {
+    }
+
     /**
      * Get the values property: The set of filter values.
      *

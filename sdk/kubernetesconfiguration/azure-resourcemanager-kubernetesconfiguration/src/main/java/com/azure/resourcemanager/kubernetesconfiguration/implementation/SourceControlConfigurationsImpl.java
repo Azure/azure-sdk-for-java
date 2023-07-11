@@ -28,23 +28,6 @@ public final class SourceControlConfigurationsImpl implements SourceControlConfi
         this.serviceManager = serviceManager;
     }
 
-    public SourceControlConfiguration get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName) {
-        SourceControlConfigurationInner inner =
-            this
-                .serviceClient()
-                .get(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName);
-        if (inner != null) {
-            return new SourceControlConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SourceControlConfiguration> getWithResponse(
         String resourceGroupName,
         String clusterRp,
@@ -73,23 +56,16 @@ public final class SourceControlConfigurationsImpl implements SourceControlConfi
         }
     }
 
-    public SourceControlConfiguration createOrUpdate(
+    public SourceControlConfiguration get(
         String resourceGroupName,
         String clusterRp,
         String clusterResourceName,
         String clusterName,
-        String sourceControlConfigurationName,
-        SourceControlConfigurationInner sourceControlConfiguration) {
+        String sourceControlConfigurationName) {
         SourceControlConfigurationInner inner =
             this
                 .serviceClient()
-                .createOrUpdate(
-                    resourceGroupName,
-                    clusterRp,
-                    clusterResourceName,
-                    clusterName,
-                    sourceControlConfigurationName,
-                    sourceControlConfiguration);
+                .get(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName);
         if (inner != null) {
             return new SourceControlConfigurationImpl(inner, this.manager());
         } else {
@@ -122,6 +98,30 @@ public final class SourceControlConfigurationsImpl implements SourceControlConfi
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SourceControlConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SourceControlConfiguration createOrUpdate(
+        String resourceGroupName,
+        String clusterRp,
+        String clusterResourceName,
+        String clusterName,
+        String sourceControlConfigurationName,
+        SourceControlConfigurationInner sourceControlConfiguration) {
+        SourceControlConfigurationInner inner =
+            this
+                .serviceClient()
+                .createOrUpdate(
+                    resourceGroupName,
+                    clusterRp,
+                    clusterResourceName,
+                    clusterName,
+                    sourceControlConfigurationName,
+                    sourceControlConfiguration);
+        if (inner != null) {
+            return new SourceControlConfigurationImpl(inner, this.manager());
         } else {
             return null;
         }

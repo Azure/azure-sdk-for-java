@@ -71,6 +71,18 @@ public final class ShippingAddress {
     @JsonProperty(value = "addressType")
     private AddressType addressType;
 
+    /*
+     * Flag to indicate if customer has chosen to skip default address validation
+     */
+    @JsonProperty(value = "skipAddressValidation")
+    private Boolean skipAddressValidation;
+
+    /*
+     * Tax Identification Number
+     */
+    @JsonProperty(value = "taxIdentificationNumber")
+    private String taxIdentificationNumber;
+
     /** Creates an instance of ShippingAddress class. */
     public ShippingAddress() {
     }
@@ -272,6 +284,48 @@ public final class ShippingAddress {
      */
     public ShippingAddress withAddressType(AddressType addressType) {
         this.addressType = addressType;
+        return this;
+    }
+
+    /**
+     * Get the skipAddressValidation property: Flag to indicate if customer has chosen to skip default address
+     * validation.
+     *
+     * @return the skipAddressValidation value.
+     */
+    public Boolean skipAddressValidation() {
+        return this.skipAddressValidation;
+    }
+
+    /**
+     * Set the skipAddressValidation property: Flag to indicate if customer has chosen to skip default address
+     * validation.
+     *
+     * @param skipAddressValidation the skipAddressValidation value to set.
+     * @return the ShippingAddress object itself.
+     */
+    public ShippingAddress withSkipAddressValidation(Boolean skipAddressValidation) {
+        this.skipAddressValidation = skipAddressValidation;
+        return this;
+    }
+
+    /**
+     * Get the taxIdentificationNumber property: Tax Identification Number.
+     *
+     * @return the taxIdentificationNumber value.
+     */
+    public String taxIdentificationNumber() {
+        return this.taxIdentificationNumber;
+    }
+
+    /**
+     * Set the taxIdentificationNumber property: Tax Identification Number.
+     *
+     * @param taxIdentificationNumber the taxIdentificationNumber value to set.
+     * @return the ShippingAddress object itself.
+     */
+    public ShippingAddress withTaxIdentificationNumber(String taxIdentificationNumber) {
+        this.taxIdentificationNumber = taxIdentificationNumber;
         return this;
     }
 

@@ -22,6 +22,19 @@ public final class ContainerAppSecret {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
+    /*
+     * Resource ID of a managed identity to authenticate with Azure Key Vault, or System to use a system-assigned
+     * identity.
+     */
+    @JsonProperty(value = "identity", access = JsonProperty.Access.WRITE_ONLY)
+    private String identity;
+
+    /*
+     * Azure Key Vault URL pointing to the secret referenced by the container app.
+     */
+    @JsonProperty(value = "keyVaultUrl", access = JsonProperty.Access.WRITE_ONLY)
+    private String keyVaultUrl;
+
     /** Creates an instance of ContainerAppSecret class. */
     public ContainerAppSecret() {
     }
@@ -42,6 +55,25 @@ public final class ContainerAppSecret {
      */
     public String value() {
         return this.value;
+    }
+
+    /**
+     * Get the identity property: Resource ID of a managed identity to authenticate with Azure Key Vault, or System to
+     * use a system-assigned identity.
+     *
+     * @return the identity value.
+     */
+    public String identity() {
+        return this.identity;
+    }
+
+    /**
+     * Get the keyVaultUrl property: Azure Key Vault URL pointing to the secret referenced by the container app.
+     *
+     * @return the keyVaultUrl value.
+     */
+    public String keyVaultUrl() {
+        return this.keyVaultUrl;
     }
 
     /**

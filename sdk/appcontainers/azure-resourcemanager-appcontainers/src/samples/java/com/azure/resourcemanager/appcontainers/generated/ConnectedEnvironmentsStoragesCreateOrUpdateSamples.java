@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironmentStorag
 /** Samples for ConnectedEnvironmentsStorages CreateOrUpdate. */
 public final class ConnectedEnvironmentsStoragesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ConnectedEnvironmentsStorages_CreateOrUpdate.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ConnectedEnvironmentsStorages_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update environments storage.
@@ -29,7 +29,7 @@ public final class ConnectedEnvironmentsStoragesCreateOrUpdateSamples {
                     .withAzureFile(
                         new AzureFileProperties()
                             .withAccountName("account1")
-                            .withAccountKey("key")
+                            .withAccountKey("fakeTokenPlaceholder")
                             .withAccessMode(AccessMode.READ_ONLY)
                             .withShareName("share1")))
             .create();

@@ -59,8 +59,7 @@ public final class CheckVirtualNetworkSubnetUsagesClientImpl implements CheckVir
     public interface CheckVirtualNetworkSubnetUsagesService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}"
-                + "/checkVirtualNetworkSubnetUsage")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/checkVirtualNetworkSubnetUsage")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualNetworkSubnetUsageResultInner>> execute(
@@ -107,6 +106,7 @@ public final class CheckVirtualNetworkSubnetUsagesClientImpl implements CheckVir
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-12-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -114,7 +114,7 @@ public final class CheckVirtualNetworkSubnetUsagesClientImpl implements CheckVir
                     service
                         .execute(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             locationName,
                             parameters,
@@ -158,12 +158,13 @@ public final class CheckVirtualNetworkSubnetUsagesClientImpl implements CheckVir
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-12-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .execute(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 locationName,
                 parameters,

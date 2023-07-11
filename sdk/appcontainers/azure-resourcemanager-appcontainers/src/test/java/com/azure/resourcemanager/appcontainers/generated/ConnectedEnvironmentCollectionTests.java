@@ -13,83 +13,82 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ConnectedEnvironmentCollectionTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ConnectedEnvironmentCollection model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"extendedLocation\":{\"name\":\"rtujwsawddjibab\",\"type\":\"CustomLocation\"},\"properties\":{\"provisioningState\":\"InfrastructureSetupComplete\",\"deploymentErrors\":\"tzeexav\",\"defaultDomain\":\"tfgle\",\"staticIp\":\"m\",\"daprAIConnectionString\":\"bwpypqtgsfjacb\"},\"location\":\"hxudbxvodht\",\"tags\":{\"agzrcxfa\":\"rudhzmmesckdl\",\"xwmdboxd\":\"lc\"},\"id\":\"gsftufqobrjlnacg\",\"name\":\"ckknhxkizvy\",\"type\":\"nrzvuljraaer\"},{\"extendedLocation\":{\"name\":\"kqg\",\"type\":\"CustomLocation\"},\"properties\":{\"provisioningState\":\"InitializationInProgress\",\"deploymentErrors\":\"broyla\",\"defaultDomain\":\"ulcdisdosf\",\"staticIp\":\"jsvg\",\"daprAIConnectionString\":\"whryvycytdcl\"},\"location\":\"cknfnwmbtmvpd\",\"tags\":{\"efedxihchrphkm\":\"httz\",\"gtgkylkdghr\":\"rjdqnsdfzp\",\"kvbwnhhtqlgeh\":\"euutlwxezwzh\",\"vgcxtx\":\"ppipifhpfeoa\"},\"id\":\"csheafidltugsr\",\"name\":\"smkss\",\"type\":\"h\"},{\"extendedLocation\":{\"name\":\"txfkfweg\",\"type\":\"CustomLocation\"},\"properties\":{\"provisioningState\":\"Failed\",\"deploymentErrors\":\"lucbiqtgdqohm\",\"defaultDomain\":\"sldrizetpwbral\",\"staticIp\":\"ibph\",\"daprAIConnectionString\":\"zmizakakan\"},\"location\":\"dnjzh\",\"tags\":{\"oyxprimr\":\"ylhjlm\",\"eislstvasylwx\":\"opteecj\",\"eoohguufuzboyj\":\"zaum\",\"a\":\"thwtzol\"},\"id\":\"mwmdxmebwjscjpa\",\"name\":\"lxveabfqx\",\"type\":\"mwmqtibx\"}],\"nextLink\":\"jddtvqct\"}")
+                    "{\"value\":[{\"extendedLocation\":{\"name\":\"ctehfiqscjey\",\"type\":\"CustomLocation\"},\"properties\":{\"provisioningState\":\"InfrastructureSetupInProgress\",\"deploymentErrors\":\"gqhcjrefovg\",\"defaultDomain\":\"qsl\",\"staticIp\":\"yvxyqjp\",\"daprAIConnectionString\":\"attpngjcrcczsq\"},\"location\":\"vmdajvnysou\",\"tags\":{\"yhltrpmopjmcm\":\"canoaeupf\"},\"id\":\"tuo\",\"name\":\"thfuiuaodsfcpkvx\",\"type\":\"dpuozmyz\"},{\"extendedLocation\":{\"name\":\"gf\",\"type\":\"CustomLocation\"},\"properties\":{\"provisioningState\":\"Waiting\",\"deploymentErrors\":\"iu\",\"defaultDomain\":\"ktwh\",\"staticIp\":\"xw\",\"daprAIConnectionString\":\"wqsmbsur\"},\"location\":\"moryocfsfksym\",\"tags\":{\"o\":\"stkiiuxhqyud\"},\"id\":\"rq\",\"name\":\"b\",\"type\":\"oczvy\"},{\"extendedLocation\":{\"name\":\"rvkdvjsllrm\",\"type\":\"CustomLocation\"},\"properties\":{\"provisioningState\":\"Canceled\",\"deploymentErrors\":\"kpnpulexxbczwtr\",\"defaultDomain\":\"iqzbq\",\"staticIp\":\"sovmyokacspkwl\",\"daprAIConnectionString\":\"dobpxjmflbvvn\"},\"location\":\"kcciwwzjuqkhr\",\"tags\":{\"ghsauuimjmvxied\":\"iwkuofos\",\"byao\":\"ugidyjrr\",\"xc\":\"v\",\"hocohslkev\":\"onpc\"},\"id\":\"eggzfb\",\"name\":\"hfmvfaxkffe\",\"type\":\"ithlvmezyvshxm\"},{\"extendedLocation\":{\"name\":\"bzoggigrx\",\"type\":\"CustomLocation\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"deploymentErrors\":\"xjnspy\",\"defaultDomain\":\"tko\",\"staticIp\":\"kouknvudwtiu\",\"daprAIConnectionString\":\"ldngkpoci\"},\"location\":\"yxoegukgjnp\",\"tags\":{\"zntypmrb\":\"gygev\",\"ydnfyhxdeoejz\":\"izcdrqjsd\"},\"id\":\"cwif\",\"name\":\"jttgzf\",\"type\":\"ishc\"}],\"nextLink\":\"hajdeyeamdpha\"}")
                 .toObject(ConnectedEnvironmentCollection.class);
-        Assertions.assertEquals("hxudbxvodht", model.value().get(0).location());
-        Assertions.assertEquals("rudhzmmesckdl", model.value().get(0).tags().get("agzrcxfa"));
-        Assertions.assertEquals("rtujwsawddjibab", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("vmdajvnysou", model.value().get(0).location());
+        Assertions.assertEquals("canoaeupf", model.value().get(0).tags().get("yhltrpmopjmcm"));
+        Assertions.assertEquals("ctehfiqscjey", model.value().get(0).extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("m", model.value().get(0).staticIp());
-        Assertions.assertEquals("bwpypqtgsfjacb", model.value().get(0).daprAIConnectionString());
+        Assertions.assertEquals("yvxyqjp", model.value().get(0).staticIp());
+        Assertions.assertEquals("attpngjcrcczsq", model.value().get(0).daprAIConnectionString());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ConnectedEnvironmentCollection model =
             new ConnectedEnvironmentCollection()
                 .withValue(
                     Arrays
                         .asList(
                             new ConnectedEnvironmentInner()
-                                .withLocation("hxudbxvodht")
-                                .withTags(mapOf("agzrcxfa", "rudhzmmesckdl", "xwmdboxd", "lc"))
+                                .withLocation("vmdajvnysou")
+                                .withTags(mapOf("yhltrpmopjmcm", "canoaeupf"))
                                 .withExtendedLocation(
                                     new ExtendedLocation()
-                                        .withName("rtujwsawddjibab")
+                                        .withName("ctehfiqscjey")
                                         .withType(ExtendedLocationTypes.CUSTOM_LOCATION))
-                                .withStaticIp("m")
-                                .withDaprAIConnectionString("bwpypqtgsfjacb"),
+                                .withStaticIp("yvxyqjp")
+                                .withDaprAIConnectionString("attpngjcrcczsq"),
                             new ConnectedEnvironmentInner()
-                                .withLocation("cknfnwmbtmvpd")
+                                .withLocation("moryocfsfksym")
+                                .withTags(mapOf("o", "stkiiuxhqyud"))
+                                .withExtendedLocation(
+                                    new ExtendedLocation()
+                                        .withName("gf")
+                                        .withType(ExtendedLocationTypes.CUSTOM_LOCATION))
+                                .withStaticIp("xw")
+                                .withDaprAIConnectionString("wqsmbsur"),
+                            new ConnectedEnvironmentInner()
+                                .withLocation("kcciwwzjuqkhr")
                                 .withTags(
                                     mapOf(
-                                        "efedxihchrphkm",
-                                        "httz",
-                                        "gtgkylkdghr",
-                                        "rjdqnsdfzp",
-                                        "kvbwnhhtqlgeh",
-                                        "euutlwxezwzh",
-                                        "vgcxtx",
-                                        "ppipifhpfeoa"))
+                                        "ghsauuimjmvxied",
+                                        "iwkuofos",
+                                        "byao",
+                                        "ugidyjrr",
+                                        "xc",
+                                        "v",
+                                        "hocohslkev",
+                                        "onpc"))
                                 .withExtendedLocation(
                                     new ExtendedLocation()
-                                        .withName("kqg")
+                                        .withName("rvkdvjsllrm")
                                         .withType(ExtendedLocationTypes.CUSTOM_LOCATION))
-                                .withStaticIp("jsvg")
-                                .withDaprAIConnectionString("whryvycytdcl"),
+                                .withStaticIp("sovmyokacspkwl")
+                                .withDaprAIConnectionString("dobpxjmflbvvn"),
                             new ConnectedEnvironmentInner()
-                                .withLocation("dnjzh")
-                                .withTags(
-                                    mapOf(
-                                        "oyxprimr",
-                                        "ylhjlm",
-                                        "eislstvasylwx",
-                                        "opteecj",
-                                        "eoohguufuzboyj",
-                                        "zaum",
-                                        "a",
-                                        "thwtzol"))
+                                .withLocation("yxoegukgjnp")
+                                .withTags(mapOf("zntypmrb", "gygev", "ydnfyhxdeoejz", "izcdrqjsd"))
                                 .withExtendedLocation(
                                     new ExtendedLocation()
-                                        .withName("txfkfweg")
+                                        .withName("bzoggigrx")
                                         .withType(ExtendedLocationTypes.CUSTOM_LOCATION))
-                                .withStaticIp("ibph")
-                                .withDaprAIConnectionString("zmizakakan")));
+                                .withStaticIp("kouknvudwtiu")
+                                .withDaprAIConnectionString("ldngkpoci")));
         model = BinaryData.fromObject(model).toObject(ConnectedEnvironmentCollection.class);
-        Assertions.assertEquals("hxudbxvodht", model.value().get(0).location());
-        Assertions.assertEquals("rudhzmmesckdl", model.value().get(0).tags().get("agzrcxfa"));
-        Assertions.assertEquals("rtujwsawddjibab", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("vmdajvnysou", model.value().get(0).location());
+        Assertions.assertEquals("canoaeupf", model.value().get(0).tags().get("yhltrpmopjmcm"));
+        Assertions.assertEquals("ctehfiqscjey", model.value().get(0).extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("m", model.value().get(0).staticIp());
-        Assertions.assertEquals("bwpypqtgsfjacb", model.value().get(0).daprAIConnectionString());
+        Assertions.assertEquals("yvxyqjp", model.value().get(0).staticIp());
+        Assertions.assertEquals("attpngjcrcczsq", model.value().get(0).daprAIConnectionString());
     }
 
     @SuppressWarnings("unchecked")

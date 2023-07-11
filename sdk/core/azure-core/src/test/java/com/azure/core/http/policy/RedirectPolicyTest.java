@@ -377,7 +377,7 @@ public class RedirectPolicyTest {
             () -> sendRequest(pipeline, HttpMethod.GET)
         )) {
             assertEquals(200, response.getStatusCode());
-            assertNull(response.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+            assertNull(response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
         }
     }
 

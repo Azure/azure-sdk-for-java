@@ -6,9 +6,9 @@ package com.azure.resourcemanager.devhub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.devhub.models.Acr;
+import com.azure.resourcemanager.devhub.models.AuthorizationStatus;
 import com.azure.resourcemanager.devhub.models.DeploymentProperties;
 import com.azure.resourcemanager.devhub.models.GitHubWorkflowProfileOidcCredentials;
-import com.azure.resourcemanager.devhub.models.ManifestType;
 import com.azure.resourcemanager.devhub.models.PullRequestStatus;
 import com.azure.resourcemanager.devhub.models.WorkflowRun;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -113,10 +113,14 @@ public final class GitHubWorkflowProfile {
     private WorkflowRun lastWorkflowRun;
 
     /*
-     * Determines the type of manifests within the repository.
+     * Determines the authorization status of requests.
      */
-    @JsonProperty(value = "authStatus")
-    private ManifestType authStatus;
+    @JsonProperty(value = "authStatus", access = JsonProperty.Access.WRITE_ONLY)
+    private AuthorizationStatus authStatus;
+
+    /** Creates an instance of GitHubWorkflowProfile class. */
+    public GitHubWorkflowProfile() {
+    }
 
     /**
      * Get the repositoryOwner property: The owner of the repository the workflow is associated with.
@@ -390,23 +394,12 @@ public final class GitHubWorkflowProfile {
     }
 
     /**
-     * Get the authStatus property: Determines the type of manifests within the repository.
+     * Get the authStatus property: Determines the authorization status of requests.
      *
      * @return the authStatus value.
      */
-    public ManifestType authStatus() {
+    public AuthorizationStatus authStatus() {
         return this.authStatus;
-    }
-
-    /**
-     * Set the authStatus property: Determines the type of manifests within the repository.
-     *
-     * @param authStatus the authStatus value to set.
-     * @return the GitHubWorkflowProfile object itself.
-     */
-    public GitHubWorkflowProfile withAuthStatus(ManifestType authStatus) {
-        this.authStatus = authStatus;
-        return this;
     }
 
     /**

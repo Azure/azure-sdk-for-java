@@ -69,7 +69,7 @@ public interface DevCenter {
     ProvisioningState provisioningState();
 
     /**
-     * Gets the devCenterUri property: The URI of the resource.
+     * Gets the devCenterUri property: The URI of the Dev Center.
      *
      * @return the devCenterUri value.
      */

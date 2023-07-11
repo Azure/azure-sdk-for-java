@@ -24,6 +24,10 @@ public final class OperationDefinitionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of OperationDefinitionListResult class. */
+    public OperationDefinitionListResult() {
+    }
+
     /**
      * Get the value property: The collection value.
      *

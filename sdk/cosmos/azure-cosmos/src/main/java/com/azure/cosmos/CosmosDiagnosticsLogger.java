@@ -66,7 +66,7 @@ class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
                     ctx.getContainerName(),
                     ctx.getStatusCode(),
                     ctx.getSubStatusCode(),
-                    ctx);
+                    ctx.toJson());
             }
         } else if (ctx.isThresholdViolated()) {
             if (logger.isInfoEnabled()) {
@@ -77,7 +77,7 @@ class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
                     ctx.getContainerName(),
                     ctx.getStatusCode(),
                     ctx.getSubStatusCode(),
-                    ctx);
+                    ctx.toJson());
             }
         } else if (logger.isTraceEnabled()) {
             logger.trace(
@@ -87,7 +87,7 @@ class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
                 ctx.getContainerName(),
                 ctx.getStatusCode(),
                 ctx.getSubStatusCode(),
-                ctx);
+                ctx.toJson());
         } else if (logger.isDebugEnabled()) {
             logger.debug(
                 "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{}, Latency: {}, Request charge: {}",

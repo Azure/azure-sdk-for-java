@@ -22,6 +22,9 @@ public final class DeviceTwinProperties {
     @JsonProperty(value = "version")
     private Float version;
 
+    /** Creates an instance of DeviceTwinProperties class. */
+    public DeviceTwinProperties() {}
+
     /**
      * Get the metadata property: Metadata information for the properties JSON document.
      *

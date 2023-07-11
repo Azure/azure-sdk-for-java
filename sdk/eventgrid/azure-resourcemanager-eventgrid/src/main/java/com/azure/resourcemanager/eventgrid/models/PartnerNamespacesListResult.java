@@ -24,6 +24,10 @@ public final class PartnerNamespacesListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of PartnerNamespacesListResult class. */
+    public PartnerNamespacesListResult() {
+    }
+
     /**
      * Get the value property: A collection of partner namespaces.
      *

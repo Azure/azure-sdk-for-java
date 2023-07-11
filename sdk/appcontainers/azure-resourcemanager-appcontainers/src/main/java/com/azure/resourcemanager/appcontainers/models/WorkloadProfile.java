@@ -14,23 +14,49 @@ public final class WorkloadProfile {
     /*
      * Workload profile type for the workloads to run on.
      */
+    @JsonProperty(value = "name", required = true)
+    private String name;
+
+    /*
+     * Workload profile type for the workloads to run on.
+     */
     @JsonProperty(value = "workloadProfileType", required = true)
     private String workloadProfileType;
 
     /*
      * The minimum capacity.
      */
-    @JsonProperty(value = "minimumCount", required = true)
-    private int minimumCount;
+    @JsonProperty(value = "minimumCount")
+    private Integer minimumCount;
 
     /*
      * The maximum capacity.
      */
-    @JsonProperty(value = "maximumCount", required = true)
-    private int maximumCount;
+    @JsonProperty(value = "maximumCount")
+    private Integer maximumCount;
 
     /** Creates an instance of WorkloadProfile class. */
     public WorkloadProfile() {
+    }
+
+    /**
+     * Get the name property: Workload profile type for the workloads to run on.
+     *
+     * @return the name value.
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Workload profile type for the workloads to run on.
+     *
+     * @param name the name value to set.
+     * @return the WorkloadProfile object itself.
+     */
+    public WorkloadProfile withName(String name) {
+        this.name = name;
+        return this;
     }
 
     /**
@@ -58,7 +84,7 @@ public final class WorkloadProfile {
      *
      * @return the minimumCount value.
      */
-    public int minimumCount() {
+    public Integer minimumCount() {
         return this.minimumCount;
     }
 
@@ -68,7 +94,7 @@ public final class WorkloadProfile {
      * @param minimumCount the minimumCount value to set.
      * @return the WorkloadProfile object itself.
      */
-    public WorkloadProfile withMinimumCount(int minimumCount) {
+    public WorkloadProfile withMinimumCount(Integer minimumCount) {
         this.minimumCount = minimumCount;
         return this;
     }
@@ -78,7 +104,7 @@ public final class WorkloadProfile {
      *
      * @return the maximumCount value.
      */
-    public int maximumCount() {
+    public Integer maximumCount() {
         return this.maximumCount;
     }
 
@@ -88,7 +114,7 @@ public final class WorkloadProfile {
      * @param maximumCount the maximumCount value to set.
      * @return the WorkloadProfile object itself.
      */
-    public WorkloadProfile withMaximumCount(int maximumCount) {
+    public WorkloadProfile withMaximumCount(Integer maximumCount) {
         this.maximumCount = maximumCount;
         return this;
     }
@@ -99,6 +125,11 @@ public final class WorkloadProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (name() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property name in model WorkloadProfile"));
+        }
         if (workloadProfileType() == null) {
             throw LOGGER
                 .logExceptionAsError(

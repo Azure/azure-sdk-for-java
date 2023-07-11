@@ -8,20 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.confidentialledger.models.LedgerProperties;
-import com.azure.resourcemanager.confidentialledger.models.RunningState;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Confidential Ledger. Contains the properties of Confidential Ledger Resource. */
 @Fluent
 public final class ConfidentialLedgerInner extends Resource {
-    /*
-     * Object representing RunningState for Ledger.
-     */
-    @JsonProperty(value = "runningState")
-    private RunningState runningState;
-
     /*
      * LedgerProperties
      *
@@ -36,35 +28,8 @@ public final class ConfidentialLedgerInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * Additional tags for Confidential Ledger
-     */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
-
     /** Creates an instance of ConfidentialLedgerInner class. */
     public ConfidentialLedgerInner() {
-    }
-
-    /**
-     * Get the runningState property: Object representing RunningState for Ledger.
-     *
-     * @return the runningState value.
-     */
-    public RunningState runningState() {
-        return this.runningState;
-    }
-
-    /**
-     * Set the runningState property: Object representing RunningState for Ledger.
-     *
-     * @param runningState the runningState value to set.
-     * @return the ConfidentialLedgerInner object itself.
-     */
-    public ConfidentialLedgerInner withRunningState(RunningState runningState) {
-        this.runningState = runningState;
-        return this;
     }
 
     /**
@@ -100,30 +65,17 @@ public final class ConfidentialLedgerInner extends Resource {
         return this.systemData;
     }
 
-    /**
-     * Get the tags property: Additional tags for Confidential Ledger.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Additional tags for Confidential Ledger.
-     *
-     * @param tags the tags value to set.
-     * @return the ConfidentialLedgerInner object itself.
-     */
-    public ConfidentialLedgerInner withTags(Map<String, String> tags) {
-        this.tags = tags;
+    /** {@inheritDoc} */
+    @Override
+    public ConfidentialLedgerInner withLocation(String location) {
+        super.withLocation(location);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ConfidentialLedgerInner withLocation(String location) {
-        super.withLocation(location);
+    public ConfidentialLedgerInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

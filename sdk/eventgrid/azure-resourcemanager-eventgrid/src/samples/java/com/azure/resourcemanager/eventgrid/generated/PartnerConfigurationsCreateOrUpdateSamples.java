@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerConfigurationInner;
 import com.azure.resourcemanager.eventgrid.models.Partner;
 import com.azure.resourcemanager.eventgrid.models.PartnerAuthorization;
@@ -15,7 +14,7 @@ import java.util.UUID;
 /** Samples for PartnerConfigurations CreateOrUpdate. */
 public final class PartnerConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerConfigurations_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerConfigurations_CreateOrUpdate.json
      */
     /**
      * Sample code: PartnerConfigurations_CreateOrUpdate.
@@ -47,6 +46,6 @@ public final class PartnerConfigurationsCreateOrUpdateSamples {
                                             .withPartnerName("fabrikam.HR")
                                             .withAuthorizationExpirationTimeInUtc(
                                                 OffsetDateTime.parse("2022-02-20T01:00:00.142Z"))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

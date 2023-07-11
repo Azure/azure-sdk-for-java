@@ -12,9 +12,8 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
+import com.azure.resourcemanager.devcenter.models.EnvironmentTypeEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentType;
 import java.nio.ByteBuffer;
@@ -35,7 +34,7 @@ public final class ProjectEnvironmentTypesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"deploymentTargetId\":\"xlllchp\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{}},\"userRoleAssignments\":{}},\"tags\":{\"kuvsjcswsm\":\"nhf\",\"qypfcv\":\"stul\"},\"identity\":{\"principalId\":\"769be413-232d-487b-b026-dac02234e915\",\"tenantId\":\"2dec49eb-458b-4c35-9550-4e3b074bb332\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"mfpjbabw\",\"id\":\"fcxsspuunnoxy\",\"name\":\"kxgqddrih\",\"type\":\"fhoqca\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"deploymentTargetId\":\"ecxn\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{}},\"userRoleAssignments\":{}},\"tags\":{\"irclnpk\":\"mlqtmldgxob\",\"iykhy\":\"iayz\",\"jlb\":\"wf\"},\"identity\":{\"principalId\":\"98acf4ee-341a-42e2-a2d5-46ee6a3be727\",\"tenantId\":\"789836d0-9cfd-4df2-b21f-7b1f8a117fc2\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"xhom\",\"id\":\"nhdwdigumbnra\",\"name\":\"uzzptjazysdz\",\"type\":\"ezwwv\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,12 +63,13 @@ public final class ProjectEnvironmentTypesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ProjectEnvironmentType> response =
-            manager.projectEnvironmentTypes().list("vm", "mfnczd", 1426712657, Context.NONE);
+            manager.projectEnvironmentTypes().list("aawzqadfl", "z", 1828408441, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nhf", response.iterator().next().tags().get("kuvsjcswsm"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
-        Assertions.assertEquals("mfpjbabw", response.iterator().next().location());
-        Assertions.assertEquals("xlllchp", response.iterator().next().deploymentTargetId());
-        Assertions.assertEquals(EnableStatus.ENABLED, response.iterator().next().status());
+        Assertions.assertEquals("mlqtmldgxob", response.iterator().next().tags().get("irclnpk"));
+        Assertions
+            .assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("xhom", response.iterator().next().location());
+        Assertions.assertEquals("ecxn", response.iterator().next().deploymentTargetId());
+        Assertions.assertEquals(EnvironmentTypeEnableStatus.ENABLED, response.iterator().next().status());
     }
 }

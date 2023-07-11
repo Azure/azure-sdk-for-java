@@ -7,6 +7,7 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
+import com.azure.resourcemanager.containerservice.models.KubernetesSupportPlan;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
@@ -170,6 +171,12 @@ public final class ManagedClusterProperties {
      */
     @JsonProperty(value = "enableRBAC")
     private Boolean enableRbac;
+
+    /*
+     * The support plan for the Managed Cluster. If unspecified, the default is 'KubernetesOfficial'.
+     */
+    @JsonProperty(value = "supportPlan")
+    private KubernetesSupportPlan supportPlan;
 
     /*
      * (DEPRECATED) Whether to enable Kubernetes pod security policy (preview). PodSecurityPolicy was deprecated in
@@ -629,6 +636,28 @@ public final class ManagedClusterProperties {
      */
     public ManagedClusterProperties withEnableRbac(Boolean enableRbac) {
         this.enableRbac = enableRbac;
+        return this;
+    }
+
+    /**
+     * Get the supportPlan property: The support plan for the Managed Cluster. If unspecified, the default is
+     * 'KubernetesOfficial'.
+     *
+     * @return the supportPlan value.
+     */
+    public KubernetesSupportPlan supportPlan() {
+        return this.supportPlan;
+    }
+
+    /**
+     * Set the supportPlan property: The support plan for the Managed Cluster. If unspecified, the default is
+     * 'KubernetesOfficial'.
+     *
+     * @param supportPlan the supportPlan value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withSupportPlan(KubernetesSupportPlan supportPlan) {
+        this.supportPlan = supportPlan;
         return this;
     }
 

@@ -80,6 +80,14 @@ public interface Image {
     ProvisioningState provisioningState();
 
     /**
+     * Gets the hibernateSupport property: Indicates whether this image has hibernate enabled. Not all images are
+     * capable of supporting hibernation. To find out more see https://aka.ms/devbox/hibernate.
+     *
+     * @return the hibernateSupport value.
+     */
+    HibernateSupport hibernateSupport();
+
+    /**
      * Gets the inner com.azure.resourcemanager.devcenter.fluent.models.ImageInner object.
      *
      * @return the inner object.

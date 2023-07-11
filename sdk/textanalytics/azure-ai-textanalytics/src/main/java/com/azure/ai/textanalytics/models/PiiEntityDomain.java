@@ -6,6 +6,8 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 
+import java.util.Collection;
+
 /**
  * Defines values for {@link PiiEntityDomain}.
  */
@@ -29,5 +31,10 @@ public final class PiiEntityDomain extends ExpandableStringEnum<PiiEntityDomain>
      */
     public static PiiEntityDomain fromString(String name) {
         return fromString(name, PiiEntityDomain.class);
+    }
+
+    /** @return known PiiEntityDomain values. */
+    public static Collection<PiiEntityDomain> values() {
+        return values(PiiEntityDomain.class);
     }
 }

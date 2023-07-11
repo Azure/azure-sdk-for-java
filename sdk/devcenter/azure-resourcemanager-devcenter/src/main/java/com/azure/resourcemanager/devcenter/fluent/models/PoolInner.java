@@ -7,10 +7,14 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.devcenter.models.HealthStatus;
+import com.azure.resourcemanager.devcenter.models.HealthStatusDetail;
 import com.azure.resourcemanager.devcenter.models.LicenseType;
 import com.azure.resourcemanager.devcenter.models.LocalAdminStatus;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
+import com.azure.resourcemanager.devcenter.models.StopOnDisconnectConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** A pool of Virtual Machines. */
@@ -62,6 +66,26 @@ public final class PoolInner extends Resource {
     public PoolInner withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
+    }
+
+    /**
+     * Get the healthStatus property: Overall health status of the Pool. Indicates whether or not the Pool is available
+     * to create Dev Boxes.
+     *
+     * @return the healthStatus value.
+     */
+    public HealthStatus healthStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().healthStatus();
+    }
+
+    /**
+     * Get the healthStatusDetails property: Details on the Pool health status to help diagnose issues. This is only
+     * populated when the pool status indicates the pool is in a non-healthy state.
+     *
+     * @return the healthStatusDetails value.
+     */
+    public List<HealthStatusDetail> healthStatusDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().healthStatusDetails();
     }
 
     /**
@@ -166,6 +190,29 @@ public final class PoolInner extends Resource {
             this.innerProperties = new PoolProperties();
         }
         this.innerProperties().withLocalAdministrator(localAdministrator);
+        return this;
+    }
+
+    /**
+     * Get the stopOnDisconnect property: Stop on disconnect configuration settings for Dev Boxes created in this pool.
+     *
+     * @return the stopOnDisconnect value.
+     */
+    public StopOnDisconnectConfiguration stopOnDisconnect() {
+        return this.innerProperties() == null ? null : this.innerProperties().stopOnDisconnect();
+    }
+
+    /**
+     * Set the stopOnDisconnect property: Stop on disconnect configuration settings for Dev Boxes created in this pool.
+     *
+     * @param stopOnDisconnect the stopOnDisconnect value to set.
+     * @return the PoolInner object itself.
+     */
+    public PoolInner withStopOnDisconnect(StopOnDisconnectConfiguration stopOnDisconnect) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PoolProperties();
+        }
+        this.innerProperties().withStopOnDisconnect(stopOnDisconnect);
         return this;
     }
 

@@ -20,27 +20,28 @@ public final class StorageProfile {
     private ImageReference imageReference;
 
     /*
-     * Specifies information about the operating system disk used by the virtual machine. <br><br> For more information
-     * about disks, see [About disks and VHDs for Azure virtual
+     * Specifies information about the operating system disk used by the virtual machine. For more information about
+     * disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      */
     @JsonProperty(value = "osDisk")
     private OSDisk osDisk;
 
     /*
-     * Specifies the parameters that are used to add a data disk to a virtual machine. <br><br> For more information
-     * about disks, see [About disks and VHDs for Azure virtual
+     * Specifies the parameters that are used to add a data disk to a virtual machine. For more information about
+     * disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      */
     @JsonProperty(value = "dataDisks")
     private List<DataDisk> dataDisks;
 
     /*
-     * Specifies the disk controller type configured for the VM. <br><br>NOTE: This property will be set to the default
-     * disk controller type if not specified provided virtual machine is being created as a hyperVGeneration: V2 based
-     * on the capabilities of the operating system disk and VM size from the the specified minimum api version. <br>You
-     * need to deallocate the VM before updating its disk controller type unless you are updating the VM size in the VM
-     * configuration which implicitly deallocates and reallocates the VM. <br><br> Minimum api-version: 2022-08-01
+     * Specifies the disk controller type configured for the VM. **Note:** This property will be set to the default
+     * disk controller type if not specified provided virtual machine is being created with 'hyperVGeneration' set to
+     * V2 based on the capabilities of the operating system disk and VM size from the the specified minimum api
+     * version. You need to deallocate the VM before updating its disk controller type unless you are updating the VM
+     * size in the VM configuration which implicitly deallocates and reallocates the VM. Minimum api-version:
+     * 2022-08-01.
      */
     @JsonProperty(value = "diskControllerType")
     private DiskControllerTypes diskControllerType;
@@ -74,8 +75,8 @@ public final class StorageProfile {
     }
 
     /**
-     * Get the osDisk property: Specifies information about the operating system disk used by the virtual machine.
-     * &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual
+     * Get the osDisk property: Specifies information about the operating system disk used by the virtual machine. For
+     * more information about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      *
      * @return the osDisk value.
@@ -85,8 +86,8 @@ public final class StorageProfile {
     }
 
     /**
-     * Set the osDisk property: Specifies information about the operating system disk used by the virtual machine.
-     * &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual
+     * Set the osDisk property: Specifies information about the operating system disk used by the virtual machine. For
+     * more information about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      *
      * @param osDisk the osDisk value to set.
@@ -98,8 +99,8 @@ public final class StorageProfile {
     }
 
     /**
-     * Get the dataDisks property: Specifies the parameters that are used to add a data disk to a virtual machine.
-     * &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual
+     * Get the dataDisks property: Specifies the parameters that are used to add a data disk to a virtual machine. For
+     * more information about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      *
      * @return the dataDisks value.
@@ -109,8 +110,8 @@ public final class StorageProfile {
     }
 
     /**
-     * Set the dataDisks property: Specifies the parameters that are used to add a data disk to a virtual machine.
-     * &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual
+     * Set the dataDisks property: Specifies the parameters that are used to add a data disk to a virtual machine. For
+     * more information about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      *
      * @param dataDisks the dataDisks value to set.
@@ -122,12 +123,12 @@ public final class StorageProfile {
     }
 
     /**
-     * Get the diskControllerType property: Specifies the disk controller type configured for the VM.
-     * &lt;br&gt;&lt;br&gt;NOTE: This property will be set to the default disk controller type if not specified provided
-     * virtual machine is being created as a hyperVGeneration: V2 based on the capabilities of the operating system disk
-     * and VM size from the the specified minimum api version. &lt;br&gt;You need to deallocate the VM before updating
-     * its disk controller type unless you are updating the VM size in the VM configuration which implicitly deallocates
-     * and reallocates the VM. &lt;br&gt;&lt;br&gt; Minimum api-version: 2022-08-01.
+     * Get the diskControllerType property: Specifies the disk controller type configured for the VM. **Note:** This
+     * property will be set to the default disk controller type if not specified provided virtual machine is being
+     * created with 'hyperVGeneration' set to V2 based on the capabilities of the operating system disk and VM size from
+     * the the specified minimum api version. You need to deallocate the VM before updating its disk controller type
+     * unless you are updating the VM size in the VM configuration which implicitly deallocates and reallocates the VM.
+     * Minimum api-version: 2022-08-01.
      *
      * @return the diskControllerType value.
      */
@@ -136,12 +137,12 @@ public final class StorageProfile {
     }
 
     /**
-     * Set the diskControllerType property: Specifies the disk controller type configured for the VM.
-     * &lt;br&gt;&lt;br&gt;NOTE: This property will be set to the default disk controller type if not specified provided
-     * virtual machine is being created as a hyperVGeneration: V2 based on the capabilities of the operating system disk
-     * and VM size from the the specified minimum api version. &lt;br&gt;You need to deallocate the VM before updating
-     * its disk controller type unless you are updating the VM size in the VM configuration which implicitly deallocates
-     * and reallocates the VM. &lt;br&gt;&lt;br&gt; Minimum api-version: 2022-08-01.
+     * Set the diskControllerType property: Specifies the disk controller type configured for the VM. **Note:** This
+     * property will be set to the default disk controller type if not specified provided virtual machine is being
+     * created with 'hyperVGeneration' set to V2 based on the capabilities of the operating system disk and VM size from
+     * the the specified minimum api version. You need to deallocate the VM before updating its disk controller type
+     * unless you are updating the VM size in the VM configuration which implicitly deallocates and reallocates the VM.
+     * Minimum api-version: 2022-08-01.
      *
      * @param diskControllerType the diskControllerType value to set.
      * @return the StorageProfile object itself.

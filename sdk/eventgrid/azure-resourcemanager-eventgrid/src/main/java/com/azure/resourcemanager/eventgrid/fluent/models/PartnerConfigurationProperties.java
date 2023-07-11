@@ -24,6 +24,10 @@ public final class PartnerConfigurationProperties {
     @JsonProperty(value = "provisioningState")
     private PartnerConfigurationProvisioningState provisioningState;
 
+    /** Creates an instance of PartnerConfigurationProperties class. */
+    public PartnerConfigurationProperties() {
+    }
+
     /**
      * Get the partnerAuthorization property: The details of authorized partners.
      *

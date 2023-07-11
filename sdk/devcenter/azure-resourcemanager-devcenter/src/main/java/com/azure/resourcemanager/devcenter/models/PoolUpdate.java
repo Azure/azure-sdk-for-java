@@ -142,6 +142,29 @@ public final class PoolUpdate extends TrackedResourceUpdate {
     }
 
     /**
+     * Get the stopOnDisconnect property: Stop on disconnect configuration settings for Dev Boxes created in this pool.
+     *
+     * @return the stopOnDisconnect value.
+     */
+    public StopOnDisconnectConfiguration stopOnDisconnect() {
+        return this.innerProperties() == null ? null : this.innerProperties().stopOnDisconnect();
+    }
+
+    /**
+     * Set the stopOnDisconnect property: Stop on disconnect configuration settings for Dev Boxes created in this pool.
+     *
+     * @param stopOnDisconnect the stopOnDisconnect value to set.
+     * @return the PoolUpdate object itself.
+     */
+    public PoolUpdate withStopOnDisconnect(StopOnDisconnectConfiguration stopOnDisconnect) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PoolUpdateProperties();
+        }
+        this.innerProperties().withStopOnDisconnect(stopOnDisconnect);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

@@ -4,8 +4,10 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
@@ -31,22 +33,24 @@ public class RntbdServiceEndpointTest {
         List<Uri> uriList = new ArrayList<>();
 
         RntbdEndpoint.Provider endpointProvider = (RntbdEndpoint.Provider) FieldUtils.readField(transportClient, "endpointProvider", true);
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor = (ProactiveOpenConnectionsProcessor) FieldUtils.readField(transportClient, "proactiveOpenConnectionsProcessor", true);
+
         for(int i = 0;i <10;i++) {
             int port=uri.getPort()+i;
-            Uri physicalAddress = new Uri("rntbd://"
+            Uri addressUri = new Uri("rntbd://"
                 + uri.getHost()+":"+port
                 + "/apps/82691bd9-bcdd-44c4-b8e3-0722d357b80d/services/dc15e65d-9fb3-46cb-83e0-765faeec8855/partitions/fd9d234b-cdf5-47a0-a495-99f2fb19e874/replicas/132542487074124709p/"
             );
-            uriList.add(physicalAddress);
+            uriList.add(addressUri);
 
             //Adding endpoints to provider
-            endpointProvider.createIfAbsent(new URI("http://localhost"), physicalAddress.getURI());
+            endpointProvider.createIfAbsent(new URI("http://localhost"), addressUri, proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
         }
         //Asserting no eviction yet
         assertThat(endpointProvider.evictions()).isEqualTo(0);
 
         for(int i = 0;i <5;i++) {
-            RntbdEndpoint rntbdEndpoint = endpointProvider.createIfAbsent(new URI("http://localhost"), uriList.get(i).getURI());
+            RntbdEndpoint rntbdEndpoint = endpointProvider.createIfAbsent(new URI("http://localhost"), uriList.get(i), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
             assertThat(rntbdEndpoint.isClosed()).isFalse();
             rntbdEndpoint.close();
             assertThat(rntbdEndpoint.isClosed()).isTrue();

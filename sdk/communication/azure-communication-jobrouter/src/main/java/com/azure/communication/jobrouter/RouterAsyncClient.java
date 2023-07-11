@@ -3,23 +3,25 @@
 
 package com.azure.communication.jobrouter;
 
-import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutingServiceImpl;
+import com.azure.communication.jobrouter.implementation.AzureCommunicationServicesImpl;
 import com.azure.communication.jobrouter.implementation.JobRoutersImpl;
 import com.azure.communication.jobrouter.implementation.convertors.JobAdapter;
 import com.azure.communication.jobrouter.implementation.convertors.WorkerAdapter;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
 import com.azure.communication.jobrouter.models.JobPositionDetails;
-import com.azure.communication.jobrouter.models.JobStateSelector;
 import com.azure.communication.jobrouter.models.QueueStatistics;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobItem;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.RouterWorkerItem;
-import com.azure.communication.jobrouter.models.WorkerStateSelector;
+import com.azure.communication.jobrouter.models.UnassignJobResult;
 import com.azure.communication.jobrouter.models.options.CloseJobOptions;
 import com.azure.communication.jobrouter.models.options.CreateJobOptions;
 import com.azure.communication.jobrouter.models.options.CreateWorkerOptions;
+import com.azure.communication.jobrouter.models.options.ListJobsOptions;
+import com.azure.communication.jobrouter.models.options.ListWorkersOptions;
+import com.azure.communication.jobrouter.models.options.UnassignJobOptions;
 import com.azure.communication.jobrouter.models.options.UpdateJobOptions;
 import com.azure.communication.jobrouter.models.options.UpdateWorkerOptions;
 import com.azure.core.annotation.ReturnType;
@@ -61,7 +63,7 @@ public final class RouterAsyncClient {
 
     private final JobRoutersImpl jobRouter;
 
-    RouterAsyncClient(AzureCommunicationRoutingServiceImpl jobRouterService) {
+    RouterAsyncClient(AzureCommunicationServicesImpl jobRouterService) {
         this.jobRouter = jobRouterService.getJobRouters();
     }
 
@@ -503,6 +505,62 @@ public final class RouterAsyncClient {
     }
 
     /**
+     * Unassigns a job from a worker.
+     *
+     * @param unassignJobOptions Options object for unassign job operation.
+     * @return result as mentioned in {@link  com.azure.communication.jobrouter.models.UnassignJobResult}.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UnassignJobResult> unassignJob(UnassignJobOptions unassignJobOptions) {
+        try {
+            return withContext(context -> unassignJobWithResponse(unassignJobOptions, context)
+                .flatMap(
+                    (Response<UnassignJobResult> res) -> {
+                        if (res.getValue() != null) {
+                            return Mono.just(res.getValue());
+                        } else {
+                            return Mono.empty();
+                        }
+                    }));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Unassigns a job from the assigned worker.
+     *
+     * @param unassignJobOptions Options object for unassign job operation.
+     * @return result as mentioned in {@link  com.azure.communication.jobrouter.models.UnassignJobResult}.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<UnassignJobResult>> unassignJobWithResponse(UnassignJobOptions unassignJobOptions) {
+        try {
+            return withContext(context -> unassignJobWithResponse(unassignJobOptions, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<UnassignJobResult>> unassignJobWithResponse(UnassignJobOptions unassignJobOptions, Context context) {
+        try {
+            return jobRouter.unassignJobActionWithResponseAsync(
+                unassignJobOptions.getJobId(),
+                unassignJobOptions.getAssignmentId(),
+                context
+            );
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
      * Retrieves list of jobs based on filter parameters.
      *
      * @return a paged collection of jobs.
@@ -512,7 +570,7 @@ public final class RouterAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouterJobItem> listJobs() {
         try {
-            return jobRouter.listJobsAsync();
+            return jobRouter.listJobsAsync(null, null, null, null, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -521,20 +579,43 @@ public final class RouterAsyncClient {
     /**
      * Retrieves list of jobs based on filter parameters.
      *
-     * @param jobStateSelector (Optional) If specified, filter jobs by status.
-     * @param queueId (Optional) If specified, filter jobs by queue.
-     * @param channelId (Optional) If specified, filter jobs by channel.
-     * @param classificationPolicyId If specified, filter jobs by classificationPolicyId.
-     * @param maxPageSize Number of objects to return per page.
+     * @param listJobsOptions options for listJobs.
      * @return a paged collection of jobs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterJobItem> listJobs(JobStateSelector jobStateSelector, String queueId, String channelId, String classificationPolicyId, Integer maxPageSize) {
+    public PagedFlux<RouterJobItem> listJobs(ListJobsOptions listJobsOptions) {
         try {
-            return jobRouter.listJobsAsync(jobStateSelector, queueId, channelId, classificationPolicyId, maxPageSize);
+            return jobRouter.listJobsAsync(listJobsOptions.getJobStateSelector(),
+                listJobsOptions.getQueueId(),
+                listJobsOptions.getChannelId(),
+                listJobsOptions.getClassificationPolicyId(),
+                listJobsOptions.getMaxPageSize());
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Retrieves list of jobs based on filter parameters.
+     *
+     * @param listJobsOptions options for listJobs.
+     * @param context Context for listJobs.
+     * @return a paged collection of jobs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    PagedFlux<RouterJobItem> listJobs(ListJobsOptions listJobsOptions, Context context) {
+        try {
+            return jobRouter.listJobsAsync(listJobsOptions.getJobStateSelector(),
+                listJobsOptions.getQueueId(),
+                listJobsOptions.getChannelId(),
+                listJobsOptions.getClassificationPolicyId(),
+                listJobsOptions.getMaxPageSize(),
+                context);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -968,7 +1049,7 @@ public final class RouterAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouterWorkerItem> listWorkers() {
         try {
-            return jobRouter.listWorkersAsync();
+            return jobRouter.listWorkersAsync(null, null, null, null, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -977,22 +1058,33 @@ public final class RouterAsyncClient {
     /**
      * Retrieves existing workers.
      *
-     * @param workerStateSelector (Optional) If specified, select workers by worker status.
-     * @param channelId (Optional) If specified, select workers who have a channel configuration with this channel.
-     * @param queueId (Optional) If specified, select workers who are assigned to this queue.
-     * @param hasCapacity (Optional) If set to true, select only workers who have capacity for the channel specified by
-     * `channelId` or for any channel if `channelId` not specified. If set to false, then will return all workers
-     * including workers without any capacity for jobs. Defaults to false.
-     * @param maxPageSize Number of objects to return per page.
+     * @param listWorkersOptions options for listWorkers.
      * @return a paged collection of workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterWorkerItem> listWorkers(WorkerStateSelector workerStateSelector, String channelId, String queueId, Boolean hasCapacity, Integer maxPageSize) {
+    public PagedFlux<RouterWorkerItem> listWorkers(ListWorkersOptions listWorkersOptions) {
         try {
-            return jobRouter.listWorkersAsync(workerStateSelector, channelId, queueId, hasCapacity, maxPageSize);
+            return jobRouter.listWorkersAsync(listWorkersOptions.getWorkerStateSelector(),
+                listWorkersOptions.getChannelId(),
+                listWorkersOptions.getQueueId(),
+                listWorkersOptions.getHasCapacity(),
+                listWorkersOptions.getMaxPageSize());
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    PagedFlux<RouterWorkerItem> listWorkers(ListWorkersOptions listWorkersOptions, Context context) {
+        try {
+            return jobRouter.listWorkersAsync(listWorkersOptions.getWorkerStateSelector(),
+                listWorkersOptions.getChannelId(),
+                listWorkersOptions.getQueueId(),
+                listWorkersOptions.getHasCapacity(),
+                listWorkersOptions.getMaxPageSize(),
+                context);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }

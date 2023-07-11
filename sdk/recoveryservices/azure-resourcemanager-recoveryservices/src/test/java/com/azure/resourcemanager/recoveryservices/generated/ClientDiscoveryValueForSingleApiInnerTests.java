@@ -18,38 +18,38 @@ public final class ClientDiscoveryValueForSingleApiInnerTests {
         ClientDiscoveryValueForSingleApiInner model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"kktwhrdxw\",\"display\":{\"provider\":\"q\",\"resource\":\"bsureximo\",\"operation\":\"ocfs\",\"description\":\"s\"},\"origin\":\"ddystkiiuxhqy\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[]}}}")
+                    "{\"name\":\"xim\",\"display\":{\"provider\":\"ocfs\",\"resource\":\"s\",\"operation\":\"ddystkiiuxhqy\",\"description\":\"xorrqnb\"},\"origin\":\"czvyifq\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[]}}}")
                 .toObject(ClientDiscoveryValueForSingleApiInner.class);
-        Assertions.assertEquals("kktwhrdxw", model.name());
-        Assertions.assertEquals("q", model.display().provider());
-        Assertions.assertEquals("bsureximo", model.display().resource());
-        Assertions.assertEquals("ocfs", model.display().operation());
-        Assertions.assertEquals("s", model.display().description());
-        Assertions.assertEquals("ddystkiiuxhqy", model.origin());
+        Assertions.assertEquals("xim", model.name());
+        Assertions.assertEquals("ocfs", model.display().provider());
+        Assertions.assertEquals("s", model.display().resource());
+        Assertions.assertEquals("ddystkiiuxhqy", model.display().operation());
+        Assertions.assertEquals("xorrqnb", model.display().description());
+        Assertions.assertEquals("czvyifq", model.origin());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClientDiscoveryValueForSingleApiInner model =
             new ClientDiscoveryValueForSingleApiInner()
-                .withName("kktwhrdxw")
+                .withName("xim")
                 .withDisplay(
                     new ClientDiscoveryDisplay()
-                        .withProvider("q")
-                        .withResource("bsureximo")
-                        .withOperation("ocfs")
-                        .withDescription("s"))
-                .withOrigin("ddystkiiuxhqy")
+                        .withProvider("ocfs")
+                        .withResource("s")
+                        .withOperation("ddystkiiuxhqy")
+                        .withDescription("xorrqnb"))
+                .withOrigin("czvyifq")
                 .withProperties(
                     new ClientDiscoveryForProperties()
                         .withServiceSpecification(
                             new ClientDiscoveryForServiceSpecification().withLogSpecifications(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(ClientDiscoveryValueForSingleApiInner.class);
-        Assertions.assertEquals("kktwhrdxw", model.name());
-        Assertions.assertEquals("q", model.display().provider());
-        Assertions.assertEquals("bsureximo", model.display().resource());
-        Assertions.assertEquals("ocfs", model.display().operation());
-        Assertions.assertEquals("s", model.display().description());
-        Assertions.assertEquals("ddystkiiuxhqy", model.origin());
+        Assertions.assertEquals("xim", model.name());
+        Assertions.assertEquals("ocfs", model.display().provider());
+        Assertions.assertEquals("s", model.display().resource());
+        Assertions.assertEquals("ddystkiiuxhqy", model.display().operation());
+        Assertions.assertEquals("xorrqnb", model.display().description());
+        Assertions.assertEquals("czvyifq", model.origin());
     }
 }

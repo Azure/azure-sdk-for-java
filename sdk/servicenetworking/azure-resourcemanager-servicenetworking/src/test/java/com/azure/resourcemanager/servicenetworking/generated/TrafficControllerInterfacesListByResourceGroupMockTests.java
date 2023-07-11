@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.TrafficController;
 import java.nio.ByteBuffer;
@@ -33,7 +32,7 @@ public final class TrafficControllerInterfacesListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"configurationEndpoints\":[\"dt\"],\"frontends\":[],\"associations\":[],\"provisioningState\":\"Deleting\"},\"location\":\"abhjybi\",\"tags\":{\"zlcuiywgqywgndrv\":\"oqfbowskanyk\"},\"id\":\"nhzgpphrcgyn\",\"name\":\"ocpecfvmmco\",\"type\":\"fsxlzevgbmqjqa\"}]}";
+            "{\"value\":[{\"properties\":{\"configurationEndpoints\":[\"esnzwde\",\"bavo\",\"xzdmohctb\",\"vudwx\"],\"frontends\":[],\"associations\":[],\"provisioningState\":\"Canceled\"},\"location\":\"ujjugwdkcglh\",\"tags\":{\"yggdtjixh\":\"zj\",\"evfyexfwhybcib\":\"kuofqweykhme\"},\"id\":\"yvdcsitynnaa\",\"name\":\"dectehfiqsc\",\"type\":\"eypvhezrkg\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +61,9 @@ public final class TrafficControllerInterfacesListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<TrafficController> response =
-            manager.trafficControllerInterfaces().listByResourceGroup("xlefgugnxkrx", Context.NONE);
+            manager.trafficControllerInterfaces().listByResourceGroup("sop", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("abhjybi", response.iterator().next().location());
-        Assertions.assertEquals("oqfbowskanyk", response.iterator().next().tags().get("zlcuiywgqywgndrv"));
+        Assertions.assertEquals("ujjugwdkcglh", response.iterator().next().location());
+        Assertions.assertEquals("zj", response.iterator().next().tags().get("yggdtjixh"));
     }
 }

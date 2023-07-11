@@ -27,7 +27,7 @@ public final class AssociationProperties {
     private AssociationSubnet subnet;
 
     /*
-     * Provisioning State
+     * Provisioning State of Traffic Controller Association Resource
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -77,7 +77,7 @@ public final class AssociationProperties {
     }
 
     /**
-     * Get the provisioningState property: Provisioning State.
+     * Get the provisioningState property: Provisioning State of Traffic Controller Association Resource.
      *
      * @return the provisioningState value.
      */

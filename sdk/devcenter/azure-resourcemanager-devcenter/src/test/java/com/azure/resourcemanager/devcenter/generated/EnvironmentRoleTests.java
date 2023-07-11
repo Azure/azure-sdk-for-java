@@ -6,19 +6,16 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.EnvironmentRole;
-import org.junit.jupiter.api.Test;
 
 public final class EnvironmentRoleTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         EnvironmentRole model =
-            BinaryData
-                .fromString("{\"roleName\":\"vwfudwpzntxhd\",\"description\":\"lrqjbhckfr\"}")
-                .toObject(EnvironmentRole.class);
+            BinaryData.fromString("{\"roleName\":\"z\",\"description\":\"zka\"}").toObject(EnvironmentRole.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         EnvironmentRole model = new EnvironmentRole();
         model = BinaryData.fromObject(model).toObject(EnvironmentRole.class);
     }

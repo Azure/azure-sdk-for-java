@@ -16,6 +16,9 @@ public final class AcsUserDisconnectedEventData {
     @JsonProperty(value = "userCommunicationIdentifier")
     private CommunicationIdentifierModel userCommunicationIdentifier;
 
+    /** Creates an instance of AcsUserDisconnectedEventData class. */
+    public AcsUserDisconnectedEventData() {}
+
     /**
      * Get the userCommunicationIdentifier property: The communication identifier of the user who was disconnected.
      *

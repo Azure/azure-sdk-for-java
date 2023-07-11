@@ -7,8 +7,8 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
+import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -156,7 +156,7 @@ public final class ScheduleInner extends ProxyResource {
      *
      * @return the state value.
      */
-    public EnableStatus state() {
+    public ScheduleEnableStatus state() {
         return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
@@ -166,7 +166,7 @@ public final class ScheduleInner extends ProxyResource {
      * @param state the state value to set.
      * @return the ScheduleInner object itself.
      */
-    public ScheduleInner withState(EnableStatus state) {
+    public ScheduleInner withState(ScheduleEnableStatus state) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ScheduleProperties();
         }

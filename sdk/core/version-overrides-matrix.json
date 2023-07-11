@@ -11,6 +11,7 @@
         "jackson_2.11",
         "jackson_2.12",
         "jackson_2.14",
+        "jackson_2.15",		
         "reactor_2020",
         "reactor_2022"
     ],

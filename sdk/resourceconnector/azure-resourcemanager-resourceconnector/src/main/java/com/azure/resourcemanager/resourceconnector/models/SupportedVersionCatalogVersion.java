@@ -28,6 +28,10 @@ public final class SupportedVersionCatalogVersion {
     @JsonProperty(value = "namespace", access = JsonProperty.Access.WRITE_ONLY)
     private String namespace;
 
+    /** Creates an instance of SupportedVersionCatalogVersion class. */
+    public SupportedVersionCatalogVersion() {
+    }
+
     /**
      * Get the data property: The newer supported version catalog version data.
      *

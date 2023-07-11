@@ -7,19 +7,24 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Head;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.http.ContentType;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
+import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
@@ -35,6 +40,8 @@ public class AsyncRestProxyTests {
 
     private SwaggerInterfaceParser swaggerInterfaceParser;
 
+
+
     @Host("https://example.com")
     @ServiceInterface(name = "async-rest-proxy-tests")
     private interface MockService {
@@ -46,6 +53,9 @@ public class AsyncRestProxyTests {
 
         @Get("getInputStream")
         InputStream getInputStream();
+
+        @Get("getStreamResponse")
+        Flux<ByteBuffer> getStreamResponse();
     }
 
     @BeforeEach
@@ -147,5 +157,45 @@ public class AsyncRestProxyTests {
             })
             .expectComplete()
             .verify();
+    }
+
+    /**
+     * Validates scenario for a response with different content type headers that maps to a
+     * replayable BinaryData if the content type is not a stream.
+     */
+    @ParameterizedTest
+    @MethodSource("getResponseHeaderAndReplayability")
+    public void handleBodyReturnTypeStream(HttpHeaders headers, boolean isReplayable) throws NoSuchMethodException {
+        // Arrange
+        SwaggerMethodParser methodParser = swaggerInterfaceParser
+            .getMethodParser(MockService.class.getDeclaredMethod("getStreamResponse"));
+
+        final byte[] expectedBytes = "hello".getBytes(StandardCharsets.UTF_8);
+        final Type returnType = BinaryData.class;
+
+        HttpResponse httpResponse = new MockHttpResponse(null, 200, headers, expectedBytes);
+
+        // Act
+        StepVerifier.create(AsyncRestProxy.handleBodyReturnType(httpResponse, ignored -> null, methodParser,
+                returnType))
+            .assertNext(value -> {
+                assertTrue(value instanceof BinaryData);
+                BinaryData binaryData = (BinaryData) value;
+                assertEquals(isReplayable, binaryData.isReplayable());
+                byte[] actualBytes = binaryData.toBytes();
+                assertEquals(expectedBytes.length, actualBytes.length);
+                assertArraysEqual(expectedBytes, actualBytes);
+            })
+            .expectComplete()
+            .verify();
+    }
+
+    public static Stream<Arguments> getResponseHeaderAndReplayability() {
+        return Stream.of(
+            Arguments.of(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_OCTET_STREAM), true),
+            Arguments.of(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/event-stream"), false),
+            Arguments.of(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_JSON), true),
+            Arguments.of(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml"), true)
+        );
     }
 }

@@ -7,9 +7,7 @@ package com.azure.resourcemanager.dns.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dns.models.ZoneType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +15,6 @@ import java.util.Map;
 /** Describes a DNS zone. */
 @Fluent
 public final class ZoneInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ZoneInner.class);
-
     /*
      * The etag of the zone.
      */
@@ -30,6 +26,10 @@ public final class ZoneInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private ZoneProperties innerProperties;
+
+    /** Creates an instance of ZoneInner class. */
+    public ZoneInner() {
+    }
 
     /**
      * Get the etag property: The etag of the zone.

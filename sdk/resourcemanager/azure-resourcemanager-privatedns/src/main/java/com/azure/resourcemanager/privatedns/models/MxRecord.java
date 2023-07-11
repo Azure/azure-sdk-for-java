@@ -22,6 +22,10 @@ public final class MxRecord {
     @JsonProperty(value = "exchange")
     private String exchange;
 
+    /** Creates an instance of MxRecord class. */
+    public MxRecord() {
+    }
+
     /**
      * Get the preference property: The preference value for this MX record.
      *

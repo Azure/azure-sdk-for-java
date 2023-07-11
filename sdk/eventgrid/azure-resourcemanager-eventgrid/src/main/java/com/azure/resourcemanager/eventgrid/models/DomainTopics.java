@@ -11,20 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of DomainTopics. */
 public interface DomainTopics {
     /**
-     * Get properties of a domain topic.
+     * Get a domain topic.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @param domainTopicName Name of the topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a domain topic.
-     */
-    DomainTopic get(String resourceGroupName, String domainName, String domainTopicName);
-
-    /**
-     * Get properties of a domain topic.
+     * <p>Get properties of a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -39,7 +28,24 @@ public interface DomainTopics {
         String resourceGroupName, String domainName, String domainTopicName, Context context);
 
     /**
-     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * Get a domain topic.
+     *
+     * <p>Get properties of a domain topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the domain.
+     * @param domainTopicName Name of the topic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a domain topic.
+     */
+    DomainTopic get(String resourceGroupName, String domainName, String domainTopicName);
+
+    /**
+     * Create or update a domain topic.
+     *
+     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -52,7 +58,9 @@ public interface DomainTopics {
     DomainTopic createOrUpdate(String resourceGroupName, String domainName, String domainTopicName);
 
     /**
-     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * Create or update a domain topic.
+     *
+     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -66,7 +74,9 @@ public interface DomainTopics {
     DomainTopic createOrUpdate(String resourceGroupName, String domainName, String domainTopicName, Context context);
 
     /**
-     * Delete existing domain topic.
+     * Delete a domain topic.
+     *
+     * <p>Delete existing domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -78,7 +88,9 @@ public interface DomainTopics {
     void delete(String resourceGroupName, String domainName, String domainTopicName);
 
     /**
-     * Delete existing domain topic.
+     * Delete a domain topic.
+     *
+     * <p>Delete existing domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -91,7 +103,9 @@ public interface DomainTopics {
     void delete(String resourceGroupName, String domainName, String domainTopicName, Context context);
 
     /**
-     * List all the topics in a domain.
+     * List domain topics.
+     *
+     * <p>List all the topics in a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Domain name.
@@ -103,7 +117,9 @@ public interface DomainTopics {
     PagedIterable<DomainTopic> listByDomain(String resourceGroupName, String domainName);
 
     /**
-     * List all the topics in a domain.
+     * List domain topics.
+     *
+     * <p>List all the topics in a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Domain name.

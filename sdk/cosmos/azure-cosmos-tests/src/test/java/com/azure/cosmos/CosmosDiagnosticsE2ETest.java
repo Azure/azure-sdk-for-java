@@ -180,6 +180,41 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
+    public void delayedSampling() {
+        MeterRegistry meterRegistry = ConsoleLoggingRegistryFactory.create(1);
+
+        CosmosClientTelemetryConfig clientTelemetryCfg = new CosmosClientTelemetryConfig()
+            .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER)
+            .metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(meterRegistry));
+
+        CosmosClientBuilder builder = this
+            .getClientBuilder()
+            .clientTelemetryConfig(clientTelemetryCfg);
+
+        CosmosContainer container = this.getContainer(builder);
+        executeTestCase(container);
+
+        meterRegistry.clear();
+        meterRegistry.close();
+
+        // change sample rate to 25%
+        clientTelemetryCfg.sampleDiagnostics(0.25);
+        executeTestCase(container);
+
+        // reduce sample rate to 0 - disable all diagnostics
+        clientTelemetryCfg.sampleDiagnostics(0);
+        executeTestCase(container);
+
+        // set sample rate to 1 - enable all diagnostics (no sampling anymore)
+        clientTelemetryCfg.sampleDiagnostics(1);
+        executeTestCase(container);
+
+        // no assertions here - invocations for diagnostics handler are validated above
+        // log4j event logging isn't validated in general in unit tests because it is too brittle to do so
+        // with custom appender
+    }
+
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void defaultLoggerWithLegacyOpenTelemetryTraces() {
         System.setProperty("COSMOS.USE_LEGACY_TRACING", "true");
         CosmosClientBuilder builder = this

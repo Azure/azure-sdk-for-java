@@ -16,6 +16,9 @@ public final class NetworkPolicy extends ExpandableStringEnum<NetworkPolicy> {
     /** Static value azure for NetworkPolicy. */
     public static final NetworkPolicy AZURE = fromString("azure");
 
+    /** Static value cilium for NetworkPolicy. */
+    public static final NetworkPolicy CILIUM = fromString("cilium");
+
     /**
      * Creates a new instance of NetworkPolicy value.
      *

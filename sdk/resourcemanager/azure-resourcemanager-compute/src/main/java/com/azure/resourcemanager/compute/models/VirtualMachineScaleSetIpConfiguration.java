@@ -13,7 +13,7 @@ import java.util.List;
 
 /** Describes a virtual machine scale set network profile's IP configuration. */
 @Fluent
-public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
+public final class VirtualMachineScaleSetIpConfiguration {
     /*
      * The IP configuration name.
      */
@@ -58,13 +58,6 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      */
     private VirtualMachineScaleSetIpConfigurationProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VirtualMachineScaleSetIpConfiguration withId(String id) {
-        super.withId(id);
-        return this;
     }
 
     /**

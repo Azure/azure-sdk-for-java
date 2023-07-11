@@ -7,6 +7,8 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import java.util.Collection;
+
 /**
  * Gets the entity category inferred by the text analytics service's named entity recognition model.
  * The list of available categories is described at
@@ -93,5 +95,10 @@ public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
     @JsonCreator
     public static EntityCategory fromString(String name) {
         return fromString(name, EntityCategory.class);
+    }
+
+    /** @return known EntityCategory values. */
+    public static Collection<EntityCategory> values() {
+        return values(EntityCategory.class);
     }
 }

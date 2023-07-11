@@ -49,6 +49,13 @@ public interface Extension {
     SystemData systemData();
 
     /**
+     * Gets the plan property: The plan information.
+     *
+     * @return the plan value.
+     */
+    Plan plan();
+
+    /**
      * Gets the extensionType property: Type of the Extension, of which this resource is an instance of. It must be one
      * of the Extension Types registered with Microsoft.KubernetesConfiguration by the Extension publisher.
      *
@@ -104,11 +111,11 @@ public interface Extension {
     Map<String, String> configurationProtectedSettings();
 
     /**
-     * Gets the installedVersion property: Installed version of the extension.
+     * Gets the currentVersion property: Currently installed version of the extension.
      *
-     * @return the installedVersion value.
+     * @return the currentVersion value.
      */
-    String installedVersion();
+    String currentVersion();
 
     /**
      * Gets the provisioningState property: Status of installation of this extension.
@@ -151,6 +158,13 @@ public interface Extension {
      * @return the aksAssignedIdentity value.
      */
     ExtensionPropertiesAksAssignedIdentity aksAssignedIdentity();
+
+    /**
+     * Gets the isSystemExtension property: Flag to note if this extension is a system extension.
+     *
+     * @return the isSystemExtension value.
+     */
+    Boolean isSystemExtension();
 
     /**
      * Gets the inner com.azure.resourcemanager.kubernetesconfiguration.fluent.models.ExtensionInner object.

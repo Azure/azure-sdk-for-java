@@ -176,6 +176,31 @@ public final class RestorableDatabaseAccountGetResultInner {
     }
 
     /**
+     * Get the oldestRestorableTime property: The least recent time at which the database account can be restored to
+     * (ISO-8601 format).
+     *
+     * @return the oldestRestorableTime value.
+     */
+    public OffsetDateTime oldestRestorableTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().oldestRestorableTime();
+    }
+
+    /**
+     * Set the oldestRestorableTime property: The least recent time at which the database account can be restored to
+     * (ISO-8601 format).
+     *
+     * @param oldestRestorableTime the oldestRestorableTime value to set.
+     * @return the RestorableDatabaseAccountGetResultInner object itself.
+     */
+    public RestorableDatabaseAccountGetResultInner withOldestRestorableTime(OffsetDateTime oldestRestorableTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorableDatabaseAccountProperties();
+        }
+        this.innerProperties().withOldestRestorableTime(oldestRestorableTime);
+        return this;
+    }
+
+    /**
      * Get the apiType property: The API type of the restorable database account.
      *
      * @return the apiType value.

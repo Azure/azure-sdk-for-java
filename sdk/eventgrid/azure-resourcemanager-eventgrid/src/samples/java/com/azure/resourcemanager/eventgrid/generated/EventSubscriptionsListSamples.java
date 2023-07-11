@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for EventSubscriptions List. */
 public final class EventSubscriptionsListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/EventSubscriptions_ListGlobalBySubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_ListGlobalBySubscription.json
      */
     /**
      * Sample code: EventSubscriptions_ListGlobalBySubscription.
@@ -18,6 +16,6 @@ public final class EventSubscriptionsListSamples {
      */
     public static void eventSubscriptionsListGlobalBySubscription(
         com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.eventSubscriptions().list(null, null, Context.NONE);
+        manager.eventSubscriptions().list(null, null, com.azure.core.util.Context.NONE);
     }
 }

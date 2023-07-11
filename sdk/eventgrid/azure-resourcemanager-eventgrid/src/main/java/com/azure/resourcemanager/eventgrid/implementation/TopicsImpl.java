@@ -31,15 +31,6 @@ public final class TopicsImpl implements Topics {
         this.serviceManager = serviceManager;
     }
 
-    public Topic getByResourceGroup(String resourceGroupName, String topicName) {
-        TopicInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, topicName);
-        if (inner != null) {
-            return new TopicImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Topic> getByResourceGroupWithResponse(String resourceGroupName, String topicName, Context context) {
         Response<TopicInner> inner =
             this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, topicName, context);
@@ -49,6 +40,15 @@ public final class TopicsImpl implements Topics {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new TopicImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Topic getByResourceGroup(String resourceGroupName, String topicName) {
+        TopicInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, topicName);
+        if (inner != null) {
+            return new TopicImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -84,15 +84,6 @@ public final class TopicsImpl implements Topics {
         return Utils.mapPage(inner, inner1 -> new TopicImpl(inner1, this.manager()));
     }
 
-    public TopicSharedAccessKeys listSharedAccessKeys(String resourceGroupName, String topicName) {
-        TopicSharedAccessKeysInner inner = this.serviceClient().listSharedAccessKeys(resourceGroupName, topicName);
-        if (inner != null) {
-            return new TopicSharedAccessKeysImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<TopicSharedAccessKeys> listSharedAccessKeysWithResponse(
         String resourceGroupName, String topicName, Context context) {
         Response<TopicSharedAccessKeysInner> inner =
@@ -103,6 +94,15 @@ public final class TopicsImpl implements Topics {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new TopicSharedAccessKeysImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public TopicSharedAccessKeys listSharedAccessKeys(String resourceGroupName, String topicName) {
+        TopicSharedAccessKeysInner inner = this.serviceClient().listSharedAccessKeys(resourceGroupName, topicName);
+        if (inner != null) {
+            return new TopicSharedAccessKeysImpl(inner, this.manager());
         } else {
             return null;
         }

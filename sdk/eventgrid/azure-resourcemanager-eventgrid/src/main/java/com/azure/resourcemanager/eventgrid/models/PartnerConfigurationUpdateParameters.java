@@ -26,6 +26,10 @@ public final class PartnerConfigurationUpdateParameters {
     @JsonProperty(value = "properties")
     private PartnerConfigurationUpdateParameterProperties innerProperties;
 
+    /** Creates an instance of PartnerConfigurationUpdateParameters class. */
+    public PartnerConfigurationUpdateParameters() {
+    }
+
     /**
      * Get the tags property: Tags of the partner configuration resource.
      *

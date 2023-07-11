@@ -10,6 +10,7 @@ import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.QueueAssignment;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.options.CreateWorkerOptions;
+import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -23,23 +24,12 @@ public class RouterWorkerLiveTests extends JobRouterTestBase {
 
     private RouterAdministrationClient routerAdminClient;
 
-    @Override
-    protected void beforeTest() {
-        routerClient = clientSetup(httpPipeline -> new RouterClientBuilder()
-            .connectionString(getConnectionString())
-            .pipeline(httpPipeline)
-            .buildClient());
-
-        routerAdminClient = clientSetup(httpPipeline -> new RouterAdministrationClientBuilder()
-            .connectionString(getConnectionString())
-            .pipeline(httpPipeline)
-            .buildClient());
-    }
-
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createWorker() {
+    public void createWorker(HttpClient httpClient) {
         // Setup
+        routerClient = getRouterClient(httpClient);
+        routerAdminClient = getRouterAdministrationClient(httpClient);
         /**
          * Setup queue
          */

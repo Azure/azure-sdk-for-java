@@ -12,23 +12,22 @@ import com.azure.resourcemanager.devcenter.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DevCenterUpdateTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DevCenterUpdate model =
             BinaryData
                 .fromString(
-                    "{\"identity\":{\"principalId\":\"0218f7cb-1973-4891-b7a7-b7e7bf835cc1\",\"tenantId\":\"c007f053-ec3c-4a7e-bb6e-e6547fdd282e\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ipjoxzjnchgejs\":{\"principalId\":\"46b87a21-c120-405e-aa71-751626bf8229\",\"clientId\":\"28bd133f-32bd-473d-bd8f-5068af5ba9da\"},\"mailzydehojw\":{\"principalId\":\"844c7466-6256-47ac-b865-cb907bed5c93\",\"clientId\":\"07144762-8153-450d-9688-dafe1f7ccd63\"},\"uxinpmqnjaq\":{\"principalId\":\"edc06086-f8b5-44c4-bf6d-fc586b42a36c\",\"clientId\":\"ffe278c5-9a31-43c5-97b5-ec3ca3c776d1\"}}},\"tags\":{\"jvwmfda\":\"jsprozvcpute\"},\"location\":\"cmdv\"}")
+                    "{\"identity\":{\"principalId\":\"2bfc1a1c-bfa3-4ea9-859a-aaba75bff1cc\",\"tenantId\":\"c1654d8a-3e20-4b5a-84d9-b6ea0101e703\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ipjoxzjnchgejs\":{\"principalId\":\"f1a61d1f-4764-4e12-b2ee-0b09a35ead4b\",\"clientId\":\"6447ff6d-c8ca-4e0d-81e2-40733b7723ea\"},\"mailzydehojw\":{\"principalId\":\"cbccdaa8-5def-477b-8de3-e5cda0f43375\",\"clientId\":\"74b251ab-cda5-4f1e-9ffa-8cb6fc493e37\"},\"uxinpmqnjaq\":{\"principalId\":\"3dbb6668-9e69-47b1-820a-ca0d0ffca14a\",\"clientId\":\"1abb8f46-79f3-4078-b84f-bab39bf60442\"}}},\"tags\":{\"jvwmfda\":\"jsprozvcpute\"},\"location\":\"cmdv\"}")
                 .toObject(DevCenterUpdate.class);
         Assertions.assertEquals("jsprozvcpute", model.tags().get("jvwmfda"));
         Assertions.assertEquals("cmdv", model.location());
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DevCenterUpdate model =
             new DevCenterUpdate()
                 .withTags(mapOf("jvwmfda", "jsprozvcpute"))

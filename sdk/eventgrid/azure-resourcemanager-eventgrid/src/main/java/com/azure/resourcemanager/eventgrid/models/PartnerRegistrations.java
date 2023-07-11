@@ -11,19 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of PartnerRegistrations. */
 public interface PartnerRegistrations {
     /**
-     * Gets a partner registration with the specified parameters.
+     * Get a partner registration.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerRegistrationName Name of the partner registration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a partner registration with the specified parameters.
-     */
-    PartnerRegistration getByResourceGroup(String resourceGroupName, String partnerRegistrationName);
-
-    /**
-     * Gets a partner registration with the specified parameters.
+     * <p>Gets a partner registration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
@@ -37,7 +27,23 @@ public interface PartnerRegistrations {
         String resourceGroupName, String partnerRegistrationName, Context context);
 
     /**
-     * Deletes a partner registration with the specified parameters.
+     * Get a partner registration.
+     *
+     * <p>Gets a partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a partner registration with the specified parameters.
+     */
+    PartnerRegistration getByResourceGroup(String resourceGroupName, String partnerRegistrationName);
+
+    /**
+     * Delete a partner registration.
+     *
+     * <p>Deletes a partner registration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
@@ -48,7 +54,9 @@ public interface PartnerRegistrations {
     void deleteByResourceGroup(String resourceGroupName, String partnerRegistrationName);
 
     /**
-     * Deletes a partner registration with the specified parameters.
+     * Delete a partner registration.
+     *
+     * <p>Deletes a partner registration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
@@ -60,7 +68,9 @@ public interface PartnerRegistrations {
     void delete(String resourceGroupName, String partnerRegistrationName, Context context);
 
     /**
-     * List all the partner registrations under an Azure subscription.
+     * List partner registrations under an Azure subscription.
+     *
+     * <p>List all the partner registrations under an Azure subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -69,7 +79,9 @@ public interface PartnerRegistrations {
     PagedIterable<PartnerRegistration> list();
 
     /**
-     * List all the partner registrations under an Azure subscription.
+     * List partner registrations under an Azure subscription.
+     *
+     * <p>List all the partner registrations under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -88,7 +100,9 @@ public interface PartnerRegistrations {
     PagedIterable<PartnerRegistration> list(String filter, Integer top, Context context);
 
     /**
-     * List all the partner registrations under a resource group.
+     * List partner registrations under a resource group.
+     *
+     * <p>List all the partner registrations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -99,7 +113,9 @@ public interface PartnerRegistrations {
     PagedIterable<PartnerRegistration> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List all the partner registrations under a resource group.
+     * List partner registrations under a resource group.
+     *
+     * <p>List all the partner registrations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -120,7 +136,9 @@ public interface PartnerRegistrations {
         String resourceGroupName, String filter, Integer top, Context context);
 
     /**
-     * Gets a partner registration with the specified parameters.
+     * Get a partner registration.
+     *
+     * <p>Gets a partner registration with the specified parameters.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -131,7 +149,9 @@ public interface PartnerRegistrations {
     PartnerRegistration getById(String id);
 
     /**
-     * Gets a partner registration with the specified parameters.
+     * Get a partner registration.
+     *
+     * <p>Gets a partner registration with the specified parameters.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -143,7 +163,9 @@ public interface PartnerRegistrations {
     Response<PartnerRegistration> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a partner registration with the specified parameters.
+     * Delete a partner registration.
+     *
+     * <p>Deletes a partner registration with the specified parameters.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,7 +175,9 @@ public interface PartnerRegistrations {
     void deleteById(String id);
 
     /**
-     * Deletes a partner registration with the specified parameters.
+     * Delete a partner registration.
+     *
+     * <p>Deletes a partner registration with the specified parameters.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

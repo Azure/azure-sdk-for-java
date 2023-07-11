@@ -26,15 +26,6 @@ public final class ExtensionTopicsImpl implements ExtensionTopics {
         this.serviceManager = serviceManager;
     }
 
-    public ExtensionTopic get(String scope) {
-        ExtensionTopicInner inner = this.serviceClient().get(scope);
-        if (inner != null) {
-            return new ExtensionTopicImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ExtensionTopic> getWithResponse(String scope, Context context) {
         Response<ExtensionTopicInner> inner = this.serviceClient().getWithResponse(scope, context);
         if (inner != null) {
@@ -43,6 +34,15 @@ public final class ExtensionTopicsImpl implements ExtensionTopics {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ExtensionTopicImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ExtensionTopic get(String scope) {
+        ExtensionTopicInner inner = this.serviceClient().get(scope);
+        if (inner != null) {
+            return new ExtensionTopicImpl(inner, this.manager());
         } else {
             return null;
         }

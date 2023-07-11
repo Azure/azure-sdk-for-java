@@ -131,4 +131,21 @@ public class FeedResponseDiagnostics {
     public void addClientSideRequestStatistics(Collection<ClientSideRequestStatistics> requestStatistics) {
         clientSideRequestStatistics.addAll(requestStatistics);
     }
+
+    public String getUserAgent() {
+        if (this.clientSideRequestStatistics != null && !this.clientSideRequestStatistics.isEmpty()) {
+            return this.clientSideRequestStatistics.stream().findFirst().get().getUserAgent();
+        }
+
+        // return default one
+        return Utils.getUserAgent();
+    }
+
+    public FeedResponseDiagnostics setSamplingRateSnapshot(double samplingRateSnapshot) {
+        for (ClientSideRequestStatistics c: this.clientSideRequestStatistics) {
+            c.setSamplingRateSnapshot(samplingRateSnapshot);
+        }
+
+        return this;
+    }
 }

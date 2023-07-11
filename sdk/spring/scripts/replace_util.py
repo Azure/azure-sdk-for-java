@@ -24,13 +24,6 @@ config = {
             )
         }
     },
-    'cosmos': {
-        'sdk/cosmos/azure-spring-data-cosmos-test/pom.xml': {
-            VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.5.0'),
-            )
-        }
-    },
     'spring': {
         'sdk/spring/azure-spring-boot-test-parent/pom.xml': {
             VERSION_UPDATE_ITEMS: (
@@ -69,9 +62,9 @@ def get_args():
     parser.add_argument(
         '--module',
         type = str,
-        choices = ['spring', 'cosmos', 'appconfiguration'],
+        choices = ['spring', 'appconfiguration'],
         required = False,
-        default = 'cosmos',
+        default = 'spring',
         help = 'Specify the target module.'
     )
     parser.add_argument(

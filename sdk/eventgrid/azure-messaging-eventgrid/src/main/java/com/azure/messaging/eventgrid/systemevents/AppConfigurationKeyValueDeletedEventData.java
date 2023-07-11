@@ -34,6 +34,9 @@ public final class AppConfigurationKeyValueDeletedEventData {
     @JsonProperty(value = "syncToken")
     private String syncToken;
 
+    /** Creates an instance of AppConfigurationKeyValueDeletedEventData class. */
+    public AppConfigurationKeyValueDeletedEventData() {}
+
     /**
      * Get the key property: The key used to identify the key-value that was deleted.
      *

@@ -36,6 +36,7 @@ public class CallAutomationUnitTestBase {
     static final String CALL_CONNECTION_ID = "callConnectionId";
     static final String CALL_SERVER_CALL_ID = "serverCallId";
     static final String CALL_CALLER_ID = "callerId";
+    static final CommunicationUserIdentifier USER_1 = new CommunicationUserIdentifier("userId1");
     static final String CALL_CALLER_DISPLAY_NAME = "callerDisplayName";
     static final String CALL_TARGET_ID = "targetId";
     static final String CALL_CONNECTION_STATE = "connected";

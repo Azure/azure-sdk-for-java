@@ -18,6 +18,10 @@ public final class PatchExtension {
     @JsonProperty(value = "properties")
     private PatchExtensionProperties innerProperties;
 
+    /** Creates an instance of PatchExtension class. */
+    public PatchExtension() {
+    }
+
     /**
      * Get the innerProperties property: Updatable properties of an Extension Patch Request.
      *

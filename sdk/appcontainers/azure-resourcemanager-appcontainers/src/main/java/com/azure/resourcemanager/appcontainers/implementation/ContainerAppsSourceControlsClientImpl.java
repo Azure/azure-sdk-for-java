@@ -65,11 +65,10 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerAppsApiClie")
-    private interface ContainerAppsSourceControlsService {
+    public interface ContainerAppsSourceControlsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps"
-                + "/{containerAppName}/sourcecontrols")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<SourceControlCollection>> listByContainerApp(
@@ -83,8 +82,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps"
-                + "/{containerAppName}/sourcecontrols/{sourceControlName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<SourceControlInner>> get(
@@ -99,8 +97,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps"
-                + "/{containerAppName}/sourcecontrols/{sourceControlName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -116,8 +113,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps"
-                + "/{containerAppName}/sourcecontrols/{sourceControlName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -697,7 +693,8 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
         String containerAppName,
         String sourceControlName,
         SourceControlInner sourceControlEnvelope) {
-        return beginCreateOrUpdateAsync(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope)
             .getSyncPoller();
     }
 
@@ -721,7 +718,8 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
         String sourceControlName,
         SourceControlInner sourceControlEnvelope,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope, context)
             .getSyncPoller();
     }
@@ -989,7 +987,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String containerAppName, String sourceControlName) {
-        return beginDeleteAsync(resourceGroupName, containerAppName, sourceControlName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, containerAppName, sourceControlName).getSyncPoller();
     }
 
     /**
@@ -1007,7 +1005,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String containerAppName, String sourceControlName, Context context) {
-        return beginDeleteAsync(resourceGroupName, containerAppName, sourceControlName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, containerAppName, sourceControlName, context).getSyncPoller();
     }
 
     /**

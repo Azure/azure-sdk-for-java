@@ -78,10 +78,10 @@ public final class KeyVaultBackupClientBuilder implements
     HttpTrait<KeyVaultBackupClientBuilder>,
     ConfigurationTrait<KeyVaultBackupClientBuilder> {
     // This is the properties file name.
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultBackupClientBuilder.class);
     private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
-    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultBackupClientBuilder.class);
 
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.

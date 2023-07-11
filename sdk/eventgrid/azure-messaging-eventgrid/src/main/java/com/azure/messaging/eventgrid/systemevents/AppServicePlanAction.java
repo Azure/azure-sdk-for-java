@@ -8,10 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AppServicePlanAction. */
+/** Type of action on the app service plan. */
 public final class AppServicePlanAction extends ExpandableStringEnum<AppServicePlanAction> {
-    /** Static value Updated for AppServicePlanAction. */
+    /** App Service plan is being updated. */
     public static final AppServicePlanAction UPDATED = fromString("Updated");
+
+    /**
+     * Creates a new instance of AppServicePlanAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AppServicePlanAction() {}
 
     /**
      * Creates or finds a AppServicePlanAction from its string representation.

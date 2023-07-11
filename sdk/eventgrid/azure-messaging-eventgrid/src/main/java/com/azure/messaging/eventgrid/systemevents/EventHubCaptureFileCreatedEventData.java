@@ -65,6 +65,9 @@ public final class EventHubCaptureFileCreatedEventData {
     @JsonProperty(value = "lastEnqueueTime")
     private OffsetDateTime lastEnqueueTime;
 
+    /** Creates an instance of EventHubCaptureFileCreatedEventData class. */
+    public EventHubCaptureFileCreatedEventData() {}
+
     /**
      * Get the fileurl property: The path to the capture file.
      *

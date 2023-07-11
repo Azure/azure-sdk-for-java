@@ -11,21 +11,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class BootDiagnosticsInstanceView {
     /*
-     * The console screenshot blob URI. <br><br>NOTE: This will **not** be set if boot diagnostics is currently enabled
+     * The console screenshot blob URI. **Note:** This will **not** be set if boot diagnostics is currently enabled
      * with managed storage.
      */
     @JsonProperty(value = "consoleScreenshotBlobUri", access = JsonProperty.Access.WRITE_ONLY)
     private String consoleScreenshotBlobUri;
 
     /*
-     * The serial console log blob Uri. <br><br>NOTE: This will **not** be set if boot diagnostics is currently enabled
+     * The serial console log blob Uri. **Note:** This will **not** be set if boot diagnostics is currently enabled
      * with managed storage.
      */
     @JsonProperty(value = "serialConsoleLogBlobUri", access = JsonProperty.Access.WRITE_ONLY)
     private String serialConsoleLogBlobUri;
 
     /*
-     * The boot diagnostics status information for the VM. <br><br> NOTE: It will be set only if there are errors
+     * The boot diagnostics status information for the VM. **Note:** It will be set only if there are errors
      * encountered in enabling boot diagnostics.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
@@ -36,8 +36,8 @@ public final class BootDiagnosticsInstanceView {
     }
 
     /**
-     * Get the consoleScreenshotBlobUri property: The console screenshot blob URI. &lt;br&gt;&lt;br&gt;NOTE: This will
-     * **not** be set if boot diagnostics is currently enabled with managed storage.
+     * Get the consoleScreenshotBlobUri property: The console screenshot blob URI. **Note:** This will **not** be set if
+     * boot diagnostics is currently enabled with managed storage.
      *
      * @return the consoleScreenshotBlobUri value.
      */
@@ -46,8 +46,8 @@ public final class BootDiagnosticsInstanceView {
     }
 
     /**
-     * Get the serialConsoleLogBlobUri property: The serial console log blob Uri. &lt;br&gt;&lt;br&gt;NOTE: This will
-     * **not** be set if boot diagnostics is currently enabled with managed storage.
+     * Get the serialConsoleLogBlobUri property: The serial console log blob Uri. **Note:** This will **not** be set if
+     * boot diagnostics is currently enabled with managed storage.
      *
      * @return the serialConsoleLogBlobUri value.
      */
@@ -56,8 +56,8 @@ public final class BootDiagnosticsInstanceView {
     }
 
     /**
-     * Get the status property: The boot diagnostics status information for the VM. &lt;br&gt;&lt;br&gt; NOTE: It will
-     * be set only if there are errors encountered in enabling boot diagnostics.
+     * Get the status property: The boot diagnostics status information for the VM. **Note:** It will be set only if
+     * there are errors encountered in enabling boot diagnostics.
      *
      * @return the status value.
      */

@@ -47,14 +47,14 @@ public final class JobRouterAdministrationsImpl {
     private final JobRouterAdministrationsService service;
 
     /** The service client containing this operation class. */
-    private final AzureCommunicationRoutingServiceImpl client;
+    private final AzureCommunicationServicesImpl client;
 
     /**
      * Initializes an instance of JobRouterAdministrationsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    JobRouterAdministrationsImpl(AzureCommunicationRoutingServiceImpl client) {
+    JobRouterAdministrationsImpl(AzureCommunicationServicesImpl client) {
         this.service =
                 RestProxy.create(
                         JobRouterAdministrationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -62,14 +62,14 @@ public final class JobRouterAdministrationsImpl {
     }
 
     /**
-     * The interface defining all the services for AzureCommunicationRoutingServiceJobRouterAdministrations to be used
-     * by the proxy service to perform REST calls.
+     * The interface defining all the services for AzureCommunicationServicesJobRouterAdministrations to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureCommunicationRo")
-    private interface JobRouterAdministrationsService {
+    @ServiceInterface(name = "AzureCommunicationSe")
+    public interface JobRouterAdministrationsService {
         @Patch("/routing/classificationPolicies/{id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ClassificationPolicy>> upsertClassificationPolicy(
                 @HostParam("endpoint") String endpoint,
@@ -104,13 +104,13 @@ public final class JobRouterAdministrationsImpl {
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ClassificationPolicyCollection>> listClassificationPolicies(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("maxpagesize") Integer maxpagesize,
+                @QueryParam("maxPageSize") Integer maxPageSize,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Patch("/routing/distributionPolicies/{id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<DistributionPolicy>> upsertDistributionPolicy(
                 @HostParam("endpoint") String endpoint,
@@ -145,13 +145,13 @@ public final class JobRouterAdministrationsImpl {
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<DistributionPolicyCollection>> listDistributionPolicies(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("maxpagesize") Integer maxpagesize,
+                @QueryParam("maxPageSize") Integer maxPageSize,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Patch("/routing/exceptionPolicies/{id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ExceptionPolicy>> upsertExceptionPolicy(
                 @HostParam("endpoint") String endpoint,
@@ -186,13 +186,13 @@ public final class JobRouterAdministrationsImpl {
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ExceptionPolicyCollection>> listExceptionPolicies(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("maxpagesize") Integer maxpagesize,
+                @QueryParam("maxPageSize") Integer maxPageSize,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Patch("/routing/queues/{id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<JobQueue>> upsertQueue(
                 @HostParam("endpoint") String endpoint,
@@ -227,7 +227,7 @@ public final class JobRouterAdministrationsImpl {
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<QueueCollection>> listQueues(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("maxpagesize") Integer maxpagesize,
+                @QueryParam("maxPageSize") Integer maxPageSize,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -571,7 +571,7 @@ public final class JobRouterAdministrationsImpl {
     /**
      * Retrieves existing classification policies.
      *
-     * @param maxpagesize Maximum page size.
+     * @param maxPageSize Maximum page size.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -580,13 +580,13 @@ public final class JobRouterAdministrationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ClassificationPolicyItem>> listClassificationPoliciesSinglePageAsync(
-            Integer maxpagesize) {
+            Integer maxPageSize) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listClassificationPolicies(
                                         this.client.getEndpoint(),
-                                        maxpagesize,
+                                        maxPageSize,
                                         this.client.getApiVersion(),
                                         accept,
                                         context))
@@ -604,7 +604,7 @@ public final class JobRouterAdministrationsImpl {
     /**
      * Retrieves existing classification policies.
      *
-     * @param maxpagesize Maximum page size.
+     * @param maxPageSize Maximum page size.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -614,10 +614,10 @@ public final class JobRouterAdministrationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ClassificationPolicyItem>> listClassificationPoliciesSinglePageAsync(
-            Integer maxpagesize, Context context) {
+            Integer maxPageSize, Context context) {
         final String accept = "application/json";
         return service.listClassificationPolicies(
-                        this.client.getEndpoint(), maxpagesize, this.client.getApiVersion(), accept, context)
+                        this.client.getEndpoint(), maxPageSize, this.client.getApiVersion(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -632,38 +632,23 @@ public final class JobRouterAdministrationsImpl {
     /**
      * Retrieves existing classification policies.
      *
-     * @param maxpagesize Maximum page size.
+     * @param maxPageSize Maximum page size.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of classification policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ClassificationPolicyItem> listClassificationPoliciesAsync(Integer maxpagesize) {
+    public PagedFlux<ClassificationPolicyItem> listClassificationPoliciesAsync(Integer maxPageSize) {
         return new PagedFlux<>(
-                () -> listClassificationPoliciesSinglePageAsync(maxpagesize),
+                () -> listClassificationPoliciesSinglePageAsync(maxPageSize),
                 nextLink -> listClassificationPoliciesNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieves existing classification policies.
      *
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of classification policies as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ClassificationPolicyItem> listClassificationPoliciesAsync() {
-        final Integer maxpagesize = null;
-        return new PagedFlux<>(
-                () -> listClassificationPoliciesSinglePageAsync(maxpagesize),
-                nextLink -> listClassificationPoliciesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Retrieves existing classification policies.
-     *
-     * @param maxpagesize Maximum page size.
+     * @param maxPageSize Maximum page size.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -671,43 +656,30 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of classification policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ClassificationPolicyItem> listClassificationPoliciesAsync(Integer maxpagesize, Context context) {
+    public PagedFlux<ClassificationPolicyItem> listClassificationPoliciesAsync(Integer maxPageSize, Context context) {
         return new PagedFlux<>(
-                () -> listClassificationPoliciesSinglePageAsync(maxpagesize, context),
+                () -> listClassificationPoliciesSinglePageAsync(maxPageSize, context),
                 nextLink -> listClassificationPoliciesNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Retrieves existing classification policies.
      *
-     * @param maxpagesize Maximum page size.
+     * @param maxPageSize Maximum page size.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of classification policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ClassificationPolicyItem> listClassificationPolicies(Integer maxpagesize) {
-        return new PagedIterable<>(listClassificationPoliciesAsync(maxpagesize));
+    public PagedIterable<ClassificationPolicyItem> listClassificationPolicies(Integer maxPageSize) {
+        return new PagedIterable<>(listClassificationPoliciesAsync(maxPageSize));
     }
 
     /**
      * Retrieves existing classification policies.
      *
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of classification policies as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ClassificationPolicyItem> listClassificationPolicies() {
-        final Integer maxpagesize = null;
-        return new PagedIterable<>(listClassificationPoliciesAsync(maxpagesize));
-    }
-
-    /**
-     * Retrieves existing classification policies.
-     *
-     * @param maxpagesize Maximum page size.
+     * @param maxPageSize Maximum page size.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -715,8 +687,8 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of classification policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ClassificationPolicyItem> listClassificationPolicies(Integer maxpagesize, Context context) {
-        return new PagedIterable<>(listClassificationPoliciesAsync(maxpagesize, context));
+    public PagedIterable<ClassificationPolicyItem> listClassificationPolicies(Integer maxPageSize, Context context) {
+        return new PagedIterable<>(listClassificationPoliciesAsync(maxPageSize, context));
     }
 
     /**
@@ -1021,7 +993,7 @@ public final class JobRouterAdministrationsImpl {
     /**
      * Retrieves existing distribution policies.
      *
-     * @param maxpagesize Maximum page size.
+     * @param maxPageSize Maximum page size.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1029,13 +1001,13 @@ public final class JobRouterAdministrationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DistributionPolicyItem>> listDistributionPoliciesSinglePageAsync(Integer maxpagesize) {
+    public Mono<PagedResponse<DistributionPolicyItem>> listDistributionPoliciesSinglePageAsync(Integer maxPageSize) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDistributionPolicies(
                                         this.client.getEndpoint(),
-                                        maxpagesize,
+                                        maxPageSize,
                                         this.client.getApiVersion(),
                                         accept,
                                         context))
@@ -1053,7 +1025,7 @@ public final class JobRouterAdministrationsImpl {
     /**
      * Retrieves existing distribution policies.
      *
-     * @param maxpagesize Maximum page size.
+     * @param maxPageSize Maximum page size.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1063,10 +1035,10 @@ public final class JobRouterAdministrationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DistributionPolicyItem>> listDistributionPoliciesSinglePageAsync(
-            Integer maxpagesize, Context context) {
+            Integer maxPageSize, Context context) {
         final String accept = "application/json";
         return service.listDistributionPolicies(
-                        this.client.getEndpoint(), maxpagesize, this.client.getApiVersion(), accept, context)
+                        this.client.getEndpoint(), maxPageSize, this.client.getApiVersion(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1081,38 +1053,23 @@ public final class JobRouterAdministrationsImpl {
     /**
      * Retrieves existing distribution policies.
      *
-     * @param maxpagesize Maximum page size.
+     * @param maxPageSize Maximum page size.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of distribution policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DistributionPolicyItem> listDistributionPoliciesAsync(Integer maxpagesize) {
+    public PagedFlux<DistributionPolicyItem> listDistributionPoliciesAsync(Integer maxPageSize) {
         return new PagedFlux<>(
-                () -> listDistributionPoliciesSinglePageAsync(maxpagesize),
+                () -> listDistributionPoliciesSinglePageAsync(maxPageSize),
                 nextLink -> listDistributionPoliciesNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieves existing distribution policies.
      *
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of distribution policies as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DistributionPolicyItem> listDistributionPoliciesAsync() {
-        final Integer maxpagesize = null;
-        return new PagedFlux<>(
-                () -> listDistributionPoliciesSinglePageAsync(maxpagesize),
-                nextLink -> listDistributionPoliciesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Retrieves existing distribution policies.
-     *
-     * @param maxpagesize Maximum page size.
+     * @param maxPageSize Maximum page size.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1120,43 +1077,30 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of distribution policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DistributionPolicyItem> listDistributionPoliciesAsync(Integer maxpagesize, Context context) {
+    public PagedFlux<DistributionPolicyItem> listDistributionPoliciesAsync(Integer maxPageSize, Context context) {
         return new PagedFlux<>(
-                () -> listDistributionPoliciesSinglePageAsync(maxpagesize, context),
+                () -> listDistributionPoliciesSinglePageAsync(maxPageSize, context),
                 nextLink -> listDistributionPoliciesNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Retrieves existing distribution policies.
      *
-     * @param maxpagesize Maximum page size.
+     * @param maxPageSize Maximum page size.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of distribution policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DistributionPolicyItem> listDistributionPolicies(Integer maxpagesize) {
-        return new PagedIterable<>(listDistributionPoliciesAsync(maxpagesize));
+    public PagedIterable<DistributionPolicyItem> listDistributionPolicies(Integer maxPageSize) {
+        return new PagedIterable<>(listDistributionPoliciesAsync(maxPageSize));
     }
 
     /**
      * Retrieves existing distribution policies.
      *
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of distribution policies as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DistributionPolicyItem> listDistributionPolicies() {
-        final Integer maxpagesize = null;
-        return new PagedIterable<>(listDistributionPoliciesAsync(maxpagesize));
-    }
-
-    /**
-     * Retrieves existing distribution policies.
-     *
-     * @param maxpagesize Maximum page size.
+     * @param maxPageSize Maximum page size.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1164,8 +1108,8 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of distribution policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DistributionPolicyItem> listDistributionPolicies(Integer maxpagesize, Context context) {
-        return new PagedIterable<>(listDistributionPoliciesAsync(maxpagesize, context));
+    public PagedIterable<DistributionPolicyItem> listDistributionPolicies(Integer maxPageSize, Context context) {
+        return new PagedIterable<>(listDistributionPoliciesAsync(maxPageSize, context));
     }
 
     /**
@@ -1471,7 +1415,7 @@ public final class JobRouterAdministrationsImpl {
     /**
      * Retrieves existing exception policies.
      *
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1479,13 +1423,13 @@ public final class JobRouterAdministrationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ExceptionPolicyItem>> listExceptionPoliciesSinglePageAsync(Integer maxpagesize) {
+    public Mono<PagedResponse<ExceptionPolicyItem>> listExceptionPoliciesSinglePageAsync(Integer maxPageSize) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listExceptionPolicies(
                                         this.client.getEndpoint(),
-                                        maxpagesize,
+                                        maxPageSize,
                                         this.client.getApiVersion(),
                                         accept,
                                         context))
@@ -1503,7 +1447,7 @@ public final class JobRouterAdministrationsImpl {
     /**
      * Retrieves existing exception policies.
      *
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1513,10 +1457,10 @@ public final class JobRouterAdministrationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ExceptionPolicyItem>> listExceptionPoliciesSinglePageAsync(
-            Integer maxpagesize, Context context) {
+            Integer maxPageSize, Context context) {
         final String accept = "application/json";
         return service.listExceptionPolicies(
-                        this.client.getEndpoint(), maxpagesize, this.client.getApiVersion(), accept, context)
+                        this.client.getEndpoint(), maxPageSize, this.client.getApiVersion(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1531,38 +1475,23 @@ public final class JobRouterAdministrationsImpl {
     /**
      * Retrieves existing exception policies.
      *
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of exception policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ExceptionPolicyItem> listExceptionPoliciesAsync(Integer maxpagesize) {
+    public PagedFlux<ExceptionPolicyItem> listExceptionPoliciesAsync(Integer maxPageSize) {
         return new PagedFlux<>(
-                () -> listExceptionPoliciesSinglePageAsync(maxpagesize),
+                () -> listExceptionPoliciesSinglePageAsync(maxPageSize),
                 nextLink -> listExceptionPoliciesNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieves existing exception policies.
      *
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of exception policies as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ExceptionPolicyItem> listExceptionPoliciesAsync() {
-        final Integer maxpagesize = null;
-        return new PagedFlux<>(
-                () -> listExceptionPoliciesSinglePageAsync(maxpagesize),
-                nextLink -> listExceptionPoliciesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Retrieves existing exception policies.
-     *
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1570,43 +1499,30 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of exception policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ExceptionPolicyItem> listExceptionPoliciesAsync(Integer maxpagesize, Context context) {
+    public PagedFlux<ExceptionPolicyItem> listExceptionPoliciesAsync(Integer maxPageSize, Context context) {
         return new PagedFlux<>(
-                () -> listExceptionPoliciesSinglePageAsync(maxpagesize, context),
+                () -> listExceptionPoliciesSinglePageAsync(maxPageSize, context),
                 nextLink -> listExceptionPoliciesNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Retrieves existing exception policies.
      *
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of exception policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExceptionPolicyItem> listExceptionPolicies(Integer maxpagesize) {
-        return new PagedIterable<>(listExceptionPoliciesAsync(maxpagesize));
+    public PagedIterable<ExceptionPolicyItem> listExceptionPolicies(Integer maxPageSize) {
+        return new PagedIterable<>(listExceptionPoliciesAsync(maxPageSize));
     }
 
     /**
      * Retrieves existing exception policies.
      *
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of exception policies as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExceptionPolicyItem> listExceptionPolicies() {
-        final Integer maxpagesize = null;
-        return new PagedIterable<>(listExceptionPoliciesAsync(maxpagesize));
-    }
-
-    /**
-     * Retrieves existing exception policies.
-     *
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1614,8 +1530,8 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of exception policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExceptionPolicyItem> listExceptionPolicies(Integer maxpagesize, Context context) {
-        return new PagedIterable<>(listExceptionPoliciesAsync(maxpagesize, context));
+    public PagedIterable<ExceptionPolicyItem> listExceptionPolicies(Integer maxPageSize, Context context) {
+        return new PagedIterable<>(listExceptionPoliciesAsync(maxPageSize, context));
     }
 
     /**
@@ -1905,20 +1821,20 @@ public final class JobRouterAdministrationsImpl {
     /**
      * Retrieves existing queues.
      *
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<JobQueueItem>> listQueuesSinglePageAsync(Integer maxpagesize) {
+    public Mono<PagedResponse<JobQueueItem>> listQueuesSinglePageAsync(Integer maxPageSize) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listQueues(
                                         this.client.getEndpoint(),
-                                        maxpagesize,
+                                        maxPageSize,
                                         this.client.getApiVersion(),
                                         accept,
                                         context))
@@ -1936,7 +1852,7 @@ public final class JobRouterAdministrationsImpl {
     /**
      * Retrieves existing queues.
      *
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1944,9 +1860,9 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<JobQueueItem>> listQueuesSinglePageAsync(Integer maxpagesize, Context context) {
+    public Mono<PagedResponse<JobQueueItem>> listQueuesSinglePageAsync(Integer maxPageSize, Context context) {
         final String accept = "application/json";
-        return service.listQueues(this.client.getEndpoint(), maxpagesize, this.client.getApiVersion(), accept, context)
+        return service.listQueues(this.client.getEndpoint(), maxPageSize, this.client.getApiVersion(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1961,36 +1877,22 @@ public final class JobRouterAdministrationsImpl {
     /**
      * Retrieves existing queues.
      *
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of queues as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobQueueItem> listQueuesAsync(Integer maxpagesize) {
+    public PagedFlux<JobQueueItem> listQueuesAsync(Integer maxPageSize) {
         return new PagedFlux<>(
-                () -> listQueuesSinglePageAsync(maxpagesize), nextLink -> listQueuesNextSinglePageAsync(nextLink));
+                () -> listQueuesSinglePageAsync(maxPageSize), nextLink -> listQueuesNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieves existing queues.
      *
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of queues as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobQueueItem> listQueuesAsync() {
-        final Integer maxpagesize = null;
-        return new PagedFlux<>(
-                () -> listQueuesSinglePageAsync(maxpagesize), nextLink -> listQueuesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Retrieves existing queues.
-     *
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1998,43 +1900,30 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobQueueItem> listQueuesAsync(Integer maxpagesize, Context context) {
+    public PagedFlux<JobQueueItem> listQueuesAsync(Integer maxPageSize, Context context) {
         return new PagedFlux<>(
-                () -> listQueuesSinglePageAsync(maxpagesize, context),
+                () -> listQueuesSinglePageAsync(maxPageSize, context),
                 nextLink -> listQueuesNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Retrieves existing queues.
      *
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of queues as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobQueueItem> listQueues(Integer maxpagesize) {
-        return new PagedIterable<>(listQueuesAsync(maxpagesize));
+    public PagedIterable<JobQueueItem> listQueues(Integer maxPageSize) {
+        return new PagedIterable<>(listQueuesAsync(maxPageSize));
     }
 
     /**
      * Retrieves existing queues.
      *
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of queues as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobQueueItem> listQueues() {
-        final Integer maxpagesize = null;
-        return new PagedIterable<>(listQueuesAsync(maxpagesize));
-    }
-
-    /**
-     * Retrieves existing queues.
-     *
-     * @param maxpagesize Number of objects to return per page.
+     * @param maxPageSize Number of objects to return per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2042,8 +1931,8 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobQueueItem> listQueues(Integer maxpagesize, Context context) {
-        return new PagedIterable<>(listQueuesAsync(maxpagesize, context));
+    public PagedIterable<JobQueueItem> listQueues(Integer maxPageSize, Context context) {
+        return new PagedIterable<>(listQueuesAsync(maxPageSize, context));
     }
 
     /**

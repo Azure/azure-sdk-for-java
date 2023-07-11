@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.util.List;
 
 /** Describes a set of label selectors that will be attached if the given condition resolves to true. */
@@ -24,6 +25,8 @@ public final class ConditionalQueueSelectorAttachment extends QueueSelectorAttac
      * ExpressionRule: A rule providing inline expression rules.
      * AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure
      * Function.
+     * WebhookRule: A rule providing a binding to a webserver following
+     * OAuth2.0 authentication protocol.
      */
     @JsonProperty(value = "condition", required = true)
     private RouterRule condition;
@@ -39,7 +42,8 @@ public final class ConditionalQueueSelectorAttachment extends QueueSelectorAttac
      *
      * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
      * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function.
+     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule:
+     * A rule providing a binding to a webserver following OAuth2.0 authentication protocol.
      *
      * @return the condition value.
      */
@@ -52,7 +56,8 @@ public final class ConditionalQueueSelectorAttachment extends QueueSelectorAttac
      *
      * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
      * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function.
+     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule:
+     * A rule providing a binding to a webserver following OAuth2.0 authentication protocol.
      *
      * @param condition the condition value to set.
      * @return the ConditionalQueueSelectorAttachment object itself.

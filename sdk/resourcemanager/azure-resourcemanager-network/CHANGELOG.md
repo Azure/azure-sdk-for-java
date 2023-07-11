@@ -1,6 +1,6 @@
 # Release History
 
-## 2.26.0-beta.1 (Unreleased)
+## 2.29.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,39 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.28.0 (2023-06-25)
+
+### Features Added
+
+- Supported `WebApplicationFirewallPolicy` for Web Application Firewall Policy.
+- Supported associating `ApplicationGateway` with `WebApplicationFirewallPolicy`.
+- Deprecated `withWebApplicationFirewall` in `ApplicationGateway` since no further investments will be made on legacy 
+  WAF configuration.
+
+## 2.27.0 (2023-05-25)
+
+### Features Added
+
+- Supported `withNatGateway` in `Subnet`.
+
+### Breaking Changes
+
+- Removed `DRAIN` from class `LoadBalancerBackendAddressAdminState`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-11-01`.
+
+## 2.26.0 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.25.0 (2023-03-24)
 

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.privatedns.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworkLinks List. */
 public final class VirtualNetworkLinksListSamples {
     /*
@@ -22,6 +20,6 @@ public final class VirtualNetworkLinksListSamples {
             .manager()
             .serviceClient()
             .getVirtualNetworkLinks()
-            .list("resourceGroup1", "privatezone1.com", null, Context.NONE);
+            .list("resourceGroup1", "privatezone1.com", null, com.azure.core.util.Context.NONE);
     }
 }

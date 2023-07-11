@@ -808,7 +808,7 @@ public class BinaryDataJavaDocCodeSnippet {
     public void toStream() throws IOException {
         // BEGIN: com.azure.core.util.BinaryData.toStream
         final byte[] data = "Some Data".getBytes(StandardCharsets.UTF_8);
-        BinaryData binaryData = BinaryData.fromStream(new ByteArrayInputStream(data));
+        BinaryData binaryData = BinaryData.fromStream(new ByteArrayInputStream(data), (long) data.length);
         final byte[] bytes = new byte[data.length];
         binaryData.toStream().read(bytes, 0, data.length);
         System.out.println(new String(bytes));

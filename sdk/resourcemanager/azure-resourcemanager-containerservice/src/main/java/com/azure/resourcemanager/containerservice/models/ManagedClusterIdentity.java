@@ -11,7 +11,7 @@ import java.util.Map;
 
 /** Identity for the managed cluster. */
 @Fluent
-public class ManagedClusterIdentity {
+public final class ManagedClusterIdentity {
     /*
      * The principal id of the system assigned identity which is used by master components.
      */

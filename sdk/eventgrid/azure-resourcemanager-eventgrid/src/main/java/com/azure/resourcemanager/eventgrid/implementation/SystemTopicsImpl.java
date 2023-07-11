@@ -27,15 +27,6 @@ public final class SystemTopicsImpl implements SystemTopics {
         this.serviceManager = serviceManager;
     }
 
-    public SystemTopic getByResourceGroup(String resourceGroupName, String systemTopicName) {
-        SystemTopicInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, systemTopicName);
-        if (inner != null) {
-            return new SystemTopicImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SystemTopic> getByResourceGroupWithResponse(
         String resourceGroupName, String systemTopicName, Context context) {
         Response<SystemTopicInner> inner =
@@ -46,6 +37,15 @@ public final class SystemTopicsImpl implements SystemTopics {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SystemTopicImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SystemTopic getByResourceGroup(String resourceGroupName, String systemTopicName) {
+        SystemTopicInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, systemTopicName);
+        if (inner != null) {
+            return new SystemTopicImpl(inner, this.manager());
         } else {
             return null;
         }

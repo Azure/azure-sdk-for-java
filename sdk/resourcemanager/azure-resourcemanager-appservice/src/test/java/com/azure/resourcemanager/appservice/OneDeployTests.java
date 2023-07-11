@@ -62,7 +62,6 @@ public class OneDeployTests extends AppServiceTest {
         Assertions.assertTrue(response.contains("Hello"));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void canPushDeployJar() throws Exception {

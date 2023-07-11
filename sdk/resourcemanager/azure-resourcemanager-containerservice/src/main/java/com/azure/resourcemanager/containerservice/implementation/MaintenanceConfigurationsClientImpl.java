@@ -63,8 +63,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     public interface MaintenanceConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/maintenanceConfigurations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/maintenanceConfigurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceConfigurationListResult>> listByManagedCluster(
@@ -78,8 +77,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/maintenanceConfigurations/{configName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/maintenanceConfigurations/{configName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceConfigurationInner>> get(
@@ -94,9 +92,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/maintenanceConfigurations/{configName}")
-        @ExpectedResponses({200})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/maintenanceConfigurations/{configName}")
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceConfigurationInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
@@ -111,8 +108,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/maintenanceConfigurations/{configName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/maintenanceConfigurations/{configName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -169,7 +165,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -229,7 +225,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -363,7 +359,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (configName == null) {
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -419,7 +415,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (configName == null) {
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -529,7 +525,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -596,7 +592,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -712,7 +708,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (configName == null) {
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -767,7 +763,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (configName == null) {
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
-        final String apiVersion = "2023-01-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

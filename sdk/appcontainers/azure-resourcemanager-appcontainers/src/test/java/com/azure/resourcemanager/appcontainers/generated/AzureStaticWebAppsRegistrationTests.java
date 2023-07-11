@@ -7,20 +7,19 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.AzureStaticWebAppsRegistration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureStaticWebAppsRegistrationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureStaticWebAppsRegistration model =
-            BinaryData.fromString("{\"clientId\":\"cpecfvmmcoofs\"}").toObject(AzureStaticWebAppsRegistration.class);
-        Assertions.assertEquals("cpecfvmmcoofs", model.clientId());
+            BinaryData.fromString("{\"clientId\":\"ymzidn\"}").toObject(AzureStaticWebAppsRegistration.class);
+        Assertions.assertEquals("ymzidn", model.clientId());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureStaticWebAppsRegistration model = new AzureStaticWebAppsRegistration().withClientId("cpecfvmmcoofs");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureStaticWebAppsRegistration model = new AzureStaticWebAppsRegistration().withClientId("ymzidn");
         model = BinaryData.fromObject(model).toObject(AzureStaticWebAppsRegistration.class);
-        Assertions.assertEquals("cpecfvmmcoofs", model.clientId());
+        Assertions.assertEquals("ymzidn", model.clientId());
     }
 }

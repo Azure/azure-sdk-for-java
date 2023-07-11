@@ -19,6 +19,13 @@ public final class PublicIpAddressDnsSettings {
     private String domainNameLabel;
 
     /*
+     * The domain name label scope. If a domain name label and a domain name label scope are specified, an A DNS record
+     * is created for the public IP in the Microsoft Azure DNS system with a hashed value includes in FQDN.
+     */
+    @JsonProperty(value = "domainNameLabelScope")
+    private PublicIpAddressDnsSettingsDomainNameLabelScope domainNameLabelScope;
+
+    /*
      * The Fully Qualified Domain Name of the A DNS record associated with the public IP. This is the concatenation of
      * the domainNameLabel and the regionalized DNS zone.
      */
@@ -58,6 +65,31 @@ public final class PublicIpAddressDnsSettings {
      */
     public PublicIpAddressDnsSettings withDomainNameLabel(String domainNameLabel) {
         this.domainNameLabel = domainNameLabel;
+        return this;
+    }
+
+    /**
+     * Get the domainNameLabelScope property: The domain name label scope. If a domain name label and a domain name
+     * label scope are specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system with a
+     * hashed value includes in FQDN.
+     *
+     * @return the domainNameLabelScope value.
+     */
+    public PublicIpAddressDnsSettingsDomainNameLabelScope domainNameLabelScope() {
+        return this.domainNameLabelScope;
+    }
+
+    /**
+     * Set the domainNameLabelScope property: The domain name label scope. If a domain name label and a domain name
+     * label scope are specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system with a
+     * hashed value includes in FQDN.
+     *
+     * @param domainNameLabelScope the domainNameLabelScope value to set.
+     * @return the PublicIpAddressDnsSettings object itself.
+     */
+    public PublicIpAddressDnsSettings withDomainNameLabelScope(
+        PublicIpAddressDnsSettingsDomainNameLabelScope domainNameLabelScope) {
+        this.domainNameLabelScope = domainNameLabelScope;
         return this;
     }
 

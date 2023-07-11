@@ -85,18 +85,6 @@ public final class ManagedEnvironmentsImpl implements ManagedEnvironments {
         this.serviceClient().delete(resourceGroupName, environmentName, context);
     }
 
-    public void update(String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope) {
-        this.serviceClient().update(resourceGroupName, environmentName, environmentEnvelope);
-    }
-
-    public void update(
-        String resourceGroupName,
-        String environmentName,
-        ManagedEnvironmentInner environmentEnvelope,
-        Context context) {
-        this.serviceClient().update(resourceGroupName, environmentName, environmentEnvelope, context);
-    }
-
     public Response<EnvironmentAuthToken> getAuthTokenWithResponse(
         String resourceGroupName, String environmentName, Context context) {
         Response<EnvironmentAuthTokenInner> inner =

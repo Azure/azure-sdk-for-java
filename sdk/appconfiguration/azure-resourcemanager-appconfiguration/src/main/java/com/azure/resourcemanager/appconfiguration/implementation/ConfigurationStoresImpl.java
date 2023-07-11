@@ -55,15 +55,6 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
         return Utils.mapPage(inner, inner1 -> new ConfigurationStoreImpl(inner1, this.manager()));
     }
 
-    public ConfigurationStore getByResourceGroup(String resourceGroupName, String configStoreName) {
-        ConfigurationStoreInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, configStoreName);
-        if (inner != null) {
-            return new ConfigurationStoreImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ConfigurationStore> getByResourceGroupWithResponse(
         String resourceGroupName, String configStoreName, Context context) {
         Response<ConfigurationStoreInner> inner =
@@ -74,6 +65,15 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ConfigurationStoreImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ConfigurationStore getByResourceGroup(String resourceGroupName, String configStoreName) {
+        ConfigurationStoreInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, configStoreName);
+        if (inner != null) {
+            return new ConfigurationStoreImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -99,17 +99,6 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
         return Utils.mapPage(inner, inner1 -> new ApiKeyImpl(inner1, this.manager()));
     }
 
-    public ApiKey regenerateKey(
-        String resourceGroupName, String configStoreName, RegenerateKeyParameters regenerateKeyParameters) {
-        ApiKeyInner inner =
-            this.serviceClient().regenerateKey(resourceGroupName, configStoreName, regenerateKeyParameters);
-        if (inner != null) {
-            return new ApiKeyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ApiKey> regenerateKeyWithResponse(
         String resourceGroupName,
         String configStoreName,
@@ -130,6 +119,17 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
         }
     }
 
+    public ApiKey regenerateKey(
+        String resourceGroupName, String configStoreName, RegenerateKeyParameters regenerateKeyParameters) {
+        ApiKeyInner inner =
+            this.serviceClient().regenerateKey(resourceGroupName, configStoreName, regenerateKeyParameters);
+        if (inner != null) {
+            return new ApiKeyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<DeletedConfigurationStore> listDeleted() {
         PagedIterable<DeletedConfigurationStoreInner> inner = this.serviceClient().listDeleted();
         return Utils.mapPage(inner, inner1 -> new DeletedConfigurationStoreImpl(inner1, this.manager()));
@@ -138,15 +138,6 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
     public PagedIterable<DeletedConfigurationStore> listDeleted(Context context) {
         PagedIterable<DeletedConfigurationStoreInner> inner = this.serviceClient().listDeleted(context);
         return Utils.mapPage(inner, inner1 -> new DeletedConfigurationStoreImpl(inner1, this.manager()));
-    }
-
-    public DeletedConfigurationStore getDeleted(String location, String configStoreName) {
-        DeletedConfigurationStoreInner inner = this.serviceClient().getDeleted(location, configStoreName);
-        if (inner != null) {
-            return new DeletedConfigurationStoreImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<DeletedConfigurationStore> getDeletedWithResponse(
@@ -159,6 +150,15 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DeletedConfigurationStoreImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DeletedConfigurationStore getDeleted(String location, String configStoreName) {
+        DeletedConfigurationStoreInner inner = this.serviceClient().getDeleted(location, configStoreName);
+        if (inner != null) {
+            return new DeletedConfigurationStoreImpl(inner, this.manager());
         } else {
             return null;
         }

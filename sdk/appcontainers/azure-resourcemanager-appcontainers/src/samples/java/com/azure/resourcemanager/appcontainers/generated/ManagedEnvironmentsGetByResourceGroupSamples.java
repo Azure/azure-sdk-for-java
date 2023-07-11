@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedEnvironments GetByResourceGroup. */
 public final class ManagedEnvironmentsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ManagedEnvironments_Get.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ManagedEnvironments_Get.json
      */
     /**
      * Sample code: Get environments by name.
@@ -17,6 +15,8 @@ public final class ManagedEnvironmentsGetByResourceGroupSamples {
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void getEnvironmentsByName(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.managedEnvironments().getByResourceGroupWithResponse("examplerg", "jlaw-demo1", Context.NONE);
+        manager
+            .managedEnvironments()
+            .getByResourceGroupWithResponse("examplerg", "jlaw-demo1", com.azure.core.util.Context.NONE);
     }
 }

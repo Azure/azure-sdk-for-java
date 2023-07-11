@@ -79,7 +79,7 @@ public interface Schedule {
      *
      * @return the state value.
      */
-    EnableStatus state();
+    ScheduleEnableStatus state();
 
     /**
      * Gets the name of the resource group.
@@ -190,7 +190,7 @@ public interface Schedule {
              * @param state Indicates whether or not this scheduled task is enabled.
              * @return the next definition stage.
              */
-            WithCreate withState(EnableStatus state);
+            WithCreate withState(ScheduleEnableStatus state);
         }
         /** The stage of the Schedule definition allowing to specify top. */
         interface WithTop {
@@ -295,7 +295,7 @@ public interface Schedule {
              * @param state Indicates whether or not this scheduled task is enabled.
              * @return the next definition stage.
              */
-            Update withState(EnableStatus state);
+            Update withState(ScheduleEnableStatus state);
         }
         /** The stage of the Schedule update allowing to specify top. */
         interface WithTop {

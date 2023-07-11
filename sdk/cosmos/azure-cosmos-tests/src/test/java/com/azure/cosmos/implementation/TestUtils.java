@@ -45,14 +45,19 @@ public class TestUtils {
     public static DiagnosticsClientContext mockDiagnosticsClientContext() {
         DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
         Mockito.doReturn(new DiagnosticsClientContext.DiagnosticsClientConfig()).when(clientContext).getConfig();
-        Mockito.doReturn(BridgeInternal.createCosmosDiagnostics(clientContext)).when(clientContext).createDiagnostics();
+        Mockito
+            .doReturn(ImplementationBridgeHelpers
+                .CosmosDiagnosticsHelper
+                .getCosmosDiagnosticsAccessor()
+                .create(clientContext, 1d))
+            .when(clientContext).createDiagnostics();
 
         return clientContext;
     }
 
     public static RxDocumentServiceRequest mockDocumentServiceRequest(DiagnosticsClientContext clientContext) {
         RxDocumentServiceRequest dsr = Mockito.mock(RxDocumentServiceRequest.class);
-        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext = new DocumentServiceRequestContext();
         dsr.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
         Mockito.doReturn(clientContext.createDiagnostics()).when(dsr).createCosmosDiagnostics();
         Mockito.doReturn(UUID.randomUUID()).when(dsr).getActivityId();

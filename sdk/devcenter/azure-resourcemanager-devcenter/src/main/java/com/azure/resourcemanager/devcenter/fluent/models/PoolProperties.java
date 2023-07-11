@@ -5,14 +5,31 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.devcenter.models.HealthStatus;
+import com.azure.resourcemanager.devcenter.models.HealthStatusDetail;
 import com.azure.resourcemanager.devcenter.models.LicenseType;
 import com.azure.resourcemanager.devcenter.models.LocalAdminStatus;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
+import com.azure.resourcemanager.devcenter.models.StopOnDisconnectConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Properties of a Pool. */
 @Fluent
 public final class PoolProperties extends PoolUpdateProperties {
+    /*
+     * Overall health status of the Pool. Indicates whether or not the Pool is available to create Dev Boxes.
+     */
+    @JsonProperty(value = "healthStatus", access = JsonProperty.Access.WRITE_ONLY)
+    private HealthStatus healthStatus;
+
+    /*
+     * Details on the Pool health status to help diagnose issues. This is only populated when the pool status indicates
+     * the pool is in a non-healthy state
+     */
+    @JsonProperty(value = "healthStatusDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private List<HealthStatusDetail> healthStatusDetails;
+
     /*
      * The provisioning state of the resource.
      */
@@ -21,6 +38,26 @@ public final class PoolProperties extends PoolUpdateProperties {
 
     /** Creates an instance of PoolProperties class. */
     public PoolProperties() {
+    }
+
+    /**
+     * Get the healthStatus property: Overall health status of the Pool. Indicates whether or not the Pool is available
+     * to create Dev Boxes.
+     *
+     * @return the healthStatus value.
+     */
+    public HealthStatus healthStatus() {
+        return this.healthStatus;
+    }
+
+    /**
+     * Get the healthStatusDetails property: Details on the Pool health status to help diagnose issues. This is only
+     * populated when the pool status indicates the pool is in a non-healthy state.
+     *
+     * @return the healthStatusDetails value.
+     */
+    public List<HealthStatusDetail> healthStatusDetails() {
+        return this.healthStatusDetails;
     }
 
     /**
@@ -60,6 +97,13 @@ public final class PoolProperties extends PoolUpdateProperties {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public PoolProperties withStopOnDisconnect(StopOnDisconnectConfiguration stopOnDisconnect) {
+        super.withStopOnDisconnect(stopOnDisconnect);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -68,5 +112,8 @@ public final class PoolProperties extends PoolUpdateProperties {
     @Override
     public void validate() {
         super.validate();
+        if (healthStatusDetails() != null) {
+            healthStatusDetails().forEach(e -> e.validate());
+        }
     }
 }

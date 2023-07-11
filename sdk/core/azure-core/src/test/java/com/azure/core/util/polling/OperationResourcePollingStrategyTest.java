@@ -64,14 +64,15 @@ public class OperationResourcePollingStrategyTest {
             }
         };
 
-        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
+        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofMillis(1),
             activationOperation::get, new OperationResourcePollingStrategy<>(createPipeline(httpClient)),
             POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
             .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS);
+                asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+            .verifyComplete();
 
         StepVerifier.create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
                 .last()
@@ -109,14 +110,15 @@ public class OperationResourcePollingStrategyTest {
             }
         };
 
-        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
+        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofMillis(1),
             activationOperation::get, new OperationResourcePollingStrategy<>(createPipeline(httpClient)),
             POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
             .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS);
+                asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+            .verifyComplete();
 
         StepVerifier.create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
                 .last().
@@ -149,14 +151,15 @@ public class OperationResourcePollingStrategyTest {
             }
         };
 
-        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
+        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofMillis(1),
             activationOperation::get, new OperationResourcePollingStrategy<>(createPipeline(httpClient)),
             POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
             .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS);
+                asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+            .verifyComplete();
 
         StepVerifier.create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
                 .last().
@@ -192,14 +195,15 @@ public class OperationResourcePollingStrategyTest {
             }
         };
 
-        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
+        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofMillis(1),
             activationOperation::get, new OperationResourcePollingStrategy<>(createPipeline(httpClient)),
             POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
             .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS);
+                asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+            .verifyComplete();
 
         StepVerifier.create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
                 .last()
@@ -242,7 +246,7 @@ public class OperationResourcePollingStrategyTest {
         };
 
         // Create OperationResourcePollingStrategy
-        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
+        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofMillis(1),
             activationOperation::get, new OperationResourcePollingStrategy<>(createPipeline(httpClient), endpointUrl,
                 new DefaultJsonSerializer(), headerName, Context.NONE),
             POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
@@ -251,7 +255,8 @@ public class OperationResourcePollingStrategyTest {
         StepVerifier.create(pollerFlux)
             .expectSubscription()
             .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS);
+                asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+            .verifyComplete();
 
         StepVerifier.create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
                 .last()
@@ -283,14 +288,15 @@ public class OperationResourcePollingStrategyTest {
             }
         };
 
-        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
+        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofMillis(1),
             activationOperation::get, new OperationResourcePollingStrategy<>(createPipeline(httpClient)),
             POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
             .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS);
+                asyncPollResponse.getStatus() == LongRunningOperationStatus.FAILED)
+            .verifyComplete();
 
         StepVerifier.create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
                 .last()
@@ -337,7 +343,7 @@ public class OperationResourcePollingStrategyTest {
                 }
             })
             .build();
-        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
+        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofMillis(1),
             activationOperation::get, new OperationResourcePollingStrategy<>(pipeline), POLL_RESULT_TYPE_REFERENCE,
             POLL_RESULT_TYPE_REFERENCE);
 
@@ -379,14 +385,15 @@ public class OperationResourcePollingStrategyTest {
 
         PollingStrategyOptions pollingStrategyOptions = new PollingStrategyOptions(createPipeline(httpClient))
             .setServiceVersion("2023-03-22");
-        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
+        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofMillis(1),
             activationOperation::get, new OperationResourcePollingStrategy<>(null, pollingStrategyOptions),
             POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
             .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS);
+                asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+            .verifyComplete();
 
         StepVerifier.create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
                 .last()

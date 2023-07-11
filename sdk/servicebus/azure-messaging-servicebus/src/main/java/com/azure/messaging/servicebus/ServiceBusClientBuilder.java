@@ -43,6 +43,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcess
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusSenderInstrumentation;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
 import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
@@ -62,9 +63,10 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
-import java.util.regex.Pattern;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
+import static com.azure.messaging.servicebus.ReceiverOptions.createNonSessionOptions;
+import static com.azure.messaging.servicebus.ReceiverOptions.createUnnamedSessionOptions;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
 
 /**
@@ -208,7 +210,6 @@ public final class ServiceBusClientBuilder implements
     private static final String UNKNOWN = "UNKNOWN";
     private static final String LIBRARY_NAME;
     private static final String LIBRARY_VERSION;
-    private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
     private static final Duration MAX_LOCK_RENEW_DEFAULT_DURATION = Duration.ofMinutes(5);
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusClientBuilder.class);
     private final Object connectionLock = new Object();
@@ -1042,6 +1043,21 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
+         * Sets the maximum amount of time to wait for a message to be received for the currently active session.
+         * After this time has elapsed, the processor will close the session and attempt to process another session.
+         * If not specified, the {@link AmqpRetryOptions#getTryTimeout()} will be used.
+         *
+         * @param sessionIdleTimeout Session idle timeout.
+         * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
+         * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
+         */
+        public ServiceBusSessionProcessorClientBuilder sessionIdleTimeout(Duration sessionIdleTimeout) {
+            validateAndThrow(sessionIdleTimeout);
+            sessionReceiverClientBuilder.sessionIdleTimeout(sessionIdleTimeout);
+            return this;
+        }
+
+        /**
          * Enables session processing roll-over by processing at most {@code maxConcurrentSessions}.
          *
          * @param maxConcurrentSessions Maximum number of concurrent sessions to process at any given time.
@@ -1235,6 +1251,7 @@ public final class ServiceBusClientBuilder implements
         private String subscriptionName;
         private String topicName;
         private Duration maxAutoLockRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
+        private Duration sessionIdleTimeout = null;
         private SubQueue subQueue = SubQueue.NONE;
 
         private ServiceBusSessionReceiverClientBuilder() {
@@ -1267,6 +1284,21 @@ public final class ServiceBusClientBuilder implements
         public ServiceBusSessionReceiverClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
             validateAndThrow(maxAutoLockRenewDuration);
             this.maxAutoLockRenewDuration = maxAutoLockRenewDuration;
+            return this;
+        }
+
+        /**
+         * Sets the maximum amount of time to wait for a message to be received for the currently active session.
+         * After this time has elapsed, the processor will close the session and attempt to process another session.
+         * If not specified, the {@link AmqpRetryOptions#getTryTimeout()} will be used.
+         *
+         * @param sessionIdleTimeout Session idle timeout.
+         * @return The updated {@link ServiceBusSessionReceiverClientBuilder} object.
+         * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
+         */
+        ServiceBusSessionReceiverClientBuilder sessionIdleTimeout(Duration sessionIdleTimeout) {
+            validateAndThrow(sessionIdleTimeout);
+            this.sessionIdleTimeout = sessionIdleTimeout;
             return this;
         }
 
@@ -1403,9 +1435,9 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                maxAutoLockRenewDuration, enableAutoComplete, null,
-                maxConcurrentSessions);
+
+            final ReceiverOptions receiverOptions = createUnnamedSessionOptions(receiveMode, prefetchCount,
+                maxAutoLockRenewDuration, enableAutoComplete, maxConcurrentSessions, sessionIdleTimeout);
 
             final String clientIdentifier;
             if (clientOptions instanceof AmqpClientOptions) {
@@ -1415,12 +1447,13 @@ public final class ServiceBusClientBuilder implements
                 clientIdentifier = UUID.randomUUID().toString();
             }
 
-            final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
-                connectionProcessor, messageSerializer, receiverOptions, clientIdentifier);
-
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
                 createTracer(), createMeter(), connectionProcessor.getFullyQualifiedNamespace(),
                 entityPath, subscriptionName, false);
+
+            final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
+                connectionProcessor, messageSerializer, receiverOptions, clientIdentifier, instrumentation.getTracer());
+
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
                 instrumentation, messageSerializer, ServiceBusClientBuilder.this::onClientClose, sessionManager);
@@ -1484,8 +1517,8 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                maxAutoLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions);
+            final ReceiverOptions receiverOptions = createUnnamedSessionOptions(receiveMode, prefetchCount,
+                maxAutoLockRenewDuration, enableAutoComplete, maxConcurrentSessions, sessionIdleTimeout);
 
             final String clientIdentifier;
             if (clientOptions instanceof AmqpClientOptions) {
@@ -1792,7 +1825,6 @@ public final class ServiceBusClientBuilder implements
         private String subscriptionName;
         private String topicName;
         private Duration maxAutoLockRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
-
         private ServiceBusReceiverClientBuilder() {
         }
 
@@ -1967,7 +1999,7 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
+            final ReceiverOptions receiverOptions = createNonSessionOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete);
 
             final String clientIdentifier;

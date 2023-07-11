@@ -18,22 +18,22 @@ public final class LatencyScorecardInnerTests {
         LatencyScorecardInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"id\":\"ywgndrv\",\"name\":\"hzgpphrcgyncocpe\",\"description\":\"vmmcoofs\",\"endpointA\":\"zevgb\",\"endpointB\":\"jqabcypmivkwlzuv\",\"startDateTimeUTC\":\"2021-04-25T02:12:50Z\",\"endDateTimeUTC\":\"2021-07-27T17:19:12Z\",\"country\":\"nbacfi\",\"latencyMetrics\":[{\"name\":\"bxetqgtzxdpn\",\"endDateTimeUTC\":\"qqwx\",\"aValue\":50.453197,\"bValue\":7.9074564,\"delta\":51.42286,\"deltaPercent\":51.614838,\"aCLower95CI\":72.799835,\"aHUpper95CI\":71.703186,\"bCLower95CI\":33.89374,\"bUpper95CI\":48.133312}]},\"location\":\"mpmngnzscxaqwoo\",\"tags\":{\"ipheoflokeyyien\":\"bonqvpkvlrxnjeas\",\"masxazjpqyegu\":\"bdlwtgrhpdjpj\"},\"id\":\"lhbxxhejjzzvdud\",\"name\":\"wdslfhotwmcy\",\"type\":\"pwlbjnpg\"}")
+                    "{\"properties\":{\"id\":\"rlazszrnw\",\"name\":\"indfpwpjyl\",\"description\":\"tlhflsjcdhszf\",\"endpointA\":\"fbgofeljagrqmqh\",\"endpointB\":\"vriiio\",\"startDateTimeUTC\":\"2021-04-25T18:11:53Z\",\"endDateTimeUTC\":\"2021-08-27T10:03:09Z\",\"country\":\"fk\",\"latencyMetrics\":[{\"name\":\"ex\",\"endDateTimeUTC\":\"wueluqhhahhxv\",\"aValue\":41.38071,\"bValue\":99.721016,\"delta\":54.870827,\"deltaPercent\":0.074237585,\"aCLower95CI\":85.248795,\"aHUpper95CI\":61.13008,\"bCLower95CI\":89.108795,\"bUpper95CI\":78.10289},{\"name\":\"qs\",\"endDateTimeUTC\":\"qxujxukndxd\",\"aValue\":84.70417,\"bValue\":35.546135,\"delta\":47.985943,\"deltaPercent\":54.662663,\"aCLower95CI\":41.437172,\"aHUpper95CI\":46.247612,\"bCLower95CI\":21.394676,\"bUpper95CI\":94.70884},{\"name\":\"whbotzingamv\",\"endDateTimeUTC\":\"ho\",\"aValue\":41.892742,\"bValue\":85.72325,\"delta\":94.45262,\"deltaPercent\":97.52175,\"aCLower95CI\":24.885792,\"aHUpper95CI\":24.78965,\"bCLower95CI\":77.53663,\"bUpper95CI\":46.93581}]},\"location\":\"nwcvtbvkayhmtnv\",\"tags\":{\"cjaesgvvs\":\"atkzwpcnpw\",\"wygzlvdnkfxusem\":\"cyajguqf\",\"pfcqdp\":\"wzrmuh\"},\"id\":\"qxqvpsvuoymgc\",\"name\":\"elvezrypq\",\"type\":\"mfe\"}")
                 .toObject(LatencyScorecardInner.class);
-        Assertions.assertEquals("mpmngnzscxaqwoo", model.location());
-        Assertions.assertEquals("bonqvpkvlrxnjeas", model.tags().get("ipheoflokeyyien"));
+        Assertions.assertEquals("nwcvtbvkayhmtnv", model.location());
+        Assertions.assertEquals("atkzwpcnpw", model.tags().get("cjaesgvvs"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LatencyScorecardInner model =
             new LatencyScorecardInner()
-                .withLocation("mpmngnzscxaqwoo")
-                .withTags(mapOf("ipheoflokeyyien", "bonqvpkvlrxnjeas", "masxazjpqyegu", "bdlwtgrhpdjpj"))
-                .withLatencyMetrics(Arrays.asList(new LatencyMetric()));
+                .withLocation("nwcvtbvkayhmtnv")
+                .withTags(mapOf("cjaesgvvs", "atkzwpcnpw", "wygzlvdnkfxusem", "cyajguqf", "pfcqdp", "wzrmuh"))
+                .withLatencyMetrics(Arrays.asList(new LatencyMetric(), new LatencyMetric(), new LatencyMetric()));
         model = BinaryData.fromObject(model).toObject(LatencyScorecardInner.class);
-        Assertions.assertEquals("mpmngnzscxaqwoo", model.location());
-        Assertions.assertEquals("bonqvpkvlrxnjeas", model.tags().get("ipheoflokeyyien"));
+        Assertions.assertEquals("nwcvtbvkayhmtnv", model.location());
+        Assertions.assertEquals("atkzwpcnpw", model.tags().get("cjaesgvvs"));
     }
 
     @SuppressWarnings("unchecked")

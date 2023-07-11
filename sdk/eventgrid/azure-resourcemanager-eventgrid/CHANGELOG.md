@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.4 (Unreleased)
+## 1.2.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,415 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0-beta.4 (2023-05-19)
+
+- Azure Resource Manager EventGrid client library for Java. This package contains Microsoft Azure SDK for EventGrid Management SDK. Azure EventGrid Management Client. Package tag package-2023-06-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.PermissionBinding$DefinitionStages` was added
+
+* `models.PartnerDestinationInfo` was added
+
+* `models.PartnerUpdateDestinationInfo` was added
+
+* `models.CaCertificates` was added
+
+* `models.Subscription$Definition` was added
+
+* `models.Namespace$UpdateStages` was added
+
+* `models.SkuName` was added
+
+* `models.DeliveryMode` was added
+
+* `models.StringEndsWithFilter` was added
+
+* `models.Namespaces` was added
+
+* `models.Sku` was added
+
+* `models.BoolEqualsFilter` was added
+
+* `models.UpdateTopicSpacesConfigurationInfo` was added
+
+* `models.DeliveryConfiguration` was added
+
+* `models.TopicSpace$Update` was added
+
+* `models.CaCertificateProvisioningState` was added
+
+* `models.PermissionBinding$UpdateStages` was added
+
+* `models.ClientAuthentication` was added
+
+* `models.StringNotEndsWithFilter` was added
+
+* `models.PermissionType` was added
+
+* `models.FilterOperatorType` was added
+
+* `models.PermissionBindingProvisioningState` was added
+
+* `models.NumberLessThanFilter` was added
+
+* `models.StringNotBeginsWithFilter` was added
+
+* `models.PartnerDestination$Definition` was added
+
+* `models.StringContainsFilter` was added
+
+* `models.Filter` was added
+
+* `models.ResourceSku` was added
+
+* `models.SubscriptionsListResult` was added
+
+* `models.ResourceKind` was added
+
+* `models.NamespaceTopicsListResult` was added
+
+* `models.NamespaceTopic$Update` was added
+
+* `models.StringNotInFilter` was added
+
+* `models.PartnerClientAuthentication` was added
+
+* `models.CaCertificate$Definition` was added
+
+* `models.CaCertificate$DefinitionStages` was added
+
+* `models.TopicSpaces` was added
+
+* `models.Namespace` was added
+
+* `models.ClientCertificateAuthentication` was added
+
+* `models.Client$Update` was added
+
+* `models.RoutingEnrichments` was added
+
+* `models.ClientGroups` was added
+
+* `models.NamespaceTopics` was added
+
+* `models.ClientCertificateThumbprint` was added
+
+* `models.NamespaceTopicEventSubscriptions` was added
+
+* `models.NumberNotInFilter` was added
+
+* `models.PartnerEndpointType` was added
+
+* `models.TopicsConfiguration` was added
+
+* `models.StringBeginsWithFilter` was added
+
+* `models.TopicSpace` was added
+
+* `models.NamespaceSharedAccessKeys` was added
+
+* `models.PartnerDestinationProvisioningState` was added
+
+* `models.TopicSpacesListResult` was added
+
+* `models.ClientGroup` was added
+
+* `models.TopicSpace$Definition` was added
+
+* `models.StringInFilter` was added
+
+* `models.CaCertificate$Update` was added
+
+* `models.TopicSpacesConfiguration` was added
+
+* `models.NamespaceSku` was added
+
+* `models.PartnerDestinations` was added
+
+* `models.PartnerDestination` was added
+
+* `models.DeliverySchema` was added
+
+* `models.NumberInFilter` was added
+
+* `models.CaCertificate` was added
+
+* `models.TopicSpaceProvisioningState` was added
+
+* `models.ClientGroupProvisioningState` was added
+
+* `models.TlsVersion` was added
+
+* `models.NumberLessThanOrEqualsFilter` was added
+
+* `models.CaCertificatesListResult` was added
+
+* `models.ResourceMoveChangeHistory` was added
+
+* `models.StringNotContainsFilter` was added
+
+* `models.WebhookPartnerDestinationInfo` was added
+
+* `models.EventInputSchema` was added
+
+* `models.NamespaceTopicProvisioningState` was added
+
+* `models.PartnerDestination$Update` was added
+
+* `models.StaticRoutingEnrichmentType` was added
+
+* `models.Subscription$Update` was added
+
+* `models.CaCertificate$UpdateStages` was added
+
+* `models.NamespaceTopic$Definition` was added
+
+* `models.NumberGreaterThanOrEqualsFilter` was added
+
+* `models.Clients` was added
+
+* `models.Subscription$DefinitionStages` was added
+
+* `models.NamespacesListResult` was added
+
+* `models.DynamicRoutingEnrichment` was added
+
+* `models.Client` was added
+
+* `models.TopicSpace$DefinitionStages` was added
+
+* `models.PermissionBindings` was added
+
+* `models.PermissionBinding` was added
+
+* `models.NamespaceTopic` was added
+
+* `models.PartnerEventSubscriptionDestination` was added
+
+* `models.IsNotNullFilter` was added
+
+* `models.Namespace$Definition` was added
+
+* `models.ClientAuthenticationSettings` was added
+
+* `models.ClientState` was added
+
+* `models.QueueInfo` was added
+
+* `models.ClientProvisioningState` was added
+
+* `models.PartnerDestinationUpdateParameters` was added
+
+* `models.FiltersConfiguration` was added
+
+* `models.ClientGroup$UpdateStages` was added
+
+* `models.PermissionBinding$Update` was added
+
+* `models.RoutingIdentityType` was added
+
+* `models.Namespace$Update` was added
+
+* `models.Namespace$DefinitionStages` was added
+
+* `models.PublisherType` was added
+
+* `models.SubscriptionProvisioningState` was added
+
+* `models.PartnerClientAuthenticationType` was added
+
+* `models.NamespaceUpdateParameters` was added
+
+* `models.NumberGreaterThanFilter` was added
+
+* `models.NamespaceProvisioningState` was added
+
+* `models.PermissionBindingsListResult` was added
+
+* `models.ClientCertificateValidationScheme` was added
+
+* `models.ClientsListResult` was added
+
+* `models.PartnerDestinationActivationState` was added
+
+* `models.ClientCertificateSubjectDistinguishedName` was added
+
+* `models.Subscription` was added
+
+* `models.AlternativeAuthenticationNameSource` was added
+
+* `models.TopicSpace$UpdateStages` was added
+
+* `models.ClientGroupsListResult` was added
+
+* `models.Client$UpdateStages` was added
+
+* `models.NamespaceTopic$DefinitionStages` was added
+
+* `models.WebhookUpdatePartnerDestinationInfo` was added
+
+* `models.Client$DefinitionStages` was added
+
+* `models.Client$Definition` was added
+
+* `models.RoutingIdentityInfo` was added
+
+* `models.ClientGroup$Update` was added
+
+* `models.TopicSpacesConfigurationState` was added
+
+* `models.ClientGroup$Definition` was added
+
+* `models.SubscriptionUpdateParameters` was added
+
+* `models.NamespaceTopic$UpdateStages` was added
+
+* `models.NamespaceTopicUpdateParameters` was added
+
+* `models.StaticRoutingEnrichment` was added
+
+* `models.AzureADPartnerClientAuthentication` was added
+
+* `models.NumberInRangeFilter` was added
+
+* `models.IsNullOrUndefinedFilter` was added
+
+* `models.Subscription$UpdateStages` was added
+
+* `models.PermissionBinding$Definition` was added
+
+* `models.NamespaceRegenerateKeyRequest` was added
+
+* `models.PartnerDestination$UpdateStages` was added
+
+* `models.NumberNotInRangeFilter` was added
+
+* `models.ExtendedLocation` was added
+
+* `models.PartnerDestination$DefinitionStages` was added
+
+* `models.PartnerDestinationsListResult` was added
+
+* `models.ClientGroup$DefinitionStages` was added
+
+#### `models.Channel` was modified
+
+* `partnerDestinationInfo()` was added
+
+#### `models.WebhookEventSubscriptionDestination` was modified
+
+* `minimumTlsVersionAllowed()` was added
+* `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
+
+#### `models.PartnerNamespace` was modified
+
+* `minimumTlsVersionAllowed()` was added
+
+#### `models.TopicUpdateParameters` was modified
+
+* `withEventTypeInfo(models.EventTypeInfo)` was added
+* `eventTypeInfo()` was added
+* `minimumTlsVersionAllowed()` was added
+* `withSku(models.ResourceSku)` was added
+* `sku()` was added
+* `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
+
+#### `models.Domain$Update` was modified
+
+* `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
+* `withEventTypeInfo(models.EventTypeInfo)` was added
+* `withSku(models.ResourceSku)` was added
+
+#### `models.Topic$Definition` was modified
+
+* `withSku(models.ResourceSku)` was added
+* `withEventTypeInfo(models.EventTypeInfo)` was added
+* `withKind(models.ResourceKind)` was added
+* `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
+* `withExtendedLocation(models.ExtendedLocation)` was added
+
+#### `models.DomainUpdateParameters` was modified
+
+* `eventTypeInfo()` was added
+* `withSku(models.ResourceSku)` was added
+* `withEventTypeInfo(models.EventTypeInfo)` was added
+* `minimumTlsVersionAllowed()` was added
+* `sku()` was added
+* `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
+
+#### `models.Topic$Update` was modified
+
+* `withEventTypeInfo(models.EventTypeInfo)` was added
+* `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
+* `withSku(models.ResourceSku)` was added
+
+#### `models.Domain` was modified
+
+* `sku()` was added
+* `eventTypeInfo()` was added
+* `minimumTlsVersionAllowed()` was added
+
+#### `models.Channel$Update` was modified
+
+* `withPartnerDestinationInfo(models.PartnerDestinationInfo)` was added
+
+#### `EventGridManager` was modified
+
+* `permissionBindings()` was added
+* `topicSpaces()` was added
+* `namespaces()` was added
+* `namespaceTopics()` was added
+* `namespaceTopicEventSubscriptions()` was added
+* `caCertificates()` was added
+* `clients()` was added
+* `clientGroups()` was added
+* `partnerDestinations()` was added
+
+#### `models.PartnerNamespace$Definition` was modified
+
+* `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
+
+#### `models.Topic` was modified
+
+* `extendedLocation()` was added
+* `eventTypeInfo()` was added
+* `kind()` was added
+* `minimumTlsVersionAllowed()` was added
+* `sku()` was added
+
+#### `models.PartnerNamespace$Update` was modified
+
+* `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
+
+#### `models.PartnerNamespaceUpdateParameters` was modified
+
+* `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
+* `minimumTlsVersionAllowed()` was added
+
+#### `models.Channel$Definition` was modified
+
+* `withPartnerDestinationInfo(models.PartnerDestinationInfo)` was added
+
+#### `models.ChannelUpdateParameters` was modified
+
+* `partnerDestinationInfo()` was added
+* `withPartnerDestinationInfo(models.PartnerUpdateDestinationInfo)` was added
+
+#### `models.TopicTypeInfo` was modified
+
+* `areRegionalAndGlobalSourcesSupported()` was added
+
+#### `models.Domain$Definition` was modified
+
+* `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
+* `withEventTypeInfo(models.EventTypeInfo)` was added
+* `withSku(models.ResourceSku)` was added
+
+#### `models.VerifiedPartner` was modified
+
+* `partnerDestinationDetails()` was added
 
 ## 1.2.0-beta.3 (2022-07-06)
 

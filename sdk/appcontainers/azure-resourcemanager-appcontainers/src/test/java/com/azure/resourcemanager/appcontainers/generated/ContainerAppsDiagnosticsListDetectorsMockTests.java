@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.Diagnostics;
 import java.nio.ByteBuffer;
@@ -33,7 +32,7 @@ public final class ContainerAppsDiagnosticsListDetectorsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"metadata\":{\"id\":\"eq\",\"name\":\"arvlagunbt\",\"description\":\"ebwlnbmhyreeudzq\",\"author\":\"bpdqmjxlyy\",\"category\":\"lgouwtlmjj\",\"supportTopicList\":[],\"analysisTypes\":[],\"type\":\"qtobaxkjeyt\",\"score\":38.508713},\"dataset\":[],\"status\":{\"message\":\"wrus\",\"statusId\":1630715289},\"dataProviderMetadata\":{\"providerName\":\"syrq\",\"propertyBag\":[]}},\"id\":\"qhd\",\"name\":\"nxaulk\",\"type\":\"akdkifmjnnawtqab\"}]}";
+            "{\"value\":[{\"properties\":{\"metadata\":{\"id\":\"hvthlaiwdcxsm\",\"name\":\"zhzdtxetlgydlhqv\",\"description\":\"npxybafiq\",\"author\":\"aarbgjekg\",\"category\":\"lbyulidwcwvmze\",\"supportTopicList\":[],\"analysisTypes\":[],\"type\":\"fhjirwgdnqzbrfk\",\"score\":60.33164},\"dataset\":[],\"status\":{\"message\":\"ksjcitdigs\",\"statusId\":915906581},\"dataProviderMetadata\":{\"providerName\":\"jplkeu\",\"propertyBag\":[]}},\"id\":\"tomflrytswfpf\",\"name\":\"dgycxnmskwhqjjy\",\"type\":\"lurlpshhkvp\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +61,11 @@ public final class ContainerAppsDiagnosticsListDetectorsMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Diagnostics> response =
-            manager.containerAppsDiagnostics().listDetectors("tz", "atbhjmznn", Context.NONE);
+            manager.containerAppsDiagnostics().listDetectors("dwv", "phcnzqtpj", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wrus", response.iterator().next().properties().status().message());
-        Assertions.assertEquals(1630715289, response.iterator().next().properties().status().statusId());
-        Assertions.assertEquals("syrq", response.iterator().next().properties().dataProviderMetadata().providerName());
+        Assertions.assertEquals("ksjcitdigs", response.iterator().next().properties().status().message());
+        Assertions.assertEquals(915906581, response.iterator().next().properties().status().statusId());
+        Assertions
+            .assertEquals("jplkeu", response.iterator().next().properties().dataProviderMetadata().providerName());
     }
 }

@@ -6,20 +6,19 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.ListUsagesResult;
-import org.junit.jupiter.api.Test;
 
 public final class ListUsagesResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ListUsagesResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"currentValue\":8612812378237184133,\"limit\":8060447161666090820,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"otgqrlltmu\",\"value\":\"auwzizxbmpgc\"}},{\"currentValue\":2032891691540283618,\"limit\":3898811101398882532,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"tdum\",\"value\":\"p\"}}],\"nextLink\":\"ebmnzbtbhjpglk\"}")
+                    "{\"value\":[{\"currentValue\":5460739394049509501,\"limit\":8841790636704603719,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"wqapnedgfbcvk\",\"value\":\"q\"}},{\"currentValue\":6395460850482092633,\"limit\":4392400281438783051,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"vo\",\"value\":\"sotbob\"}}],\"nextLink\":\"opcjwvnhd\"}")
                 .toObject(ListUsagesResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ListUsagesResult model = new ListUsagesResult();
         model = BinaryData.fromObject(model).toObject(ListUsagesResult.class);
     }

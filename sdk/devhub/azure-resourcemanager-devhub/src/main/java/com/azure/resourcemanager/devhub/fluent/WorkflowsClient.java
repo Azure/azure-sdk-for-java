@@ -71,19 +71,6 @@ public interface WorkflowsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkflowInner getByResourceGroup(String resourceGroupName, String workflowName);
-
-    /**
-     * Gets a workflow.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workflowName The name of the workflow resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -95,18 +82,17 @@ public interface WorkflowsClient {
         String resourceGroupName, String workflowName, Context context);
 
     /**
-     * Creates or updates a workflow.
+     * Gets a workflow.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
-     * @param parameters Resource representation of a workflow.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workflow.
+     * @return a workflow.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkflowInner createOrUpdate(String resourceGroupName, String workflowName, WorkflowInner parameters);
+    WorkflowInner getByResourceGroup(String resourceGroupName, String workflowName);
 
     /**
      * Creates or updates a workflow.
@@ -125,17 +111,18 @@ public interface WorkflowsClient {
         String resourceGroupName, String workflowName, WorkflowInner parameters, Context context);
 
     /**
-     * Deletes a workflow.
+     * Creates or updates a workflow.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
+     * @param parameters Resource representation of a workflow.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return delete response if content must be provided on delete operation.
+     * @return workflow.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeleteWorkflowResponseInner delete(String resourceGroupName, String workflowName);
+    WorkflowInner createOrUpdate(String resourceGroupName, String workflowName, WorkflowInner parameters);
 
     /**
      * Deletes a workflow.
@@ -153,18 +140,17 @@ public interface WorkflowsClient {
         String resourceGroupName, String workflowName, Context context);
 
     /**
-     * Updates tags on a workflow.
+     * Deletes a workflow.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
-     * @param parameters Parameters supplied to the Update Workflow Tags operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workflow.
+     * @return delete response if content must be provided on delete operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkflowInner updateTags(String resourceGroupName, String workflowName, TagsObject parameters);
+    DeleteWorkflowResponseInner delete(String resourceGroupName, String workflowName);
 
     /**
      * Updates tags on a workflow.
@@ -181,4 +167,18 @@ public interface WorkflowsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WorkflowInner> updateTagsWithResponse(
         String resourceGroupName, String workflowName, TagsObject parameters, Context context);
+
+    /**
+     * Updates tags on a workflow.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workflowName The name of the workflow resource.
+     * @param parameters Parameters supplied to the Update Workflow Tags operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return workflow.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkflowInner updateTags(String resourceGroupName, String workflowName, TagsObject parameters);
 }

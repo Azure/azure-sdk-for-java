@@ -4,6 +4,7 @@ package com.azure.core.test;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
+import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.PlaybackClient;
 import com.azure.core.test.implementation.TestIterationContext;
 import com.azure.core.test.implementation.TestingHelpers;
@@ -25,12 +26,16 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ServiceLoader;
 import java.util.stream.Stream;
+
+import static com.azure.core.test.utils.TestUtils.toURI;
 
 /**
  * Base class for running live and playback tests using {@link InterceptorManager}.
@@ -147,7 +152,13 @@ public abstract class TestBase implements BeforeEachCallback {
         } else if (testInfo.getTags().contains("Live")) {
             localTestMode = TestMode.LIVE;
         }
-        this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), localTestMode, isTestProxyEnabled());
+        Path testClassPath = Paths.get(toURI(testInfo.getTestClass().get().getResource(testInfo.getTestClass().get().getSimpleName() + ".class")));
+        this.testContextManager =
+            new TestContextManager(testInfo.getTestMethod().get(),
+                localTestMode,
+                isTestProxyEnabled(),
+                testInfo.getTestClass().get().getAnnotation(RecordWithoutRequestBody.class) != null,
+                testClassPath);
         testContextManager.setTestIteration(testIterationContext.getTestIteration());
         logger.info("Test Mode: {}, Name: {}", localTestMode, testContextManager.getTestName());
 
@@ -160,7 +171,6 @@ public abstract class TestBase implements BeforeEachCallback {
 
         if (isTestProxyEnabled()) {
             interceptorManager.setHttpClient(getHttpClients().findFirst().orElse(null));
-            interceptorManager.setProxyUrl(this.proxyUrl);
             // The supplier/consumer are used to retrieve/store variables over the wire.
             testResourceNamer = new TestResourceNamer(testContextManager,
                 interceptorManager.getProxyVariableConsumer(),
@@ -176,7 +186,6 @@ public abstract class TestBase implements BeforeEachCallback {
         } else {
             testResourceNamer = new TestResourceNamer(testContextManager, interceptorManager.getRecordedData());
         }
-
         beforeTest();
     }
 
@@ -315,6 +324,15 @@ public abstract class TestBase implements BeforeEachCallback {
 
     void setProxyUrl(URL proxyUrl) {
         this.proxyUrl = proxyUrl;
+    }
+
+    /**
+     * Returns the path of the class to which the test belongs.
+     *
+     * @return The file path of the test class.
+     */
+    protected Path getTestClassPath() {
+        return testContextManager.getTestClassPath();
     }
 
     /**
