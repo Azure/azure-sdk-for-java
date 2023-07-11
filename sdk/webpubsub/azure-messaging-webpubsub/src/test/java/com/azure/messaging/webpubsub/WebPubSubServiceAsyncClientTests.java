@@ -80,6 +80,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
             .verify(TIMEOUT);
     }
 
+    @DoNotRecord
     @Test
     public void assertClientNotNull() {
         assertNotNull(client);

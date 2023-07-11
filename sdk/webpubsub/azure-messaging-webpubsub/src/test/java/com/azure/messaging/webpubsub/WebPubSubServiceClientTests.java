@@ -33,6 +33,7 @@ import java.text.ParseException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+
 public class WebPubSubServiceClientTests extends TestProxyTestBase {
 
     private WebPubSubServiceClient client;
@@ -61,6 +62,7 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     }
 
     @Test
+    @DoNotRecord
     public void assertClientNotNull() {
         assertNotNull(client);
     }
