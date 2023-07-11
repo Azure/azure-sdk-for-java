@@ -36,6 +36,11 @@
     <!-- Once full testing is added this should either be removed or increased -->
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
+
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+      --add-reads com.azure.messaging.webpubsub=org.glassfish.tyrus.client
+    </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
