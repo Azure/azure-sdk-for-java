@@ -90,7 +90,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0cfd102a6ecb172f04ec915732bd8ca6f6b2a7af/specification/search/data-plane/Azure.Search/preview/2023-07-01-Preview/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchError,SearchErrorException,SearchOptions,SearchRequest,SuggestDocumentsResult,SuggestRequest,SuggestResult
+custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchError,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult
 customization-class: src/main/java/SearchIndexCustomizations.java
 ```
 
@@ -214,7 +214,7 @@ directive:
 
 ### Remove required from properties that are optional
 
-``` yaml $(java)
+``` yaml $(tag) == 'searchservice'
 directive:
   - from: swagger-document
     where: $.definitions
@@ -228,7 +228,7 @@ directive:
 ```
 
 ### Renames 
-``` yaml $(java)
+``` yaml $(tag) == 'searchservice'
 directive:
   - from: swagger-document
     where: $.definitions
@@ -290,7 +290,7 @@ directive:
 ```
 
 ### Rename Answers to QueryAnswerType, Captions to QueryCaptionType, and Speller to QuerySpellerType
-``` yaml $(java)
+``` yaml $(tag) == 'searchindex'
 directive:
   - from: swagger-document
     where: $.definitions
@@ -317,7 +317,7 @@ directive:
       delete param["x-ms-enum"];
 ```
 
-``` yaml $(java)
+``` yaml $(tag) == 'searchindex'
 directive:
   - from: swagger-document
     where: $.definitions
@@ -370,7 +370,7 @@ directive:
 ```
 
 ### Rename client parameter names
-``` yaml $(java)
+``` yaml $(tag) == 'searchservice'
 directive:
   - from: swagger-document
     where: $.definitions
