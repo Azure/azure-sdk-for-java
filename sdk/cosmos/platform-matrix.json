@@ -4,7 +4,7 @@
     "-Pcosmos-fast-tests": "Fast",
     "-Pcosmos-direct-tests": "Direct",
     "-Pcosmos-multi-master-tests": "MultiMaster",
-    "-Pcosmos--tests": "MultiRegion",
+    "-Pcosmos-multi-region-tests": "MultiRegion",
     "-Pcosmos-long-tests": "Long",
     "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"": "TCP",
     "Session": "",
