@@ -3,8 +3,10 @@
 
 package com.azure.messaging.webpubsub;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 
 import java.time.Duration;
@@ -27,6 +29,13 @@ class TestUtils {
 
     static RetryOptions getRetryOptions() {
         return new RetryOptions(new FixedDelayOptions(0, Duration.ofSeconds(20)));
+    }
+
+    static HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertAsync()
+            .skipRequest((httpRequest, context) -> false)
+            .build();
     }
 
     private TestUtils() {

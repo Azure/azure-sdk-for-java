@@ -6,7 +6,7 @@ package com.azure.messaging.webpubsub;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
@@ -32,16 +32,32 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Unit tests for {@link WebPubSubServiceAsyncClient#getClientAccessToken(GetClientAccessTokenOptions)
  * getAuthenticationToken} method.
  */
-public class TokenGenerationTest extends TestBase {
+public class TokenGenerationTest extends TestProxyTestBase {
+
+    private WebPubSubServiceClientBuilder builder;
+
+    @Override
+    protected void beforeTest() {
+        builder = new WebPubSubServiceClientBuilder()
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .retryOptions(TestUtils.getRetryOptions())
+            .hub(TestUtils.HUB_NAME);
+    }
+
+    /**
+     * Testing token generation with connection string.
+     */
     @ParameterizedTest
     @MethodSource("getTokenOptions")
+    @DoNotRecord
     public void testTokenGeneration(GetClientAccessTokenOptions tokenOptions, String connectionString,
                                     String expectedUrlPrefix, String expectedSubject,
                                     List<String> expectedRoles, List<String> expectedGroups) throws ParseException {
-        WebPubSubServiceClient client = new WebPubSubServiceClientBuilder()
-            .hub(TestUtils.HUB_NAME)
+
+        WebPubSubServiceClient client = builder
             .connectionString(connectionString)
             .buildClient();
+
         WebPubSubClientAccessToken authenticationToken = client.getClientAccessToken(tokenOptions);
 
         assertNotNull(authenticationToken.getToken());
@@ -66,8 +82,6 @@ public class TokenGenerationTest extends TestBase {
         WebPubSubServiceClientBuilder webPubSubServiceClientBuilder = new WebPubSubServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(HttpClient.createDefault())
-            .retryOptions(TestUtils.getRetryOptions())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .credential(new DefaultAzureCredentialBuilder().build())
             .hub(TestUtils.HUB_NAME);
 
