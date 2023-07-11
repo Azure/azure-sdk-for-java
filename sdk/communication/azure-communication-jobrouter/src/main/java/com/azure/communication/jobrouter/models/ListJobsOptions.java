@@ -101,7 +101,7 @@ public class ListJobsOptions {
 
     /**
      * Set scheduledBefore
-     * @param scheduledBefore
+     * @param scheduledBefore scheduledBefore.
      * @return ListJobOptions object
      */
     public ListJobsOptions setScheduledBefore(OffsetDateTime scheduledBefore) {
@@ -111,7 +111,7 @@ public class ListJobsOptions {
 
     /**
      * Set scheduledAfter
-     * @param scheduledAfter
+     * @param scheduledAfter scheduledAfter.
      * @return ListJobOptions object
      */
     public ListJobsOptions setScheduledAfter(OffsetDateTime scheduledAfter) {
