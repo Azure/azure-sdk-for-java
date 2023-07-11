@@ -38,10 +38,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import static com.azure.monitor.query.LogsQueryAsyncClientTest.RESOURCE_ID;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for {@link LogsQueryClient}
@@ -81,6 +78,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
                     .credential(getCredential());
         } else if (getTestMode() == TestMode.LIVE) {
             clientBuilder.credential(getCredential());
+            clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
         }
         this.client = clientBuilder
                 .buildClient();

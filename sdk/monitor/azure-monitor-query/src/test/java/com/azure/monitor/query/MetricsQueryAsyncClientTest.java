@@ -96,6 +96,7 @@ public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
                     .credential(getCredential());
         } else if (getTestMode() == TestMode.LIVE) {
             clientBuilder.credential(getCredential());
+            clientBuilder.endpoint(MonitorQueryTestUtils.getMetricEndpoint());
         }
         this.client = clientBuilder
                 .buildAsyncClient();

@@ -84,6 +84,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
                     .credential(getCredential());
         } else if (getTestMode() == TestMode.LIVE) {
             clientBuilder.credential(getCredential());
+            clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
         }
         this.client = clientBuilder
                 .buildAsyncClient();
