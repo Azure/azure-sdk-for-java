@@ -298,16 +298,19 @@ public final class NonAzureOpenAIClientImpl {
         final String accept = "application/json";
 
         // modelId is part of the request body in nonAzure OpenAI
-        BinaryData embeddingsOptionsUpdated = addModelIdJson(embeddingsOptions, modelId);
-
-        return FluxUtil.withContext(
-            context ->
-                service.getEmbeddings(
-                    OPEN_AI_ENDPOINT,
-                    accept,
-                    embeddingsOptionsUpdated,
-                    requestOptions,
-                    context));
+        try {
+            BinaryData embeddingsOptionsUpdated = addModelIdJson(embeddingsOptions, modelId);
+            return FluxUtil.withContext(
+                context ->
+                    service.getEmbeddings(
+                        OPEN_AI_ENDPOINT,
+                        accept,
+                        embeddingsOptionsUpdated,
+                        requestOptions,
+                        context));
+        } catch (JsonProcessingException e) {
+            return Mono.error(e);
+        }
     }
 
     /**
@@ -363,14 +366,17 @@ public final class NonAzureOpenAIClientImpl {
         final String accept = "application/json";
 
         // modelId is part of the request body in nonAzure OpenAI
-        BinaryData embeddingsOptionsUpdated = addModelIdJson(embeddingsOptions, modelId);
-
-        return service.getEmbeddingsSync(
-            OPEN_AI_ENDPOINT,
-            accept,
-            embeddingsOptionsUpdated,
-            requestOptions,
-            Context.NONE);
+        try {
+            BinaryData embeddingsOptionsUpdated = addModelIdJson(embeddingsOptions, modelId);
+            return service.getEmbeddingsSync(
+                OPEN_AI_ENDPOINT,
+                accept,
+                embeddingsOptionsUpdated,
+                requestOptions,
+                Context.NONE);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -461,16 +467,19 @@ public final class NonAzureOpenAIClientImpl {
         final String accept = "application/json";
 
         // modelId is part of the request body in nonAzure OpenAI
-        BinaryData completionsOptionsUpdated = addModelIdJson(completionsOptions, modelId);
-
-        return FluxUtil.withContext(
-            context ->
-                service.getCompletions(
-                    OPEN_AI_ENDPOINT,
-                    accept,
-                    completionsOptionsUpdated,
-                    requestOptions,
-                    context));
+        try {
+            BinaryData completionsOptionsUpdated = addModelIdJson(completionsOptions, modelId);
+            return FluxUtil.withContext(
+                context ->
+                    service.getCompletions(
+                        OPEN_AI_ENDPOINT,
+                        accept,
+                        completionsOptionsUpdated,
+                        requestOptions,
+                        context));
+        } catch (JsonProcessingException e) {
+            return Mono.error(e);
+        }
     }
 
     /**
@@ -559,7 +568,12 @@ public final class NonAzureOpenAIClientImpl {
         final String accept = "application/json";
 
         // modelId is part of the request body in nonAzure OpenAI
-        BinaryData completionsOptionsUpdated = addModelIdJson(completionsOptions, modelId);
+        BinaryData completionsOptionsUpdated = null;
+        try {
+            completionsOptionsUpdated = addModelIdJson(completionsOptions, modelId);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
         return service.getCompletionsSync(
             OPEN_AI_ENDPOINT,
@@ -648,16 +662,19 @@ public final class NonAzureOpenAIClientImpl {
         final String accept = "application/json";
 
         // modelId is part of the request body in nonAzure OpenAI
-        BinaryData chatCompletionsOptionsUpdated = addModelIdJson(chatCompletionsOptions, modelId);
-
-        return FluxUtil.withContext(
-            context ->
-                service.getChatCompletions(
-                    OPEN_AI_ENDPOINT,
-                    accept,
-                    chatCompletionsOptionsUpdated,
-                    requestOptions,
-                    context));
+        try {
+            BinaryData chatCompletionsOptionsUpdated = addModelIdJson(chatCompletionsOptions, modelId);
+            return FluxUtil.withContext(
+                context ->
+                    service.getChatCompletions(
+                        OPEN_AI_ENDPOINT,
+                        accept,
+                        chatCompletionsOptionsUpdated,
+                        requestOptions,
+                        context));
+        } catch (JsonProcessingException e) {
+            return Mono.error(e);
+        }
     }
 
     /**
@@ -738,7 +755,12 @@ public final class NonAzureOpenAIClientImpl {
         final String accept = "application/json";
 
         // modelId is part of the request body in nonAzure OpenAI
-        BinaryData chatCompletionsOptionsUpdated = addModelIdJson(chatCompletionsOptions, modelId);
+        BinaryData chatCompletionsOptionsUpdated = null;
+        try {
+            chatCompletionsOptionsUpdated = addModelIdJson(chatCompletionsOptions, modelId);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
         return service.getChatCompletionsSync(
             OPEN_AI_ENDPOINT,
@@ -871,14 +893,8 @@ public final class NonAzureOpenAIClientImpl {
      * @param modelId The LLM model ID to be injected in the JSON
      * @return
      */
-    private static BinaryData addModelIdJson(BinaryData inputJson, String modelId) {
-        JsonNode jsonNode = null;
-        try {
-            jsonNode = JSON_MAPPER.readTree(inputJson.toString());
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
+    private static BinaryData addModelIdJson(BinaryData inputJson, String modelId) throws JsonProcessingException {
+        JsonNode jsonNode = JSON_MAPPER.readTree(inputJson.toString());
         if (jsonNode instanceof ObjectNode) {
             ObjectNode objectNode = (ObjectNode) jsonNode;
             objectNode.put("model", modelId);
