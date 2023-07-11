@@ -4,6 +4,7 @@
 package com.azure.messaging.webpubsub;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.RequestOptions;
@@ -35,12 +36,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class WebPubSubServiceClientTests extends TestBase {
 
     private WebPubSubServiceClient client;
-    private WebPubSubServiceAsyncClient asyncClient;
 
     @BeforeEach
     public void setup() {
         WebPubSubServiceClientBuilder webPubSubServiceClientBuilder = new WebPubSubServiceClientBuilder()
             .connectionString(TestUtils.getConnectionString())
+            .retryOptions(TestUtils.getRetryOptions())
             .httpClient(HttpClient.createDefault())
             .hub(TestUtils.HUB_NAME);
 
@@ -52,19 +53,12 @@ public class WebPubSubServiceClientTests extends TestBase {
 
         this.client = webPubSubServiceClientBuilder
             .buildClient();
-
-        this.asyncClient = webPubSubServiceClientBuilder
-            .buildAsyncClient();
     }
 
-    private void assertResponse(Response<?> response, int expectedCode) {
+    private static void assertResponse(Response<?> response, int expectedCode) {
         assertNotNull(response);
         assertEquals(expectedCode, response.getStatusCode());
     }
-
-    /*****************************************************************************************************************
-     * Sync Tests - WebPubSubServiceClient
-     ****************************************************************************************************************/
 
     @Test
     public void assertClientNotNull() {
@@ -75,8 +69,7 @@ public class WebPubSubServiceClientTests extends TestBase {
     public void testBroadcastString() {
         assertResponse(client.sendToAllWithResponse(
                 BinaryData.fromString("Hello World - Broadcast test!"),
-                new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", "text/plain"))), 202);
+                new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
     }
 
     @Test
@@ -92,8 +85,7 @@ public class WebPubSubServiceClientTests extends TestBase {
         byte[] bytes = "Hello World - Broadcast test!".getBytes();
         assertResponse(client.sendToAllWithResponse(
                 BinaryData.fromBytes(bytes),
-                new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", "application/octet-stream"))), 202);
+                new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/octet-stream"))), 202);
     }
 
     @Test
@@ -102,8 +94,7 @@ public class WebPubSubServiceClientTests extends TestBase {
 
         assertResponse(client.sendToUserWithResponse("test_user",
             message,
-                new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", "text/plain"))), 202);
+                new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
 
         assertResponse(client.sendToUserWithResponse("test_user",
                 message, WebPubSubContentType.TEXT_PLAIN, message.getLength(),
@@ -124,8 +115,7 @@ public class WebPubSubServiceClientTests extends TestBase {
 
         assertResponse(client.sendToUserWithResponse("test_user",
             message,
-            new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                .set("Content-Type", "text/plain"))), 202);
+            new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
 
         assertResponse(client.sendToUserWithResponse("test_user",
                 message, WebPubSubContentType.TEXT_PLAIN, message.getLength(),
@@ -144,16 +134,14 @@ public class WebPubSubServiceClientTests extends TestBase {
     public void testSendToUserBytes() {
         assertResponse(client.sendToUserWithResponse("test_user",
                 BinaryData.fromBytes("Hello World!".getBytes(StandardCharsets.UTF_8)),
-                new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", "application/octet-stream"))), 202);
+                new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/octet-stream"))), 202);
     }
 
     @Test
     public void testSendToConnectionString() {
         assertResponse(client.sendToConnectionWithResponse("test_connection",
                 BinaryData.fromString("Hello World!"),
-                new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", "text/plain"))), 202);
+                new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
     }
 
     @Test
@@ -168,8 +156,7 @@ public class WebPubSubServiceClientTests extends TestBase {
     public void testSendToConnectionBytes() {
         assertResponse(client.sendToConnectionWithResponse("test_connection",
                 BinaryData.fromBytes("Hello World!".getBytes(StandardCharsets.UTF_8)),
-                new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", "application/octet-stream"))), 202);
+                new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/octet-stream"))), 202);
     }
 
     @Test
@@ -234,10 +221,6 @@ public class WebPubSubServiceClientTests extends TestBase {
         Assertions.assertTrue(aud.contains(".webpubsub.azure.com/client/hubs/"));
     }
 
-    /*****************************************************************************************************************
-     * Sync Tests - WebPubSubGroup
-     ****************************************************************************************************************/
-
     @Test
     public void testRemoveNonExistentUserFromGroup() {
         assertResponse(client.removeUserFromGroupWithResponse("java",
@@ -248,8 +231,7 @@ public class WebPubSubServiceClientTests extends TestBase {
     public void testSendMessageToGroup() {
         assertResponse(client.sendToGroupWithResponse("java",
                 BinaryData.fromString("Hello World!"),
-                new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", "text/plain"))), 202);
+                new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
     }
 
     @Test
@@ -274,8 +256,7 @@ public class WebPubSubServiceClientTests extends TestBase {
 
         assertResponse(client.sendToUserWithResponse("test_user",
                 BinaryData.fromString("Hello World!"),
-                new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", "text/plain"))), 202);
+                new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
     }
 
     @Test
