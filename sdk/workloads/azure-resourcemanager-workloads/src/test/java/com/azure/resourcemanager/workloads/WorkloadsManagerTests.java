@@ -33,7 +33,6 @@ import java.util.Random;
 public class WorkloadsManagerTests extends TestBase {
     private static final Random RANDOM = new Random();
     private static final Region RESOURCE_REGION = Region.US_EAST2;
-    private static final Region MANAGED_REGION = Region.US_EAST;
     private static final Region APPLICATION_REGION = Region.US_WEST;
     private static final String MANAGED_RG_NAME = "managerRG" + randomPadding();
     private String resourceGroupName = "rg" + randomPadding();
@@ -69,8 +68,6 @@ public class WorkloadsManagerTests extends TestBase {
             .authenticate(credential, profile)
             .withDefaultSubscription();
 
-        resourceManager.resourceGroups().define(MANAGED_RG_NAME).withRegion(MANAGED_REGION).create();
-
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
         testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
@@ -86,7 +83,6 @@ public class WorkloadsManagerTests extends TestBase {
 
     @Override
     protected void afterTest() {
-        resourceManager.resourceGroups().beginDeleteByName(MANAGED_RG_NAME);
         if (!testEnv) {
             resourceManager.resourceGroups().beginDeleteByName(resourceGroupName);
         }
