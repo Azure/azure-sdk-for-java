@@ -22,7 +22,8 @@
         "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS": "false",
         "TestFromSource": false,
         "TestGoals": "surefire:test",
-        "TestOptions": ""
+        "TestOptions": "",
+        "CoverageArg": "--disablecov"
     },
     "include": [
         {
