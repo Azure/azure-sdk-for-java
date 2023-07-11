@@ -1,6 +1,6 @@
-Service: azure-messaging-eventhubs
+Service: messaging-eventhubs
 
-Project: sdk/eventhubs/azure-messaging-eventhubs
+Project: sdk/eventhubs/azure-messaging-eventhubs-track2-perf
 
 PrimaryPackage: 'com.azure:azure-messaging-eventhubs'
 
