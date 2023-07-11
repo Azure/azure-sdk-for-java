@@ -59,6 +59,15 @@ public class BulkExecutorTest extends BatchTestBase {
                 }
             }
         }
+        if (this.createdContainer != null) {
+            try {
+                this.createdContainer.delete().block();
+            } catch (CosmosException error) {
+                if (error.getStatusCode() != 404) {
+                    throw error;
+                }
+            }
+        }
     }
 
     @BeforeMethod(groups = { "emulator" })
@@ -133,7 +142,7 @@ public class BulkExecutorTest extends BatchTestBase {
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void executeBulk_preserveOrdering() throws InterruptedException { // need to fix this, don't know how to check if order was written correctly
-        int totalRequest = 10;
+        int totalRequest = 100;
         this.container = createContainer(database);
 
         List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
@@ -179,7 +188,11 @@ public class BulkExecutorTest extends BatchTestBase {
             CosmosBulkOperationResponse<BulkExecutorTest> operationResponse = bulkResponse.get(i);
             com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse =
                 operationResponse.getResponse();
-            logger.info(String.valueOf(i));
+            if (i == 0) {
+                assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+            } else {
+                assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+            }
             assertThat(operationResponse.getOperation()).isEqualTo(cosmosItemOperations.get(i));
             assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
             assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
@@ -204,6 +217,7 @@ public class BulkExecutorTest extends BatchTestBase {
     @Test(groups = { "emulator" })
     public void executeBulk_preserveOrdering_OnFailure() throws InterruptedException {
         int totalRequest = 10;
+        this.container = createContainer(database);
 
         List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
         String duplicatePK = UUID.randomUUID().toString();
@@ -228,13 +242,14 @@ public class BulkExecutorTest extends BatchTestBase {
             .getCosmosBulkExecutionOptionsAccessor()
             .setPreserveOrdering(cosmosBulkExecutionOptions, true);
 
-        FaultInjectionRule rule = injectFailure(createdContainer, FaultInjectionOperationType.PATCH_ITEM);
+        FaultInjectionRule rule = injectFailure("RequestRateTooLarge", this.container, FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.TOO_MANY_REQUEST);
+//        FaultInjectionRule rule = injectFailure("PartitionSplit", createdContainer, FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING);
 
         Flux<CosmosItemOperation> inputFlux = Flux
             .fromArray(itemOperationsArray)
             .delayElements(Duration.ofMillis(100));
         final BulkExecutor<BulkExecutorTest> executor = new BulkExecutor<>(
-            createdContainer,
+            this.container,
             inputFlux,
             cosmosBulkExecutionOptions);
         Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<BulkExecutorTest>> bulkResponseFlux =
@@ -257,7 +272,13 @@ public class BulkExecutorTest extends BatchTestBase {
             CosmosBulkOperationResponse<BulkExecutorTest> operationResponse = bulkResponse.get(i);
             com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse =
                 operationResponse.getResponse();
+
             assertThat(operationResponse.getOperation()).isEqualTo(cosmosItemOperations.get(i));
+            if (i == 0) {
+                assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+            } else {
+                assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+            }
             assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
             assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
             assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
@@ -278,15 +299,14 @@ public class BulkExecutorTest extends BatchTestBase {
         rule.disable();
     }
 
-    private FaultInjectionRule injectFailure(
+    private FaultInjectionRule injectFailure(String id,
         CosmosAsyncContainer createdContainer,
-        FaultInjectionOperationType operationType) {
+        FaultInjectionOperationType operationType, FaultInjectionServerErrorType serverErrorType) {
 
 
         FaultInjectionServerErrorResultBuilder faultInjectionResultBuilder = FaultInjectionResultBuilders
-             .getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST) //Request Rate too large
-             .delay(Duration.ofMillis(1500))
-             .times(1);
+             .getResultBuilder(serverErrorType)
+             .delay(Duration.ofMillis(1500));
 
 
         IFaultInjectionResult result = faultInjectionResultBuilder.build();
@@ -296,11 +316,11 @@ public class BulkExecutorTest extends BatchTestBase {
             .connectionType(FaultInjectionConnectionType.DIRECT)
             .build();
 
-        FaultInjectionRule rule = new FaultInjectionRuleBuilder("RequestRateTooLarge")
+        FaultInjectionRule rule = new FaultInjectionRuleBuilder(id)
             .condition(condition)
             .result(result)
             .startDelay(Duration.ofSeconds(1))
-            .hitLimit(1) // 1 or 2
+            .hitLimit(12) // 1 or 2
             .build();
 
 

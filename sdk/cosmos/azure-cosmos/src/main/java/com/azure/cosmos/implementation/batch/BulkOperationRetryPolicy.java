@@ -104,6 +104,7 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
             if (subStatusCode == SubStatusCodes.NAME_CACHE_IS_STALE) {
                 refreshCollectionCache();
             }
+            // if
 
             return Mono.just(true);
         }
