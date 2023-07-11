@@ -68,7 +68,7 @@ class BufferStagingAreaTest extends Specification {
         when:
         def recoveredData = data.flatMapSequential(stagingArea.&write, 1)
             .concatWith(Flux.defer(stagingArea.&flush))
-            .flatMap({aggregator -> ((BufferAggregator) aggregator).asFlux().collectList() })
+            .flatMap(aggregator -> aggregator.asFlux().collectList())
             .collectList()
             .block()
 
