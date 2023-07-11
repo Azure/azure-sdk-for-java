@@ -188,7 +188,7 @@
 /sdk/servicebus/microsoft-azure-servicebus/          @shankarsama @yvgopal
 
 # PRLabel: %Storage
-/sdk/storage/                                        @ibrahimrabab @alzimmermsft
+/sdk/storage/                                        @ibrahimrabab @alzimmermsft @seanmcc-msft
 
 # PRLabel: %Tables
 /sdk/tables/                                         @jairmyree @vcolin7
