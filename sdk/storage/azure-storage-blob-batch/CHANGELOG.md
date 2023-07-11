@@ -3,12 +3,6 @@
 ## 12.19.0 (2023-07-11)
 - Added support for 2023-01-03 service version.
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 - Migrate test recordings to assets repo.
 

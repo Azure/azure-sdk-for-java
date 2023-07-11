@@ -5,10 +5,6 @@
 ### Features Added
 - Added support for 2023-01-03 service version.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 - Migrate test recordings to assets repo.
 

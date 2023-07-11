@@ -7,12 +7,8 @@
   server timeout interval elapses before the service has finished processing the request, the service returns an error.
 - Added support for 2023-01-03 service version.
 
-### Breaking Changes
-
 ### Bugs Fixed
 - Adding support for sas tokens with start and end times that only contain a date, no timestamp, ex: st=2021-06-21&se=2021-06-22.
-
-### Other Changes
 
 ## 12.21.2 (2023-06-14)
 

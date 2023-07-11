@@ -9,12 +9,8 @@
 - Added owner, group, and permissions properties to `PathProperties`.
 - Added encryptionContext property to `FileParallelUploadOptions`.
 
-### Breaking Changes
-
 ### Bugs Fixed
 - Fixed a bug that would cause authentication failures when trying to rename a path object while authenticating with a sas token that contained a leading question mark.
-
-### Other Changes
 
 ## 12.15.3 (2023-06-14)
 

@@ -6,12 +6,6 @@
 - Added support for 2023-01-03 service version.
 - Added `ShareFileHandleAccessRights` property on `HandleItem` that specifies access rights for a file handle.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 12.18.2 (2023-06-14)
 
 ### Other Changes
