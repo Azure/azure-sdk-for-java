@@ -6,26 +6,29 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.data.appconfiguration.models.CompositionType;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
+import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.data.appconfiguration.models.SnapshotStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.HttpURLConnection;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -69,15 +72,12 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         return clientSetup(credentials -> {
             ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
                 .connectionString(connectionString)
-                .serviceVersion(serviceVersion)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+                .serviceVersion(serviceVersion);
 
-            setHttpClient(httpClient, builder);
+            builder = setHttpClient(httpClient, builder);
 
             if (interceptorManager.isRecordMode()) {
-                builder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .addPolicy(new RetryPolicy());
+                builder.addPolicy(interceptorManager.getRecordPolicy());
             } else if (interceptorManager.isPlaybackMode()) {
                 interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Sync-Token"))));
             }
@@ -86,14 +86,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     private ConfigurationClientBuilder setHttpClient(HttpClient httpClient, ConfigurationClientBuilder builder) {
-        if (interceptorManager.isRecordMode()) {
-            return builder
-                .httpClient(buildSyncAssertingClient(httpClient));
-        } else if (interceptorManager.isPlaybackMode()) {
-            return builder
-                .httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
+        if (interceptorManager.isPlaybackMode()) {
+            return builder.httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
         }
-        return builder;
+        return builder.httpClient(buildSyncAssertingClient(httpClient));
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
@@ -998,6 +994,176 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 assertContainsHeaders(headers, response.getRequest().getHeaders());
             }
         );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void createSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        // Prepare a setting before creating a snapshot
+        addConfigurationSettingRunner((expected) -> assertConfigurationEquals(expected,
+            client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue()));
+
+        createSnapshotRunner((name, filters) -> {
+            // Retention period can be setup when creating a snapshot and cannot edit.
+            Duration retentionPeriod = Duration.ofMinutes(60);
+
+            ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(filters)
+                .setRetentionPeriod(retentionPeriod);
+            SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
+                client.beginCreateSnapshot(name, snapshot, Context.NONE);
+            poller.setPollInterval(Duration.ofSeconds(10));
+            poller.waitForCompletion();
+            ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
+
+            assertEqualsConfigurationSettingSnapshot(name,
+                SnapshotStatus.READY, filters, CompositionType.KEY,
+                retentionPeriod, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
+
+            // Archived the snapshot, it will be deleted automatically when retention period expires.
+            assertEquals(SnapshotStatus.ARCHIVED, client.archiveSnapshot(name).getStatus());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void getSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        // Prepare a setting before creating a snapshot
+        addConfigurationSettingRunner((expected) -> assertConfigurationEquals(expected,
+            client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue()));
+
+        createSnapshotRunner((name, filters) -> {
+            // Retention period can be setup when creating a snapshot and cannot edit.
+            Duration retentionPeriod = Duration.ofMinutes(60);
+
+            ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(filters)
+                .setRetentionPeriod(retentionPeriod);
+            SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
+                client.beginCreateSnapshot(name, snapshot, Context.NONE);
+            poller.setPollInterval(Duration.ofSeconds(10));
+            poller.waitForCompletion();
+            ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
+
+            assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
+                retentionPeriod, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
+
+            // Retrieve a snapshot after creation
+            Response<ConfigurationSettingSnapshot> getSnapshot = client.getSnapshotWithResponse(name, Context.NONE);
+            assertConfigurationSettingSnapshotWithResponse(200, name,
+                SnapshotStatus.READY, filters, CompositionType.KEY,
+                retentionPeriod, Long.valueOf(1000), Long.valueOf(0), null, getSnapshot);
+
+            // Archived the snapshot, it will be deleted automatically when retention period expires.
+            ConfigurationSettingSnapshot archivedSnapshot = client.archiveSnapshot(name);
+            assertEquals(SnapshotStatus.ARCHIVED, archivedSnapshot.getStatus());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void getSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        // Prepare a setting before creating a snapshot
+        addConfigurationSettingRunner((expected) -> assertConfigurationEquals(expected,
+            client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue()));
+
+        createSnapshotRunner((name, filters) -> {
+            SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
+                client.beginCreateSnapshot(name, new ConfigurationSettingSnapshot(filters), Context.NONE);
+            poller.setPollInterval(Duration.ofSeconds(10));
+            poller.waitForCompletion();
+            ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
+
+            assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
+                DEFAULT_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
+
+            // Retrieve a snapshot after creation
+            assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
+                DEFAULT_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null,
+                client.getSnapshot(name));
+
+            // Archived the snapshot, it will be deleted automatically when retention period expires.
+            ConfigurationSettingSnapshot archivedSnapshot = client.archiveSnapshot(name);
+            assertEquals(SnapshotStatus.ARCHIVED, archivedSnapshot.getStatus());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void recoverSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        // Prepare a setting before creating a snapshot
+        addConfigurationSettingRunner((expected) -> assertConfigurationEquals(expected,
+            client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue()));
+
+        createSnapshotRunner((name, filters) -> {
+            // Retention period can be setup when creating a snapshot and cannot edit.
+            Duration retentionPeriod = Duration.ofMinutes(60);
+
+            ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(filters)
+                .setRetentionPeriod(retentionPeriod);
+            SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
+                client.beginCreateSnapshot(name, snapshot, Context.NONE);
+            poller.setPollInterval(Duration.ofSeconds(10));
+            poller.waitForCompletion();
+            ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
+
+            assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
+                retentionPeriod, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
+
+            // Archived the snapshot
+            assertEqualsConfigurationSettingSnapshot(name,
+                SnapshotStatus.ARCHIVED, filters, CompositionType.KEY,
+                retentionPeriod, Long.valueOf(1000), Long.valueOf(0), null,
+                client.archiveSnapshot(name));
+
+            // Recover the snapshot, it will be deleted automatically when retention period expires.
+            Response<ConfigurationSettingSnapshot> configurationSettingSnapshotResponse =
+                client.recoverSnapshotWithResponse(snapshotResult, false, Context.NONE);
+            assertConfigurationSettingSnapshotWithResponse(200, name,
+                SnapshotStatus.READY, filters, CompositionType.KEY,
+                retentionPeriod, Long.valueOf(1000), Long.valueOf(0), null,
+                configurationSettingSnapshotResponse);
+
+            // Archived the snapshot, it will be deleted automatically when retention period expires.
+            assertEquals(SnapshotStatus.ARCHIVED, client.archiveSnapshot(name).getStatus());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void recoverSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        // Prepare a setting before creating a snapshot
+        addConfigurationSettingRunner((expected) -> assertConfigurationEquals(expected,
+            client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue()));
+
+        createSnapshotRunner((name, filters) -> {
+            // Retention period can be setup when creating a snapshot and cannot edit.
+            Duration retentionPeriod = Duration.ofMinutes(60);
+
+            ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(filters)
+                .setRetentionPeriod(retentionPeriod);
+            SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
+                client.beginCreateSnapshot(name, snapshot, Context.NONE);
+            poller.setPollInterval(Duration.ofSeconds(10));
+            poller.waitForCompletion();
+            ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
+
+            assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
+                retentionPeriod, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
+
+            // Archived the snapshot
+            assertEquals(SnapshotStatus.ARCHIVED, client.archiveSnapshot(name).getStatus());
+
+            // Recover the snapshot, it will be deleted automatically when retention period expires.
+            assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
+                retentionPeriod, Long.valueOf(1000), Long.valueOf(0), null, client.recoverSnapshot(name));
+
+            // Archived the snapshot, it will be deleted automatically when retention period expires.
+            assertEquals(SnapshotStatus.ARCHIVED, client.archiveSnapshot(name).getStatus());
+        });
     }
 
     /**

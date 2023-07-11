@@ -89,7 +89,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.9.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.9.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -100,7 +100,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.13.4</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.13.5</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -125,7 +125,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.29</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.30</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -180,7 +180,7 @@
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-registry-azure-monitor</artifactId>
-      <version>1.9.10</version> <!-- {x-version-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
+      <version>1.9.12</version> <!-- {x-version-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -228,7 +228,7 @@
                 <include>org.scalastyle:scalastyle-maven-plugin:[1.0.0]</include> <!-- {x-include-update;cosmos_org.scalastyle:scalastyle-maven-plugin;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
-                <include>io.micrometer:micrometer-registry-azure-monitor:[1.9.10]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
+                <include>io.micrometer:micrometer-registry-azure-monitor:[1.9.12]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
                 <include>com.microsoft.azure:applicationinsights-core:[2.6.4]</include> <!-- {x-include-update;cosmos_com.microsoft.azure:applicationinsights-core;external_dependency} -->
                 <include>com.globalmentor:hadoop-bare-naked-local-fs:[0.1.0]</include> <!-- {x-include-update;cosmos_com.globalmentor:hadoop-bare-naked-local-fs;external_dependency} -->
               </includes>
@@ -269,7 +269,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>attach-javadocs</id>
@@ -292,7 +292,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
-            <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+            <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>empty-javadoc-jar-with-readme</id>
@@ -310,7 +310,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-antrun-plugin</artifactId>
-            <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+            <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>copy-readme-to-javadocTemp</id>
@@ -693,7 +693,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>
@@ -702,7 +702,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
-            <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+            <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>

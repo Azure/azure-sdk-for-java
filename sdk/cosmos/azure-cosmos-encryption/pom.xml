@@ -80,7 +80,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.9.1</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.9.2</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -128,7 +128,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>7.5</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
+      <version>7.5.1</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <!-- Excluding these 2 dependencies as they have vulnerabilities and we don't use them -->
@@ -174,7 +174,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.29</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.30</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
