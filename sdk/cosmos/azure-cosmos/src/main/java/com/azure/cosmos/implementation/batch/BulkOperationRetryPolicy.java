@@ -16,6 +16,8 @@ import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
+import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.models.CosmosItemOperationType;
 import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -80,8 +82,17 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
         return this.resourceThrottleRetryPolicy.getRetryContext();
     }
 
-    Mono<Boolean> shouldRetryForGone(int statusCode, int subStatusCode) {
+    Mono<Boolean> shouldRetryForGone(int statusCode, int subStatusCode, CosmosItemOperation itemOperation) {
         if (statusCode == StatusCodes.GONE) {
+
+            if (itemOperation.getOperationType() == CosmosItemOperationType.CREATE ||
+                itemOperation.getOperationType() == CosmosItemOperationType.DELETE ||
+                itemOperation.getOperationType() == CosmosItemOperationType.PATCH ||
+                itemOperation.getOperationType() == CosmosItemOperationType.REPLACE ||
+                itemOperation.getOperationType() == CosmosItemOperationType.UPSERT) {
+                return Mono.just(false);
+            }
+
             if (this.attemptedRetries++ > MAX_RETRIES) {
                 return Mono.just(false);
             }

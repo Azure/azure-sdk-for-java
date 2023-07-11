@@ -293,6 +293,8 @@ public class FaultInjectionRuleProcessor {
                 return OperationType.Delete;
             case PATCH_ITEM:
                 return OperationType.Patch;
+            case BATCH_ITEM:
+                return OperationType.Batch;
             default:
                 throw new IllegalStateException("FaultInjectionOperationType " + faultInjectionOperationType + " is not supported");
         }

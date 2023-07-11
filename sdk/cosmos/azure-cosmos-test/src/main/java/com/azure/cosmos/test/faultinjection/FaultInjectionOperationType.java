@@ -34,7 +34,12 @@ public enum FaultInjectionOperationType {
     /**
      * Patch item.
      */
-    PATCH_ITEM
+    PATCH_ITEM,
+
+    /**
+     * Batch item.
+     */
+    BATCH_ITEM
 
     // Add support for metadata request type
 }
