@@ -412,6 +412,8 @@ jobs:
       vmImage: windows-2022
 
     steps:
+      - checkout: none
+
       # For PullRequests CredScan will be run against the files changed in the PR.
       # For non-pull requests CredScan
       - ${{if eq(variables['Build.Reason'], 'PullRequest')}}:
