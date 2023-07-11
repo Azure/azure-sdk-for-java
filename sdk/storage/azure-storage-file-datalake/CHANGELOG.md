@@ -1,8 +1,13 @@
 # Release History
 
-## 12.16.0-beta.2 (Unreleased)
+## 12.16.0 (2023-07-11)
 
 ### Features Added
+- Added `DataLakeFileClient.getOutputStream()` which allows users to open an `OutputStream` on the file and write data
+  to it using `ParallelTransferOptions`.
+- Added support for 2023-01-03 service version.
+- Added owner, group, and permissions properties to `PathProperties`.
+- Added encryptionContext property to `FileParallelUploadOptions`.
 
 ### Breaking Changes
 
@@ -29,6 +34,7 @@ to it using `ParallelTransferOptions`.
 - Added support for 2023-01-03 service version.
 - Added owner, group, and permissions properties to `PathProperties`.
 - Added encryptionContext property to `FileParallelUploadOptions`.
+
 ## 12.15.2 (2023-05-23)
 
 ### Other Changes
