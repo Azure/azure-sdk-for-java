@@ -50,7 +50,7 @@
   <!-- Repositories definitions -->
   <repositories>
     <repository>
-      <id>ossrh</id>
+      <id>repo-ossrh</id>
       <name>Sonatype Snapshots</name>
       <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
       <layout>default</layout>
@@ -63,7 +63,7 @@
 
   <pluginRepositories>
     <pluginRepository>
-      <id>ossrh</id>
+      <id>repo-ossrh</id>
       <name>Sonatype Snapshots</name>
       <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
       <layout>default</layout>
@@ -76,7 +76,7 @@
 
   <distributionManagement>
     <snapshotRepository>
-      <id>ossrh</id>
+      <id>repo-ossrh</id>
       <name>Sonatype Snapshots</name>
       <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
       <uniqueVersion>true</uniqueVersion>

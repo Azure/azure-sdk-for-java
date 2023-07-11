@@ -8,12 +8,31 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
 
-  <modules>
-      <module>microsoft-azure-servicebus</module>
-      <module>azure-messaging-servicebus</module>
-      <module>azure-messaging-servicebus-stress</module>
-      <module>azure-messaging-servicebus-track1-perf</module>
-      <module>azure-messaging-servicebus-track2-perf</module>
-  </modules>
+  <profiles>
+    <profile>
+      <id>libraries-data-plane-current</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>azure-messaging-servicebus</module>
+        <module>azure-messaging-servicebus-stress</module>
+        <module>azure-messaging-servicebus-track1-perf</module>
+        <module>azure-messaging-servicebus-track2-perf</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>libraries-data-plane-track1</id>
+      <activation>
+        <property>
+          <name>data-plane-track1</name>
+        </property>
+      </activation>
+      <modules>
+        <module>microsoft-azure-servicebus</module>
+      </modules>
+    </profile>
+  </profiles>
 
 </project>

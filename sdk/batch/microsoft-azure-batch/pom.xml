@@ -184,7 +184,7 @@
   </build>
   <profiles>
     <profile>
-      <id>java9plus</id>
+      <id>requires-java-9-or-later</id>
       <activation>
         <jdk>[9,)</jdk>
       </activation>

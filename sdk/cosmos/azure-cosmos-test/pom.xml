@@ -163,7 +163,7 @@ Licensed under the MIT License.
   <profiles>
     <profile>
       <!-- unit test -->
-      <id>unit</id>
+      <id>cosmos-unit-tests</id>
       <properties>
         <env>default</env>
         <test.groups>unit</test.groups>
@@ -185,7 +185,7 @@ Licensed under the MIT License.
     </profile>
     <profile>
       <!-- integration tests, requires Cosmos DB endpoint with multi region support -->
-      <id>multi-region</id>
+      <id>cosmos-multi-region-tests</id>
       <properties>
         <test.groups>multi-region</test.groups>
       </properties>
@@ -206,7 +206,7 @@ Licensed under the MIT License.
     </profile>
     <profile>
       <!-- integration tests, requires Cosmos DB endpoint -->
-      <id>fast</id>
+      <id>cosmos-fast-tests</id>
       <properties>
         <test.groups>simple</test.groups>
       </properties>

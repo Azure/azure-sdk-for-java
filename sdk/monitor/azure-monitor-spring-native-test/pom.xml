@@ -51,7 +51,7 @@
   <profiles>
     <!-- Library cannot build for Java 17 and below -->
     <profile>
-      <id>belowJava17</id>
+      <id>requires-java-below-17</id>
       <activation>
         <jdk>[,17)</jdk>
       </activation>

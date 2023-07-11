@@ -10,7 +10,7 @@
 
   <profiles>
     <profile>
-      <id>default</id>
+      <id>libraries-data-plane-spring</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
@@ -19,7 +19,7 @@
     </profile>
 
     <profile>
-      <id>dev</id>
+      <id>libraries-data-plane-spring-dev</id>
       <modules>
         <module>../../eng/code-quality-reports</module>
       </modules>

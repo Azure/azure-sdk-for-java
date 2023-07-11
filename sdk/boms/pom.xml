@@ -8,6 +8,8 @@
   <artifactId>azure-boms</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
+
+  <!-- TODO (JG): No profiles here yet -->
   <modules>
     <module>azure-sdk-bom</module>
     <module>azure-sdk-template-bom</module>

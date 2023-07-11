@@ -9,11 +9,40 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
 
-  <modules>
-    <module>azure-messaging-eventgrid</module>
-    <module>azure-messaging-eventgrid-cloudnative-cloudevents</module>
-    <module>azure-resourcemanager-eventgrid</module>
-    <module>microsoft-azure-eventgrid</module>
-  </modules>
+  <profiles>
+    <profile>
+      <id>libraries-data-plane-current</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>azure-messaging-eventgrid</module>
+        <module>azure-messaging-eventgrid-cloudnative-cloudevents</module>
+      </modules>
+    </profile>
 
+    <profile>
+      <id>libraries-mgmt-plane-current</id>
+      <activation>
+        <property>
+          <name>mgmt-plane-current</name>
+        </property>
+      </activation>
+      <modules>
+        <module>azure-resourcemanager-eventgrid</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>libraries-data-plane-track1</id>
+      <activation>
+        <property>
+          <name>data-plane-track1</name>
+        </property>
+      </activation>
+      <modules>
+        <module>microsoft-azure-eventgrid</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

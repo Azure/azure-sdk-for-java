@@ -11,8 +11,18 @@
   <artifactId>azure-data-schemaregistry-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
-  <modules>
-      <module>azure-data-schemaregistry</module>
-      <module>azure-data-schemaregistry-apacheavro</module>
-  </modules>
+
+
+  <profiles>
+    <profile>
+      <id>libraries-data-plane-current</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>azure-data-schemaregistry</module>
+        <module>azure-data-schemaregistry-apacheavro</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

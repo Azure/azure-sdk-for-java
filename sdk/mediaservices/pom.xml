@@ -8,8 +8,29 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
 
-  <modules>
-      <module>azure-resourcemanager-mediaservices</module>
-      <module>microsoft-azure-media</module>
-  </modules>
+  <profiles>
+    <profile>
+      <id>libraries-mgmt-plane-current</id>
+      <activation>
+        <property>
+          <name>mgmt-plane-current</name>
+        </property>
+      </activation>
+      <modules>
+        <module>azure-resourcemanager-mediaservices</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>libraries-data-plane-track1</id>
+      <activation>
+        <property>
+          <name>data-plane-track1</name>
+        </property>
+      </activation>
+      <modules>
+        <module>microsoft-azure-media</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

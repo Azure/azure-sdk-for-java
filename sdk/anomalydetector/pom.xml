@@ -8,7 +8,16 @@
   <artifactId>azure-anomalydetector-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
-  <modules>
-      <module>azure-ai-anomalydetector</module>
-  </modules>
+
+  <profiles>
+    <profile>
+      <id>libraries-data-plane-current</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+          <module>azure-ai-anomalydetector</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

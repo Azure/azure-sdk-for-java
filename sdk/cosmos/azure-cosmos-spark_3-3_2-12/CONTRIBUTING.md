@@ -48,7 +48,7 @@ mvn clean install -Dgpg.skip
         So set the 
         second group environment variables NEW_ACCOUNT_HOST, NEW_ACCOUNT_KEY and 
         NEW_SECONDARY_ACCOUNT_KEY, the two group environment variables can be same.
-     3. Run maven command with `integration-test-azure` profile. 
+     3. Run maven command with `cosmos-integration-test-azure` profile. 
   
         ```bash
         set ACCOUNT_HOST=your-cosmos-account-uri
@@ -58,7 +58,7 @@ mvn clean install -Dgpg.skip
         set NEW_ACCOUNT_HOST=your-cosmos-account-uri
         set NEW_ACCOUNT_KEY=your-cosmos-account-primary-key
         set NEW_SECONDARY_ACCOUNT_KEY=your-cosmos-account-secondary-key
-        mvnw -P integration-test-azure clean install
+        mvnw -P cosmos-integration-test-azure clean install
         ```
         
    - on Emulator
@@ -67,7 +67,7 @@ mvn clean install -Dgpg.skip
      [this instruction](https://docs.microsoft.com/azure/cosmos-db/local-emulator), and set 
      associated environment variables. Then run test with:
      ```bash
-     mvnw -P integration-test-emulator install
+     mvnw -P cosmos-integration-test-emulator install
      ```
 
 

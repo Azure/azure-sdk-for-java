@@ -8,10 +8,19 @@
   <artifactId>azure-aot-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
-  <modules>
-    <module>azure-aot-graalvm-support</module>
-    <module>azure-aot-graalvm-support-netty</module>
-    <module>azure-aot-graalvm-samples</module>
-    <module>azure-aot-graalvm-perf</module>
-  </modules>
+
+  <profiles>
+    <profile>
+      <id>libraries-data-plane-current</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>azure-aot-graalvm-support</module>
+        <module>azure-aot-graalvm-support-netty</module>
+        <module>azure-aot-graalvm-samples</module>
+        <module>azure-aot-graalvm-perf</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

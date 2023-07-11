@@ -266,7 +266,7 @@
   <profiles>
     <profile>
       <!-- unit test -->
-      <id>unit</id>
+      <id>cosmos-unit-tests</id>
       <properties>
         <env>default</env>
         <test.groups>unit</test.groups>
@@ -288,9 +288,9 @@
     </profile>
 
     <profile>
-      <id>integration-test-azure</id>
+      <id>cosmos-integration-test-azure</id>
       <properties>
-        <build.profile.id>integration-test-azure</build.profile.id>
+        <build.profile.id>cosmos-integration-test-azure</build.profile.id>
         <skip.integration.tests>false</skip.integration.tests>
         <test.on.azure>true</test.on.azure>
         <test.on.emulator>false</test.on.emulator>
@@ -308,9 +308,9 @@
       </build>
     </profile>
     <profile>
-      <id>integration-test-emulator</id>
+      <id>cosmos-integration-test-emulator</id>
       <properties>
-        <build.profile.id>integration-test-emulator</build.profile.id>
+        <build.profile.id>cosmos-integration-test-emulator</build.profile.id>
         <skip.integration.tests>false</skip.integration.tests>
         <test.on.azure>false</test.on.azure>
         <test.on.emulator>true</test.on.emulator>

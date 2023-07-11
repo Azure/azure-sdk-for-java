@@ -291,7 +291,7 @@ Licensed under the MIT License.
   <profiles>
     <profile>
       <!-- unit test -->
-      <id>unit</id>
+      <id>cosmos-unit-tests</id>
       <properties>
         <env>default</env>
         <test.groups>unit</test.groups>
@@ -313,7 +313,7 @@ Licensed under the MIT License.
     </profile>
     <profile>
       <!-- integration tests, requires Cosmos DB endpoint -->
-      <id>fast</id>
+      <id>cosmos-fast-tests</id>
       <properties>
         <test.groups>simple,cosmosv3</test.groups>
       </properties>
@@ -334,7 +334,7 @@ Licensed under the MIT License.
     </profile>
     <profile>
       <!-- integration tests, requires Cosmos DB endpoint -->
-      <id>long</id>
+      <id>cosmos-long-tests</id>
       <properties>
         <test.groups>long</test.groups>
       </properties>
@@ -355,7 +355,7 @@ Licensed under the MIT License.
     </profile>
     <profile>
       <!-- integration tests, requires Cosmos DB endpoint -->
-      <id>direct</id>
+      <id>cosmos-direct-tests</id>
       <properties>
         <test.groups>direct</test.groups>
       </properties>
@@ -376,7 +376,7 @@ Licensed under the MIT License.
     </profile>
     <profile>
       <!-- integration tests, requires Cosmos DB endpoint with multi master support -->
-      <id>multi-master</id>
+      <id>cosmos-multi-master-tests</id>
       <properties>
         <test.groups>multi-master</test.groups>
       </properties>
@@ -397,7 +397,7 @@ Licensed under the MIT License.
     </profile>
     <profile>
       <!-- integration tests, requires Cosmos DB endpoint -->
-      <id>examples</id>
+      <id>cosmos-examples-tests</id>
       <properties>
         <!-- reset the test group as examples have no test group -->
         <test.groups>samples,examples</test.groups>
@@ -427,7 +427,7 @@ Licensed under the MIT License.
     </profile>
     <profile>
       <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
-      <id>emulator</id>
+      <id>cosmos-emulator-tests</id>
       <properties>
         <test.groups>emulator</test.groups>
       </properties>
@@ -448,7 +448,7 @@ Licensed under the MIT License.
     </profile>
     <profile>
       <!-- e2e integration tests, requires Cosmos DB endpoint -->
-      <id>e2e</id>
+      <id>cosmos-e2e-tests</id>
       <properties>
         <test.groups>e2e</test.groups>
       </properties>

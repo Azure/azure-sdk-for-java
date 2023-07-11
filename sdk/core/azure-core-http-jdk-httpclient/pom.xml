@@ -139,7 +139,7 @@
   <profiles>
     <!-- Library cannot build for Java 11 and below -->
     <profile>
-      <id>java8</id>
+      <id>requires-java-8</id>
       <activation>
         <jdk>[,11)</jdk>
       </activation>
@@ -222,8 +222,9 @@
     </profile>
 
     <!-- Override the parent client.pom.xml's java11+ profile to override target of base-compile execution from 1.8 to 11-->
+    <!-- TODO (JG): Should this LTS be moved up to 17? -->
     <profile>
-      <id>java-lts</id>
+      <id>requires-java-lts</id>
       <activation>
         <jdk>[11,)</jdk>
       </activation>
@@ -240,7 +241,7 @@
               <execution>
                 <id>default-compile</id>
               </execution>
-              <!-- Here the 'base-compile' execution section of java-lts profile defined in parent pom.client.xml is overridden.
+              <!-- Here the 'base-compile' execution section of requires-java-lts profile defined in parent pom.client.xml is overridden.
                In parent pom, this execution entry enforces java8 release compatibility. The new http APIs are not available
                in Java8, hence here in this pom we override that release compatibility to 11.
               -->
@@ -253,7 +254,7 @@
                   <release>11</release>
                 </configuration>
               </execution>
-              <!-- Here the 'base-testCompile' execution section of java-lts profile defined in parent pom.client.xml is overridden.
+              <!-- Here the 'base-testCompile' execution section of requires-java-lts profile defined in parent pom.client.xml is overridden.
                In parent pom, this execution entry enforces java8 release compatibility. The new http APIs are not available
                in Java8, hence here in this pom we override that release compatibility to 11.
               -->

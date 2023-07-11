@@ -38,20 +38,30 @@
     </plugins>
   </build>
 
-  <modules>
-    <module>azure-resourcemanager</module>
-    <module>azure-resourcemanager-appservice</module>
-    <module>azure-resourcemanager-authorization</module>
-    <module>azure-resourcemanager-compute</module>
-    <module>azure-resourcemanager-containerregistry</module>
-    <module>azure-resourcemanager-containerservice</module>
-    <module>azure-resourcemanager-dns</module>
-    <module>azure-resourcemanager-eventhubs</module>
-    <module>azure-resourcemanager-keyvault</module>
-    <module>azure-resourcemanager-monitor</module>
-    <module>azure-resourcemanager-network</module>
-    <module>azure-resourcemanager-resources</module>
-    <module>azure-resourcemanager-storage</module>
-    <module>azure-resourcemanager-test</module>
-  </modules>
+  <profiles>
+    <profile>
+      <id>libraries-mgmt-plane-current</id>
+      <activation>
+        <property>
+          <name>mgmt-plane-current</name>
+        </property>
+      </activation>
+      <modules>
+        <module>azure-resourcemanager</module>
+        <module>azure-resourcemanager-appservice</module>
+        <module>azure-resourcemanager-authorization</module>
+        <module>azure-resourcemanager-compute</module>
+        <module>azure-resourcemanager-containerregistry</module>
+        <module>azure-resourcemanager-containerservice</module>
+        <module>azure-resourcemanager-dns</module>
+        <module>azure-resourcemanager-eventhubs</module>
+        <module>azure-resourcemanager-keyvault</module>
+        <module>azure-resourcemanager-monitor</module>
+        <module>azure-resourcemanager-network</module>
+        <module>azure-resourcemanager-resources</module>
+        <module>azure-resourcemanager-storage</module>
+        <module>azure-resourcemanager-test</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

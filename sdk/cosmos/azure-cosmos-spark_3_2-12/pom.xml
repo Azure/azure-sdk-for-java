@@ -241,7 +241,7 @@
 
   <profiles>
     <profile>
-      <id>build-scala</id>
+      <id>cosmos-build-scala</id>
       <activation>
         <file>
           <exists>${basedir}/scalastyle_config.xml</exists>
@@ -623,7 +623,7 @@
     </profile>
 
     <profile>
-      <id>unit</id>
+      <id>cosmos-unit-tests</id>
       <activation>
         <file>
           <exists>${basedir}/scalastyle_config.xml</exists>
@@ -675,7 +675,7 @@
 
     <!-- Library cannot build for Java 10 and below -->
     <profile>
-      <id>java8</id>
+      <id>requires-java-8</id>
       <activation>
         <jdk>[,11)</jdk>
       </activation>
@@ -713,7 +713,7 @@
 
     <!-- Override the parent client.pom.xml's java11+ profile to override target of base-compile execution from 1.8 to 11-->
     <profile>
-      <id>java-lts</id>
+      <id>requires-java-lts</id>
       <activation>
         <jdk>[11,)</jdk>
       </activation>
@@ -730,7 +730,7 @@
                   <release>11</release>
                 </configuration>
               </execution>
-              <!-- Here the 'base-compile' execution section of java-lts profile defined in parent pom.client.xml is
+              <!-- Here the 'base-compile' execution section of requires-java-lts profile defined in parent pom.client.xml is
               overridden. In parent pom, this execution entry enforces java8 release compatibility. The Spark
               connectors for Spark 3.0 and above not available in Java8, hence here in this pom we override that
               release compact to 11.

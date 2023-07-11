@@ -9,8 +9,16 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
 
-  <modules>
-      <module>azure-ai-textanalytics</module>
-      <module>azure-ai-textanalytics-perf</module>
-  </modules>
+  <profiles>
+    <profile>
+      <id>libraries-data-plane-current</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>azure-ai-textanalytics</module>
+        <module>azure-ai-textanalytics-perf</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

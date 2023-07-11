@@ -440,7 +440,7 @@
   <profiles>
     <!-- Generate "spring-configuration-metadata.json" by annotation process -->
     <profile>
-      <id>annotation-process-for-java-8</id>
+      <id>spring-annotation-process-for-java-8</id>
       <activation>
         <jdk>[1.8,9)</jdk>
       </activation>
@@ -452,7 +452,7 @@
             <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <executions>
               <execution>
-                <id>annotation-process-for-java-8</id>
+                <id>spring-annotation-process-for-java-8</id>
                 <goals>
                   <goal>compile</goal>
                 </goals>
@@ -468,7 +468,7 @@
       </build>
     </profile>
     <profile>
-      <id>annotation-process-for-java-11</id>
+      <id>spring-annotation-process-for-java-11</id>
       <activation>
         <jdk>[11,)</jdk>
       </activation>
@@ -480,7 +480,7 @@
             <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <executions>
               <execution>
-                <id>annotation-process-for-java-11</id>
+                <id>spring-annotation-process-for-java-11</id>
                 <goals>
                   <goal>compile</goal>
                 </goals>

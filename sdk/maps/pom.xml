@@ -9,15 +9,34 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
 
-  <modules>
-    <module>azure-maps-search</module>
-    <module>azure-maps-route</module>
-    <module>azure-maps-render</module>
-    <module>azure-maps-timezone</module>
-    <module>azure-maps-geolocation</module>
-    <module>azure-maps-elevation</module>
-    <module>azure-maps-traffic</module>
-    <module>azure-maps-weather</module>
-    <module>azure-resourcemanager-maps</module>
-  </modules>
+  <profiles>
+    <profile>
+      <id>libraries-data-plane-current</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>azure-maps-search</module>
+        <module>azure-maps-route</module>
+        <module>azure-maps-render</module>
+        <module>azure-maps-timezone</module>
+        <module>azure-maps-geolocation</module>
+        <module>azure-maps-elevation</module>
+        <module>azure-maps-traffic</module>
+        <module>azure-maps-weather</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>libraries-mgmt-plane-current</id>
+      <activation>
+        <property>
+          <name>mgmt-plane-current</name>
+        </property>
+      </activation>
+      <modules>
+        <module>azure-resourcemanager-maps</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

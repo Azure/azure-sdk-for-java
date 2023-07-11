@@ -231,7 +231,7 @@ Licensed under the MIT License.
   <profiles>
     <profile>
       <!-- unit test -->
-      <id>unit</id>
+      <id>cosmos-unit-tests</id>
       <properties>
         <env>default</env>
         <test.groups>unit</test.groups>
@@ -253,7 +253,7 @@ Licensed under the MIT License.
     </profile>
     <profile>
       <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
-      <id>encryption-integration</id>
+      <id>cosmos-encryption-integration-tests</id>
       <properties>
         <test.groups>encryption</test.groups>
       </properties>

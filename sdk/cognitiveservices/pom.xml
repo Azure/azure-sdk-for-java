@@ -9,17 +9,36 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
 
-  <modules>
-      <module>azure-resourcemanager-cognitiveservices</module>
-      <module>ms-azure-cs-autosuggest</module>
-      <module>ms-azure-cs-computervision</module>
-      <module>ms-azure-cs-contentmoderator</module>
-      <module>ms-azure-cs-customimagesearch</module>
-      <module>ms-azure-cs-customsearch</module>
-      <module>ms-azure-cs-customvision-prediction</module>
-      <module>ms-azure-cs-customvision-training</module>
-      <module>ms-azure-cs-entitysearch</module>
-      <module>ms-azure-cs-faceapi</module>
+  <profiles>
+    <profile>
+      <id>libraries-mgmt-plane-current</id>
+      <activation>
+        <property>
+          <name>mgmt-plane-current</name>
+        </property>
+      </activation>
+      <modules>
+        <module>azure-resourcemanager-cognitiveservices</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>libraries-data-plane-track1</id>
+      <activation>
+        <property>
+          <name>data-plane-track1</name>
+        </property>
+      </activation>
+      <modules>
+        <module>ms-azure-cs-autosuggest</module>
+        <module>ms-azure-cs-computervision</module>
+        <module>ms-azure-cs-contentmoderator</module>
+        <module>ms-azure-cs-customimagesearch</module>
+        <module>ms-azure-cs-customsearch</module>
+        <module>ms-azure-cs-customvision-prediction</module>
+        <module>ms-azure-cs-customvision-training</module>
+        <module>ms-azure-cs-entitysearch</module>
+        <module>ms-azure-cs-faceapi</module>
         <module>ms-azure-cs-imagesearch</module>
         <module>ms-azure-cs-luis-authoring</module>
         <module>ms-azure-cs-luis-runtime</module>
@@ -31,4 +50,6 @@
         <module>ms-azure-cs-visualsearch</module>
         <module>ms-azure-cs-websearch</module>
       </modules>
+    </profile>
+  </profiles>
 </project>

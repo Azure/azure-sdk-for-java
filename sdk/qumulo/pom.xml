@@ -9,7 +9,17 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
 
-  <modules>
-    <module>azure-resourcemanager-qumulo</module>
-  </modules>
+  <profiles>
+    <profile>
+      <id>libraries-mgmt-plane-current</id>
+      <activation>
+        <property>
+          <name>mgmt-plane-current</name>
+        </property>
+      </activation>
+      <modules>
+        <module>azure-resourcemanager-qumulo</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

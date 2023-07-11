@@ -8,19 +8,39 @@
   <artifactId>azure-storage-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
-  <modules>
-      <module>azure-storage-common</module>
-      <module>azure-storage-blob</module>
-      <module>azure-storage-blob-batch</module>
-      <module>azure-storage-blob-changefeed</module>
-      <module>azure-storage-blob-cryptography</module>
-      <module>azure-storage-blob-nio</module>
-      <module>azure-storage-file-share</module>
-      <module>azure-storage-file-datalake</module>
-      <module>azure-storage-internal-avro</module>
-      <module>azure-storage-queue</module>
+
+  <profiles>
+    <profile>
+      <id>libraries-data-plane-current</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>azure-storage-common</module>
+        <module>azure-storage-blob</module>
+        <module>azure-storage-blob-batch</module>
+        <module>azure-storage-blob-changefeed</module>
+        <module>azure-storage-blob-cryptography</module>
+        <module>azure-storage-blob-nio</module>
+        <module>azure-storage-file-share</module>
+        <module>azure-storage-file-datalake</module>
+        <module>azure-storage-internal-avro</module>
+        <module>azure-storage-queue</module>
         <module>azure-storage-perf</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>libraries-data-plane-track1</id>
+      <activation>
+        <property>
+          <name>data-plane-track1</name>
+        </property>
+      </activation>
+      <modules>
         <module>microsoft-azure-storage-blob</module>
         <module>microsoft-azure-storage-perf</module>
       </modules>
+    </profile>
+  </profiles>
 </project>

@@ -9,8 +9,27 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
 
-  <modules>
-    <module>azure-developer-loadtesting</module>
-    <module>azure-resourcemanager-loadtesting</module>
-  </modules>
+  <profiles>
+    <profile>
+      <id>libraries-data-plane-current</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>azure-developer-loadtesting</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>libraries-mgmt-plane-current</id>
+      <activation>
+        <property>
+          <name>mgmt-plane-current</name>
+        </property>
+      </activation>
+      <modules>
+        <module>azure-resourcemanager-loadtesting</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

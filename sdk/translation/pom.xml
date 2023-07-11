@@ -8,8 +8,17 @@
   <artifactId>azure-translation-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
-  <modules>
-      <module>azure-ai-documenttranslator</module>
-      <module>azure-ai-translation-text</module>
-  </modules>
+
+  <profiles>
+    <profile>
+      <id>libraries-data-plane-current</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>azure-ai-documenttranslator</module>
+        <module>azure-ai-translation-text</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

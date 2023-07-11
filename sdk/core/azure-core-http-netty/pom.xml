@@ -235,7 +235,7 @@
 
   <profiles>
     <profile>
-      <id>native-linux</id>
+      <id>native-linux-dependency</id>
       <activation>
         <property>
           <name>native-linux</name>
@@ -248,7 +248,7 @@
     </profile>
 
     <profile>
-      <id>native-macos</id>
+      <id>native-macos-dependency</id>
       <activation>
         <property>
           <name>native-macos</name>
@@ -261,7 +261,7 @@
     </profile>
 
     <profile>
-      <id>native-windows</id>
+      <id>native-windows-dependency</id>
       <activation>
         <property>
           <name>native-windows</name>

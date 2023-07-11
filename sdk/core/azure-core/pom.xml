@@ -269,7 +269,7 @@
 
   <profiles>
     <profile>
-      <id>jmh-benchmark</id>
+      <id>tools-jmh-benchmark</id>
       <activation>
         <property>
           <name>jmh-benchmark</name>

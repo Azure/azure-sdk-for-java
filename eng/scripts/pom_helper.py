@@ -43,7 +43,7 @@ dependency_template = '''
 distribution_management = '''
     <distributionManagement>
         <snapshotRepository>
-            <id>ossrh</id>
+            <id>repo-ossrh</id>
             <name>Sonatype Snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
             <uniqueVersion>true</uniqueVersion>
