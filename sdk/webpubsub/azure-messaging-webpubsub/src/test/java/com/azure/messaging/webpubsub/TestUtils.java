@@ -14,7 +14,7 @@ import java.time.Duration;
 /**
  * Common properties used in testing.
  */
-class TestUtils {
+final class TestUtils {
     static final String HUB_NAME = "Hub";
 
     static String getEndpoint() {
