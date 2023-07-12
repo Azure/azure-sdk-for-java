@@ -453,7 +453,11 @@ public final class ChatCompletionsOptions {
     @JsonProperty(value = "function_call")
     private FunctionCallModelBase functionCall;
 
-    @JsonIgnore private FunctionCall functionCalls;
+    /*
+     * Field not used for serialization. This is a convenience field to enable the functionality while honouring the
+     * polymorphic nature of the field
+     */
+    @JsonIgnore private FunctionCall functionCallInternal;
 
     /**
      * Get the functions property: A list of functions the model may generate JSON inputs for.
@@ -503,19 +507,36 @@ public final class ChatCompletionsOptions {
         return this;
     }
 
+    /**
+     * Get the functionCall property: Controls how the model responds to function calls. "none" means the model does not
+     * call a function, and responds to the end-user. "auto" means the model can pick between an end-user or calling a
+     * function. Specifying a particular function via `{"name": "my_function"}` forces the model to call that function.
+     * "none" is the default when no functions are present. "auto" is the default if functions are present.
+     *
+     * @return the functionCall value.
+     */
     public FunctionCall getFunctionCall() {
-        return this.functionCalls;
+        return this.functionCallInternal;
     }
 
-    public ChatCompletionsOptions setFunctionCall(FunctionCall functionCalls) {
-        this.functionCalls = functionCalls;
+    /**
+     * Set the functionCall property: Controls how the model responds to function calls. "none" means the model does not
+     * call a function, and responds to the end-user. "auto" means the model can pick between an end-user or calling a
+     * function. Specifying a particular function via `{"name": "my_function"}` forces the model to call that function.
+     * "none" is the default when no functions are present. "auto" is the default if functions are present.
+     *
+     * @param functionCallInternal the functionCall value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    public ChatCompletionsOptions setFunctionCall(FunctionCall functionCallInternal) {
+        this.functionCallInternal = functionCallInternal;
         if (FunctionCallPreset.values().stream()
-                .anyMatch(preset -> preset.toString().equals(functionCalls.getName()))) {
+                .anyMatch(preset -> preset.toString().equals(functionCallInternal.getName()))) {
             this.functionCall =
                     new FunctionCallPresetFunctionCallModel(
-                            FunctionCallPreset.fromString(this.functionCalls.getName()));
+                            FunctionCallPreset.fromString(this.functionCallInternal.getName()));
         } else {
-            this.functionCall = new FunctionNameFunctionCallModel(new FunctionName(this.functionCalls.getName()));
+            this.functionCall = new FunctionNameFunctionCallModel(new FunctionName(this.functionCallInternal.getName()));
         }
         return this;
     }
