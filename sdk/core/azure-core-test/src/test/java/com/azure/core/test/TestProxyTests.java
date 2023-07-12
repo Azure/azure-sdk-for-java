@@ -428,6 +428,8 @@ public class TestProxyTests extends TestProxyTestBase {
             TestProxyUtils.getProxyProcessName()).toString();
         Path engRepoRoot = TestUtils.getRepoRootResolveUntil(getTestClassPath(), "eng");
         String targetRepoRoot = TestUtils.getRepoRootResolveUntil(getTestClassPath(), "target").toString();
+        System.out.printf("Target repo root: %s", targetRepoRoot);
+        System.out.printf("Eng repo root: %s", engRepoRoot.toString());
         ProcessBuilder builder = new ProcessBuilder(commandLine,
             "config",
             "locate",
@@ -450,11 +452,13 @@ public class TestProxyTests extends TestProxyTestBase {
                 stringBuilder.append(line);
             }
         }
+        System.out.printf("Process output: %s", stringBuilder);
         String filePath = stringBuilder.toString();
         String recordingName = testContextManager.getTestPlaybackRecordingName() + ".json";
         String relativePath =
             engRepoRoot.relativize(Paths.get(targetRepoRoot, "src/test/resources/session-records", recordingName))
                 .toString();
+        System.out.printf("Relative path: %s", relativePath);
         return Paths.get(filePath, relativePath).toString();
     }
 
