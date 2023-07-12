@@ -46,7 +46,7 @@ parameters:
   - name: AdditionalLintingOptions
     type: string
     default: ''
-  - name: LatestNonLtsJavaVersion
+  - name: IsLatestNonLtsJdk
     type: boolean
     default: false
 
@@ -104,7 +104,7 @@ jobs:
       - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
         parameters:
           LatestJdkFeatureVersion: $(LatestJdkFeatureVersion)
-          IsLatestNonLtsJdk: ${{ parameters.LatestNonLtsJavaVersion }}
+          IsLatestNonLtsJdk: ${{ parameters.IsLatestNonLtsJdk }}
 
       - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
         parameters:
@@ -123,13 +123,13 @@ jobs:
           TestOptions: ${{ parameters.TestOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
-          ContinueOnError: ${{ parameters.LatestNonLtsJavaVersion }}
+          ContinueOnError: ${{ parameters.IsLatestNonLtsJdk }}
 
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
           JavaBuildVersion: $(JavaTestVersion)
           AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
           ContinueOnError: true
-          RunLinting: ${{ parameters.LatestNonLtsJavaVersion }}
+          RunLinting: ${{ parameters.IsLatestNonLtsJdk }}
 
       - template: /eng/common/testproxy/publish-proxy-logs.yml
