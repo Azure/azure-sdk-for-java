@@ -36,8 +36,6 @@ jobs:
       - template: /eng/pipelines/templates/variables/globals.yml
       - name: ArmTemplateParameters
         value: '@{}'
-      - name: IsLatestNonLtsJdk
-        value: $[eq(variables['JavaTestVersion'], variables['LatestNonLtsJavaVersion'])]
 
     timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 

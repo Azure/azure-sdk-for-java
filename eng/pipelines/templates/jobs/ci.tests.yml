@@ -65,8 +65,6 @@ jobs:
 
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
-      - name: IsLatestNonLtsJdk
-        value: $[eq(variables['JavaTestVersion'], variables['LatestNonLtsJavaVersion'])]
 
     steps:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml

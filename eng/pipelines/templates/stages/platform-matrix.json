@@ -64,7 +64,8 @@
       "TestFromSource": false,
       "RunAggregateReports": false,
       "TestGoals": "surefire:test",
-      "TestOptions": ""
+      "TestOptions": "",
+      "IsLatestNonLtsJdk": true
     }
   ]
 }
