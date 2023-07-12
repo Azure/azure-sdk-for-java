@@ -35,7 +35,7 @@ public final class L2NetworksCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"extendedLocation\":{\"name\":\"xls\",\"type\":\"ihmxrfdsajredn\"},\"properties\":{\"clusterId\":\"yshtuwgmev\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"wzyif\",\"hybridAksClustersAssociatedIds\":[\"wltxeqipxgzdyims\",\"ayorprav\",\"jogeslabnsmjkwyn\"],\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"kqsykvwjtqpke\",\"l2IsolationDomainId\":\"myltj\",\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"klurccl\",\"gxannnoytzposewx\",\"gpxvkqmaupxvpi\",\"dfaifyzyzeyuube\"]},\"location\":\"szlfyt\",\"tags\":{\"hoynk\":\"hgygvfltgvd\",\"nn\":\"xwetwkdrcyrucpc\",\"odnaienhqhskndn\":\"zdqumoe\",\"anniyopetxivcnr\":\"lqkaadlknwf\"},\"id\":\"yxnu\",\"name\":\"aephblkw\",\"type\":\"pat\"}";
+            "{\"extendedLocation\":{\"name\":\"eeksnbksdqhjvyk\",\"type\":\"xeslkhhustcpoqm\"},\"properties\":{\"associatedResourceIds\":[\"wqjwgok\",\"lejjjkxy\",\"wfd\"],\"clusterId\":\"jbzten\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"yk\",\"hybridAksClustersAssociatedIds\":[\"kns\",\"fwushcdpkupn\"],\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"jfbp\",\"l2IsolationDomainId\":\"uwxeoiojfizf\",\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"wfbcyaykmmfzsbf\",\"xrzxmdewsrsxkrp\",\"bjazejwwviy\",\"y\"]},\"location\":\"uhbrnnhjxsq\",\"tags\":{\"ozycy\":\"qkbiwet\"},\"id\":\"iqyhgfse\",\"name\":\"zlex\",\"type\":\"sfledyn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,23 +66,32 @@ public final class L2NetworksCreateOrUpdateMockTests {
         L2Network response =
             manager
                 .l2Networks()
-                .define("atbwbqam")
-                .withRegion("sxwwhnhjtf")
-                .withExistingResourceGroup("v")
-                .withExtendedLocation(new ExtendedLocation().withName("e").withType("liys"))
-                .withL2IsolationDomainId("hycvdimwrzre")
-                .withTags(mapOf("ynudqllzsa", "dpmiljpn"))
+                .define("ndljdjuskbr")
+                .withRegion("vru")
+                .withExistingResourceGroup("mvqmtdwckygroej")
+                .withExtendedLocation(new ExtendedLocation().withName("eqy").withType("kceysfaqegplw"))
+                .withL2IsolationDomainId("zysevusxi")
+                .withTags(
+                    mapOf(
+                        "qgdgkkile",
+                        "gsyeipqdsmjtg",
+                        "orvvmqfloygbdgw",
+                        "lkcsmknhwtbbae",
+                        "xjd",
+                        "mgxdgdhpabgd",
+                        "wllcolsr",
+                        "vjsaqwotm"))
                 .withHybridAksPluginType(HybridAksPluginType.OSDEVICE)
-                .withInterfaceName("xn")
+                .withInterfaceName("wehtaemxh")
                 .create();
 
-        Assertions.assertEquals("szlfyt", response.location());
-        Assertions.assertEquals("hgygvfltgvd", response.tags().get("hoynk"));
-        Assertions.assertEquals("xls", response.extendedLocation().name());
-        Assertions.assertEquals("ihmxrfdsajredn", response.extendedLocation().type());
+        Assertions.assertEquals("uhbrnnhjxsq", response.location());
+        Assertions.assertEquals("qkbiwet", response.tags().get("ozycy"));
+        Assertions.assertEquals("eeksnbksdqhjvyk", response.extendedLocation().name());
+        Assertions.assertEquals("xeslkhhustcpoqm", response.extendedLocation().type());
         Assertions.assertEquals(HybridAksPluginType.SRIOV, response.hybridAksPluginType());
-        Assertions.assertEquals("kqsykvwjtqpke", response.interfaceName());
-        Assertions.assertEquals("myltj", response.l2IsolationDomainId());
+        Assertions.assertEquals("jfbp", response.interfaceName());
+        Assertions.assertEquals("uwxeoiojfizf", response.l2IsolationDomainId());
     }
 
     @SuppressWarnings("unchecked")

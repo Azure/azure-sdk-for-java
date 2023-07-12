@@ -16,16 +16,15 @@ public final class RackSkuListTests {
         RackSkuList model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"lcrpw\",\"value\":[{\"properties\":{\"computeMachines\":[],\"controllerMachines\":[],\"description\":\"igbrnjw\",\"maxClusterSlots\":3524202842191540912,\"provisioningState\":\"Succeeded\",\"rackType\":\"Aggregator\",\"storageAppliances\":[],\"supportedRackSkuIds\":[]},\"id\":\"joqkagfhsxt\",\"name\":\"augzxnfaazpxdtn\",\"type\":\"dm\"},{\"properties\":{\"computeMachines\":[],\"controllerMachines\":[],\"description\":\"lwuenvrkp\",\"maxClusterSlots\":4937898817473869392,\"provisioningState\":\"Succeeded\",\"rackType\":\"Compute\",\"storageAppliances\":[],\"supportedRackSkuIds\":[]},\"id\":\"aysjkixqtnqttez\",\"name\":\"wfff\",\"type\":\"akpjpqqmtedlt\"}]}")
+                    "{\"nextLink\":\"zpfrla\",\"value\":[{\"properties\":{\"computeMachines\":[],\"controllerMachines\":[],\"description\":\"oiindfpwpjy\",\"maxClusterSlots\":1464641146056052310,\"provisioningState\":\"Succeeded\",\"rackType\":\"Compute\",\"storageAppliances\":[],\"supportedRackSkuIds\":[]},\"id\":\"dhszfjv\",\"name\":\"bgofeljag\",\"type\":\"qmqhldvriii\"}]}")
                 .toObject(RackSkuList.class);
-        Assertions.assertEquals("lcrpw", model.nextLink());
+        Assertions.assertEquals("zpfrla", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RackSkuList model =
-            new RackSkuList().withNextLink("lcrpw").withValue(Arrays.asList(new RackSkuInner(), new RackSkuInner()));
+        RackSkuList model = new RackSkuList().withNextLink("zpfrla").withValue(Arrays.asList(new RackSkuInner()));
         model = BinaryData.fromObject(model).toObject(RackSkuList.class);
-        Assertions.assertEquals("lcrpw", model.nextLink());
+        Assertions.assertEquals("zpfrla", model.nextLink());
     }
 }

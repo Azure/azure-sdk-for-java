@@ -4,13 +4,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Document analysis result. */
-@Fluent
+@Immutable
 public final class AnalyzeResult {
     /*
      * API version used to produce this result.
@@ -88,7 +88,7 @@ public final class AnalyzeResult {
      * @param pages the pages value to set.
      */
     @JsonCreator
-    public AnalyzeResult(
+    private AnalyzeResult(
             @JsonProperty(value = "apiVersion", required = true) String apiVersion,
             @JsonProperty(value = "modelId", required = true) String modelId,
             @JsonProperty(value = "stringIndexType", required = true) StringIndexType stringIndexType,
@@ -156,34 +156,12 @@ public final class AnalyzeResult {
     }
 
     /**
-     * Set the paragraphs property: Extracted paragraphs.
-     *
-     * @param paragraphs the paragraphs value to set.
-     * @return the AnalyzeResult object itself.
-     */
-    public AnalyzeResult setParagraphs(List<DocumentParagraph> paragraphs) {
-        this.paragraphs = paragraphs;
-        return this;
-    }
-
-    /**
      * Get the tables property: Extracted tables.
      *
      * @return the tables value.
      */
     public List<DocumentTable> getTables() {
         return this.tables;
-    }
-
-    /**
-     * Set the tables property: Extracted tables.
-     *
-     * @param tables the tables value to set.
-     * @return the AnalyzeResult object itself.
-     */
-    public AnalyzeResult setTables(List<DocumentTable> tables) {
-        this.tables = tables;
-        return this;
     }
 
     /**
@@ -196,34 +174,12 @@ public final class AnalyzeResult {
     }
 
     /**
-     * Set the keyValuePairs property: Extracted key-value pairs.
-     *
-     * @param keyValuePairs the keyValuePairs value to set.
-     * @return the AnalyzeResult object itself.
-     */
-    public AnalyzeResult setKeyValuePairs(List<DocumentKeyValuePair> keyValuePairs) {
-        this.keyValuePairs = keyValuePairs;
-        return this;
-    }
-
-    /**
      * Get the styles property: Extracted font styles.
      *
      * @return the styles value.
      */
     public List<DocumentStyle> getStyles() {
         return this.styles;
-    }
-
-    /**
-     * Set the styles property: Extracted font styles.
-     *
-     * @param styles the styles value to set.
-     * @return the AnalyzeResult object itself.
-     */
-    public AnalyzeResult setStyles(List<DocumentStyle> styles) {
-        this.styles = styles;
-        return this;
     }
 
     /**
@@ -236,33 +192,11 @@ public final class AnalyzeResult {
     }
 
     /**
-     * Set the languages property: Detected languages.
-     *
-     * @param languages the languages value to set.
-     * @return the AnalyzeResult object itself.
-     */
-    public AnalyzeResult setLanguages(List<DocumentLanguage> languages) {
-        this.languages = languages;
-        return this;
-    }
-
-    /**
      * Get the documents property: Extracted documents.
      *
      * @return the documents value.
      */
     public List<Document> getDocuments() {
         return this.documents;
-    }
-
-    /**
-     * Set the documents property: Extracted documents.
-     *
-     * @param documents the documents value to set.
-     * @return the AnalyzeResult object itself.
-     */
-    public AnalyzeResult setDocuments(List<Document> documents) {
-        this.documents = documents;
-        return this;
     }
 }

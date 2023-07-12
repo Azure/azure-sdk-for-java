@@ -295,7 +295,7 @@ public final class OpenAIClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getImageOperationStatus(
+        Mono<Response<BinaryData>> getAzureBatchImageGenerationOperationStatus(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("operationId") String operationId,
@@ -315,7 +315,7 @@ public final class OpenAIClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getImageOperationStatusSync(
+        Response<BinaryData> getAzureBatchImageGenerationOperationStatusSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("operationId") String operationId,
@@ -335,7 +335,7 @@ public final class OpenAIClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> startGenerateImage(
+        Mono<Response<BinaryData>> beginAzureBatchImageGeneration(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("accept") String accept,
@@ -355,7 +355,7 @@ public final class OpenAIClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> startGenerateImageSync(
+        Response<BinaryData> beginAzureBatchImageGenerationSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("accept") String accept,
@@ -864,26 +864,21 @@ public final class OpenAIClientImpl {
      *     expires: Long (Optional)
      *     result (Optional): {
      *         created: long (Required)
-     *         data (Required): [
-     *              (Required){
-     *                 url: String (Optional)
-     *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     target: String (Optional)
-     *                     details (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     innererror (Optional): {
-     *                         code: String (Optional)
-     *                         innererror (Optional): (recursive schema, see innererror above)
-     *                     }
-     *                 }
-     *             }
-     *         ]
+     *         data: DataModelBase (Required)
      *     }
      *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
-     *     error (Optional): (recursive schema, see error above)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
      * }
      * }</pre>
      *
@@ -893,16 +888,16 @@ public final class OpenAIClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of the operation if the operation succeeded along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return a polling status update or final response payload for an image operation along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getImageOperationStatusWithResponseAsync(
+    public Mono<Response<BinaryData>> getAzureBatchImageGenerationOperationStatusWithResponseAsync(
             String operationId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getImageOperationStatus(
+                        service.getAzureBatchImageGenerationOperationStatus(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 operationId,
@@ -923,26 +918,21 @@ public final class OpenAIClientImpl {
      *     expires: Long (Optional)
      *     result (Optional): {
      *         created: long (Required)
-     *         data (Required): [
-     *              (Required){
-     *                 url: String (Optional)
-     *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     target: String (Optional)
-     *                     details (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     innererror (Optional): {
-     *                         code: String (Optional)
-     *                         innererror (Optional): (recursive schema, see innererror above)
-     *                     }
-     *                 }
-     *             }
-     *         ]
+     *         data: DataModelBase (Required)
      *     }
      *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
-     *     error (Optional): (recursive schema, see error above)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
      * }
      * }</pre>
      *
@@ -952,12 +942,13 @@ public final class OpenAIClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of the operation if the operation succeeded along with {@link Response}.
+     * @return a polling status update or final response payload for an image operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getImageOperationStatusWithResponse(String operationId, RequestOptions requestOptions) {
+    public Response<BinaryData> getAzureBatchImageGenerationOperationStatusWithResponse(
+            String operationId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getImageOperationStatusSync(
+        return service.getAzureBatchImageGenerationOperationStatusSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
                 operationId,
@@ -976,6 +967,7 @@ public final class OpenAIClientImpl {
      *     prompt: String (Required)
      *     n: Integer (Optional)
      *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     response_format: String(url/b64_json) (Optional)
      *     user: String (Optional)
      * }
      * }</pre>
@@ -1011,12 +1003,12 @@ public final class OpenAIClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> startGenerateImageWithResponseAsync(
+    private Mono<Response<BinaryData>> beginAzureBatchImageGenerationWithResponseAsync(
             BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.startGenerateImage(
+                        service.beginAzureBatchImageGeneration(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 accept,
@@ -1035,6 +1027,7 @@ public final class OpenAIClientImpl {
      *     prompt: String (Required)
      *     n: Integer (Optional)
      *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     response_format: String(url/b64_json) (Optional)
      *     user: String (Optional)
      * }
      * }</pre>
@@ -1069,10 +1062,10 @@ public final class OpenAIClientImpl {
      * @return status details for long running operations along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> startGenerateImageWithResponse(
+    private Response<BinaryData> beginAzureBatchImageGenerationWithResponse(
             BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.startGenerateImageSync(
+        return service.beginAzureBatchImageGenerationSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
                 accept,
@@ -1091,6 +1084,7 @@ public final class OpenAIClientImpl {
      *     prompt: String (Required)
      *     n: Integer (Optional)
      *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     response_format: String(url/b64_json) (Optional)
      *     user: String (Optional)
      * }
      * }</pre>
@@ -1125,11 +1119,11 @@ public final class OpenAIClientImpl {
      * @return the {@link PollerFlux} for polling of status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginStartGenerateImageAsync(
+    public PollerFlux<BinaryData, BinaryData> beginBeginAzureBatchImageGenerationAsync(
             BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
-                () -> this.startGenerateImageWithResponseAsync(imageGenerationOptions, requestOptions),
+                () -> this.beginAzureBatchImageGenerationWithResponseAsync(imageGenerationOptions, requestOptions),
                 new DefaultPollingStrategy<>(
                         new PollingStrategyOptions(this.getHttpPipeline())
                                 .setEndpoint("{endpoint}/openai".replace("{endpoint}", this.getEndpoint()))
@@ -1151,6 +1145,7 @@ public final class OpenAIClientImpl {
      *     prompt: String (Required)
      *     n: Integer (Optional)
      *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     response_format: String(url/b64_json) (Optional)
      *     user: String (Optional)
      * }
      * }</pre>
@@ -1185,11 +1180,11 @@ public final class OpenAIClientImpl {
      * @return the {@link SyncPoller} for polling of status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginStartGenerateImage(
+    public SyncPoller<BinaryData, BinaryData> beginBeginAzureBatchImageGeneration(
             BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         return SyncPoller.createPoller(
                 Duration.ofSeconds(1),
-                () -> this.startGenerateImageWithResponse(imageGenerationOptions, requestOptions),
+                () -> this.beginAzureBatchImageGenerationWithResponse(imageGenerationOptions, requestOptions),
                 new SyncDefaultPollingStrategy<>(
                         new PollingStrategyOptions(this.getHttpPipeline())
                                 .setEndpoint("{endpoint}/openai".replace("{endpoint}", this.getEndpoint()))

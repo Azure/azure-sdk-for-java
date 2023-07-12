@@ -308,7 +308,7 @@ EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
     .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
     .buildAsyncConsumerClient();
 
-// Take a specific partitionId from EventHubConsumerAsyncClient.getPartitionIds()
+// Obtain partitionId from EventHubConsumerAsyncClient.getPartitionIds()
 String partitionId = "0";
 EventPosition startingPosition = EventPosition.latest();
 

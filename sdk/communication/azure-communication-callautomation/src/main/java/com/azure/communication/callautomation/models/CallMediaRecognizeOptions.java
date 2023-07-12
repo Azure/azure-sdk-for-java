@@ -55,6 +55,12 @@ public abstract class CallMediaRecognizeOptions {
     private Duration initialSilenceTimeout;
 
     /*
+     * Endpoint where the custom model was deployed.
+     */
+    @JsonProperty(value = "speechModelEndpointId")
+    private String speechModelEndpointId;
+
+    /*
      * Target participant of DTFM tone recognition.
      */
     @JsonProperty(value = "targetParticipant")
@@ -223,5 +229,25 @@ public abstract class CallMediaRecognizeOptions {
      */
     public CommunicationIdentifier getTargetParticipant() {
         return this.targetParticipant;
+    }
+
+    /**
+     * Get the speech model endpoint id.
+     *
+     * @return the speech model endpoint id.
+     */
+    public String getSpeechModelEndpointId() {
+        return speechModelEndpointId;
+    }
+
+    /**
+     * Set the speechModelEndpointId property: Endpoint where the custom model was deployed.
+     *
+     * @param speechModelEndpointId the initialSilenceTimeout value to set.
+     * @return the CallMediaRecognizeSpeechOrDtmfOptions object itself.
+     */
+    public CallMediaRecognizeOptions setSpeechModelEndpointId(String speechModelEndpointId) {
+        this.speechModelEndpointId = speechModelEndpointId;
+        return this;
     }
 }

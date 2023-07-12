@@ -14,6 +14,7 @@ import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.ImageOperationResponse;
+import com.azure.ai.openai.models.ImageResponse;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -442,10 +443,10 @@ public final class OpenAIAsyncClient {
 
     /**
      * Initializes an instance of OpenAIAsyncClient class by using "Azure" OpenAI service implementation. Azure OpenAI
-     * and Non-Azure OpenAI service implementations are mutually exclusive. Both service client implementation cannot
+     * and Non-Azure OpenAI Service implementations are mutually exclusive. Both service client implementation cannot
      * coexist because `OpenAIClient` operates either way in a mutually exclusive way.
      *
-     * @param serviceClient the service client implementation for Azure OpenAI service client.
+     * @param serviceClient the service client implementation for Azure OpenAI Service client.
      */
     OpenAIAsyncClient(OpenAIClientImpl serviceClient) {
         this.serviceClient = serviceClient;
@@ -454,14 +455,41 @@ public final class OpenAIAsyncClient {
 
     /**
      * Initializes an instance of OpenAIAsyncClient class by using "Non-Azure" OpenAI service implementation. Azure
-     * OpenAI and Non-Azure OpenAI service implementations are mutually exclusive. Both service client implementation
+     * OpenAI and Non-Azure OpenAI Service implementations are mutually exclusive. Both service client implementation
      * cannot coexist because `OpenAIClient` operates either way in a mutually exclusive way.
      *
-     * @param serviceClient the service client implementation for Non-Azure OpenAI service client.
+     * @param serviceClient the service client implementation for Non-Azure OpenAI Service client.
      */
     OpenAIAsyncClient(NonAzureOpenAIClientImpl serviceClient) {
         this.serviceClient = null;
         openAIServiceClient = serviceClient;
+    }
+
+    /**
+     * Starts the generation of a batch of images from a text caption.
+     *
+     * @param imageGenerationOptions Represents the request data used to generate images.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Mono} with the image generation result
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ImageResponse> generateImage(ImageGenerationOptions imageGenerationOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
+        return openAIServiceClient != null
+                ? openAIServiceClient
+                        .generateImageWithResponseAsync(imageGenerationOptionsBinaryData, requestOptions)
+                        .flatMap(FluxUtil::toMono)
+                        .map(it -> it.toObject(ImageResponse.class))
+                : beginBeginAzureBatchImageGeneration(imageGenerationOptionsBinaryData, requestOptions)
+                        .last()
+                        .flatMap(it -> it.getFinalResult())
+                        .map(it -> it.toObject(ImageOperationResponse.class).getResult());
     }
 
     /**
@@ -476,26 +504,21 @@ public final class OpenAIAsyncClient {
      *     expires: Long (Optional)
      *     result (Optional): {
      *         created: long (Required)
-     *         data (Required): [
-     *              (Required){
-     *                 url: String (Optional)
-     *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     target: String (Optional)
-     *                     details (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     innererror (Optional): {
-     *                         code: String (Optional)
-     *                         innererror (Optional): (recursive schema, see innererror above)
-     *                     }
-     *                 }
-     *             }
-     *         ]
+     *         data: DataModelBase (Required)
      *     }
      *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
-     *     error (Optional): (recursive schema, see error above)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
      * }
      * }</pre>
      *
@@ -505,14 +528,15 @@ public final class OpenAIAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of the operation if the operation succeeded along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return a polling status update or final response payload for an image operation along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getImageOperationStatusWithResponse(
+    Mono<Response<BinaryData>> getAzureBatchImageGenerationOperationStatusWithResponse(
             String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.getImageOperationStatusWithResponseAsync(operationId, requestOptions);
+        return this.serviceClient.getAzureBatchImageGenerationOperationStatusWithResponseAsync(
+                operationId, requestOptions);
     }
 
     /**
@@ -525,6 +549,7 @@ public final class OpenAIAsyncClient {
      *     prompt: String (Required)
      *     n: Integer (Optional)
      *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     response_format: String(url/b64_json) (Optional)
      *     user: String (Optional)
      * }
      * }</pre>
@@ -560,30 +585,8 @@ public final class OpenAIAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<BinaryData, BinaryData> beginStartGenerateImage(
+    PollerFlux<BinaryData, BinaryData> beginBeginAzureBatchImageGeneration(
             BinaryData imageGenerationOptions, RequestOptions requestOptions) {
-        return this.serviceClient.beginStartGenerateImageAsync(imageGenerationOptions, requestOptions);
-    }
-
-    /**
-     * Returns the status of the images operation.
-     *
-     * @param operationId .
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the operation if the operation succeeded on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ImageOperationResponse> getImageOperationStatus(String operationId) {
-        // Generated convenience method for getImageOperationStatusWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getImageOperationStatusWithResponse(operationId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ImageOperationResponse.class));
+        return this.serviceClient.beginBeginAzureBatchImageGenerationAsync(imageGenerationOptions, requestOptions);
     }
 }

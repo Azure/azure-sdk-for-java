@@ -46,7 +46,7 @@ If you want to see the full code for these snippets check out our [samples folde
 
 ### Authentication
 
-In order to interact with the Azure OpenAI service you'll need to create an instance of client class,
+In order to interact with the Azure OpenAI Service you'll need to create an instance of client class,
 [OpenAIAsyncClient][openai_client_async] or [OpenAIClient][openai_client_sync] by using 
 [OpenAIClientBuilder][openai_client_builder]. To configure a client for use with 
 Azure OpenAI, provide a valid endpoint URI to an Azure OpenAI resource along with a corresponding key credential,

@@ -1,5 +1,16 @@
 ## Release History
 
+### 4.21.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+* Fixed schema reference issue for empty array - See [PR 35746](https://github.com/Azure/azure-sdk-for-java/pull/35746)
+
+#### Other Changes
+
 ### 4.20.0 (2023-06-26)
 
 #### Features Added
