@@ -177,6 +177,7 @@ public class StatsbeatModule {
             this.telemetryItemExporter = telemetryItemExporter;
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public void run() {
             try {
