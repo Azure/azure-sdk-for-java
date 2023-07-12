@@ -20,7 +20,6 @@ public final class AksResourceAttributes {
     private static final String AZURE_AKS = "azure_aks";
     private static final String UNKNOWN_SERVICE = "unknown_service";
     private static final ClientLogger logger = new ClientLogger(AksResourceAttributes.class);
-    @SuppressWarnings("MS_CANNOT_BE_FINAL")
     public static Map<String, String> otelResourceAttributes;
 
     static {
