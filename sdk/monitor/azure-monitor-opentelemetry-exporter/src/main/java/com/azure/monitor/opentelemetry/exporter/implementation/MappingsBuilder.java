@@ -91,6 +91,7 @@ class MappingsBuilder {
         return this;
     }
 
+    @SuppressWarnings("unchecked")
     MappingsBuilder exactStringArray(AttributeKey<List<String>> attributeKey, String propertyName) {
         exactMappings.put(
             attributeKey.getKey(),
