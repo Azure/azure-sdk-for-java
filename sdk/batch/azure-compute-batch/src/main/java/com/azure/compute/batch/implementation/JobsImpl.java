@@ -899,8 +899,11 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *                             protectedSettings (Optional): {
+     *                                 String: Object (Optional)
+     *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -1347,8 +1350,11 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *                             protectedSettings (Optional): {
+     *                                 String: Object (Optional)
+     *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -1668,8 +1674,11 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *                             protectedSettings (Optional): {
+     *                                 String: Object (Optional)
+     *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -1991,8 +2000,11 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *                             protectedSettings (Optional): {
+     *                                 String: Object (Optional)
+     *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -2421,8 +2433,11 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *                             protectedSettings (Optional): {
+     *                                 String: Object (Optional)
+     *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -2876,8 +2891,11 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *                             protectedSettings (Optional): {
+     *                                 String: Object (Optional)
+     *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -3734,8 +3752,11 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *                             protectedSettings (Optional): {
+     *                                 String: Object (Optional)
+     *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -3884,22 +3905,6 @@ public final class JobsImpl {
      *     metadata (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     stats (Optional): {
-     *         url: String (Required)
-     *         startTime: OffsetDateTime (Required)
-     *         lastUpdateTime: OffsetDateTime (Required)
-     *         userCPUTime: Duration (Required)
-     *         kernelCPUTime: Duration (Required)
-     *         wallClockTime: Duration (Required)
-     *         readIOps: int (Required)
-     *         writeIOps: int (Required)
-     *         readIOGiB: double (Required)
-     *         writeIOGiB: double (Required)
-     *         numSucceededTasks: int (Required)
-     *         numFailedTasks: int (Required)
-     *         numTaskRetries: int (Required)
-     *         waitTime: Duration (Required)
-     *     }
      * }
      * }</pre>
      *
@@ -4152,8 +4157,11 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *                             protectedSettings (Optional): {
+     *                                 String: Object (Optional)
+     *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -4302,22 +4310,6 @@ public final class JobsImpl {
      *     metadata (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     stats (Optional): {
-     *         url: String (Required)
-     *         startTime: OffsetDateTime (Required)
-     *         lastUpdateTime: OffsetDateTime (Required)
-     *         userCPUTime: Duration (Required)
-     *         kernelCPUTime: Duration (Required)
-     *         wallClockTime: Duration (Required)
-     *         readIOps: int (Required)
-     *         writeIOps: int (Required)
-     *         readIOGiB: double (Required)
-     *         writeIOGiB: double (Required)
-     *         numSucceededTasks: int (Required)
-     *         numFailedTasks: int (Required)
-     *         numTaskRetries: int (Required)
-     *         waitTime: Duration (Required)
-     *     }
      * }
      * }</pre>
      *
@@ -4566,8 +4558,11 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *                             protectedSettings (Optional): {
+     *                                 String: Object (Optional)
+     *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -5014,8 +5009,11 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *                             protectedSettings (Optional): {
+     *                                 String: Object (Optional)
+     *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -5451,8 +5449,11 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *                             protectedSettings (Optional): {
+     *                                 String: Object (Optional)
+     *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -5881,8 +5882,11 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *                             protectedSettings (Optional): {
+     *                                 String: Object (Optional)
+     *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -6332,8 +6336,11 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *                             protectedSettings (Optional): {
+     *                                 String: Object (Optional)
+     *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -6770,8 +6777,11 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *                             protectedSettings (Optional): {
+     *                                 String: Object (Optional)
+     *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -7663,8 +7673,11 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *                             protectedSettings (Optional): {
+     *                                 String: Object (Optional)
+     *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -8093,8 +8106,11 @@ public final class JobsImpl {
      *                             typeHandlerVersion: String (Optional)
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             settings (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *                             protectedSettings (Optional): {
+     *                                 String: Object (Optional)
+     *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
      *                             ]

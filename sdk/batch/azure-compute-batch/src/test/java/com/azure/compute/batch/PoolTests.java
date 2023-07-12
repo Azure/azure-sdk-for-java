@@ -39,49 +39,6 @@ public class PoolTests extends BatchServiceClientTestBase {
         networkConfiguration = createNetworkConfiguration();
     }
 
-
-    @Test
-    public void testPoolUnifiedModel() {
-	     String unifiedModelPoolId = getStringIdWithUserNamePrefix("-testPoolModelUnification");
-         String startTaskCommand = "echo 'hello world'";
-	     try {
-             String POOL_VM_SIZE = "STANDARD_D1_V2";
-             ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
-                     .setSku("18.04-LTS").setVersion("latest");
-
-             VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
-
-             BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(unifiedModelPoolId, POOL_VM_SIZE);
-             poolCreateParameters.setTargetDedicatedNodes(3)
-                     .setVirtualMachineConfiguration(configuration)
-                     .setTargetNodeCommunicationMode(NodeCommunicationMode.DEFAULT)
-                     .setMetadata(new LinkedList<>(List.of(new MetadataItem("foo", "bar"))));       //Set Metadata on pool creation
-
-
-             poolClient.create(poolCreateParameters);
-
-             //GET
-             BatchPool pool = poolClient.get(unifiedModelPoolId);
-             Assertions.assertNotNull(pool.getMetadata());
-             Assertions.assertNull(pool.getCertificateReferences());
-
-            //UPDATE
-             pool.setStartTask(new StartTask(startTaskCommand));
-             pool.setMetadata(new LinkedList<>(List.of(new MetadataItem("UpdatedName", "UpdatedValue"))));
-             pool.setApplicationPackageReferences(new LinkedList<>());
-             pool.setCertificateReferences(new LinkedList<>());
-             poolClient.updateProperties(unifiedModelPoolId, pool);       //certificateReferences and applicationPackageReferences are null from previous GET - Assign value to those properties
-
-             //GET After UPDATE
-             pool = poolClient.get(unifiedModelPoolId);
-             Assertions.assertEquals(pool.getMetadata().get(0).getValue(), "UpdatedValue");
-
-         }
-	     finally {
-             poolClient.delete(unifiedModelPoolId);
-         }
-    }
-
 	 @Test
 	 public void testPoolOData() throws Exception {
 
@@ -246,14 +203,14 @@ public class PoolTests extends BatchServiceClientTestBase {
 
             // Update NodeCommunicationMode to Simplified
 
-//	            //You cannot take an existing BatchPool object that has i.e. Id and vmSize properties defined and call update with it
-//	            poolToUpdate.setTargetNodeCommunicationMode(NodeCommunicationMode.SIMPLIFIED)
-//    			.setApplicationPackageReferences(new ArrayList<ApplicationPackageReference>())
-//    			.setMetadata(new ArrayList<MetadataItem>())
-//    			.setCertificateReferences(new ArrayList<CertificateReference>());
+            BatchPoolUpdateParameters poolUpdateParameters = new BatchPoolUpdateParameters(
+                new LinkedList<CertificateReference>(),
+                new LinkedList<ApplicationPackageReference>(),
+                new LinkedList<MetadataItem>());
 
-            BatchPool poolToUpdate = new BatchPool(new ArrayList<CertificateReference>(), new ArrayList<ApplicationPackageReference>(), new ArrayList<MetadataItem>());
-            poolClient.updateProperties(poolId, poolToUpdate);
+            poolUpdateParameters.setTargetNodeCommunicationMode(NodeCommunicationMode.SIMPLIFIED);
+
+            poolClient.updateProperties(poolId, poolUpdateParameters);
 
             pool = poolClient.get(poolId);
             Assertions.assertNotNull(pool.getCurrentNodeCommunicationMode(), "CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node");
@@ -261,11 +218,7 @@ public class PoolTests extends BatchServiceClientTestBase {
 
             // Patch NodeCommunicationMode to Classic
 
-            //You cannot take an existing BatchPool object that has i.e. Id and vmSize properties defined and call patch with it
-//	            pool.setTargetNodeCommunicationMode(NodeCommunicationMode.CLASSIC);
-//	            poolClient.patch(poolId, pool);
-
-            BatchPoolUpdateParameters poolPatchParameters = new BatchPoolUpdateParameters();
+            BatchPoolPatchParameters poolPatchParameters = new BatchPoolPatchParameters();
             poolPatchParameters.setTargetNodeCommunicationMode(NodeCommunicationMode.CLASSIC);
             poolClient.patch(poolId, poolPatchParameters);
 

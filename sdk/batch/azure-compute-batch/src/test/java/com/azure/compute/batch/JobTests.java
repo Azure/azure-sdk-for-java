@@ -33,7 +33,7 @@ public class JobTests extends BatchServiceClientTestBase {
     }
 
     /*
-    * This test is POC for testing TypeSpec Shared model among CRUD operations
+    * Test TypeSpec Shared model among GET-PUT Roundtrip operation
     * */
     @Test
     public void testJobUnifiedModel() throws Exception {
@@ -75,7 +75,7 @@ public class JobTests extends BatchServiceClientTestBase {
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setPoolId(poolId);
         JobClient jobClient = batchClientBuilder.buildJobClient();
-        BatchJobCreateParameters jobCreateParameters = new BatchJobCreateParameters(poolId, poolInfo);
+        BatchJobCreateParameters jobCreateParameters = new BatchJobCreateParameters(jobId, poolInfo);
 
         jobClient.create(jobCreateParameters);
 
@@ -219,7 +219,7 @@ public class JobTests extends BatchServiceClientTestBase {
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setAutoPoolSpecification(new AutoPoolSpecification(PoolLifetimeOption.JOB).setPool(poolSpec));
 
-        BatchJobCreateParameters jobCreateParameters = new BatchJobCreateParameters(poolId, poolInfo);
+        BatchJobCreateParameters jobCreateParameters = new BatchJobCreateParameters(jobId, poolInfo);
         jobClient.create(jobCreateParameters);
 
         try {

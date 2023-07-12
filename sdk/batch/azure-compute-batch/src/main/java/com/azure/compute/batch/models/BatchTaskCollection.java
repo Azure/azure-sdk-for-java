@@ -21,7 +21,7 @@ public final class BatchTaskCollection {
      */
     @Generated
     @JsonProperty(value = "value")
-    private List<BatchTask> value;
+    private List<BatchTaskCreateParameters> value;
 
     /**
      * Creates an instance of BatchTaskCollection class.
@@ -30,7 +30,7 @@ public final class BatchTaskCollection {
      */
     @Generated
     @JsonCreator
-    public BatchTaskCollection(@JsonProperty(value = "value") List<BatchTask> value) {
+    public BatchTaskCollection(@JsonProperty(value = "value") List<BatchTaskCreateParameters> value) {
         this.value = value;
     }
 
@@ -42,7 +42,7 @@ public final class BatchTaskCollection {
      * @return the value value.
      */
     @Generated
-    public List<BatchTask> getValue() {
+    public List<BatchTaskCreateParameters> getValue() {
         return this.value;
     }
 }

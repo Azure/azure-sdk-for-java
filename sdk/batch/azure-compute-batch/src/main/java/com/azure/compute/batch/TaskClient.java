@@ -495,12 +495,8 @@ public final class TaskClient {
      * {
      *     value (Required): [
      *          (Required){
-     *             id: String (Optional)
+     *             id: String (Required)
      *             displayName: String (Optional)
-     *             url: String (Optional)
-     *             eTag: String (Optional)
-     *             lastModified: OffsetDateTime (Optional)
-     *             creationTime: OffsetDateTime (Optional)
      *             exitConditions (Optional): {
      *                 exitCodes (Optional): [
      *                      (Optional){
@@ -522,11 +518,7 @@ public final class TaskClient {
      *                 fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *                 default (Optional): (recursive schema, see default above)
      *             }
-     *             state: String(active/preparing/running/completed) (Optional)
-     *             stateTransitionTime: OffsetDateTime (Optional)
-     *             previousState: String(active/preparing/running/completed) (Optional)
-     *             previousStateTransitionTime: OffsetDateTime (Optional)
-     *             commandLine: String (Optional)
+     *             commandLine: String (Required)
      *             containerSettings (Optional): {
      *                 containerRunOptions: String (Optional)
      *                 imageName: String (Required)
@@ -594,59 +586,12 @@ public final class TaskClient {
      *                     elevationLevel: String(nonadmin/admin) (Optional)
      *                 }
      *             }
-     *             executionInfo (Optional): {
-     *                 startTime: OffsetDateTime (Optional)
-     *                 endTime: OffsetDateTime (Optional)
-     *                 exitCode: Integer (Optional)
-     *                 containerInfo (Optional): {
-     *                     containerId: String (Optional)
-     *                     state: String (Optional)
-     *                     error: String (Optional)
-     *                 }
-     *                 failureInfo (Optional): {
-     *                     category: String(usererror/servererror) (Required)
-     *                     code: String (Optional)
-     *                     message: String (Optional)
-     *                     details (Optional): [
-     *                          (Optional){
-     *                             name: String (Optional)
-     *                             value: String (Optional)
-     *                         }
-     *                     ]
-     *                 }
-     *                 retryCount: int (Required)
-     *                 lastRetryTime: OffsetDateTime (Optional)
-     *                 requeueCount: int (Required)
-     *                 lastRequeueTime: OffsetDateTime (Optional)
-     *                 result: String(success/failure) (Optional)
-     *             }
-     *             nodeInfo (Optional): {
-     *                 affinityId: String (Optional)
-     *                 nodeUrl: String (Optional)
-     *                 poolId: String (Optional)
-     *                 nodeId: String (Optional)
-     *                 taskRootDirectory: String (Optional)
-     *                 taskRootDirectoryUrl: String (Optional)
-     *             }
      *             multiInstanceSettings (Optional): {
      *                 numberOfInstances: Integer (Optional)
      *                 coordinationCommandLine: String (Required)
      *                 commonResourceFiles (Optional): [
      *                     (recursive schema, see above)
      *                 ]
-     *             }
-     *             stats (Optional): {
-     *                 url: String (Required)
-     *                 startTime: OffsetDateTime (Required)
-     *                 lastUpdateTime: OffsetDateTime (Required)
-     *                 userCPUTime: Duration (Required)
-     *                 kernelCPUTime: Duration (Required)
-     *                 wallClockTime: Duration (Required)
-     *                 readIOps: int (Required)
-     *                 writeIOps: int (Required)
-     *                 readIOGiB: double (Required)
-     *                 writeIOGiB: double (Required)
-     *                 waitTime: Duration (Required)
      *             }
      *             dependsOn (Optional): {
      *                 taskIds (Optional): [
@@ -681,7 +626,7 @@ public final class TaskClient {
      * {
      *     value (Optional): [
      *          (Optional){
-     *             status: String(success/clienterror/servererror) (Required)
+     *             status: String(Success/clienterror/servererror) (Required)
      *             taskId: String (Required)
      *             eTag: String (Optional)
      *             lastModified: OffsetDateTime (Optional)
@@ -1264,97 +1209,6 @@ public final class TaskClient {
     public Response<Void> updateWithResponse(
             String jobId, String taskId, BinaryData parameters, RequestOptions requestOptions) {
         return this.client.updateWithResponse(jobId, taskId, parameters, requestOptions).block();
-    }
-
-    /**
-     * Lists all of the subtasks that are associated with the specified multi-instance Task.
-     *
-     * <p>If the Task is not a multi-instance Task then this returns an empty collection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
-     *     <tr><td>$select</td><td>String</td><td>No</td><td>An OData $select clause.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
-     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
-     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Optional): [
-     *          (Optional){
-     *             id: Integer (Optional)
-     *             nodeInfo (Optional): {
-     *                 affinityId: String (Optional)
-     *                 nodeUrl: String (Optional)
-     *                 poolId: String (Optional)
-     *                 nodeId: String (Optional)
-     *                 taskRootDirectory: String (Optional)
-     *                 taskRootDirectoryUrl: String (Optional)
-     *             }
-     *             startTime: OffsetDateTime (Optional)
-     *             endTime: OffsetDateTime (Optional)
-     *             exitCode: Integer (Optional)
-     *             containerInfo (Optional): {
-     *                 containerId: String (Optional)
-     *                 state: String (Optional)
-     *                 error: String (Optional)
-     *             }
-     *             failureInfo (Optional): {
-     *                 category: String(usererror/servererror) (Required)
-     *                 code: String (Optional)
-     *                 message: String (Optional)
-     *                 details (Optional): [
-     *                      (Optional){
-     *                         name: String (Optional)
-     *                         value: String (Optional)
-     *                     }
-     *                 ]
-     *             }
-     *             state: String(preparing/running/completed) (Optional)
-     *             stateTransitionTime: OffsetDateTime (Optional)
-     *             previousState: String(preparing/running/completed) (Optional)
-     *             previousStateTransitionTime: OffsetDateTime (Optional)
-     *             result: String(success/failure) (Optional)
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param jobId The ID of the Job.
-     * @param taskId The ID of the Task.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of listing the subtasks of a Task along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSubtasksWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
-        return this.client.getSubtasksWithResponse(jobId, taskId, requestOptions).block();
     }
 
     /**
@@ -2020,88 +1874,6 @@ public final class TaskClient {
     }
 
     /**
-     * Lists all of the subtasks that are associated with the specified multi-instance Task.
-     *
-     * <p>If the Task is not a multi-instance Task then this returns an empty collection.
-     *
-     * @param jobId The ID of the Job.
-     * @param taskId The ID of the Task.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param select An OData $select clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the subtasks of a Task.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchTaskListSubtasksResult getSubtasks(
-            String jobId,
-            String taskId,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            OffsetDateTime ocpDate,
-            String select) {
-        // Generated convenience method for getSubtasksWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select, false);
-        }
-        return getSubtasksWithResponse(jobId, taskId, requestOptions)
-                .getValue()
-                .toObject(BatchTaskListSubtasksResult.class);
-    }
-
-    /**
-     * Lists all of the subtasks that are associated with the specified multi-instance Task.
-     *
-     * <p>If the Task is not a multi-instance Task then this returns an empty collection.
-     *
-     * @param jobId The ID of the Job.
-     * @param taskId The ID of the Task.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the subtasks of a Task.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchTaskListSubtasksResult getSubtasks(String jobId, String taskId) {
-        // Generated convenience method for getSubtasksWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getSubtasksWithResponse(jobId, taskId, requestOptions)
-                .getValue()
-                .toObject(BatchTaskListSubtasksResult.class);
-    }
-
-    /**
      * Terminates the specified Task.
      *
      * <p>When the Task has been terminated, it moves to the completed state. For multi-instance Tasks, the terminate
@@ -2293,5 +2065,178 @@ public final class TaskClient {
         // Generated convenience method for reactivateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         reactivateWithResponse(jobId, taskId, requestOptions).getValue();
+    }
+
+    /**
+     * Lists all of the subtasks that are associated with the specified multi-instance Task.
+     *
+     * <p>If the Task is not a multi-instance Task then this returns an empty collection.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>$select</td><td>String</td><td>No</td><td>An OData $select clause.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
+     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
+     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Optional): [
+     *          (Optional){
+     *             id: Integer (Optional)
+     *             nodeInfo (Optional): {
+     *                 affinityId: String (Optional)
+     *                 nodeUrl: String (Optional)
+     *                 poolId: String (Optional)
+     *                 nodeId: String (Optional)
+     *                 taskRootDirectory: String (Optional)
+     *                 taskRootDirectoryUrl: String (Optional)
+     *             }
+     *             startTime: OffsetDateTime (Optional)
+     *             endTime: OffsetDateTime (Optional)
+     *             exitCode: Integer (Optional)
+     *             containerInfo (Optional): {
+     *                 containerId: String (Optional)
+     *                 state: String (Optional)
+     *                 error: String (Optional)
+     *             }
+     *             failureInfo (Optional): {
+     *                 category: String(usererror/servererror) (Required)
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 details (Optional): [
+     *                      (Optional){
+     *                         name: String (Optional)
+     *                         value: String (Optional)
+     *                     }
+     *                 ]
+     *             }
+     *             state: String(preparing/running/completed) (Optional)
+     *             stateTransitionTime: OffsetDateTime (Optional)
+     *             previousState: String(preparing/running/completed) (Optional)
+     *             previousStateTransitionTime: OffsetDateTime (Optional)
+     *             result: String(success/failure) (Optional)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param jobId The ID of the Job.
+     * @param taskId The ID of the Task.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the subtasks of a Task along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listSubtasksWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
+        return this.client.listSubtasksWithResponse(jobId, taskId, requestOptions).block();
+    }
+
+    /**
+     * Lists all of the subtasks that are associated with the specified multi-instance Task.
+     *
+     * <p>If the Task is not a multi-instance Task then this returns an empty collection.
+     *
+     * @param jobId The ID of the Job.
+     * @param taskId The ID of the Task.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
+     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param select An OData $select clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the subtasks of a Task.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchTaskListSubtasksResult listSubtasks(
+            String jobId,
+            String taskId,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate,
+            String select) {
+        // Generated convenience method for listSubtasksWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (clientRequestId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
+        }
+        if (returnClientRequestId != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select", select, false);
+        }
+        return listSubtasksWithResponse(jobId, taskId, requestOptions)
+                .getValue()
+                .toObject(BatchTaskListSubtasksResult.class);
+    }
+
+    /**
+     * Lists all of the subtasks that are associated with the specified multi-instance Task.
+     *
+     * <p>If the Task is not a multi-instance Task then this returns an empty collection.
+     *
+     * @param jobId The ID of the Job.
+     * @param taskId The ID of the Task.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the subtasks of a Task.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchTaskListSubtasksResult listSubtasks(String jobId, String taskId) {
+        // Generated convenience method for listSubtasksWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return listSubtasksWithResponse(jobId, taskId, requestOptions)
+                .getValue()
+                .toObject(BatchTaskListSubtasksResult.class);
     }
 }

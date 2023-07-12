@@ -1055,8 +1055,11 @@ public final class BatchNodesClient {
      *         typeHandlerVersion: String (Optional)
      *         autoUpgradeMinorVersion: Boolean (Optional)
      *         settings (Optional): {
+     *             String: Object (Optional)
      *         }
-     *         protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *         protectedSettings (Optional): {
+     *             String: Object (Optional)
+     *         }
      *         provisionAfterExtensions (Optional): [
      *             String (Optional)
      *         ]
@@ -1140,8 +1143,11 @@ public final class BatchNodesClient {
      *         typeHandlerVersion: String (Optional)
      *         autoUpgradeMinorVersion: Boolean (Optional)
      *         settings (Optional): {
+     *             String: Object (Optional)
      *         }
-     *         protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *         protectedSettings (Optional): {
+     *             String: Object (Optional)
+     *         }
      *         provisionAfterExtensions (Optional): [
      *             String (Optional)
      *         ]

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** The configuration for virtual machine extensions. */
 @Fluent
@@ -55,7 +56,7 @@ public final class VMExtension {
      */
     @Generated
     @JsonProperty(value = "settings")
-    private ObjectModel settings;
+    private Map<String, Object> settings;
 
     /*
      * The extension can contain either protectedSettings or
@@ -63,7 +64,7 @@ public final class VMExtension {
      */
     @Generated
     @JsonProperty(value = "protectedSettings")
-    private ObjectModel protectedSettings;
+    private Map<String, Object> protectedSettings;
 
     /*
      * Collection of extension names after which this extension needs to be
@@ -175,20 +176,8 @@ public final class VMExtension {
      * @return the settings value.
      */
     @Generated
-    public ObjectModel getSettings() {
+    public Map<String, Object> getSettings() {
         return this.settings;
-    }
-
-    /**
-     * Set the settings property: JSON formatted public settings for the extension.
-     *
-     * @param settings the settings value to set.
-     * @return the VMExtension object itself.
-     */
-    @Generated
-    public VMExtension setSettings(ObjectModel settings) {
-        this.settings = settings;
-        return this;
     }
 
     /**
@@ -198,21 +187,8 @@ public final class VMExtension {
      * @return the protectedSettings value.
      */
     @Generated
-    public ObjectModel getProtectedSettings() {
+    public Map<String, Object> getProtectedSettings() {
         return this.protectedSettings;
-    }
-
-    /**
-     * Set the protectedSettings property: The extension can contain either protectedSettings or
-     * protectedSettingsFromKeyVault or no protected settings at all.
-     *
-     * @param protectedSettings the protectedSettings value to set.
-     * @return the VMExtension object itself.
-     */
-    @Generated
-    public VMExtension setProtectedSettings(ObjectModel protectedSettings) {
-        this.protectedSettings = protectedSettings;
-        return this;
     }
 
     /**
@@ -236,6 +212,31 @@ public final class VMExtension {
     @Generated
     public VMExtension setProvisionAfterExtensions(List<String> provisionAfterExtensions) {
         this.provisionAfterExtensions = provisionAfterExtensions;
+        return this;
+    }
+
+    /**
+     * Set the settings property: JSON formatted public settings for the extension.
+     *
+     * @param settings the settings value to set.
+     * @return the VMExtension object itself.
+     */
+    @Generated
+    public VMExtension setSettings(Map<String, Object> settings) {
+        this.settings = settings;
+        return this;
+    }
+
+    /**
+     * Set the protectedSettings property: The extension can contain either protectedSettings or
+     * protectedSettingsFromKeyVault or no protected settings at all.
+     *
+     * @param protectedSettings the protectedSettings value to set.
+     * @return the VMExtension object itself.
+     */
+    @Generated
+    public VMExtension setProtectedSettings(Map<String, Object> protectedSettings) {
+        this.protectedSettings = protectedSettings;
         return this;
     }
 }

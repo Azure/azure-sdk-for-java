@@ -68,11 +68,13 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
             /*
              * Updating Pool
              */
-            BatchPool poolToUpdate = new BatchPool(new LinkedList<CertificateReference>(),
+            BatchPoolUpdateParameters poolUpdateParameters = new BatchPoolUpdateParameters(new LinkedList<CertificateReference>(),
                                                    new LinkedList<ApplicationPackageReference>(),
                                                    new LinkedList<>(List.of(new MetadataItem("foo", "bar"))));
 
-            poolClientWithSharedKey.updateProperties(sharedKeyPoolId, poolToUpdate);
+            poolUpdateParameters.setTargetNodeCommunicationMode(NodeCommunicationMode.SIMPLIFIED);
+
+            poolClientWithSharedKey.updateProperties(sharedKeyPoolId, poolUpdateParameters);
 
             pool = poolClientWithSharedKey.get(sharedKeyPoolId);
             Assertions.assertEquals(NodeCommunicationMode.SIMPLIFIED, pool.getTargetNodeCommunicationMode());
@@ -82,8 +84,8 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
             /*
              * Patch Pool
              */
-            BatchPoolUpdateParameters poolUpdateParameters = new BatchPoolUpdateParameters().setMetadata(new ArrayList<MetadataItem>(List.of(new MetadataItem("key1", "value1")))).setTargetNodeCommunicationMode(NodeCommunicationMode.CLASSIC);
-            Response patchPoolResponse = poolClientWithSharedKey.patchWithResponse(sharedKeyPoolId, BinaryData.fromObject(poolUpdateParameters), null);
+            BatchPoolPatchParameters poolPatchParameters = new BatchPoolPatchParameters().setMetadata(new ArrayList<MetadataItem>(List.of(new MetadataItem("key1", "value1")))).setTargetNodeCommunicationMode(NodeCommunicationMode.CLASSIC);
+            Response patchPoolResponse = poolClientWithSharedKey.patchWithResponse(sharedKeyPoolId, BinaryData.fromObject(poolPatchParameters), null);
             HttpRequest patchPoolRequest = patchPoolResponse.getRequest();
             HttpHeader ocpDateHeader = patchPoolRequest.getHeaders().get("ocp-date");
             Assertions.assertNull(ocpDateHeader);

@@ -393,7 +393,7 @@ enum TaskState {
 
 enum TaskAddStatus {
   @doc("The Task was added successfully.")
-  Success: "success",
+  Success: "Success",
 
   @doc("The Task failed to add due to a client error and should not be retried without modifying the request as appropriate.")
   ClientError: "clienterror",
@@ -2450,13 +2450,13 @@ upgrade minor versions unless redeployed, even with this property set to true.
   autoUpgradeMinorVersion?: boolean;
 
   @doc("JSON formatted public settings for the extension.")
-  settings?: object;
+  settings?: Record<unknown>;
 
   @doc("""
 The extension can contain either protectedSettings or
 protectedSettingsFromKeyVault or no protected settings at all.
 """)
-  protectedSettings?: object;
+  protectedSettings?: Record<unknown>;
 
   @doc("""
 Collection of extension names after which this extension needs to be
@@ -3352,15 +3352,8 @@ The Batch service does not assign any meaning to metadata; it is solely for the
 use of user code.
 """)
   metadata?: MetadataItem[];
-
-  @doc("""
-This property is populated only if the CloudJob was retrieved with an expand
-clause including the 'stats' attribute; otherwise it is null. The statistics
-may not be immediately available. The Batch service performs periodic roll-up
-of statistics. The typical delay is about 30 minutes.
-""")
-  stats?: JobStatistics;
 }
+
 
 @doc("An Azure Batch Job Update Model.")
 model BatchJobUpdateParameters {
@@ -3911,14 +3904,16 @@ location. For Certificates with visibility of 'remoteUser', a 'certs' directory
 is created in the user's home directory (e.g., /home/{user-name}/certs) and
 Certificates are placed in that directory.
 """)
-  certificateReferences: CertificateReference[];
+  @visibility("read")
+  certificateReferences?: CertificateReference[];
 
   @doc("""
 Changes to Package references affect all new Nodes joining the Pool, but do not
 affect Compute Nodes that are already in the Pool until they are rebooted or
 reimaged. There is a maximum of 10 Package references on any given Pool.
 """)
-  applicationPackageReferences: ApplicationPackageReference[];
+  @visibility("read")
+  applicationPackageReferences?: ApplicationPackageReference[];
 
   @doc("""
 The list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, Pool creation will fail.
@@ -3942,7 +3937,8 @@ of cores of the vmSize of the pool or 256.
   userAccounts?: UserAccount[];
 
   @doc("A list of name-value pairs associated with the Pool as metadata.")
-  metadata: MetadataItem[];
+  @visibility("read")
+  metadata?: MetadataItem[];
 
   @doc("""
 This property is populated only if the CloudPool was retrieved with an expand
@@ -4107,8 +4103,54 @@ of cores of the vmSize of the pool or 256.
   targetNodeCommunicationMode?: NodeCommunicationMode;
 }
 
+
 @doc("A Pool in the Azure Batch service.")
 model BatchPoolUpdateParameters {
+  @doc("""
+Batch will retry Tasks when a recovery operation is triggered on a Node.
+Examples of recovery operations include (but are not limited to) when an
+unhealthy Node is rebooted or a Compute Node disappeared due to host failure.
+Retries due to recovery operations are independent of and are not counted
+against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal
+retry due to a recovery operation may occur. Because of this, all Tasks should
+be idempotent. This means Tasks need to tolerate being interrupted and
+restarted without causing any corruption or duplicate data. The best practice
+for long running Tasks is to use some form of checkpointing. In some cases the
+StartTask may be re-run even though the Compute Node was not rebooted. Special
+care should be taken to avoid StartTasks which create breakaway process or
+install/launch services from the StartTask working directory, as this will
+block Batch from being able to re-run the StartTask.
+""")
+  startTask?: StartTask;
+
+  @doc("""
+For Windows Nodes, the Batch service installs the Certificates to the specified
+Certificate store and location. For Linux Compute Nodes, the Certificates are
+stored in a directory inside the Task working directory and an environment
+variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this
+location. For Certificates with visibility of 'remoteUser', a 'certs' directory
+is created in the user's home directory (e.g., /home/{user-name}/certs) and
+Certificates are placed in that directory.
+""")
+  certificateReferences: CertificateReference[];
+
+  @doc("""
+Changes to Package references affect all new Nodes joining the Pool, but do not
+affect Compute Nodes that are already in the Pool until they are rebooted or
+reimaged. There is a maximum of 10 Package references on any given Pool.
+""")
+  applicationPackageReferences: ApplicationPackageReference[];
+
+  @doc("A list of name-value pairs associated with the Pool as metadata.")
+  metadata: MetadataItem[];
+
+  @doc("If omitted, the default value is Default.")
+  targetNodeCommunicationMode?: NodeCommunicationMode;
+}
+
+
+@doc("A Pool in the Azure Batch service.")
+model BatchPoolPatchParameters {
   @doc("""
 Batch will retry Tasks when a recovery operation is triggered on a Node.
 Examples of recovery operations include (but are not limited to) when an
@@ -4963,7 +5005,7 @@ greater than 1MB (for example if each Task has 100's of resource files or
 environment variables), the request will fail with code 'RequestBodyTooLarge'
 and should be retried again with fewer Tasks.
 """)
-  value: BatchTask[];
+  value: BatchTaskCreateParameters[];
 }
 
 @doc("The result of adding a collection of Tasks to a Job.")

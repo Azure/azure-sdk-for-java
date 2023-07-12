@@ -162,16 +162,6 @@ public final class BatchJobCreateParameters {
     @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
-    /*
-     * This property is populated only if the CloudJob was retrieved with an expand
-     * clause including the 'stats' attribute; otherwise it is null. The statistics
-     * may not be immediately available. The Batch service performs periodic roll-up
-     * of statistics. The typical delay is about 30 minutes.
-     */
-    @Generated
-    @JsonProperty(value = "stats")
-    private JobStatistics stats;
-
     /**
      * Creates an instance of BatchJobCreateParameters class.
      *
@@ -564,32 +554,6 @@ public final class BatchJobCreateParameters {
     @Generated
     public BatchJobCreateParameters setMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
-        return this;
-    }
-
-    /**
-     * Get the stats property: This property is populated only if the CloudJob was retrieved with an expand clause
-     * including the 'stats' attribute; otherwise it is null. The statistics may not be immediately available. The Batch
-     * service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @return the stats value.
-     */
-    @Generated
-    public JobStatistics getStats() {
-        return this.stats;
-    }
-
-    /**
-     * Set the stats property: This property is populated only if the CloudJob was retrieved with an expand clause
-     * including the 'stats' attribute; otherwise it is null. The statistics may not be immediately available. The Batch
-     * service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @param stats the stats value to set.
-     * @return the BatchJobCreateParameters object itself.
-     */
-    @Generated
-    public BatchJobCreateParameters setStats(JobStatistics stats) {
-        this.stats = stats;
         return this;
     }
 }

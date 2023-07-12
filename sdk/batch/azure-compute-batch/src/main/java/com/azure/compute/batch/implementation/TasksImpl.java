@@ -204,7 +204,7 @@ public final class TasksImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSubtasks(
+        Mono<Response<BinaryData>> listSubtasks(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("jobId") String jobId,
@@ -1404,12 +1404,8 @@ public final class TasksImpl {
      * {
      *     value (Required): [
      *          (Required){
-     *             id: String (Optional)
+     *             id: String (Required)
      *             displayName: String (Optional)
-     *             url: String (Optional)
-     *             eTag: String (Optional)
-     *             lastModified: OffsetDateTime (Optional)
-     *             creationTime: OffsetDateTime (Optional)
      *             exitConditions (Optional): {
      *                 exitCodes (Optional): [
      *                      (Optional){
@@ -1431,11 +1427,7 @@ public final class TasksImpl {
      *                 fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *                 default (Optional): (recursive schema, see default above)
      *             }
-     *             state: String(active/preparing/running/completed) (Optional)
-     *             stateTransitionTime: OffsetDateTime (Optional)
-     *             previousState: String(active/preparing/running/completed) (Optional)
-     *             previousStateTransitionTime: OffsetDateTime (Optional)
-     *             commandLine: String (Optional)
+     *             commandLine: String (Required)
      *             containerSettings (Optional): {
      *                 containerRunOptions: String (Optional)
      *                 imageName: String (Required)
@@ -1503,59 +1495,12 @@ public final class TasksImpl {
      *                     elevationLevel: String(nonadmin/admin) (Optional)
      *                 }
      *             }
-     *             executionInfo (Optional): {
-     *                 startTime: OffsetDateTime (Optional)
-     *                 endTime: OffsetDateTime (Optional)
-     *                 exitCode: Integer (Optional)
-     *                 containerInfo (Optional): {
-     *                     containerId: String (Optional)
-     *                     state: String (Optional)
-     *                     error: String (Optional)
-     *                 }
-     *                 failureInfo (Optional): {
-     *                     category: String(usererror/servererror) (Required)
-     *                     code: String (Optional)
-     *                     message: String (Optional)
-     *                     details (Optional): [
-     *                          (Optional){
-     *                             name: String (Optional)
-     *                             value: String (Optional)
-     *                         }
-     *                     ]
-     *                 }
-     *                 retryCount: int (Required)
-     *                 lastRetryTime: OffsetDateTime (Optional)
-     *                 requeueCount: int (Required)
-     *                 lastRequeueTime: OffsetDateTime (Optional)
-     *                 result: String(success/failure) (Optional)
-     *             }
-     *             nodeInfo (Optional): {
-     *                 affinityId: String (Optional)
-     *                 nodeUrl: String (Optional)
-     *                 poolId: String (Optional)
-     *                 nodeId: String (Optional)
-     *                 taskRootDirectory: String (Optional)
-     *                 taskRootDirectoryUrl: String (Optional)
-     *             }
      *             multiInstanceSettings (Optional): {
      *                 numberOfInstances: Integer (Optional)
      *                 coordinationCommandLine: String (Required)
      *                 commonResourceFiles (Optional): [
      *                     (recursive schema, see above)
      *                 ]
-     *             }
-     *             stats (Optional): {
-     *                 url: String (Required)
-     *                 startTime: OffsetDateTime (Required)
-     *                 lastUpdateTime: OffsetDateTime (Required)
-     *                 userCPUTime: Duration (Required)
-     *                 kernelCPUTime: Duration (Required)
-     *                 wallClockTime: Duration (Required)
-     *                 readIOps: int (Required)
-     *                 writeIOps: int (Required)
-     *                 readIOGiB: double (Required)
-     *                 writeIOGiB: double (Required)
-     *                 waitTime: Duration (Required)
      *             }
      *             dependsOn (Optional): {
      *                 taskIds (Optional): [
@@ -1590,7 +1535,7 @@ public final class TasksImpl {
      * {
      *     value (Optional): [
      *          (Optional){
-     *             status: String(success/clienterror/servererror) (Required)
+     *             status: String(Success/clienterror/servererror) (Required)
      *             taskId: String (Required)
      *             eTag: String (Optional)
      *             lastModified: OffsetDateTime (Optional)
@@ -1687,12 +1632,8 @@ public final class TasksImpl {
      * {
      *     value (Required): [
      *          (Required){
-     *             id: String (Optional)
+     *             id: String (Required)
      *             displayName: String (Optional)
-     *             url: String (Optional)
-     *             eTag: String (Optional)
-     *             lastModified: OffsetDateTime (Optional)
-     *             creationTime: OffsetDateTime (Optional)
      *             exitConditions (Optional): {
      *                 exitCodes (Optional): [
      *                      (Optional){
@@ -1714,11 +1655,7 @@ public final class TasksImpl {
      *                 fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *                 default (Optional): (recursive schema, see default above)
      *             }
-     *             state: String(active/preparing/running/completed) (Optional)
-     *             stateTransitionTime: OffsetDateTime (Optional)
-     *             previousState: String(active/preparing/running/completed) (Optional)
-     *             previousStateTransitionTime: OffsetDateTime (Optional)
-     *             commandLine: String (Optional)
+     *             commandLine: String (Required)
      *             containerSettings (Optional): {
      *                 containerRunOptions: String (Optional)
      *                 imageName: String (Required)
@@ -1786,59 +1723,12 @@ public final class TasksImpl {
      *                     elevationLevel: String(nonadmin/admin) (Optional)
      *                 }
      *             }
-     *             executionInfo (Optional): {
-     *                 startTime: OffsetDateTime (Optional)
-     *                 endTime: OffsetDateTime (Optional)
-     *                 exitCode: Integer (Optional)
-     *                 containerInfo (Optional): {
-     *                     containerId: String (Optional)
-     *                     state: String (Optional)
-     *                     error: String (Optional)
-     *                 }
-     *                 failureInfo (Optional): {
-     *                     category: String(usererror/servererror) (Required)
-     *                     code: String (Optional)
-     *                     message: String (Optional)
-     *                     details (Optional): [
-     *                          (Optional){
-     *                             name: String (Optional)
-     *                             value: String (Optional)
-     *                         }
-     *                     ]
-     *                 }
-     *                 retryCount: int (Required)
-     *                 lastRetryTime: OffsetDateTime (Optional)
-     *                 requeueCount: int (Required)
-     *                 lastRequeueTime: OffsetDateTime (Optional)
-     *                 result: String(success/failure) (Optional)
-     *             }
-     *             nodeInfo (Optional): {
-     *                 affinityId: String (Optional)
-     *                 nodeUrl: String (Optional)
-     *                 poolId: String (Optional)
-     *                 nodeId: String (Optional)
-     *                 taskRootDirectory: String (Optional)
-     *                 taskRootDirectoryUrl: String (Optional)
-     *             }
      *             multiInstanceSettings (Optional): {
      *                 numberOfInstances: Integer (Optional)
      *                 coordinationCommandLine: String (Required)
      *                 commonResourceFiles (Optional): [
      *                     (recursive schema, see above)
      *                 ]
-     *             }
-     *             stats (Optional): {
-     *                 url: String (Required)
-     *                 startTime: OffsetDateTime (Required)
-     *                 lastUpdateTime: OffsetDateTime (Required)
-     *                 userCPUTime: Duration (Required)
-     *                 kernelCPUTime: Duration (Required)
-     *                 wallClockTime: Duration (Required)
-     *                 readIOps: int (Required)
-     *                 writeIOps: int (Required)
-     *                 readIOGiB: double (Required)
-     *                 writeIOGiB: double (Required)
-     *                 waitTime: Duration (Required)
      *             }
      *             dependsOn (Optional): {
      *                 taskIds (Optional): [
@@ -1873,7 +1763,7 @@ public final class TasksImpl {
      * {
      *     value (Optional): [
      *          (Optional){
-     *             status: String(success/clienterror/servererror) (Required)
+     *             status: String(Success/clienterror/servererror) (Required)
      *             taskId: String (Required)
      *             eTag: String (Optional)
      *             lastModified: OffsetDateTime (Optional)
@@ -3117,12 +3007,12 @@ public final class TasksImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSubtasksWithResponseAsync(
+    public Mono<Response<BinaryData>> listSubtasksWithResponseAsync(
             String jobId, String taskId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getSubtasks(
+                        service.listSubtasks(
                                 this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 jobId,
@@ -3218,8 +3108,8 @@ public final class TasksImpl {
      * @return the result of listing the subtasks of a Task along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSubtasksWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
-        return getSubtasksWithResponseAsync(jobId, taskId, requestOptions).block();
+    public Response<BinaryData> listSubtasksWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
+        return listSubtasksWithResponseAsync(jobId, taskId, requestOptions).block();
     }
 
     /**

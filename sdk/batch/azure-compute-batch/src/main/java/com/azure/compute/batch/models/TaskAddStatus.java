@@ -12,7 +12,7 @@ import java.util.Collection;
 public final class TaskAddStatus extends ExpandableStringEnum<TaskAddStatus> {
 
     /** The Task was added successfully. */
-    @Generated public static final TaskAddStatus SUCCESS = fromString("success");
+    @Generated public static final TaskAddStatus SUCCESS = fromString("Success");
 
     /**
      * The Task failed to add due to a client error and should not be retried without modifying the request as

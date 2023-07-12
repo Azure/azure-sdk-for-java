@@ -5,13 +5,12 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A Pool in the Azure Batch service. */
 @Fluent
-public final class BatchPoolUpdateParameters {
+public final class BatchPoolPatchParameters {
 
     /*
      * Batch will retry Tasks when a recovery operation is triggered on a Node.
@@ -68,6 +67,10 @@ public final class BatchPoolUpdateParameters {
     @JsonProperty(value = "targetNodeCommunicationMode")
     private NodeCommunicationMode targetNodeCommunicationMode;
 
+    /** Creates an instance of BatchPoolPatchParameters class. */
+    @Generated
+    public BatchPoolPatchParameters() {}
+
     /**
      * Get the startTask property: Batch will retry Tasks when a recovery operation is triggered on a Node. Examples of
      * recovery operations include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node
@@ -98,10 +101,10 @@ public final class BatchPoolUpdateParameters {
      * services from the StartTask working directory, as this will block Batch from being able to re-run the StartTask.
      *
      * @param startTask the startTask value to set.
-     * @return the BatchPoolUpdateParameters object itself.
+     * @return the BatchPoolPatchParameters object itself.
      */
     @Generated
-    public BatchPoolUpdateParameters setStartTask(StartTask startTask) {
+    public BatchPoolPatchParameters setStartTask(StartTask startTask) {
         this.startTask = startTask;
         return this;
     }
@@ -121,6 +124,22 @@ public final class BatchPoolUpdateParameters {
     }
 
     /**
+     * Set the certificateReferences property: For Windows Nodes, the Batch service installs the Certificates to the
+     * specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory
+     * inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task
+     * to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in
+     * the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     *
+     * @param certificateReferences the certificateReferences value to set.
+     * @return the BatchPoolPatchParameters object itself.
+     */
+    @Generated
+    public BatchPoolPatchParameters setCertificateReferences(List<CertificateReference> certificateReferences) {
+        this.certificateReferences = certificateReferences;
+        return this;
+    }
+
+    /**
      * Get the applicationPackageReferences property: Changes to Package references affect all new Nodes joining the
      * Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is
      * a maximum of 10 Package references on any given Pool.
@@ -133,6 +152,21 @@ public final class BatchPoolUpdateParameters {
     }
 
     /**
+     * Set the applicationPackageReferences property: Changes to Package references affect all new Nodes joining the
+     * Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is
+     * a maximum of 10 Package references on any given Pool.
+     *
+     * @param applicationPackageReferences the applicationPackageReferences value to set.
+     * @return the BatchPoolPatchParameters object itself.
+     */
+    @Generated
+    public BatchPoolPatchParameters setApplicationPackageReferences(
+            List<ApplicationPackageReference> applicationPackageReferences) {
+        this.applicationPackageReferences = applicationPackageReferences;
+        return this;
+    }
+
+    /**
      * Get the metadata property: A list of name-value pairs associated with the Pool as metadata.
      *
      * @return the metadata value.
@@ -140,6 +174,18 @@ public final class BatchPoolUpdateParameters {
     @Generated
     public List<MetadataItem> getMetadata() {
         return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: A list of name-value pairs associated with the Pool as metadata.
+     *
+     * @param metadata the metadata value to set.
+     * @return the BatchPoolPatchParameters object itself.
+     */
+    @Generated
+    public BatchPoolPatchParameters setMetadata(List<MetadataItem> metadata) {
+        this.metadata = metadata;
+        return this;
     }
 
     /**
@@ -156,30 +202,11 @@ public final class BatchPoolUpdateParameters {
      * Set the targetNodeCommunicationMode property: If omitted, the default value is Default.
      *
      * @param targetNodeCommunicationMode the targetNodeCommunicationMode value to set.
-     * @return the BatchPoolUpdateParameters object itself.
+     * @return the BatchPoolPatchParameters object itself.
      */
     @Generated
-    public BatchPoolUpdateParameters setTargetNodeCommunicationMode(NodeCommunicationMode targetNodeCommunicationMode) {
+    public BatchPoolPatchParameters setTargetNodeCommunicationMode(NodeCommunicationMode targetNodeCommunicationMode) {
         this.targetNodeCommunicationMode = targetNodeCommunicationMode;
         return this;
-    }
-
-    /**
-     * Creates an instance of BatchPoolUpdateParameters class.
-     *
-     * @param certificateReferences the certificateReferences value to set.
-     * @param applicationPackageReferences the applicationPackageReferences value to set.
-     * @param metadata the metadata value to set.
-     */
-    @Generated
-    @JsonCreator
-    public BatchPoolUpdateParameters(
-            @JsonProperty(value = "certificateReferences") List<CertificateReference> certificateReferences,
-            @JsonProperty(value = "applicationPackageReferences")
-                    List<ApplicationPackageReference> applicationPackageReferences,
-            @JsonProperty(value = "metadata") List<MetadataItem> metadata) {
-        this.certificateReferences = certificateReferences;
-        this.applicationPackageReferences = applicationPackageReferences;
-        this.metadata = metadata;
     }
 }

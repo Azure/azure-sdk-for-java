@@ -144,7 +144,7 @@ public final class JobStatistics {
      */
     @Generated
     @JsonCreator
-    public JobStatistics(
+    private JobStatistics(
             @JsonProperty(value = "url") String url,
             @JsonProperty(value = "startTime") OffsetDateTime startTime,
             @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,

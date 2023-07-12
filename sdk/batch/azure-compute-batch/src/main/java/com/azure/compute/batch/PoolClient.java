@@ -8,6 +8,7 @@ import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolCreateParameters;
 import com.azure.compute.batch.models.BatchPoolEnableAutoScaleParameters;
 import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleParameters;
+import com.azure.compute.batch.models.BatchPoolPatchParameters;
 import com.azure.compute.batch.models.BatchPoolResizeParameters;
 import com.azure.compute.batch.models.BatchPoolUpdateParameters;
 import com.azure.compute.batch.models.NodeRemoveParameters;
@@ -290,8 +291,11 @@ public final class PoolClient {
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 settings (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *                 protectedSettings (Optional): {
+     *                     String: Object (Optional)
+     *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
      *                 ]
@@ -579,8 +583,11 @@ public final class PoolClient {
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 settings (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *                 protectedSettings (Optional): {
+     *                     String: Object (Optional)
+     *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
      *                 ]
@@ -690,8 +697,8 @@ public final class PoolClient {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Required): [
-     *          (Required){
+     *     certificateReferences (Optional): [
+     *          (Optional){
      *             thumbprint: String (Required)
      *             thumbprintAlgorithm: String (Required)
      *             storeLocation: String(currentuser/localmachine) (Optional)
@@ -701,8 +708,8 @@ public final class PoolClient {
      *             ]
      *         }
      *     ]
-     *     applicationPackageReferences (Required): [
-     *          (Required){
+     *     applicationPackageReferences (Optional): [
+     *          (Optional){
      *             applicationId: String (Required)
      *             version: String (Optional)
      *         }
@@ -729,8 +736,8 @@ public final class PoolClient {
      *             }
      *         }
      *     ]
-     *     metadata (Required): [
-     *          (Required){
+     *     metadata (Optional): [
+     *          (Optional){
      *             name: String (Required)
      *             value: String (Required)
      *         }
@@ -1060,8 +1067,11 @@ public final class PoolClient {
      *                 typeHandlerVersion: String (Optional)
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 settings (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
+     *                 protectedSettings (Optional): {
+     *                     String: Object (Optional)
+     *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
      *                 ]
@@ -1171,8 +1181,8 @@ public final class PoolClient {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Required): [
-     *          (Required){
+     *     certificateReferences (Optional): [
+     *          (Optional){
      *             thumbprint: String (Required)
      *             thumbprintAlgorithm: String (Required)
      *             storeLocation: String(currentuser/localmachine) (Optional)
@@ -1182,8 +1192,8 @@ public final class PoolClient {
      *             ]
      *         }
      *     ]
-     *     applicationPackageReferences (Required): [
-     *          (Required){
+     *     applicationPackageReferences (Optional): [
+     *          (Optional){
      *             applicationId: String (Required)
      *             version: String (Optional)
      *         }
@@ -1210,8 +1220,8 @@ public final class PoolClient {
      *             }
      *         }
      *     ]
-     *     metadata (Required): [
-     *          (Required){
+     *     metadata (Optional): [
+     *          (Optional){
      *             name: String (Required)
      *             value: String (Required)
      *         }
@@ -1795,157 +1805,19 @@ public final class PoolClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Optional)
-     *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     allocationState: String(steady/resizing/stopping) (Optional)
-     *     allocationStateTransitionTime: OffsetDateTime (Optional)
-     *     vmSize: String (Optional)
-     *     cloudServiceConfiguration (Optional): {
-     *         osFamily: String (Required)
-     *         osVersion: String (Optional)
-     *     }
-     *     virtualMachineConfiguration (Optional): {
-     *         imageReference (Required): {
-     *             publisher: String (Optional)
-     *             offer: String (Optional)
-     *             sku: String (Optional)
-     *             version: String (Optional)
-     *             virtualMachineImageId: String (Optional)
-     *             exactVersion: String (Optional)
-     *         }
-     *         nodeAgentSKUId: String (Required)
-     *         windowsConfiguration (Optional): {
-     *             enableAutomaticUpdates: Boolean (Optional)
-     *         }
-     *         dataDisks (Optional): [
-     *              (Optional){
-     *                 lun: int (Required)
-     *                 caching: String(none/readonly/readwrite) (Optional)
-     *                 diskSizeGB: int (Required)
-     *                 storageAccountType: String(standard_lrs/premium_lrs) (Optional)
-     *             }
-     *         ]
-     *         licenseType: String (Optional)
-     *         containerConfiguration (Optional): {
-     *             type: String(dockerCompatible) (Required)
-     *             containerImageNames (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             containerRegistries (Optional): [
-     *                  (Optional){
-     *                     username: String (Optional)
-     *                     password: String (Optional)
-     *                     registryServer: String (Optional)
-     *                     identityReference (Optional): {
-     *                         resourceId: String (Optional)
-     *                     }
-     *                 }
-     *             ]
-     *         }
-     *         diskEncryptionConfiguration (Optional): {
-     *             targets (Optional): [
-     *                 String(osdisk/temporarydisk) (Optional)
-     *             ]
-     *         }
-     *         nodePlacementConfiguration (Optional): {
-     *             policy: String(regional/zonal) (Optional)
-     *         }
-     *         extensions (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 publisher: String (Required)
-     *                 type: String (Required)
-     *                 typeHandlerVersion: String (Optional)
-     *                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                 settings (Optional): {
-     *                 }
-     *                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
-     *                 provisionAfterExtensions (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *         osDisk (Optional): {
-     *             ephemeralOSDiskSettings (Optional): {
-     *                 placement: String(cachedisk) (Optional)
-     *             }
-     *         }
-     *     }
-     *     resizeTimeout: Duration (Optional)
-     *     resizeErrors (Optional): [
-     *          (Optional){
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             values (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     value: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     currentDedicatedNodes: Integer (Optional)
-     *     currentLowPriorityNodes: Integer (Optional)
-     *     targetDedicatedNodes: Integer (Optional)
-     *     targetLowPriorityNodes: Integer (Optional)
-     *     enableAutoScale: Boolean (Optional)
-     *     autoScaleFormula: String (Optional)
-     *     autoScaleEvaluationInterval: Duration (Optional)
-     *     autoScaleRun (Optional): {
-     *         timestamp: OffsetDateTime (Required)
-     *         results: String (Optional)
-     *         error (Optional): {
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             values (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *     }
-     *     enableInterNodeCommunication: Boolean (Optional)
-     *     networkConfiguration (Optional): {
-     *         subnetId: String (Optional)
-     *         dynamicVNetAssignmentScope: String(none/job) (Optional)
-     *         endpointConfiguration (Optional): {
-     *             inboundNATPools (Required): [
-     *                  (Required){
-     *                     name: String (Required)
-     *                     protocol: String(tcp/udp) (Required)
-     *                     backendPort: int (Required)
-     *                     frontendPortRangeStart: int (Required)
-     *                     frontendPortRangeEnd: int (Required)
-     *                     networkSecurityGroupRules (Optional): [
-     *                          (Optional){
-     *                             priority: int (Required)
-     *                             access: String(allow/deny) (Required)
-     *                             sourceAddressPrefix: String (Required)
-     *                             sourcePortRanges (Optional): [
-     *                                 String (Optional)
-     *                             ]
-     *                         }
-     *                     ]
-     *                 }
-     *             ]
-     *         }
-     *         publicIPAddressConfiguration (Optional): {
-     *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
-     *             ipAddressIds (Optional): [
-     *                 String (Optional)
-     *             ]
-     *         }
-     *     }
      *     startTask (Optional): {
      *         commandLine: String (Required)
      *         containerSettings (Optional): {
      *             containerRunOptions: String (Optional)
      *             imageName: String (Required)
-     *             registry (Optional): (recursive schema, see registry above)
+     *             registry (Optional): {
+     *                 username: String (Optional)
+     *                 password: String (Optional)
+     *                 registryServer: String (Optional)
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
      *         }
      *         resourceFiles (Optional): [
@@ -1992,103 +1864,13 @@ public final class PoolClient {
      *             version: String (Optional)
      *         }
      *     ]
-     *     applicationLicenses (Optional): [
-     *         String (Optional)
-     *     ]
-     *     taskSlotsPerNode: Integer (Optional)
-     *     taskSchedulingPolicy (Optional): {
-     *         nodeFillType: String(spread/pack) (Required)
-     *     }
-     *     userAccounts (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *             password: String (Required)
-     *             elevationLevel: String(nonadmin/admin) (Optional)
-     *             linuxUserConfiguration (Optional): {
-     *                 uid: Integer (Optional)
-     *                 gid: Integer (Optional)
-     *                 sshPrivateKey: String (Optional)
-     *             }
-     *             windowsUserConfiguration (Optional): {
-     *                 loginMode: String(batch/interactive) (Optional)
-     *             }
-     *         }
-     *     ]
      *     metadata (Required): [
      *          (Required){
      *             name: String (Required)
      *             value: String (Required)
      *         }
      *     ]
-     *     stats (Optional): {
-     *         url: String (Required)
-     *         startTime: OffsetDateTime (Required)
-     *         lastUpdateTime: OffsetDateTime (Required)
-     *         usageStats (Optional): {
-     *             startTime: OffsetDateTime (Required)
-     *             lastUpdateTime: OffsetDateTime (Required)
-     *             dedicatedCoreTime: Duration (Required)
-     *         }
-     *         resourceStats (Optional): {
-     *             startTime: OffsetDateTime (Required)
-     *             lastUpdateTime: OffsetDateTime (Required)
-     *             avgCPUPercentage: double (Required)
-     *             avgMemoryGiB: double (Required)
-     *             peakMemoryGiB: double (Required)
-     *             avgDiskGiB: double (Required)
-     *             peakDiskGiB: double (Required)
-     *             diskReadIOps: int (Required)
-     *             diskWriteIOps: int (Required)
-     *             diskReadGiB: double (Required)
-     *             diskWriteGiB: double (Required)
-     *             networkReadGiB: double (Required)
-     *             networkWriteGiB: double (Required)
-     *         }
-     *     }
-     *     mountConfiguration (Optional): [
-     *          (Optional){
-     *             azureBlobFileSystemConfiguration (Optional): {
-     *                 accountName: String (Required)
-     *                 containerName: String (Required)
-     *                 accountKey: String (Optional)
-     *                 sasKey: String (Optional)
-     *                 blobfuseOptions: String (Optional)
-     *                 relativeMountPath: String (Required)
-     *                 identityReference (Optional): (recursive schema, see identityReference above)
-     *             }
-     *             nfsMountConfiguration (Optional): {
-     *                 source: String (Required)
-     *                 relativeMountPath: String (Required)
-     *                 mountOptions: String (Optional)
-     *             }
-     *             cifsMountConfiguration (Optional): {
-     *                 username: String (Required)
-     *                 source: String (Required)
-     *                 relativeMountPath: String (Required)
-     *                 mountOptions: String (Optional)
-     *                 password: String (Required)
-     *             }
-     *             azureFileShareConfiguration (Optional): {
-     *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
-     *                 accountKey: String (Required)
-     *                 relativeMountPath: String (Required)
-     *                 mountOptions: String (Optional)
-     *             }
-     *         }
-     *     ]
-     *     identity (Optional): {
-     *         type: String(UserAssigned/None) (Required)
-     *         userAssignedIdentities (Optional): [
-     *              (Optional){
-     *                 resourceId: String (Required)
-     *                 clientId: String (Optional)
-     *                 principalId: String (Optional)
-     *             }
-     *         ]
-     *     }
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
      * }</pre>
      *
@@ -2737,101 +2519,6 @@ public final class PoolClient {
     }
 
     /**
-     * Updates the properties of the specified Pool.
-     *
-     * <p>This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask
-     * associated with it, and a request does not specify a StartTask element, then the Pool keeps the existing
-     * StartTask.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param parameters The parameters for the request.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void patch(
-            String poolId,
-            BatchPoolUpdateParameters parameters,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
-        // Generated convenience method for patchWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        patchWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
-    }
-
-    /**
-     * Updates the properties of the specified Pool.
-     *
-     * <p>This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask
-     * associated with it, and a request does not specify a StartTask element, then the Pool keeps the existing
-     * StartTask.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param parameters The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void patch(String poolId, BatchPoolUpdateParameters parameters) {
-        // Generated convenience method for patchWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        patchWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
-    }
-
-    /**
      * Disables automatic scaling for a Pool.
      *
      * @param poolId The ID of the Pool on which to disable automatic scaling.
@@ -3267,81 +2954,6 @@ public final class PoolClient {
     }
 
     /**
-     * Updates the properties of the specified Pool.
-     *
-     * <p>This fully replaces all the updatable properties of the Pool. For example, if the Pool has a StartTask
-     * associated with it and if StartTask is not specified with this request, then the Batch service will remove the
-     * existing StartTask.
-     *
-     * @param poolId The ID of the Pool to update.
-     * @param parameters The parameters for the request.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
-     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateProperties(
-            String poolId,
-            BatchPool parameters,
-            Integer timeOut,
-            String clientRequestId,
-            Boolean returnClientRequestId,
-            OffsetDateTime ocpDate) {
-        // Generated convenience method for updatePropertiesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        updatePropertiesWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
-    }
-
-    /**
-     * Updates the properties of the specified Pool.
-     *
-     * <p>This fully replaces all the updatable properties of the Pool. For example, if the Pool has a StartTask
-     * associated with it and if StartTask is not specified with this request, then the Batch service will remove the
-     * existing StartTask.
-     *
-     * @param poolId The ID of the Pool to update.
-     * @param parameters The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateProperties(String poolId, BatchPool parameters) {
-        // Generated convenience method for updatePropertiesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        updatePropertiesWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
-    }
-
-    /**
      * Removes Compute Nodes from the specified Pool.
      *
      * <p>This operation can only run when the allocation state of the Pool is steady. When this operation runs, the
@@ -3432,5 +3044,175 @@ public final class PoolClient {
         // Generated convenience method for removeNodesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         removeNodesWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
+    }
+
+    /**
+     * Updates the properties of the specified Pool.
+     *
+     * <p>This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask
+     * associated with it, and a request does not specify a StartTask element, then the Pool keeps the existing
+     * StartTask.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The parameters for the request.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
+     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void patch(
+            String poolId,
+            BatchPoolPatchParameters parameters,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate,
+            RequestConditions requestConditions) {
+        // Generated convenience method for patchWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (clientRequestId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
+        }
+        if (returnClientRequestId != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        patchWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
+    }
+
+    /**
+     * Updates the properties of the specified Pool.
+     *
+     * <p>This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask
+     * associated with it, and a request does not specify a StartTask element, then the Pool keeps the existing
+     * StartTask.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void patch(String poolId, BatchPoolPatchParameters parameters) {
+        // Generated convenience method for patchWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        patchWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
+    }
+
+    /**
+     * Updates the properties of the specified Pool.
+     *
+     * <p>This fully replaces all the updatable properties of the Pool. For example, if the Pool has a StartTask
+     * associated with it and if StartTask is not specified with this request, then the Batch service will remove the
+     * existing StartTask.
+     *
+     * @param poolId The ID of the Pool to update.
+     * @param parameters The parameters for the request.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
+     *     curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
+     * @param returnClientRequestId Whether the server should return the client-request-id in the response.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateProperties(
+            String poolId,
+            BatchPoolUpdateParameters parameters,
+            Integer timeOut,
+            String clientRequestId,
+            Boolean returnClientRequestId,
+            OffsetDateTime ocpDate) {
+        // Generated convenience method for updatePropertiesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (clientRequestId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("client-request-id"), clientRequestId);
+        }
+        if (returnClientRequestId != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("return-client-request-id"), String.valueOf(returnClientRequestId));
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        updatePropertiesWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
+    }
+
+    /**
+     * Updates the properties of the specified Pool.
+     *
+     * <p>This fully replaces all the updatable properties of the Pool. For example, if the Pool has a StartTask
+     * associated with it and if StartTask is not specified with this request, then the Batch service will remove the
+     * existing StartTask.
+     *
+     * @param poolId The ID of the Pool to update.
+     * @param parameters The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateProperties(String poolId, BatchPoolUpdateParameters parameters) {
+        // Generated convenience method for updatePropertiesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        updatePropertiesWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
     }
 }

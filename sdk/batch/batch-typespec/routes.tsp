@@ -19,7 +19,7 @@ using Azure.ClientGenerator.Core;
 
 namespace BatchService;
 
-// Templates 
+// Templates
 
 /**
  * A remote procedure call (RPC) operation with additional response.
@@ -119,7 +119,7 @@ last aggregation interval is returned.
     """)
       @query
       starttime?: utcDateTime;
-    
+
       @doc("""
     The latest time from which to include metrics. This must be at least two hours
     before the current time. If not specified this defaults to the end time of the
@@ -127,7 +127,7 @@ last aggregation interval is returned.
     """)
       @query
       endtime?: utcDateTime;
-    
+
       @doc("""
     An OData $filter clause. For more information on constructing this filter, see
     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
@@ -315,7 +315,7 @@ a StartTask element, then the Pool keeps the existing StartTask.
 
         @doc("The parameters for the request.")
         @body
-        parameters : BatchPoolUpdateParameters;
+        parameters : BatchPoolPatchParameters;
       },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -505,7 +505,7 @@ with this request, then the Batch service will remove the existing StartTask.
 
       @doc("The parameters for the request.")
       @body
-      parameters : BatchPool;
+      parameters : BatchPoolUpdateParameters;
     },
     PoolUpdatePropertiesResponseHeaders,
     {},
@@ -1895,7 +1895,7 @@ Task.
   @example("./examples/TaskListSubtasks.json", "Task list subtasks")
   @route("/jobs/{jobId}/tasks/{taskId}/subtasksinfo")
   @get
-  GetSubtasks is RpcOperation<
+  ListSubtasks is RpcOperation<
     BatchClientRequestHeaders & {
       @doc("The ID of the Job.")
       @path
@@ -2669,7 +2669,7 @@ applications can be returned.
   @query
   @minValue(1)
   @maxValue(1000)
-  
+
   maxresults?: int32 = 1000;
 
   #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
@@ -2680,7 +2680,7 @@ directly.
 """)
   @header
   @format("date-time-rfc1123")
-  
+
   `ocp-date`?: string;
 }
 
@@ -2745,5 +2745,4 @@ directly.
   @format("date-time-rfc1123")
   `ocp-date`?: string;
 }
-
 

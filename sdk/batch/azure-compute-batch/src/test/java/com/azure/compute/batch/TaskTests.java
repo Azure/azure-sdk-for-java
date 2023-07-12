@@ -38,31 +38,42 @@ public class TaskTests extends BatchServiceClientTestBase {
        }
    }
 
+    /*
+     * Test TypeSpec Shared model among GET-PUT Roundtrip operation
+     * */
    @Test
     public void testTaskUnifiedModel() throws Exception {
-        String jobId = "job_1";
-        String taskId = "task-canPut";
-        try {
-            // CREATE
-            BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(taskId, "echo hello world");
-            taskClient.create(jobId, taskCreateParameters);
+       String taskId = "task-canPut";
+       String jobId = getStringIdWithUserNamePrefix("-SampleJob");
+       try {
+        //CREATE JOB
+        PoolInformation poolInfo = new PoolInformation();
+        poolInfo.setPoolId(livePoolId);
+        JobClient jobClient = batchClientBuilder.buildJobClient();
+        BatchJobCreateParameters jobCreateParameters = new BatchJobCreateParameters(jobId, poolInfo);
+        jobClient.create(jobCreateParameters);
 
-            // GET
-            BatchTask task = taskClient.get(jobId, taskId);
+        //CREATE TASK
+        BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(taskId, "echo hello world");
+        taskClient.create(jobId, taskCreateParameters);
 
-            //UPDATE
-            Integer maxRetrycount = 5;
-            Duration retentionPeriod = Duration.ofDays(5);
-            task.setConstraints(new TaskConstraints().setMaxTaskRetryCount(maxRetrycount).setRetentionTime(retentionPeriod));
-            taskClient.update(jobId, taskId, task);
+        // GET
+        BatchTask task = taskClient.get(jobId, taskId);
 
-            //GET After UPDATE
-            task = taskClient.get(jobId, taskId);
-            Assertions.assertEquals(maxRetrycount, task.getConstraints().getMaxTaskRetryCount());
-            Assertions.assertEquals(retentionPeriod, task.getConstraints().getRetentionTime());
+        //UPDATE
+        Integer maxRetrycount = 5;
+        Duration retentionPeriod = Duration.ofDays(5);
+        task.setConstraints(new TaskConstraints().setMaxTaskRetryCount(maxRetrycount).setRetentionTime(retentionPeriod));
+        taskClient.update(jobId, taskId, task);
+
+        //GET After UPDATE
+        task = taskClient.get(jobId, taskId);
+        Assertions.assertEquals(maxRetrycount, task.getConstraints().getMaxTaskRetryCount());
+        Assertions.assertEquals(retentionPeriod, task.getConstraints().getRetentionTime());
         }
         finally {
             taskClient.delete(jobId, taskId);
+            jobClient.delete(jobId);
         }
     }
 
