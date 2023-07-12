@@ -146,6 +146,7 @@ stages:
               TestGoals: ${{ parameters.TestGoals }}
               TestOptions: ${{ parameters.TestOptions }}
               UseHttpFaultInjector: ${{ parameters.UseHttpFaultInjector }}
+              LatestNonLtsJavaVersion: ${{ eq(variables['JavaTestVersion'], variables['LatestNonLtsJavaVersion']) }}
 
             MatrixConfigs:
               # Enumerate platforms and additional platforms based on supported clouds (sparse platform<-->cloud matrix).
