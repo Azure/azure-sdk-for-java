@@ -17,7 +17,7 @@
         "Content-Length": "0",
         "Content-Type": "application/json; charset=utf-8",
         "Date": "Tue, 11 Jul 2023 22:12:21 GMT",
-        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains"
       },
       "ResponseBody": null
     }
