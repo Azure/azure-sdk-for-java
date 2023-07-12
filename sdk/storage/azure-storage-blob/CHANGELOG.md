@@ -1,14 +1,10 @@
 # Release History
 
-## 12.23.0-beta.2 (Unreleased)
+## 12.23.0 (2023-07-11)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for the `2023-01-03` service version.
+- Content length limit for `AppendBlobClient.appendBlock()` raised from 4 MiB to 100 MiB.
 
 ## 12.22.3 (2023-06-14)
 
