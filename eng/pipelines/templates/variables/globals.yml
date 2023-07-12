@@ -43,8 +43,6 @@ variables:
   TestFromSource: false
   # This will be overwritten by the test matrix, if configured.
   RunAggregateReports: false
-  # This will be overwritten by the test matrix, if configured.
-  IsLatestNonLtsJdk: false
 
   skipComponentGovernanceDetection: true
   DisableDockerDetector: true

@@ -66,7 +66,7 @@ jobs:
       - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
         parameters:
           LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
-          IsLatestNonLtsJdk: $(IsLatestNonLtsJdk)
+          IsLatestNonLtsJdk: "$[ eq(variables['JavaTestVersion'], variables['LatestNonLtsJavaVersion']) ]"
 
       - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
         parameters:
