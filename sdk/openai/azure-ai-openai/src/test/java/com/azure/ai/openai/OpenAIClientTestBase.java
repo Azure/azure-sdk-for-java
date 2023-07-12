@@ -147,7 +147,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     void getChatFunctionForRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
-        testRunner.accept("gpt-35-turbo-0613", getChatMessagesWithFunction());
+        testRunner.accept("gpt-4", getChatMessagesWithFunction());
     }
 
     private List<ChatMessage> getChatMessages() {
