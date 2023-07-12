@@ -3,6 +3,10 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
+import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AksResourceAttributes.getAksRoleInstance;
+import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AksResourceAttributes.getAksRoleName;
+import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AksResourceAttributes.isAks;
+
 import com.azure.core.util.Configuration;
 import com.azure.monitor.opentelemetry.exporter.implementation.ResourceAttributes;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder;
@@ -13,12 +17,12 @@ import io.opentelemetry.sdk.resources.Resource;
 
 import java.util.Map;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AksResourceAttributes.*;
-
+@SuppressWarnings("javadoc")
 public final class ResourceParser {
 
     private static final String DEFAULT_SERVICE_NAME = "unknown_service:java";
 
+    @SuppressWarnings({"NoImplInPublicAPI", "ExternalDependencyExposedCheck"})
     // visible for testing
     public static void updateRoleNameAndInstance(
         AbstractTelemetryBuilder builder, Resource resource, Configuration configuration) {
