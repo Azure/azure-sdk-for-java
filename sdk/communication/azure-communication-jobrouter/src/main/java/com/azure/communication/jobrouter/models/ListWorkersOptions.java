@@ -3,8 +3,6 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.communication.jobrouter.models.RouterWorkerStateSelector;
-
 /**
  * Request options to list workers.
  * Worker: An entity for jobs to be routed to.
