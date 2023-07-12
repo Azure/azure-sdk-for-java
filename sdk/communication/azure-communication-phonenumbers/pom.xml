@@ -51,6 +51,7 @@
     <test.dir>src/test</test.dir>
     <jacoco.min.linecoverage>0.68</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.66</jacoco.min.branchcoverage>
+    <jacoco.skip>false</jacoco.skip>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-opens com.azure.communication.phonenumbers/com.azure.communication.phonenumbers=ALL-UNNAMED
@@ -126,6 +127,26 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.9</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <configuration>
+          <includes>
+            <include>com/azure/communication/phonenumbers/*.class</include>
+            <include>com/azure/communication/phonenumbers/siprouting/*.class</include>
+          </includes>
+        </configuration>
+        <executions>
+          <execution>
+            <id>coverage-report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
