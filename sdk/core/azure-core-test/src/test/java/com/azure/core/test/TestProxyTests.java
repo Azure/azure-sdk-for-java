@@ -463,7 +463,7 @@ public class TestProxyTests extends TestProxyTestBase {
 
         String[] lines = stringBuilder.toString().split(System.lineSeparator());
         System.out.printf("Process output: %s\n", stringBuilder);
-        String filePath = lines.get(lines.size()-1);
+        String filePath = lines.get(lines.length-1);
         String recordingName = testContextManager.getTestPlaybackRecordingName() + ".json";
         String relativePath =
             engRepoRoot.relativize(Paths.get(targetRepoRoot, "src/test/resources/session-records", recordingName))
