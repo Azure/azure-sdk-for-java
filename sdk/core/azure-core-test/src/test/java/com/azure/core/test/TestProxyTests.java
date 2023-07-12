@@ -428,10 +428,11 @@ public class TestProxyTests extends TestProxyTestBase {
             TestProxyUtils.getProxyProcessName()).toString();
         Path engRepoRoot = TestUtils.getRepoRootResolveUntil(getTestClassPath(), "eng");
         String targetRepoRoot = TestUtils.getRepoRootResolveUntil(getTestClassPath(), "target").toString();
-        System.out.printf("Target repo root: %s", targetRepoRoot);
-        System.out.printf("Eng repo root: %s", engRepoRoot.toString());
-        String assetPath = Paths.get("sdk", "core", "azure-core-test", "assets.json").toString();
-        System.out.printf("AssetPath being passed to config locate is %s", assetPath);
+        System.out.printf("Target repo root: %s\n", targetRepoRoot);
+        System.out.printf("Eng repo root: %s\n", engRepoRoot.toString());
+        String assetPath = Paths.get("sdk", "core", "azure-core-test", "assets.json\n").toString();
+        System.out.printf("AssetPath being passed to config locate is %s\n", assetPath);
+        System.out.printf("CommandLine: %s\n", commandLine);
         ProcessBuilder builder = new ProcessBuilder(commandLine,
             "config",
             "locate",
@@ -446,6 +447,9 @@ public class TestProxyTests extends TestProxyTestBase {
 
         BufferedReader reader =
             new BufferedReader(new InputStreamReader(process.getInputStream()));
+        BufferedReader reader2 =
+            new BufferedReader(new InputStreamReader(process.getOutputStream()));
+
         StringBuilder stringBuilder = new StringBuilder();
         String line;
         while ((line = reader.readLine()) != null) {
@@ -459,13 +463,13 @@ public class TestProxyTests extends TestProxyTestBase {
             }
         }
 
-        System.out.printf("Process output: %s", stringBuilder);
+        System.out.printf("Process output: %s\n", stringBuilder);
         String filePath = stringBuilder.toString();
         String recordingName = testContextManager.getTestPlaybackRecordingName() + ".json";
         String relativePath =
             engRepoRoot.relativize(Paths.get(targetRepoRoot, "src/test/resources/session-records", recordingName))
                 .toString();
-        System.out.printf("Relative path: %s", relativePath);
+        System.out.printf("Relative path: %s\n", relativePath);
         return Paths.get(filePath, relativePath).toString();
     }
 
