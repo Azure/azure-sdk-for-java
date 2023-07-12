@@ -18,6 +18,7 @@ parameters:
   UsePlatformContainer: false
   DisableAzureResourceCreation: false
   BuildParallelization: '2C'
+  JavaTestVersion: $(JavaTestVersion)
   TestGoals: $(TestGoals)
   TestOptions: $(TestOptions)
   TestParallelization: '1'
@@ -63,10 +64,10 @@ jobs:
       # If the Java test versions isn't one of the LTS versions, or in other words is the latest Java version we're
       # testing against and that isn't an LTS version at the time (ex. latest LTS is Java 17 but we're testing against
       # Java 18), then install the latest Java version and use that to run tests.
-      - ${{ if notIn(split(variables['JavaTestVersion'], '.')[1], '8', '11', '17', '21') }}:
+      - ${{ if notIn(split(parameters.JavaTestVersion, '.')[1], '8', '11', '17', '21') }}:
         - template: eng/pipelines/templates/steps/install-latest-jdk.yml
           parameters:
-            LatestJdkFeatureVersion: ${{ split(variables['JavaTestVersion'], '.')[1] }}
+            LatestJdkFeatureVersion: ${{ split(parameters.JavaTestVersion, '.')[1] }}
 
       - template: ../steps/install-reporting-tools.yml
         parameters:
@@ -104,7 +105,7 @@ jobs:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           ParallelTestPlayback: 'false'
           BuildParallelization: ${{ parameters.BuildParallelization }}
-          ContinueOnError: ${{ notIn(split(variables['JavaTestVersion'], '.')[1], '8', '11', '17', '21') }}
+          ContinueOnError: ${{ notIn(split(parameters.JavaTestVersion, '.')[1], '8', '11', '17', '21') }}
           IsLiveTest: true
           TestGoals: ${{ parameters.TestGoals }}
           TestOptions: ${{ parameters.TestOptions }}
