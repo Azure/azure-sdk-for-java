@@ -430,7 +430,7 @@ public class TestProxyTests extends TestProxyTestBase {
         String targetRepoRoot = TestUtils.getRepoRootResolveUntil(getTestClassPath(), "target").toString();
         System.out.printf("Target repo root: %s\n", targetRepoRoot);
         System.out.printf("Eng repo root: %s\n", engRepoRoot.toString());
-        String assetPath = Paths.get("sdk", "core", "azure-core-test", "assets.json\n").toString();
+        String assetPath = Paths.get("sdk", "core", "azure-core-test", "assets.json").toString();
         System.out.printf("AssetPath being passed to config locate is %s\n", assetPath);
         System.out.printf("CommandLine: %s\n", commandLine);
         ProcessBuilder builder = new ProcessBuilder(commandLine,
@@ -459,7 +459,7 @@ public class TestProxyTests extends TestProxyTestBase {
             }
         }
 
-        String[] lines = stringBuilder.toString().split(System.lineSeparator());
+        String[] lines = stringBuilder.toString().split("\n");
         System.out.printf("Process output: %s\n", stringBuilder);
         String filePath = lines[lines.length-1];
         String recordingName = testContextManager.getTestPlaybackRecordingName() + ".json";
