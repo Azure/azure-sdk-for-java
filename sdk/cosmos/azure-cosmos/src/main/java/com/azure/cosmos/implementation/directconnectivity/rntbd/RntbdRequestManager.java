@@ -1062,6 +1062,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                             break;
                         case SubStatusCodes.PARTITION_KEY_RANGE_GONE:
                             cause = new PartitionKeyRangeGoneException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            handleGoneException(serviceRequest, cause);
                             rntbdConnectionStateListener.attemptBackgroundAddressRefresh(serviceRequest);
                             break;
                         default:
@@ -1165,6 +1166,12 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             request.forcePartitionKeyRangeRefresh = true;
         } else if (exception instanceof GoneException) {
             request.requestContext.forceRefreshAddressCache = true;
+        } else if (exception instanceof PartitionKeyRangeGoneException) {
+            request.forcePartitionKeyRangeRefresh = true;
+            request.requestContext.forceRefreshAddressCache = true;
+            request.requestContext.resolvedPartitionKeyRange = null;
+            request.requestContext.quorumSelectedLSN = -1;
+            request.requestContext.quorumSelectedStoreResponse = null;
         }
     }
 

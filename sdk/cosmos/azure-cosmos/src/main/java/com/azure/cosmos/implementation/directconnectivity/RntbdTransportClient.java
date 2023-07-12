@@ -151,7 +151,7 @@ public class RntbdTransportClient extends TransportClient {
         this.globalEndpointManager = null;
         this.metricConfig = null;
         this.addressSelector = null;
-        this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(endpointProvider, this.addressSelector);
+        this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(endpointProvider, null);
         this.serverErrorInjector = new RntbdServerErrorInjector();
     }
 

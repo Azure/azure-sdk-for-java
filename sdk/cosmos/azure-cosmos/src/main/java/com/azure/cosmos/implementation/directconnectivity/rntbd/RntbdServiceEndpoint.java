@@ -605,6 +605,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             );
 
             RxDocumentServiceRequest serviceRequest = requestArgs.serviceRequest();
+            BridgeInternal.setRequestHeaders(goneException, serviceRequest.getHeaders());
 
             if (serviceRequest.requestContext != null) {
                 serviceRequest.requestContext.forceRefreshAddressCache = true;
