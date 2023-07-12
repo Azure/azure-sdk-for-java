@@ -31,9 +31,6 @@ parameters:
   - name: PreBuildSteps
     type: object
     default: []
-  - name: JavaTestVersion
-    type: string
-    default: $(JavaTestVersion)
   - name: TestGoals
     type: string
     default: $(TestGoals)
@@ -101,10 +98,10 @@ jobs:
       # Java 18), then install the latest Java version and use that to run a full build for validation of the latest
       # Java version.
       # Otherwise, run a normal test run.
-      - ${{ if eq(parameters.JavaTestVersion, '1.20') }}:
+      - ${{ if eq(variables['JavaTestVersion'], variables['LatestJavaVersion']) }}:
         - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
           parameters:
-            LatestJdkFeatureVersion: '20'
+            LatestJdkFeatureVersion: $(LatestJdkFeatureVersion)
 
       - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
         parameters:
@@ -123,9 +120,9 @@ jobs:
           TestOptions: ${{ parameters.TestOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
-          ContinueOnError: ${{ eq(parameters.JavaTestVersion, '1.20') }}
+          ContinueOnError: ${{ eq(variables['JavaTestVersion'], variables['LatestJavaVersion']) }}
 
-      - ${{ if eq(parameters.JavaTestVersion, '1.20') }}:
+      - ${{ if eq(variables['JavaTestVersion'], variables['LatestJavaVersion']) }}:
         - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
           parameters:
             JavaBuildVersion: ${{ parameters.JavaTestVersion }}
