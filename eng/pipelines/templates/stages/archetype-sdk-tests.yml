@@ -107,6 +107,9 @@ parameters:
 - name: LtsVersion
   type: string
   default: $(JavaTestVersion)
+- name: UseHttpFaultInjector
+  type: boolean
+  default: false
 
 stages:
 - ${{ each cloud in parameters.CloudConfig }}:
@@ -145,6 +148,7 @@ stages:
               DisableAzureResourceCreation: ${{ parameters.DisableAzureResourceCreation }}
               TestGoals: ${{ parameters.TestGoals }}
               TestOptions: ${{ parameters.TestOptions }}
+              UseHttpFaultInjector: ${{ parameters.UseHttpFaultInjector }}
 
             MatrixConfigs:
               # Enumerate platforms and additional platforms based on supported clouds (sparse platform<-->cloud matrix).

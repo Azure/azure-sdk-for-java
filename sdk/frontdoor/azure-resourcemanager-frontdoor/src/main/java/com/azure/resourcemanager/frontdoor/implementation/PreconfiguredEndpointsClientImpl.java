@@ -59,8 +59,7 @@ public final class PreconfiguredEndpointsClientImpl implements PreconfiguredEndp
     public interface PreconfiguredEndpointsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/NetworkExperimentProfiles/{profileName}/PreconfiguredEndpoints")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/PreconfiguredEndpoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PreconfiguredEndpointList>> list(

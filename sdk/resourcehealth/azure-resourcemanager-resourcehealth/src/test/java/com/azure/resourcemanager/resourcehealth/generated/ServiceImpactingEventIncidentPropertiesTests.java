@@ -7,34 +7,33 @@ package com.azure.resourcemanager.resourcehealth.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resourcehealth.models.ServiceImpactingEventIncidentProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ServiceImpactingEventIncidentPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ServiceImpactingEventIncidentProperties model =
             BinaryData
                 .fromString(
-                    "{\"title\":\"fufsrpymzi\",\"service\":\"sezcxtb\",\"region\":\"gfycc\",\"incidentType\":\"ewmdw\"}")
+                    "{\"title\":\"idf\",\"service\":\"wdzuhtymwisd\",\"region\":\"thwxmnteiwaopvkm\",\"incidentType\":\"c\"}")
                 .toObject(ServiceImpactingEventIncidentProperties.class);
-        Assertions.assertEquals("fufsrpymzi", model.title());
-        Assertions.assertEquals("sezcxtb", model.service());
-        Assertions.assertEquals("gfycc", model.region());
-        Assertions.assertEquals("ewmdw", model.incidentType());
+        Assertions.assertEquals("idf", model.title());
+        Assertions.assertEquals("wdzuhtymwisd", model.service());
+        Assertions.assertEquals("thwxmnteiwaopvkm", model.region());
+        Assertions.assertEquals("c", model.incidentType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ServiceImpactingEventIncidentProperties model =
             new ServiceImpactingEventIncidentProperties()
-                .withTitle("fufsrpymzi")
-                .withService("sezcxtb")
-                .withRegion("gfycc")
-                .withIncidentType("ewmdw");
+                .withTitle("idf")
+                .withService("wdzuhtymwisd")
+                .withRegion("thwxmnteiwaopvkm")
+                .withIncidentType("c");
         model = BinaryData.fromObject(model).toObject(ServiceImpactingEventIncidentProperties.class);
-        Assertions.assertEquals("fufsrpymzi", model.title());
-        Assertions.assertEquals("sezcxtb", model.service());
-        Assertions.assertEquals("gfycc", model.region());
-        Assertions.assertEquals("ewmdw", model.incidentType());
+        Assertions.assertEquals("idf", model.title());
+        Assertions.assertEquals("wdzuhtymwisd", model.service());
+        Assertions.assertEquals("thwxmnteiwaopvkm", model.region());
+        Assertions.assertEquals("c", model.incidentType());
     }
 }

@@ -22,7 +22,7 @@ import com.azure.resourcemanager.selfhelp.models.CheckNameAvailabilityRequest;
 /** Samples for Diagnostics CheckNameAvailability. */
 public final class DiagnosticsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsNotAvailable.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/stable/2023-06-01/examples/CheckNameAvailabilityForDiagnosticWhenNameIsNotAvailable.json
      */
     /**
      * Sample code: Example when name is not available for a Diagnostic resource.
@@ -40,7 +40,7 @@ public final class DiagnosticsCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsAvailable.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/stable/2023-06-01/examples/CheckNameAvailabilityForDiagnosticWhenNameIsAvailable.json
      */
     /**
      * Sample code: Example when name is available for a Diagnostic resource.
@@ -65,7 +65,7 @@ public final class DiagnosticsCheckNameAvailabilitySamples {
 /** Samples for Diagnostics Create. */
 public final class DiagnosticsCreateSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/CreateDiagnosticForKeyVaultResource.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/stable/2023-06-01/examples/CreateDiagnosticForKeyVaultResource.json
      */
     /**
      * Sample code: Creates a Diagnostic for a KeyVault resource.
@@ -90,7 +90,7 @@ public final class DiagnosticsCreateSamples {
 /** Samples for Diagnostics Get. */
 public final class DiagnosticsGetSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/GetDiagnosticForKeyVaultResource.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/stable/2023-06-01/examples/GetDiagnosticForKeyVaultResource.json
      */
     /**
      * Sample code: Gets a Diagnostic for a KeyVault resource.
@@ -114,7 +114,7 @@ public final class DiagnosticsGetSamples {
 /** Samples for DiscoverySolution List. */
 public final class DiscoverySolutionListSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/ListDiscoverySolutionsForKeyVaultResource.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/stable/2023-06-01/examples/ListDiscoverySolutionsForKeyVaultResource.json
      */
     /**
      * Sample code: List DiscoverySolutions for a KeyVault resource.
@@ -140,7 +140,7 @@ public final class DiscoverySolutionListSamples {
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/ListOperations.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/stable/2023-06-01/examples/ListOperations.json
      */
     /**
      * Sample code: List All Operations.

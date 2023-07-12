@@ -17,10 +17,10 @@ public final class ExperimentUpdateModelTests {
         ExperimentUpdateModel model =
             BinaryData
                 .fromString(
-                    "{\"tags\":{\"t\":\"rzayv\",\"ln\":\"gvdfgiotkftutq\",\"qmi\":\"xlefgugnxkrx\",\"abhjybi\":\"tthzrvqd\"},\"properties\":{\"description\":\"oqfbowskanyk\",\"enabledState\":\"Disabled\"}}")
+                    "{\"tags\":{\"cgpik\":\"bi\"},\"properties\":{\"description\":\"mejzanlfzxia\",\"enabledState\":\"Disabled\"}}")
                 .toObject(ExperimentUpdateModel.class);
-        Assertions.assertEquals("rzayv", model.tags().get("t"));
-        Assertions.assertEquals("oqfbowskanyk", model.description());
+        Assertions.assertEquals("bi", model.tags().get("cgpik"));
+        Assertions.assertEquals("mejzanlfzxia", model.description());
         Assertions.assertEquals(State.DISABLED, model.enabledState());
     }
 
@@ -28,12 +28,12 @@ public final class ExperimentUpdateModelTests {
     public void testSerialize() throws Exception {
         ExperimentUpdateModel model =
             new ExperimentUpdateModel()
-                .withTags(mapOf("t", "rzayv", "ln", "gvdfgiotkftutq", "qmi", "xlefgugnxkrx", "abhjybi", "tthzrvqd"))
-                .withDescription("oqfbowskanyk")
+                .withTags(mapOf("cgpik", "bi"))
+                .withDescription("mejzanlfzxia")
                 .withEnabledState(State.DISABLED);
         model = BinaryData.fromObject(model).toObject(ExperimentUpdateModel.class);
-        Assertions.assertEquals("rzayv", model.tags().get("t"));
-        Assertions.assertEquals("oqfbowskanyk", model.description());
+        Assertions.assertEquals("bi", model.tags().get("cgpik"));
+        Assertions.assertEquals("mejzanlfzxia", model.description());
         Assertions.assertEquals(State.DISABLED, model.enabledState());
     }
 

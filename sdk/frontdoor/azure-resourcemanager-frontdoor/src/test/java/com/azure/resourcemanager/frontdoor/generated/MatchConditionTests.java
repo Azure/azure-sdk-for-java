@@ -18,13 +18,13 @@ public final class MatchConditionTests {
         MatchCondition model =
             BinaryData
                 .fromString(
-                    "{\"matchVariable\":\"QueryString\",\"selector\":\"otzi\",\"operator\":\"Equal\",\"negateCondition\":false,\"matchValue\":[\"pph\",\"szqzudphqamv\"],\"transforms\":[\"UrlDecode\",\"Lowercase\",\"Lowercase\",\"RemoveNulls\"]}")
+                    "{\"matchVariable\":\"RequestHeader\",\"selector\":\"vpjhulsuuv\",\"operator\":\"GreaterThan\",\"negateCondition\":true,\"matchValue\":[\"k\",\"wfndiodjpsl\"],\"transforms\":[\"UrlDecode\",\"Uppercase\"]}")
                 .toObject(MatchCondition.class);
-        Assertions.assertEquals(MatchVariable.QUERY_STRING, model.matchVariable());
-        Assertions.assertEquals("otzi", model.selector());
-        Assertions.assertEquals(Operator.EQUAL, model.operator());
-        Assertions.assertEquals(false, model.negateCondition());
-        Assertions.assertEquals("pph", model.matchValue().get(0));
+        Assertions.assertEquals(MatchVariable.REQUEST_HEADER, model.matchVariable());
+        Assertions.assertEquals("vpjhulsuuv", model.selector());
+        Assertions.assertEquals(Operator.GREATER_THAN, model.operator());
+        Assertions.assertEquals(true, model.negateCondition());
+        Assertions.assertEquals("k", model.matchValue().get(0));
         Assertions.assertEquals(TransformType.URL_DECODE, model.transforms().get(0));
     }
 
@@ -32,24 +32,18 @@ public final class MatchConditionTests {
     public void testSerialize() throws Exception {
         MatchCondition model =
             new MatchCondition()
-                .withMatchVariable(MatchVariable.QUERY_STRING)
-                .withSelector("otzi")
-                .withOperator(Operator.EQUAL)
-                .withNegateCondition(false)
-                .withMatchValue(Arrays.asList("pph", "szqzudphqamv"))
-                .withTransforms(
-                    Arrays
-                        .asList(
-                            TransformType.URL_DECODE,
-                            TransformType.LOWERCASE,
-                            TransformType.LOWERCASE,
-                            TransformType.REMOVE_NULLS));
+                .withMatchVariable(MatchVariable.REQUEST_HEADER)
+                .withSelector("vpjhulsuuv")
+                .withOperator(Operator.GREATER_THAN)
+                .withNegateCondition(true)
+                .withMatchValue(Arrays.asList("k", "wfndiodjpsl"))
+                .withTransforms(Arrays.asList(TransformType.URL_DECODE, TransformType.UPPERCASE));
         model = BinaryData.fromObject(model).toObject(MatchCondition.class);
-        Assertions.assertEquals(MatchVariable.QUERY_STRING, model.matchVariable());
-        Assertions.assertEquals("otzi", model.selector());
-        Assertions.assertEquals(Operator.EQUAL, model.operator());
-        Assertions.assertEquals(false, model.negateCondition());
-        Assertions.assertEquals("pph", model.matchValue().get(0));
+        Assertions.assertEquals(MatchVariable.REQUEST_HEADER, model.matchVariable());
+        Assertions.assertEquals("vpjhulsuuv", model.selector());
+        Assertions.assertEquals(Operator.GREATER_THAN, model.operator());
+        Assertions.assertEquals(true, model.negateCondition());
+        Assertions.assertEquals("k", model.matchValue().get(0));
         Assertions.assertEquals(TransformType.URL_DECODE, model.transforms().get(0));
     }
 }

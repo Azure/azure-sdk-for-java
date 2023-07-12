@@ -32,6 +32,20 @@ public interface GenerateDetailedCostReportOperationStatuses {
     Status status();
 
     /**
+     * Gets the startTime property: The startTime of the operation.
+     *
+     * @return the startTime value.
+     */
+    String startTime();
+
+    /**
+     * Gets the endTime property: The endTime of the operation.
+     *
+     * @return the endTime value.
+     */
+    String endTime();
+
+    /**
      * Gets the type property: The type of the long running operation.
      *
      * @return the type value.

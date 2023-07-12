@@ -30,7 +30,7 @@ public final class JobsBookShipmentPickUpWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"confirmationNumber\":\"mbmpaxmodfvuefy\",\"readyByTime\":\"2021-06-26T00:17:44Z\"}";
+        String responseStr = "{\"confirmationNumber\":\"dmovsm\",\"readyByTime\":\"2020-12-25T04:12:31Z\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,12 @@ public final class JobsBookShipmentPickUpWithResponseMockTests {
             manager
                 .jobs()
                 .bookShipmentPickUpWithResponse(
-                    "mutwuoe",
-                    "rpkhjwn",
+                    "aznqntoru",
+                    "sgsahmkycgr",
                     new ShipmentPickUpRequest()
-                        .withStartTime(OffsetDateTime.parse("2021-07-28T08:27Z"))
-                        .withEndTime(OffsetDateTime.parse("2021-08-17T21:02:56Z"))
-                        .withShipmentLocation("sluicpdggkzz"),
+                        .withStartTime(OffsetDateTime.parse("2021-08-02T01:55:50Z"))
+                        .withEndTime(OffsetDateTime.parse("2021-04-05T08:15:46Z"))
+                        .withShipmentLocation("juetaebur"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
     }

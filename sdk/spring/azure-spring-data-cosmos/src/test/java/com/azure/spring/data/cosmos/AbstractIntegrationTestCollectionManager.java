@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentMap;
 public abstract class AbstractIntegrationTestCollectionManager<T> implements TestRule {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractIntegrationTestCollectionManager.class);
-    private static final Duration LEASE_DURATION = Duration.ofMinutes(5);
+    private static final Duration LEASE_DURATION = Duration.ofSeconds(5 * 60);
     private static final ConcurrentMap<String, DeleteContainerAction> CONTAINER_CLEANUP_REGISTRY = new ConcurrentHashMap<>();
 
     static {

@@ -30,7 +30,7 @@ public final class DocumentSpan {
      * @param length the length value to set.
      */
     @JsonCreator
-    public DocumentSpan(
+    private DocumentSpan(
             @JsonProperty(value = "offset", required = true) int offset,
             @JsonProperty(value = "length", required = true) int length) {
         this.offset = offset;

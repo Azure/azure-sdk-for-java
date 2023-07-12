@@ -14,12 +14,11 @@ public final class HeaderActionTests {
     public void testDeserialize() throws Exception {
         HeaderAction model =
             BinaryData
-                .fromString(
-                    "{\"headerActionType\":\"Delete\",\"headerName\":\"dmhdlxyjr\",\"value\":\"agafcnihgwqap\"}")
+                .fromString("{\"headerActionType\":\"Delete\",\"headerName\":\"gxhnisk\",\"value\":\"bkpyc\"}")
                 .toObject(HeaderAction.class);
         Assertions.assertEquals(HeaderActionType.DELETE, model.headerActionType());
-        Assertions.assertEquals("dmhdlxyjr", model.headerName());
-        Assertions.assertEquals("agafcnihgwqap", model.value());
+        Assertions.assertEquals("gxhnisk", model.headerName());
+        Assertions.assertEquals("bkpyc", model.value());
     }
 
     @org.junit.jupiter.api.Test
@@ -27,11 +26,11 @@ public final class HeaderActionTests {
         HeaderAction model =
             new HeaderAction()
                 .withHeaderActionType(HeaderActionType.DELETE)
-                .withHeaderName("dmhdlxyjr")
-                .withValue("agafcnihgwqap");
+                .withHeaderName("gxhnisk")
+                .withValue("bkpyc");
         model = BinaryData.fromObject(model).toObject(HeaderAction.class);
         Assertions.assertEquals(HeaderActionType.DELETE, model.headerActionType());
-        Assertions.assertEquals("dmhdlxyjr", model.headerName());
-        Assertions.assertEquals("agafcnihgwqap", model.value());
+        Assertions.assertEquals("gxhnisk", model.headerName());
+        Assertions.assertEquals("bkpyc", model.value());
     }
 }

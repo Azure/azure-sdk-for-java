@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.List;
 
-/** Describes a set of label selectors that will be attached if the given condition resolves to true. */
+/** Describes a set of worker selectors that will be attached if the given condition resolves to true. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("conditional")
 @Fluent
@@ -32,10 +32,10 @@ public final class ConditionalWorkerSelectorAttachment extends WorkerSelectorAtt
     private RouterRule condition;
 
     /*
-     * The label selectors to attach
+     * The worker selectors to attach
      */
-    @JsonProperty(value = "labelSelectors", required = true)
-    private List<WorkerSelector> labelSelectors;
+    @JsonProperty(value = "workerSelectors", required = true)
+    private List<RouterWorkerSelector> workerSelectors;
 
     /**
      * Get the condition property: A rule of one of the following types:
@@ -68,22 +68,22 @@ public final class ConditionalWorkerSelectorAttachment extends WorkerSelectorAtt
     }
 
     /**
-     * Get the labelSelectors property: The label selectors to attach.
+     * Get the workerSelectors property: The worker selectors to attach.
      *
-     * @return the labelSelectors value.
+     * @return the workerSelectors value.
      */
-    public List<WorkerSelector> getLabelSelectors() {
-        return this.labelSelectors;
+    public List<RouterWorkerSelector> getWorkerSelectors() {
+        return this.workerSelectors;
     }
 
     /**
-     * Set the labelSelectors property: The label selectors to attach.
+     * Set the workerSelectors property: The worker selectors to attach.
      *
-     * @param labelSelectors the labelSelectors value to set.
+     * @param workerSelectors the workerSelectors value to set.
      * @return the ConditionalWorkerSelectorAttachment object itself.
      */
-    public ConditionalWorkerSelectorAttachment setLabelSelectors(List<WorkerSelector> labelSelectors) {
-        this.labelSelectors = labelSelectors;
+    public ConditionalWorkerSelectorAttachment setWorkerSelectors(List<RouterWorkerSelector> workerSelectors) {
+        this.workerSelectors = workerSelectors;
         return this;
     }
 }

@@ -4,6 +4,6 @@
 
 /**
  * Package containing the classes for AzureDatabricksManagementClient. The Microsoft Azure management APIs allow end
- * users to operate on Azure Databricks Workspace resources.
+ * users to operate on Azure Databricks Workspace / Access Connector resources.
  */
 package com.azure.resourcemanager.databricks;

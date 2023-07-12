@@ -68,6 +68,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -680,6 +681,21 @@ public class CosmosAsyncContainer {
 
     /**
      * Query for items in the current container.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.queryItems -->
+     * <pre>
+     * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
+     * String query = &quot;SELECT * FROM Passenger WHERE Passenger.departure IN &#40;'SEA', 'IND'&#41;&quot;;
+     * cosmosAsyncContainer.queryItems&#40;query, options, Passenger.class&#41;
+     *     .byPage&#40;&#41;
+     *     .flatMap&#40;passengerFeedResponse -&gt; &#123;
+     *         for &#40;Passenger passenger : passengerFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;passenger&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.queryItems -->
      * <p>
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained items. In case of
@@ -720,7 +736,7 @@ public class CosmosAsyncContainer {
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig =
                 new CosmosContainerProactiveInitConfigBuilder(Collections.singletonList(cosmosContainerIdentity))
                     .setProactiveConnectionRegionsCount(1)
-                    .setMinConnectionsPerEndpointForContainer(cosmosContainerIdentity, Configs.getMinConnectionPoolSizePerEndpoint())
+                    .setMinConnectionPoolSizePerEndpointForContainer(cosmosContainerIdentity, Configs.getMinConnectionPoolSizePerEndpoint())
                     .build();
 
             return withContext(context -> openConnectionsAndInitCachesInternal(
@@ -829,6 +845,21 @@ public class CosmosAsyncContainer {
 
     /**
      * Query for items in the current container using a string.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.queryItems -->
+     * <pre>
+     * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
+     * String query = &quot;SELECT * FROM Passenger WHERE Passenger.departure IN &#40;'SEA', 'IND'&#41;&quot;;
+     * cosmosAsyncContainer.queryItems&#40;query, options, Passenger.class&#41;
+     *     .byPage&#40;&#41;
+     *     .flatMap&#40;passengerFeedResponse -&gt; &#123;
+     *         for &#40;Passenger passenger : passengerFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;passenger&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.queryItems -->
      * <p>
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained items. In case of
@@ -851,6 +882,25 @@ public class CosmosAsyncContainer {
 
     /**
      * Query for items in the current container using a {@link SqlQuerySpec}.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.SqlQuerySpec.queryItems -->
+     * <pre>
+     * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
+     *
+     * String query = &quot;SELECT * FROM Passenger p WHERE &#40;p.departure = &#64;departure&#41;&quot;;
+     * List&lt;SqlParameter&gt; parameters = Collections.singletonList&#40;new SqlParameter&#40;&quot;&#64;departure&quot;, &quot;SEA&quot;&#41;&#41;;
+     * SqlQuerySpec sqlQuerySpec = new SqlQuerySpec&#40;query, parameters&#41;;
+     *
+     * cosmosAsyncContainer.queryItems&#40;sqlQuerySpec, options, Passenger.class&#41;
+     *     .byPage&#40;&#41;
+     *     .flatMap&#40;passengerFeedResponse -&gt; &#123;
+     *         for &#40;Passenger passenger : passengerFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;passenger&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.SqlQuerySpec.queryItems -->
      * <p>
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained items. In case of
@@ -925,10 +975,15 @@ public class CosmosAsyncContainer {
                 client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(options)));
 
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
+            ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .setCancelledRequestDiagnosticsTracker(options, new ArrayList<>());
 
-                return getDatabase().getDocClientWrapper()
-                             .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, options, classType)
-                             .map(response -> prepareFeedResponse(response, false));
+            return getDatabase()
+                        .getDocClientWrapper()
+                        .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, options, classType)
+                        .map(response -> prepareFeedResponse(response, false));
         });
 
         return pagedFluxOptionsFluxFunction;
@@ -968,7 +1023,23 @@ public class CosmosAsyncContainer {
 
     /**
      * Query for items in the change feed of the current container using the {@link CosmosChangeFeedRequestOptions}.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.queryChangeFeed -->
+     * <pre>
+     * CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+     *     .createForProcessingFromNow&#40;FeedRange.forFullRange&#40;&#41;&#41;
+     *     .allVersionsAndDeletes&#40;&#41;;
+     *
+     * cosmosAsyncContainer.queryChangeFeed&#40;options, Passenger.class&#41;
+     *     .byPage&#40;&#41;
+     *     .flatMap&#40;passengerFeedResponse -&gt; &#123;
+     *         for &#40;Passenger passenger : passengerFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;passenger&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.queryChangeFeed -->
      * After subscription the operation will be performed. The {@link Flux} will
      * contain one or several feed response of the obtained items. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -1241,10 +1312,25 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Reads an item.
+     * Reads an item by itemId.
+     * <br/>
+     * This operation is used to retrieve a single item from a container based on its unique identifier (ID) and partition key.
+     * The readItem operation provides direct access to a specific item using its unique identifier, which consists of the item's ID and the partition key value. This operation is efficient for retrieving a known item by its ID and partition key without the need for complex querying.
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain an item response with the read item.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.readItem -->
+     * <pre>
+     * &#47;&#47; Read an item
+     * cosmosAsyncContainer.readItem&#40;passenger.getId&#40;&#41;, new PartitionKey&#40;passenger.getId&#40;&#41;&#41;, Passenger.class&#41;
+     *     .flatMap&#40;response -&gt; Mono.just&#40;response.getItem&#40;&#41;&#41;&#41;
+     *     .subscribe&#40;passengerItem -&gt; System.out.println&#40;passengerItem&#41;, throwable -&gt; &#123;
+     *         CosmosException cosmosException = &#40;CosmosException&#41; throwable;
+     *         cosmosException.printStackTrace&#40;&#41;;
+     *     &#125;&#41;;
+     * &#47;&#47; ...
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.readItem -->
      *
      * @param <T> the type parameter.
      * @param itemId the item id.
@@ -1257,7 +1343,10 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Reads an item using a configured {@link CosmosItemRequestOptions}.
+     * Reads an item by itemId using a configured {@link CosmosItemRequestOptions}.
+     * <br/>
+     * This operation is used to retrieve a single item from a container based on its unique identifier (ID) and partition key.
+     * The readItem operation provides direct access to a specific item using its unique identifier, which consists of the item's ID and the partition key value. This operation is efficient for retrieving a known item by its ID and partition key without the need for complex querying.
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a Cosmos item response with the read item.
@@ -1265,7 +1354,7 @@ public class CosmosAsyncContainer {
      * @param <T> the type parameter.
      * @param itemId the item id.
      * @param partitionKey the partition key.
-     * @param options the request {@link CosmosItemRequestOptions}.
+     * @param options the request (Optional) {@link CosmosItemRequestOptions}.
      * @param itemType the item type.
      * @return an {@link Mono} containing the Cosmos item response with the read item or an error.
      */
@@ -1283,7 +1372,24 @@ public class CosmosAsyncContainer {
 
     /**
      * Reads many documents.
+     * Useful for reading many documents with a particular id and partition key in a single request.
+     * If any document from the list is missing, no exception will be thrown.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.readMany -->
+     * <pre>
+     * List&lt;CosmosItemIdentity&gt; itemIdentityList = new ArrayList&lt;&gt;&#40;&#41;;
+     * itemIdentityList.add&#40;new CosmosItemIdentity&#40;new PartitionKey&#40;passenger1Id&#41;, passenger1Id&#41;&#41;;
+     * itemIdentityList.add&#40;new CosmosItemIdentity&#40;new PartitionKey&#40;passenger2Id&#41;, passenger2Id&#41;&#41;;
      *
+     * cosmosAsyncContainer.readMany&#40;itemIdentityList, Passenger.class&#41;
+     *     .flatMap&#40;passengerFeedResponse -&gt; &#123;
+     *         for &#40;Passenger passenger : passengerFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;passenger&#41;;
+     *         &#125;
+     *         return Mono.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.readMany -->
      * @param <T> the type parameter
      * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param classType   class type
@@ -1298,12 +1404,29 @@ public class CosmosAsyncContainer {
 
     /**
      * Reads many documents.
+     * Useful for reading many documents with a particular id and partition key in a single request.
+     * If any document from the list is missing, no exception will be thrown.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.readMany -->
+     * <pre>
+     * List&lt;CosmosItemIdentity&gt; itemIdentityList = new ArrayList&lt;&gt;&#40;&#41;;
+     * itemIdentityList.add&#40;new CosmosItemIdentity&#40;new PartitionKey&#40;passenger1Id&#41;, passenger1Id&#41;&#41;;
+     * itemIdentityList.add&#40;new CosmosItemIdentity&#40;new PartitionKey&#40;passenger2Id&#41;, passenger2Id&#41;&#41;;
      *
+     * cosmosAsyncContainer.readMany&#40;itemIdentityList, Passenger.class&#41;
+     *     .flatMap&#40;passengerFeedResponse -&gt; &#123;
+     *         for &#40;Passenger passenger : passengerFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;passenger&#41;;
+     *         &#125;
+     *         return Mono.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.readMany -->
      * @param <T> the type parameter
      * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param sessionToken the optional Session token - null if the read can be made without specific session token
      * @param classType   class type
-     * @return a Mono with feed response of cosmos items
+     * @return a Mono with feed response of cosmos items or error
      */
     public <T> Mono<FeedResponse<T>> readMany(
         List<CosmosItemIdentity> itemIdentityList,
@@ -1324,6 +1447,20 @@ public class CosmosAsyncContainer {
 
     /**
      * Reads all the items of a logical partition
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.readAllItems -->
+     * <pre>
+     * cosmosAsyncContainer
+     *     .readAllItems&#40;new PartitionKey&#40;partitionKey&#41;, Passenger.class&#41;
+     *     .byPage&#40;100&#41;
+     *     .flatMap&#40;passengerFeedResponse -&gt; &#123;
+     *         for &#40;Passenger passenger : passengerFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;passenger&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.readAllItems -->
      * <p>
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed responses of the read Cosmos items. In case of
@@ -1346,14 +1483,27 @@ public class CosmosAsyncContainer {
 
     /**
      * Reads all the items of a logical partition
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.readAllItems -->
+     * <pre>
+     * cosmosAsyncContainer
+     *     .readAllItems&#40;new PartitionKey&#40;partitionKey&#41;, Passenger.class&#41;
+     *     .byPage&#40;100&#41;
+     *     .flatMap&#40;passengerFeedResponse -&gt; &#123;
+     *         for &#40;Passenger passenger : passengerFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;passenger&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.readAllItems -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed responses of the read Cosmos items. In case of
      * failure the {@link CosmosPagedFlux} will error.
      *
      * @param <T> the type parameter.
      * @param partitionKey the partition key value of the documents that need to be read
-     * @param options the feed options.
+     * @param options the feed options (Optional).
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages
      * of the read Cosmos items or an error.
@@ -1394,8 +1544,23 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Replaces an item with the passed in item.
-     * <p>
+     * Replaces an existing item in a container with a new item.
+     * It performs a complete replacement of the item,
+     * replacing all its properties with the properties of the new item
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.replaceItem -->
+     * <pre>
+     * cosmosAsyncContainer.replaceItem&#40;
+     *         newPassenger,
+     *         oldPassenger.getId&#40;&#41;,
+     *         new PartitionKey&#40;oldPassenger.getId&#40;&#41;&#41;,
+     *         new CosmosItemRequestOptions&#40;&#41;&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         System.out.println&#40;response&#41;;
+     *     &#125;, throwable -&gt; &#123;
+     *         throwable.printStackTrace&#40;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.replaceItem -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single Cosmos item response with the replaced item.
      *
@@ -1410,8 +1575,23 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Replaces an item with the passed in item.
-     * <p>
+     * Replaces an existing item in a container with a new item.
+     * It performs a complete replacement of the item,
+     * replacing all its properties with the properties of the new item
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.replaceItem -->
+     * <pre>
+     * cosmosAsyncContainer.replaceItem&#40;
+     *         newPassenger,
+     *         oldPassenger.getId&#40;&#41;,
+     *         new PartitionKey&#40;oldPassenger.getId&#40;&#41;&#41;,
+     *         new CosmosItemRequestOptions&#40;&#41;&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         System.out.println&#40;response&#41;;
+     *     &#125;, throwable -&gt; &#123;
+     *         throwable.printStackTrace&#40;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.replaceItem -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single Cosmos item response with the replaced item.
      *
@@ -1419,7 +1599,7 @@ public class CosmosAsyncContainer {
      * @param item the item to replace (containing the item id).
      * @param itemId the item id.
      * @param partitionKey the partition key.
-     * @param options the request comosItemRequestOptions.
+     * @param options the request comosItemRequestOptions (Optional).
      * @return an {@link Mono} containing the Cosmos item resource response with the replaced item or an error.
      */
     public <T> Mono<CosmosItemResponse<T>> replaceItem(
@@ -1437,8 +1617,28 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Run patch operations on an Item.
-     * <p>
+     * Run partial update that modifies specific properties or fields of the item without replacing the entire item.
+     *
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.patchItem -->
+     * <pre>
+     * CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create&#40;&#41;;
+     *
+     * cosmosPatchOperations
+     *     .add&#40;&quot;&#47;departure&quot;, &quot;SEA&quot;&#41;
+     *     .increment&#40;&quot;&#47;trips&quot;, 1&#41;;
+     *
+     * cosmosAsyncContainer.patchItem&#40;
+     *         passenger.getId&#40;&#41;,
+     *         new PartitionKey&#40;passenger.getId&#40;&#41;&#41;,
+     *         cosmosPatchOperations,
+     *         Passenger.class&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         System.out.println&#40;response&#41;;
+     *     &#125;, throwable -&gt; &#123;
+     *         throwable.printStackTrace&#40;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.patchItem -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single Cosmos item response with the patched item.
      *
@@ -1460,8 +1660,28 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Run patch operations on an Item.
-     * <p>
+     * Run partial update that modifies specific properties or fields of the item without replacing the entire item.
+     *
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.patchItem -->
+     * <pre>
+     * CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create&#40;&#41;;
+     *
+     * cosmosPatchOperations
+     *     .add&#40;&quot;&#47;departure&quot;, &quot;SEA&quot;&#41;
+     *     .increment&#40;&quot;&#47;trips&quot;, 1&#41;;
+     *
+     * cosmosAsyncContainer.patchItem&#40;
+     *         passenger.getId&#40;&#41;,
+     *         new PartitionKey&#40;passenger.getId&#40;&#41;&#41;,
+     *         cosmosPatchOperations,
+     *         Passenger.class&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         System.out.println&#40;response&#41;;
+     *     &#125;, throwable -&gt; &#123;
+     *         throwable.printStackTrace&#40;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.patchItem -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single Cosmos item response with the patched item.
      *
@@ -1499,7 +1719,20 @@ public class CosmosAsyncContainer {
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single Cosmos item response for the deleted item.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.deleteItem -->
+     * <pre>
      *
+     * cosmosAsyncContainer.deleteItem&#40;
+     *     passenger.getId&#40;&#41;,
+     *     new PartitionKey&#40;passenger.getId&#40;&#41;&#41;
+     * &#41;.subscribe&#40;response -&gt; &#123;
+     *     System.out.println&#40;response&#41;;
+     * &#125;, throwable -&gt; &#123;
+     *     CosmosException cosmosException = &#40;CosmosException&#41; throwable;
+     *     cosmosException.printStackTrace&#40;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.deleteItem -->
      * @param itemId the item id.
      * @param partitionKey the partition key.
      * @return an {@link Mono} containing the Cosmos item resource response.
@@ -1516,7 +1749,7 @@ public class CosmosAsyncContainer {
      *
      * @param itemId id of the item.
      * @param partitionKey partitionKey of the item.
-     * @param options the request options.
+     * @param options the request options (Optional).
      * @return an {@link Mono} containing the Cosmos item resource response.
      */
     public Mono<CosmosItemResponse<Object>> deleteItem(
@@ -1597,7 +1830,25 @@ public class CosmosAsyncContainer {
 
     /**
      * Lists all the conflicts in the current container.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.readAllConflicts -->
+     * <pre>
+     * try &#123;
+     *     cosmosAsyncContainer.readAllConflicts&#40;options&#41;.
+     *         byPage&#40;100&#41;
+     *         .subscribe&#40;response -&gt; &#123;
+     *             for &#40;CosmosConflictProperties conflictProperties : response.getResults&#40;&#41;&#41; &#123;
+     *                 System.out.println&#40;conflictProperties&#41;;
+     *             &#125;
+     *         &#125;, throwable -&gt; &#123;
+     *             throwable.printStackTrace&#40;&#41;;
+     *         &#125;&#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     ce.printStackTrace&#40;&#41;;
+     * &#125; catch &#40;Exception e&#41; &#123;
+     *     e.printStackTrace&#40;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.readAllConflicts -->
      * @param options the query request options
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained conflicts or an error.
@@ -1630,7 +1881,25 @@ public class CosmosAsyncContainer {
 
     /**
      * Queries all the conflicts in the current container.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.queryConflicts -->
+     * <pre>
+     * try &#123;
+     *     cosmosAsyncContainer.queryConflicts&#40;query&#41;.
+     *         byPage&#40;100&#41;
+     *         .subscribe&#40;response -&gt; &#123;
+     *             for &#40;CosmosConflictProperties conflictProperties : response.getResults&#40;&#41;&#41; &#123;
+     *                 System.out.println&#40;conflictProperties&#41;;
+     *             &#125;
+     *         &#125;, throwable -&gt; &#123;
+     *             throwable.printStackTrace&#40;&#41;;
+     *         &#125;&#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     ce.printStackTrace&#40;&#41;;
+     * &#125; catch &#40;Exception e&#41; &#123;
+     *     e.printStackTrace&#40;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.queryConflicts -->
      * @param query the query.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained conflicts or an error.
@@ -1643,7 +1912,7 @@ public class CosmosAsyncContainer {
      * Queries all the conflicts in the current container.
      *
      * @param query the query.
-     * @param options the query request options.
+     * @param options the query request options (Optional).
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained conflicts or an error.
      */
@@ -1683,7 +1952,20 @@ public class CosmosAsyncContainer {
 
     /**
      * Replace the throughput.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.replaceThroughput -->
+     * <pre>
+     * ThroughputProperties throughputProperties =
+     *     ThroughputProperties.createAutoscaledThroughput&#40;1000&#41;;
      *
+     * cosmosAsyncContainer.replaceThroughput&#40;throughputProperties&#41;
+     *     .subscribe&#40;throughputResponse -&gt; &#123;
+     *             System.out.println&#40;throughputResponse&#41;;
+     *         &#125;,
+     *         throwable -&gt; &#123;
+     *             throwable.printStackTrace&#40;&#41;;
+     *         &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.replaceThroughput -->
      * @param throughputProperties the throughput properties.
      * @return the mono containing throughput response.
      */
@@ -1693,7 +1975,16 @@ public class CosmosAsyncContainer {
 
     /**
      * Read the throughput provisioned for the current container.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.readThroughput -->
+     * <pre>
+     * Mono&lt;ThroughputResponse&gt; throughputResponseMono = cosmosAsyncContainer.readThroughput&#40;&#41;;
+     * throughputResponseMono.subscribe&#40;throughputResponse -&gt; &#123;
+     *     System.out.println&#40;throughputResponse&#41;;
+     * &#125;, throwable -&gt; &#123;
+     *     throwable.printStackTrace&#40;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.readThroughput -->
      * @return the mono containing throughput response.
      */
     public Mono<ThroughputResponse> readThroughput() {
@@ -2174,7 +2465,16 @@ public class CosmosAsyncContainer {
     /**
      * Obtains a list of {@link FeedRange} that can be used to parallelize Feed
      * operations.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.getFeedRanges -->
+     * <pre>
+     * cosmosAsyncContainer.getFeedRanges&#40;&#41;
+     *     .subscribe&#40;feedRanges -&gt; &#123;
+     *         for &#40;FeedRange feedRange : feedRanges&#41; &#123;
+     *             System.out.println&#40;&quot;Feed range: &quot; + feedRange&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.getFeedRanges -->
      * @return An unmodifiable list of {@link FeedRange}
      */
     public Mono<List<FeedRange>> getFeedRanges() {

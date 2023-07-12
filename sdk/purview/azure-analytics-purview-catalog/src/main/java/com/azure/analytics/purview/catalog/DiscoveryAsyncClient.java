@@ -35,111 +35,107 @@ public final class DiscoveryAsyncClient {
 
     /**
      * Gets data using search.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     keywords: String
-     *     offset: Integer
-     *     limit: Integer
-     *     filter: Object
-     *     facets: [
-     *         {
-     *             count: Integer
-     *             facet: String
-     *             sort: Object
+     *     keywords: String (Optional)
+     *     offset: Integer (Optional)
+     *     limit: Integer (Optional)
+     *     filter: Object (Optional)
+     *     facets (Optional): [
+     *          (Optional){
+     *             count: Integer (Optional)
+     *             facet: String (Optional)
+     *             sort: Object (Optional)
      *         }
      *     ]
-     *     taxonomySetting: {
-     *         assetTypes: [
-     *             String
+     *     taxonomySetting (Optional): {
+     *         assetTypes (Optional): [
+     *             String (Optional)
      *         ]
-     *         facet: (recursive schema, see facet above)
+     *         facet (Optional): (recursive schema, see facet above)
      *     }
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     searchCount: Integer
-     *     searchFacets: {
-     *         assetType: [
-     *             {
-     *                 count: Integer
-     *                 value: String
+     *     @search.count: Integer (Optional)
+     *     @search.facets (Optional): {
+     *         assetType (Optional): [
+     *              (Optional){
+     *                 count: Integer (Optional)
+     *                 value: String (Optional)
      *             }
      *         ]
-     *         classification: [
+     *         classification (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         classificationCategory: [
+     *         classificationCategory (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         contactId: [
+     *         contactId (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         fileExtension: [
+     *         fileExtension (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         label: [
+     *         label (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         term: [
+     *         term (Optional): [
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     value: [
-     *         {
-     *             searchScore: Float
-     *             searchHighlights: {
-     *                 id: [
-     *                     String
+     *     value (Optional): [
+     *          (Optional){
+     *             @search.score: Float (Optional)
+     *             @search.highlights (Optional): {
+     *                 id (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 qualifiedName: [
-     *                     String
+     *                 qualifiedName (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 name: [
-     *                     String
+     *                 name (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 description: [
-     *                     String
+     *                 description (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 entityType: [
-     *                     String
+     *                 entityType (Optional): [
+     *                     String (Optional)
      *                 ]
      *             }
-     *             searchText: String
-     *             description: String
-     *             id: String
-     *             name: String
-     *             owner: String
-     *             qualifiedName: String
-     *             entityType: String
-     *             classification: [
-     *                 String
+     *             @search.text: String (Optional)
+     *             description: String (Optional)
+     *             id: String (Optional)
+     *             name: String (Optional)
+     *             owner: String (Optional)
+     *             qualifiedName: String (Optional)
+     *             entityType: String (Optional)
+     *             classification (Optional): [
+     *                 String (Optional)
      *             ]
-     *             label: [
-     *                 String
+     *             label (Optional): [
+     *                 String (Optional)
      *             ]
-     *             term: [
-     *                 {
-     *                     name: String
-     *                     glossaryName: String
-     *                     guid: String
+     *             term (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     glossaryName: String (Optional)
+     *                     guid: String (Optional)
      *                 }
      *             ]
-     *             contact: [
-     *                 {
-     *                     id: String
-     *                     info: String
-     *                     contactType: String
+     *             contact (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     info: String (Optional)
+     *                     contactType: String (Optional)
      *                 }
      *             ]
-     *             assetType: [
-     *                 String
+     *             assetType (Optional): [
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
@@ -162,53 +158,49 @@ public final class DiscoveryAsyncClient {
 
     /**
      * Get search suggestions by query criteria.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     keywords: String
-     *     limit: Integer
-     *     filter: Object
+     *     keywords: String (Optional)
+     *     limit: Integer (Optional)
+     *     filter: Object (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             searchScore: Float
-     *             searchText: String
-     *             description: String
-     *             id: String
-     *             name: String
-     *             owner: String
-     *             qualifiedName: String
-     *             entityType: String
-     *             classification: [
-     *                 String
+     *     value (Optional): [
+     *          (Optional){
+     *             @search.score: Float (Optional)
+     *             @search.text: String (Optional)
+     *             description: String (Optional)
+     *             id: String (Optional)
+     *             name: String (Optional)
+     *             owner: String (Optional)
+     *             qualifiedName: String (Optional)
+     *             entityType: String (Optional)
+     *             classification (Optional): [
+     *                 String (Optional)
      *             ]
-     *             label: [
-     *                 String
+     *             label (Optional): [
+     *                 String (Optional)
      *             ]
-     *             term: [
-     *                 {
-     *                     name: String
-     *                     glossaryName: String
-     *                     guid: String
+     *             term (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     glossaryName: String (Optional)
+     *                     guid: String (Optional)
      *                 }
      *             ]
-     *             contact: [
-     *                 {
-     *                     id: String
-     *                     info: String
-     *                     contactType: String
+     *             contact (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     info: String (Optional)
+     *                     contactType: String (Optional)
      *                 }
      *             ]
-     *             assetType: [
-     *                 String
+     *             assetType (Optional): [
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
@@ -221,8 +213,7 @@ public final class DiscoveryAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return search suggestions by query criteria along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return search suggestions by query criteria along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -232,39 +223,35 @@ public final class DiscoveryAsyncClient {
 
     /**
      * Browse entities by path or entity type.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     entityType: String
-     *     path: String
-     *     limit: Integer
-     *     offset: Integer
+     *     entityType: String (Optional)
+     *     path: String (Optional)
+     *     limit: Integer (Optional)
+     *     offset: Integer (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     searchCount: Integer
-     *     value: [
-     *         {
-     *             entityType: String
-     *             id: String
-     *             isLeaf: Boolean
-     *             name: String
-     *             owner: [
-     *                 {
-     *                     id: String
-     *                     displayName: String
-     *                     mail: String
-     *                     contactType: String
+     *     @search.count: Integer (Optional)
+     *     value (Optional): [
+     *          (Optional){
+     *             entityType: String (Optional)
+     *             id: String (Optional)
+     *             isLeaf: Boolean (Optional)
+     *             name: String (Optional)
+     *             owner (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     displayName: String (Optional)
+     *                     mail: String (Optional)
+     *                     contactType: String (Optional)
      *                 }
      *             ]
-     *             path: String
-     *             qualifiedName: String
+     *             path: String (Optional)
+     *             qualifiedName: String (Optional)
      *         }
      *     ]
      * }
@@ -291,9 +278,9 @@ public final class DiscoveryAsyncClient {
      *
      * <pre>{@code
      * {
-     *     keywords: String
-     *     limit: Integer
-     *     filter: Object
+     *     keywords: String (Optional)
+     *     limit: Integer (Optional)
+     *     filter: Object (Optional)
      * }
      * }</pre>
      *
@@ -301,10 +288,10 @@ public final class DiscoveryAsyncClient {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             text: String
-     *             queryPlusText: String
+     *     value (Optional): [
+     *          (Optional){
+     *             text: String (Optional)
+     *             queryPlusText: String (Optional)
      *         }
      *     ]
      * }

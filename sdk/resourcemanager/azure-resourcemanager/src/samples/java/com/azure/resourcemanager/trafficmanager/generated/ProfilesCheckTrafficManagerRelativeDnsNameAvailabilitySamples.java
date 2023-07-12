@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.trafficmanager.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.trafficmanager.models.CheckTrafficManagerRelativeDnsNameAvailabilityParameters;
 
 /** Samples for Profiles CheckTrafficManagerRelativeDnsNameAvailability. */
 public final class ProfilesCheckTrafficManagerRelativeDnsNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-04-01/examples/NameAvailabilityTest_NameNotAvailable-POST-example-23.json
+     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/NameAvailabilityTest_NameNotAvailable-POST-example-23.json
      */
     /**
      * Sample code: NameAvailabilityTest_NameNotAvailablePOST23.
@@ -28,11 +27,11 @@ public final class ProfilesCheckTrafficManagerRelativeDnsNameAvailabilitySamples
                 new CheckTrafficManagerRelativeDnsNameAvailabilityParameters()
                     .withName("azsmnet4696")
                     .withType("microsoft.network/trafficmanagerprofiles"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-04-01/examples/NameAvailabilityTest_NameAvailable-POST-example-21.json
+     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/NameAvailabilityTest_NameAvailable-POST-example-21.json
      */
     /**
      * Sample code: NameAvailabilityTest_NameAvailablePOST21.
@@ -49,6 +48,6 @@ public final class ProfilesCheckTrafficManagerRelativeDnsNameAvailabilitySamples
                 new CheckTrafficManagerRelativeDnsNameAvailabilityParameters()
                     .withName("azsmnet5403")
                     .withType("microsoft.network/trafficmanagerprofiles"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

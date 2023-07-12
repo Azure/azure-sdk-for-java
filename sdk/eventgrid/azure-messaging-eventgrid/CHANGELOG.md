@@ -1,16 +1,39 @@
 # Release History
 
-## 4.16.0-beta.1 (Unreleased)
+## 4.18.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added new events for Healthcare, Acs, and Storage.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.17.0 (2023-06-16)
+
+### Features Added
+- New Container Service events
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+- Upgraded `azure-core` from `1.39.0` to version `1.41.0`.
+
+## 4.16.0 (2023-05-22)
+
+### Features Added
+- Added new events for Healthcare, Acs, and Storage.
+
+### Other Changes
 - Moved customization to its own project.
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.3`.
+- Upgraded `azure-core` from `1.37.0` to version `1.39.0`.
 
 ## 4.15.1 (2023-04-21)
 

@@ -36,7 +36,7 @@ public final class ClusterProperties {
     /*
      * The resource ID of the Log Analytics Workspace that will be used for storing relevant logs.
      */
-    @JsonProperty(value = "analyticsWorkspaceId", required = true)
+    @JsonProperty(value = "analyticsWorkspaceId")
     private String analyticsWorkspaceId;
 
     /*
@@ -140,8 +140,9 @@ public final class ClusterProperties {
     /*
      * ExtendedLocation represents the Azure custom location where the resource will be created.
      *
-     * The extended location (custom location) that represents the Hybrid AKS control plane location. This extended
-     * location is used when creating provisioned clusters (Hybrid AKS clusters).
+     * Field Deprecated. This field will not be populated in an upcoming version. The extended location (custom
+     * location) that represents the Hybrid AKS control plane location. This extended location is used when creating
+     * provisioned clusters (Hybrid AKS clusters).
      */
     @JsonProperty(value = "hybridAksExtendedLocation", access = JsonProperty.Access.WRITE_ONLY)
     private ExtendedLocation hybridAksExtendedLocation;
@@ -460,8 +461,9 @@ public final class ClusterProperties {
      * Get the hybridAksExtendedLocation property: ExtendedLocation represents the Azure custom location where the
      * resource will be created.
      *
-     * <p>The extended location (custom location) that represents the Hybrid AKS control plane location. This extended
-     * location is used when creating provisioned clusters (Hybrid AKS clusters).
+     * <p>Field Deprecated. This field will not be populated in an upcoming version. The extended location (custom
+     * location) that represents the Hybrid AKS control plane location. This extended location is used when creating
+     * provisioned clusters (Hybrid AKS clusters).
      *
      * @return the hybridAksExtendedLocation value.
      */
@@ -565,12 +567,6 @@ public final class ClusterProperties {
                         "Missing required property aggregatorOrSingleRackDefinition in model ClusterProperties"));
         } else {
             aggregatorOrSingleRackDefinition().validate();
-        }
-        if (analyticsWorkspaceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property analyticsWorkspaceId in model ClusterProperties"));
         }
         if (availableUpgradeVersions() != null) {
             availableUpgradeVersions().forEach(e -> e.validate());

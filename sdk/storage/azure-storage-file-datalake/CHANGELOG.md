@@ -1,6 +1,38 @@
 # Release History
 
-## 12.16.0-beta.1 (Unreleased)
+## 12.17.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.16.0 (2023-07-11)
+
+### Features Added
+- Added `DataLakeFileClient.getOutputStream()` which allows users to open an `OutputStream` on the file and write data
+  to it using `ParallelTransferOptions`.
+- Added support for the `2023-01-03` service version.
+- Added owner, group, and permissions properties to `PathProperties`.
+- Added encryptionContext property to `FileParallelUploadOptions`.
+
+### Bugs Fixed
+- Fixed a bug that would cause authentication failures when trying to rename a path object while authenticating with a sas token that contained a leading question mark.
+
+## 12.15.3 (2023-06-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+- Upgraded `azure-storage-blob` from `12.22.1` to version `12.22.2`.
+
+## 12.16.0-beta.1 (2023-05-30)
 
 ### Features Added
 - Added `DataLakeFileClient.getOutputStream()` which allows users to open an `OutputStream` on the file and write data 
@@ -8,11 +40,15 @@ to it using `ParallelTransferOptions`.
 - Added support for 2023-01-03 service version.
 - Added owner, group, and permissions properties to `PathProperties`.
 - Added encryptionContext property to `FileParallelUploadOptions`.
-### Breaking Changes
 
-### Bugs Fixed
+## 12.15.2 (2023-05-23)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
 
 ## 12.15.1 (2023-05-16)
 

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for FirewallRules Delete. */
 public final class FirewallRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheFirewallRuleDelete.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheFirewallRuleDelete.json
      */
     /**
      * Sample code: RedisCacheFirewallRuleDelete.
@@ -22,6 +20,6 @@ public final class FirewallRulesDeleteSamples {
             .manager()
             .serviceClient()
             .getFirewallRules()
-            .deleteWithResponse("rg1", "cache1", "rule1", Context.NONE);
+            .deleteWithResponse("rg1", "cache1", "rule1", com.azure.core.util.Context.NONE);
     }
 }

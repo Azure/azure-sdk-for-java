@@ -46,7 +46,7 @@ To take dependency on a particular version of the library that isn't present in 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.9.0</version>
+    <version>1.9.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -302,6 +302,11 @@ Not all credentials require this configuration. Credentials that authenticate th
       <td>authenticates the managed identity of an Azure resource</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-in-azure-with-managed-identity">example</a></td>
     </tr>
+    <tr>
+      <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.workloadidentitycredential?view=azure-java-stable">WorkloadIdentityCredential</a></code></td>
+      <td>supports <a href="https://learn.microsoft.com/azure/aks/workload-identity-overview">Azure AD workload identity</a> on Kubernetes</td>
+      <td><a href="https://learn.microsoft.com/java/api/com.azure.identity.workloadidentitycredential?view=azure-java-stable">example</a></td>
+    </tr>
   </tbody>
 </table>
 
@@ -399,17 +404,16 @@ Not all credentials require this configuration. Credentials that authenticate th
   </thead>
   <tbody>
     <tr>
-      <td><code>AzureDeveloperCliCredential</code></td>
-      <td>Authenticate in a development environment with the enabled user or service principal in Azure Developer CLI</td>
-      <!-- Example and Reference for azd is WIP -->
-      <td></td>  
-      <td><a href="https://learn.microsoft.com/azure/developer/azure-developer-cli/reference">Azure Developer CLI Reference</a></td>
-    </tr>
-    <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.azureclicredential?view=azure-java-stable">AzureCliCredential</a></code></td>
       <td>Authenticate in a development environment with the enabled user or service principal in Azure CLI</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-azure-cli">example</a></td>
       <td><a href="https://learn.microsoft.com/cli/azure/authenticate-azure-cli">Azure CLI authentication</a></td>
+    </tr>
+    <tr>
+      <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.azuredeveloperclicredential?view=azure-java-stable">AzureDeveloperCliCredential</a></code></td>
+      <td>Authenticate in a development environment with the enabled user or service principal in Azure Developer CLI</td>
+      <td></td>  
+      <td><a href="https://learn.microsoft.com/azure/developer/azure-developer-cli/reference">Azure Developer CLI Reference</a></td>
     </tr>
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.azurepowershellcredential?view=azure-java-stable">AzurePowerShellCredential </a></code></td>
@@ -431,8 +435,6 @@ Not all credentials require this configuration. Credentials that authenticate th
     </tr>
   </tbody>
 </table>
-
-> __Note:__ `AzureDeveloperCliCredential` is in beta and its name may change before the stable release.
 
 > __Note:__ All credential implementations in the Azure Identity library are threadsafe, and a single credential instance can be used to create multiple service clients.
 
@@ -565,7 +567,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_sub]: https://azure.microsoft.com/free/
 [azuread_doc]: https://learn.microsoft.com/azure/active-directory/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[javadoc]: https://azure.github.io/azure-sdk-for-java
+[javadoc]: https://learn.microsoft.com/java/api/com.azure.identity?view=azure-java-stable
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [secrets_client_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-secrets

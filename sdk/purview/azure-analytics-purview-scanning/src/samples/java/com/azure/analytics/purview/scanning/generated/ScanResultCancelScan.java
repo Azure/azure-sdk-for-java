@@ -13,14 +13,16 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ScanResultCancelScan {
     public static void main(String[] args) {
-        ScanResultClient client =
+        ScanResultClient scanResultClient =
                 new PurviewScanningClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildScanResultClient();
+        // BEGIN:com.azure.analytics.purview.scanning.generated.scanresultcancelscan.scanresultcancelscan
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                client.cancelScanWithResponse(
+                scanResultClient.cancelScanWithResponse(
                         "myDataSource", "myScanName", "138301e4-f4f9-4ab5-b734-bac446b236e7", requestOptions);
+        // END:com.azure.analytics.purview.scanning.generated.scanresultcancelscan.scanresultcancelscan
     }
 }

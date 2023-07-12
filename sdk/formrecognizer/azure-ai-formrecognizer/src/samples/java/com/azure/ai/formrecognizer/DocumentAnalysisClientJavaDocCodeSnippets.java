@@ -3,26 +3,43 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentLanguage;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentStyle;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Code snippet for {@link DocumentAnalysisClient}
  */
 public class DocumentAnalysisClientJavaDocCodeSnippets {
     private final DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder().buildClient();
+    private final DocumentModelAdministrationClient documentModelAdminClient =
+        new DocumentModelAdministrationClientBuilder().buildClient();
 
     /**
      * Code snippet for creating a {@link DocumentAnalysisClient}
@@ -34,6 +51,15 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
             .endpoint("{endpoint}")
             .buildClient();
         // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.instantiation
+    }
+
+    public void useAadAsyncClient() {
+        // BEGIN: readme-sample-createDocumentAnalysisAsyncClientWithAAD
+        DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder()
+            .endpoint("{endpoint}")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAsyncClient();
+        // END: readme-sample-createDocumentAnalysisAsyncClientWithAAD
     }
 
     /**
@@ -182,5 +208,168 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
             .getDocuments()
             .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocType()));
         // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginClassifyDocumentFromUrl#string-string-Context
+    }
+
+    /**
+     * Code snippet for analyzing data using prebuilt read model.
+     */
+    public void prebuiltRead() {
+        // BEGIN: readme-sample-prebuiltRead-url
+        String documentUrl = "documentUrl";
+
+        SyncPoller<OperationResult, AnalyzeResult> analyzeResultPoller =
+            documentAnalysisClient.beginAnalyzeDocumentFromUrl("prebuilt-read", documentUrl);
+        AnalyzeResult analyzeResult = analyzeResultPoller.getFinalResult();
+
+        System.out.println("Detected Languages: ");
+        for (DocumentLanguage language : analyzeResult.getLanguages()) {
+            System.out.printf("Found language with locale %s and confidence %.2f",
+                language.getLocale(),
+                language.getConfidence());
+        }
+
+        System.out.println("Detected Styles: ");
+        for (DocumentStyle style: analyzeResult.getStyles()) {
+            if (style.isHandwritten()) {
+                System.out.printf("Found handwritten content %s with confidence %.2f",
+                    style.getSpans().stream().map(span -> analyzeResult.getContent()
+                        .substring(span.getOffset(), span.getLength())),
+                    style.getConfidence());
+            }
+        }
+
+        // pages
+        analyzeResult.getPages().forEach(documentPage -> {
+            System.out.printf("Page has width: %.2f and height: %.2f, measured with unit: %s%n",
+                documentPage.getWidth(),
+                documentPage.getHeight(),
+                documentPage.getUnit());
+
+            // lines
+            documentPage.getLines().forEach(documentLine ->
+                System.out.printf("Line '%s' is within a bounding polygon %s.%n",
+                    documentLine.getContent(),
+                    documentLine.getBoundingPolygon().stream().map(point -> String.format("[%.2f, %.2f]", point.getX(),
+                        point.getY())).collect(Collectors.joining(", "))));
+        });
+        // END: readme-sample-prebuiltRead-url
+    }
+
+    /**
+     * Code snippet for analyzing data using prebuilt read model.
+     */
+    public void prebuiltReadFile() {
+        // BEGIN: readme-sample-prebuiltRead-file
+        File document = new File("{local/file_path/fileName.jpg}");
+        SyncPoller<OperationResult, AnalyzeResult> analyzeResultPoller =
+            documentAnalysisClient.beginAnalyzeDocument("prebuilt-read",
+                BinaryData.fromFile(document.toPath(),
+                    (int) document.length()));
+        AnalyzeResult analyzeResult = analyzeResultPoller.getFinalResult();
+
+        System.out.println("Detected Languages: ");
+        for (DocumentLanguage language : analyzeResult.getLanguages()) {
+            System.out.printf("Found language with locale %s and confidence %.2f",
+                language.getLocale(),
+                language.getConfidence());
+        }
+
+        System.out.println("Detected Styles: ");
+        for (DocumentStyle style: analyzeResult.getStyles()) {
+            if (style.isHandwritten()) {
+                System.out.printf("Found handwritten content %s with confidence %.2f",
+                    style.getSpans().stream().map(span -> analyzeResult.getContent()
+                        .substring(span.getOffset(), span.getLength())),
+                    style.getConfidence());
+            }
+        }
+
+        // pages
+        analyzeResult.getPages().forEach(documentPage -> {
+            System.out.printf("Page has width: %.2f and height: %.2f, measured with unit: %s%n",
+                documentPage.getWidth(),
+                documentPage.getHeight(),
+                documentPage.getUnit());
+
+            // lines
+            documentPage.getLines().forEach(documentLine ->
+                System.out.printf("Line '%s' is within a bounding polygon %s.%n",
+                    documentLine.getContent(),
+                    documentLine.getBoundingPolygon().stream().map(point -> String.format("[%.2f, %.2f]", point.getX(),
+                        point.getY())).collect(Collectors.joining(", "))));
+        });
+        // END: readme-sample-prebuiltRead-file
+    }
+
+    private void buildAndAnalyzeCustomDocument() {
+        // BEGIN: readme-sample-build-analyze
+        String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
+        // The shared access signature (SAS) Url of your Azure Blob Storage container with your custom documents.
+        String prefix = "{blob_name_prefix}}";
+        // Build custom document analysis model
+        SyncPoller<OperationResult, DocumentModelDetails> buildOperationPoller =
+            documentModelAdminClient.beginBuildDocumentModel(blobContainerUrl,
+                DocumentModelBuildMode.TEMPLATE,
+                prefix,
+                new BuildDocumentModelOptions().setModelId("my-custom-built-model").setDescription("model desc"),
+                Context.NONE);
+
+        DocumentModelDetails customBuildModel = buildOperationPoller.getFinalResult();
+
+        // analyze using custom-built model
+        String modelId = customBuildModel.getModelId();
+        String documentUrl = "documentUrl";
+        SyncPoller<OperationResult, AnalyzeResult> analyzeDocumentPoller =
+            documentAnalysisClient.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
+
+        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
+
+        for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
+            final AnalyzedDocument analyzedDocument = analyzeResult.getDocuments().get(i);
+            System.out.printf("----------- Analyzing custom document %d -----------%n", i);
+            System.out.printf("Analyzed document has doc type %s with confidence : %.2f%n",
+                analyzedDocument.getDocType(), analyzedDocument.getConfidence());
+            analyzedDocument.getFields().forEach((key, documentField) -> {
+                System.out.printf("Document Field content: %s%n", documentField.getContent());
+                System.out.printf("Document Field confidence: %.2f%n", documentField.getConfidence());
+                System.out.printf("Document Field Type: %s%n", documentField.getType());
+                System.out.printf("Document Field found within bounding region: %s%n",
+                    documentField.getBoundingRegions().toString());
+            });
+        }
+
+        analyzeResult.getPages().forEach(documentPage -> {
+            System.out.printf("Page has width: %.2f and height: %.2f, measured with unit: %s%n",
+                documentPage.getWidth(),
+                documentPage.getHeight(),
+                documentPage.getUnit());
+
+            // lines
+            documentPage.getLines().forEach(documentLine ->
+                System.out.printf("Line '%s' is within a bounding box %s.%n",
+                    documentLine.getContent(),
+                    documentLine.getBoundingPolygon().toString()));
+
+            // words
+            documentPage.getWords().forEach(documentWord ->
+                System.out.printf("Word '%s' has a confidence score of %.2f.%n",
+                    documentWord.getContent(),
+                    documentWord.getConfidence()));
+        });
+
+        // tables
+        List<DocumentTable> tables = analyzeResult.getTables();
+        for (int i = 0; i < tables.size(); i++) {
+            DocumentTable documentTable = tables.get(i);
+            System.out.printf("Table %d has %d rows and %d columns.%n", i, documentTable.getRowCount(),
+                documentTable.getColumnCount());
+            documentTable.getCells().forEach(documentTableCell -> {
+                System.out.printf("Cell '%s', has row index %d and column index %d.%n",
+                    documentTableCell.getContent(),
+                    documentTableCell.getRowIndex(), documentTableCell.getColumnIndex());
+            });
+            System.out.println();
+        }
+        // END: readme-sample-build-analyze
     }
 }

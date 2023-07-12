@@ -30,7 +30,7 @@ public final class DeploymentInfoesListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"status\":\"Healthy\",\"version\":\"buhfmvfaxkffeiit\",\"memoryCapacity\":\"vmezy\",\"diskCapacity\":\"hxmzsbbzoggig\",\"deploymentUrl\":\"wburvjxxjnspydpt\",\"marketplaceSaasInfo\":{\"marketplaceSubscription\":{\"id\":\"kouknvudwtiu\"},\"marketplaceName\":\"ldngkpoci\",\"marketplaceResourceId\":\"z\"}}";
+            "{\"status\":\"Unhealthy\",\"version\":\"vfaxkffeiith\",\"memoryCapacity\":\"m\",\"diskCapacity\":\"yvshxmz\",\"deploymentUrl\":\"bzoggigrx\",\"marketplaceSaasInfo\":{\"marketplaceSubscription\":{\"id\":\"vjxxjnsp\"},\"marketplaceName\":\"ptkoenkoukn\",\"marketplaceResourceId\":\"dwtiukbldngkp\"}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class DeploymentInfoesListWithResponseMockTests {
         DeploymentInfoResponse response =
             manager
                 .deploymentInfoes()
-                .listWithResponse("csonpclhoco", "slkevle", com.azure.core.util.Context.NONE)
+                .listWithResponse("hocohslkev", "eggzfb", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

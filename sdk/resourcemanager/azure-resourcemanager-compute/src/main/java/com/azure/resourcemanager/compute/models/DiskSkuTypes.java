@@ -26,6 +26,9 @@ public final class DiskSkuTypes {
     /** Static value ULTRA_SSD_LRS for DiskSkuTypes. */
     public static final DiskSkuTypes ULTRA_SSD_LRS = new DiskSkuTypes(DiskStorageAccountTypes.ULTRA_SSD_LRS);
 
+    /** Static value PREMIUM_V2_LRS for DiskSkuTypes. */
+    public static final DiskSkuTypes PREMIUM_V2_LRS = new DiskSkuTypes(DiskStorageAccountTypes.PREMIUM_V2_LRS);
+
     /** The actual serialized value for a DiskSkuTypes instance. */
     private final DiskStorageAccountTypes value;
 

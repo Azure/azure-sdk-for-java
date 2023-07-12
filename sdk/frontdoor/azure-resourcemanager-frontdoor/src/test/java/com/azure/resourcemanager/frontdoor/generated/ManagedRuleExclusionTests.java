@@ -16,23 +16,23 @@ public final class ManagedRuleExclusionTests {
         ManagedRuleExclusion model =
             BinaryData
                 .fromString(
-                    "{\"matchVariable\":\"RequestCookieNames\",\"selectorMatchOperator\":\"Contains\",\"selector\":\"ywkbirryuzhlhkjo\"}")
+                    "{\"matchVariable\":\"RequestBodyJsonArgNames\",\"selectorMatchOperator\":\"EndsWith\",\"selector\":\"amiheognarxz\"}")
                 .toObject(ManagedRuleExclusion.class);
-        Assertions.assertEquals(ManagedRuleExclusionMatchVariable.REQUEST_COOKIE_NAMES, model.matchVariable());
-        Assertions.assertEquals(ManagedRuleExclusionSelectorMatchOperator.CONTAINS, model.selectorMatchOperator());
-        Assertions.assertEquals("ywkbirryuzhlhkjo", model.selector());
+        Assertions.assertEquals(ManagedRuleExclusionMatchVariable.REQUEST_BODY_JSON_ARG_NAMES, model.matchVariable());
+        Assertions.assertEquals(ManagedRuleExclusionSelectorMatchOperator.ENDS_WITH, model.selectorMatchOperator());
+        Assertions.assertEquals("amiheognarxz", model.selector());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedRuleExclusion model =
             new ManagedRuleExclusion()
-                .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_COOKIE_NAMES)
-                .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.CONTAINS)
-                .withSelector("ywkbirryuzhlhkjo");
+                .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_BODY_JSON_ARG_NAMES)
+                .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.ENDS_WITH)
+                .withSelector("amiheognarxz");
         model = BinaryData.fromObject(model).toObject(ManagedRuleExclusion.class);
-        Assertions.assertEquals(ManagedRuleExclusionMatchVariable.REQUEST_COOKIE_NAMES, model.matchVariable());
-        Assertions.assertEquals(ManagedRuleExclusionSelectorMatchOperator.CONTAINS, model.selectorMatchOperator());
-        Assertions.assertEquals("ywkbirryuzhlhkjo", model.selector());
+        Assertions.assertEquals(ManagedRuleExclusionMatchVariable.REQUEST_BODY_JSON_ARG_NAMES, model.matchVariable());
+        Assertions.assertEquals(ManagedRuleExclusionSelectorMatchOperator.ENDS_WITH, model.selectorMatchOperator());
+        Assertions.assertEquals("amiheognarxz", model.selector());
     }
 }

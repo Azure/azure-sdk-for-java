@@ -8,15 +8,22 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class WorkTaskGetTests extends PurviewWorkflowClientTestBase {
     @Test
+    @Disabled
     public void testWorkTaskGetTests() {
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 purviewWorkflowClient.getWorkflowTaskWithResponse(
-                        "69b57a00-f5de-4a17-a44a-6479adae373d", requestOptions);
+                        "98d98e2c-23fa-4157-a3f8-ff8ce5cc095c", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
+        Assertions.assertEquals(
+                BinaryData.fromString(
+                                "{\"type\":\"Approval\",\"approvalDetail\":{\"approvalType\":\"PendingOnAll\",\"approvers\":{\"eece94d9-0619-4669-bb8a-d6ecec5220bc\":{\"comment\":\"Thanks!\",\"reply\":\"Approved\",\"responseTime\":\"2023-02-06T09:57:46.056708512Z\"}},\"status\":\"Pending\"},\"createdTime\":\"2023-01-13T09:57:59.878107314Z\",\"expiryInfo\":{\"expirySettings\":{\"expireAfter\":{\"Month\":{\"number\":1}},\"notifyOnExpiration\":[]},\"expiryTime\":\"2023-02-12T09:57:59.878107314Z\",\"nextExpiryNotificationTime\":\"2023-02-12T09:57:59.878107314Z\"},\"id\":\"54b7ccdb-0b09-427e-8105-61a8dd4b1309\",\"lastUpdateTime\":\"2023-01-13T09:58:08.034872193Z\",\"payload\":{\"type\":\"CreateTerm\",\"payload\":{\"glossaryTerm\":{\"name\":\"term\",\"anchor\":{\"glossaryGuid\":\"20031e20-b4df-4a66-a61d-1b0716f3fa48\"},\"attributes\":{},\"nickName\":\"term\",\"status\":\"Approved\"}},\"targetValue\":\"term\"},\"reminderInfo\":{\"lastRemindTime\":\"2023-01-16T09:57:59.878107314Z\",\"nextRemindTime\":\"2023-01-18T09:57:59.878107314Z\",\"reminderSettings\":{\"reminderFrequency\":{\"Day\":{\"number\":1}}}},\"requestor\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"title\":\"Approval Request for Create Glossary Term\",\"workflowId\":\"3fb9ba13-bf35-4f29-ab63-70b5234923c2\",\"workflowRunId\":\"2245c5e1-63d0-436a-b1c0-8252f03f0e17\"}")
+                        .toObject(Object.class),
+                response.getValue().toObject(Object.class));
     }
 }

@@ -58,6 +58,9 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
     /** @return the ID of the subnet. */
     String id();
 
+    /** @return the resource ID of the NAT gateway associated with this subnet, if any */
+    String natGatewayId();
+
     /** Grouping of subnet definition stages. */
     interface DefinitionStages {
         /**
@@ -189,6 +192,21 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
         }
 
         /**
+         * The stage of a subnet definition allowing to specify the network NAT gateway to assign to the subnet.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
+        interface WithNatGateway<ParentT> {
+            /**
+             * Specifies an existing NAT gateway to associate with the subnet.
+             *
+             * @param resourceId the resource ID of the NAT gateway
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withExistingNatGateway(String resourceId);
+        }
+
+        /**
          * The final stage of the subnet definition.
          *
          * <p>At this stage, any remaining optional settings can be specified, or the subnet definition can be attached
@@ -203,7 +221,8 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
                 WithDelegation<ParentT>,
                 WithServiceEndpoint<ParentT>,
                 WithPrivateEndpointNetworkPolicies<ParentT>,
-                WithPrivateLinkServiceNetworkPolicies<ParentT> {
+                WithPrivateLinkServiceNetworkPolicies<ParentT>,
+                WithNatGateway<ParentT> {
         }
     }
 
@@ -364,6 +383,20 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
              */
             Update disableNetworkPoliciesOnPrivateLinkService();
         }
+
+        /**
+         * The stage of a subnet update allowing to specify the network NAT gateway to assign to the subnet.
+         *
+         */
+        interface WithNatGateway {
+            /**
+             * Specifies an existing NAT gateway to associate with the subnet.
+             *
+             * @param resourceId the resource ID of the NAT gateway
+             * @return the next stage of the definition
+             */
+            Update withExistingNatGateway(String resourceId);
+        }
     }
 
     /** The entirety of a subnet update as part of a network update. */
@@ -375,6 +408,7 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
             UpdateStages.WithServiceEndpoint,
             UpdateStages.WithPrivateEndpointNetworkPolicies,
             UpdateStages.WithPrivateLinkServiceNetworkPolicies,
+            UpdateStages.WithNatGateway,
             Settable<Network.Update> {
     }
 
@@ -495,6 +529,21 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
         }
 
         /**
+         * The stage of a subnet definition allowing to specify the network NAT gateway to assign to the subnet.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
+        interface WithNatGateway<ParentT> {
+            /**
+             * Specifies an existing NAT gateway to associate with the subnet.
+             *
+             * @param resourceId the resource ID of the NAT gateway
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withExistingNatGateway(String resourceId);
+        }
+
+        /**
          * The final stage of the subnet definition.
          *
          * <p>At this stage, any remaining optional settings can be specified, or the subnet definition can be attached
@@ -508,7 +557,8 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
                 WithRouteTable<ParentT>,
                 WithDelegation<ParentT>,
                 WithServiceEndpoint<ParentT>,
-                WithPrivateEndpointNetworkPolicies<ParentT> {
+                WithPrivateEndpointNetworkPolicies<ParentT>,
+                WithNatGateway<ParentT> {
         }
     }
 

@@ -209,6 +209,17 @@ public final class CosmosDiagnosticsThresholds {
         }
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+            "pointOperationLatencyThreshold=" + this.pointOperationLatencyThreshold +
+            ", nonPointOperationLatencyThreshold=" + this.nonPointOperationLatencyThreshold +
+            ", requestChargeThreshold=" + this.requestChargeThreshold +
+            ", payloadSizeInBytesThreshold=" + this.payloadSizeInBytesThreshold +
+            ", customFailureHandler=" + (this.failureHandler != DEFAULT.failureHandler) +
+            "}";
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////

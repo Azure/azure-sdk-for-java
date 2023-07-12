@@ -11,7 +11,7 @@ import java.util.Map;
 
 /** Msi identity details of the resource. */
 @Fluent
-public class ResourceIdentity {
+public final class ResourceIdentity {
     /*
      * Identity type
      */

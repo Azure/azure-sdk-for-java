@@ -17,8 +17,8 @@ public final class ExpressionRule extends RouterRule {
     /*
      * The expression language to compile to and execute
      */
-    @JsonProperty(value = "language", required = true)
-    private String language = "powerFx";
+    @JsonProperty(value = "language")
+    private ExpressionLanguage language;
 
     /*
      * The string containing the expression to evaluate. Should contain return
@@ -27,17 +27,12 @@ public final class ExpressionRule extends RouterRule {
     @JsonProperty(value = "expression", required = true)
     private String expression;
 
-    /** Creates an instance of ExpressionRule class. */
-    public ExpressionRule() {
-        language = "powerFx";
-    }
-
     /**
      * Get the language property: The expression language to compile to and execute.
      *
      * @return the language value.
      */
-    public String getLanguage() {
+    public ExpressionLanguage getLanguage() {
         return this.language;
     }
 
@@ -47,7 +42,7 @@ public final class ExpressionRule extends RouterRule {
      * @param language the language value to set.
      * @return the ExpressionRule object itself.
      */
-    public ExpressionRule setLanguage(String language) {
+    public ExpressionRule setLanguage(ExpressionLanguage language) {
         this.language = language;
         return this;
     }

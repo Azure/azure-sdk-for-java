@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ForkJoinPool;
@@ -793,7 +794,7 @@ public class UrlBuilderTests {
                 callCount.incrementAndGet();
                 return UrlBuilder.parse("https://example" + i + ".com");
             })
-            .collect(Collectors.toList());
+            .collect(Collectors.toCollection(() -> new ArrayList<>(20000)));
 
         pool.invokeAll(tasks);
         pool.shutdown();
@@ -803,17 +804,19 @@ public class UrlBuilderTests {
 
     @Test
     public void fluxParallelParsing() {
-        Mono<Long> mono = Flux.range(0, 20000)
+        AtomicInteger callCount = new AtomicInteger();
+        Mono<Void> mono = Flux.range(0, 20000)
             .parallel()
             .runOn(Schedulers.parallel())
-            .map(i -> UrlBuilder.parse("https://example" + i + ".com"))
-            .sequential()
-            .count();
+            .map(i -> {
+                callCount.incrementAndGet();
+                return UrlBuilder.parse("https://example" + i + ".com");
+            })
+            .then()
+            .timeout(Duration.ofSeconds(10));
 
-        StepVerifier.create(mono)
-            .assertNext(count -> assertEquals(20000, count))
-            .expectComplete()
-            .verify(Duration.ofSeconds(10));
+        StepVerifier.create(mono).verifyComplete();
+        assertEquals(20000, callCount.get());
     }
 
     @Test

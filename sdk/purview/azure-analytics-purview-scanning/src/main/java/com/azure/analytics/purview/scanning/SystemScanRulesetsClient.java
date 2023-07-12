@@ -9,7 +9,10 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -21,7 +24,7 @@ public final class SystemScanRulesetsClient {
     @Generated private final SystemScanRulesetsImpl serviceClient;
 
     /**
-     * Initializes an instance of SystemScanRulesets client.
+     * Initializes an instance of SystemScanRulesetsClient class.
      *
      * @param serviceClient the service client implementation.
      */
@@ -33,35 +36,24 @@ public final class SystemScanRulesetsClient {
     /**
      * List all system scan rulesets for an account.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             id: String
-     *             name: String
-     *             scanRulesetType: String(Custom/System)
-     *             status: String(Enabled/Disabled)
-     *             version: Integer
-     *         }
-     *     ]
-     *     nextLink: String
-     *     count: Long
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     scanRulesetType: String(Custom/System) (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
+     *     version: Integer (Optional)
      * }
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -72,29 +64,29 @@ public final class SystemScanRulesetsClient {
     /**
      * Get a system scan ruleset for a data source.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     scanRulesetType: String(Custom/System)
-     *     status: String(Enabled/Disabled)
-     *     version: Integer
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     scanRulesetType: String(Custom/System) (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
+     *     version: Integer (Optional)
      * }
      * }</pre>
      *
-     * @param dataSourceType The dataSourceType parameter.
+     * @param dataSourceType The dataSourceType parameter. Allowed values: "None", "AzureSubscription",
+     *     "AzureResourceGroup", "AzureSynapseWorkspace", "AzureSynapse", "AdlsGen1", "AdlsGen2", "AmazonAccount",
+     *     "AmazonS3", "AmazonSql", "AzureCosmosDb", "AzureDataExplorer", "AzureFileService", "AzureSqlDatabase",
+     *     "AmazonPostgreSql", "AzurePostgreSql", "SqlServerDatabase", "AzureSqlDatabaseManagedInstance",
+     *     "AzureSqlDataWarehouse", "AzureMySql", "AzureStorage", "Teradata", "Oracle", "SapS4Hana", "SapEcc",
+     *     "PowerBI".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a system scan ruleset for a data source along with {@link Response}.
      */
     @Generated
@@ -111,25 +103,29 @@ public final class SystemScanRulesetsClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>dataSourceType</td><td>String</td><td>No</td><td>The dataSourceType parameter</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>dataSourceType</td><td>String</td><td>No</td><td>The dataSourceType parameter. Allowed values: "None", "AzureSubscription", "AzureResourceGroup", "AzureSynapseWorkspace", "AzureSynapse", "AdlsGen1", "AdlsGen2", "AmazonAccount", "AmazonS3", "AmazonSql", "AzureCosmosDb", "AzureDataExplorer", "AzureFileService", "AzureSqlDatabase", "AmazonPostgreSql", "AzurePostgreSql", "SqlServerDatabase", "AzureSqlDatabaseManagedInstance", "AzureSqlDataWarehouse", "AzureMySql", "AzureStorage", "Teradata", "Oracle", "SapS4Hana", "SapEcc", "PowerBI".</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     scanRulesetType: String(Custom/System)
-     *     status: String(Enabled/Disabled)
-     *     version: Integer
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     scanRulesetType: String(Custom/System) (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
+     *     version: Integer (Optional)
      * }
      * }</pre>
      *
      * @param version The version parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a scan ruleset by version along with {@link Response}.
      */
     @Generated
@@ -146,24 +142,28 @@ public final class SystemScanRulesetsClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>dataSourceType</td><td>String</td><td>No</td><td>The dataSourceType parameter</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>dataSourceType</td><td>String</td><td>No</td><td>The dataSourceType parameter. Allowed values: "None", "AzureSubscription", "AzureResourceGroup", "AzureSynapseWorkspace", "AzureSynapse", "AdlsGen1", "AdlsGen2", "AmazonAccount", "AmazonS3", "AmazonSql", "AzureCosmosDb", "AzureDataExplorer", "AzureFileService", "AzureSqlDatabase", "AmazonPostgreSql", "AzurePostgreSql", "SqlServerDatabase", "AzureSqlDatabaseManagedInstance", "AzureSqlDataWarehouse", "AzureMySql", "AzureStorage", "Teradata", "Oracle", "SapS4Hana", "SapEcc", "PowerBI".</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     scanRulesetType: String(Custom/System)
-     *     status: String(Enabled/Disabled)
-     *     version: Integer
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     scanRulesetType: String(Custom/System) (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
+     *     version: Integer (Optional)
      * }
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the latest version of a system scan ruleset along with {@link Response}.
      */
     @Generated
@@ -180,31 +180,29 @@ public final class SystemScanRulesetsClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>dataSourceType</td><td>String</td><td>No</td><td>The dataSourceType parameter</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>dataSourceType</td><td>String</td><td>No</td><td>The dataSourceType parameter. Allowed values: "None", "AzureSubscription", "AzureResourceGroup", "AzureSynapseWorkspace", "AzureSynapse", "AdlsGen1", "AdlsGen2", "AmazonAccount", "AmazonS3", "AmazonSql", "AzureCosmosDb", "AzureDataExplorer", "AzureFileService", "AzureSqlDatabase", "AmazonPostgreSql", "AzurePostgreSql", "SqlServerDatabase", "AzureSqlDatabaseManagedInstance", "AzureSqlDataWarehouse", "AzureMySql", "AzureStorage", "Teradata", "Oracle", "SapS4Hana", "SapEcc", "PowerBI".</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             id: String
-     *             name: String
-     *             scanRulesetType: String(Custom/System)
-     *             status: String(Enabled/Disabled)
-     *             version: Integer
-     *         }
-     *     ]
-     *     nextLink: String
-     *     count: Long
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     scanRulesetType: String(Custom/System) (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
+     *     version: Integer (Optional)
      * }
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)

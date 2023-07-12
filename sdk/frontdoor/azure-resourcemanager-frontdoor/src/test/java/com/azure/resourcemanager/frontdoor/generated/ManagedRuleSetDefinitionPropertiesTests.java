@@ -13,7 +13,7 @@ public final class ManagedRuleSetDefinitionPropertiesTests {
         ManagedRuleSetDefinitionProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"havgrvk\",\"ruleSetId\":\"ovjzhpjbibgjmfx\",\"ruleSetType\":\"vfcluyovwxnbkfe\",\"ruleSetVersion\":\"xscyhwzdgirujbz\",\"ruleGroups\":[{\"ruleGroupName\":\"zzbtdcqvpniyujvi\",\"description\":\"wdsh\",\"rules\":[]},{\"ruleGroupName\":\"rbgyefry\",\"description\":\"gaojf\",\"rules\":[]},{\"ruleGroupName\":\"otmrfhir\",\"description\":\"ymoxoftpipiwyczu\",\"rules\":[]}]}")
+                    "{\"provisioningState\":\"c\",\"ruleSetId\":\"newmdwzjeiachbo\",\"ruleSetType\":\"flnrosfqpteehzz\",\"ruleSetVersion\":\"pyqr\",\"ruleGroups\":[{\"ruleGroupName\":\"npvswjdkirso\",\"description\":\"qxhcrmn\",\"rules\":[]}]}")
                 .toObject(ManagedRuleSetDefinitionProperties.class);
     }
 

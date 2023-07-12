@@ -61,7 +61,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <configuration>
           <!-- Added to override the -snippetpath arg which is not applicable here-->
           <additionalOptions>-maxLineLength 120</additionalOptions>
@@ -107,7 +107,7 @@
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-batch</artifactId>
-          <version>10.2.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-batch;current} -->
+          <version>11.1.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-batch;current} -->
         </dependency>
         <dependency>
           <groupId>com.microsoft.azure</groupId>

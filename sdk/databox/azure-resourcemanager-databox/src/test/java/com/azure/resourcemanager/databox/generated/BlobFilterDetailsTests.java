@@ -15,23 +15,23 @@ public final class BlobFilterDetailsTests {
         BlobFilterDetails model =
             BinaryData
                 .fromString(
-                    "{\"blobPrefixList\":[\"eipheoflokeyy\",\"enjbdlwtgrhp\"],\"blobPathList\":[\"jumasx\"],\"containerList\":[\"pqyegualhbxxh\",\"jj\"]}")
+                    "{\"blobPrefixList\":[\"wtgrhpdjpj\",\"masxazjpqyegu\",\"lhbxxhejjzzvdud\"],\"blobPathList\":[\"slfhotwm\",\"ynpwlbj\",\"pgacftadehxnlty\"],\"containerList\":[\"ppusuesnzwdejba\",\"orxzdmohctbqvud\",\"xdn\"]}")
                 .toObject(BlobFilterDetails.class);
-        Assertions.assertEquals("eipheoflokeyy", model.blobPrefixList().get(0));
-        Assertions.assertEquals("jumasx", model.blobPathList().get(0));
-        Assertions.assertEquals("pqyegualhbxxh", model.containerList().get(0));
+        Assertions.assertEquals("wtgrhpdjpj", model.blobPrefixList().get(0));
+        Assertions.assertEquals("slfhotwm", model.blobPathList().get(0));
+        Assertions.assertEquals("ppusuesnzwdejba", model.containerList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BlobFilterDetails model =
             new BlobFilterDetails()
-                .withBlobPrefixList(Arrays.asList("eipheoflokeyy", "enjbdlwtgrhp"))
-                .withBlobPathList(Arrays.asList("jumasx"))
-                .withContainerList(Arrays.asList("pqyegualhbxxh", "jj"));
+                .withBlobPrefixList(Arrays.asList("wtgrhpdjpj", "masxazjpqyegu", "lhbxxhejjzzvdud"))
+                .withBlobPathList(Arrays.asList("slfhotwm", "ynpwlbj", "pgacftadehxnlty"))
+                .withContainerList(Arrays.asList("ppusuesnzwdejba", "orxzdmohctbqvud", "xdn"));
         model = BinaryData.fromObject(model).toObject(BlobFilterDetails.class);
-        Assertions.assertEquals("eipheoflokeyy", model.blobPrefixList().get(0));
-        Assertions.assertEquals("jumasx", model.blobPathList().get(0));
-        Assertions.assertEquals("pqyegualhbxxh", model.containerList().get(0));
+        Assertions.assertEquals("wtgrhpdjpj", model.blobPrefixList().get(0));
+        Assertions.assertEquals("slfhotwm", model.blobPathList().get(0));
+        Assertions.assertEquals("ppusuesnzwdejba", model.containerList().get(0));
     }
 }

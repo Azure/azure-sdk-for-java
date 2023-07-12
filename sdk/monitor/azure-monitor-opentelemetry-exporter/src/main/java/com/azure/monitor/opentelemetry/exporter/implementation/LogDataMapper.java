@@ -113,7 +113,7 @@ public class LogDataMapper {
 
         // set standard properties
         setOperationTags(telemetryBuilder, log);
-        setTime(telemetryBuilder, log.getEpochNanos());
+        setTime(telemetryBuilder, log.getTimestampEpochNanos());
         setItemCount(telemetryBuilder, log, itemCount);
 
         // update tags
@@ -143,7 +143,7 @@ public class LogDataMapper {
 
         // set standard properties
         setOperationTags(telemetryBuilder, log);
-        setTime(telemetryBuilder, log.getEpochNanos());
+        setTime(telemetryBuilder, log.getTimestampEpochNanos());
         setItemCount(telemetryBuilder, log, itemCount);
 
         // update tags

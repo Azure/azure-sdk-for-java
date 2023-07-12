@@ -13,7 +13,7 @@ public final class ValidationResponseInnerTests {
         ValidationResponseInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"status\":\"InputsRevisitRequired\",\"individualResponseDetails\":[{\"validationType\":\"ValidationInputResponse\"},{\"validationType\":\"ValidationInputResponse\"}]}}")
+                    "{\"properties\":{\"status\":\"AllValidToProceed\",\"individualResponseDetails\":[{\"validationType\":\"ValidationInputResponse\"}]}}")
                 .toObject(ValidationResponseInner.class);
     }
 

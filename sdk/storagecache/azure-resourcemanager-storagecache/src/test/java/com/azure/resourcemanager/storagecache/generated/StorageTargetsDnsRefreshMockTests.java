@@ -58,6 +58,6 @@ public final class StorageTargetsDnsRefreshMockTests {
 
         manager
             .storageTargets()
-            .dnsRefresh("uwjuetaeburuvdmo", "s", "zlxwabmqoefkifr", com.azure.core.util.Context.NONE);
+            .dnsRefresh("hfkvtvsexsowuel", "qhhahhxvrhmzkwpj", "wws", com.azure.core.util.Context.NONE);
     }
 }

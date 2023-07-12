@@ -14,23 +14,23 @@ public final class LoadBalancingSettingsPropertiesTests {
         LoadBalancingSettingsProperties model =
             BinaryData
                 .fromString(
-                    "{\"resourceState\":\"Disabling\",\"sampleSize\":1631223460,\"successfulSamplesRequired\":520152641,\"additionalLatencyMilliseconds\":508782992}")
+                    "{\"resourceState\":\"Enabling\",\"sampleSize\":412409909,\"successfulSamplesRequired\":1627840881,\"additionalLatencyMilliseconds\":1448466618}")
                 .toObject(LoadBalancingSettingsProperties.class);
-        Assertions.assertEquals(1631223460, model.sampleSize());
-        Assertions.assertEquals(520152641, model.successfulSamplesRequired());
-        Assertions.assertEquals(508782992, model.additionalLatencyMilliseconds());
+        Assertions.assertEquals(412409909, model.sampleSize());
+        Assertions.assertEquals(1627840881, model.successfulSamplesRequired());
+        Assertions.assertEquals(1448466618, model.additionalLatencyMilliseconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LoadBalancingSettingsProperties model =
             new LoadBalancingSettingsProperties()
-                .withSampleSize(1631223460)
-                .withSuccessfulSamplesRequired(520152641)
-                .withAdditionalLatencyMilliseconds(508782992);
+                .withSampleSize(412409909)
+                .withSuccessfulSamplesRequired(1627840881)
+                .withAdditionalLatencyMilliseconds(1448466618);
         model = BinaryData.fromObject(model).toObject(LoadBalancingSettingsProperties.class);
-        Assertions.assertEquals(1631223460, model.sampleSize());
-        Assertions.assertEquals(520152641, model.successfulSamplesRequired());
-        Assertions.assertEquals(508782992, model.additionalLatencyMilliseconds());
+        Assertions.assertEquals(412409909, model.sampleSize());
+        Assertions.assertEquals(1627840881, model.successfulSamplesRequired());
+        Assertions.assertEquals(1448466618, model.additionalLatencyMilliseconds());
     }
 }

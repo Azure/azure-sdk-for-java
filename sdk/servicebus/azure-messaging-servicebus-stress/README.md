@@ -30,7 +30,7 @@ mvn clean install
 Run command to deploy the package to cluster:
 
 ```shell
-..\..\..\eng\common\scripts\stress-testing\deploy-stress-tests.ps1 -Login -PushImage
+..\..\..\eng\common\scripts\stress-testing\deploy-stress-tests.ps1
 ``` 
 
 ### Validate Status

@@ -6,11 +6,13 @@ package com.azure.messaging.servicebus.administration;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.messaging.servicebus.administration.implementation.EntitiesImpl;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
@@ -27,6 +29,7 @@ import com.azure.messaging.servicebus.administration.implementation.models.Queue
 import com.azure.messaging.servicebus.administration.implementation.models.ResponseLinkImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementError;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
+import com.azure.messaging.servicebus.administration.implementation.models.TitleImpl;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
@@ -92,17 +95,14 @@ class ServiceBusAdministrationAsyncClientTest {
     private SubscriptionsImpl subscriptions;
     @Mock
     private ServiceBusManagementSerializer serializer;
-    @Mock
     private Response<Object> objectResponse;
-    @Mock
     private Response<Object> secondObjectResponse;
 
     private final String queueName = "some-queue";
     private final String responseString = "some-xml-response-string";
     private final String secondResponseString = "second-xml-response";
-    private final String dummyEndpoint = "endpoint.servicebus.foo";
     private final String forwardToEntity = "forward-to-entity";
-    private final HttpHeaders httpHeaders = new HttpHeaders().put("foo", "baz");
+    private final HttpHeaders httpHeaders = new HttpHeaders().set("foo", "baz");
     private final HttpRequest httpRequest;
 
     private AutoCloseable mockClosable;
@@ -130,18 +130,11 @@ class ServiceBusAdministrationAsyncClientTest {
     void beforeEach() {
         mockClosable = MockitoAnnotations.openMocks(this);
 
-        when(objectResponse.getValue()).thenReturn(responseString);
-        int statusCode = 202;
-        when(objectResponse.getStatusCode()).thenReturn(statusCode);
-        when(objectResponse.getHeaders()).thenReturn(httpHeaders);
-        when(objectResponse.getRequest()).thenReturn(httpRequest);
-
-        when(secondObjectResponse.getValue()).thenReturn(secondResponseString);
-        when(secondObjectResponse.getStatusCode()).thenReturn(430);
-        when(secondObjectResponse.getHeaders()).thenReturn(httpHeaders);
-        when(secondObjectResponse.getRequest()).thenReturn(httpRequest);
+        objectResponse = new SimpleResponse<>(httpRequest, 202, httpHeaders, responseString);
+        secondObjectResponse = new SimpleResponse<>(httpRequest, 430, httpHeaders, secondResponseString);
 
         when(serviceClient.getEntities()).thenReturn(entitys);
+        String dummyEndpoint = "endpoint.servicebus.foo";
         when(serviceClient.getEndpoint()).thenReturn(dummyEndpoint);
         when(serviceClient.getSubscriptions()).thenReturn(subscriptions);
 
@@ -161,7 +154,7 @@ class ServiceBusAdministrationAsyncClientTest {
         final CreateQueueOptions description = new CreateQueueOptions();
         final QueueDescriptionImpl expectedDescription = EntityHelper.getQueueDescription(description);
         final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(updatedName)
+            .setTitle(new TitleImpl().setContent(updatedName))
             .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
 
         when(entitys.putWithResponseAsync(eq(queueName),
@@ -183,7 +176,7 @@ class ServiceBusAdministrationAsyncClientTest {
         final CreateQueueOptions description = new CreateQueueOptions();
         final QueueDescriptionImpl expectedDescription = EntityHelper.getQueueDescription(description);
         final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(updatedName)
+            .setTitle(new TitleImpl().setContent(updatedName))
             .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
 
         when(entitys.putWithResponseAsync(eq(queueName),
@@ -210,7 +203,7 @@ class ServiceBusAdministrationAsyncClientTest {
         description.setForwardDeadLetteredMessagesTo(forwardToEntity);
         final QueueDescriptionImpl expectedDescription = EntityHelper.getQueueDescription(description);
         final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(updatedName)
+            .setTitle(new TitleImpl().setContent(updatedName))
             .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
 
         when(entitys.putWithResponseAsync(eq(queueName),
@@ -259,7 +252,7 @@ class ServiceBusAdministrationAsyncClientTest {
         // Arrange
         final QueueDescriptionImpl expected = new QueueDescriptionImpl();
         final QueueDescriptionEntryImpl entry = new QueueDescriptionEntryImpl()
-            .setTitle(queueName)
+            .setTitle(new TitleImpl().setContent(queueName))
             .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expected));
 
         when(entitys.getWithResponseAsync(eq(queueName), eq(true), any(Context.class)))
@@ -279,7 +272,7 @@ class ServiceBusAdministrationAsyncClientTest {
         final String updatedName = "some-new-name";
         final QueueDescriptionImpl expectedDescription = new QueueDescriptionImpl();
         final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(updatedName)
+            .setTitle(new TitleImpl().setContent(updatedName))
             .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
 
         when(entitys.getWithResponseAsync(eq(queueName), eq(true), any(Context.class)))
@@ -444,7 +437,7 @@ class ServiceBusAdministrationAsyncClientTest {
                 .setQueueDescription(description);
             return new QueueDescriptionEntryImpl()
                 .setContent(content)
-                .setTitle(name);
+                .setTitle(new TitleImpl().setContent(name));
         }).collect(Collectors.toList());
         final List<ResponseLinkImpl> links = Arrays.asList(
             new ResponseLinkImpl().setRel("self").setHref("foo"),
@@ -464,7 +457,7 @@ class ServiceBusAdministrationAsyncClientTest {
 
             return new QueueDescriptionEntryImpl()
                 .setContent(content)
-                .setTitle(name);
+                .setTitle(new TitleImpl().setContent(name));
         }).collect(Collectors.toList());
         final List<ResponseLinkImpl> secondLinks = Arrays.asList(
             new ResponseLinkImpl().setRel("self").setHref("foo"),
@@ -501,7 +494,7 @@ class ServiceBusAdministrationAsyncClientTest {
         final String updatedName = "some-new-name";
         final QueueDescriptionImpl expectedDescription = new QueueDescriptionImpl();
         final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(updatedName)
+            .setTitle(new TitleImpl().setContent(updatedName))
             .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
 
         when(entitys.putWithResponseAsync(eq(queueName),
@@ -536,7 +529,7 @@ class ServiceBusAdministrationAsyncClientTest {
         final String updatedName = "some-new-name";
         final QueueDescriptionImpl expectedDescription = new QueueDescriptionImpl();
         final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(updatedName)
+            .setTitle(new TitleImpl().setContent(updatedName))
             .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
 
         when(entitys.putWithResponseAsync(eq(queueName),
@@ -644,21 +637,16 @@ class ServiceBusAdministrationAsyncClientTest {
             && "application/xml".equals(content.getType());
     }
 
-    private static boolean verifyAdditionalAuthHeaderPresent(Context context, String requiredHeader, String entity) {
+    private static boolean verifyAdditionalAuthHeaderPresent(Context context, HttpHeaderName requiredHeader,
+        String entity) {
         return context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY).map(headers -> {
             if (!(headers instanceof HttpHeaders)) {
                 return false;
             }
             HttpHeaders customHttpHeaders = (HttpHeaders) headers;
-            // loop through customHttpHeaders and check if the required Header is present
-            for (HttpHeader httpHeader : customHttpHeaders) {
-                if (!Objects.isNull(httpHeader.getName()) && !Objects.isNull(httpHeader.getValue())) {
-                    if (httpHeader.getName().equals(requiredHeader) && httpHeader.getValue().equals(entity)) {
-                        return true;
-                    }
-                }
-            }
-            return false;
+            // Attempt to get the required header and validate the value.
+            HttpHeader header = customHttpHeaders.get(requiredHeader);
+            return header != null && Objects.equals(entity, header.getValue());
         }).orElse(false);
     }
 
