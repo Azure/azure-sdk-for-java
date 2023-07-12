@@ -13,6 +13,7 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
+import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageOperationResponse;
 import com.azure.ai.openai.models.ImageResponse;
 import com.azure.core.annotation.Generated;
@@ -88,10 +89,10 @@ public final class OpenAIAsyncClient {
     public Mono<Response<BinaryData>> getEmbeddingsWithResponse(
             String deploymentOrModelName, BinaryData embeddingsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
-                ? openAIServiceClient.getEmbeddingsWithResponseAsync(deploymentOrModelName, embeddingsOptions,
-            requestOptions)
-                : serviceClient.getEmbeddingsWithResponseAsync(deploymentOrModelName, embeddingsOptions,
-            requestOptions);
+                ? openAIServiceClient.getEmbeddingsWithResponseAsync(
+                        deploymentOrModelName, embeddingsOptions, requestOptions)
+                : serviceClient.getEmbeddingsWithResponseAsync(
+                        deploymentOrModelName, embeddingsOptions, requestOptions);
     }
 
     /**
@@ -180,10 +181,10 @@ public final class OpenAIAsyncClient {
     public Mono<Response<BinaryData>> getCompletionsWithResponse(
             String deploymentOrModelName, BinaryData completionsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
-                ? openAIServiceClient.getCompletionsWithResponseAsync(deploymentOrModelName, completionsOptions,
-            requestOptions)
-                : serviceClient.getCompletionsWithResponseAsync(deploymentOrModelName, completionsOptions,
-            requestOptions);
+                ? openAIServiceClient.getCompletionsWithResponseAsync(
+                        deploymentOrModelName, completionsOptions, requestOptions)
+                : serviceClient.getCompletionsWithResponseAsync(
+                        deploymentOrModelName, completionsOptions, requestOptions);
     }
 
     /**
@@ -264,9 +265,9 @@ public final class OpenAIAsyncClient {
             String deploymentOrModelName, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
                 ? openAIServiceClient.getChatCompletionsWithResponseAsync(
-                    deploymentOrModelName, chatCompletionsOptions, requestOptions)
+                        deploymentOrModelName, chatCompletionsOptions, requestOptions)
                 : serviceClient.getChatCompletionsWithResponseAsync(
-                    deploymentOrModelName, chatCompletionsOptions, requestOptions);
+                        deploymentOrModelName, chatCompletionsOptions, requestOptions);
     }
 
     /**
@@ -430,7 +431,7 @@ public final class OpenAIAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         Flux<ByteBuffer> responseStream =
                 getChatCompletionsWithResponse(
-                    deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                                deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
                         .flatMapMany(response -> response.getValue().toFluxByteBuffer());
         OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream =
                 new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);

@@ -13,6 +13,7 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
+import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageOperationResponse;
 import com.azure.ai.openai.models.ImageResponse;
 import com.azure.core.annotation.Generated;
@@ -87,8 +88,8 @@ public final class OpenAIClient {
     public Response<BinaryData> getEmbeddingsWithResponse(
             String deploymentOrModelName, BinaryData embeddingsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
-                ? openAIServiceClient.getEmbeddingsWithResponse(deploymentOrModelName, embeddingsOptions,
-            requestOptions)
+                ? openAIServiceClient.getEmbeddingsWithResponse(
+                        deploymentOrModelName, embeddingsOptions, requestOptions)
                 : serviceClient.getEmbeddingsWithResponse(deploymentOrModelName, embeddingsOptions, requestOptions);
     }
 
@@ -177,8 +178,8 @@ public final class OpenAIClient {
     public Response<BinaryData> getCompletionsWithResponse(
             String deploymentOrModelName, BinaryData completionsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
-                ? openAIServiceClient.getCompletionsWithResponse(deploymentOrModelName, completionsOptions,
-            requestOptions)
+                ? openAIServiceClient.getCompletionsWithResponse(
+                        deploymentOrModelName, completionsOptions, requestOptions)
                 : serviceClient.getCompletionsWithResponse(deploymentOrModelName, completionsOptions, requestOptions);
     }
 
@@ -258,10 +259,10 @@ public final class OpenAIClient {
     public Response<BinaryData> getChatCompletionsWithResponse(
             String deploymentOrModelName, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
-                ? openAIServiceClient.getChatCompletionsWithResponse(deploymentOrModelName, chatCompletionsOptions,
-            requestOptions)
-                : serviceClient.getChatCompletionsWithResponse(deploymentOrModelName, chatCompletionsOptions,
-            requestOptions);
+                ? openAIServiceClient.getChatCompletionsWithResponse(
+                        deploymentOrModelName, chatCompletionsOptions, requestOptions)
+                : serviceClient.getChatCompletionsWithResponse(
+                        deploymentOrModelName, chatCompletionsOptions, requestOptions);
     }
 
     /**
@@ -364,9 +365,10 @@ public final class OpenAIClient {
         completionsOptions.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
         Flux<ByteBuffer> responseStream =
-            getCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(completionsOptions), requestOptions)
-                .getValue()
-                .toFluxByteBuffer();
+                getCompletionsWithResponse(
+                                deploymentOrModelName, BinaryData.fromObject(completionsOptions), requestOptions)
+                        .getValue()
+                        .toFluxByteBuffer();
         OpenAIServerSentEvents<Completions> completionsStream =
                 new OpenAIServerSentEvents<>(responseStream, Completions.class);
         return new IterableStream<>(completionsStream.getEvents());
@@ -424,10 +426,10 @@ public final class OpenAIClient {
         chatCompletionsOptions.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
         Flux<ByteBuffer> responseStream =
-                getChatCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions),
-                    requestOptions)
-                    .getValue()
-                    .toFluxByteBuffer();
+                getChatCompletionsWithResponse(
+                                deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                        .getValue()
+                        .toFluxByteBuffer();
         OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream =
                 new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
         return new IterableStream<ChatCompletions>(chatCompletionsStream.getEvents());
