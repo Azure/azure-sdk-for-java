@@ -2,6 +2,7 @@ parameters:
   Matrix: ''
   MaxParallel: 10
   SkipOptions: "-Dcheckstyle.skip -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip"
+  ProfileFlag: "-Plibraries-data-plane-spring-dev -Plibraries-data-plane-spring"
   BuildParallelization: '2C'
 
 jobs:
@@ -48,5 +49,5 @@ jobs:
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
-          goals: 'clean install -Pdev '
+          goals: 'clean install ${{parameters.ProfileFlag}} '
 
