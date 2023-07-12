@@ -453,9 +453,7 @@ public class TestProxyTests extends TestProxyTestBase {
         StringBuilder stringBuilder = new StringBuilder();
         String line;
         while ((line = reader.readLine()) != null) {
-            if (line.contains("azure-sdk-for-java")) {
-                stringBuilder.append(line);
-            }
+            stringBuilder.append(line);
             try {
                 process.waitFor();
             } catch (InterruptedException e) {
@@ -463,13 +461,15 @@ public class TestProxyTests extends TestProxyTestBase {
             }
         }
 
+        String[] lines = stringBuilder.toString().split(System.lineSeparator());
         System.out.printf("Process output: %s\n", stringBuilder);
-        String filePath = stringBuilder.toString();
+        String filePath = lines.get(lines.size()-1);
         String recordingName = testContextManager.getTestPlaybackRecordingName() + ".json";
         String relativePath =
             engRepoRoot.relativize(Paths.get(targetRepoRoot, "src/test/resources/session-records", recordingName))
                 .toString();
         System.out.printf("Relative path: %s\n", relativePath);
+        System.out.printf("Line Filtered: %s\n", filePath);
         return Paths.get(filePath, relativePath).toString();
     }
 
