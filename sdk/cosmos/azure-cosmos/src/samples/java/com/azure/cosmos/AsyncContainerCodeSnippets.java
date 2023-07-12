@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.models.*;
+import com.azure.cosmos.util.CosmosPagedIterable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -379,6 +380,106 @@ public class AsyncContainerCodeSnippets {
                 throwable -> System.out.println("Failed to create container: " + throwable)
             );
         // END: com.azure.cosmos.CosmosAsyncDatabase.createContainerPartitionKey
+    }
+
+    public void databaseCreateContainerIfNotExistsAsyncSampleThroughput() {
+        String containerId = "passengers";
+        PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+        int autoScaleMaxThroughput = 1000;
+        ThroughputProperties throughputProperties =
+            ThroughputProperties.createAutoscaledThroughput(autoScaleMaxThroughput);
+
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExistsThroughput
+        CosmosContainerProperties containerProperties =
+            new CosmosContainerProperties(containerId, partitionKeyDefinition);
+        cosmosAsyncDatabase.createContainerIfNotExists(containerProperties, throughputProperties)
+            .subscribe(
+                cosmosContainerResponse -> System.out.println(cosmosContainerResponse),
+                throwable -> System.out.println("Failed to create container: " + throwable)
+            );
+        // END: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExistsThroughput
+    }
+
+    public void databaseCreateContainerIfNotExistsAsyncSample() {
+        String containerId = "passengers";
+        PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists
+        CosmosContainerProperties containerProperties =
+            new CosmosContainerProperties(containerId, partitionKeyDefinition);
+        cosmosAsyncDatabase.createContainerIfNotExists(containerProperties)
+            .subscribe(
+                cosmosContainerResponse -> System.out.println(cosmosContainerResponse),
+                throwable -> System.out.println("Failed to create container: " + throwable)
+            );
+        // END: com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists
+    }
+
+    public void readAllContainersSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.readAllContainers
+        cosmosAsyncDatabase.readAllContainers()
+            .byPage()
+            .flatMap(containerPropertiesFeedResponse -> {
+                for (CosmosContainerProperties properties : containerPropertiesFeedResponse.getResults()) {
+                    System.out.println(properties);
+                }
+                return Flux.empty();
+            })
+            .subscribe();
+        // END: com.azure.cosmos.CosmosAsyncDatabase.readAllContainers
+    }
+
+    public void queryContainersSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.queryContainers
+        cosmosAsyncDatabase.queryContainers("SELECT * FROM DB_NAME")
+            .byPage()
+            .flatMap(containerPropertiesFeedResponse -> {
+                for (CosmosContainerProperties properties : containerPropertiesFeedResponse.getResults()) {
+                    System.out.println(properties);
+                }
+                return Flux.empty();
+            })
+            .subscribe();
+        // END: com.azure.cosmos.CosmosAsyncDatabase.queryContainers
+    }
+
+    public void createUserAsyncSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.createUser
+        String userId = "userId";
+        CosmosUserProperties userProperties = new CosmosUserProperties();
+        userProperties.setId(userId);
+        cosmosAsyncDatabase.createUser(userProperties)
+            .subscribe(
+                userResponse -> System.out.println(userResponse),
+                throwable -> System.out.println("Failed to create user: " + throwable)
+            );
+        // END: com.azure.cosmos.CosmosAsyncDatabase.createUser
+    }
+
+    public void upsertUserAsyncSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.upsertUser
+        String userId = "userId";
+        CosmosUserProperties userProperties = new CosmosUserProperties();
+        userProperties.setId(userId);
+        cosmosAsyncDatabase.upsertUser(userProperties)
+            .subscribe(
+                userResponse -> System.out.println(userResponse),
+                throwable -> System.out.println("Failed to upsert user: " + throwable)
+            );
+        // END: com.azure.cosmos.CosmosAsyncDatabase.upsertUser
+    }
+
+    public void readAllUsersSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.readAllUsers
+        cosmosAsyncDatabase.readAllUsers()
+            .byPage()
+            .flatMap(userPropertiesFeedResponse -> {
+                for (CosmosUserProperties properties : userPropertiesFeedResponse.getResults()) {
+                    System.out.println(properties);
+                }
+                return Flux.empty();
+            })
+            .subscribe();
+        // END: com.azure.cosmos.CosmosAsyncDatabase.readAllUsers
     }
 
 }
