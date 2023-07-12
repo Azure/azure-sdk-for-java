@@ -103,7 +103,7 @@ jobs:
       # Otherwise, run a normal test run.
       - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
         parameters:
-          LatestJdkFeatureVersion: $(LatestJdkFeatureVersion)
+          LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
           IsLatestNonLtsJdk: ${{ parameters.IsLatestNonLtsJdk }}
 
       - template: /eng/pipelines/templates/steps/install-reporting-tools.yml

@@ -66,7 +66,7 @@ jobs:
       # Java 18), then install the latest Java version and use that to run tests.
       - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
         parameters:
-          LatestJdkFeatureVersion: $(LatestJdkFeatureVersion)
+          LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
           IsLatestNonLtsJdk: ${{ eq(variables['JavaTestVersion'], variables['IsLatestNonLtsJdk']) }}
 
       - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
