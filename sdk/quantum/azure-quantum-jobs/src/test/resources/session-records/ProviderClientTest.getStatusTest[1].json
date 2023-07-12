@@ -1,24 +1,254 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.quantum.azure.com/v1.0/subscriptions/677fc922-91d0-4bf6-9b06-4274d319a0fa/resourceGroups/sdk-review-rg/providers/Microsoft.Quantum/workspaces/workspace-ms/providerStatus",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=2592000",
-      "Server" : "Microsoft-IIS/10.0",
-      "Set-Cookie" : "ARRAffinitySameSite=a80c7c3a42bc29f88c9055a7e2789984b224746994993027ab866c65455cca24;Path=/;HttpOnly;SameSite=None;Secure;Domain=westus.quantum.azure.com",
-      "retry-after" : "0",
-      "Content-Length" : "1140",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"id\":\"Microsoft\",\"currentAvailability\":\"Available\",\"targets\":[{\"id\":\"microsoft.simulatedannealing.fpga\",\"currentAvailability\":\"Available\",\"averageQueueTime\":0,\"statusPage\":null},{\"id\":\"microsoft.simulatedannealing-parameterfree.fpga\",\"currentAvailability\":\"Available\",\"averageQueueTime\":0,\"statusPage\":null},{\"id\":\"microsoft.paralleltempering-parameterfree.cpu\",\"currentAvailability\":\"Available\",\"averageQueueTime\":0,\"statusPage\":null},{\"id\":\"microsoft.paralleltempering.cpu\",\"currentAvailability\":\"Available\",\"averageQueueTime\":0,\"statusPage\":null},{\"id\":\"microsoft.simulatedannealing-parameterfree.cpu\",\"currentAvailability\":\"Available\",\"averageQueueTime\":0,\"statusPage\":null},{\"id\":\"microsoft.simulatedannealing.cpu\",\"currentAvailability\":\"Available\",\"averageQueueTime\":0,\"statusPage\":null},{\"id\":\"microsoft.tabu-parameterfree.cpu\",\"currentAvailability\":\"Available\",\"averageQueueTime\":0,\"statusPage\":null},{\"id\":\"microsoft.tabu.cpu\",\"currentAvailability\":\"Available\",\"averageQueueTime\":0,\"statusPage\":null},{\"id\":\"microsoft.qmc.cpu\",\"currentAvailability\":\"Available\",\"averageQueueTime\":0,\"statusPage\":null}]}],\"nextLink\":null}",
-      "Date" : "Mon, 01 Feb 2021 19:38:04 GMT",
-      "Request-Context" : "appId=cid-v1:4d6ac272-7369-45c6-9036-63d733c8519f",
-      "X-Powered-By" : "ASP.NET",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "677fc922-91d0-4bf6-9b06-4274d319a0fa", "sdk-review-rg", "workspace-ms" ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/v1.0/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/vigera-group/providers/Microsoft.Quantum/workspaces/vigeraQuantumWorkspace/providerStatus",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-java-UnknownName/UnknownVersion (17.0.2; Windows 11; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "4189",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 12 Jul 2023 15:25:54 GMT",
+        "mise-correlation-id": "21ec93e9-74b4-4fd9-929f-d635c1d5b41a",
+        "Request-Context": "appId=cid-v1:4d6ac272-7369-45c6-9036-63d733c8519f",
+        "Server": "Microsoft-IIS/10.0",
+        "Set-Cookie": [
+          "ApplicationGatewayAffinityCORS=f41f4d84e6de1cfe7357bf648ccde6bc; Path=/; SameSite=None; Secure",
+          "ApplicationGatewayAffinity=f41f4d84e6de1cfe7357bf648ccde6bc; Path=/",
+          "ARRAffinity=f08099ddc6d1b5b480ee26565f489b862c28fda9abd95391f75b0cea107d6318;Path=/;HttpOnly;Secure;Domain=app-jobscheduler-westus2-003.ase-jobscheduler-westus2-003.appserviceenvironment.net",
+          "ARRAffinitySameSite=f08099ddc6d1b5b480ee26565f489b862c28fda9abd95391f75b0cea107d6318;Path=/;HttpOnly;SameSite=None;Secure;Domain=app-jobscheduler-westus2-003.ase-jobscheduler-westus2-003.appserviceenvironment.net"
+        ],
+        "Strict-Transport-Security": "max-age=2592000; includeSubDomains",
+        "x-ms-request-id": "df0362848f74fe0d",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "ionq",
+            "currentAvailability": "Available",
+            "targets": [
+              {
+                "id": "ionq.qpu",
+                "currentAvailability": "Available",
+                "averageQueueTime": 174,
+                "statusPage": "https://status.ionq.co"
+              },
+              {
+                "id": "ionq.qpu.aria-1",
+                "currentAvailability": "Available",
+                "averageQueueTime": 19960,
+                "statusPage": "https://status.ionq.co"
+              },
+              {
+                "id": "ionq.simulator",
+                "currentAvailability": "Available",
+                "averageQueueTime": 1,
+                "statusPage": "https://status.ionq.co"
+              }
+            ]
+          },
+          {
+            "id": "microsoft-qc",
+            "currentAvailability": "Available",
+            "targets": [
+              {
+                "id": "microsoft.estimator",
+                "currentAvailability": "Available",
+                "averageQueueTime": 0,
+                "statusPage": null
+              }
+            ]
+          },
+          {
+            "id": "quantinuum",
+            "currentAvailability": "Degraded",
+            "targets": [
+              {
+                "id": "quantinuum.hqs-lt-s1",
+                "currentAvailability": "Degraded",
+                "averageQueueTime": 0,
+                "statusPage": "https://www.quantinuum.com/hardware/h1"
+              },
+              {
+                "id": "quantinuum.hqs-lt-s1-apival",
+                "currentAvailability": "Available",
+                "averageQueueTime": 0,
+                "statusPage": "https://www.quantinuum.com/hardware/h1"
+              },
+              {
+                "id": "quantinuum.hqs-lt-s2",
+                "currentAvailability": "Degraded",
+                "averageQueueTime": 0,
+                "statusPage": "https://www.quantinuum.com/hardware/h1"
+              },
+              {
+                "id": "quantinuum.hqs-lt-s2-apival",
+                "currentAvailability": "Available",
+                "averageQueueTime": 0,
+                "statusPage": "https://www.quantinuum.com/hardware/h1"
+              },
+              {
+                "id": "quantinuum.hqs-lt-s1-sim",
+                "currentAvailability": "Available",
+                "averageQueueTime": 72295,
+                "statusPage": "https://www.quantinuum.com/hardware/h1"
+              },
+              {
+                "id": "quantinuum.hqs-lt-s2-sim",
+                "currentAvailability": "Available",
+                "averageQueueTime": 7,
+                "statusPage": "https://www.quantinuum.com/hardware/h1"
+              },
+              {
+                "id": "quantinuum.qpu.h1-1",
+                "currentAvailability": "Degraded",
+                "averageQueueTime": 0,
+                "statusPage": "https://www.quantinuum.com/hardware/h1"
+              },
+              {
+                "id": "quantinuum.sim.h1-1sc",
+                "currentAvailability": "Available",
+                "averageQueueTime": 0,
+                "statusPage": "https://www.quantinuum.com/hardware/h1"
+              },
+              {
+                "id": "quantinuum.qpu.h1-2",
+                "currentAvailability": "Degraded",
+                "averageQueueTime": 0,
+                "statusPage": "https://www.quantinuum.com/hardware/h1"
+              },
+              {
+                "id": "quantinuum.sim.h1-2sc",
+                "currentAvailability": "Available",
+                "averageQueueTime": 0,
+                "statusPage": "https://www.quantinuum.com/hardware/h1"
+              },
+              {
+                "id": "quantinuum.sim.h1-1e",
+                "currentAvailability": "Available",
+                "averageQueueTime": 72295,
+                "statusPage": "https://www.quantinuum.com/hardware/h1"
+              },
+              {
+                "id": "quantinuum.sim.h1-2e",
+                "currentAvailability": "Available",
+                "averageQueueTime": 7,
+                "statusPage": "https://www.quantinuum.com/hardware/h1"
+              }
+            ]
+          },
+          {
+            "id": "rigetti",
+            "currentAvailability": "Degraded",
+            "targets": [
+              {
+                "id": "rigetti.sim.qvm",
+                "currentAvailability": "Available",
+                "averageQueueTime": 5,
+                "statusPage": "https://rigetti.statuspage.io/"
+              },
+              {
+                "id": "rigetti.qpu.aspen-m-2",
+                "currentAvailability": "Unavailable",
+                "averageQueueTime": 0,
+                "statusPage": "https://rigetti.statuspage.io/"
+              },
+              {
+                "id": "rigetti.qpu.aspen-m-3",
+                "currentAvailability": "Available",
+                "averageQueueTime": 5,
+                "statusPage": "https://rigetti.statuspage.io/"
+              }
+            ]
+          },
+          {
+            "id": "Microsoft",
+            "currentAvailability": "Available",
+            "targets": [
+              {
+                "id": "microsoft.paralleltempering-parameterfree.cpu",
+                "currentAvailability": "Available",
+                "averageQueueTime": 0,
+                "statusPage": null
+              },
+              {
+                "id": "microsoft.paralleltempering.cpu",
+                "currentAvailability": "Available",
+                "averageQueueTime": 0,
+                "statusPage": null
+              },
+              {
+                "id": "microsoft.simulatedannealing-parameterfree.cpu",
+                "currentAvailability": "Available",
+                "averageQueueTime": 0,
+                "statusPage": null
+              },
+              {
+                "id": "microsoft.simulatedannealing.cpu",
+                "currentAvailability": "Available",
+                "averageQueueTime": 0,
+                "statusPage": null
+              },
+              {
+                "id": "microsoft.tabu-parameterfree.cpu",
+                "currentAvailability": "Available",
+                "averageQueueTime": 0,
+                "statusPage": null
+              },
+              {
+                "id": "microsoft.tabu.cpu",
+                "currentAvailability": "Available",
+                "averageQueueTime": 0,
+                "statusPage": null
+              },
+              {
+                "id": "microsoft.qmc.cpu",
+                "currentAvailability": "Available",
+                "averageQueueTime": 0,
+                "statusPage": null
+              },
+              {
+                "id": "microsoft.populationannealing.cpu",
+                "currentAvailability": "Available",
+                "averageQueueTime": 0,
+                "statusPage": null
+              },
+              {
+                "id": "microsoft.populationannealing-parameterfree.cpu",
+                "currentAvailability": "Available",
+                "averageQueueTime": 0,
+                "statusPage": null
+              },
+              {
+                "id": "microsoft.substochasticmontecarlo.cpu",
+                "currentAvailability": "Available",
+                "averageQueueTime": 0,
+                "statusPage": null
+              },
+              {
+                "id": "microsoft.substochasticmontecarlo-parameterfree.cpu",
+                "currentAvailability": "Available",
+                "averageQueueTime": 0,
+                "statusPage": null
+              }
+            ]
+          }
+        ],
+        "nextLink": null
+      }
+    }
+  ],
+  "Variables": {
+    "0": "faa080af-c1d8-40ad-9cce-e1a450ca5b57",
+    "1": "vigera-group",
+    "2": "vigeraQuantumWorkspace"
+  }
 }

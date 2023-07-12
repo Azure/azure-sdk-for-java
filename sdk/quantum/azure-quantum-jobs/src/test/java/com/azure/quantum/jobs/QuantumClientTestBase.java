@@ -7,10 +7,16 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.util.Configuration;
 import com.azure.identity.AzureCliCredentialBuilder;
 
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class QuantumClientTestBase extends TestProxyTestBase {
 //    private final String endpoint = Configuration.getGlobalConfiguration().get("QUANTUM_ENDPOINT");
@@ -29,6 +35,10 @@ public class QuantumClientTestBase extends TestProxyTestBase {
         }
 
         if (interceptorManager.isPlaybackMode()) {
+            List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
+            customMatchers.add(new BodilessMatcher());
+            customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));
+            interceptorManager.addMatchers(customMatchers);
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else {
             builder.httpClient(httpClient)
