@@ -19,8 +19,8 @@ import com.azure.communication.jobrouter.models.ExceptionPolicyItem;
 import com.azure.communication.jobrouter.models.ExceptionRule;
 import com.azure.communication.jobrouter.models.QueueLengthExceptionTrigger;
 import com.azure.communication.jobrouter.models.WaitTimeExceptionTrigger;
-import com.azure.communication.jobrouter.models.options.CreateExceptionPolicyOptions;
-import com.azure.communication.jobrouter.models.options.UpdateExceptionPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
+import com.azure.communication.jobrouter.models.UpdateExceptionPolicyOptions;
 import com.azure.core.http.rest.PagedIterable;
 
 import java.util.Collections;
@@ -35,7 +35,7 @@ public class ExceptionPolicyExample {
     private void createAndUpdateExceptionPolicy() {
         String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
 
-        RouterAdministrationClient routerAdminClient = new RouterAdministrationClientBuilder()
+        JobRouterAdministrationClient routerAdminClient = new JobRouterAdministrationClientBuilder()
             .connectionString(connectionString)
             .buildClient();
 
@@ -91,7 +91,7 @@ public class ExceptionPolicyExample {
 
     private void getExceptionPolicy() {
         String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
-        RouterAdministrationClient routerAdminClient = new RouterAdministrationClientBuilder()
+        JobRouterAdministrationClient routerAdminClient = new JobRouterAdministrationClientBuilder()
             .connectionString(connectionString)
             .buildClient();
 
@@ -101,7 +101,7 @@ public class ExceptionPolicyExample {
 
     private void listExceptionPolicies() {
         String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
-        RouterAdministrationClient routerAdminClient = new RouterAdministrationClientBuilder()
+        JobRouterAdministrationClient routerAdminClient = new JobRouterAdministrationClientBuilder()
             .connectionString(connectionString)
             .buildClient();
 
@@ -117,7 +117,7 @@ public class ExceptionPolicyExample {
 
     private void cleanUp() {
         String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
-        RouterAdministrationClient routerAdminClient = new RouterAdministrationClientBuilder()
+        JobRouterAdministrationClient routerAdminClient = new JobRouterAdministrationClientBuilder()
             .connectionString(connectionString)
             .buildClient();
         routerAdminClient.deleteExceptionPolicy(exceptionPolicyId);
