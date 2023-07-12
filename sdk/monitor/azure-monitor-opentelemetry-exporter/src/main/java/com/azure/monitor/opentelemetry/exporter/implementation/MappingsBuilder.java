@@ -90,6 +90,17 @@ class MappingsBuilder {
         return this;
     }
 
+    MappingsBuilder exactStringArray(AttributeKey<List<String>> attributeKey, String propertyName) {
+        exactMappings.put(
+            attributeKey.getKey(),
+            (telemetryBuilder, value) -> {
+                if (value instanceof List) {
+                    telemetryBuilder.addProperty(propertyName, String.join(",", (List) value));
+                }
+            });
+        return this;
+    }
+
     public Mappings build() {
         return new Mappings(exactMappings, prefixMappings.build());
     }

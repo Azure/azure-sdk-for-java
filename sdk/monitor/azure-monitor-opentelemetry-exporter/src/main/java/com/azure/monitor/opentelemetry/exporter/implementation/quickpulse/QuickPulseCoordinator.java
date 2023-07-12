@@ -58,10 +58,9 @@ final class QuickPulseCoordinator implements Runnable {
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+        } catch (ThreadDeath td) {
+            throw td;
         } catch (Throwable t) {
-            if (t instanceof Error) {
-                throw (Error) t;
-            }
             // chomp
         }
     }
