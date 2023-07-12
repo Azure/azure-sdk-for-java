@@ -101,6 +101,9 @@ class QuickPulseDataFetcher {
         } catch (ThreadDeath td) {
             throw td;
         } catch (Throwable e) {
+            if (e instanceof Error) {
+                throw (Error) e;
+            }
             try {
                 try (MDC.MDCCloseable ignored = QUICK_PULSE_SEND_ERROR.makeActive()) {
                     logger.error("Quick Pulse failed to prepare data for send", e);
@@ -108,7 +111,9 @@ class QuickPulseDataFetcher {
             } catch (ThreadDeath td) {
                 throw td;
             } catch (Throwable t2) {
-                // chomp
+                if (t2 instanceof Error) {
+                    throw (Error) t2;
+                }
             }
         }
     }

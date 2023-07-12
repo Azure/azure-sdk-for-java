@@ -61,7 +61,9 @@ final class QuickPulseCoordinator implements Runnable {
         } catch (ThreadDeath td) {
             throw td;
         } catch (Throwable t) {
-            // chomp
+            if (t instanceof Error) {
+                throw (Error) t;
+            }
         }
     }
 
