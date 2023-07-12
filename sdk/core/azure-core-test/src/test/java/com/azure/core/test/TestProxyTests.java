@@ -430,8 +430,8 @@ public class TestProxyTests extends TestProxyTestBase {
         String targetRepoRoot = TestUtils.getRepoRootResolveUntil(getTestClassPath(), "target").toString();
         System.out.printf("Target repo root: %s", targetRepoRoot);
         System.out.printf("Eng repo root: %s", engRepoRoot.toString());
-        System.out.printf("AssetPath being passed to config locate is %s", assetPath);
         String assetPath = Paths.get("sdk", "core", "azure-core-test", "assets.json").toString();
+        System.out.printf("AssetPath being passed to config locate is %s", assetPath);
         ProcessBuilder builder = new ProcessBuilder(commandLine,
             "config",
             "locate",
