@@ -4,8 +4,6 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: monitor
-      Clouds: "USGov"
-      SupportedClouds: 'UsGov'
       Artifacts:
         - name: azure-monitor-query
           groupId: com.azure
