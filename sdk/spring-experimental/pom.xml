@@ -12,7 +12,9 @@
     <profile>
       <id>libraries-data-plane-spring</id>
       <activation>
-        <activeByDefault>true</activeByDefault>
+        <property>
+          <name>libraries-data-plane-spring</name>
+        </property>
       </activation>
       <modules>
       </modules>
@@ -20,6 +22,11 @@
 
     <profile>
       <id>libraries-data-plane-spring-dev</id>
+      <activation>
+        <property>
+          <name>libraries-data-plane-spring-dev</name>
+        </property>
+      </activation>
       <modules>
         <module>../../eng/code-quality-reports</module>
       </modules>
