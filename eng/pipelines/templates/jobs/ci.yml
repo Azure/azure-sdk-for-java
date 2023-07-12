@@ -433,4 +433,4 @@ jobs:
         TestParallelization: ${{ parameters.TestParallelization }}
         BuildParallelization: ${{ parameters.BuildParallelization }}
         AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
-        IsLatestNonLtsJdk: $[ eq(variables['JavaTestVersion'], variables['LatestNonLtsJavaVersion']) ]
+        IsLatestNonLtsJdk: "$[eq(variables['JavaTestVersion'], variables['LatestNonLtsJavaVersion'])]"
