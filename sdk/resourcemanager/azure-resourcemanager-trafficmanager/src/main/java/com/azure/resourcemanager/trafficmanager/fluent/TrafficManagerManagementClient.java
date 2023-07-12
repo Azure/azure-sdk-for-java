@@ -10,8 +10,7 @@ import java.time.Duration;
 /** The interface for TrafficManagerManagementClient class. */
 public interface TrafficManagerManagementClient {
     /**
-     * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-     * forms part of the URI for every service call.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */

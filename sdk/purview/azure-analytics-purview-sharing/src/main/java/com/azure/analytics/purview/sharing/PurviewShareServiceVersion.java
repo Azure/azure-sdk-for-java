@@ -8,8 +8,8 @@ import com.azure.core.util.ServiceVersion;
 
 /** Service version of PurviewShareClient. */
 public enum PurviewShareServiceVersion implements ServiceVersion {
-    /** Enum value 2023-02-15-preview. */
-    V2023_02_15_PREVIEW("2023-02-15-preview");
+    /** Enum value 2023-05-30-preview. */
+    V2023_05_30_PREVIEW("2023-05-30-preview");
 
     private final String version;
 
@@ -29,6 +29,6 @@ public enum PurviewShareServiceVersion implements ServiceVersion {
      * @return The latest {@link PurviewShareServiceVersion}.
      */
     public static PurviewShareServiceVersion getLatest() {
-        return V2023_02_15_PREVIEW;
+        return V2023_05_30_PREVIEW;
     }
 }

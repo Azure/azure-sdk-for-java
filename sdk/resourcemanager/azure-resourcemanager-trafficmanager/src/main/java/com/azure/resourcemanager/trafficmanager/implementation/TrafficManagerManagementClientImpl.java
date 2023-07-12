@@ -21,15 +21,11 @@ import java.time.Duration;
 @ServiceClient(builder = TrafficManagerManagementClientBuilder.class)
 public final class TrafficManagerManagementClientImpl extends AzureServiceClient
     implements TrafficManagerManagementClient {
-    /**
-     * Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
-     */
+    /** The ID of the target subscription. */
     private final String subscriptionId;
 
     /**
-     * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-     * forms part of the URI for every service call.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -164,8 +160,7 @@ public final class TrafficManagerManagementClientImpl extends AzureServiceClient
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId Gets subscription credentials which uniquely identify Microsoft Azure subscription. The
-     *     subscription ID forms part of the URI for every service call.
+     * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
     TrafficManagerManagementClientImpl(
@@ -181,7 +176,7 @@ public final class TrafficManagerManagementClientImpl extends AzureServiceClient
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2018-04-01";
+        this.apiVersion = "2022-04-01";
         this.endpoints = new EndpointsClientImpl(this);
         this.profiles = new ProfilesClientImpl(this);
         this.geographicHierarchies = new GeographicHierarchiesClientImpl(this);

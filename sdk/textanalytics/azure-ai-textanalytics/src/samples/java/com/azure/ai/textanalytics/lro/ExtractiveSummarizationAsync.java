@@ -5,12 +5,12 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.ExtractSummaryOperationDetail;
-import com.azure.ai.textanalytics.models.ExtractSummaryOptions;
-import com.azure.ai.textanalytics.models.ExtractSummaryResult;
-import com.azure.ai.textanalytics.models.SummarySentence;
-import com.azure.ai.textanalytics.models.SummarySentencesOrder;
-import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryOptions;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryResult;
+import com.azure.ai.textanalytics.models.ExtractiveSummarySentence;
+import com.azure.ai.textanalytics.models.ExtractiveSummarySentencesOrder;
+import com.azure.ai.textanalytics.util.ExtractiveSummaryResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.ArrayList;
@@ -56,9 +56,9 @@ public class ExtractiveSummarizationAsync {
 
         client.beginExtractSummary(documents,
             "en",
-            new ExtractSummaryOptions().setMaxSentenceCount(4).setOrderBy(SummarySentencesOrder.RANK))
+            new ExtractiveSummaryOptions().setMaxSentenceCount(4).setOrderBy(ExtractiveSummarySentencesOrder.RANK))
             .flatMap(result -> {
-                ExtractSummaryOperationDetail operationDetail = result.getValue();
+                ExtractiveSummaryOperationDetail operationDetail = result.getValue();
                 System.out.printf("Operation created time: %s, expiration time: %s.%n",
                     operationDetail.getCreatedAt(), operationDetail.getExpiresAt());
                 return result.getFinalResult();
@@ -79,16 +79,16 @@ public class ExtractiveSummarizationAsync {
         }
     }
 
-    private static void processResult(ExtractSummaryResultCollection resultCollection) {
+    private static void processResult(ExtractiveSummaryResultCollection resultCollection) {
         System.out.println("Extractive Summarization action results:");
-        for (ExtractSummaryResult documentResult : resultCollection) {
+        for (ExtractiveSummaryResult documentResult : resultCollection) {
             if (!documentResult.isError()) {
                 System.out.println("\tExtracted summary sentences:");
-                for (SummarySentence summarySentence : documentResult.getSentences()) {
+                for (ExtractiveSummarySentence extractiveSummarySentence : documentResult.getSentences()) {
                     System.out.printf(
                         "\t\t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n",
-                        summarySentence.getText(), summarySentence.getLength(),
-                        summarySentence.getOffset(), summarySentence.getRankScore());
+                        extractiveSummarySentence.getText(), extractiveSummarySentence.getLength(),
+                        extractiveSummarySentence.getOffset(), extractiveSummarySentence.getRankScore());
                 }
             } else {
                 System.out.printf("\tCannot extract summary sentences. Error: %s%n",

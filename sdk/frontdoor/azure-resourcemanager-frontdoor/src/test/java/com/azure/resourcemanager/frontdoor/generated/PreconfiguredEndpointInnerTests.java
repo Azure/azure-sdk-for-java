@@ -17,33 +17,33 @@ public final class PreconfiguredEndpointInnerTests {
         PreconfiguredEndpointInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"description\":\"i\",\"endpoint\":\"yqkgfg\",\"endpointType\":\"ATM\",\"backend\":\"dgak\"},\"location\":\"qsrxybzqqed\",\"tags\":{\"nkzsmodmglou\":\"bciqfouflm\",\"duqkt\":\"pbkwtmu\",\"kdosvqw\":\"pspwgcuertu\"},\"id\":\"bmdg\",\"name\":\"bjf\",\"type\":\"dgmb\"}")
+                    "{\"properties\":{\"description\":\"iuiefozbhdmsm\",\"endpoint\":\"zqhof\",\"endpointType\":\"ATM\",\"backend\":\"equi\"},\"location\":\"hxicslfaoqz\",\"tags\":{\"ph\":\"ylhalnswhcc\",\"gwol\":\"aivwitqscywu\",\"zbwemh\":\"h\",\"sbrgz\":\"i\"},\"id\":\"wmsweypqwd\",\"name\":\"ggicccnxqhue\",\"type\":\"mkttlstvlzywem\"}")
                 .toObject(PreconfiguredEndpointInner.class);
-        Assertions.assertEquals("qsrxybzqqed", model.location());
-        Assertions.assertEquals("bciqfouflm", model.tags().get("nkzsmodmglou"));
-        Assertions.assertEquals("i", model.description());
-        Assertions.assertEquals("yqkgfg", model.endpoint());
+        Assertions.assertEquals("hxicslfaoqz", model.location());
+        Assertions.assertEquals("ylhalnswhcc", model.tags().get("ph"));
+        Assertions.assertEquals("iuiefozbhdmsm", model.description());
+        Assertions.assertEquals("zqhof", model.endpoint());
         Assertions.assertEquals(EndpointType.ATM, model.endpointType());
-        Assertions.assertEquals("dgak", model.backend());
+        Assertions.assertEquals("equi", model.backend());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PreconfiguredEndpointInner model =
             new PreconfiguredEndpointInner()
-                .withLocation("qsrxybzqqed")
-                .withTags(mapOf("nkzsmodmglou", "bciqfouflm", "duqkt", "pbkwtmu", "kdosvqw", "pspwgcuertu"))
-                .withDescription("i")
-                .withEndpoint("yqkgfg")
+                .withLocation("hxicslfaoqz")
+                .withTags(mapOf("ph", "ylhalnswhcc", "gwol", "aivwitqscywu", "zbwemh", "h", "sbrgz", "i"))
+                .withDescription("iuiefozbhdmsm")
+                .withEndpoint("zqhof")
                 .withEndpointType(EndpointType.ATM)
-                .withBackend("dgak");
+                .withBackend("equi");
         model = BinaryData.fromObject(model).toObject(PreconfiguredEndpointInner.class);
-        Assertions.assertEquals("qsrxybzqqed", model.location());
-        Assertions.assertEquals("bciqfouflm", model.tags().get("nkzsmodmglou"));
-        Assertions.assertEquals("i", model.description());
-        Assertions.assertEquals("yqkgfg", model.endpoint());
+        Assertions.assertEquals("hxicslfaoqz", model.location());
+        Assertions.assertEquals("ylhalnswhcc", model.tags().get("ph"));
+        Assertions.assertEquals("iuiefozbhdmsm", model.description());
+        Assertions.assertEquals("zqhof", model.endpoint());
         Assertions.assertEquals(EndpointType.ATM, model.endpointType());
-        Assertions.assertEquals("dgak", model.backend());
+        Assertions.assertEquals("equi", model.backend());
     }
 
     @SuppressWarnings("unchecked")

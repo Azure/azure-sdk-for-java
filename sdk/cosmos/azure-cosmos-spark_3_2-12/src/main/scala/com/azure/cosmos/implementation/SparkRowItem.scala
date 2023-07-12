@@ -3,9 +3,11 @@
 
 package com.azure.cosmos.implementation
 
+import com.azure.cosmos.models.PartitionKey
 import org.apache.spark.sql.Row
 
 private[cosmos] case class SparkRowItem
 (
-  row: Row
+  row: Row,
+  pkValue: Option[PartitionKey]
 )

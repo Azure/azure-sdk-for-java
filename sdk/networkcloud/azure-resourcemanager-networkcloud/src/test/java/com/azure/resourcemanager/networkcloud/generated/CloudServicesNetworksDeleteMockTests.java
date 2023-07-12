@@ -56,6 +56,6 @@ public final class CloudServicesNetworksDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.cloudServicesNetworks().delete("wjksghudgzhxo", "jggsvo", com.azure.core.util.Context.NONE);
+        manager.cloudServicesNetworks().delete("chl", "mltx", com.azure.core.util.Context.NONE);
     }
 }

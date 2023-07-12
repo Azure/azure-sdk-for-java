@@ -14,18 +14,18 @@ public final class ScheduleAvailabilityRequestTests {
         ScheduleAvailabilityRequest model =
             BinaryData
                 .fromString(
-                    "{\"skuName\":\"ScheduleAvailabilityRequest\",\"storageLocation\":\"jrwjueiotwm\",\"country\":\"ytdxwit\"}")
+                    "{\"skuName\":\"ScheduleAvailabilityRequest\",\"storageLocation\":\"mgucna\",\"country\":\"t\"}")
                 .toObject(ScheduleAvailabilityRequest.class);
-        Assertions.assertEquals("jrwjueiotwm", model.storageLocation());
-        Assertions.assertEquals("ytdxwit", model.country());
+        Assertions.assertEquals("mgucna", model.storageLocation());
+        Assertions.assertEquals("t", model.country());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScheduleAvailabilityRequest model =
-            new ScheduleAvailabilityRequest().withStorageLocation("jrwjueiotwm").withCountry("ytdxwit");
+            new ScheduleAvailabilityRequest().withStorageLocation("mgucna").withCountry("t");
         model = BinaryData.fromObject(model).toObject(ScheduleAvailabilityRequest.class);
-        Assertions.assertEquals("jrwjueiotwm", model.storageLocation());
-        Assertions.assertEquals("ytdxwit", model.country());
+        Assertions.assertEquals("mgucna", model.storageLocation());
+        Assertions.assertEquals("t", model.country());
     }
 }

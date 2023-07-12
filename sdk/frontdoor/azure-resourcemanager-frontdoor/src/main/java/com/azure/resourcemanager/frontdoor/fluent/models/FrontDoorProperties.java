@@ -13,8 +13,10 @@ import com.azure.resourcemanager.frontdoor.models.FrontDoorUpdateParameters;
 import com.azure.resourcemanager.frontdoor.models.HealthProbeSettingsModel;
 import com.azure.resourcemanager.frontdoor.models.LoadBalancingSettingsModel;
 import com.azure.resourcemanager.frontdoor.models.RoutingRule;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** The JSON object that contains the properties required to create an endpoint. */
 @Fluent
@@ -50,6 +52,13 @@ public final class FrontDoorProperties extends FrontDoorUpdateParameters {
      */
     @JsonProperty(value = "rulesEngines", access = JsonProperty.Access.WRITE_ONLY)
     private List<RulesEngineInner> rulesEngines;
+
+    /*
+     * Key-Value pair representing additional properties for frontdoor.
+     */
+    @JsonProperty(value = "extendedProperties", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> extendedProperties;
 
     /** Creates an instance of FrontDoorProperties class. */
     public FrontDoorProperties() {
@@ -100,6 +109,15 @@ public final class FrontDoorProperties extends FrontDoorUpdateParameters {
      */
     public List<RulesEngineInner> rulesEngines() {
         return this.rulesEngines;
+    }
+
+    /**
+     * Get the extendedProperties property: Key-Value pair representing additional properties for frontdoor.
+     *
+     * @return the extendedProperties value.
+     */
+    public Map<String, String> extendedProperties() {
+        return this.extendedProperties;
     }
 
     /** {@inheritDoc} */

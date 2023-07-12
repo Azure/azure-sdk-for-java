@@ -15,23 +15,23 @@ public final class ShipmentPickUpRequestTests {
         ShipmentPickUpRequest model =
             BinaryData
                 .fromString(
-                    "{\"startTime\":\"2021-02-27T12:21:31Z\",\"endTime\":\"2021-04-22T00:28:22Z\",\"shipmentLocation\":\"gvxp\"}")
+                    "{\"startTime\":\"2021-10-11T10:00:24Z\",\"endTime\":\"2021-02-02T03:25:54Z\",\"shipmentLocation\":\"bxwyjsflhhcaa\"}")
                 .toObject(ShipmentPickUpRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-27T12:21:31Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-22T00:28:22Z"), model.endTime());
-        Assertions.assertEquals("gvxp", model.shipmentLocation());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-11T10:00:24Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-02T03:25:54Z"), model.endTime());
+        Assertions.assertEquals("bxwyjsflhhcaa", model.shipmentLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ShipmentPickUpRequest model =
             new ShipmentPickUpRequest()
-                .withStartTime(OffsetDateTime.parse("2021-02-27T12:21:31Z"))
-                .withEndTime(OffsetDateTime.parse("2021-04-22T00:28:22Z"))
-                .withShipmentLocation("gvxp");
+                .withStartTime(OffsetDateTime.parse("2021-10-11T10:00:24Z"))
+                .withEndTime(OffsetDateTime.parse("2021-02-02T03:25:54Z"))
+                .withShipmentLocation("bxwyjsflhhcaa");
         model = BinaryData.fromObject(model).toObject(ShipmentPickUpRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-27T12:21:31Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-22T00:28:22Z"), model.endTime());
-        Assertions.assertEquals("gvxp", model.shipmentLocation());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-11T10:00:24Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-02T03:25:54Z"), model.endTime());
+        Assertions.assertEquals("bxwyjsflhhcaa", model.shipmentLocation());
     }
 }

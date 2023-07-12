@@ -14,9 +14,9 @@ public final class NotificationPreferenceTests {
     public void testDeserialize() throws Exception {
         NotificationPreference model =
             BinaryData
-                .fromString("{\"stageName\":\"DevicePrepared\",\"sendNotification\":true}")
+                .fromString("{\"stageName\":\"ShippedToCustomer\",\"sendNotification\":true}")
                 .toObject(NotificationPreference.class);
-        Assertions.assertEquals(NotificationStageName.DEVICE_PREPARED, model.stageName());
+        Assertions.assertEquals(NotificationStageName.SHIPPED_TO_CUSTOMER, model.stageName());
         Assertions.assertEquals(true, model.sendNotification());
     }
 
@@ -24,10 +24,10 @@ public final class NotificationPreferenceTests {
     public void testSerialize() throws Exception {
         NotificationPreference model =
             new NotificationPreference()
-                .withStageName(NotificationStageName.DEVICE_PREPARED)
+                .withStageName(NotificationStageName.SHIPPED_TO_CUSTOMER)
                 .withSendNotification(true);
         model = BinaryData.fromObject(model).toObject(NotificationPreference.class);
-        Assertions.assertEquals(NotificationStageName.DEVICE_PREPARED, model.stageName());
+        Assertions.assertEquals(NotificationStageName.SHIPPED_TO_CUSTOMER, model.stageName());
         Assertions.assertEquals(true, model.sendNotification());
     }
 }

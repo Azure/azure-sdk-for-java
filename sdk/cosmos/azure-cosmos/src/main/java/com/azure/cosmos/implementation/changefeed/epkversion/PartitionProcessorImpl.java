@@ -22,6 +22,7 @@ import com.azure.cosmos.implementation.changefeed.exceptions.PartitionNotFoundEx
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -51,7 +52,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
     private volatile RuntimeException resultException;
 
     private volatile String lastServerContinuationToken;
-    private volatile boolean isFirstQueryForChangeFeeds;
+    private volatile boolean hasMoreResults;
 
     public PartitionProcessorImpl(ChangeFeedObserver<T> observer,
                                   ChangeFeedContextClient documentClient,
@@ -79,7 +80,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
     public Mono<Void> run(CancellationToken cancellationToken) {
         logger.info("Lease with token {}: processing task started with owner {}.",
             this.lease.getLeaseToken(), this.lease.getOwner());
-        this.isFirstQueryForChangeFeeds = true;
+        this.hasMoreResults = true;
         this.checkpointer.setCancellationToken(cancellationToken);
 
         return Flux.just(this)
@@ -88,8 +89,9 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                     return Flux.empty();
                 }
 
-                if(this.isFirstQueryForChangeFeeds) {
-                    this.isFirstQueryForChangeFeeds = false;
+                // If there are still changes need to be processed, fetch right away
+                // If there are no changes, wait pollDelay time then try again
+                if(this.hasMoreResults && this.resultException == null) {
                     return Flux.just(value);
                 }
 
@@ -120,6 +122,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                     "For ChangeFeedProcessor the continuation state should always have one range/continuation");
 
                 this.lastServerContinuationToken = continuationToken;
+                this.hasMoreResults = !ModelBridgeInternal.noChanges(documentFeedResponse);
 
                 if (documentFeedResponse.getResults() != null && documentFeedResponse.getResults().size() > 0) {
                     logger.info("Lease with token {}: processing {} feeds with owner {}.",

@@ -32,7 +32,7 @@ public final class OperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"zizxbmpgcj\",\"display\":{\"provider\":\"zmuvpbttdumorppx\",\"resource\":\"mnzb\",\"operation\":\"hjpglkf\",\"description\":\"hdneuelfph\"},\"properties\":\"datayhtozfikdowwqu\",\"origin\":\"xzxcl\",\"isDataAction\":true}]}";
+            "{\"value\":[{\"name\":\"iodkooebwnujhem\",\"display\":{\"provider\":\"vdkcrodtj\",\"resource\":\"fw\",\"operation\":\"fltkacjv\",\"description\":\"kdlfoa\"},\"properties\":\"datagkfpaga\",\"origin\":\"pulpqblylsyxk\",\"isDataAction\":false}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,6 +62,6 @@ public final class OperationsListMockTests {
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(true, response.iterator().next().isDataAction());
+        Assertions.assertEquals(false, response.iterator().next().isDataAction());
     }
 }

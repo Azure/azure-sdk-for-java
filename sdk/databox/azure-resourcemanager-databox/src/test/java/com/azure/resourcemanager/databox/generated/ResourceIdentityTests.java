@@ -17,19 +17,19 @@ public final class ResourceIdentityTests {
         ResourceIdentity model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"e\",\"principalId\":\"noae\",\"tenantId\":\"fhyhltrpmopjmcma\",\"userAssignedIdentities\":{\"uaxbezyiuokkt\":{\"principalId\":\"thfuiuaodsfcpkvx\",\"clientId\":\"puozmyzydag\"}}}")
+                    "{\"type\":\"m\",\"principalId\":\"yvshxmz\",\"tenantId\":\"bzoggigrx\",\"userAssignedIdentities\":{\"udwtiukbl\":{\"principalId\":\"vjxxjnsp\",\"clientId\":\"ptkoenkoukn\"}}}")
                 .toObject(ResourceIdentity.class);
-        Assertions.assertEquals("e", model.type());
+        Assertions.assertEquals("m", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceIdentity model =
             new ResourceIdentity()
-                .withType("e")
-                .withUserAssignedIdentities(mapOf("uaxbezyiuokkt", new UserAssignedIdentity()));
+                .withType("m")
+                .withUserAssignedIdentities(mapOf("udwtiukbl", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ResourceIdentity.class);
-        Assertions.assertEquals("e", model.type());
+        Assertions.assertEquals("m", model.type());
     }
 
     @SuppressWarnings("unchecked")

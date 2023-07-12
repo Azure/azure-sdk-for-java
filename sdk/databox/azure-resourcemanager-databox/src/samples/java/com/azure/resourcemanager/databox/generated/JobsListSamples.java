@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databox.generated;
 /** Samples for Jobs List. */
 public final class JobsListSamples {
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2021-03-01/examples/JobsList.json
+     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsList.json
      */
     /**
      * Sample code: JobsList.

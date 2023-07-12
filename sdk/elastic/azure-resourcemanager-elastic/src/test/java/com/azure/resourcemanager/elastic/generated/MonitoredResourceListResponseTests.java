@@ -17,12 +17,12 @@ public final class MonitoredResourceListResponseTests {
         MonitoredResourceListResponse model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"id\":\"gpbkwtmut\",\"sendingLogs\":\"False\",\"reasonForLogsStatus\":\"ta\"},{\"id\":\"pwgcuertu\",\"sendingLogs\":\"False\",\"reasonForLogsStatus\":\"svqwhbmdgbbjfd\"}],\"nextLink\":\"mbmbexppbh\"}")
+                    "{\"value\":[{\"id\":\"fpfpsalgbquxigj\",\"sendingLogs\":\"False\",\"reasonForLogsStatus\":\"jaoyfhrtx\"}],\"nextLink\":\"n\"}")
                 .toObject(MonitoredResourceListResponse.class);
-        Assertions.assertEquals("gpbkwtmut", model.value().get(0).id());
+        Assertions.assertEquals("fpfpsalgbquxigj", model.value().get(0).id());
         Assertions.assertEquals(SendingLogs.FALSE, model.value().get(0).sendingLogs());
-        Assertions.assertEquals("ta", model.value().get(0).reasonForLogsStatus());
-        Assertions.assertEquals("mbmbexppbh", model.nextLink());
+        Assertions.assertEquals("jaoyfhrtx", model.value().get(0).reasonForLogsStatus());
+        Assertions.assertEquals("n", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -33,18 +33,14 @@ public final class MonitoredResourceListResponseTests {
                     Arrays
                         .asList(
                             new MonitoredResourceInner()
-                                .withId("gpbkwtmut")
+                                .withId("fpfpsalgbquxigj")
                                 .withSendingLogs(SendingLogs.FALSE)
-                                .withReasonForLogsStatus("ta"),
-                            new MonitoredResourceInner()
-                                .withId("pwgcuertu")
-                                .withSendingLogs(SendingLogs.FALSE)
-                                .withReasonForLogsStatus("svqwhbmdgbbjfd")))
-                .withNextLink("mbmbexppbh");
+                                .withReasonForLogsStatus("jaoyfhrtx")))
+                .withNextLink("n");
         model = BinaryData.fromObject(model).toObject(MonitoredResourceListResponse.class);
-        Assertions.assertEquals("gpbkwtmut", model.value().get(0).id());
+        Assertions.assertEquals("fpfpsalgbquxigj", model.value().get(0).id());
         Assertions.assertEquals(SendingLogs.FALSE, model.value().get(0).sendingLogs());
-        Assertions.assertEquals("ta", model.value().get(0).reasonForLogsStatus());
-        Assertions.assertEquals("mbmbexppbh", model.nextLink());
+        Assertions.assertEquals("jaoyfhrtx", model.value().get(0).reasonForLogsStatus());
+        Assertions.assertEquals("n", model.nextLink());
     }
 }

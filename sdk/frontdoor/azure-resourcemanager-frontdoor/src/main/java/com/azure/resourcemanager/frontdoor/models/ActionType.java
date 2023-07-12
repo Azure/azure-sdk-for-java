@@ -22,6 +22,9 @@ public final class ActionType extends ExpandableStringEnum<ActionType> {
     /** Static value Redirect for ActionType. */
     public static final ActionType REDIRECT = fromString("Redirect");
 
+    /** Static value AnomalyScoring for ActionType. */
+    public static final ActionType ANOMALY_SCORING = fromString("AnomalyScoring");
+
     /**
      * Creates a new instance of ActionType value.
      *

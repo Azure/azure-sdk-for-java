@@ -18,7 +18,7 @@ import java.util.Map;
 /** Samples for FileSystems Update. */
 public final class FileSystemsUpdateSamples {
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/FileSystems_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Update_MinimumSet_Gen.
@@ -35,7 +35,7 @@ public final class FileSystemsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/FileSystems_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Update_MaximumSet_Gen.
@@ -64,7 +64,7 @@ public final class FileSystemsUpdateSamples {
                             .withPlanId("x")
                             .withOfferId("eiyhbmpwgezcmzrrfoiskuxlcvwojf")
                             .withPublisherId("wfmokfdjbwpjhz"))
-                    .withUserDetails(new UserDetails().withEmail("viptslwulnpaupfljvnjeq"))
+                    .withUserDetails(new UserDetails().withEmail("aa"))
                     .withDelegatedSubnetId("vjfirtaljehawmflyfianw")
                     .withClusterLoginUrl("adabmuthwrbjshzfbo")
                     .withPrivateIPs(Arrays.asList("eugjqbaoucgjsopzfrq")))

@@ -16,6 +16,7 @@ import com.azure.resourcemanager.databox.fluent.models.UnencryptedCredentialsInn
 import com.azure.resourcemanager.databox.models.CancellationReason;
 import com.azure.resourcemanager.databox.models.JobResource;
 import com.azure.resourcemanager.databox.models.Jobs;
+import com.azure.resourcemanager.databox.models.MarkDevicesShippedRequest;
 import com.azure.resourcemanager.databox.models.ShipmentPickUpRequest;
 import com.azure.resourcemanager.databox.models.ShipmentPickUpResponse;
 import com.azure.resourcemanager.databox.models.UnencryptedCredentials;
@@ -40,6 +41,21 @@ public final class JobsImpl implements Jobs {
     public PagedIterable<JobResource> list(String skipToken, Context context) {
         PagedIterable<JobResourceInner> inner = this.serviceClient().list(skipToken, context);
         return Utils.mapPage(inner, inner1 -> new JobResourceImpl(inner1, this.manager()));
+    }
+
+    public Response<Void> markDevicesShippedWithResponse(
+        String jobName,
+        String resourceGroupName,
+        MarkDevicesShippedRequest markDevicesShippedRequest,
+        Context context) {
+        return this
+            .serviceClient()
+            .markDevicesShippedWithResponse(jobName, resourceGroupName, markDevicesShippedRequest, context);
+    }
+
+    public void markDevicesShipped(
+        String jobName, String resourceGroupName, MarkDevicesShippedRequest markDevicesShippedRequest) {
+        this.serviceClient().markDevicesShipped(jobName, resourceGroupName, markDevicesShippedRequest);
     }
 
     public PagedIterable<JobResource> listByResourceGroup(String resourceGroupName) {

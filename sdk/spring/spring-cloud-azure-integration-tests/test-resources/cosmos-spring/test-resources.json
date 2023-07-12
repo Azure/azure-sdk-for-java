@@ -9,13 +9,15 @@
       "type": "bool",
       "metadata": {
         "description": "Flag to enable or disable multiple write locations on CosmosDB Account"
-      }
+      },
+      "defaultValue": false
     },
     "defaultConsistencyLevel": {
       "type": "string",
       "metadata": {
         "description": "Default Cosmosdb Account level consistency"
-      }
+      },
+      "defaultValue": "Session"
     },
     "enableMultipleRegions": {
       "type": "bool",
@@ -38,35 +40,14 @@
     "newAccountName": "[toLower(concat(parameters('baseName'), '2'))]",
     "resourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]",
     "newResourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('newAccountName'))]",
-    "singleRegionConfiguration": [
-      {
-        "locationName": "West Central US",
-        "provisioningState": "Succeeded",
-        "failoverPriority": 0,
-        "isZoneRedundant": false
-      }],
-      "multiRegionConfiguration": [
-      {
-        "locationName": "West Central US",
-        "provisioningState": "Succeeded",
-        "failoverPriority": 0,
-        "isZoneRedundant": false
-      },
-      {
-        "locationName": "Central US",
-        "provisioningState": "Succeeded",
-        "failoverPriority": 1,
-        "isZoneRedundant": false
-      }
-    ],
-    "locationsConfiguration": "[if(parameters('enableMultipleRegions'), variables('multiRegionConfiguration'), variables('singleRegionConfiguration'))]"
+    "location": "[resourceGroup().location]"
   },
   "resources": [
     {
       "type": "Microsoft.DocumentDB/databaseAccounts",
       "apiVersion": "[variables('apiVersion')]",
       "name": "[variables('accountName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[variables('location')]",
       "kind": "GlobalDocumentDB",
       "properties": {
         "publicNetworkAccess": "Enabled",
@@ -84,7 +65,14 @@
           "maxIntervalInSeconds": 5,
           "maxStalenessPrefix": 100
         },
-        "locations": "[variables('locationsConfiguration')]",
+        "locations": [
+          {
+            "locationName": "[variables('location')]",
+            "provisioningState": "Succeeded",
+            "failoverPriority": 0,
+            "isZoneRedundant": false
+          }
+        ],
         "capabilities": [],
         "ipRules": []
       }
@@ -93,7 +81,7 @@
       "type": "Microsoft.DocumentDB/databaseAccounts",
       "apiVersion": "[variables('apiVersion')]",
       "name": "[variables('newAccountName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[variables('location')]",
       "kind": "GlobalDocumentDB",
       "properties": {
         "publicNetworkAccess": "Enabled",
@@ -111,7 +99,14 @@
           "maxIntervalInSeconds": 5,
           "maxStalenessPrefix": 100
         },
-        "locations": "[variables('locationsConfiguration')]",
+        "locations": [
+          {
+            "locationName": "[variables('location')]",
+            "provisioningState": "Succeeded",
+            "failoverPriority": 0,
+            "isZoneRedundant": false
+          }
+        ],
         "capabilities": [],
         "ipRules": []
       }

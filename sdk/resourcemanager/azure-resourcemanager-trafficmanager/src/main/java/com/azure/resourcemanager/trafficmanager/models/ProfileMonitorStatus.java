@@ -26,6 +26,15 @@ public final class ProfileMonitorStatus extends ExpandableStringEnum<ProfileMoni
     public static final ProfileMonitorStatus INACTIVE = fromString("Inactive");
 
     /**
+     * Creates a new instance of ProfileMonitorStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProfileMonitorStatus() {
+    }
+
+    /**
      * Creates or finds a ProfileMonitorStatus from its string representation.
      *
      * @param name a name to look for.

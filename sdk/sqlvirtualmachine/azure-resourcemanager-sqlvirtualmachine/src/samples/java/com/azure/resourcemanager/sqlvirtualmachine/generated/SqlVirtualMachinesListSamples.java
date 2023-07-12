@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlVirtualMachines List. */
 public final class SqlVirtualMachinesListSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/ListSubscriptionSqlVirtualMachine.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/ListSubscriptionSqlVirtualMachine.json
      */
     /**
      * Sample code: Gets all SQL virtual machines in a subscription.
@@ -18,6 +16,6 @@ public final class SqlVirtualMachinesListSamples {
      */
     public static void getsAllSQLVirtualMachinesInASubscription(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager.sqlVirtualMachines().list(Context.NONE);
+        manager.sqlVirtualMachines().list(com.azure.core.util.Context.NONE);
     }
 }

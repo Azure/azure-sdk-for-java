@@ -4,75 +4,92 @@
 
 package com.azure.resourcemanager.databox.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** The Status of the copy. */
-public enum CopyStatus {
-    /** Enum value NotStarted. */
-    NOT_STARTED("NotStarted"),
+public final class CopyStatus extends ExpandableStringEnum<CopyStatus> {
+    /** Static value NotStarted for CopyStatus. */
+    public static final CopyStatus NOT_STARTED = fromString("NotStarted");
 
-    /** Enum value InProgress. */
-    IN_PROGRESS("InProgress"),
+    /** Static value InProgress for CopyStatus. */
+    public static final CopyStatus IN_PROGRESS = fromString("InProgress");
 
-    /** Enum value Completed. */
-    COMPLETED("Completed"),
+    /** Static value Completed for CopyStatus. */
+    public static final CopyStatus COMPLETED = fromString("Completed");
 
-    /** Enum value CompletedWithErrors. */
-    COMPLETED_WITH_ERRORS("CompletedWithErrors"),
+    /** Static value CompletedWithErrors for CopyStatus. */
+    public static final CopyStatus COMPLETED_WITH_ERRORS = fromString("CompletedWithErrors");
 
-    /** Enum value Failed. */
-    FAILED("Failed"),
+    /** Static value Failed for CopyStatus. */
+    public static final CopyStatus FAILED = fromString("Failed");
 
-    /** Enum value NotReturned. */
-    NOT_RETURNED("NotReturned"),
+    /** Static value NotReturned for CopyStatus. */
+    public static final CopyStatus NOT_RETURNED = fromString("NotReturned");
 
-    /** Enum value HardwareError. */
-    HARDWARE_ERROR("HardwareError"),
+    /** Static value HardwareError for CopyStatus. */
+    public static final CopyStatus HARDWARE_ERROR = fromString("HardwareError");
 
-    /** Enum value DeviceFormatted. */
-    DEVICE_FORMATTED("DeviceFormatted"),
+    /** Static value DeviceFormatted for CopyStatus. */
+    public static final CopyStatus DEVICE_FORMATTED = fromString("DeviceFormatted");
 
-    /** Enum value DeviceMetadataModified. */
-    DEVICE_METADATA_MODIFIED("DeviceMetadataModified"),
+    /** Static value DeviceMetadataModified for CopyStatus. */
+    public static final CopyStatus DEVICE_METADATA_MODIFIED = fromString("DeviceMetadataModified");
 
-    /** Enum value StorageAccountNotAccessible. */
-    STORAGE_ACCOUNT_NOT_ACCESSIBLE("StorageAccountNotAccessible"),
+    /** Static value StorageAccountNotAccessible for CopyStatus. */
+    public static final CopyStatus STORAGE_ACCOUNT_NOT_ACCESSIBLE = fromString("StorageAccountNotAccessible");
 
-    /** Enum value UnsupportedData. */
-    UNSUPPORTED_DATA("UnsupportedData");
+    /** Static value UnsupportedData for CopyStatus. */
+    public static final CopyStatus UNSUPPORTED_DATA = fromString("UnsupportedData");
 
-    /** The actual serialized value for a CopyStatus instance. */
-    private final String value;
+    /** Static value DriveNotReceived for CopyStatus. */
+    public static final CopyStatus DRIVE_NOT_RECEIVED = fromString("DriveNotReceived");
 
-    CopyStatus(String value) {
-        this.value = value;
+    /** Static value UnsupportedDrive for CopyStatus. */
+    public static final CopyStatus UNSUPPORTED_DRIVE = fromString("UnsupportedDrive");
+
+    /** Static value OtherServiceError for CopyStatus. */
+    public static final CopyStatus OTHER_SERVICE_ERROR = fromString("OtherServiceError");
+
+    /** Static value OtherUserError for CopyStatus. */
+    public static final CopyStatus OTHER_USER_ERROR = fromString("OtherUserError");
+
+    /** Static value DriveNotDetected for CopyStatus. */
+    public static final CopyStatus DRIVE_NOT_DETECTED = fromString("DriveNotDetected");
+
+    /** Static value DriveCorrupted for CopyStatus. */
+    public static final CopyStatus DRIVE_CORRUPTED = fromString("DriveCorrupted");
+
+    /** Static value MetadataFilesModifiedOrRemoved for CopyStatus. */
+    public static final CopyStatus METADATA_FILES_MODIFIED_OR_REMOVED = fromString("MetadataFilesModifiedOrRemoved");
+
+    /**
+     * Creates a new instance of CopyStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CopyStatus() {
     }
 
     /**
-     * Parses a serialized value to a CopyStatus instance.
+     * Creates or finds a CopyStatus from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed CopyStatus object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding CopyStatus.
      */
     @JsonCreator
-    public static CopyStatus fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        CopyStatus[] items = CopyStatus.values();
-        for (CopyStatus item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static CopyStatus fromString(String name) {
+        return fromString(name, CopyStatus.class);
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * Gets known CopyStatus values.
+     *
+     * @return known CopyStatus values.
+     */
+    public static Collection<CopyStatus> values() {
+        return values(CopyStatus.class);
     }
 }

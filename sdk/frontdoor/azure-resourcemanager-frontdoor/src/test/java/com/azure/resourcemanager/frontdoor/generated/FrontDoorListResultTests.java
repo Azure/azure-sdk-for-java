@@ -14,15 +14,15 @@ public final class FrontDoorListResultTests {
         FrontDoorListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"resourceState\":\"Deleting\",\"provisioningState\":\"k\",\"cname\":\"eiithlvmez\",\"frontdoorId\":\"shxmzsbbzoggigrx\",\"rulesEngines\":[],\"friendlyName\":\"rvjx\",\"routingRules\":[],\"loadBalancingSettings\":[],\"healthProbeSettings\":[],\"backendPools\":[],\"frontendEndpoints\":[],\"enabledState\":\"Enabled\"},\"location\":\"koen\",\"tags\":{\"dng\":\"knvudwtiukb\",\"g\":\"pocipazyxoegu\",\"mrbpizcdrqj\":\"npiucgygevqznty\"},\"id\":\"dpydn\",\"name\":\"yhxdeoejzicwi\",\"type\":\"sjttgzfbish\"},{\"properties\":{\"resourceState\":\"Disabled\",\"provisioningState\":\"jdeyeamdpha\",\"cname\":\"lpbuxwgipwhonowk\",\"frontdoorId\":\"hwankixzbinjepu\",\"rulesEngines\":[],\"friendlyName\":\"rywn\",\"routingRules\":[],\"loadBalancingSettings\":[],\"healthProbeSettings\":[],\"backendPools\":[],\"frontendEndpoints\":[],\"enabledState\":\"Disabled\"},\"location\":\"zrnkcqvyxlwh\",\"tags\":{\"yav\":\"icohoqqnwvl\",\"konocu\":\"hheunmmqhgyx\",\"zf\":\"oklyaxuconuq\",\"vjektcxsenh\":\"beypewrmjmw\"},\"id\":\"lrsf\",\"name\":\"rzpwvlqdqgbiq\",\"type\":\"lihkaetcktvfc\"},{\"properties\":{\"resourceState\":\"Deleting\",\"provisioningState\":\"kymuctqhjfbebr\",\"cname\":\"xerf\",\"frontdoorId\":\"utttxfvjrbirp\",\"rulesEngines\":[],\"friendlyName\":\"pcyvahfnljkyqx\",\"routingRules\":[],\"loadBalancingSettings\":[],\"healthProbeSettings\":[],\"backendPools\":[],\"frontendEndpoints\":[],\"enabledState\":\"Enabled\"},\"location\":\"ok\",\"tags\":{\"gsncghkjeszz\":\"jyoxgvclt\",\"mxnehmp\":\"bijhtxfvgxbf\",\"godebfqkkrbmpu\":\"ec\"},\"id\":\"gr\",\"name\":\"wflzlfbxzpuzy\",\"type\":\"ispnqzahmgkbrp\"},{\"properties\":{\"resourceState\":\"Enabling\",\"provisioningState\":\"bnuqqkpik\",\"cname\":\"rgvtqag\",\"frontdoorId\":\"uynhijg\",\"rulesEngines\":[],\"friendlyName\":\"bfs\",\"routingRules\":[],\"loadBalancingSettings\":[],\"healthProbeSettings\":[],\"backendPools\":[],\"frontendEndpoints\":[],\"enabledState\":\"Enabled\"},\"location\":\"pnazzm\",\"tags\":{\"hrbnlankxmyskpbh\":\"unmpxttd\",\"yn\":\"nbtkcxywnytnr\"},\"id\":\"qidybyx\",\"name\":\"zfcl\",\"type\":\"aaxdbabphlwrq\"}],\"nextLink\":\"ktsthsucocmny\"}")
+                    "{\"value\":[{\"properties\":{\"resourceState\":\"Enabled\",\"provisioningState\":\"fkgukdkexxppof\",\"cname\":\"axcfjpgddtocjjx\",\"frontdoorId\":\"pmouexhdz\",\"rulesEngines\":[],\"extendedProperties\":{},\"friendlyName\":\"eojnxqbzvddn\",\"routingRules\":[],\"loadBalancingSettings\":[],\"healthProbeSettings\":[],\"backendPools\":[],\"frontendEndpoints\":[],\"enabledState\":\"Disabled\"},\"location\":\"w\",\"tags\":{\"hcffcyddglmjthjq\":\"aoqvuh\"},\"id\":\"wpyeicxmqciwqvh\",\"name\":\"hix\",\"type\":\"igdtopbob\"}],\"nextLink\":\"ghmewuam\"}")
                 .toObject(FrontDoorListResult.class);
-        Assertions.assertEquals("ktsthsucocmny", model.nextLink());
+        Assertions.assertEquals("ghmewuam", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FrontDoorListResult model = new FrontDoorListResult().withNextLink("ktsthsucocmny");
+        FrontDoorListResult model = new FrontDoorListResult().withNextLink("ghmewuam");
         model = BinaryData.fromObject(model).toObject(FrontDoorListResult.class);
-        Assertions.assertEquals("ktsthsucocmny", model.nextLink());
+        Assertions.assertEquals("ghmewuam", model.nextLink());
     }
 }

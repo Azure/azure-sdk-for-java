@@ -41,6 +41,7 @@ public final class DirectConnectionConfig {
     private int ioThreadCountPerCoreFactor;
     private int ioThreadPriority;
     private boolean healthCheckTimeoutDetectionEnabled;
+    private int minConnectionPoolSizePerEndpoint;
 
     /**
      * Constructor
@@ -56,6 +57,7 @@ public final class DirectConnectionConfig {
         this.ioThreadCountPerCoreFactor = DEFAULT_IO_THREAD_COUNT_PER_CORE_FACTOR;
         this.ioThreadPriority = DEFAULT_IO_THREAD_PRIORITY;
         this.healthCheckTimeoutDetectionEnabled = Configs.isTcpHealthCheckTimeoutDetectionEnabled();
+        this.minConnectionPoolSizePerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
     }
 
     /**
@@ -310,6 +312,15 @@ public final class DirectConnectionConfig {
         return this.healthCheckTimeoutDetectionEnabled;
     }
 
+    DirectConnectionConfig setMinConnectionPoolSizePerEndpoint(int minConnectionPoolSizePerEndpoint) {
+        this.minConnectionPoolSizePerEndpoint = minConnectionPoolSizePerEndpoint;
+        return this;
+    }
+
+    int getMinConnectionPoolSizePerEndpoint() {
+        return this.minConnectionPoolSizePerEndpoint;
+    }
+
     @Override
     public String toString() {
         return "DirectConnectionConfig{" +
@@ -364,6 +375,17 @@ public final class DirectConnectionConfig {
                 @Override
                 public boolean isHealthCheckTimeoutDetectionEnabled(DirectConnectionConfig directConnectionConfig) {
                     return directConnectionConfig.isHealthCheckTimeoutDetectionEnabled();
+                }
+
+                @Override
+                public DirectConnectionConfig setMinConnectionPoolSizePerEndpoint(DirectConnectionConfig directConnectionConfig, int minConnectionPoolSizePerEndpoint) {
+                    directConnectionConfig.setMinConnectionPoolSizePerEndpoint(minConnectionPoolSizePerEndpoint);
+                    return directConnectionConfig;
+                }
+
+                @Override
+                public int getMinConnectionPoolSizePerEndpoint(DirectConnectionConfig directConnectionConfig) {
+                    return directConnectionConfig.getMinConnectionPoolSizePerEndpoint();
                 }
             });
     }

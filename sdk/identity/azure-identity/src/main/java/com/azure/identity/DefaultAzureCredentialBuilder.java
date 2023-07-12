@@ -275,12 +275,12 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         output.add(new EnvironmentCredential(identityClientOptions.clone()));
         output.add(getWorkloadIdentityCredential());
         output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, identityClientOptions.clone()));
-        output.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
         output.add(new SharedTokenCacheCredential(null, IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID,
             tenantId, identityClientOptions.clone()));
         output.add(new IntelliJCredential(tenantId, identityClientOptions.clone()));
         output.add(new AzureCliCredential(tenantId, identityClientOptions.clone()));
         output.add(new AzurePowerShellCredential(tenantId, identityClientOptions.clone()));
+        output.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
         return output;
     }
 
@@ -295,7 +295,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         if (!CoreUtils.isNullOrEmpty(azureAuthorityHost)) {
             identityClientOptions.setAuthorityHost(azureAuthorityHost);
         }
-        return new WorkloadIdentityCredential(null, clientId, null,
+        return new WorkloadIdentityCredential(tenantId, clientId, null,
                 identityClientOptions.clone());
     }
 }

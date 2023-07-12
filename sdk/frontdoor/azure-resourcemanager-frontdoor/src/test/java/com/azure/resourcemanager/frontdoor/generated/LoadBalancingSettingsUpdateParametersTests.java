@@ -14,23 +14,23 @@ public final class LoadBalancingSettingsUpdateParametersTests {
         LoadBalancingSettingsUpdateParameters model =
             BinaryData
                 .fromString(
-                    "{\"sampleSize\":2032728059,\"successfulSamplesRequired\":1528851064,\"additionalLatencyMilliseconds\":398738394}")
+                    "{\"sampleSize\":1092081926,\"successfulSamplesRequired\":2033787842,\"additionalLatencyMilliseconds\":294736838}")
                 .toObject(LoadBalancingSettingsUpdateParameters.class);
-        Assertions.assertEquals(2032728059, model.sampleSize());
-        Assertions.assertEquals(1528851064, model.successfulSamplesRequired());
-        Assertions.assertEquals(398738394, model.additionalLatencyMilliseconds());
+        Assertions.assertEquals(1092081926, model.sampleSize());
+        Assertions.assertEquals(2033787842, model.successfulSamplesRequired());
+        Assertions.assertEquals(294736838, model.additionalLatencyMilliseconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LoadBalancingSettingsUpdateParameters model =
             new LoadBalancingSettingsUpdateParameters()
-                .withSampleSize(2032728059)
-                .withSuccessfulSamplesRequired(1528851064)
-                .withAdditionalLatencyMilliseconds(398738394);
+                .withSampleSize(1092081926)
+                .withSuccessfulSamplesRequired(2033787842)
+                .withAdditionalLatencyMilliseconds(294736838);
         model = BinaryData.fromObject(model).toObject(LoadBalancingSettingsUpdateParameters.class);
-        Assertions.assertEquals(2032728059, model.sampleSize());
-        Assertions.assertEquals(1528851064, model.successfulSamplesRequired());
-        Assertions.assertEquals(398738394, model.additionalLatencyMilliseconds());
+        Assertions.assertEquals(1092081926, model.sampleSize());
+        Assertions.assertEquals(2033787842, model.successfulSamplesRequired());
+        Assertions.assertEquals(294736838, model.additionalLatencyMilliseconds());
     }
 }

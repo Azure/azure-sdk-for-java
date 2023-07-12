@@ -58,8 +58,7 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
     public interface ManagedRuleSetsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Network"
-                + "/FrontDoorWebApplicationFirewallManagedRuleSets")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallManagedRuleSets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedRuleSetDefinitionList>> list(
@@ -102,7 +101,7 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -145,7 +144,7 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-11-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

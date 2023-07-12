@@ -107,7 +107,7 @@ public final class FrontDoorNameAvailabilityWithSubscriptionsClientImpl
         } else {
             checkFrontDoorNameAvailabilityInput.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -157,7 +157,7 @@ public final class FrontDoorNameAvailabilityWithSubscriptionsClientImpl
         } else {
             checkFrontDoorNameAvailabilityInput.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

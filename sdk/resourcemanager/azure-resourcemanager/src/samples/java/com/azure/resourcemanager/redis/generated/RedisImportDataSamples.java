@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.redis.models.ImportRdbParameters;
 import java.util.Arrays;
 
 /** Samples for Redis ImportData. */
 public final class RedisImportDataSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheImport.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheImport.json
      */
     /**
      * Sample code: RedisCacheImport.
@@ -29,7 +28,8 @@ public final class RedisImportDataSamples {
                 "cache1",
                 new ImportRdbParameters()
                     .withFormat("RDB")
-                    .withFiles(Arrays.asList("http://fileuris.contoso.com/pathtofile1")),
-                Context.NONE);
+                    .withFiles(Arrays.asList("http://fileuris.contoso.com/pathtofile1"))
+                    .withStorageSubscriptionId("storageSubId"),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -415,7 +415,7 @@ class ServiceBusReceiverClientTest {
         // Arrange
         final byte[] contents = new byte[]{10, 111, 23};
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
-        when(asyncClient.getSessionState(SESSION_ID)).thenReturn(Mono.just(contents));
+        when(asyncClient.getSessionState()).thenReturn(Mono.just(contents));
 
         // Act
         final byte[] actual = client.getSessionState();
@@ -428,7 +428,7 @@ class ServiceBusReceiverClientTest {
     void getSessionStateNull() {
         // Arrange
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
-        when(asyncClient.getSessionState(SESSION_ID)).thenReturn(Mono.empty());
+        when(asyncClient.getSessionState()).thenReturn(Mono.empty());
 
         // Act
         final byte[] actual = client.getSessionState();
@@ -841,7 +841,7 @@ class ServiceBusReceiverClientTest {
         final String sessionId = "a-session-id";
         final OffsetDateTime response = Instant.ofEpochSecond(1585259339).atOffset(ZoneOffset.UTC);
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
-        when(asyncClient.renewSessionLock(SESSION_ID)).thenReturn(Mono.just(response));
+        when(asyncClient.renewSessionLock()).thenReturn(Mono.just(response));
 
 
         // Act
@@ -856,13 +856,13 @@ class ServiceBusReceiverClientTest {
         // Arrange
         final byte[] contents = new byte[]{10, 111, 23};
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
-        when(asyncClient.setSessionState(SESSION_ID, contents)).thenReturn(Mono.empty());
+        when(asyncClient.setSessionState(contents)).thenReturn(Mono.empty());
 
         // Act
         client.setSessionState(contents);
 
         // Assert
-        verify(asyncClient).setSessionState(SESSION_ID, contents);
+        verify(asyncClient).setSessionState(contents);
     }
 
     @Test

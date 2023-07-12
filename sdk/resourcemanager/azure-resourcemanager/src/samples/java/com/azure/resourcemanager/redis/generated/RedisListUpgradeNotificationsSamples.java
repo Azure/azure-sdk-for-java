@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Redis ListUpgradeNotifications. */
 public final class RedisListUpgradeNotificationsSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheListUpgradeNotifications.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheListUpgradeNotifications.json
      */
     /**
      * Sample code: RedisCacheListUpgradeNotifications.
@@ -22,6 +20,6 @@ public final class RedisListUpgradeNotificationsSamples {
             .manager()
             .serviceClient()
             .getRedis()
-            .listUpgradeNotifications("rg1", "cache1", 5000.0, Context.NONE);
+            .listUpgradeNotifications("rg1", "cache1", 5000.0, com.azure.core.util.Context.NONE);
     }
 }

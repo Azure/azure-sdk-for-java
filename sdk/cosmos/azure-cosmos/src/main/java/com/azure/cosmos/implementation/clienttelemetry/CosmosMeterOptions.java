@@ -15,18 +15,22 @@ public final class CosmosMeterOptions {
     private final boolean isHistogramPublishingEnabled;
     private final EnumSet<TagName> suppressedTagNames;
 
+    private final boolean isDiagnosticThresholdsFilteringEnabled;
+
     public CosmosMeterOptions(
         CosmosMetricName name,
         boolean isEnabled,
         double[] percentiles,
         boolean isHistogramPublishingEnabled,
-        EnumSet<TagName> suppressedTagNames) {
+        EnumSet<TagName> suppressedTagNames,
+        boolean isDiagnosticThresholdsFilteringEnabled) {
 
         this.name = name;
         this.isEnabled = isEnabled;
         this.percentiles = percentiles != null ? percentiles.clone() : new double[0];
         this.isHistogramPublishingEnabled = isHistogramPublishingEnabled;
         this.suppressedTagNames = suppressedTagNames;
+        this.isDiagnosticThresholdsFilteringEnabled = isDiagnosticThresholdsFilteringEnabled;
     }
 
     public CosmosMetricName getMeterName() {
@@ -48,4 +52,6 @@ public final class CosmosMeterOptions {
     public boolean isEnabled() {
         return this.isEnabled;
     }
+
+    public boolean isDiagnosticThresholdsFilteringEnabled() { return this.isDiagnosticThresholdsFilteringEnabled; }
 }

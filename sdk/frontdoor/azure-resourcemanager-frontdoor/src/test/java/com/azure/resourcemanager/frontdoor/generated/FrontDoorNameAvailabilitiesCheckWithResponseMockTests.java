@@ -31,7 +31,8 @@ public final class FrontDoorNameAvailabilitiesCheckWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"nameAvailability\":\"Available\",\"reason\":\"wcluqovekqvgq\",\"message\":\"wifzmp\"}";
+        String responseStr =
+            "{\"nameAvailability\":\"Available\",\"reason\":\"mieoxorgguf\",\"message\":\"aomtbghhavgrvkff\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,8 +65,8 @@ public final class FrontDoorNameAvailabilitiesCheckWithResponseMockTests {
                 .frontDoorNameAvailabilities()
                 .checkWithResponse(
                     new CheckNameAvailabilityInput()
-                        .withName("cjhfgmvecactxmw")
-                        .withType(ResourceType.MICROSOFT_NETWORK_FRONT_DOORS),
+                        .withName("sewgioilqukr")
+                        .withType(ResourceType.MICROSOFT_NETWORK_FRONT_DOORS_FRONTEND_ENDPOINTS),
                     com.azure.core.util.Context.NONE)
                 .getValue();
     }
