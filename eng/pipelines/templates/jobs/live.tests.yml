@@ -34,7 +34,7 @@ jobs:
       matrix: $[ ${{ parameters.Matrix }} ]
 
     variables:
-      - template: ../variables/globals.yml
+      - template: /eng/pipelines/templates/variables/globals.yml
       - name: ArmTemplateParameters
         value: '@{}'
 
@@ -65,11 +65,11 @@ jobs:
       # testing against and that isn't an LTS version at the time (ex. latest LTS is Java 17 but we're testing against
       # Java 18), then install the latest Java version and use that to run tests.
       - ${{ if notIn(split(parameters.JavaTestVersion, '.')[1], '8', '11', '17', '21') }}:
-        - template: eng/pipelines/templates/steps/install-latest-jdk.yml
+        - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
           parameters:
             LatestJdkFeatureVersion: ${{ split(parameters.JavaTestVersion, '.')[1] }}
 
-      - template: ../steps/install-reporting-tools.yml
+      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
         parameters:
           JdkVersion: $(JavaTestVersion)
 
