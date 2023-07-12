@@ -35,6 +35,9 @@ parameters:
   - name: ExcludeProjectList
     type: string
     default: 'com.azure.resourcemanager:azure-resourcemanager-samples'
+  - name: ContinueOnError
+    type: boolean
+    default: false
 
 steps:
   - ${{ if ne(variables.TestFromSource, 'true') }}:
@@ -51,6 +54,7 @@ steps:
         goals: 'install'
       env:
         AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
+      continueOnError: ${{ parameters.ContinueOnError }}
 
   - ${{ if eq(variables.TestVersionSupport, 'true') }}:
     - task: PythonScript@0
@@ -72,6 +76,12 @@ steps:
         goals: 'install'
       env:
         AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
+      continueOnError: ${{ parameters.ContinueOnError }}
+      # Only run tests if the build succeeded without errors.
+      # This doesn't use the built-in 'succeeded()' as the passes if the build succeeded or succeeded with warnings,
+      # which is what continueOnError: true does.
+      # https://learn.microsoft.com/en-us/azure/devops/pipelines/process/expressions?view=azure-devops#succeeded
+      condition: eq(variables['Agent.JobStatus'], 'Succeeded')
 
   - ${{ if ne(variables.TestFromSource, 'true') }}:
     # we want to run this when TestFromSource isn't true
@@ -87,6 +97,7 @@ steps:
         publishJUnitResults: false
         goals: ${{ parameters.TestGoals }}
       env: ${{ parameters.TestEnvVars }}
+      continueOnError: ${{ parameters.ContinueOnError }}
 
   - ${{ if eq(variables.RunAggregateReports, 'true') }}:
     # Generate the pom file with all the modules required for creating an aggregate code coverage report
