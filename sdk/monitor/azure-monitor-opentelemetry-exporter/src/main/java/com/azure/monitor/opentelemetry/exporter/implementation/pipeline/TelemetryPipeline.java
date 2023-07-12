@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.pipeline;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
@@ -13,6 +14,8 @@ import io.opentelemetry.sdk.common.CompletableResultCode;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Collections;
@@ -61,8 +64,8 @@ public class TelemetryPipeline {
 
     private static URL getFullIngestionUrl(String ingestionEndpoint) {
         try {
-            return new URL(new URL(ingestionEndpoint), "v2.1/track");
-        } catch (MalformedURLException e) {
+            return new URI(ingestionEndpoint).resolve("v2.1/track").toURL();
+        } catch (MalformedURLException | URISyntaxException e) {
             throw new IllegalArgumentException("Invalid endpoint: " + ingestionEndpoint, e);
         }
     }
@@ -119,11 +122,11 @@ public class TelemetryPipeline {
         int responseCode = response.getStatusCode();
 
         if (StatusCode.isRedirect(responseCode) && remainingRedirects > 0) {
-            String location = response.getHeaderValue("Location");
+            String location = response.getHeaderValue(HttpHeaderName.fromString("Location"));
             URL locationUrl;
             try {
-                locationUrl = new URL(location);
-            } catch (MalformedURLException e) {
+                locationUrl = new URI(location).toURL();
+            } catch (MalformedURLException | URISyntaxException e) {
                 listener.onException(request, "Invalid redirect: " + location, e);
                 return;
             }
