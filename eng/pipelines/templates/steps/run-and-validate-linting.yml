@@ -9,8 +9,8 @@ parameters:
     type: boolean
     default: false
   - name: RunLinting
-    type: string
-    default: 'true'
+    type: boolean
+    default: true
 
 steps:
   - task: Maven@3

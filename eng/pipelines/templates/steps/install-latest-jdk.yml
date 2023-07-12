@@ -3,8 +3,8 @@ parameters:
     type: string
     default: $(LatestJdkFeatureVersion)
   - name: IsLatestNonLtsJdk
-    type: string
-    default: 'true'
+    type: boolean
+    default: true
 
 steps:
   # Non-standard JDK versions are only supported in Linux.

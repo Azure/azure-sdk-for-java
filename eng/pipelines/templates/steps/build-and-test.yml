@@ -36,8 +36,8 @@ parameters:
     type: string
     default: 'com.azure.resourcemanager:azure-resourcemanager-samples'
   - name: ContinueOnError
-    type: string
-    default: 'false'
+    type: boolean
+    default: false
 
 steps:
   - task: Maven@3

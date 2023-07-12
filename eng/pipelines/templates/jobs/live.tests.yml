@@ -23,6 +23,7 @@ parameters:
   TestParallelization: '1'
   TestVersionSupport: $(TestVersionSupport)
   UseHttpFaultInjector: false
+  IsLatestNonLtsJdk: 'false'
 
 jobs:
   - job:
@@ -66,7 +67,7 @@ jobs:
       - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
         parameters:
           LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
-          IsLatestNonLtsJdk: "$[ eq(variables['JavaTestVersion'], variables['LatestNonLtsJavaVersion']) ]"
+          IsLatestNonLtsJdk: ${{ eq(parameters.IsLatestNonLtsJdk, 'true') }}
 
       - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
         parameters:
@@ -104,7 +105,7 @@ jobs:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           ParallelTestPlayback: 'false'
           BuildParallelization: ${{ parameters.BuildParallelization }}
-          ContinueOnError: $(IsLatestNonLtsJdk)
+          ContinueOnError: ${{ eq(parameters.IsLatestNonLtsJdk, 'true') }}
           IsLiveTest: true
           TestGoals: ${{ parameters.TestGoals }}
           TestOptions: ${{ parameters.TestOptions }}
