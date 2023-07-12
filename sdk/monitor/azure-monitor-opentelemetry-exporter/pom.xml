@@ -81,11 +81,6 @@
       <artifactId>spotbugs-annotations</artifactId>
       <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
     </dependency>
-    <dependency>
-      <groupId>com.google.auto.service</groupId>
-      <artifactId>auto-service</artifactId>
-      <version>1.1.1</version> <!-- {x-version-update;com.google.auto.service:auto-service;external_dependency} -->
-    </dependency>
 
     <!-- Test dependencies -->
     <dependency>
