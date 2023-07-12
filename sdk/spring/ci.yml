@@ -237,6 +237,7 @@ extends:
   parameters:
     ServiceDirectory: spring
     EnableBatchRelease: true
+    ProfileFlag: "-Plibraries-data-plane-spring"
     Artifacts:
       - name: azure-spring-data-cosmos
         groupId: com.azure
