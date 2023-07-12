@@ -451,7 +451,7 @@ public class TestProxyTests extends TestProxyTestBase {
         StringBuilder stringBuilder = new StringBuilder();
         String line;
         while ((line = reader.readLine()) != null) {
-            stringBuilder.append(line);
+            stringBuilder.append(line + "\n");
             try {
                 process.waitFor();
             } catch (InterruptedException e) {
