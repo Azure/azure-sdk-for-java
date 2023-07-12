@@ -15,7 +15,7 @@ import java.util.Map;
 /** Samples for BmcKeySets Update. */
 public final class BmcKeySetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BmcKeySets_Patch.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BmcKeySets_Patch.json
      */
     /**
      * Sample code: Patch baseboard management controller key set of cluster.

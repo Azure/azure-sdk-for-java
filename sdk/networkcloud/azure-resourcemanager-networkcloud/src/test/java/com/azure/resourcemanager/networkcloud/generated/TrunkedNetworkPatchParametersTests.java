@@ -16,9 +16,9 @@ public final class TrunkedNetworkPatchParametersTests {
         TrunkedNetworkPatchParameters model =
             BinaryData
                 .fromString(
-                    "{\"tags\":{\"py\":\"qtanarfdlpuk\",\"gkhnmgbrouxddbh\":\"neizjcpe\",\"ulontacnpqwteht\":\"hpfpazjzoywjxhp\",\"ljyoogwx\":\"evrh\"}}")
+                    "{\"tags\":{\"amlbnseqacjjvpil\":\"eg\",\"ueio\":\"uooqjagmdit\",\"tdtpdelqacslmo\":\"kjbsah\",\"xofvcjk\":\"oebn\"}}")
                 .toObject(TrunkedNetworkPatchParameters.class);
-        Assertions.assertEquals("qtanarfdlpuk", model.tags().get("py"));
+        Assertions.assertEquals("eg", model.tags().get("amlbnseqacjjvpil"));
     }
 
     @org.junit.jupiter.api.Test
@@ -27,16 +27,16 @@ public final class TrunkedNetworkPatchParametersTests {
             new TrunkedNetworkPatchParameters()
                 .withTags(
                     mapOf(
-                        "py",
-                        "qtanarfdlpuk",
-                        "gkhnmgbrouxddbh",
-                        "neizjcpe",
-                        "ulontacnpqwteht",
-                        "hpfpazjzoywjxhp",
-                        "ljyoogwx",
-                        "evrh"));
+                        "amlbnseqacjjvpil",
+                        "eg",
+                        "ueio",
+                        "uooqjagmdit",
+                        "tdtpdelqacslmo",
+                        "kjbsah",
+                        "xofvcjk",
+                        "oebn"));
         model = BinaryData.fromObject(model).toObject(TrunkedNetworkPatchParameters.class);
-        Assertions.assertEquals("qtanarfdlpuk", model.tags().get("py"));
+        Assertions.assertEquals("eg", model.tags().get("amlbnseqacjjvpil"));
     }
 
     @SuppressWarnings("unchecked")

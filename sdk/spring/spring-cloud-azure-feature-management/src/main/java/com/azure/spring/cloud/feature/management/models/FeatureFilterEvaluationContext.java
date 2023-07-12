@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.models;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -38,7 +39,11 @@ public final class FeatureFilterEvaluationContext {
      * @return the parameters
      */
     public Map<String, Object> getParameters() {
-        return parameters;
+        Map<String, Object> params = new HashMap<String, Object>();
+        if (parameters != null) {
+            params.putAll(parameters);
+        }
+        return params;
     }
 
     /**

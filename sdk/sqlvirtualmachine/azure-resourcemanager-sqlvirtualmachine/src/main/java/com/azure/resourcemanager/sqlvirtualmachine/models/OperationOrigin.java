@@ -17,6 +17,15 @@ public final class OperationOrigin extends ExpandableStringEnum<OperationOrigin>
     public static final OperationOrigin SYSTEM = fromString("system");
 
     /**
+     * Creates a new instance of OperationOrigin value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperationOrigin() {
+    }
+
+    /**
      * Creates or finds a OperationOrigin from its string representation.
      *
      * @param name a name to look for.

@@ -4,14 +4,14 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Document model info. */
-@Fluent
+@Immutable
 public final class DocumentModelDetails {
     /*
      * Unique document model name.
@@ -62,7 +62,7 @@ public final class DocumentModelDetails {
      * @param createdDateTime the createdDateTime value to set.
      */
     @JsonCreator
-    public DocumentModelDetails(
+    private DocumentModelDetails(
             @JsonProperty(value = "modelId", required = true) String modelId,
             @JsonProperty(value = "createdDateTime", required = true) OffsetDateTime createdDateTime) {
         this.modelId = modelId;
@@ -88,17 +88,6 @@ public final class DocumentModelDetails {
     }
 
     /**
-     * Set the description property: Document model description.
-     *
-     * @param description the description value to set.
-     * @return the DocumentModelDetails object itself.
-     */
-    public DocumentModelDetails setDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
      * Get the createdDateTime property: Date and time (UTC) when the document model was created.
      *
      * @return the createdDateTime value.
@@ -117,34 +106,12 @@ public final class DocumentModelDetails {
     }
 
     /**
-     * Set the expirationDateTime property: Date and time (UTC) when the document model will expire.
-     *
-     * @param expirationDateTime the expirationDateTime value to set.
-     * @return the DocumentModelDetails object itself.
-     */
-    public DocumentModelDetails setExpirationDateTime(OffsetDateTime expirationDateTime) {
-        this.expirationDateTime = expirationDateTime;
-        return this;
-    }
-
-    /**
      * Get the apiVersion property: API version used to create this document model.
      *
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
-    }
-
-    /**
-     * Set the apiVersion property: API version used to create this document model.
-     *
-     * @param apiVersion the apiVersion value to set.
-     * @return the DocumentModelDetails object itself.
-     */
-    public DocumentModelDetails setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
     }
 
     /**
@@ -157,33 +124,11 @@ public final class DocumentModelDetails {
     }
 
     /**
-     * Set the tags property: List of key-value tag attributes associated with the document model.
-     *
-     * @param tags the tags value to set.
-     * @return the DocumentModelDetails object itself.
-     */
-    public DocumentModelDetails setTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
      * Get the docTypes property: Supported document types.
      *
      * @return the docTypes value.
      */
     public Map<String, DocumentTypeDetails> getDocTypes() {
         return this.docTypes;
-    }
-
-    /**
-     * Set the docTypes property: Supported document types.
-     *
-     * @param docTypes the docTypes value to set.
-     * @return the DocumentModelDetails object itself.
-     */
-    public DocumentModelDetails setDocTypes(Map<String, DocumentTypeDetails> docTypes) {
-        this.docTypes = docTypes;
-        return this;
     }
 }

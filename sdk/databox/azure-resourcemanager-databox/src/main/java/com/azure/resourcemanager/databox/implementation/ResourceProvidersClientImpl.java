@@ -54,8 +54,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     public interface ResourceProvidersService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs"
-                + "/{jobName}/mitigate")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}/mitigate")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> mitigate(

@@ -65,6 +65,10 @@ public final class WsfcDomainProfile {
     @JsonProperty(value = "clusterSubnetType")
     private ClusterSubnetType clusterSubnetType;
 
+    /** Creates an instance of WsfcDomainProfile class. */
+    public WsfcDomainProfile() {
+    }
+
     /**
      * Get the domainFqdn property: Fully qualified name of the domain.
      *

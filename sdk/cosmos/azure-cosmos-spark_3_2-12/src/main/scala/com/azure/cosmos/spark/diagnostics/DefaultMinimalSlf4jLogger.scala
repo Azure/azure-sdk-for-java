@@ -49,6 +49,10 @@ private[spark] class DefaultMinimalSlf4jLogger(classType: Class[_])
     log.isDebugEnabled()
   }
 
+  def isInfoLogEnabled: Boolean = {
+    log.isInfoEnabled()
+  }
+
   def logDebug(msg: => String, throwable: Throwable) {
     if (log.isDebugEnabled) log.debug(msg, throwable)
   }

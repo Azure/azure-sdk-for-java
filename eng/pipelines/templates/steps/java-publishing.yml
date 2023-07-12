@@ -97,6 +97,15 @@ steps:
           -ArtifactIDFilter "${{ parameters.ArtifactID }}"
           -GPGExecutablePath ${{ parameters.GPGExecutablePath }}
           -InformationAction Continue
+    - task: PowerShell@2
+      displayName: 'Flatten output folder'
+      inputs:
+        pwsh: true
+        workingDirectory: $(Agent.BuildDirectory)
+        filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Flatten-MavenPackageFolder.ps1
+        arguments: >
+          -Path ${{ parameters.OutputDirectory }}
+          -InformationAction Continue
     - ${{if and(eq(parameters.ShouldPublish, 'true'), ne(parameters.StageOnly, 'true'))}}:
       - task: EsrpRelease@2
         displayName: 'Publish to ESRP'

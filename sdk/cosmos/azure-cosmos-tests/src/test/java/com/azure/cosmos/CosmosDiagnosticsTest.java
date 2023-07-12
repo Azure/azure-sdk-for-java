@@ -208,6 +208,16 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         };
     }
 
+    @DataProvider(name = "operationTypeProvider")
+    public static Object[][] operationTypeProvider() {
+        return new Object[][]{
+            { OperationType.Read },
+            { OperationType.Replace },
+            { OperationType.Create },
+            { OperationType.Query },
+        };
+    }
+
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void gatewayDiagnostics() throws Exception {
 
@@ -604,8 +614,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         deleteCollection(testcontainer);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void directDiagnosticsOnCancelledOperation() {
+    @Test(groups = {"simple"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    public void directDiagnosticsOnCancelledOperation(OperationType operationType) {
 
         CosmosAsyncClient client = null;
         FaultInjectionRule faultInjectionRule = null;
@@ -621,38 +631,75 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             CosmosAsyncContainer container =
                 client.getDatabase(containerDirect.asyncContainer.getDatabase().getId()).getContainer(containerDirect.getId());
 
+            TestItem testItem = TestItem.createNewItem();
+            container.createItem(testItem).block();
+
             faultInjectionRule =
-                new FaultInjectionRuleBuilder("connectionDelay")
+                new FaultInjectionRuleBuilder("responseDelay")
                     .condition(new FaultInjectionConditionBuilder().build())
                     .result(
-                        FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
+                        FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
                             .delay(Duration.ofSeconds(2))
                             .build()
                     )
                     .build();
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(faultInjectionRule)).block();
-
-            // Test diagnostics for create item
-            InternalObjectNode internalObjectNode = getInternalObjectNode();
-            try {
-                container.createItem(internalObjectNode).block();
-                fail("expected OperationCancelledException");
-            } catch (CosmosException e) {
+            this.performDocumentOperation(container, operationType, testItem);
+            fail("expected OperationCancelledException");
+        } catch (CosmosException e) {
+                assertThat(e).isInstanceOf(OperationCancelledException.class);
                 String cosmosDiagnosticsString = e.getDiagnostics().toString();
                 assertThat(cosmosDiagnosticsString).contains("\"statusCode\":408");
                 assertThat(cosmosDiagnosticsString).contains("\"subStatusCode\":20008");
+        } finally {
+            if (faultInjectionRule != null) {
+                faultInjectionRule.disable();
             }
+            safeClose(client);
+        }
+    }
 
-            // Test diagnostics for read item
-            try {
-                container.readItem("fakeId", new PartitionKey("fakePartitionKey"), JsonNode.class).block();
-                fail("expected OperationCancelledException");
-            } catch (CosmosException e) {
-                String cosmosDiagnosticsString = e.getDiagnostics().toString();
-                assertThat(cosmosDiagnosticsString).contains("\"statusCode\":408");
-                assertThat(cosmosDiagnosticsString).contains("\"subStatusCode\":20008");
-            }
+    @Test(groups = {"simple"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    public void directDiagnostics_WithFaultInjection(OperationType operationType) {
+
+        CosmosAsyncClient client = null;
+        FaultInjectionRule faultInjectionRule = null;
+
+        try {
+            client = new CosmosClientBuilder()
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(TestConfigurations.HOST)
+                .buildAsyncClient();
+
+            CosmosAsyncContainer container =
+                client.getDatabase(containerDirect.asyncContainer.getDatabase().getId()).getContainer(containerDirect.getId());
+
+            TestItem testItem = TestItem.createNewItem();
+            container.createItem(testItem).block();
+
+            faultInjectionRule =
+                new FaultInjectionRuleBuilder("serverResponseError")
+                    .condition(new FaultInjectionConditionBuilder().build())
+                    .result(
+                        FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.GONE)
+                            .times(1)
+                            .build()
+                    )
+                    .build();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(faultInjectionRule)).block();
+            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, operationType, testItem);
+
+            assertThat(cosmosDiagnostics).isNotNull();
+            String diagnosticsString = cosmosDiagnostics.toString();
+            assertThat(diagnosticsString).contains("\"statusCode\":410");
+            assertThat(diagnosticsString).contains("\"subStatusCode\":21005");
+            assertThat(diagnosticsString).doesNotContain("\"statusCode\":408");
+            assertThat(diagnosticsString).doesNotContain("\"subStatusCode\":20008");
+
+        } catch (CosmosException e) {
+            fail("Request should succeeded but failed with " + e.getMessage());
 
         } finally {
             if (faultInjectionRule != null) {
@@ -1442,11 +1489,54 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
+    private CosmosDiagnostics performDocumentOperation(
+        CosmosAsyncContainer cosmosAsyncContainer,
+        OperationType operationType,
+        TestItem createdItem) {
+        if (operationType == OperationType.Query) {
+            String query = "SELECT * from c";
+            FeedResponse<TestItem> itemFeedResponse =
+                cosmosAsyncContainer.queryItems(query, TestItem.class).byPage().blockFirst();
+
+            return itemFeedResponse.getCosmosDiagnostics();
+        }
+
+
+        if (operationType == OperationType.Read) {
+            return cosmosAsyncContainer
+                .readItem(createdItem.id, new PartitionKey(createdItem.mypk), TestItem.class)
+                .block()
+                .getDiagnostics();
+        }
+
+        if (operationType == OperationType.Replace) {
+            return cosmosAsyncContainer
+                .replaceItem(createdItem, createdItem.id, new PartitionKey(createdItem.mypk))
+                .block()
+                .getDiagnostics();
+        }
+
+        if (operationType == OperationType.Create) {
+            return cosmosAsyncContainer.createItem(TestItem.createNewItem()).block().getDiagnostics();
+        }
+
+        throw new IllegalArgumentException("The operation type is not supported");
+    }
+
     public static class TestItem {
         public String id;
         public String mypk;
 
         public TestItem() {
+        }
+
+        public TestItem(String id, String mypk) {
+            this.id = id;
+            this.mypk = mypk;
+        }
+
+        public static TestItem createNewItem() {
+            return new TestItem(UUID.randomUUID().toString(), UUID.randomUUID().toString());
         }
     }
 }

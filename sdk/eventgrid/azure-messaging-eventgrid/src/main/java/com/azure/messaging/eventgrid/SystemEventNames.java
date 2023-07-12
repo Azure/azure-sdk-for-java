@@ -61,7 +61,12 @@ import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartDeletedE
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartPushedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImageDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImagePushedEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerServiceClusterSupportEndedEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerServiceClusterSupportEndingEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerServiceNewKubernetesVersionAvailableEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerServiceNodePoolRollingFailedEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerServiceNodePoolRollingStartedEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerServiceNodePoolRollingSucceededEventData;
 import com.azure.messaging.eventgrid.systemevents.DataBoxCopyCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.DataBoxCopyStartedEventData;
 import com.azure.messaging.eventgrid.systemevents.DataBoxOrderCompletedEventData;
@@ -420,12 +425,38 @@ public final class SystemEventNames {
     /** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ImagePushed event. */
     public static final String CONTAINER_REGISTRY_IMAGE_PUSHED = "Microsoft.ContainerRegistry.ImagePushed";
 
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.ClusterSupportEnded event. */
+    public static final String CONTAINER_SERVICE_CLUSTER_SUPPORT_ENDED =
+            "Microsoft.ContainerService.ClusterSupportEnded";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.ClusterSupportEnding event. */
+    public static final String CONTAINER_SERVICE_CLUSTER_SUPPORT_ENDING =
+            "Microsoft.ContainerService.ClusterSupportEnding";
+
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NewKubernetesVersionAvailable
      * event.
      */
     public static final String CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE =
             "Microsoft.ContainerService.NewKubernetesVersionAvailable";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NodePoolRollingFailed event.
+     */
+    public static final String CONTAINER_SERVICE_NODE_POOL_ROLLING_FAILED =
+            "Microsoft.ContainerService.NodePoolRollingFailed";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NodePoolRollingStarted event.
+     */
+    public static final String CONTAINER_SERVICE_NODE_POOL_ROLLING_STARTED =
+            "Microsoft.ContainerService.NodePoolRollingStarted";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NodePoolRollingSucceeded event.
+     */
+    public static final String CONTAINER_SERVICE_NODE_POOL_ROLLING_SUCCEEDED =
+            "Microsoft.ContainerService.NodePoolRollingSucceeded";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.DataBox.CopyCompleted event. */
     public static final String DATA_BOX_COPY_COMPLETED = "Microsoft.DataBox.CopyCompleted";
@@ -981,9 +1012,20 @@ public final class SystemEventNames {
                     put(CONTAINER_REGISTRY_CHART_PUSHED, ContainerRegistryChartPushedEventData.class);
                     put(CONTAINER_REGISTRY_IMAGE_DELETED, ContainerRegistryImageDeletedEventData.class);
                     put(CONTAINER_REGISTRY_IMAGE_PUSHED, ContainerRegistryImagePushedEventData.class);
+                    put(CONTAINER_SERVICE_CLUSTER_SUPPORT_ENDED, ContainerServiceClusterSupportEndedEventData.class);
+                    put(CONTAINER_SERVICE_CLUSTER_SUPPORT_ENDING, ContainerServiceClusterSupportEndingEventData.class);
                     put(
                             CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE,
                             ContainerServiceNewKubernetesVersionAvailableEventData.class);
+                    put(
+                            CONTAINER_SERVICE_NODE_POOL_ROLLING_FAILED,
+                            ContainerServiceNodePoolRollingFailedEventData.class);
+                    put(
+                            CONTAINER_SERVICE_NODE_POOL_ROLLING_STARTED,
+                            ContainerServiceNodePoolRollingStartedEventData.class);
+                    put(
+                            CONTAINER_SERVICE_NODE_POOL_ROLLING_SUCCEEDED,
+                            ContainerServiceNodePoolRollingSucceededEventData.class);
                     put(DATA_BOX_COPY_COMPLETED, DataBoxCopyCompletedEventData.class);
                     put(DATA_BOX_COPY_STARTED, DataBoxCopyStartedEventData.class);
                     put(DATA_BOX_ORDER_COMPLETED, DataBoxOrderCompletedEventData.class);

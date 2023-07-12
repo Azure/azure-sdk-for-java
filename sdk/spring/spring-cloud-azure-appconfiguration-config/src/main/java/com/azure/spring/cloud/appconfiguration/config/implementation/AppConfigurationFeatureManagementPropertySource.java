@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.AUDIENCE;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_REQUIREMENT_TYPE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_ROLLOUT_PERCENTAGE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_ROLLOUT_PERCENTAGE_CAPS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
@@ -10,6 +11,7 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.GROUPS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.GROUPS_CAPS;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.REQUIREMENT_TYPE_SERVICE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.SELECT_ALL_FEATURE_FLAGS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.TARGETING_FILTER;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.USERS;
@@ -32,7 +34,9 @@ import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Feature;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -50,7 +54,6 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
 
     private final List<ConfigurationSetting> featureConfigurationSettings;
-
     AppConfigurationFeatureManagementPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient,
         String keyFilter, String[] labelFilter) {
         super("FM_" + originEndpoint, replicaClient, keyFilter, labelFilter);
@@ -127,7 +130,17 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
     @SuppressWarnings("unchecked")
     private Object createFeature(FeatureFlagConfigurationSetting item) {
         String key = getFeatureSimpleName(item);
-        Feature feature = new Feature(key, item);
+        String requirementType = DEFAULT_REQUIREMENT_TYPE;
+        try {
+            JsonNode node = CASE_INSENSITIVE_MAPPER.readTree(item.getValue());
+            JsonNode conditions = node.get("conditions");
+            if (conditions != null && conditions.get(REQUIREMENT_TYPE_SERVICE) != null) {
+                requirementType = conditions.get(REQUIREMENT_TYPE_SERVICE).asText();
+            }
+        } catch (JsonProcessingException e) {
+
+        }
+        Feature feature = new Feature(key, item, requirementType);
         Map<Integer, FeatureFlagFilter> featureEnabledFor = feature.getEnabledFor();
 
         // Setting Enabled For to null, but enabled = true will result in the feature

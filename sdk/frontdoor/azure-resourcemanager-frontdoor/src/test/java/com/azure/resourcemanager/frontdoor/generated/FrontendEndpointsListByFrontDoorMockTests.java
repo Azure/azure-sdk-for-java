@@ -33,7 +33,7 @@ public final class FrontendEndpointsListByFrontDoorMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"resourceState\":\"Creating\",\"customHttpsProvisioningState\":\"Enabling\",\"customHttpsProvisioningSubstate\":\"DomainControlValidationRequestTimedOut\",\"customHttpsConfiguration\":{\"certificateSource\":\"FrontDoor\",\"protocolType\":\"ServerNameIndication\",\"minimumTlsVersion\":\"1.2\"},\"hostName\":\"uwprtujwsawd\",\"sessionAffinityEnabledState\":\"Disabled\",\"sessionAffinityTtlSeconds\":1148238938,\"webApplicationFirewallPolicyLink\":{\"id\":\"vit\"}},\"name\":\"v\",\"type\":\"eexavo\",\"id\":\"fglecdmdqbwp\"}]}";
+            "{\"value\":[{\"properties\":{\"resourceState\":\"Deleting\",\"customHttpsProvisioningState\":\"Enabling\",\"customHttpsProvisioningSubstate\":\"IssuingCertificate\",\"customHttpsConfiguration\":{\"certificateSource\":\"AzureKeyVault\",\"protocolType\":\"ServerNameIndication\",\"minimumTlsVersion\":\"1.2\"},\"hostName\":\"ordilmywwtkgkxny\",\"sessionAffinityEnabledState\":\"Enabled\",\"sessionAffinityTtlSeconds\":823284571,\"webApplicationFirewallPolicyLink\":{\"id\":\"udtjuewbc\"}},\"name\":\"xuuwhcj\",\"type\":\"ccybvp\",\"id\":\"akkud\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,15 +62,15 @@ public final class FrontendEndpointsListByFrontDoorMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<FrontendEndpoint> response =
-            manager.frontendEndpoints().listByFrontDoor("ekkkzd", "rtkgdojbmxvavref", com.azure.core.util.Context.NONE);
+            manager.frontendEndpoints().listByFrontDoor("cbgoor", "te", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fglecdmdqbwp", response.iterator().next().id());
-        Assertions.assertEquals("v", response.iterator().next().name());
-        Assertions.assertEquals("uwprtujwsawd", response.iterator().next().hostname());
+        Assertions.assertEquals("akkud", response.iterator().next().id());
+        Assertions.assertEquals("xuuwhcj", response.iterator().next().name());
+        Assertions.assertEquals("ordilmywwtkgkxny", response.iterator().next().hostname());
         Assertions
             .assertEquals(
-                SessionAffinityEnabledState.DISABLED, response.iterator().next().sessionAffinityEnabledState());
-        Assertions.assertEquals(1148238938, response.iterator().next().sessionAffinityTtlSeconds());
-        Assertions.assertEquals("vit", response.iterator().next().webApplicationFirewallPolicyLink().id());
+                SessionAffinityEnabledState.ENABLED, response.iterator().next().sessionAffinityEnabledState());
+        Assertions.assertEquals(823284571, response.iterator().next().sessionAffinityTtlSeconds());
+        Assertions.assertEquals("udtjuewbc", response.iterator().next().webApplicationFirewallPolicyLink().id());
     }
 }

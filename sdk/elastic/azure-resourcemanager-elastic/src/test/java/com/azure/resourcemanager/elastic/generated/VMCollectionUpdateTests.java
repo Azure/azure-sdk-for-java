@@ -14,18 +14,18 @@ public final class VMCollectionUpdateTests {
     public void testDeserialize() throws Exception {
         VMCollectionUpdate model =
             BinaryData
-                .fromString("{\"vmResourceId\":\"fmxa\",\"operationName\":\"Delete\"}")
+                .fromString("{\"vmResourceId\":\"nxqbzvddn\",\"operationName\":\"Add\"}")
                 .toObject(VMCollectionUpdate.class);
-        Assertions.assertEquals("fmxa", model.vmResourceId());
-        Assertions.assertEquals(OperationName.DELETE, model.operationName());
+        Assertions.assertEquals("nxqbzvddn", model.vmResourceId());
+        Assertions.assertEquals(OperationName.ADD, model.operationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VMCollectionUpdate model =
-            new VMCollectionUpdate().withVmResourceId("fmxa").withOperationName(OperationName.DELETE);
+            new VMCollectionUpdate().withVmResourceId("nxqbzvddn").withOperationName(OperationName.ADD);
         model = BinaryData.fromObject(model).toObject(VMCollectionUpdate.class);
-        Assertions.assertEquals("fmxa", model.vmResourceId());
-        Assertions.assertEquals(OperationName.DELETE, model.operationName());
+        Assertions.assertEquals("nxqbzvddn", model.vmResourceId());
+        Assertions.assertEquals(OperationName.ADD, model.operationName());
     }
 }

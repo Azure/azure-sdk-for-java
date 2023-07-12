@@ -10,7 +10,7 @@ import java.util.List;
 /** An immutable client-side representation of OperationListResult. */
 public interface OperationListResult {
     /**
-     * Gets the value property: List of operations available in the resourcehealth resource provider.
+     * Gets the value property: List of operations available in the Microsoft.ResourceHealth resource provider.
      *
      * @return the value value.
      */

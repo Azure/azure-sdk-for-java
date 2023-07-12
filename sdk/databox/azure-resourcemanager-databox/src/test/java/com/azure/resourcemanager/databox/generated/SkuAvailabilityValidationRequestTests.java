@@ -16,12 +16,12 @@ public final class SkuAvailabilityValidationRequestTests {
         SkuAvailabilityValidationRequest model =
             BinaryData
                 .fromString(
-                    "{\"validationType\":\"ValidateSkuAvailability\",\"deviceType\":\"DataBox\",\"transferType\":\"ImportToAzure\",\"country\":\"wakbogqxndl\",\"location\":\"zgx\"}")
+                    "{\"validationType\":\"ValidateSkuAvailability\",\"deviceType\":\"DataBox\",\"transferType\":\"ImportToAzure\",\"country\":\"pxacqqudfn\",\"location\":\"yxbaaabjyvayf\"}")
                 .toObject(SkuAvailabilityValidationRequest.class);
         Assertions.assertEquals(SkuName.DATA_BOX, model.deviceType());
         Assertions.assertEquals(TransferType.IMPORT_TO_AZURE, model.transferType());
-        Assertions.assertEquals("wakbogqxndl", model.country());
-        Assertions.assertEquals("zgx", model.location());
+        Assertions.assertEquals("pxacqqudfn", model.country());
+        Assertions.assertEquals("yxbaaabjyvayf", model.location());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,12 +30,12 @@ public final class SkuAvailabilityValidationRequestTests {
             new SkuAvailabilityValidationRequest()
                 .withDeviceType(SkuName.DATA_BOX)
                 .withTransferType(TransferType.IMPORT_TO_AZURE)
-                .withCountry("wakbogqxndl")
-                .withLocation("zgx");
+                .withCountry("pxacqqudfn")
+                .withLocation("yxbaaabjyvayf");
         model = BinaryData.fromObject(model).toObject(SkuAvailabilityValidationRequest.class);
         Assertions.assertEquals(SkuName.DATA_BOX, model.deviceType());
         Assertions.assertEquals(TransferType.IMPORT_TO_AZURE, model.transferType());
-        Assertions.assertEquals("wakbogqxndl", model.country());
-        Assertions.assertEquals("zgx", model.location());
+        Assertions.assertEquals("pxacqqudfn", model.country());
+        Assertions.assertEquals("yxbaaabjyvayf", model.location());
     }
 }

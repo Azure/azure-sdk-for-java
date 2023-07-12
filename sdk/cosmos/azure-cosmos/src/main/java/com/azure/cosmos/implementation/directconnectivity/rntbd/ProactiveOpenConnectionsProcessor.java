@@ -77,7 +77,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
             new ConcurrencyConfiguration(Configs.getAggressiveWarmupConcurrency(), Configs.getAggressiveWarmupConcurrency()));
         concurrencySettings.put(
             ConnectionOpenFlowAggressivenessHint.DEFENSIVE,
-            new ConcurrencyConfiguration(Configs.getDefensiveWarmupConcurrency(), Configs.getDefensiveWarmupConcurrency()));
+            new ConcurrencyConfiguration(Configs.getOpenConnectionsConcurrency(), Configs.getOpenConnectionsConcurrency()));
     }
 
     public void init() {

@@ -19,6 +19,10 @@ public final class SqlVirtualMachineUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of SqlVirtualMachineUpdate class. */
+    public SqlVirtualMachineUpdate() {
+    }
+
     /**
      * Get the tags property: Resource tags.
      *

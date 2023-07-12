@@ -17,30 +17,21 @@ public final class ProfileUpdateModelTests {
         ProfileUpdateModel model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"enabledState\":\"Enabled\"},\"tags\":{\"kkvnipjox\":\"yhtnapczwlokjye\",\"podmailzydehojwy\":\"jnchgej\",\"qwixjspro\":\"huxinpmqnj\",\"wmfdatscmdvpjhul\":\"vcputegj\"}}")
+                    "{\"properties\":{\"enabledState\":\"Disabled\"},\"tags\":{\"sgsahmkycgr\":\"znqntoru\",\"s\":\"uwjuetaeburuvdmo\",\"tpuqujmq\":\"zlxwabmqoefkifr\"}}")
                 .toObject(ProfileUpdateModel.class);
-        Assertions.assertEquals("yhtnapczwlokjye", model.tags().get("kkvnipjox"));
-        Assertions.assertEquals(State.ENABLED, model.enabledState());
+        Assertions.assertEquals("znqntoru", model.tags().get("sgsahmkycgr"));
+        Assertions.assertEquals(State.DISABLED, model.enabledState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProfileUpdateModel model =
             new ProfileUpdateModel()
-                .withTags(
-                    mapOf(
-                        "kkvnipjox",
-                        "yhtnapczwlokjye",
-                        "podmailzydehojwy",
-                        "jnchgej",
-                        "qwixjspro",
-                        "huxinpmqnj",
-                        "wmfdatscmdvpjhul",
-                        "vcputegj"))
-                .withEnabledState(State.ENABLED);
+                .withTags(mapOf("sgsahmkycgr", "znqntoru", "s", "uwjuetaeburuvdmo", "tpuqujmq", "zlxwabmqoefkifr"))
+                .withEnabledState(State.DISABLED);
         model = BinaryData.fromObject(model).toObject(ProfileUpdateModel.class);
-        Assertions.assertEquals("yhtnapczwlokjye", model.tags().get("kkvnipjox"));
-        Assertions.assertEquals(State.ENABLED, model.enabledState());
+        Assertions.assertEquals("znqntoru", model.tags().get("sgsahmkycgr"));
+        Assertions.assertEquals(State.DISABLED, model.enabledState());
     }
 
     @SuppressWarnings("unchecked")

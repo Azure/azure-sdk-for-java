@@ -3,6 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.core.management.AzureEnvironment
+import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants
 import com.azure.cosmos.spark.CosmosPatchOperationTypes.Increment
 import com.azure.cosmos.spark.utils.CosmosPatchTestHelper
 import org.apache.spark.sql.types.{NumericType, StructType}
@@ -720,6 +721,31 @@ class CosmosConfigSpec extends UnitSpec {
         config.operationType shouldEqual defaultPatchOperationType
       }
     )
+  }
+
+  "Customizing MaxBulKPayloadSizeInBytes" should "be possible" in {
+    val schema = CosmosPatchTestHelper.getPatchConfigTestSchema()
+    var userConfig = Map(
+      "spark.cosmos.write.strategy" -> "ItemOverwrite",
+      "spark.cosmos.write.bulk.enabled" -> "True",
+    )
+    var writeConfig: CosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig, schema)
+    writeConfig should not be null
+    writeConfig.maxMicroBatchPayloadSizeInBytes should not be null
+    writeConfig.maxMicroBatchPayloadSizeInBytes.isDefined shouldEqual true
+    writeConfig.maxMicroBatchPayloadSizeInBytes.get shouldEqual BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES
+
+    userConfig = Map(
+      "spark.cosmos.write.strategy" -> "ItemOverwrite",
+      "spark.cosmos.write.bulk.enabled" -> "True",
+      "spark.cosmos.write.bulk.targetedPayloadSizeInBytes" -> "1000000",
+    )
+
+    writeConfig = CosmosWriteConfig.parseWriteConfig(userConfig, schema)
+    writeConfig should not be null
+    writeConfig.maxMicroBatchPayloadSizeInBytes should not be null
+    writeConfig.maxMicroBatchPayloadSizeInBytes.isDefined shouldEqual true
+    writeConfig.maxMicroBatchPayloadSizeInBytes.get shouldEqual 1000000
   }
 
   "Config Parser" should "validate default operation types for patch configs" in {

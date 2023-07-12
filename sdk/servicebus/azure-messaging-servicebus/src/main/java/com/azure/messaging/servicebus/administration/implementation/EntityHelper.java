@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.administration.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -62,7 +63,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -669,7 +669,7 @@ public final class EntityHelper {
      * @param headerName name of the header to be added
      * @param context current request context
      */
-    public static void addSupplementaryAuthHeader(String headerName, String entity, Context context) {
+    public static void addSupplementaryAuthHeader(HttpHeaderName headerName, String entity, Context context) {
         context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY)
             .ifPresent(headers -> {
                 if (headers instanceof HttpHeaders) {
@@ -768,7 +768,7 @@ public final class EntityHelper {
     }
 
     public static QueueProperties getQueueProperties(QueueDescriptionEntryImpl e) {
-        final String queueName = getTitleValue(e.getTitle());
+        final String queueName = e.getTitle().getContent();
         final QueueProperties queueProperties = EntityHelper.toModel(
             e.getContent().getQueueDescription());
 
@@ -796,7 +796,7 @@ public final class EntityHelper {
                                                                    SubscriptionDescriptionEntryImpl entry) {
         final SubscriptionProperties subscription = EntityHelper.toModel(
             entry.getContent().getSubscriptionDescription());
-        final String subscriptionName = getTitleValue(entry.getTitle());
+        final String subscriptionName = entry.getTitle().getContent();
         EntityHelper.setSubscriptionName(subscription, subscriptionName);
         EntityHelper.setTopicName(subscription, topicName);
         return subscription;
@@ -804,13 +804,14 @@ public final class EntityHelper {
 
     public static TopicProperties getTopicProperties(TopicDescriptionEntryImpl entry) {
         final TopicProperties result = EntityHelper.toModel(entry.getContent().getTopicDescription());
-        final String topicName = getTitleValue(entry.getTitle());
+        final String topicName = entry.getTitle().getContent();
         EntityHelper.setTopicName(result, topicName);
         return result;
     }
 
-    public static SimpleResponse<SubscriptionProperties> getSubscriptionPropertiesSimpleResponse(
-        String topicName, Response<Object> response, SubscriptionDescriptionEntryImpl entry) {
+    public static SimpleResponse<SubscriptionProperties> getSubscriptionPropertiesSimpleResponse(String topicName,
+        Response<SubscriptionDescriptionEntryImpl> response) {
+        final SubscriptionDescriptionEntryImpl entry = response.getValue();
 
         // This was an empty response (ie. 204).
         if (entry == null) {
@@ -820,7 +821,7 @@ public final class EntityHelper {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         }
         final SubscriptionProperties subscription = getSubscriptionProperties(topicName, entry);
-        final String subscriptionName = getTitleValue(entry.getTitle());
+        final String subscriptionName = entry.getTitle().getContent();
         EntityHelper.setSubscriptionName(subscription, subscriptionName);
         EntityHelper.setTopicName(subscription, topicName);
 
@@ -829,7 +830,8 @@ public final class EntityHelper {
     }
 
     public static SimpleResponse<RuleProperties> getRulePropertiesSimpleResponse(
-        Response<Object> response, RuleDescriptionEntryImpl entry) {
+        Response<RuleDescriptionEntryImpl> response) {
+        final RuleDescriptionEntryImpl entry = response.getValue();
         // This was an empty response (ie. 204).
         if (entry == null) {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
@@ -841,35 +843,6 @@ public final class EntityHelper {
         final RuleDescriptionImpl description = entry.getContent().getRuleDescription();
         final RuleProperties result = EntityHelper.toModel(description);
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
-    }
-
-    /**
-     * Given an XML title element, returns the XML text inside. Jackson deserializes Objects as LinkedHashMaps. XML text
-     * is represented as an entry with an empty string as the key.
-     * <p>
-     * For example, the text returned from this {@code <title text="text/xml">QueueName</title>} is "QueueName".
-     *
-     * @param responseTitle XML title element.
-     * @return The XML text inside the title. {@code null} is returned if there is no value.
-     */
-    @SuppressWarnings("unchecked")
-    public static String getTitleValue(Object responseTitle) {
-        if (responseTitle instanceof String) {
-            return (String) responseTitle;
-        }
-
-        if (!(responseTitle instanceof Map)) {
-            return null;
-        }
-
-        final Map<String, String> map;
-        try {
-            map = (Map<String, String>) responseTitle;
-            return map.get("");
-        } catch (ClassCastException error) {
-            LOGGER.warning("Unable to cast to Map<String,String>. Title: {}", responseTitle, error);
-            return null;
-        }
     }
 
     public static void validateQueueName(String queueName) {

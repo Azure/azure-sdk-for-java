@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.catalog;
 
+import com.azure.analytics.purview.catalog.implementation.RelationshipsImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -19,16 +20,16 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = RelationshipClientBuilder.class)
 public final class RelationshipClient {
-    @Generated private final RelationshipAsyncClient client;
+    @Generated private final RelationshipsImpl serviceClient;
 
     /**
      * Initializes an instance of RelationshipClient class.
      *
-     * @param client the async client.
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    RelationshipClient(RelationshipAsyncClient client) {
-        this.client = client;
+    RelationshipClient(RelationshipsImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -38,29 +39,29 @@ public final class RelationshipClient {
      *
      * <pre>{@code
      * {
-     *     attributes: {
-     *         String: Object
+     *     attributes (Optional): {
+     *         String: Object (Optional)
      *     }
-     *     typeName: String
-     *     lastModifiedTS: String
-     *     createTime: Float
-     *     createdBy: String
-     *     end1: {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
+     *     typeName: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     end1 (Optional): {
+     *         guid: String (Optional)
+     *         typeName: String (Optional)
+     *         uniqueAttributes (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     end2: (recursive schema, see end2 above)
-     *     guid: String
-     *     homeId: String
-     *     label: String
-     *     provenanceType: Float
-     *     status: String(ACTIVE/DELETED)
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
+     *     end2 (Optional): (recursive schema, see end2 above)
+     *     guid: String (Optional)
+     *     homeId: String (Optional)
+     *     label: String (Optional)
+     *     provenanceType: Float (Optional)
+     *     status: String(ACTIVE/DELETED) (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
      * }
      * }</pre>
      *
@@ -68,29 +69,29 @@ public final class RelationshipClient {
      *
      * <pre>{@code
      * {
-     *     attributes: {
-     *         String: Object
+     *     attributes (Optional): {
+     *         String: Object (Optional)
      *     }
-     *     typeName: String
-     *     lastModifiedTS: String
-     *     createTime: Float
-     *     createdBy: String
-     *     end1: {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
+     *     typeName: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     end1 (Optional): {
+     *         guid: String (Optional)
+     *         typeName: String (Optional)
+     *         uniqueAttributes (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     end2: (recursive schema, see end2 above)
-     *     guid: String
-     *     homeId: String
-     *     label: String
-     *     provenanceType: Float
-     *     status: String(ACTIVE/DELETED)
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
+     *     end2 (Optional): (recursive schema, see end2 above)
+     *     guid: String (Optional)
+     *     homeId: String (Optional)
+     *     label: String (Optional)
+     *     provenanceType: Float (Optional)
+     *     status: String(ACTIVE/DELETED) (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
      * }
      * }</pre>
      *
@@ -105,7 +106,7 @@ public final class RelationshipClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createWithResponse(BinaryData relationship, RequestOptions requestOptions) {
-        return this.client.createWithResponse(relationship, requestOptions).block();
+        return this.serviceClient.createWithResponse(relationship, requestOptions);
     }
 
     /**
@@ -115,29 +116,29 @@ public final class RelationshipClient {
      *
      * <pre>{@code
      * {
-     *     attributes: {
-     *         String: Object
+     *     attributes (Optional): {
+     *         String: Object (Optional)
      *     }
-     *     typeName: String
-     *     lastModifiedTS: String
-     *     createTime: Float
-     *     createdBy: String
-     *     end1: {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
+     *     typeName: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     end1 (Optional): {
+     *         guid: String (Optional)
+     *         typeName: String (Optional)
+     *         uniqueAttributes (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     end2: (recursive schema, see end2 above)
-     *     guid: String
-     *     homeId: String
-     *     label: String
-     *     provenanceType: Float
-     *     status: String(ACTIVE/DELETED)
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
+     *     end2 (Optional): (recursive schema, see end2 above)
+     *     guid: String (Optional)
+     *     homeId: String (Optional)
+     *     label: String (Optional)
+     *     provenanceType: Float (Optional)
+     *     status: String(ACTIVE/DELETED) (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
      * }
      * }</pre>
      *
@@ -145,29 +146,29 @@ public final class RelationshipClient {
      *
      * <pre>{@code
      * {
-     *     attributes: {
-     *         String: Object
+     *     attributes (Optional): {
+     *         String: Object (Optional)
      *     }
-     *     typeName: String
-     *     lastModifiedTS: String
-     *     createTime: Float
-     *     createdBy: String
-     *     end1: {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
+     *     typeName: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     end1 (Optional): {
+     *         guid: String (Optional)
+     *         typeName: String (Optional)
+     *         uniqueAttributes (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     end2: (recursive schema, see end2 above)
-     *     guid: String
-     *     homeId: String
-     *     label: String
-     *     provenanceType: Float
-     *     status: String(ACTIVE/DELETED)
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
+     *     end2 (Optional): (recursive schema, see end2 above)
+     *     guid: String (Optional)
+     *     homeId: String (Optional)
+     *     label: String (Optional)
+     *     provenanceType: Float (Optional)
+     *     status: String(ACTIVE/DELETED) (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
      * }
      * }</pre>
      *
@@ -182,7 +183,7 @@ public final class RelationshipClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateWithResponse(BinaryData relationship, RequestOptions requestOptions) {
-        return this.client.updateWithResponse(relationship, requestOptions).block();
+        return this.serviceClient.updateWithResponse(relationship, requestOptions);
     }
 
     /**
@@ -196,93 +197,95 @@ public final class RelationshipClient {
      *     <tr><td>extendedInfo</td><td>Boolean</td><td>No</td><td>Limits whether includes extended information.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     referredEntities: {
-     *         String: {
-     *             attributes: {
-     *                 String: Object
+     *     referredEntities (Optional): {
+     *         String (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             classificationNames: [
-     *                 String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             classificationNames (Optional): [
+     *                 String (Optional)
      *             ]
-     *             classifications: [
-     *                 {
-     *                     attributes: {
-     *                         String: Object
+     *             classifications (Optional): [
+     *                  (Optional){
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
-     *                     entityGuid: String
-     *                     entityStatus: String(ACTIVE/DELETED)
-     *                     removePropagationsOnEntityDelete: Boolean
-     *                     validityPeriods: [
-     *                         {
-     *                             endTime: String
-     *                             startTime: String
-     *                             timeZone: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
+     *                     entityGuid: String (Optional)
+     *                     entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                     removePropagationsOnEntityDelete: Boolean (Optional)
+     *                     validityPeriods (Optional): [
+     *                          (Optional){
+     *                             endTime: String (Optional)
+     *                             startTime: String (Optional)
+     *                             timeZone: String (Optional)
      *                         }
      *                     ]
-     *                     source: String
-     *                     sourceDetails: {
-     *                         String: Object
+     *                     source: String (Optional)
+     *                     sourceDetails (Optional): {
+     *                         String: Object (Optional)
      *                     }
      *                 }
      *             ]
-     *             displayText: String
-     *             guid: String
-     *             isIncomplete: Boolean
-     *             labels: [
-     *                 String
+     *             displayText: String (Optional)
+     *             guid: String (Optional)
+     *             isIncomplete: Boolean (Optional)
+     *             labels (Optional): [
+     *                 String (Optional)
      *             ]
-     *             meaningNames: [
-     *                 String
+     *             meaningNames (Optional): [
+     *                 String (Optional)
      *             ]
-     *             meanings: [
-     *                 {
-     *                     confidence: Integer
-     *                     createdBy: String
-     *                     description: String
-     *                     displayText: String
-     *                     expression: String
-     *                     relationGuid: String
-     *                     source: String
-     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
-     *                     steward: String
-     *                     termGuid: String
+     *             meanings (Optional): [
+     *                  (Optional){
+     *                     confidence: Integer (Optional)
+     *                     createdBy: String (Optional)
+     *                     description: String (Optional)
+     *                     displayText: String (Optional)
+     *                     expression: String (Optional)
+     *                     relationGuid: String (Optional)
+     *                     source: String (Optional)
+     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                     steward: String (Optional)
+     *                     termGuid: String (Optional)
      *                 }
      *             ]
-     *             status: String(ACTIVE/DELETED)
+     *             status: String(ACTIVE/DELETED) (Optional)
      *         }
      *     }
-     *     relationship: {
-     *         attributes: {
-     *             String: Object
+     *     relationship (Optional): {
+     *         attributes (Optional): {
+     *             String: Object (Optional)
      *         }
-     *         typeName: String
-     *         lastModifiedTS: String
-     *         createTime: Float
-     *         createdBy: String
-     *         end1: {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
+     *         typeName: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         createTime: Float (Optional)
+     *         createdBy: String (Optional)
+     *         end1 (Optional): {
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
-     *         end2: (recursive schema, see end2 above)
-     *         guid: String
-     *         homeId: String
-     *         label: String
-     *         provenanceType: Float
-     *         status: String(ACTIVE/DELETED)
-     *         updateTime: Float
-     *         updatedBy: String
-     *         version: Float
+     *         end2 (Optional): (recursive schema, see end2 above)
+     *         guid: String (Optional)
+     *         homeId: String (Optional)
+     *         label: String (Optional)
+     *         provenanceType: Float (Optional)
+     *         status: String(ACTIVE/DELETED) (Optional)
+     *         updateTime: Float (Optional)
+     *         updatedBy: String (Optional)
+     *         version: Float (Optional)
      *     }
      * }
      * }</pre>
@@ -298,7 +301,7 @@ public final class RelationshipClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String guid, RequestOptions requestOptions) {
-        return this.client.getWithResponse(guid, requestOptions).block();
+        return this.serviceClient.getWithResponse(guid, requestOptions);
     }
 
     /**
@@ -315,6 +318,6 @@ public final class RelationshipClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String guid, RequestOptions requestOptions) {
-        return this.client.deleteWithResponse(guid, requestOptions).block();
+        return this.serviceClient.deleteWithResponse(guid, requestOptions);
     }
 }

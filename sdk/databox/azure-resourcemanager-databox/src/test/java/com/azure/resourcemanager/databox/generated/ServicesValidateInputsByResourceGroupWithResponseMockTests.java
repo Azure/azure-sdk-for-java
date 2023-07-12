@@ -65,8 +65,8 @@ public final class ServicesValidateInputsByResourceGroupWithResponseMockTests {
             manager
                 .services()
                 .validateInputsByResourceGroupWithResponse(
-                    "odlqiyntor",
-                    "ihleos",
+                    "wem",
+                    "zrncsdt",
                     new ValidationRequest()
                         .withIndividualRequestDetails(
                             Arrays.asList(new ValidationInputRequest(), new ValidationInputRequest())),

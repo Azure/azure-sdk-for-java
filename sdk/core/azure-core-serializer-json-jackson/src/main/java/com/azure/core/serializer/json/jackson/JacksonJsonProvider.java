@@ -31,6 +31,12 @@ import java.io.Writer;
  * Jackson-based implementation of {@link JsonProvider}.
  */
 public class JacksonJsonProvider implements JsonProvider {
+    /**
+     * Creates an instance of {@link JacksonJsonProvider}.
+     */
+    public JacksonJsonProvider() {
+    }
+
     @Override
     public JsonReader createReader(byte[] json, JsonOptions options) throws IOException {
         return AzureJsonUtils.createReader(json, options);

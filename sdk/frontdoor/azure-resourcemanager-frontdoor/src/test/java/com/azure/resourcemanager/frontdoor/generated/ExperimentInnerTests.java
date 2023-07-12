@@ -18,15 +18,15 @@ public final class ExperimentInnerTests {
         ExperimentInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"description\":\"erhhbcsglumm\",\"endpointA\":{\"name\":\"j\",\"endpoint\":\"dxob\"},\"endpointB\":{\"name\":\"xkqpxo\",\"endpoint\":\"jionpimexgstxgc\"},\"enabledState\":\"Enabled\",\"resourceState\":\"Enabled\",\"status\":\"ajrmvdjwzrlovmc\",\"scriptFileUri\":\"hijco\"},\"location\":\"jctbza\",\"tags\":{\"ukdkexxppofmxa\":\"sycbkbfk\",\"jpgd\":\"c\",\"j\":\"toc\"},\"id\":\"hvpmoue\",\"name\":\"hd\",\"type\":\"xibqeojnx\"}")
+                    "{\"properties\":{\"description\":\"y\",\"endpointA\":{\"name\":\"wlmdjrkv\",\"endpoint\":\"bvfvpdbod\"},\"endpointB\":{\"name\":\"zsjqlh\",\"endpoint\":\"r\"},\"enabledState\":\"Enabled\",\"resourceState\":\"Enabled\",\"status\":\"qipqkghvxndz\",\"scriptFileUri\":\"krefajpjo\"},\"location\":\"wkqnyhg\",\"tags\":{\"ystawfsdjpvkvp\":\"tjivfxzsjabib\"},\"id\":\"jxbkzbzkdvn\",\"name\":\"jabudurgkakmo\",\"type\":\"zhjjklffhmouwq\"}")
                 .toObject(ExperimentInner.class);
-        Assertions.assertEquals("jctbza", model.location());
-        Assertions.assertEquals("sycbkbfk", model.tags().get("ukdkexxppofmxa"));
-        Assertions.assertEquals("erhhbcsglumm", model.description());
-        Assertions.assertEquals("j", model.endpointA().name());
-        Assertions.assertEquals("dxob", model.endpointA().endpoint());
-        Assertions.assertEquals("xkqpxo", model.endpointB().name());
-        Assertions.assertEquals("jionpimexgstxgc", model.endpointB().endpoint());
+        Assertions.assertEquals("wkqnyhg", model.location());
+        Assertions.assertEquals("tjivfxzsjabib", model.tags().get("ystawfsdjpvkvp"));
+        Assertions.assertEquals("y", model.description());
+        Assertions.assertEquals("wlmdjrkv", model.endpointA().name());
+        Assertions.assertEquals("bvfvpdbod", model.endpointA().endpoint());
+        Assertions.assertEquals("zsjqlh", model.endpointB().name());
+        Assertions.assertEquals("r", model.endpointB().endpoint());
         Assertions.assertEquals(State.ENABLED, model.enabledState());
     }
 
@@ -34,20 +34,20 @@ public final class ExperimentInnerTests {
     public void testSerialize() throws Exception {
         ExperimentInner model =
             new ExperimentInner()
-                .withLocation("jctbza")
-                .withTags(mapOf("ukdkexxppofmxa", "sycbkbfk", "jpgd", "c", "j", "toc"))
-                .withDescription("erhhbcsglumm")
-                .withEndpointA(new Endpoint().withName("j").withEndpoint("dxob"))
-                .withEndpointB(new Endpoint().withName("xkqpxo").withEndpoint("jionpimexgstxgc"))
+                .withLocation("wkqnyhg")
+                .withTags(mapOf("ystawfsdjpvkvp", "tjivfxzsjabib"))
+                .withDescription("y")
+                .withEndpointA(new Endpoint().withName("wlmdjrkv").withEndpoint("bvfvpdbod"))
+                .withEndpointB(new Endpoint().withName("zsjqlh").withEndpoint("r"))
                 .withEnabledState(State.ENABLED);
         model = BinaryData.fromObject(model).toObject(ExperimentInner.class);
-        Assertions.assertEquals("jctbza", model.location());
-        Assertions.assertEquals("sycbkbfk", model.tags().get("ukdkexxppofmxa"));
-        Assertions.assertEquals("erhhbcsglumm", model.description());
-        Assertions.assertEquals("j", model.endpointA().name());
-        Assertions.assertEquals("dxob", model.endpointA().endpoint());
-        Assertions.assertEquals("xkqpxo", model.endpointB().name());
-        Assertions.assertEquals("jionpimexgstxgc", model.endpointB().endpoint());
+        Assertions.assertEquals("wkqnyhg", model.location());
+        Assertions.assertEquals("tjivfxzsjabib", model.tags().get("ystawfsdjpvkvp"));
+        Assertions.assertEquals("y", model.description());
+        Assertions.assertEquals("wlmdjrkv", model.endpointA().name());
+        Assertions.assertEquals("bvfvpdbod", model.endpointA().endpoint());
+        Assertions.assertEquals("zsjqlh", model.endpointB().name());
+        Assertions.assertEquals("r", model.endpointB().endpoint());
         Assertions.assertEquals(State.ENABLED, model.enabledState());
     }
 

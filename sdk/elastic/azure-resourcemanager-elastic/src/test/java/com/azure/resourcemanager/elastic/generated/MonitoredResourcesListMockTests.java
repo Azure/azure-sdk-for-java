@@ -32,7 +32,7 @@ public final class MonitoredResourcesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"value\":[{\"id\":\"y\",\"sendingLogs\":\"False\",\"reasonForLogsStatus\":\"e\"}]}";
+        String responseStr = "{\"value\":[{\"id\":\"e\",\"sendingLogs\":\"False\",\"reasonForLogsStatus\":\"npc\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,10 +61,10 @@ public final class MonitoredResourcesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<MonitoredResource> response =
-            manager.monitoredResources().list("imjm", "xieduugidyjrr", com.azure.core.util.Context.NONE);
+            manager.monitoredResources().list("xieduugidyjrr", "byao", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("y", response.iterator().next().id());
+        Assertions.assertEquals("e", response.iterator().next().id());
         Assertions.assertEquals(SendingLogs.FALSE, response.iterator().next().sendingLogs());
-        Assertions.assertEquals("e", response.iterator().next().reasonForLogsStatus());
+        Assertions.assertEquals("npc", response.iterator().next().reasonForLogsStatus());
     }
 }

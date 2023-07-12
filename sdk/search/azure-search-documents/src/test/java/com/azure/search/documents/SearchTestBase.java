@@ -43,16 +43,22 @@ import com.azure.search.documents.indexes.models.TextWeights;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.function.BiConsumer;
 
 import static com.azure.search.documents.TestHelpers.BLOB_DATASOURCE_NAME;
 import static com.azure.search.documents.TestHelpers.HOTEL_INDEX_NAME;
+import static com.azure.search.documents.TestHelpers.ISO8601_FORMAT;
 import static com.azure.search.documents.TestHelpers.SQL_DATASOURCE_NAME;
 import static com.azure.search.documents.indexes.DataSourceTests.FAKE_AZURE_SQL_CONNECTION_STRING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -453,5 +459,17 @@ public abstract class SearchTestBase extends TestProxyTestBase {
 
             comparisonFunction.accept(expected, actual);
         });
+    }
+
+    @SuppressWarnings({"UseOfObsoleteDateTimeApi"})
+    protected static Date parseDate(String dateString) {
+        DateFormat dateFormat = new SimpleDateFormat(ISO8601_FORMAT);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        try {
+            return dateFormat.parse(dateString);
+        } catch (ParseException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

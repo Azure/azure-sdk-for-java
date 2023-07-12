@@ -19,38 +19,61 @@ import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.core.publisher.Mono;
 
 abstract class LocalKeyCryptographyClient {
-    final CryptographyServiceClient serviceClient;
+    final CryptographyClientImpl serviceClient;
 
-    LocalKeyCryptographyClient(CryptographyServiceClient serviceClient) {
+    LocalKeyCryptographyClient(CryptographyClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
-    LocalKeyCryptographyClient(JsonWebKey key, CryptographyServiceClient serviceClient) {
+    LocalKeyCryptographyClient(JsonWebKey key, CryptographyClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
-    abstract Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context, JsonWebKey jsonWebKey);
+    abstract Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, JsonWebKey jsonWebKey, Context context);
 
-    abstract Mono<EncryptResult> encryptAsync(EncryptParameters encryptParameters, Context context, JsonWebKey jsonWebKey);
+    abstract EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, JsonWebKey jsonWebKey, Context context);
 
-    abstract Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context, JsonWebKey jsonWebKey);
+    abstract Mono<EncryptResult> encryptAsync(EncryptParameters encryptParameters, JsonWebKey jsonWebKey, Context context);
 
-    abstract Mono<DecryptResult> decryptAsync(DecryptParameters decryptParameters, Context context, JsonWebKey jsonWebKey);
+    abstract EncryptResult encrypt(EncryptParameters encryptParameters, JsonWebKey jsonWebKey, Context context);
 
-    abstract Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, Context context, JsonWebKey key);
+    abstract Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, JsonWebKey jsonWebKey, Context context);
+
+    abstract DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] plaintext, JsonWebKey jsonWebKey, Context context);
+
+    abstract Mono<DecryptResult> decryptAsync(DecryptParameters decryptParameters, JsonWebKey jsonWebKey, Context context);
+
+    abstract DecryptResult decrypt(DecryptParameters decryptParameters, JsonWebKey jsonWebKey, Context context);
+
+    abstract Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, JsonWebKey key, Context context);
+
+    abstract SignResult sign(SignatureAlgorithm algorithm, byte[] digest, JsonWebKey key, Context context);
 
     abstract Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature,
-                                            Context context, JsonWebKey key);
+                                            JsonWebKey key, Context context);
 
-    abstract Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, Context context,
-                                           JsonWebKey jsonWebKey);
+    abstract VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, JsonWebKey key,
+                                 Context context);
 
-    abstract Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context,
-                                               JsonWebKey jsonWebKey);
+    abstract Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, JsonWebKey jsonWebKey,
+                                           Context context);
 
-    abstract Mono<SignResult> signDataAsync(SignatureAlgorithm algorithm, byte[] data, Context context, JsonWebKey key);
+    abstract WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, JsonWebKey jsonWebKey, Context context);
+
+    abstract Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, JsonWebKey jsonWebKey,
+                                    Context context);
+
+    abstract UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, JsonWebKey jsonWebKey,
+                                    Context context);
+
+    abstract Mono<SignResult> signDataAsync(SignatureAlgorithm algorithm, byte[] data, JsonWebKey key, Context context);
+
+    abstract SignResult signData(SignatureAlgorithm algorithm, byte[] data, JsonWebKey key, Context context);
 
     abstract Mono<VerifyResult> verifyDataAsync(SignatureAlgorithm algorithm, byte[] data, byte[] signature,
-                                                Context context, JsonWebKey key);
+                                                JsonWebKey key, Context context);
+
+    abstract VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature, JsonWebKey key,
+                                     Context context);
 
 }

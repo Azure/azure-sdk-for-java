@@ -7,7 +7,7 @@ package com.azure.resourcemanager.qumulo.generated;
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumSet_Gen.
@@ -19,7 +19,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet_Gen.

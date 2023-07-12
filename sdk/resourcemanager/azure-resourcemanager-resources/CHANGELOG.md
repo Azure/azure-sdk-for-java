@@ -1,6 +1,21 @@
 # Release History
 
-## 2.27.0-beta.1 (Unreleased)
+## 2.29.0-beta.1 (Unreleased)
+
+### Bugs Fixed
+
+- Fixed a bug that methods in `GenericResources`, `PolicyAssignments` and `TagOperations` fails when get or delete a 
+  resource, if the resource name contains space.
+
+## 2.28.0 (2023-06-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.27.0 (2023-05-25)
 
 ### Other Changes
 

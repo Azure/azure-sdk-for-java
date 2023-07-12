@@ -9,12 +9,11 @@ import com.azure.resourcemanager.elastic.fluent.models.UserApiKeyResponseInner;
 /** An immutable client-side representation of UserApiKeyResponse. */
 public interface UserApiKeyResponse {
     /**
-     * Gets the apiKey property: The User Api Key Generated based on ReturnApiKey flag. This is applicable for
-     * non-Portal clients only.
+     * Gets the properties property: The properties property.
      *
-     * @return the apiKey value.
+     * @return the properties value.
      */
-    String apiKey();
+    UserApiKeyResponseProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.elastic.fluent.models.UserApiKeyResponseInner object.

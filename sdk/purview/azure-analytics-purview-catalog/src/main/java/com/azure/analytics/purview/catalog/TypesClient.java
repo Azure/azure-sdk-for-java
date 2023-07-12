@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.catalog;
 
+import com.azure.analytics.purview.catalog.implementation.TypesImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -19,16 +20,16 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = TypesClientBuilder.class)
 public final class TypesClient {
-    @Generated private final TypesAsyncClient client;
+    @Generated private final TypesImpl serviceClient;
 
     /**
      * Initializes an instance of TypesClient class.
      *
-     * @param client the async client.
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    TypesClient(TypesAsyncClient client) {
-        this.client = client;
+    TypesClient(TypesImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -38,84 +39,84 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *     createTime: Float
-     *     createdBy: String
-     *     dateFormatter: {
-     *         availableLocales: [
-     *             String
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     dateFormatter (Optional): {
+     *         availableLocales (Optional): [
+     *             String (Optional)
      *         ]
-     *         calendar: Float
-     *         dateInstance: (recursive schema, see dateInstance above)
-     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *         instance: (recursive schema, see instance above)
-     *         lenient: Boolean
-     *         numberFormat: {
-     *             availableLocales: [
-     *                 String
+     *         calendar: Float (Optional)
+     *         dateInstance (Optional): (recursive schema, see dateInstance above)
+     *         dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *         instance (Optional): (recursive schema, see instance above)
+     *         lenient: Boolean (Optional)
+     *         numberFormat (Optional): {
+     *             availableLocales (Optional): [
+     *                 String (Optional)
      *             ]
-     *             currency: String
-     *             currencyInstance: (recursive schema, see currencyInstance above)
-     *             groupingUsed: Boolean
-     *             instance: (recursive schema, see instance above)
-     *             integerInstance: (recursive schema, see integerInstance above)
-     *             maximumFractionDigits: Integer
-     *             maximumIntegerDigits: Integer
-     *             minimumFractionDigits: Integer
-     *             minimumIntegerDigits: Integer
-     *             numberInstance: (recursive schema, see numberInstance above)
-     *             parseIntegerOnly: Boolean
-     *             percentInstance: (recursive schema, see percentInstance above)
-     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *             currency: String (Optional)
+     *             currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean (Optional)
+     *             instance (Optional): (recursive schema, see instance above)
+     *             integerInstance (Optional): (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer (Optional)
+     *             maximumIntegerDigits: Integer (Optional)
+     *             minimumFractionDigits: Integer (Optional)
+     *             minimumIntegerDigits: Integer (Optional)
+     *             numberInstance (Optional): (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean (Optional)
+     *             percentInstance (Optional): (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *         }
-     *         timeInstance: (recursive schema, see timeInstance above)
-     *         timeZone: {
-     *             dstSavings: Integer
-     *             id: String
-     *             availableIds: [
-     *                 String
+     *         timeInstance (Optional): (recursive schema, see timeInstance above)
+     *         timeZone (Optional): {
+     *             dstSavings: Integer (Optional)
+     *             id: String (Optional)
+     *             availableIds (Optional): [
+     *                 String (Optional)
      *             ]
-     *             defaultProperty: (recursive schema, see defaultProperty above)
-     *             displayName: String
-     *             rawOffset: Integer
+     *             default (Optional): (recursive schema, see default above)
+     *             displayName: String (Optional)
+     *             rawOffset: Integer (Optional)
      *         }
      *     }
-     *     description: String
-     *     guid: String
-     *     name: String
-     *     options: {
-     *         String: String
+     *     description: String (Optional)
+     *     guid: String (Optional)
+     *     name: String (Optional)
+     *     options (Optional): {
+     *         String: String (Optional)
      *     }
-     *     serviceType: String
-     *     typeVersion: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
-     *     lastModifiedTS: String
-     *     attributeDefs: [
-     *         {
-     *             cardinality: String(SINGLE/LIST/SET)
-     *             constraints: [
-     *                 {
-     *                     params: {
-     *                         String: Object
+     *     serviceType: String (Optional)
+     *     typeVersion: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     attributeDefs (Optional): [
+     *          (Optional){
+     *             cardinality: String(SINGLE/LIST/SET) (Optional)
+     *             constraints (Optional): [
+     *                  (Optional){
+     *                     params (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     type: String
+     *                     type: String (Optional)
      *                 }
      *             ]
-     *             defaultValue: String
-     *             description: String
-     *             includeInNotification: Boolean
-     *             isIndexable: Boolean
-     *             isOptional: Boolean
-     *             isUnique: Boolean
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             defaultValue: String (Optional)
+     *             description: String (Optional)
+     *             includeInNotification: Boolean (Optional)
+     *             isIndexable: Boolean (Optional)
+     *             isOptional: Boolean (Optional)
+     *             isUnique: Boolean (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             typeName: String
-     *             valuesMaxCount: Integer
-     *             valuesMinCount: Integer
+     *             typeName: String (Optional)
+     *             valuesMaxCount: Integer (Optional)
+     *             valuesMinCount: Integer (Optional)
      *         }
      *     ]
      * }
@@ -132,7 +133,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getBusinessMetadataDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.client.getBusinessMetadataDefByGuidWithResponse(guid, requestOptions).block();
+        return this.serviceClient.getBusinessMetadataDefByGuidWithResponse(guid, requestOptions);
     }
 
     /**
@@ -142,84 +143,84 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *     createTime: Float
-     *     createdBy: String
-     *     dateFormatter: {
-     *         availableLocales: [
-     *             String
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     dateFormatter (Optional): {
+     *         availableLocales (Optional): [
+     *             String (Optional)
      *         ]
-     *         calendar: Float
-     *         dateInstance: (recursive schema, see dateInstance above)
-     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *         instance: (recursive schema, see instance above)
-     *         lenient: Boolean
-     *         numberFormat: {
-     *             availableLocales: [
-     *                 String
+     *         calendar: Float (Optional)
+     *         dateInstance (Optional): (recursive schema, see dateInstance above)
+     *         dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *         instance (Optional): (recursive schema, see instance above)
+     *         lenient: Boolean (Optional)
+     *         numberFormat (Optional): {
+     *             availableLocales (Optional): [
+     *                 String (Optional)
      *             ]
-     *             currency: String
-     *             currencyInstance: (recursive schema, see currencyInstance above)
-     *             groupingUsed: Boolean
-     *             instance: (recursive schema, see instance above)
-     *             integerInstance: (recursive schema, see integerInstance above)
-     *             maximumFractionDigits: Integer
-     *             maximumIntegerDigits: Integer
-     *             minimumFractionDigits: Integer
-     *             minimumIntegerDigits: Integer
-     *             numberInstance: (recursive schema, see numberInstance above)
-     *             parseIntegerOnly: Boolean
-     *             percentInstance: (recursive schema, see percentInstance above)
-     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *             currency: String (Optional)
+     *             currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean (Optional)
+     *             instance (Optional): (recursive schema, see instance above)
+     *             integerInstance (Optional): (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer (Optional)
+     *             maximumIntegerDigits: Integer (Optional)
+     *             minimumFractionDigits: Integer (Optional)
+     *             minimumIntegerDigits: Integer (Optional)
+     *             numberInstance (Optional): (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean (Optional)
+     *             percentInstance (Optional): (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *         }
-     *         timeInstance: (recursive schema, see timeInstance above)
-     *         timeZone: {
-     *             dstSavings: Integer
-     *             id: String
-     *             availableIds: [
-     *                 String
+     *         timeInstance (Optional): (recursive schema, see timeInstance above)
+     *         timeZone (Optional): {
+     *             dstSavings: Integer (Optional)
+     *             id: String (Optional)
+     *             availableIds (Optional): [
+     *                 String (Optional)
      *             ]
-     *             defaultProperty: (recursive schema, see defaultProperty above)
-     *             displayName: String
-     *             rawOffset: Integer
+     *             default (Optional): (recursive schema, see default above)
+     *             displayName: String (Optional)
+     *             rawOffset: Integer (Optional)
      *         }
      *     }
-     *     description: String
-     *     guid: String
-     *     name: String
-     *     options: {
-     *         String: String
+     *     description: String (Optional)
+     *     guid: String (Optional)
+     *     name: String (Optional)
+     *     options (Optional): {
+     *         String: String (Optional)
      *     }
-     *     serviceType: String
-     *     typeVersion: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
-     *     lastModifiedTS: String
-     *     attributeDefs: [
-     *         {
-     *             cardinality: String(SINGLE/LIST/SET)
-     *             constraints: [
-     *                 {
-     *                     params: {
-     *                         String: Object
+     *     serviceType: String (Optional)
+     *     typeVersion: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     attributeDefs (Optional): [
+     *          (Optional){
+     *             cardinality: String(SINGLE/LIST/SET) (Optional)
+     *             constraints (Optional): [
+     *                  (Optional){
+     *                     params (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     type: String
+     *                     type: String (Optional)
      *                 }
      *             ]
-     *             defaultValue: String
-     *             description: String
-     *             includeInNotification: Boolean
-     *             isIndexable: Boolean
-     *             isOptional: Boolean
-     *             isUnique: Boolean
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             defaultValue: String (Optional)
+     *             description: String (Optional)
+     *             includeInNotification: Boolean (Optional)
+     *             isIndexable: Boolean (Optional)
+     *             isOptional: Boolean (Optional)
+     *             isUnique: Boolean (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             typeName: String
-     *             valuesMaxCount: Integer
-     *             valuesMinCount: Integer
+     *             typeName: String (Optional)
+     *             valuesMaxCount: Integer (Optional)
+     *             valuesMinCount: Integer (Optional)
      *         }
      *     ]
      * }
@@ -236,7 +237,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getBusinessMetadataDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.client.getBusinessMetadataDefByNameWithResponse(name, requestOptions).block();
+        return this.serviceClient.getBusinessMetadataDefByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -246,94 +247,94 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *     createTime: Float
-     *     createdBy: String
-     *     dateFormatter: {
-     *         availableLocales: [
-     *             String
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     dateFormatter (Optional): {
+     *         availableLocales (Optional): [
+     *             String (Optional)
      *         ]
-     *         calendar: Float
-     *         dateInstance: (recursive schema, see dateInstance above)
-     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *         instance: (recursive schema, see instance above)
-     *         lenient: Boolean
-     *         numberFormat: {
-     *             availableLocales: [
-     *                 String
+     *         calendar: Float (Optional)
+     *         dateInstance (Optional): (recursive schema, see dateInstance above)
+     *         dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *         instance (Optional): (recursive schema, see instance above)
+     *         lenient: Boolean (Optional)
+     *         numberFormat (Optional): {
+     *             availableLocales (Optional): [
+     *                 String (Optional)
      *             ]
-     *             currency: String
-     *             currencyInstance: (recursive schema, see currencyInstance above)
-     *             groupingUsed: Boolean
-     *             instance: (recursive schema, see instance above)
-     *             integerInstance: (recursive schema, see integerInstance above)
-     *             maximumFractionDigits: Integer
-     *             maximumIntegerDigits: Integer
-     *             minimumFractionDigits: Integer
-     *             minimumIntegerDigits: Integer
-     *             numberInstance: (recursive schema, see numberInstance above)
-     *             parseIntegerOnly: Boolean
-     *             percentInstance: (recursive schema, see percentInstance above)
-     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *             currency: String (Optional)
+     *             currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean (Optional)
+     *             instance (Optional): (recursive schema, see instance above)
+     *             integerInstance (Optional): (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer (Optional)
+     *             maximumIntegerDigits: Integer (Optional)
+     *             minimumFractionDigits: Integer (Optional)
+     *             minimumIntegerDigits: Integer (Optional)
+     *             numberInstance (Optional): (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean (Optional)
+     *             percentInstance (Optional): (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *         }
-     *         timeInstance: (recursive schema, see timeInstance above)
-     *         timeZone: {
-     *             dstSavings: Integer
-     *             id: String
-     *             availableIds: [
-     *                 String
+     *         timeInstance (Optional): (recursive schema, see timeInstance above)
+     *         timeZone (Optional): {
+     *             dstSavings: Integer (Optional)
+     *             id: String (Optional)
+     *             availableIds (Optional): [
+     *                 String (Optional)
      *             ]
-     *             defaultProperty: (recursive schema, see defaultProperty above)
-     *             displayName: String
-     *             rawOffset: Integer
+     *             default (Optional): (recursive schema, see default above)
+     *             displayName: String (Optional)
+     *             rawOffset: Integer (Optional)
      *         }
      *     }
-     *     description: String
-     *     guid: String
-     *     name: String
-     *     options: {
-     *         String: String
+     *     description: String (Optional)
+     *     guid: String (Optional)
+     *     name: String (Optional)
+     *     options (Optional): {
+     *         String: String (Optional)
      *     }
-     *     serviceType: String
-     *     typeVersion: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
-     *     lastModifiedTS: String
-     *     attributeDefs: [
-     *         {
-     *             cardinality: String(SINGLE/LIST/SET)
-     *             constraints: [
-     *                 {
-     *                     params: {
-     *                         String: Object
+     *     serviceType: String (Optional)
+     *     typeVersion: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     attributeDefs (Optional): [
+     *          (Optional){
+     *             cardinality: String(SINGLE/LIST/SET) (Optional)
+     *             constraints (Optional): [
+     *                  (Optional){
+     *                     params (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     type: String
+     *                     type: String (Optional)
      *                 }
      *             ]
-     *             defaultValue: String
-     *             description: String
-     *             includeInNotification: Boolean
-     *             isIndexable: Boolean
-     *             isOptional: Boolean
-     *             isUnique: Boolean
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             defaultValue: String (Optional)
+     *             description: String (Optional)
+     *             includeInNotification: Boolean (Optional)
+     *             isIndexable: Boolean (Optional)
+     *             isOptional: Boolean (Optional)
+     *             isUnique: Boolean (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             typeName: String
-     *             valuesMaxCount: Integer
-     *             valuesMinCount: Integer
+     *             typeName: String (Optional)
+     *             valuesMaxCount: Integer (Optional)
+     *             valuesMinCount: Integer (Optional)
      *         }
      *     ]
-     *     entityTypes: [
-     *         String
+     *     entityTypes (Optional): [
+     *         String (Optional)
      *     ]
-     *     subTypes: [
-     *         String
+     *     subTypes (Optional): [
+     *         String (Optional)
      *     ]
-     *     superTypes: [
-     *         String
+     *     superTypes (Optional): [
+     *         String (Optional)
      *     ]
      * }
      * }</pre>
@@ -349,7 +350,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getClassificationDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.client.getClassificationDefByGuidWithResponse(guid, requestOptions).block();
+        return this.serviceClient.getClassificationDefByGuidWithResponse(guid, requestOptions);
     }
 
     /**
@@ -359,94 +360,94 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *     createTime: Float
-     *     createdBy: String
-     *     dateFormatter: {
-     *         availableLocales: [
-     *             String
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     dateFormatter (Optional): {
+     *         availableLocales (Optional): [
+     *             String (Optional)
      *         ]
-     *         calendar: Float
-     *         dateInstance: (recursive schema, see dateInstance above)
-     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *         instance: (recursive schema, see instance above)
-     *         lenient: Boolean
-     *         numberFormat: {
-     *             availableLocales: [
-     *                 String
+     *         calendar: Float (Optional)
+     *         dateInstance (Optional): (recursive schema, see dateInstance above)
+     *         dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *         instance (Optional): (recursive schema, see instance above)
+     *         lenient: Boolean (Optional)
+     *         numberFormat (Optional): {
+     *             availableLocales (Optional): [
+     *                 String (Optional)
      *             ]
-     *             currency: String
-     *             currencyInstance: (recursive schema, see currencyInstance above)
-     *             groupingUsed: Boolean
-     *             instance: (recursive schema, see instance above)
-     *             integerInstance: (recursive schema, see integerInstance above)
-     *             maximumFractionDigits: Integer
-     *             maximumIntegerDigits: Integer
-     *             minimumFractionDigits: Integer
-     *             minimumIntegerDigits: Integer
-     *             numberInstance: (recursive schema, see numberInstance above)
-     *             parseIntegerOnly: Boolean
-     *             percentInstance: (recursive schema, see percentInstance above)
-     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *             currency: String (Optional)
+     *             currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean (Optional)
+     *             instance (Optional): (recursive schema, see instance above)
+     *             integerInstance (Optional): (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer (Optional)
+     *             maximumIntegerDigits: Integer (Optional)
+     *             minimumFractionDigits: Integer (Optional)
+     *             minimumIntegerDigits: Integer (Optional)
+     *             numberInstance (Optional): (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean (Optional)
+     *             percentInstance (Optional): (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *         }
-     *         timeInstance: (recursive schema, see timeInstance above)
-     *         timeZone: {
-     *             dstSavings: Integer
-     *             id: String
-     *             availableIds: [
-     *                 String
+     *         timeInstance (Optional): (recursive schema, see timeInstance above)
+     *         timeZone (Optional): {
+     *             dstSavings: Integer (Optional)
+     *             id: String (Optional)
+     *             availableIds (Optional): [
+     *                 String (Optional)
      *             ]
-     *             defaultProperty: (recursive schema, see defaultProperty above)
-     *             displayName: String
-     *             rawOffset: Integer
+     *             default (Optional): (recursive schema, see default above)
+     *             displayName: String (Optional)
+     *             rawOffset: Integer (Optional)
      *         }
      *     }
-     *     description: String
-     *     guid: String
-     *     name: String
-     *     options: {
-     *         String: String
+     *     description: String (Optional)
+     *     guid: String (Optional)
+     *     name: String (Optional)
+     *     options (Optional): {
+     *         String: String (Optional)
      *     }
-     *     serviceType: String
-     *     typeVersion: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
-     *     lastModifiedTS: String
-     *     attributeDefs: [
-     *         {
-     *             cardinality: String(SINGLE/LIST/SET)
-     *             constraints: [
-     *                 {
-     *                     params: {
-     *                         String: Object
+     *     serviceType: String (Optional)
+     *     typeVersion: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     attributeDefs (Optional): [
+     *          (Optional){
+     *             cardinality: String(SINGLE/LIST/SET) (Optional)
+     *             constraints (Optional): [
+     *                  (Optional){
+     *                     params (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     type: String
+     *                     type: String (Optional)
      *                 }
      *             ]
-     *             defaultValue: String
-     *             description: String
-     *             includeInNotification: Boolean
-     *             isIndexable: Boolean
-     *             isOptional: Boolean
-     *             isUnique: Boolean
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             defaultValue: String (Optional)
+     *             description: String (Optional)
+     *             includeInNotification: Boolean (Optional)
+     *             isIndexable: Boolean (Optional)
+     *             isOptional: Boolean (Optional)
+     *             isUnique: Boolean (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             typeName: String
-     *             valuesMaxCount: Integer
-     *             valuesMinCount: Integer
+     *             typeName: String (Optional)
+     *             valuesMaxCount: Integer (Optional)
+     *             valuesMinCount: Integer (Optional)
      *         }
      *     ]
-     *     entityTypes: [
-     *         String
+     *     entityTypes (Optional): [
+     *         String (Optional)
      *     ]
-     *     subTypes: [
-     *         String
+     *     subTypes (Optional): [
+     *         String (Optional)
      *     ]
-     *     superTypes: [
-     *         String
+     *     superTypes (Optional): [
+     *         String (Optional)
      *     ]
      * }
      * }</pre>
@@ -462,7 +463,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getClassificationDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.client.getClassificationDefByNameWithResponse(name, requestOptions).block();
+        return this.serviceClient.getClassificationDefByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -472,113 +473,113 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *     createTime: Float
-     *     createdBy: String
-     *     dateFormatter: {
-     *         availableLocales: [
-     *             String
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     dateFormatter (Optional): {
+     *         availableLocales (Optional): [
+     *             String (Optional)
      *         ]
-     *         calendar: Float
-     *         dateInstance: (recursive schema, see dateInstance above)
-     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *         instance: (recursive schema, see instance above)
-     *         lenient: Boolean
-     *         numberFormat: {
-     *             availableLocales: [
-     *                 String
+     *         calendar: Float (Optional)
+     *         dateInstance (Optional): (recursive schema, see dateInstance above)
+     *         dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *         instance (Optional): (recursive schema, see instance above)
+     *         lenient: Boolean (Optional)
+     *         numberFormat (Optional): {
+     *             availableLocales (Optional): [
+     *                 String (Optional)
      *             ]
-     *             currency: String
-     *             currencyInstance: (recursive schema, see currencyInstance above)
-     *             groupingUsed: Boolean
-     *             instance: (recursive schema, see instance above)
-     *             integerInstance: (recursive schema, see integerInstance above)
-     *             maximumFractionDigits: Integer
-     *             maximumIntegerDigits: Integer
-     *             minimumFractionDigits: Integer
-     *             minimumIntegerDigits: Integer
-     *             numberInstance: (recursive schema, see numberInstance above)
-     *             parseIntegerOnly: Boolean
-     *             percentInstance: (recursive schema, see percentInstance above)
-     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *             currency: String (Optional)
+     *             currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean (Optional)
+     *             instance (Optional): (recursive schema, see instance above)
+     *             integerInstance (Optional): (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer (Optional)
+     *             maximumIntegerDigits: Integer (Optional)
+     *             minimumFractionDigits: Integer (Optional)
+     *             minimumIntegerDigits: Integer (Optional)
+     *             numberInstance (Optional): (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean (Optional)
+     *             percentInstance (Optional): (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *         }
-     *         timeInstance: (recursive schema, see timeInstance above)
-     *         timeZone: {
-     *             dstSavings: Integer
-     *             id: String
-     *             availableIds: [
-     *                 String
+     *         timeInstance (Optional): (recursive schema, see timeInstance above)
+     *         timeZone (Optional): {
+     *             dstSavings: Integer (Optional)
+     *             id: String (Optional)
+     *             availableIds (Optional): [
+     *                 String (Optional)
      *             ]
-     *             defaultProperty: (recursive schema, see defaultProperty above)
-     *             displayName: String
-     *             rawOffset: Integer
+     *             default (Optional): (recursive schema, see default above)
+     *             displayName: String (Optional)
+     *             rawOffset: Integer (Optional)
      *         }
      *     }
-     *     description: String
-     *     guid: String
-     *     name: String
-     *     options: {
-     *         String: String
+     *     description: String (Optional)
+     *     guid: String (Optional)
+     *     name: String (Optional)
+     *     options (Optional): {
+     *         String: String (Optional)
      *     }
-     *     serviceType: String
-     *     typeVersion: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
-     *     lastModifiedTS: String
-     *     attributeDefs: [
-     *         {
-     *             cardinality: String(SINGLE/LIST/SET)
-     *             constraints: [
-     *                 {
-     *                     params: {
-     *                         String: Object
+     *     serviceType: String (Optional)
+     *     typeVersion: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     attributeDefs (Optional): [
+     *          (Optional){
+     *             cardinality: String(SINGLE/LIST/SET) (Optional)
+     *             constraints (Optional): [
+     *                  (Optional){
+     *                     params (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     type: String
+     *                     type: String (Optional)
      *                 }
      *             ]
-     *             defaultValue: String
-     *             description: String
-     *             includeInNotification: Boolean
-     *             isIndexable: Boolean
-     *             isOptional: Boolean
-     *             isUnique: Boolean
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             defaultValue: String (Optional)
+     *             description: String (Optional)
+     *             includeInNotification: Boolean (Optional)
+     *             isIndexable: Boolean (Optional)
+     *             isOptional: Boolean (Optional)
+     *             isUnique: Boolean (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             typeName: String
-     *             valuesMaxCount: Integer
-     *             valuesMinCount: Integer
+     *             typeName: String (Optional)
+     *             valuesMaxCount: Integer (Optional)
+     *             valuesMinCount: Integer (Optional)
      *         }
      *     ]
-     *     subTypes: [
-     *         String
+     *     subTypes (Optional): [
+     *         String (Optional)
      *     ]
-     *     superTypes: [
-     *         String
+     *     superTypes (Optional): [
+     *         String (Optional)
      *     ]
-     *     relationshipAttributeDefs: [
-     *         {
-     *             cardinality: String(SINGLE/LIST/SET)
-     *             constraints: [
+     *     relationshipAttributeDefs (Optional): [
+     *          (Optional){
+     *             cardinality: String(SINGLE/LIST/SET) (Optional)
+     *             constraints (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             defaultValue: String
-     *             description: String
-     *             includeInNotification: Boolean
-     *             isIndexable: Boolean
-     *             isOptional: Boolean
-     *             isUnique: Boolean
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             defaultValue: String (Optional)
+     *             description: String (Optional)
+     *             includeInNotification: Boolean (Optional)
+     *             isIndexable: Boolean (Optional)
+     *             isOptional: Boolean (Optional)
+     *             isUnique: Boolean (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             typeName: String
-     *             valuesMaxCount: Integer
-     *             valuesMinCount: Integer
-     *             isLegacyAttribute: Boolean
-     *             relationshipTypeName: String
+     *             typeName: String (Optional)
+     *             valuesMaxCount: Integer (Optional)
+     *             valuesMinCount: Integer (Optional)
+     *             isLegacyAttribute: Boolean (Optional)
+     *             relationshipTypeName: String (Optional)
      *         }
      *     ]
      * }
@@ -595,7 +596,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntityDefinitionByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.client.getEntityDefinitionByGuidWithResponse(guid, requestOptions).block();
+        return this.serviceClient.getEntityDefinitionByGuidWithResponse(guid, requestOptions);
     }
 
     /**
@@ -605,113 +606,113 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *     createTime: Float
-     *     createdBy: String
-     *     dateFormatter: {
-     *         availableLocales: [
-     *             String
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     dateFormatter (Optional): {
+     *         availableLocales (Optional): [
+     *             String (Optional)
      *         ]
-     *         calendar: Float
-     *         dateInstance: (recursive schema, see dateInstance above)
-     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *         instance: (recursive schema, see instance above)
-     *         lenient: Boolean
-     *         numberFormat: {
-     *             availableLocales: [
-     *                 String
+     *         calendar: Float (Optional)
+     *         dateInstance (Optional): (recursive schema, see dateInstance above)
+     *         dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *         instance (Optional): (recursive schema, see instance above)
+     *         lenient: Boolean (Optional)
+     *         numberFormat (Optional): {
+     *             availableLocales (Optional): [
+     *                 String (Optional)
      *             ]
-     *             currency: String
-     *             currencyInstance: (recursive schema, see currencyInstance above)
-     *             groupingUsed: Boolean
-     *             instance: (recursive schema, see instance above)
-     *             integerInstance: (recursive schema, see integerInstance above)
-     *             maximumFractionDigits: Integer
-     *             maximumIntegerDigits: Integer
-     *             minimumFractionDigits: Integer
-     *             minimumIntegerDigits: Integer
-     *             numberInstance: (recursive schema, see numberInstance above)
-     *             parseIntegerOnly: Boolean
-     *             percentInstance: (recursive schema, see percentInstance above)
-     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *             currency: String (Optional)
+     *             currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean (Optional)
+     *             instance (Optional): (recursive schema, see instance above)
+     *             integerInstance (Optional): (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer (Optional)
+     *             maximumIntegerDigits: Integer (Optional)
+     *             minimumFractionDigits: Integer (Optional)
+     *             minimumIntegerDigits: Integer (Optional)
+     *             numberInstance (Optional): (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean (Optional)
+     *             percentInstance (Optional): (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *         }
-     *         timeInstance: (recursive schema, see timeInstance above)
-     *         timeZone: {
-     *             dstSavings: Integer
-     *             id: String
-     *             availableIds: [
-     *                 String
+     *         timeInstance (Optional): (recursive schema, see timeInstance above)
+     *         timeZone (Optional): {
+     *             dstSavings: Integer (Optional)
+     *             id: String (Optional)
+     *             availableIds (Optional): [
+     *                 String (Optional)
      *             ]
-     *             defaultProperty: (recursive schema, see defaultProperty above)
-     *             displayName: String
-     *             rawOffset: Integer
+     *             default (Optional): (recursive schema, see default above)
+     *             displayName: String (Optional)
+     *             rawOffset: Integer (Optional)
      *         }
      *     }
-     *     description: String
-     *     guid: String
-     *     name: String
-     *     options: {
-     *         String: String
+     *     description: String (Optional)
+     *     guid: String (Optional)
+     *     name: String (Optional)
+     *     options (Optional): {
+     *         String: String (Optional)
      *     }
-     *     serviceType: String
-     *     typeVersion: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
-     *     lastModifiedTS: String
-     *     attributeDefs: [
-     *         {
-     *             cardinality: String(SINGLE/LIST/SET)
-     *             constraints: [
-     *                 {
-     *                     params: {
-     *                         String: Object
+     *     serviceType: String (Optional)
+     *     typeVersion: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     attributeDefs (Optional): [
+     *          (Optional){
+     *             cardinality: String(SINGLE/LIST/SET) (Optional)
+     *             constraints (Optional): [
+     *                  (Optional){
+     *                     params (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     type: String
+     *                     type: String (Optional)
      *                 }
      *             ]
-     *             defaultValue: String
-     *             description: String
-     *             includeInNotification: Boolean
-     *             isIndexable: Boolean
-     *             isOptional: Boolean
-     *             isUnique: Boolean
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             defaultValue: String (Optional)
+     *             description: String (Optional)
+     *             includeInNotification: Boolean (Optional)
+     *             isIndexable: Boolean (Optional)
+     *             isOptional: Boolean (Optional)
+     *             isUnique: Boolean (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             typeName: String
-     *             valuesMaxCount: Integer
-     *             valuesMinCount: Integer
+     *             typeName: String (Optional)
+     *             valuesMaxCount: Integer (Optional)
+     *             valuesMinCount: Integer (Optional)
      *         }
      *     ]
-     *     subTypes: [
-     *         String
+     *     subTypes (Optional): [
+     *         String (Optional)
      *     ]
-     *     superTypes: [
-     *         String
+     *     superTypes (Optional): [
+     *         String (Optional)
      *     ]
-     *     relationshipAttributeDefs: [
-     *         {
-     *             cardinality: String(SINGLE/LIST/SET)
-     *             constraints: [
+     *     relationshipAttributeDefs (Optional): [
+     *          (Optional){
+     *             cardinality: String(SINGLE/LIST/SET) (Optional)
+     *             constraints (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             defaultValue: String
-     *             description: String
-     *             includeInNotification: Boolean
-     *             isIndexable: Boolean
-     *             isOptional: Boolean
-     *             isUnique: Boolean
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             defaultValue: String (Optional)
+     *             description: String (Optional)
+     *             includeInNotification: Boolean (Optional)
+     *             isIndexable: Boolean (Optional)
+     *             isOptional: Boolean (Optional)
+     *             isUnique: Boolean (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             typeName: String
-     *             valuesMaxCount: Integer
-     *             valuesMinCount: Integer
-     *             isLegacyAttribute: Boolean
-     *             relationshipTypeName: String
+     *             typeName: String (Optional)
+     *             valuesMaxCount: Integer (Optional)
+     *             valuesMinCount: Integer (Optional)
+     *             isLegacyAttribute: Boolean (Optional)
+     *             relationshipTypeName: String (Optional)
      *         }
      *     ]
      * }
@@ -728,7 +729,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntityDefinitionByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.client.getEntityDefinitionByNameWithResponse(name, requestOptions).block();
+        return this.serviceClient.getEntityDefinitionByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -738,66 +739,66 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *     createTime: Float
-     *     createdBy: String
-     *     dateFormatter: {
-     *         availableLocales: [
-     *             String
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     dateFormatter (Optional): {
+     *         availableLocales (Optional): [
+     *             String (Optional)
      *         ]
-     *         calendar: Float
-     *         dateInstance: (recursive schema, see dateInstance above)
-     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *         instance: (recursive schema, see instance above)
-     *         lenient: Boolean
-     *         numberFormat: {
-     *             availableLocales: [
-     *                 String
+     *         calendar: Float (Optional)
+     *         dateInstance (Optional): (recursive schema, see dateInstance above)
+     *         dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *         instance (Optional): (recursive schema, see instance above)
+     *         lenient: Boolean (Optional)
+     *         numberFormat (Optional): {
+     *             availableLocales (Optional): [
+     *                 String (Optional)
      *             ]
-     *             currency: String
-     *             currencyInstance: (recursive schema, see currencyInstance above)
-     *             groupingUsed: Boolean
-     *             instance: (recursive schema, see instance above)
-     *             integerInstance: (recursive schema, see integerInstance above)
-     *             maximumFractionDigits: Integer
-     *             maximumIntegerDigits: Integer
-     *             minimumFractionDigits: Integer
-     *             minimumIntegerDigits: Integer
-     *             numberInstance: (recursive schema, see numberInstance above)
-     *             parseIntegerOnly: Boolean
-     *             percentInstance: (recursive schema, see percentInstance above)
-     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *             currency: String (Optional)
+     *             currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean (Optional)
+     *             instance (Optional): (recursive schema, see instance above)
+     *             integerInstance (Optional): (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer (Optional)
+     *             maximumIntegerDigits: Integer (Optional)
+     *             minimumFractionDigits: Integer (Optional)
+     *             minimumIntegerDigits: Integer (Optional)
+     *             numberInstance (Optional): (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean (Optional)
+     *             percentInstance (Optional): (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *         }
-     *         timeInstance: (recursive schema, see timeInstance above)
-     *         timeZone: {
-     *             dstSavings: Integer
-     *             id: String
-     *             availableIds: [
-     *                 String
+     *         timeInstance (Optional): (recursive schema, see timeInstance above)
+     *         timeZone (Optional): {
+     *             dstSavings: Integer (Optional)
+     *             id: String (Optional)
+     *             availableIds (Optional): [
+     *                 String (Optional)
      *             ]
-     *             defaultProperty: (recursive schema, see defaultProperty above)
-     *             displayName: String
-     *             rawOffset: Integer
+     *             default (Optional): (recursive schema, see default above)
+     *             displayName: String (Optional)
+     *             rawOffset: Integer (Optional)
      *         }
      *     }
-     *     description: String
-     *     guid: String
-     *     name: String
-     *     options: {
-     *         String: String
+     *     description: String (Optional)
+     *     guid: String (Optional)
+     *     name: String (Optional)
+     *     options (Optional): {
+     *         String: String (Optional)
      *     }
-     *     serviceType: String
-     *     typeVersion: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
-     *     lastModifiedTS: String
-     *     defaultValue: String
-     *     elementDefs: [
-     *         {
-     *             description: String
-     *             ordinal: Float
-     *             value: String
+     *     serviceType: String (Optional)
+     *     typeVersion: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     defaultValue: String (Optional)
+     *     elementDefs (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             ordinal: Float (Optional)
+     *             value: String (Optional)
      *         }
      *     ]
      * }
@@ -814,7 +815,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEnumDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.client.getEnumDefByGuidWithResponse(guid, requestOptions).block();
+        return this.serviceClient.getEnumDefByGuidWithResponse(guid, requestOptions);
     }
 
     /**
@@ -824,66 +825,66 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *     createTime: Float
-     *     createdBy: String
-     *     dateFormatter: {
-     *         availableLocales: [
-     *             String
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     dateFormatter (Optional): {
+     *         availableLocales (Optional): [
+     *             String (Optional)
      *         ]
-     *         calendar: Float
-     *         dateInstance: (recursive schema, see dateInstance above)
-     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *         instance: (recursive schema, see instance above)
-     *         lenient: Boolean
-     *         numberFormat: {
-     *             availableLocales: [
-     *                 String
+     *         calendar: Float (Optional)
+     *         dateInstance (Optional): (recursive schema, see dateInstance above)
+     *         dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *         instance (Optional): (recursive schema, see instance above)
+     *         lenient: Boolean (Optional)
+     *         numberFormat (Optional): {
+     *             availableLocales (Optional): [
+     *                 String (Optional)
      *             ]
-     *             currency: String
-     *             currencyInstance: (recursive schema, see currencyInstance above)
-     *             groupingUsed: Boolean
-     *             instance: (recursive schema, see instance above)
-     *             integerInstance: (recursive schema, see integerInstance above)
-     *             maximumFractionDigits: Integer
-     *             maximumIntegerDigits: Integer
-     *             minimumFractionDigits: Integer
-     *             minimumIntegerDigits: Integer
-     *             numberInstance: (recursive schema, see numberInstance above)
-     *             parseIntegerOnly: Boolean
-     *             percentInstance: (recursive schema, see percentInstance above)
-     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *             currency: String (Optional)
+     *             currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean (Optional)
+     *             instance (Optional): (recursive schema, see instance above)
+     *             integerInstance (Optional): (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer (Optional)
+     *             maximumIntegerDigits: Integer (Optional)
+     *             minimumFractionDigits: Integer (Optional)
+     *             minimumIntegerDigits: Integer (Optional)
+     *             numberInstance (Optional): (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean (Optional)
+     *             percentInstance (Optional): (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *         }
-     *         timeInstance: (recursive schema, see timeInstance above)
-     *         timeZone: {
-     *             dstSavings: Integer
-     *             id: String
-     *             availableIds: [
-     *                 String
+     *         timeInstance (Optional): (recursive schema, see timeInstance above)
+     *         timeZone (Optional): {
+     *             dstSavings: Integer (Optional)
+     *             id: String (Optional)
+     *             availableIds (Optional): [
+     *                 String (Optional)
      *             ]
-     *             defaultProperty: (recursive schema, see defaultProperty above)
-     *             displayName: String
-     *             rawOffset: Integer
+     *             default (Optional): (recursive schema, see default above)
+     *             displayName: String (Optional)
+     *             rawOffset: Integer (Optional)
      *         }
      *     }
-     *     description: String
-     *     guid: String
-     *     name: String
-     *     options: {
-     *         String: String
+     *     description: String (Optional)
+     *     guid: String (Optional)
+     *     name: String (Optional)
+     *     options (Optional): {
+     *         String: String (Optional)
      *     }
-     *     serviceType: String
-     *     typeVersion: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
-     *     lastModifiedTS: String
-     *     defaultValue: String
-     *     elementDefs: [
-     *         {
-     *             description: String
-     *             ordinal: Float
-     *             value: String
+     *     serviceType: String (Optional)
+     *     typeVersion: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     defaultValue: String (Optional)
+     *     elementDefs (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             ordinal: Float (Optional)
+     *             value: String (Optional)
      *         }
      *     ]
      * }
@@ -900,7 +901,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEnumDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.client.getEnumDefByNameWithResponse(name, requestOptions).block();
+        return this.serviceClient.getEnumDefByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -910,97 +911,97 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *     createTime: Float
-     *     createdBy: String
-     *     dateFormatter: {
-     *         availableLocales: [
-     *             String
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     dateFormatter (Optional): {
+     *         availableLocales (Optional): [
+     *             String (Optional)
      *         ]
-     *         calendar: Float
-     *         dateInstance: (recursive schema, see dateInstance above)
-     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *         instance: (recursive schema, see instance above)
-     *         lenient: Boolean
-     *         numberFormat: {
-     *             availableLocales: [
-     *                 String
+     *         calendar: Float (Optional)
+     *         dateInstance (Optional): (recursive schema, see dateInstance above)
+     *         dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *         instance (Optional): (recursive schema, see instance above)
+     *         lenient: Boolean (Optional)
+     *         numberFormat (Optional): {
+     *             availableLocales (Optional): [
+     *                 String (Optional)
      *             ]
-     *             currency: String
-     *             currencyInstance: (recursive schema, see currencyInstance above)
-     *             groupingUsed: Boolean
-     *             instance: (recursive schema, see instance above)
-     *             integerInstance: (recursive schema, see integerInstance above)
-     *             maximumFractionDigits: Integer
-     *             maximumIntegerDigits: Integer
-     *             minimumFractionDigits: Integer
-     *             minimumIntegerDigits: Integer
-     *             numberInstance: (recursive schema, see numberInstance above)
-     *             parseIntegerOnly: Boolean
-     *             percentInstance: (recursive schema, see percentInstance above)
-     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *             currency: String (Optional)
+     *             currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean (Optional)
+     *             instance (Optional): (recursive schema, see instance above)
+     *             integerInstance (Optional): (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer (Optional)
+     *             maximumIntegerDigits: Integer (Optional)
+     *             minimumFractionDigits: Integer (Optional)
+     *             minimumIntegerDigits: Integer (Optional)
+     *             numberInstance (Optional): (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean (Optional)
+     *             percentInstance (Optional): (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *         }
-     *         timeInstance: (recursive schema, see timeInstance above)
-     *         timeZone: {
-     *             dstSavings: Integer
-     *             id: String
-     *             availableIds: [
-     *                 String
+     *         timeInstance (Optional): (recursive schema, see timeInstance above)
+     *         timeZone (Optional): {
+     *             dstSavings: Integer (Optional)
+     *             id: String (Optional)
+     *             availableIds (Optional): [
+     *                 String (Optional)
      *             ]
-     *             defaultProperty: (recursive schema, see defaultProperty above)
-     *             displayName: String
-     *             rawOffset: Integer
+     *             default (Optional): (recursive schema, see default above)
+     *             displayName: String (Optional)
+     *             rawOffset: Integer (Optional)
      *         }
      *     }
-     *     description: String
-     *     guid: String
-     *     name: String
-     *     options: {
-     *         String: String
+     *     description: String (Optional)
+     *     guid: String (Optional)
+     *     name: String (Optional)
+     *     options (Optional): {
+     *         String: String (Optional)
      *     }
-     *     serviceType: String
-     *     typeVersion: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
-     *     lastModifiedTS: String
-     *     attributeDefs: [
-     *         {
-     *             cardinality: String(SINGLE/LIST/SET)
-     *             constraints: [
-     *                 {
-     *                     params: {
-     *                         String: Object
+     *     serviceType: String (Optional)
+     *     typeVersion: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     attributeDefs (Optional): [
+     *          (Optional){
+     *             cardinality: String(SINGLE/LIST/SET) (Optional)
+     *             constraints (Optional): [
+     *                  (Optional){
+     *                     params (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     type: String
+     *                     type: String (Optional)
      *                 }
      *             ]
-     *             defaultValue: String
-     *             description: String
-     *             includeInNotification: Boolean
-     *             isIndexable: Boolean
-     *             isOptional: Boolean
-     *             isUnique: Boolean
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             defaultValue: String (Optional)
+     *             description: String (Optional)
+     *             includeInNotification: Boolean (Optional)
+     *             isIndexable: Boolean (Optional)
+     *             isOptional: Boolean (Optional)
+     *             isUnique: Boolean (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             typeName: String
-     *             valuesMaxCount: Integer
-     *             valuesMinCount: Integer
+     *             typeName: String (Optional)
+     *             valuesMaxCount: Integer (Optional)
+     *             valuesMinCount: Integer (Optional)
      *         }
      *     ]
-     *     endDef1: {
-     *         cardinality: String(SINGLE/LIST/SET)
-     *         description: String
-     *         isContainer: Boolean
-     *         isLegacyAttribute: Boolean
-     *         name: String
-     *         type: String
+     *     endDef1 (Optional): {
+     *         cardinality: String(SINGLE/LIST/SET) (Optional)
+     *         description: String (Optional)
+     *         isContainer: Boolean (Optional)
+     *         isLegacyAttribute: Boolean (Optional)
+     *         name: String (Optional)
+     *         type: String (Optional)
      *     }
-     *     endDef2: (recursive schema, see endDef2 above)
-     *     relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION)
-     *     relationshipLabel: String
+     *     endDef2 (Optional): (recursive schema, see endDef2 above)
+     *     relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION) (Optional)
+     *     relationshipLabel: String (Optional)
      * }
      * }</pre>
      *
@@ -1015,7 +1016,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRelationshipDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.client.getRelationshipDefByGuidWithResponse(guid, requestOptions).block();
+        return this.serviceClient.getRelationshipDefByGuidWithResponse(guid, requestOptions);
     }
 
     /**
@@ -1025,97 +1026,97 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *     createTime: Float
-     *     createdBy: String
-     *     dateFormatter: {
-     *         availableLocales: [
-     *             String
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     dateFormatter (Optional): {
+     *         availableLocales (Optional): [
+     *             String (Optional)
      *         ]
-     *         calendar: Float
-     *         dateInstance: (recursive schema, see dateInstance above)
-     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *         instance: (recursive schema, see instance above)
-     *         lenient: Boolean
-     *         numberFormat: {
-     *             availableLocales: [
-     *                 String
+     *         calendar: Float (Optional)
+     *         dateInstance (Optional): (recursive schema, see dateInstance above)
+     *         dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *         instance (Optional): (recursive schema, see instance above)
+     *         lenient: Boolean (Optional)
+     *         numberFormat (Optional): {
+     *             availableLocales (Optional): [
+     *                 String (Optional)
      *             ]
-     *             currency: String
-     *             currencyInstance: (recursive schema, see currencyInstance above)
-     *             groupingUsed: Boolean
-     *             instance: (recursive schema, see instance above)
-     *             integerInstance: (recursive schema, see integerInstance above)
-     *             maximumFractionDigits: Integer
-     *             maximumIntegerDigits: Integer
-     *             minimumFractionDigits: Integer
-     *             minimumIntegerDigits: Integer
-     *             numberInstance: (recursive schema, see numberInstance above)
-     *             parseIntegerOnly: Boolean
-     *             percentInstance: (recursive schema, see percentInstance above)
-     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *             currency: String (Optional)
+     *             currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean (Optional)
+     *             instance (Optional): (recursive schema, see instance above)
+     *             integerInstance (Optional): (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer (Optional)
+     *             maximumIntegerDigits: Integer (Optional)
+     *             minimumFractionDigits: Integer (Optional)
+     *             minimumIntegerDigits: Integer (Optional)
+     *             numberInstance (Optional): (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean (Optional)
+     *             percentInstance (Optional): (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *         }
-     *         timeInstance: (recursive schema, see timeInstance above)
-     *         timeZone: {
-     *             dstSavings: Integer
-     *             id: String
-     *             availableIds: [
-     *                 String
+     *         timeInstance (Optional): (recursive schema, see timeInstance above)
+     *         timeZone (Optional): {
+     *             dstSavings: Integer (Optional)
+     *             id: String (Optional)
+     *             availableIds (Optional): [
+     *                 String (Optional)
      *             ]
-     *             defaultProperty: (recursive schema, see defaultProperty above)
-     *             displayName: String
-     *             rawOffset: Integer
+     *             default (Optional): (recursive schema, see default above)
+     *             displayName: String (Optional)
+     *             rawOffset: Integer (Optional)
      *         }
      *     }
-     *     description: String
-     *     guid: String
-     *     name: String
-     *     options: {
-     *         String: String
+     *     description: String (Optional)
+     *     guid: String (Optional)
+     *     name: String (Optional)
+     *     options (Optional): {
+     *         String: String (Optional)
      *     }
-     *     serviceType: String
-     *     typeVersion: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
-     *     lastModifiedTS: String
-     *     attributeDefs: [
-     *         {
-     *             cardinality: String(SINGLE/LIST/SET)
-     *             constraints: [
-     *                 {
-     *                     params: {
-     *                         String: Object
+     *     serviceType: String (Optional)
+     *     typeVersion: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     attributeDefs (Optional): [
+     *          (Optional){
+     *             cardinality: String(SINGLE/LIST/SET) (Optional)
+     *             constraints (Optional): [
+     *                  (Optional){
+     *                     params (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     type: String
+     *                     type: String (Optional)
      *                 }
      *             ]
-     *             defaultValue: String
-     *             description: String
-     *             includeInNotification: Boolean
-     *             isIndexable: Boolean
-     *             isOptional: Boolean
-     *             isUnique: Boolean
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             defaultValue: String (Optional)
+     *             description: String (Optional)
+     *             includeInNotification: Boolean (Optional)
+     *             isIndexable: Boolean (Optional)
+     *             isOptional: Boolean (Optional)
+     *             isUnique: Boolean (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             typeName: String
-     *             valuesMaxCount: Integer
-     *             valuesMinCount: Integer
+     *             typeName: String (Optional)
+     *             valuesMaxCount: Integer (Optional)
+     *             valuesMinCount: Integer (Optional)
      *         }
      *     ]
-     *     endDef1: {
-     *         cardinality: String(SINGLE/LIST/SET)
-     *         description: String
-     *         isContainer: Boolean
-     *         isLegacyAttribute: Boolean
-     *         name: String
-     *         type: String
+     *     endDef1 (Optional): {
+     *         cardinality: String(SINGLE/LIST/SET) (Optional)
+     *         description: String (Optional)
+     *         isContainer: Boolean (Optional)
+     *         isLegacyAttribute: Boolean (Optional)
+     *         name: String (Optional)
+     *         type: String (Optional)
      *     }
-     *     endDef2: (recursive schema, see endDef2 above)
-     *     relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION)
-     *     relationshipLabel: String
+     *     endDef2 (Optional): (recursive schema, see endDef2 above)
+     *     relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION) (Optional)
+     *     relationshipLabel: String (Optional)
      * }
      * }</pre>
      *
@@ -1130,7 +1131,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRelationshipDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.client.getRelationshipDefByNameWithResponse(name, requestOptions).block();
+        return this.serviceClient.getRelationshipDefByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -1140,84 +1141,84 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *     createTime: Float
-     *     createdBy: String
-     *     dateFormatter: {
-     *         availableLocales: [
-     *             String
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     dateFormatter (Optional): {
+     *         availableLocales (Optional): [
+     *             String (Optional)
      *         ]
-     *         calendar: Float
-     *         dateInstance: (recursive schema, see dateInstance above)
-     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *         instance: (recursive schema, see instance above)
-     *         lenient: Boolean
-     *         numberFormat: {
-     *             availableLocales: [
-     *                 String
+     *         calendar: Float (Optional)
+     *         dateInstance (Optional): (recursive schema, see dateInstance above)
+     *         dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *         instance (Optional): (recursive schema, see instance above)
+     *         lenient: Boolean (Optional)
+     *         numberFormat (Optional): {
+     *             availableLocales (Optional): [
+     *                 String (Optional)
      *             ]
-     *             currency: String
-     *             currencyInstance: (recursive schema, see currencyInstance above)
-     *             groupingUsed: Boolean
-     *             instance: (recursive schema, see instance above)
-     *             integerInstance: (recursive schema, see integerInstance above)
-     *             maximumFractionDigits: Integer
-     *             maximumIntegerDigits: Integer
-     *             minimumFractionDigits: Integer
-     *             minimumIntegerDigits: Integer
-     *             numberInstance: (recursive schema, see numberInstance above)
-     *             parseIntegerOnly: Boolean
-     *             percentInstance: (recursive schema, see percentInstance above)
-     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *             currency: String (Optional)
+     *             currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean (Optional)
+     *             instance (Optional): (recursive schema, see instance above)
+     *             integerInstance (Optional): (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer (Optional)
+     *             maximumIntegerDigits: Integer (Optional)
+     *             minimumFractionDigits: Integer (Optional)
+     *             minimumIntegerDigits: Integer (Optional)
+     *             numberInstance (Optional): (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean (Optional)
+     *             percentInstance (Optional): (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *         }
-     *         timeInstance: (recursive schema, see timeInstance above)
-     *         timeZone: {
-     *             dstSavings: Integer
-     *             id: String
-     *             availableIds: [
-     *                 String
+     *         timeInstance (Optional): (recursive schema, see timeInstance above)
+     *         timeZone (Optional): {
+     *             dstSavings: Integer (Optional)
+     *             id: String (Optional)
+     *             availableIds (Optional): [
+     *                 String (Optional)
      *             ]
-     *             defaultProperty: (recursive schema, see defaultProperty above)
-     *             displayName: String
-     *             rawOffset: Integer
+     *             default (Optional): (recursive schema, see default above)
+     *             displayName: String (Optional)
+     *             rawOffset: Integer (Optional)
      *         }
      *     }
-     *     description: String
-     *     guid: String
-     *     name: String
-     *     options: {
-     *         String: String
+     *     description: String (Optional)
+     *     guid: String (Optional)
+     *     name: String (Optional)
+     *     options (Optional): {
+     *         String: String (Optional)
      *     }
-     *     serviceType: String
-     *     typeVersion: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
-     *     lastModifiedTS: String
-     *     attributeDefs: [
-     *         {
-     *             cardinality: String(SINGLE/LIST/SET)
-     *             constraints: [
-     *                 {
-     *                     params: {
-     *                         String: Object
+     *     serviceType: String (Optional)
+     *     typeVersion: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     attributeDefs (Optional): [
+     *          (Optional){
+     *             cardinality: String(SINGLE/LIST/SET) (Optional)
+     *             constraints (Optional): [
+     *                  (Optional){
+     *                     params (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     type: String
+     *                     type: String (Optional)
      *                 }
      *             ]
-     *             defaultValue: String
-     *             description: String
-     *             includeInNotification: Boolean
-     *             isIndexable: Boolean
-     *             isOptional: Boolean
-     *             isUnique: Boolean
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             defaultValue: String (Optional)
+     *             description: String (Optional)
+     *             includeInNotification: Boolean (Optional)
+     *             isIndexable: Boolean (Optional)
+     *             isOptional: Boolean (Optional)
+     *             isUnique: Boolean (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             typeName: String
-     *             valuesMaxCount: Integer
-     *             valuesMinCount: Integer
+     *             typeName: String (Optional)
+     *             valuesMaxCount: Integer (Optional)
+     *             valuesMinCount: Integer (Optional)
      *         }
      *     ]
      * }
@@ -1234,7 +1235,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getStructDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.client.getStructDefByGuidWithResponse(guid, requestOptions).block();
+        return this.serviceClient.getStructDefByGuidWithResponse(guid, requestOptions);
     }
 
     /**
@@ -1244,84 +1245,84 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *     createTime: Float
-     *     createdBy: String
-     *     dateFormatter: {
-     *         availableLocales: [
-     *             String
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     dateFormatter (Optional): {
+     *         availableLocales (Optional): [
+     *             String (Optional)
      *         ]
-     *         calendar: Float
-     *         dateInstance: (recursive schema, see dateInstance above)
-     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *         instance: (recursive schema, see instance above)
-     *         lenient: Boolean
-     *         numberFormat: {
-     *             availableLocales: [
-     *                 String
+     *         calendar: Float (Optional)
+     *         dateInstance (Optional): (recursive schema, see dateInstance above)
+     *         dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *         instance (Optional): (recursive schema, see instance above)
+     *         lenient: Boolean (Optional)
+     *         numberFormat (Optional): {
+     *             availableLocales (Optional): [
+     *                 String (Optional)
      *             ]
-     *             currency: String
-     *             currencyInstance: (recursive schema, see currencyInstance above)
-     *             groupingUsed: Boolean
-     *             instance: (recursive schema, see instance above)
-     *             integerInstance: (recursive schema, see integerInstance above)
-     *             maximumFractionDigits: Integer
-     *             maximumIntegerDigits: Integer
-     *             minimumFractionDigits: Integer
-     *             minimumIntegerDigits: Integer
-     *             numberInstance: (recursive schema, see numberInstance above)
-     *             parseIntegerOnly: Boolean
-     *             percentInstance: (recursive schema, see percentInstance above)
-     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *             currency: String (Optional)
+     *             currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean (Optional)
+     *             instance (Optional): (recursive schema, see instance above)
+     *             integerInstance (Optional): (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer (Optional)
+     *             maximumIntegerDigits: Integer (Optional)
+     *             minimumFractionDigits: Integer (Optional)
+     *             minimumIntegerDigits: Integer (Optional)
+     *             numberInstance (Optional): (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean (Optional)
+     *             percentInstance (Optional): (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *         }
-     *         timeInstance: (recursive schema, see timeInstance above)
-     *         timeZone: {
-     *             dstSavings: Integer
-     *             id: String
-     *             availableIds: [
-     *                 String
+     *         timeInstance (Optional): (recursive schema, see timeInstance above)
+     *         timeZone (Optional): {
+     *             dstSavings: Integer (Optional)
+     *             id: String (Optional)
+     *             availableIds (Optional): [
+     *                 String (Optional)
      *             ]
-     *             defaultProperty: (recursive schema, see defaultProperty above)
-     *             displayName: String
-     *             rawOffset: Integer
+     *             default (Optional): (recursive schema, see default above)
+     *             displayName: String (Optional)
+     *             rawOffset: Integer (Optional)
      *         }
      *     }
-     *     description: String
-     *     guid: String
-     *     name: String
-     *     options: {
-     *         String: String
+     *     description: String (Optional)
+     *     guid: String (Optional)
+     *     name: String (Optional)
+     *     options (Optional): {
+     *         String: String (Optional)
      *     }
-     *     serviceType: String
-     *     typeVersion: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
-     *     lastModifiedTS: String
-     *     attributeDefs: [
-     *         {
-     *             cardinality: String(SINGLE/LIST/SET)
-     *             constraints: [
-     *                 {
-     *                     params: {
-     *                         String: Object
+     *     serviceType: String (Optional)
+     *     typeVersion: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     attributeDefs (Optional): [
+     *          (Optional){
+     *             cardinality: String(SINGLE/LIST/SET) (Optional)
+     *             constraints (Optional): [
+     *                  (Optional){
+     *                     params (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     type: String
+     *                     type: String (Optional)
      *                 }
      *             ]
-     *             defaultValue: String
-     *             description: String
-     *             includeInNotification: Boolean
-     *             isIndexable: Boolean
-     *             isOptional: Boolean
-     *             isUnique: Boolean
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             defaultValue: String (Optional)
+     *             description: String (Optional)
+     *             includeInNotification: Boolean (Optional)
+     *             isIndexable: Boolean (Optional)
+     *             isOptional: Boolean (Optional)
+     *             isUnique: Boolean (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             typeName: String
-     *             valuesMaxCount: Integer
-     *             valuesMinCount: Integer
+     *             typeName: String (Optional)
+     *             valuesMaxCount: Integer (Optional)
+     *             valuesMinCount: Integer (Optional)
      *         }
      *     ]
      * }
@@ -1338,7 +1339,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getStructDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.client.getStructDefByNameWithResponse(name, requestOptions).block();
+        return this.serviceClient.getStructDefByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -1348,135 +1349,135 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *     createTime: Float
-     *     createdBy: String
-     *     dateFormatter: {
-     *         availableLocales: [
-     *             String
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     dateFormatter (Optional): {
+     *         availableLocales (Optional): [
+     *             String (Optional)
      *         ]
-     *         calendar: Float
-     *         dateInstance: (recursive schema, see dateInstance above)
-     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *         instance: (recursive schema, see instance above)
-     *         lenient: Boolean
-     *         numberFormat: {
-     *             availableLocales: [
-     *                 String
+     *         calendar: Float (Optional)
+     *         dateInstance (Optional): (recursive schema, see dateInstance above)
+     *         dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *         instance (Optional): (recursive schema, see instance above)
+     *         lenient: Boolean (Optional)
+     *         numberFormat (Optional): {
+     *             availableLocales (Optional): [
+     *                 String (Optional)
      *             ]
-     *             currency: String
-     *             currencyInstance: (recursive schema, see currencyInstance above)
-     *             groupingUsed: Boolean
-     *             instance: (recursive schema, see instance above)
-     *             integerInstance: (recursive schema, see integerInstance above)
-     *             maximumFractionDigits: Integer
-     *             maximumIntegerDigits: Integer
-     *             minimumFractionDigits: Integer
-     *             minimumIntegerDigits: Integer
-     *             numberInstance: (recursive schema, see numberInstance above)
-     *             parseIntegerOnly: Boolean
-     *             percentInstance: (recursive schema, see percentInstance above)
-     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *             currency: String (Optional)
+     *             currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean (Optional)
+     *             instance (Optional): (recursive schema, see instance above)
+     *             integerInstance (Optional): (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer (Optional)
+     *             maximumIntegerDigits: Integer (Optional)
+     *             minimumFractionDigits: Integer (Optional)
+     *             minimumIntegerDigits: Integer (Optional)
+     *             numberInstance (Optional): (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean (Optional)
+     *             percentInstance (Optional): (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *         }
-     *         timeInstance: (recursive schema, see timeInstance above)
-     *         timeZone: {
-     *             dstSavings: Integer
-     *             id: String
-     *             availableIds: [
-     *                 String
+     *         timeInstance (Optional): (recursive schema, see timeInstance above)
+     *         timeZone (Optional): {
+     *             dstSavings: Integer (Optional)
+     *             id: String (Optional)
+     *             availableIds (Optional): [
+     *                 String (Optional)
      *             ]
-     *             defaultProperty: (recursive schema, see defaultProperty above)
-     *             displayName: String
-     *             rawOffset: Integer
+     *             default (Optional): (recursive schema, see default above)
+     *             displayName: String (Optional)
+     *             rawOffset: Integer (Optional)
      *         }
      *     }
-     *     description: String
-     *     guid: String
-     *     name: String
-     *     options: {
-     *         String: String
+     *     description: String (Optional)
+     *     guid: String (Optional)
+     *     name: String (Optional)
+     *     options (Optional): {
+     *         String: String (Optional)
      *     }
-     *     serviceType: String
-     *     typeVersion: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
-     *     lastModifiedTS: String
-     *     entityTypes: [
-     *         String
+     *     serviceType: String (Optional)
+     *     typeVersion: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     entityTypes (Optional): [
+     *         String (Optional)
      *     ]
-     *     subTypes: [
-     *         String
+     *     subTypes (Optional): [
+     *         String (Optional)
      *     ]
-     *     superTypes: [
-     *         String
+     *     superTypes (Optional): [
+     *         String (Optional)
      *     ]
-     *     relationshipAttributeDefs: [
-     *         {
-     *             cardinality: String(SINGLE/LIST/SET)
-     *             constraints: [
-     *                 {
-     *                     params: {
-     *                         String: Object
+     *     relationshipAttributeDefs (Optional): [
+     *          (Optional){
+     *             cardinality: String(SINGLE/LIST/SET) (Optional)
+     *             constraints (Optional): [
+     *                  (Optional){
+     *                     params (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     type: String
+     *                     type: String (Optional)
      *                 }
      *             ]
-     *             defaultValue: String
-     *             description: String
-     *             includeInNotification: Boolean
-     *             isIndexable: Boolean
-     *             isOptional: Boolean
-     *             isUnique: Boolean
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             defaultValue: String (Optional)
+     *             description: String (Optional)
+     *             includeInNotification: Boolean (Optional)
+     *             isIndexable: Boolean (Optional)
+     *             isOptional: Boolean (Optional)
+     *             isUnique: Boolean (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             typeName: String
-     *             valuesMaxCount: Integer
-     *             valuesMinCount: Integer
-     *             isLegacyAttribute: Boolean
-     *             relationshipTypeName: String
+     *             typeName: String (Optional)
+     *             valuesMaxCount: Integer (Optional)
+     *             valuesMinCount: Integer (Optional)
+     *             isLegacyAttribute: Boolean (Optional)
+     *             relationshipTypeName: String (Optional)
      *         }
      *     ]
-     *     defaultValue: String
-     *     elementDefs: [
-     *         {
-     *             description: String
-     *             ordinal: Float
-     *             value: String
+     *     defaultValue: String (Optional)
+     *     elementDefs (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             ordinal: Float (Optional)
+     *             value: String (Optional)
      *         }
      *     ]
-     *     endDef1: {
-     *         cardinality: String(SINGLE/LIST/SET)
-     *         description: String
-     *         isContainer: Boolean
-     *         isLegacyAttribute: Boolean
-     *         name: String
-     *         type: String
+     *     endDef1 (Optional): {
+     *         cardinality: String(SINGLE/LIST/SET) (Optional)
+     *         description: String (Optional)
+     *         isContainer: Boolean (Optional)
+     *         isLegacyAttribute: Boolean (Optional)
+     *         name: String (Optional)
+     *         type: String (Optional)
      *     }
-     *     endDef2: (recursive schema, see endDef2 above)
-     *     relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION)
-     *     relationshipLabel: String
-     *     attributeDefs: [
-     *         {
-     *             cardinality: String(SINGLE/LIST/SET)
-     *             constraints: [
+     *     endDef2 (Optional): (recursive schema, see endDef2 above)
+     *     relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION) (Optional)
+     *     relationshipLabel: String (Optional)
+     *     attributeDefs (Optional): [
+     *          (Optional){
+     *             cardinality: String(SINGLE/LIST/SET) (Optional)
+     *             constraints (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             defaultValue: String
-     *             description: String
-     *             includeInNotification: Boolean
-     *             isIndexable: Boolean
-     *             isOptional: Boolean
-     *             isUnique: Boolean
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             defaultValue: String (Optional)
+     *             description: String (Optional)
+     *             includeInNotification: Boolean (Optional)
+     *             isIndexable: Boolean (Optional)
+     *             isOptional: Boolean (Optional)
+     *             isUnique: Boolean (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             typeName: String
-     *             valuesMaxCount: Integer
-     *             valuesMinCount: Integer
+     *             typeName: String (Optional)
+     *             valuesMaxCount: Integer (Optional)
+     *             valuesMinCount: Integer (Optional)
      *         }
      *     ]
      * }
@@ -1493,7 +1494,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTypeDefinitionByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.client.getTypeDefinitionByGuidWithResponse(guid, requestOptions).block();
+        return this.serviceClient.getTypeDefinitionByGuidWithResponse(guid, requestOptions);
     }
 
     /**
@@ -1503,135 +1504,135 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *     createTime: Float
-     *     createdBy: String
-     *     dateFormatter: {
-     *         availableLocales: [
-     *             String
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     dateFormatter (Optional): {
+     *         availableLocales (Optional): [
+     *             String (Optional)
      *         ]
-     *         calendar: Float
-     *         dateInstance: (recursive schema, see dateInstance above)
-     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *         instance: (recursive schema, see instance above)
-     *         lenient: Boolean
-     *         numberFormat: {
-     *             availableLocales: [
-     *                 String
+     *         calendar: Float (Optional)
+     *         dateInstance (Optional): (recursive schema, see dateInstance above)
+     *         dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *         instance (Optional): (recursive schema, see instance above)
+     *         lenient: Boolean (Optional)
+     *         numberFormat (Optional): {
+     *             availableLocales (Optional): [
+     *                 String (Optional)
      *             ]
-     *             currency: String
-     *             currencyInstance: (recursive schema, see currencyInstance above)
-     *             groupingUsed: Boolean
-     *             instance: (recursive schema, see instance above)
-     *             integerInstance: (recursive schema, see integerInstance above)
-     *             maximumFractionDigits: Integer
-     *             maximumIntegerDigits: Integer
-     *             minimumFractionDigits: Integer
-     *             minimumIntegerDigits: Integer
-     *             numberInstance: (recursive schema, see numberInstance above)
-     *             parseIntegerOnly: Boolean
-     *             percentInstance: (recursive schema, see percentInstance above)
-     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *             currency: String (Optional)
+     *             currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean (Optional)
+     *             instance (Optional): (recursive schema, see instance above)
+     *             integerInstance (Optional): (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer (Optional)
+     *             maximumIntegerDigits: Integer (Optional)
+     *             minimumFractionDigits: Integer (Optional)
+     *             minimumIntegerDigits: Integer (Optional)
+     *             numberInstance (Optional): (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean (Optional)
+     *             percentInstance (Optional): (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *         }
-     *         timeInstance: (recursive schema, see timeInstance above)
-     *         timeZone: {
-     *             dstSavings: Integer
-     *             id: String
-     *             availableIds: [
-     *                 String
+     *         timeInstance (Optional): (recursive schema, see timeInstance above)
+     *         timeZone (Optional): {
+     *             dstSavings: Integer (Optional)
+     *             id: String (Optional)
+     *             availableIds (Optional): [
+     *                 String (Optional)
      *             ]
-     *             defaultProperty: (recursive schema, see defaultProperty above)
-     *             displayName: String
-     *             rawOffset: Integer
+     *             default (Optional): (recursive schema, see default above)
+     *             displayName: String (Optional)
+     *             rawOffset: Integer (Optional)
      *         }
      *     }
-     *     description: String
-     *     guid: String
-     *     name: String
-     *     options: {
-     *         String: String
+     *     description: String (Optional)
+     *     guid: String (Optional)
+     *     name: String (Optional)
+     *     options (Optional): {
+     *         String: String (Optional)
      *     }
-     *     serviceType: String
-     *     typeVersion: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
-     *     lastModifiedTS: String
-     *     entityTypes: [
-     *         String
+     *     serviceType: String (Optional)
+     *     typeVersion: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     entityTypes (Optional): [
+     *         String (Optional)
      *     ]
-     *     subTypes: [
-     *         String
+     *     subTypes (Optional): [
+     *         String (Optional)
      *     ]
-     *     superTypes: [
-     *         String
+     *     superTypes (Optional): [
+     *         String (Optional)
      *     ]
-     *     relationshipAttributeDefs: [
-     *         {
-     *             cardinality: String(SINGLE/LIST/SET)
-     *             constraints: [
-     *                 {
-     *                     params: {
-     *                         String: Object
+     *     relationshipAttributeDefs (Optional): [
+     *          (Optional){
+     *             cardinality: String(SINGLE/LIST/SET) (Optional)
+     *             constraints (Optional): [
+     *                  (Optional){
+     *                     params (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     type: String
+     *                     type: String (Optional)
      *                 }
      *             ]
-     *             defaultValue: String
-     *             description: String
-     *             includeInNotification: Boolean
-     *             isIndexable: Boolean
-     *             isOptional: Boolean
-     *             isUnique: Boolean
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             defaultValue: String (Optional)
+     *             description: String (Optional)
+     *             includeInNotification: Boolean (Optional)
+     *             isIndexable: Boolean (Optional)
+     *             isOptional: Boolean (Optional)
+     *             isUnique: Boolean (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             typeName: String
-     *             valuesMaxCount: Integer
-     *             valuesMinCount: Integer
-     *             isLegacyAttribute: Boolean
-     *             relationshipTypeName: String
+     *             typeName: String (Optional)
+     *             valuesMaxCount: Integer (Optional)
+     *             valuesMinCount: Integer (Optional)
+     *             isLegacyAttribute: Boolean (Optional)
+     *             relationshipTypeName: String (Optional)
      *         }
      *     ]
-     *     defaultValue: String
-     *     elementDefs: [
-     *         {
-     *             description: String
-     *             ordinal: Float
-     *             value: String
+     *     defaultValue: String (Optional)
+     *     elementDefs (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             ordinal: Float (Optional)
+     *             value: String (Optional)
      *         }
      *     ]
-     *     endDef1: {
-     *         cardinality: String(SINGLE/LIST/SET)
-     *         description: String
-     *         isContainer: Boolean
-     *         isLegacyAttribute: Boolean
-     *         name: String
-     *         type: String
+     *     endDef1 (Optional): {
+     *         cardinality: String(SINGLE/LIST/SET) (Optional)
+     *         description: String (Optional)
+     *         isContainer: Boolean (Optional)
+     *         isLegacyAttribute: Boolean (Optional)
+     *         name: String (Optional)
+     *         type: String (Optional)
      *     }
-     *     endDef2: (recursive schema, see endDef2 above)
-     *     relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION)
-     *     relationshipLabel: String
-     *     attributeDefs: [
-     *         {
-     *             cardinality: String(SINGLE/LIST/SET)
-     *             constraints: [
+     *     endDef2 (Optional): (recursive schema, see endDef2 above)
+     *     relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION) (Optional)
+     *     relationshipLabel: String (Optional)
+     *     attributeDefs (Optional): [
+     *          (Optional){
+     *             cardinality: String(SINGLE/LIST/SET) (Optional)
+     *             constraints (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             defaultValue: String
-     *             description: String
-     *             includeInNotification: Boolean
-     *             isIndexable: Boolean
-     *             isOptional: Boolean
-     *             isUnique: Boolean
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             defaultValue: String (Optional)
+     *             description: String (Optional)
+     *             includeInNotification: Boolean (Optional)
+     *             isIndexable: Boolean (Optional)
+     *             isOptional: Boolean (Optional)
+     *             isUnique: Boolean (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             typeName: String
-     *             valuesMaxCount: Integer
-     *             valuesMinCount: Integer
+     *             typeName: String (Optional)
+     *             valuesMaxCount: Integer (Optional)
+     *             valuesMinCount: Integer (Optional)
      *         }
      *     ]
      * }
@@ -1648,7 +1649,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTypeDefinitionByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.client.getTypeDefinitionByNameWithResponse(name, requestOptions).block();
+        return this.serviceClient.getTypeDefinitionByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -1665,7 +1666,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTypeByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.client.deleteTypeByNameWithResponse(name, requestOptions).block();
+        return this.serviceClient.deleteTypeByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -1678,285 +1679,287 @@ public final class TypesClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>includeTermTemplate</td><td>Boolean</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
      * This is always true when search filter type=term_template</td></tr>
-     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values: enum, entity, classification, relationship, struct, term_template.</td></tr>
+     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values: "enum", "entity", "classification", "relationship", "struct", "term_template".</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     businessMetadataDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: {
-     *                 availableLocales: [
-     *                     String
+     *     businessMetadataDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): {
+     *                 availableLocales (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 calendar: Float
-     *                 dateInstance: (recursive schema, see dateInstance above)
-     *                 dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *                 instance: (recursive schema, see instance above)
-     *                 lenient: Boolean
-     *                 numberFormat: {
-     *                     availableLocales: [
-     *                         String
+     *                 calendar: Float (Optional)
+     *                 dateInstance (Optional): (recursive schema, see dateInstance above)
+     *                 dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *                 instance (Optional): (recursive schema, see instance above)
+     *                 lenient: Boolean (Optional)
+     *                 numberFormat (Optional): {
+     *                     availableLocales (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                     currency: String
-     *                     currencyInstance: (recursive schema, see currencyInstance above)
-     *                     groupingUsed: Boolean
-     *                     instance: (recursive schema, see instance above)
-     *                     integerInstance: (recursive schema, see integerInstance above)
-     *                     maximumFractionDigits: Integer
-     *                     maximumIntegerDigits: Integer
-     *                     minimumFractionDigits: Integer
-     *                     minimumIntegerDigits: Integer
-     *                     numberInstance: (recursive schema, see numberInstance above)
-     *                     parseIntegerOnly: Boolean
-     *                     percentInstance: (recursive schema, see percentInstance above)
-     *                     roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *                     currency: String (Optional)
+     *                     currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *                     groupingUsed: Boolean (Optional)
+     *                     instance (Optional): (recursive schema, see instance above)
+     *                     integerInstance (Optional): (recursive schema, see integerInstance above)
+     *                     maximumFractionDigits: Integer (Optional)
+     *                     maximumIntegerDigits: Integer (Optional)
+     *                     minimumFractionDigits: Integer (Optional)
+     *                     minimumIntegerDigits: Integer (Optional)
+     *                     numberInstance (Optional): (recursive schema, see numberInstance above)
+     *                     parseIntegerOnly: Boolean (Optional)
+     *                     percentInstance (Optional): (recursive schema, see percentInstance above)
+     *                     roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *                 }
-     *                 timeInstance: (recursive schema, see timeInstance above)
-     *                 timeZone: {
-     *                     dstSavings: Integer
-     *                     id: String
-     *                     availableIds: [
-     *                         String
+     *                 timeInstance (Optional): (recursive schema, see timeInstance above)
+     *                 timeZone (Optional): {
+     *                     dstSavings: Integer (Optional)
+     *                     id: String (Optional)
+     *                     availableIds (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                     defaultProperty: (recursive schema, see defaultProperty above)
-     *                     displayName: String
-     *                     rawOffset: Integer
+     *                     default (Optional): (recursive schema, see default above)
+     *                     displayName: String (Optional)
+     *                     rawOffset: Integer (Optional)
      *                 }
      *             }
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
-     *                 {
-     *                     cardinality: String(SINGLE/LIST/SET)
-     *                     constraints: [
-     *                         {
-     *                             params: {
-     *                                 String: Object
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
+     *                  (Optional){
+     *                     cardinality: String(SINGLE/LIST/SET) (Optional)
+     *                     constraints (Optional): [
+     *                          (Optional){
+     *                             params (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             type: String
+     *                             type: String (Optional)
      *                         }
      *                     ]
-     *                     defaultValue: String
-     *                     description: String
-     *                     includeInNotification: Boolean
-     *                     isIndexable: Boolean
-     *                     isOptional: Boolean
-     *                     isUnique: Boolean
-     *                     name: String
-     *                     options: {
-     *                         String: String
+     *                     defaultValue: String (Optional)
+     *                     description: String (Optional)
+     *                     includeInNotification: Boolean (Optional)
+     *                     isIndexable: Boolean (Optional)
+     *                     isOptional: Boolean (Optional)
+     *                     isUnique: Boolean (Optional)
+     *                     name: String (Optional)
+     *                     options (Optional): {
+     *                         String: String (Optional)
      *                     }
-     *                     typeName: String
-     *                     valuesMaxCount: Integer
-     *                     valuesMinCount: Integer
+     *                     typeName: String (Optional)
+     *                     valuesMaxCount: Integer (Optional)
+     *                     valuesMinCount: Integer (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     classificationDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     classificationDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             entityTypes: [
-     *                 String
+     *             entityTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             subTypes: [
-     *                 String
+     *             subTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             superTypes: [
-     *                 String
+     *             superTypes (Optional): [
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
-     *     entityDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     entityDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             subTypes: [
-     *                 String
+     *             subTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             superTypes: [
-     *                 String
+     *             superTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             relationshipAttributeDefs: [
-     *                 {
-     *                     cardinality: String(SINGLE/LIST/SET)
-     *                     constraints: [
+     *             relationshipAttributeDefs (Optional): [
+     *                  (Optional){
+     *                     cardinality: String(SINGLE/LIST/SET) (Optional)
+     *                     constraints (Optional): [
      *                         (recursive schema, see above)
      *                     ]
-     *                     defaultValue: String
-     *                     description: String
-     *                     includeInNotification: Boolean
-     *                     isIndexable: Boolean
-     *                     isOptional: Boolean
-     *                     isUnique: Boolean
-     *                     name: String
-     *                     options: {
-     *                         String: String
+     *                     defaultValue: String (Optional)
+     *                     description: String (Optional)
+     *                     includeInNotification: Boolean (Optional)
+     *                     isIndexable: Boolean (Optional)
+     *                     isOptional: Boolean (Optional)
+     *                     isUnique: Boolean (Optional)
+     *                     name: String (Optional)
+     *                     options (Optional): {
+     *                         String: String (Optional)
      *                     }
-     *                     typeName: String
-     *                     valuesMaxCount: Integer
-     *                     valuesMinCount: Integer
-     *                     isLegacyAttribute: Boolean
-     *                     relationshipTypeName: String
+     *                     typeName: String (Optional)
+     *                     valuesMaxCount: Integer (Optional)
+     *                     valuesMinCount: Integer (Optional)
+     *                     isLegacyAttribute: Boolean (Optional)
+     *                     relationshipTypeName: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     enumDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     enumDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             defaultValue: String
-     *             elementDefs: [
-     *                 {
-     *                     description: String
-     *                     ordinal: Float
-     *                     value: String
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             defaultValue: String (Optional)
+     *             elementDefs (Optional): [
+     *                  (Optional){
+     *                     description: String (Optional)
+     *                     ordinal: Float (Optional)
+     *                     value: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     relationshipDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     relationshipDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             endDef1: {
-     *                 cardinality: String(SINGLE/LIST/SET)
-     *                 description: String
-     *                 isContainer: Boolean
-     *                 isLegacyAttribute: Boolean
-     *                 name: String
-     *                 type: String
+     *             endDef1 (Optional): {
+     *                 cardinality: String(SINGLE/LIST/SET) (Optional)
+     *                 description: String (Optional)
+     *                 isContainer: Boolean (Optional)
+     *                 isLegacyAttribute: Boolean (Optional)
+     *                 name: String (Optional)
+     *                 type: String (Optional)
      *             }
-     *             endDef2: (recursive schema, see endDef2 above)
-     *             relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION)
-     *             relationshipLabel: String
+     *             endDef2 (Optional): (recursive schema, see endDef2 above)
+     *             relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION) (Optional)
+     *             relationshipLabel: String (Optional)
      *         }
      *     ]
-     *     structDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     structDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
      *         }
      *     ]
-     *     termTemplateDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     termTemplateDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
      *         }
@@ -1974,7 +1977,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAllTypeDefinitionsWithResponse(RequestOptions requestOptions) {
-        return this.client.getAllTypeDefinitionsWithResponse(requestOptions).block();
+        return this.serviceClient.getAllTypeDefinitionsWithResponse(requestOptions);
     }
 
     /**
@@ -1985,278 +1988,278 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     businessMetadataDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: {
-     *                 availableLocales: [
-     *                     String
+     *     businessMetadataDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): {
+     *                 availableLocales (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 calendar: Float
-     *                 dateInstance: (recursive schema, see dateInstance above)
-     *                 dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *                 instance: (recursive schema, see instance above)
-     *                 lenient: Boolean
-     *                 numberFormat: {
-     *                     availableLocales: [
-     *                         String
+     *                 calendar: Float (Optional)
+     *                 dateInstance (Optional): (recursive schema, see dateInstance above)
+     *                 dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *                 instance (Optional): (recursive schema, see instance above)
+     *                 lenient: Boolean (Optional)
+     *                 numberFormat (Optional): {
+     *                     availableLocales (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                     currency: String
-     *                     currencyInstance: (recursive schema, see currencyInstance above)
-     *                     groupingUsed: Boolean
-     *                     instance: (recursive schema, see instance above)
-     *                     integerInstance: (recursive schema, see integerInstance above)
-     *                     maximumFractionDigits: Integer
-     *                     maximumIntegerDigits: Integer
-     *                     minimumFractionDigits: Integer
-     *                     minimumIntegerDigits: Integer
-     *                     numberInstance: (recursive schema, see numberInstance above)
-     *                     parseIntegerOnly: Boolean
-     *                     percentInstance: (recursive schema, see percentInstance above)
-     *                     roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *                     currency: String (Optional)
+     *                     currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *                     groupingUsed: Boolean (Optional)
+     *                     instance (Optional): (recursive schema, see instance above)
+     *                     integerInstance (Optional): (recursive schema, see integerInstance above)
+     *                     maximumFractionDigits: Integer (Optional)
+     *                     maximumIntegerDigits: Integer (Optional)
+     *                     minimumFractionDigits: Integer (Optional)
+     *                     minimumIntegerDigits: Integer (Optional)
+     *                     numberInstance (Optional): (recursive schema, see numberInstance above)
+     *                     parseIntegerOnly: Boolean (Optional)
+     *                     percentInstance (Optional): (recursive schema, see percentInstance above)
+     *                     roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *                 }
-     *                 timeInstance: (recursive schema, see timeInstance above)
-     *                 timeZone: {
-     *                     dstSavings: Integer
-     *                     id: String
-     *                     availableIds: [
-     *                         String
+     *                 timeInstance (Optional): (recursive schema, see timeInstance above)
+     *                 timeZone (Optional): {
+     *                     dstSavings: Integer (Optional)
+     *                     id: String (Optional)
+     *                     availableIds (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                     defaultProperty: (recursive schema, see defaultProperty above)
-     *                     displayName: String
-     *                     rawOffset: Integer
+     *                     default (Optional): (recursive schema, see default above)
+     *                     displayName: String (Optional)
+     *                     rawOffset: Integer (Optional)
      *                 }
      *             }
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
-     *                 {
-     *                     cardinality: String(SINGLE/LIST/SET)
-     *                     constraints: [
-     *                         {
-     *                             params: {
-     *                                 String: Object
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
+     *                  (Optional){
+     *                     cardinality: String(SINGLE/LIST/SET) (Optional)
+     *                     constraints (Optional): [
+     *                          (Optional){
+     *                             params (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             type: String
+     *                             type: String (Optional)
      *                         }
      *                     ]
-     *                     defaultValue: String
-     *                     description: String
-     *                     includeInNotification: Boolean
-     *                     isIndexable: Boolean
-     *                     isOptional: Boolean
-     *                     isUnique: Boolean
-     *                     name: String
-     *                     options: {
-     *                         String: String
+     *                     defaultValue: String (Optional)
+     *                     description: String (Optional)
+     *                     includeInNotification: Boolean (Optional)
+     *                     isIndexable: Boolean (Optional)
+     *                     isOptional: Boolean (Optional)
+     *                     isUnique: Boolean (Optional)
+     *                     name: String (Optional)
+     *                     options (Optional): {
+     *                         String: String (Optional)
      *                     }
-     *                     typeName: String
-     *                     valuesMaxCount: Integer
-     *                     valuesMinCount: Integer
+     *                     typeName: String (Optional)
+     *                     valuesMaxCount: Integer (Optional)
+     *                     valuesMinCount: Integer (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     classificationDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     classificationDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             entityTypes: [
-     *                 String
+     *             entityTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             subTypes: [
-     *                 String
+     *             subTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             superTypes: [
-     *                 String
+     *             superTypes (Optional): [
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
-     *     entityDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     entityDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             subTypes: [
-     *                 String
+     *             subTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             superTypes: [
-     *                 String
+     *             superTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             relationshipAttributeDefs: [
-     *                 {
-     *                     cardinality: String(SINGLE/LIST/SET)
-     *                     constraints: [
+     *             relationshipAttributeDefs (Optional): [
+     *                  (Optional){
+     *                     cardinality: String(SINGLE/LIST/SET) (Optional)
+     *                     constraints (Optional): [
      *                         (recursive schema, see above)
      *                     ]
-     *                     defaultValue: String
-     *                     description: String
-     *                     includeInNotification: Boolean
-     *                     isIndexable: Boolean
-     *                     isOptional: Boolean
-     *                     isUnique: Boolean
-     *                     name: String
-     *                     options: {
-     *                         String: String
+     *                     defaultValue: String (Optional)
+     *                     description: String (Optional)
+     *                     includeInNotification: Boolean (Optional)
+     *                     isIndexable: Boolean (Optional)
+     *                     isOptional: Boolean (Optional)
+     *                     isUnique: Boolean (Optional)
+     *                     name: String (Optional)
+     *                     options (Optional): {
+     *                         String: String (Optional)
      *                     }
-     *                     typeName: String
-     *                     valuesMaxCount: Integer
-     *                     valuesMinCount: Integer
-     *                     isLegacyAttribute: Boolean
-     *                     relationshipTypeName: String
+     *                     typeName: String (Optional)
+     *                     valuesMaxCount: Integer (Optional)
+     *                     valuesMinCount: Integer (Optional)
+     *                     isLegacyAttribute: Boolean (Optional)
+     *                     relationshipTypeName: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     enumDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     enumDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             defaultValue: String
-     *             elementDefs: [
-     *                 {
-     *                     description: String
-     *                     ordinal: Float
-     *                     value: String
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             defaultValue: String (Optional)
+     *             elementDefs (Optional): [
+     *                  (Optional){
+     *                     description: String (Optional)
+     *                     ordinal: Float (Optional)
+     *                     value: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     relationshipDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     relationshipDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             endDef1: {
-     *                 cardinality: String(SINGLE/LIST/SET)
-     *                 description: String
-     *                 isContainer: Boolean
-     *                 isLegacyAttribute: Boolean
-     *                 name: String
-     *                 type: String
+     *             endDef1 (Optional): {
+     *                 cardinality: String(SINGLE/LIST/SET) (Optional)
+     *                 description: String (Optional)
+     *                 isContainer: Boolean (Optional)
+     *                 isLegacyAttribute: Boolean (Optional)
+     *                 name: String (Optional)
+     *                 type: String (Optional)
      *             }
-     *             endDef2: (recursive schema, see endDef2 above)
-     *             relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION)
-     *             relationshipLabel: String
+     *             endDef2 (Optional): (recursive schema, see endDef2 above)
+     *             relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION) (Optional)
+     *             relationshipLabel: String (Optional)
      *         }
      *     ]
-     *     structDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     structDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
      *         }
      *     ]
-     *     termTemplateDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     termTemplateDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
      *         }
@@ -2268,278 +2271,278 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     businessMetadataDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: {
-     *                 availableLocales: [
-     *                     String
+     *     businessMetadataDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): {
+     *                 availableLocales (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 calendar: Float
-     *                 dateInstance: (recursive schema, see dateInstance above)
-     *                 dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *                 instance: (recursive schema, see instance above)
-     *                 lenient: Boolean
-     *                 numberFormat: {
-     *                     availableLocales: [
-     *                         String
+     *                 calendar: Float (Optional)
+     *                 dateInstance (Optional): (recursive schema, see dateInstance above)
+     *                 dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *                 instance (Optional): (recursive schema, see instance above)
+     *                 lenient: Boolean (Optional)
+     *                 numberFormat (Optional): {
+     *                     availableLocales (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                     currency: String
-     *                     currencyInstance: (recursive schema, see currencyInstance above)
-     *                     groupingUsed: Boolean
-     *                     instance: (recursive schema, see instance above)
-     *                     integerInstance: (recursive schema, see integerInstance above)
-     *                     maximumFractionDigits: Integer
-     *                     maximumIntegerDigits: Integer
-     *                     minimumFractionDigits: Integer
-     *                     minimumIntegerDigits: Integer
-     *                     numberInstance: (recursive schema, see numberInstance above)
-     *                     parseIntegerOnly: Boolean
-     *                     percentInstance: (recursive schema, see percentInstance above)
-     *                     roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *                     currency: String (Optional)
+     *                     currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *                     groupingUsed: Boolean (Optional)
+     *                     instance (Optional): (recursive schema, see instance above)
+     *                     integerInstance (Optional): (recursive schema, see integerInstance above)
+     *                     maximumFractionDigits: Integer (Optional)
+     *                     maximumIntegerDigits: Integer (Optional)
+     *                     minimumFractionDigits: Integer (Optional)
+     *                     minimumIntegerDigits: Integer (Optional)
+     *                     numberInstance (Optional): (recursive schema, see numberInstance above)
+     *                     parseIntegerOnly: Boolean (Optional)
+     *                     percentInstance (Optional): (recursive schema, see percentInstance above)
+     *                     roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *                 }
-     *                 timeInstance: (recursive schema, see timeInstance above)
-     *                 timeZone: {
-     *                     dstSavings: Integer
-     *                     id: String
-     *                     availableIds: [
-     *                         String
+     *                 timeInstance (Optional): (recursive schema, see timeInstance above)
+     *                 timeZone (Optional): {
+     *                     dstSavings: Integer (Optional)
+     *                     id: String (Optional)
+     *                     availableIds (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                     defaultProperty: (recursive schema, see defaultProperty above)
-     *                     displayName: String
-     *                     rawOffset: Integer
+     *                     default (Optional): (recursive schema, see default above)
+     *                     displayName: String (Optional)
+     *                     rawOffset: Integer (Optional)
      *                 }
      *             }
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
-     *                 {
-     *                     cardinality: String(SINGLE/LIST/SET)
-     *                     constraints: [
-     *                         {
-     *                             params: {
-     *                                 String: Object
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
+     *                  (Optional){
+     *                     cardinality: String(SINGLE/LIST/SET) (Optional)
+     *                     constraints (Optional): [
+     *                          (Optional){
+     *                             params (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             type: String
+     *                             type: String (Optional)
      *                         }
      *                     ]
-     *                     defaultValue: String
-     *                     description: String
-     *                     includeInNotification: Boolean
-     *                     isIndexable: Boolean
-     *                     isOptional: Boolean
-     *                     isUnique: Boolean
-     *                     name: String
-     *                     options: {
-     *                         String: String
+     *                     defaultValue: String (Optional)
+     *                     description: String (Optional)
+     *                     includeInNotification: Boolean (Optional)
+     *                     isIndexable: Boolean (Optional)
+     *                     isOptional: Boolean (Optional)
+     *                     isUnique: Boolean (Optional)
+     *                     name: String (Optional)
+     *                     options (Optional): {
+     *                         String: String (Optional)
      *                     }
-     *                     typeName: String
-     *                     valuesMaxCount: Integer
-     *                     valuesMinCount: Integer
+     *                     typeName: String (Optional)
+     *                     valuesMaxCount: Integer (Optional)
+     *                     valuesMinCount: Integer (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     classificationDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     classificationDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             entityTypes: [
-     *                 String
+     *             entityTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             subTypes: [
-     *                 String
+     *             subTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             superTypes: [
-     *                 String
+     *             superTypes (Optional): [
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
-     *     entityDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     entityDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             subTypes: [
-     *                 String
+     *             subTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             superTypes: [
-     *                 String
+     *             superTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             relationshipAttributeDefs: [
-     *                 {
-     *                     cardinality: String(SINGLE/LIST/SET)
-     *                     constraints: [
+     *             relationshipAttributeDefs (Optional): [
+     *                  (Optional){
+     *                     cardinality: String(SINGLE/LIST/SET) (Optional)
+     *                     constraints (Optional): [
      *                         (recursive schema, see above)
      *                     ]
-     *                     defaultValue: String
-     *                     description: String
-     *                     includeInNotification: Boolean
-     *                     isIndexable: Boolean
-     *                     isOptional: Boolean
-     *                     isUnique: Boolean
-     *                     name: String
-     *                     options: {
-     *                         String: String
+     *                     defaultValue: String (Optional)
+     *                     description: String (Optional)
+     *                     includeInNotification: Boolean (Optional)
+     *                     isIndexable: Boolean (Optional)
+     *                     isOptional: Boolean (Optional)
+     *                     isUnique: Boolean (Optional)
+     *                     name: String (Optional)
+     *                     options (Optional): {
+     *                         String: String (Optional)
      *                     }
-     *                     typeName: String
-     *                     valuesMaxCount: Integer
-     *                     valuesMinCount: Integer
-     *                     isLegacyAttribute: Boolean
-     *                     relationshipTypeName: String
+     *                     typeName: String (Optional)
+     *                     valuesMaxCount: Integer (Optional)
+     *                     valuesMinCount: Integer (Optional)
+     *                     isLegacyAttribute: Boolean (Optional)
+     *                     relationshipTypeName: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     enumDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     enumDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             defaultValue: String
-     *             elementDefs: [
-     *                 {
-     *                     description: String
-     *                     ordinal: Float
-     *                     value: String
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             defaultValue: String (Optional)
+     *             elementDefs (Optional): [
+     *                  (Optional){
+     *                     description: String (Optional)
+     *                     ordinal: Float (Optional)
+     *                     value: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     relationshipDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     relationshipDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             endDef1: {
-     *                 cardinality: String(SINGLE/LIST/SET)
-     *                 description: String
-     *                 isContainer: Boolean
-     *                 isLegacyAttribute: Boolean
-     *                 name: String
-     *                 type: String
+     *             endDef1 (Optional): {
+     *                 cardinality: String(SINGLE/LIST/SET) (Optional)
+     *                 description: String (Optional)
+     *                 isContainer: Boolean (Optional)
+     *                 isLegacyAttribute: Boolean (Optional)
+     *                 name: String (Optional)
+     *                 type: String (Optional)
      *             }
-     *             endDef2: (recursive schema, see endDef2 above)
-     *             relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION)
-     *             relationshipLabel: String
+     *             endDef2 (Optional): (recursive schema, see endDef2 above)
+     *             relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION) (Optional)
+     *             relationshipLabel: String (Optional)
      *         }
      *     ]
-     *     structDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     structDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
      *         }
      *     ]
-     *     termTemplateDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     termTemplateDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
      *         }
@@ -2558,7 +2561,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createTypeDefinitionsWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
-        return this.client.createTypeDefinitionsWithResponse(typesDef, requestOptions).block();
+        return this.serviceClient.createTypeDefinitionsWithResponse(typesDef, requestOptions);
     }
 
     /**
@@ -2568,278 +2571,278 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     businessMetadataDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: {
-     *                 availableLocales: [
-     *                     String
+     *     businessMetadataDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): {
+     *                 availableLocales (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 calendar: Float
-     *                 dateInstance: (recursive schema, see dateInstance above)
-     *                 dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *                 instance: (recursive schema, see instance above)
-     *                 lenient: Boolean
-     *                 numberFormat: {
-     *                     availableLocales: [
-     *                         String
+     *                 calendar: Float (Optional)
+     *                 dateInstance (Optional): (recursive schema, see dateInstance above)
+     *                 dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *                 instance (Optional): (recursive schema, see instance above)
+     *                 lenient: Boolean (Optional)
+     *                 numberFormat (Optional): {
+     *                     availableLocales (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                     currency: String
-     *                     currencyInstance: (recursive schema, see currencyInstance above)
-     *                     groupingUsed: Boolean
-     *                     instance: (recursive schema, see instance above)
-     *                     integerInstance: (recursive schema, see integerInstance above)
-     *                     maximumFractionDigits: Integer
-     *                     maximumIntegerDigits: Integer
-     *                     minimumFractionDigits: Integer
-     *                     minimumIntegerDigits: Integer
-     *                     numberInstance: (recursive schema, see numberInstance above)
-     *                     parseIntegerOnly: Boolean
-     *                     percentInstance: (recursive schema, see percentInstance above)
-     *                     roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *                     currency: String (Optional)
+     *                     currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *                     groupingUsed: Boolean (Optional)
+     *                     instance (Optional): (recursive schema, see instance above)
+     *                     integerInstance (Optional): (recursive schema, see integerInstance above)
+     *                     maximumFractionDigits: Integer (Optional)
+     *                     maximumIntegerDigits: Integer (Optional)
+     *                     minimumFractionDigits: Integer (Optional)
+     *                     minimumIntegerDigits: Integer (Optional)
+     *                     numberInstance (Optional): (recursive schema, see numberInstance above)
+     *                     parseIntegerOnly: Boolean (Optional)
+     *                     percentInstance (Optional): (recursive schema, see percentInstance above)
+     *                     roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *                 }
-     *                 timeInstance: (recursive schema, see timeInstance above)
-     *                 timeZone: {
-     *                     dstSavings: Integer
-     *                     id: String
-     *                     availableIds: [
-     *                         String
+     *                 timeInstance (Optional): (recursive schema, see timeInstance above)
+     *                 timeZone (Optional): {
+     *                     dstSavings: Integer (Optional)
+     *                     id: String (Optional)
+     *                     availableIds (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                     defaultProperty: (recursive schema, see defaultProperty above)
-     *                     displayName: String
-     *                     rawOffset: Integer
+     *                     default (Optional): (recursive schema, see default above)
+     *                     displayName: String (Optional)
+     *                     rawOffset: Integer (Optional)
      *                 }
      *             }
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
-     *                 {
-     *                     cardinality: String(SINGLE/LIST/SET)
-     *                     constraints: [
-     *                         {
-     *                             params: {
-     *                                 String: Object
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
+     *                  (Optional){
+     *                     cardinality: String(SINGLE/LIST/SET) (Optional)
+     *                     constraints (Optional): [
+     *                          (Optional){
+     *                             params (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             type: String
+     *                             type: String (Optional)
      *                         }
      *                     ]
-     *                     defaultValue: String
-     *                     description: String
-     *                     includeInNotification: Boolean
-     *                     isIndexable: Boolean
-     *                     isOptional: Boolean
-     *                     isUnique: Boolean
-     *                     name: String
-     *                     options: {
-     *                         String: String
+     *                     defaultValue: String (Optional)
+     *                     description: String (Optional)
+     *                     includeInNotification: Boolean (Optional)
+     *                     isIndexable: Boolean (Optional)
+     *                     isOptional: Boolean (Optional)
+     *                     isUnique: Boolean (Optional)
+     *                     name: String (Optional)
+     *                     options (Optional): {
+     *                         String: String (Optional)
      *                     }
-     *                     typeName: String
-     *                     valuesMaxCount: Integer
-     *                     valuesMinCount: Integer
+     *                     typeName: String (Optional)
+     *                     valuesMaxCount: Integer (Optional)
+     *                     valuesMinCount: Integer (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     classificationDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     classificationDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             entityTypes: [
-     *                 String
+     *             entityTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             subTypes: [
-     *                 String
+     *             subTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             superTypes: [
-     *                 String
+     *             superTypes (Optional): [
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
-     *     entityDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     entityDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             subTypes: [
-     *                 String
+     *             subTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             superTypes: [
-     *                 String
+     *             superTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             relationshipAttributeDefs: [
-     *                 {
-     *                     cardinality: String(SINGLE/LIST/SET)
-     *                     constraints: [
+     *             relationshipAttributeDefs (Optional): [
+     *                  (Optional){
+     *                     cardinality: String(SINGLE/LIST/SET) (Optional)
+     *                     constraints (Optional): [
      *                         (recursive schema, see above)
      *                     ]
-     *                     defaultValue: String
-     *                     description: String
-     *                     includeInNotification: Boolean
-     *                     isIndexable: Boolean
-     *                     isOptional: Boolean
-     *                     isUnique: Boolean
-     *                     name: String
-     *                     options: {
-     *                         String: String
+     *                     defaultValue: String (Optional)
+     *                     description: String (Optional)
+     *                     includeInNotification: Boolean (Optional)
+     *                     isIndexable: Boolean (Optional)
+     *                     isOptional: Boolean (Optional)
+     *                     isUnique: Boolean (Optional)
+     *                     name: String (Optional)
+     *                     options (Optional): {
+     *                         String: String (Optional)
      *                     }
-     *                     typeName: String
-     *                     valuesMaxCount: Integer
-     *                     valuesMinCount: Integer
-     *                     isLegacyAttribute: Boolean
-     *                     relationshipTypeName: String
+     *                     typeName: String (Optional)
+     *                     valuesMaxCount: Integer (Optional)
+     *                     valuesMinCount: Integer (Optional)
+     *                     isLegacyAttribute: Boolean (Optional)
+     *                     relationshipTypeName: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     enumDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     enumDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             defaultValue: String
-     *             elementDefs: [
-     *                 {
-     *                     description: String
-     *                     ordinal: Float
-     *                     value: String
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             defaultValue: String (Optional)
+     *             elementDefs (Optional): [
+     *                  (Optional){
+     *                     description: String (Optional)
+     *                     ordinal: Float (Optional)
+     *                     value: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     relationshipDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     relationshipDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             endDef1: {
-     *                 cardinality: String(SINGLE/LIST/SET)
-     *                 description: String
-     *                 isContainer: Boolean
-     *                 isLegacyAttribute: Boolean
-     *                 name: String
-     *                 type: String
+     *             endDef1 (Optional): {
+     *                 cardinality: String(SINGLE/LIST/SET) (Optional)
+     *                 description: String (Optional)
+     *                 isContainer: Boolean (Optional)
+     *                 isLegacyAttribute: Boolean (Optional)
+     *                 name: String (Optional)
+     *                 type: String (Optional)
      *             }
-     *             endDef2: (recursive schema, see endDef2 above)
-     *             relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION)
-     *             relationshipLabel: String
+     *             endDef2 (Optional): (recursive schema, see endDef2 above)
+     *             relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION) (Optional)
+     *             relationshipLabel: String (Optional)
      *         }
      *     ]
-     *     structDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     structDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
      *         }
      *     ]
-     *     termTemplateDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     termTemplateDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
      *         }
@@ -2851,278 +2854,278 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     businessMetadataDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: {
-     *                 availableLocales: [
-     *                     String
+     *     businessMetadataDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): {
+     *                 availableLocales (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 calendar: Float
-     *                 dateInstance: (recursive schema, see dateInstance above)
-     *                 dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *                 instance: (recursive schema, see instance above)
-     *                 lenient: Boolean
-     *                 numberFormat: {
-     *                     availableLocales: [
-     *                         String
+     *                 calendar: Float (Optional)
+     *                 dateInstance (Optional): (recursive schema, see dateInstance above)
+     *                 dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *                 instance (Optional): (recursive schema, see instance above)
+     *                 lenient: Boolean (Optional)
+     *                 numberFormat (Optional): {
+     *                     availableLocales (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                     currency: String
-     *                     currencyInstance: (recursive schema, see currencyInstance above)
-     *                     groupingUsed: Boolean
-     *                     instance: (recursive schema, see instance above)
-     *                     integerInstance: (recursive schema, see integerInstance above)
-     *                     maximumFractionDigits: Integer
-     *                     maximumIntegerDigits: Integer
-     *                     minimumFractionDigits: Integer
-     *                     minimumIntegerDigits: Integer
-     *                     numberInstance: (recursive schema, see numberInstance above)
-     *                     parseIntegerOnly: Boolean
-     *                     percentInstance: (recursive schema, see percentInstance above)
-     *                     roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *                     currency: String (Optional)
+     *                     currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *                     groupingUsed: Boolean (Optional)
+     *                     instance (Optional): (recursive schema, see instance above)
+     *                     integerInstance (Optional): (recursive schema, see integerInstance above)
+     *                     maximumFractionDigits: Integer (Optional)
+     *                     maximumIntegerDigits: Integer (Optional)
+     *                     minimumFractionDigits: Integer (Optional)
+     *                     minimumIntegerDigits: Integer (Optional)
+     *                     numberInstance (Optional): (recursive schema, see numberInstance above)
+     *                     parseIntegerOnly: Boolean (Optional)
+     *                     percentInstance (Optional): (recursive schema, see percentInstance above)
+     *                     roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *                 }
-     *                 timeInstance: (recursive schema, see timeInstance above)
-     *                 timeZone: {
-     *                     dstSavings: Integer
-     *                     id: String
-     *                     availableIds: [
-     *                         String
+     *                 timeInstance (Optional): (recursive schema, see timeInstance above)
+     *                 timeZone (Optional): {
+     *                     dstSavings: Integer (Optional)
+     *                     id: String (Optional)
+     *                     availableIds (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                     defaultProperty: (recursive schema, see defaultProperty above)
-     *                     displayName: String
-     *                     rawOffset: Integer
+     *                     default (Optional): (recursive schema, see default above)
+     *                     displayName: String (Optional)
+     *                     rawOffset: Integer (Optional)
      *                 }
      *             }
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
-     *                 {
-     *                     cardinality: String(SINGLE/LIST/SET)
-     *                     constraints: [
-     *                         {
-     *                             params: {
-     *                                 String: Object
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
+     *                  (Optional){
+     *                     cardinality: String(SINGLE/LIST/SET) (Optional)
+     *                     constraints (Optional): [
+     *                          (Optional){
+     *                             params (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             type: String
+     *                             type: String (Optional)
      *                         }
      *                     ]
-     *                     defaultValue: String
-     *                     description: String
-     *                     includeInNotification: Boolean
-     *                     isIndexable: Boolean
-     *                     isOptional: Boolean
-     *                     isUnique: Boolean
-     *                     name: String
-     *                     options: {
-     *                         String: String
+     *                     defaultValue: String (Optional)
+     *                     description: String (Optional)
+     *                     includeInNotification: Boolean (Optional)
+     *                     isIndexable: Boolean (Optional)
+     *                     isOptional: Boolean (Optional)
+     *                     isUnique: Boolean (Optional)
+     *                     name: String (Optional)
+     *                     options (Optional): {
+     *                         String: String (Optional)
      *                     }
-     *                     typeName: String
-     *                     valuesMaxCount: Integer
-     *                     valuesMinCount: Integer
+     *                     typeName: String (Optional)
+     *                     valuesMaxCount: Integer (Optional)
+     *                     valuesMinCount: Integer (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     classificationDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     classificationDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             entityTypes: [
-     *                 String
+     *             entityTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             subTypes: [
-     *                 String
+     *             subTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             superTypes: [
-     *                 String
+     *             superTypes (Optional): [
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
-     *     entityDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     entityDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             subTypes: [
-     *                 String
+     *             subTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             superTypes: [
-     *                 String
+     *             superTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             relationshipAttributeDefs: [
-     *                 {
-     *                     cardinality: String(SINGLE/LIST/SET)
-     *                     constraints: [
+     *             relationshipAttributeDefs (Optional): [
+     *                  (Optional){
+     *                     cardinality: String(SINGLE/LIST/SET) (Optional)
+     *                     constraints (Optional): [
      *                         (recursive schema, see above)
      *                     ]
-     *                     defaultValue: String
-     *                     description: String
-     *                     includeInNotification: Boolean
-     *                     isIndexable: Boolean
-     *                     isOptional: Boolean
-     *                     isUnique: Boolean
-     *                     name: String
-     *                     options: {
-     *                         String: String
+     *                     defaultValue: String (Optional)
+     *                     description: String (Optional)
+     *                     includeInNotification: Boolean (Optional)
+     *                     isIndexable: Boolean (Optional)
+     *                     isOptional: Boolean (Optional)
+     *                     isUnique: Boolean (Optional)
+     *                     name: String (Optional)
+     *                     options (Optional): {
+     *                         String: String (Optional)
      *                     }
-     *                     typeName: String
-     *                     valuesMaxCount: Integer
-     *                     valuesMinCount: Integer
-     *                     isLegacyAttribute: Boolean
-     *                     relationshipTypeName: String
+     *                     typeName: String (Optional)
+     *                     valuesMaxCount: Integer (Optional)
+     *                     valuesMinCount: Integer (Optional)
+     *                     isLegacyAttribute: Boolean (Optional)
+     *                     relationshipTypeName: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     enumDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     enumDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             defaultValue: String
-     *             elementDefs: [
-     *                 {
-     *                     description: String
-     *                     ordinal: Float
-     *                     value: String
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             defaultValue: String (Optional)
+     *             elementDefs (Optional): [
+     *                  (Optional){
+     *                     description: String (Optional)
+     *                     ordinal: Float (Optional)
+     *                     value: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     relationshipDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     relationshipDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             endDef1: {
-     *                 cardinality: String(SINGLE/LIST/SET)
-     *                 description: String
-     *                 isContainer: Boolean
-     *                 isLegacyAttribute: Boolean
-     *                 name: String
-     *                 type: String
+     *             endDef1 (Optional): {
+     *                 cardinality: String(SINGLE/LIST/SET) (Optional)
+     *                 description: String (Optional)
+     *                 isContainer: Boolean (Optional)
+     *                 isLegacyAttribute: Boolean (Optional)
+     *                 name: String (Optional)
+     *                 type: String (Optional)
      *             }
-     *             endDef2: (recursive schema, see endDef2 above)
-     *             relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION)
-     *             relationshipLabel: String
+     *             endDef2 (Optional): (recursive schema, see endDef2 above)
+     *             relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION) (Optional)
+     *             relationshipLabel: String (Optional)
      *         }
      *     ]
-     *     structDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     structDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
      *         }
      *     ]
-     *     termTemplateDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     termTemplateDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
      *         }
@@ -3142,7 +3145,7 @@ public final class TypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateAtlasTypeDefinitionsWithResponse(
             BinaryData typesDef, RequestOptions requestOptions) {
-        return this.client.updateAtlasTypeDefinitionsWithResponse(typesDef, requestOptions).block();
+        return this.serviceClient.updateAtlasTypeDefinitionsWithResponse(typesDef, requestOptions);
     }
 
     /**
@@ -3152,278 +3155,278 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     businessMetadataDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: {
-     *                 availableLocales: [
-     *                     String
+     *     businessMetadataDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): {
+     *                 availableLocales (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 calendar: Float
-     *                 dateInstance: (recursive schema, see dateInstance above)
-     *                 dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *                 instance: (recursive schema, see instance above)
-     *                 lenient: Boolean
-     *                 numberFormat: {
-     *                     availableLocales: [
-     *                         String
+     *                 calendar: Float (Optional)
+     *                 dateInstance (Optional): (recursive schema, see dateInstance above)
+     *                 dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *                 instance (Optional): (recursive schema, see instance above)
+     *                 lenient: Boolean (Optional)
+     *                 numberFormat (Optional): {
+     *                     availableLocales (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                     currency: String
-     *                     currencyInstance: (recursive schema, see currencyInstance above)
-     *                     groupingUsed: Boolean
-     *                     instance: (recursive schema, see instance above)
-     *                     integerInstance: (recursive schema, see integerInstance above)
-     *                     maximumFractionDigits: Integer
-     *                     maximumIntegerDigits: Integer
-     *                     minimumFractionDigits: Integer
-     *                     minimumIntegerDigits: Integer
-     *                     numberInstance: (recursive schema, see numberInstance above)
-     *                     parseIntegerOnly: Boolean
-     *                     percentInstance: (recursive schema, see percentInstance above)
-     *                     roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *                     currency: String (Optional)
+     *                     currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *                     groupingUsed: Boolean (Optional)
+     *                     instance (Optional): (recursive schema, see instance above)
+     *                     integerInstance (Optional): (recursive schema, see integerInstance above)
+     *                     maximumFractionDigits: Integer (Optional)
+     *                     maximumIntegerDigits: Integer (Optional)
+     *                     minimumFractionDigits: Integer (Optional)
+     *                     minimumIntegerDigits: Integer (Optional)
+     *                     numberInstance (Optional): (recursive schema, see numberInstance above)
+     *                     parseIntegerOnly: Boolean (Optional)
+     *                     percentInstance (Optional): (recursive schema, see percentInstance above)
+     *                     roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *                 }
-     *                 timeInstance: (recursive schema, see timeInstance above)
-     *                 timeZone: {
-     *                     dstSavings: Integer
-     *                     id: String
-     *                     availableIds: [
-     *                         String
+     *                 timeInstance (Optional): (recursive schema, see timeInstance above)
+     *                 timeZone (Optional): {
+     *                     dstSavings: Integer (Optional)
+     *                     id: String (Optional)
+     *                     availableIds (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                     defaultProperty: (recursive schema, see defaultProperty above)
-     *                     displayName: String
-     *                     rawOffset: Integer
+     *                     default (Optional): (recursive schema, see default above)
+     *                     displayName: String (Optional)
+     *                     rawOffset: Integer (Optional)
      *                 }
      *             }
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
-     *                 {
-     *                     cardinality: String(SINGLE/LIST/SET)
-     *                     constraints: [
-     *                         {
-     *                             params: {
-     *                                 String: Object
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
+     *                  (Optional){
+     *                     cardinality: String(SINGLE/LIST/SET) (Optional)
+     *                     constraints (Optional): [
+     *                          (Optional){
+     *                             params (Optional): {
+     *                                 String: Object (Optional)
      *                             }
-     *                             type: String
+     *                             type: String (Optional)
      *                         }
      *                     ]
-     *                     defaultValue: String
-     *                     description: String
-     *                     includeInNotification: Boolean
-     *                     isIndexable: Boolean
-     *                     isOptional: Boolean
-     *                     isUnique: Boolean
-     *                     name: String
-     *                     options: {
-     *                         String: String
+     *                     defaultValue: String (Optional)
+     *                     description: String (Optional)
+     *                     includeInNotification: Boolean (Optional)
+     *                     isIndexable: Boolean (Optional)
+     *                     isOptional: Boolean (Optional)
+     *                     isUnique: Boolean (Optional)
+     *                     name: String (Optional)
+     *                     options (Optional): {
+     *                         String: String (Optional)
      *                     }
-     *                     typeName: String
-     *                     valuesMaxCount: Integer
-     *                     valuesMinCount: Integer
+     *                     typeName: String (Optional)
+     *                     valuesMaxCount: Integer (Optional)
+     *                     valuesMinCount: Integer (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     classificationDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     classificationDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             entityTypes: [
-     *                 String
+     *             entityTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             subTypes: [
-     *                 String
+     *             subTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             superTypes: [
-     *                 String
+     *             superTypes (Optional): [
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
-     *     entityDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     entityDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             subTypes: [
-     *                 String
+     *             subTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             superTypes: [
-     *                 String
+     *             superTypes (Optional): [
+     *                 String (Optional)
      *             ]
-     *             relationshipAttributeDefs: [
-     *                 {
-     *                     cardinality: String(SINGLE/LIST/SET)
-     *                     constraints: [
+     *             relationshipAttributeDefs (Optional): [
+     *                  (Optional){
+     *                     cardinality: String(SINGLE/LIST/SET) (Optional)
+     *                     constraints (Optional): [
      *                         (recursive schema, see above)
      *                     ]
-     *                     defaultValue: String
-     *                     description: String
-     *                     includeInNotification: Boolean
-     *                     isIndexable: Boolean
-     *                     isOptional: Boolean
-     *                     isUnique: Boolean
-     *                     name: String
-     *                     options: {
-     *                         String: String
+     *                     defaultValue: String (Optional)
+     *                     description: String (Optional)
+     *                     includeInNotification: Boolean (Optional)
+     *                     isIndexable: Boolean (Optional)
+     *                     isOptional: Boolean (Optional)
+     *                     isUnique: Boolean (Optional)
+     *                     name: String (Optional)
+     *                     options (Optional): {
+     *                         String: String (Optional)
      *                     }
-     *                     typeName: String
-     *                     valuesMaxCount: Integer
-     *                     valuesMinCount: Integer
-     *                     isLegacyAttribute: Boolean
-     *                     relationshipTypeName: String
+     *                     typeName: String (Optional)
+     *                     valuesMaxCount: Integer (Optional)
+     *                     valuesMinCount: Integer (Optional)
+     *                     isLegacyAttribute: Boolean (Optional)
+     *                     relationshipTypeName: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     enumDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     enumDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             defaultValue: String
-     *             elementDefs: [
-     *                 {
-     *                     description: String
-     *                     ordinal: Float
-     *                     value: String
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             defaultValue: String (Optional)
+     *             elementDefs (Optional): [
+     *                  (Optional){
+     *                     description: String (Optional)
+     *                     ordinal: Float (Optional)
+     *                     value: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     relationshipDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     relationshipDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             endDef1: {
-     *                 cardinality: String(SINGLE/LIST/SET)
-     *                 description: String
-     *                 isContainer: Boolean
-     *                 isLegacyAttribute: Boolean
-     *                 name: String
-     *                 type: String
+     *             endDef1 (Optional): {
+     *                 cardinality: String(SINGLE/LIST/SET) (Optional)
+     *                 description: String (Optional)
+     *                 isContainer: Boolean (Optional)
+     *                 isLegacyAttribute: Boolean (Optional)
+     *                 name: String (Optional)
+     *                 type: String (Optional)
      *             }
-     *             endDef2: (recursive schema, see endDef2 above)
-     *             relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION)
-     *             relationshipLabel: String
+     *             endDef2 (Optional): (recursive schema, see endDef2 above)
+     *             relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION) (Optional)
+     *             relationshipLabel: String (Optional)
      *         }
      *     ]
-     *     structDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     structDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
      *         }
      *     ]
-     *     termTemplateDefs: [
-     *         {
-     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *             createTime: Float
-     *             createdBy: String
-     *             dateFormatter: (recursive schema, see dateFormatter above)
-     *             description: String
-     *             guid: String
-     *             name: String
-     *             options: {
-     *                 String: String
+     *     termTemplateDefs (Optional): [
+     *          (Optional){
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             dateFormatter (Optional): (recursive schema, see dateFormatter above)
+     *             description: String (Optional)
+     *             guid: String (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             serviceType: String
-     *             typeVersion: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             lastModifiedTS: String
-     *             attributeDefs: [
+     *             serviceType: String (Optional)
+     *             typeVersion: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             attributeDefs (Optional): [
      *                 (recursive schema, see above)
      *             ]
      *         }
@@ -3442,7 +3445,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTypeDefinitionsWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
-        return this.client.deleteTypeDefinitionsWithResponse(typesDef, requestOptions).block();
+        return this.serviceClient.deleteTypeDefinitionsWithResponse(typesDef, requestOptions);
     }
 
     /**
@@ -3455,17 +3458,19 @@ public final class TypesClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>includeTermTemplate</td><td>Boolean</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
      * This is always true when search filter type=term_template</td></tr>
-     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values: enum, entity, classification, relationship, struct, term_template.</td></tr>
+     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values: "enum", "entity", "classification", "relationship", "struct", "term_template".</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *         guid: String
-     *         name: String
+     *      (Required){
+     *         category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *         guid: String (Optional)
+     *         name: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -3481,7 +3486,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listTypeDefinitionHeadersWithResponse(RequestOptions requestOptions) {
-        return this.client.listTypeDefinitionHeadersWithResponse(requestOptions).block();
+        return this.serviceClient.listTypeDefinitionHeadersWithResponse(requestOptions);
     }
 
     /**
@@ -3491,84 +3496,84 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *     createTime: Float
-     *     createdBy: String
-     *     dateFormatter: {
-     *         availableLocales: [
-     *             String
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     dateFormatter (Optional): {
+     *         availableLocales (Optional): [
+     *             String (Optional)
      *         ]
-     *         calendar: Float
-     *         dateInstance: (recursive schema, see dateInstance above)
-     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *         instance: (recursive schema, see instance above)
-     *         lenient: Boolean
-     *         numberFormat: {
-     *             availableLocales: [
-     *                 String
+     *         calendar: Float (Optional)
+     *         dateInstance (Optional): (recursive schema, see dateInstance above)
+     *         dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *         instance (Optional): (recursive schema, see instance above)
+     *         lenient: Boolean (Optional)
+     *         numberFormat (Optional): {
+     *             availableLocales (Optional): [
+     *                 String (Optional)
      *             ]
-     *             currency: String
-     *             currencyInstance: (recursive schema, see currencyInstance above)
-     *             groupingUsed: Boolean
-     *             instance: (recursive schema, see instance above)
-     *             integerInstance: (recursive schema, see integerInstance above)
-     *             maximumFractionDigits: Integer
-     *             maximumIntegerDigits: Integer
-     *             minimumFractionDigits: Integer
-     *             minimumIntegerDigits: Integer
-     *             numberInstance: (recursive schema, see numberInstance above)
-     *             parseIntegerOnly: Boolean
-     *             percentInstance: (recursive schema, see percentInstance above)
-     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *             currency: String (Optional)
+     *             currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean (Optional)
+     *             instance (Optional): (recursive schema, see instance above)
+     *             integerInstance (Optional): (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer (Optional)
+     *             maximumIntegerDigits: Integer (Optional)
+     *             minimumFractionDigits: Integer (Optional)
+     *             minimumIntegerDigits: Integer (Optional)
+     *             numberInstance (Optional): (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean (Optional)
+     *             percentInstance (Optional): (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *         }
-     *         timeInstance: (recursive schema, see timeInstance above)
-     *         timeZone: {
-     *             dstSavings: Integer
-     *             id: String
-     *             availableIds: [
-     *                 String
+     *         timeInstance (Optional): (recursive schema, see timeInstance above)
+     *         timeZone (Optional): {
+     *             dstSavings: Integer (Optional)
+     *             id: String (Optional)
+     *             availableIds (Optional): [
+     *                 String (Optional)
      *             ]
-     *             defaultProperty: (recursive schema, see defaultProperty above)
-     *             displayName: String
-     *             rawOffset: Integer
+     *             default (Optional): (recursive schema, see default above)
+     *             displayName: String (Optional)
+     *             rawOffset: Integer (Optional)
      *         }
      *     }
-     *     description: String
-     *     guid: String
-     *     name: String
-     *     options: {
-     *         String: String
+     *     description: String (Optional)
+     *     guid: String (Optional)
+     *     name: String (Optional)
+     *     options (Optional): {
+     *         String: String (Optional)
      *     }
-     *     serviceType: String
-     *     typeVersion: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
-     *     lastModifiedTS: String
-     *     attributeDefs: [
-     *         {
-     *             cardinality: String(SINGLE/LIST/SET)
-     *             constraints: [
-     *                 {
-     *                     params: {
-     *                         String: Object
+     *     serviceType: String (Optional)
+     *     typeVersion: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     attributeDefs (Optional): [
+     *          (Optional){
+     *             cardinality: String(SINGLE/LIST/SET) (Optional)
+     *             constraints (Optional): [
+     *                  (Optional){
+     *                     params (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     type: String
+     *                     type: String (Optional)
      *                 }
      *             ]
-     *             defaultValue: String
-     *             description: String
-     *             includeInNotification: Boolean
-     *             isIndexable: Boolean
-     *             isOptional: Boolean
-     *             isUnique: Boolean
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             defaultValue: String (Optional)
+     *             description: String (Optional)
+     *             includeInNotification: Boolean (Optional)
+     *             isIndexable: Boolean (Optional)
+     *             isOptional: Boolean (Optional)
+     *             isUnique: Boolean (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             typeName: String
-     *             valuesMaxCount: Integer
-     *             valuesMinCount: Integer
+     *             typeName: String (Optional)
+     *             valuesMaxCount: Integer (Optional)
+     *             valuesMinCount: Integer (Optional)
      *         }
      *     ]
      * }
@@ -3585,7 +3590,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTermTemplateDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.client.getTermTemplateDefByGuidWithResponse(guid, requestOptions).block();
+        return this.serviceClient.getTermTemplateDefByGuidWithResponse(guid, requestOptions);
     }
 
     /**
@@ -3595,84 +3600,84 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
-     *     createTime: Float
-     *     createdBy: String
-     *     dateFormatter: {
-     *         availableLocales: [
-     *             String
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     dateFormatter (Optional): {
+     *         availableLocales (Optional): [
+     *             String (Optional)
      *         ]
-     *         calendar: Float
-     *         dateInstance: (recursive schema, see dateInstance above)
-     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
-     *         instance: (recursive schema, see instance above)
-     *         lenient: Boolean
-     *         numberFormat: {
-     *             availableLocales: [
-     *                 String
+     *         calendar: Float (Optional)
+     *         dateInstance (Optional): (recursive schema, see dateInstance above)
+     *         dateTimeInstance (Optional): (recursive schema, see dateTimeInstance above)
+     *         instance (Optional): (recursive schema, see instance above)
+     *         lenient: Boolean (Optional)
+     *         numberFormat (Optional): {
+     *             availableLocales (Optional): [
+     *                 String (Optional)
      *             ]
-     *             currency: String
-     *             currencyInstance: (recursive schema, see currencyInstance above)
-     *             groupingUsed: Boolean
-     *             instance: (recursive schema, see instance above)
-     *             integerInstance: (recursive schema, see integerInstance above)
-     *             maximumFractionDigits: Integer
-     *             maximumIntegerDigits: Integer
-     *             minimumFractionDigits: Integer
-     *             minimumIntegerDigits: Integer
-     *             numberInstance: (recursive schema, see numberInstance above)
-     *             parseIntegerOnly: Boolean
-     *             percentInstance: (recursive schema, see percentInstance above)
-     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *             currency: String (Optional)
+     *             currencyInstance (Optional): (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean (Optional)
+     *             instance (Optional): (recursive schema, see instance above)
+     *             integerInstance (Optional): (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer (Optional)
+     *             maximumIntegerDigits: Integer (Optional)
+     *             minimumFractionDigits: Integer (Optional)
+     *             minimumIntegerDigits: Integer (Optional)
+     *             numberInstance (Optional): (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean (Optional)
+     *             percentInstance (Optional): (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY) (Optional)
      *         }
-     *         timeInstance: (recursive schema, see timeInstance above)
-     *         timeZone: {
-     *             dstSavings: Integer
-     *             id: String
-     *             availableIds: [
-     *                 String
+     *         timeInstance (Optional): (recursive schema, see timeInstance above)
+     *         timeZone (Optional): {
+     *             dstSavings: Integer (Optional)
+     *             id: String (Optional)
+     *             availableIds (Optional): [
+     *                 String (Optional)
      *             ]
-     *             defaultProperty: (recursive schema, see defaultProperty above)
-     *             displayName: String
-     *             rawOffset: Integer
+     *             default (Optional): (recursive schema, see default above)
+     *             displayName: String (Optional)
+     *             rawOffset: Integer (Optional)
      *         }
      *     }
-     *     description: String
-     *     guid: String
-     *     name: String
-     *     options: {
-     *         String: String
+     *     description: String (Optional)
+     *     guid: String (Optional)
+     *     name: String (Optional)
+     *     options (Optional): {
+     *         String: String (Optional)
      *     }
-     *     serviceType: String
-     *     typeVersion: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     version: Float
-     *     lastModifiedTS: String
-     *     attributeDefs: [
-     *         {
-     *             cardinality: String(SINGLE/LIST/SET)
-     *             constraints: [
-     *                 {
-     *                     params: {
-     *                         String: Object
+     *     serviceType: String (Optional)
+     *     typeVersion: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     version: Float (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     attributeDefs (Optional): [
+     *          (Optional){
+     *             cardinality: String(SINGLE/LIST/SET) (Optional)
+     *             constraints (Optional): [
+     *                  (Optional){
+     *                     params (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     type: String
+     *                     type: String (Optional)
      *                 }
      *             ]
-     *             defaultValue: String
-     *             description: String
-     *             includeInNotification: Boolean
-     *             isIndexable: Boolean
-     *             isOptional: Boolean
-     *             isUnique: Boolean
-     *             name: String
-     *             options: {
-     *                 String: String
+     *             defaultValue: String (Optional)
+     *             description: String (Optional)
+     *             includeInNotification: Boolean (Optional)
+     *             isIndexable: Boolean (Optional)
+     *             isOptional: Boolean (Optional)
+     *             isUnique: Boolean (Optional)
+     *             name: String (Optional)
+     *             options (Optional): {
+     *                 String: String (Optional)
      *             }
-     *             typeName: String
-     *             valuesMaxCount: Integer
-     *             valuesMinCount: Integer
+     *             typeName: String (Optional)
+     *             valuesMaxCount: Integer (Optional)
+     *             valuesMinCount: Integer (Optional)
      *         }
      *     ]
      * }
@@ -3689,6 +3694,6 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTermTemplateDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.client.getTermTemplateDefByNameWithResponse(name, requestOptions).block();
+        return this.serviceClient.getTermTemplateDefByNameWithResponse(name, requestOptions);
     }
 }

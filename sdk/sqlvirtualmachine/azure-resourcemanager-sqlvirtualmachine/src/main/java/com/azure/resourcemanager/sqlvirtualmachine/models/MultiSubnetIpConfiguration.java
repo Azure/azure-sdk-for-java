@@ -23,6 +23,10 @@ public final class MultiSubnetIpConfiguration {
     @JsonProperty(value = "sqlVirtualMachineInstance", required = true)
     private String sqlVirtualMachineInstance;
 
+    /** Creates an instance of MultiSubnetIpConfiguration class. */
+    public MultiSubnetIpConfiguration() {
+    }
+
     /**
      * Get the privateIpAddress property: Private IP address.
      *

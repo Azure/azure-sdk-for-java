@@ -16,7 +16,7 @@ import java.util.Map;
 /** Samples for BmcKeySets CreateOrUpdate. */
 public final class BmcKeySetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/BmcKeySets_Create.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BmcKeySets_Create.json
      */
     /**
      * Sample code: Create or update baseboard management controller key set of cluster.
@@ -33,7 +33,7 @@ public final class BmcKeySetsCreateOrUpdateSamples {
             .withExtendedLocation(
                 new ExtendedLocation()
                     .withName(
-                        "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
                     .withType("CustomLocation"))
             .withAzureGroupId("f110271b-XXXX-4163-9b99-214d91660f0e")
             .withExpiration(OffsetDateTime.parse("2022-12-31T23:59:59.008Z"))

@@ -16,6 +16,7 @@ import com.azure.resourcemanager.databox.fluent.models.ShipmentPickUpResponseInn
 import com.azure.resourcemanager.databox.fluent.models.UnencryptedCredentialsInner;
 import com.azure.resourcemanager.databox.models.CancellationReason;
 import com.azure.resourcemanager.databox.models.JobResourceUpdateParameter;
+import com.azure.resourcemanager.databox.models.MarkDevicesShippedRequest;
 import com.azure.resourcemanager.databox.models.ShipmentPickUpRequest;
 
 /** An instance of this class provides access to all the operations defined in JobsClient. */
@@ -42,6 +43,38 @@ public interface JobsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<JobResourceInner> list(String skipToken, Context context);
+
+    /**
+     * Request to mark devices for a given job as shipped.
+     *
+     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
+     *     24 characters in length and use any alphanumeric and underscore only.
+     * @param resourceGroupName The Resource Group Name.
+     * @param markDevicesShippedRequest Mark Devices Shipped Request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> markDevicesShippedWithResponse(
+        String jobName, String resourceGroupName, MarkDevicesShippedRequest markDevicesShippedRequest, Context context);
+
+    /**
+     * Request to mark devices for a given job as shipped.
+     *
+     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
+     *     24 characters in length and use any alphanumeric and underscore only.
+     * @param resourceGroupName The Resource Group Name.
+     * @param markDevicesShippedRequest Mark Devices Shipped Request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void markDevicesShipped(
+        String jobName, String resourceGroupName, MarkDevicesShippedRequest markDevicesShippedRequest);
 
     /**
      * Lists all the jobs available under the given resource group.

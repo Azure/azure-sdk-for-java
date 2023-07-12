@@ -17,7 +17,10 @@ import com.azure.resourcemanager.databox.models.JobDeliveryType;
 import com.azure.resourcemanager.databox.models.JobDetails;
 import com.azure.resourcemanager.databox.models.JobResource;
 import com.azure.resourcemanager.databox.models.JobResourceUpdateParameter;
+import com.azure.resourcemanager.databox.models.MarkDevicesShippedRequest;
 import com.azure.resourcemanager.databox.models.ResourceIdentity;
+import com.azure.resourcemanager.databox.models.ReverseShippingDetailsEditStatus;
+import com.azure.resourcemanager.databox.models.ReverseTransportPreferenceEditStatus;
 import com.azure.resourcemanager.databox.models.ShipmentPickUpRequest;
 import com.azure.resourcemanager.databox.models.ShipmentPickUpResponse;
 import com.azure.resourcemanager.databox.models.Sku;
@@ -85,6 +88,14 @@ public final class JobResourceImpl implements JobResource, JobResource.Definitio
 
     public Boolean isShippingAddressEditable() {
         return this.innerModel().isShippingAddressEditable();
+    }
+
+    public ReverseShippingDetailsEditStatus reverseShippingDetailsUpdate() {
+        return this.innerModel().reverseShippingDetailsUpdate();
+    }
+
+    public ReverseTransportPreferenceEditStatus reverseTransportPreferenceUpdate() {
+        return this.innerModel().reverseTransportPreferenceUpdate();
     }
 
     public Boolean isPrepareToShipEnabled() {
@@ -228,6 +239,17 @@ public final class JobResourceImpl implements JobResource, JobResource.Definitio
                 .getByResourceGroupWithResponse(resourceGroupName, jobName, localExpand, context)
                 .getValue();
         return this;
+    }
+
+    public Response<Void> markDevicesShippedWithResponse(
+        MarkDevicesShippedRequest markDevicesShippedRequest, Context context) {
+        return serviceManager
+            .jobs()
+            .markDevicesShippedWithResponse(jobName, resourceGroupName, markDevicesShippedRequest, context);
+    }
+
+    public void markDevicesShipped(MarkDevicesShippedRequest markDevicesShippedRequest) {
+        serviceManager.jobs().markDevicesShipped(jobName, resourceGroupName, markDevicesShippedRequest);
     }
 
     public Response<ShipmentPickUpResponse> bookShipmentPickUpWithResponse(

@@ -111,52 +111,28 @@ public final class FrontDoorManagementClientImpl implements FrontDoorManagementC
         return this.defaultPollInterval;
     }
 
-    /** The NetworkExperimentProfilesClient object to access its operations. */
-    private final NetworkExperimentProfilesClient networkExperimentProfiles;
+    /** The PoliciesClient object to access its operations. */
+    private final PoliciesClient policies;
 
     /**
-     * Gets the NetworkExperimentProfilesClient object to access its operations.
+     * Gets the PoliciesClient object to access its operations.
      *
-     * @return the NetworkExperimentProfilesClient object.
+     * @return the PoliciesClient object.
      */
-    public NetworkExperimentProfilesClient getNetworkExperimentProfiles() {
-        return this.networkExperimentProfiles;
+    public PoliciesClient getPolicies() {
+        return this.policies;
     }
 
-    /** The PreconfiguredEndpointsClient object to access its operations. */
-    private final PreconfiguredEndpointsClient preconfiguredEndpoints;
+    /** The ManagedRuleSetsClient object to access its operations. */
+    private final ManagedRuleSetsClient managedRuleSets;
 
     /**
-     * Gets the PreconfiguredEndpointsClient object to access its operations.
+     * Gets the ManagedRuleSetsClient object to access its operations.
      *
-     * @return the PreconfiguredEndpointsClient object.
+     * @return the ManagedRuleSetsClient object.
      */
-    public PreconfiguredEndpointsClient getPreconfiguredEndpoints() {
-        return this.preconfiguredEndpoints;
-    }
-
-    /** The ExperimentsClient object to access its operations. */
-    private final ExperimentsClient experiments;
-
-    /**
-     * Gets the ExperimentsClient object to access its operations.
-     *
-     * @return the ExperimentsClient object.
-     */
-    public ExperimentsClient getExperiments() {
-        return this.experiments;
-    }
-
-    /** The ReportsClient object to access its operations. */
-    private final ReportsClient reports;
-
-    /**
-     * Gets the ReportsClient object to access its operations.
-     *
-     * @return the ReportsClient object.
-     */
-    public ReportsClient getReports() {
-        return this.reports;
+    public ManagedRuleSetsClient getManagedRuleSets() {
+        return this.managedRuleSets;
     }
 
     /** The FrontDoorNameAvailabilitiesClient object to access its operations. */
@@ -231,28 +207,52 @@ public final class FrontDoorManagementClientImpl implements FrontDoorManagementC
         return this.rulesEngines;
     }
 
-    /** The PoliciesClient object to access its operations. */
-    private final PoliciesClient policies;
+    /** The NetworkExperimentProfilesClient object to access its operations. */
+    private final NetworkExperimentProfilesClient networkExperimentProfiles;
 
     /**
-     * Gets the PoliciesClient object to access its operations.
+     * Gets the NetworkExperimentProfilesClient object to access its operations.
      *
-     * @return the PoliciesClient object.
+     * @return the NetworkExperimentProfilesClient object.
      */
-    public PoliciesClient getPolicies() {
-        return this.policies;
+    public NetworkExperimentProfilesClient getNetworkExperimentProfiles() {
+        return this.networkExperimentProfiles;
     }
 
-    /** The ManagedRuleSetsClient object to access its operations. */
-    private final ManagedRuleSetsClient managedRuleSets;
+    /** The PreconfiguredEndpointsClient object to access its operations. */
+    private final PreconfiguredEndpointsClient preconfiguredEndpoints;
 
     /**
-     * Gets the ManagedRuleSetsClient object to access its operations.
+     * Gets the PreconfiguredEndpointsClient object to access its operations.
      *
-     * @return the ManagedRuleSetsClient object.
+     * @return the PreconfiguredEndpointsClient object.
      */
-    public ManagedRuleSetsClient getManagedRuleSets() {
-        return this.managedRuleSets;
+    public PreconfiguredEndpointsClient getPreconfiguredEndpoints() {
+        return this.preconfiguredEndpoints;
+    }
+
+    /** The ExperimentsClient object to access its operations. */
+    private final ExperimentsClient experiments;
+
+    /**
+     * Gets the ExperimentsClient object to access its operations.
+     *
+     * @return the ExperimentsClient object.
+     */
+    public ExperimentsClient getExperiments() {
+        return this.experiments;
+    }
+
+    /** The ReportsClient object to access its operations. */
+    private final ReportsClient reports;
+
+    /**
+     * Gets the ReportsClient object to access its operations.
+     *
+     * @return the ReportsClient object.
+     */
+    public ReportsClient getReports() {
+        return this.reports;
     }
 
     /**
@@ -278,10 +278,8 @@ public final class FrontDoorManagementClientImpl implements FrontDoorManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.networkExperimentProfiles = new NetworkExperimentProfilesClientImpl(this);
-        this.preconfiguredEndpoints = new PreconfiguredEndpointsClientImpl(this);
-        this.experiments = new ExperimentsClientImpl(this);
-        this.reports = new ReportsClientImpl(this);
+        this.policies = new PoliciesClientImpl(this);
+        this.managedRuleSets = new ManagedRuleSetsClientImpl(this);
         this.frontDoorNameAvailabilities = new FrontDoorNameAvailabilitiesClientImpl(this);
         this.frontDoorNameAvailabilityWithSubscriptions =
             new FrontDoorNameAvailabilityWithSubscriptionsClientImpl(this);
@@ -289,8 +287,10 @@ public final class FrontDoorManagementClientImpl implements FrontDoorManagementC
         this.frontendEndpoints = new FrontendEndpointsClientImpl(this);
         this.endpoints = new EndpointsClientImpl(this);
         this.rulesEngines = new RulesEnginesClientImpl(this);
-        this.policies = new PoliciesClientImpl(this);
-        this.managedRuleSets = new ManagedRuleSetsClientImpl(this);
+        this.networkExperimentProfiles = new NetworkExperimentProfilesClientImpl(this);
+        this.preconfiguredEndpoints = new PreconfiguredEndpointsClientImpl(this);
+        this.experiments = new ExperimentsClientImpl(this);
+        this.reports = new ReportsClientImpl(this);
     }
 
     /**

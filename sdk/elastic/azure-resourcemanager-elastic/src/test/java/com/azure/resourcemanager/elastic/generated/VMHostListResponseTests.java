@@ -16,10 +16,10 @@ public final class VMHostListResponseTests {
         VMHostListResponse model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"vmResourceId\":\"j\"},{\"vmResourceId\":\"dxob\"},{\"vmResourceId\":\"dxkqpx\"},{\"vmResourceId\":\"ajionpimexgstxg\"}],\"nextLink\":\"odgmaajrmvdjwz\"}")
+                    "{\"value\":[{\"vmResourceId\":\"j\"},{\"vmResourceId\":\"ejctbzaqsqsycb\"}],\"nextLink\":\"fkgukdkexxppof\"}")
                 .toObject(VMHostListResponse.class);
         Assertions.assertEquals("j", model.value().get(0).vmResourceId());
-        Assertions.assertEquals("odgmaajrmvdjwz", model.nextLink());
+        Assertions.assertEquals("fkgukdkexxppof", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,12 +30,10 @@ public final class VMHostListResponseTests {
                     Arrays
                         .asList(
                             new VMResourcesInner().withVmResourceId("j"),
-                            new VMResourcesInner().withVmResourceId("dxob"),
-                            new VMResourcesInner().withVmResourceId("dxkqpx"),
-                            new VMResourcesInner().withVmResourceId("ajionpimexgstxg")))
-                .withNextLink("odgmaajrmvdjwz");
+                            new VMResourcesInner().withVmResourceId("ejctbzaqsqsycb")))
+                .withNextLink("fkgukdkexxppof");
         model = BinaryData.fromObject(model).toObject(VMHostListResponse.class);
         Assertions.assertEquals("j", model.value().get(0).vmResourceId());
-        Assertions.assertEquals("odgmaajrmvdjwz", model.nextLink());
+        Assertions.assertEquals("fkgukdkexxppof", model.nextLink());
     }
 }

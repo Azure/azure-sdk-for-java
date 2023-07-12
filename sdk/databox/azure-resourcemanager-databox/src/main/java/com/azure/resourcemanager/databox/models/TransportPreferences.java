@@ -17,6 +17,13 @@ public final class TransportPreferences {
     @JsonProperty(value = "preferredShipmentType", required = true)
     private TransportShipmentTypes preferredShipmentType;
 
+    /*
+     * Read only property which indicates whether transport preferences has been updated or not after device is
+     * prepared.
+     */
+    @JsonProperty(value = "isUpdated", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isUpdated;
+
     /** Creates an instance of TransportPreferences class. */
     public TransportPreferences() {
     }
@@ -39,6 +46,16 @@ public final class TransportPreferences {
     public TransportPreferences withPreferredShipmentType(TransportShipmentTypes preferredShipmentType) {
         this.preferredShipmentType = preferredShipmentType;
         return this;
+    }
+
+    /**
+     * Get the isUpdated property: Read only property which indicates whether transport preferences has been updated or
+     * not after device is prepared.
+     *
+     * @return the isUpdated value.
+     */
+    public Boolean isUpdated() {
+        return this.isUpdated;
     }
 
     /**

@@ -32,7 +32,7 @@ public final class BareMetalMachineKeySetsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"extendedLocation\":{\"name\":\"zigjsugswhgsaodk\",\"type\":\"wnbaf\"},\"properties\":{\"azureGroupId\":\"ctohzhaquvwsxbgn\",\"detailedStatus\":\"Validating\",\"detailedStatusMessage\":\"vqchoadhrs\",\"expiration\":\"2021-08-15T17:43:25Z\",\"jumpHostsAllowed\":[\"z\",\"spabdsrgfa\"],\"lastValidation\":\"2021-09-28T20:27:20Z\",\"osGroupName\":\"rsubklrxhjnl\",\"privilegeLevel\":\"Standard\",\"provisioningState\":\"Provisioning\",\"userList\":[],\"userListStatus\":[]},\"location\":\"ydi\",\"tags\":{\"ruwdxvqzxoebwgj\":\"kw\",\"wtzvpakloz\":\"bibanbau\"},\"id\":\"xbzrpejplssanb\",\"name\":\"ttkgsux\",\"type\":\"nrswgkpjhboyik\"}";
+            "{\"extendedLocation\":{\"name\":\"njzudr\",\"type\":\"pzkg\"},\"properties\":{\"azureGroupId\":\"eboywhczzqrhm\",\"detailedStatus\":\"AllInvalid\",\"detailedStatusMessage\":\"edygisrzwnykdi\",\"expiration\":\"2021-10-14T18:41:21Z\",\"jumpHostsAllowed\":[\"hlr\"],\"lastValidation\":\"2021-03-02T18:49:45Z\",\"osGroupName\":\"tofldseacdh\",\"privilegeLevel\":\"Standard\",\"provisioningState\":\"Canceled\",\"userList\":[],\"userListStatus\":[]},\"location\":\"drwjiy\",\"tags\":{\"rwq\":\"fj\",\"gcwvrrmdqntycna\":\"xet\",\"dfjeceho\":\"thvmaxgnuyeamcmh\"},\"id\":\"wcpqtwl\",\"name\":\"esq\",\"type\":\"ggvrbnyrukoilaci\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,17 +63,17 @@ public final class BareMetalMachineKeySetsGetWithResponseMockTests {
         BareMetalMachineKeySet response =
             manager
                 .bareMetalMachineKeySets()
-                .getWithResponse("zp", "admskx", "npd", com.azure.core.util.Context.NONE)
+                .getWithResponse("fftedousnktj", "gravaqogfkbebauz", "qbtxxwpf", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ydi", response.location());
-        Assertions.assertEquals("kw", response.tags().get("ruwdxvqzxoebwgj"));
-        Assertions.assertEquals("zigjsugswhgsaodk", response.extendedLocation().name());
-        Assertions.assertEquals("wnbaf", response.extendedLocation().type());
-        Assertions.assertEquals("ctohzhaquvwsxbgn", response.azureGroupId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-15T17:43:25Z"), response.expiration());
-        Assertions.assertEquals("z", response.jumpHostsAllowed().get(0));
-        Assertions.assertEquals("rsubklrxhjnl", response.osGroupName());
+        Assertions.assertEquals("drwjiy", response.location());
+        Assertions.assertEquals("fj", response.tags().get("rwq"));
+        Assertions.assertEquals("njzudr", response.extendedLocation().name());
+        Assertions.assertEquals("pzkg", response.extendedLocation().type());
+        Assertions.assertEquals("eboywhczzqrhm", response.azureGroupId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-14T18:41:21Z"), response.expiration());
+        Assertions.assertEquals("hlr", response.jumpHostsAllowed().get(0));
+        Assertions.assertEquals("tofldseacdh", response.osGroupName());
         Assertions.assertEquals(BareMetalMachineKeySetPrivilegeLevel.STANDARD, response.privilegeLevel());
     }
 }

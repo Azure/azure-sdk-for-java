@@ -49,6 +49,12 @@ public final class BuildProperties {
     @JsonProperty(value = "triggeredBuildResult", access = JsonProperty.Access.WRITE_ONLY)
     private TriggeredBuildResult triggeredBuildResult;
 
+    /*
+     * The customized build resource for this build
+     */
+    @JsonProperty(value = "resourceRequests")
+    private BuildResourceRequests resourceRequests;
+
     /**
      * Get the relativePath property: The relative path of source code.
      *
@@ -148,6 +154,26 @@ public final class BuildProperties {
     }
 
     /**
+     * Get the resourceRequests property: The customized build resource for this build.
+     *
+     * @return the resourceRequests value.
+     */
+    public BuildResourceRequests resourceRequests() {
+        return this.resourceRequests;
+    }
+
+    /**
+     * Set the resourceRequests property: The customized build resource for this build.
+     *
+     * @param resourceRequests the resourceRequests value to set.
+     * @return the BuildProperties object itself.
+     */
+    public BuildProperties withResourceRequests(BuildResourceRequests resourceRequests) {
+        this.resourceRequests = resourceRequests;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -155,6 +181,9 @@ public final class BuildProperties {
     public void validate() {
         if (triggeredBuildResult() != null) {
             triggeredBuildResult().validate();
+        }
+        if (resourceRequests() != null) {
+            resourceRequests().validate();
         }
     }
 }

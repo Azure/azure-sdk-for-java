@@ -2324,6 +2324,14 @@
   </Match>
   <Bug pattern="NM_CONFUSING"/>
 
+  <!--  This method is made synchronous by blocking and waiting for a result. They do not return
+  anything, so it can be ignored. -->
+  <Match>
+    <Class name="com.microsoft.azure.eventgrid.implementation.EventGridClientImpl"/>
+    <Method name="publishEvents"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
   <Match>
     <Class name="com.azure.ai.metricsadvisor.implementation.models.InfluxDBParameter"/>
     <Method name="getUserName"/>
@@ -2506,6 +2514,11 @@
   </Match>
 
   <Match>
+    <Class name="com.azure.maps.render.implementation.RendersImpl"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <Match>
     <Class name="~com\.azure\.search.*"/>
     <Or>
       <Field name="odataType"/>
@@ -2629,6 +2642,11 @@
   <Match>
     <Class name="com.azure.core.test.models.RecordFilePayload"/>
     <Field name="recordingFile"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.core.test.models.RecordFilePayload"/>
+    <Field name="assetFile"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 

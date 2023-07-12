@@ -13,7 +13,7 @@ public final class ManagedRuleDefinitionTests {
         ManagedRuleDefinition model =
             BinaryData
                 .fromString(
-                    "{\"ruleId\":\"mznbaeqphch\",\"defaultState\":\"Disabled\",\"defaultAction\":\"Block\",\"description\":\"x\"}")
+                    "{\"ruleId\":\"bnbdxkqpxokajion\",\"defaultState\":\"Enabled\",\"defaultAction\":\"Redirect\",\"description\":\"stxgc\"}")
                 .toObject(ManagedRuleDefinition.class);
     }
 

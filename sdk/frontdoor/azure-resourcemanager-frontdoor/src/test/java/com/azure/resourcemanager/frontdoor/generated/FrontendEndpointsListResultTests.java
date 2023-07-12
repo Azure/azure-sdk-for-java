@@ -14,15 +14,15 @@ public final class FrontendEndpointsListResultTests {
         FrontendEndpointsListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"resourceState\":\"Enabling\",\"customHttpsProvisioningState\":\"Enabled\",\"customHttpsProvisioningSubstate\":\"DomainControlValidationRequestTimedOut\",\"hostName\":\"iahxicsl\",\"sessionAffinityEnabledState\":\"Disabled\",\"sessionAffinityTtlSeconds\":243894800},\"name\":\"yylhalnswhccsp\",\"type\":\"aivwitqscywu\",\"id\":\"woluhczbwemhair\"},{\"properties\":{\"resourceState\":\"Disabling\",\"customHttpsProvisioningState\":\"Failed\",\"customHttpsProvisioningSubstate\":\"DomainControlValidationRequestTimedOut\",\"hostName\":\"eypqwdxggicccn\",\"sessionAffinityEnabledState\":\"Enabled\",\"sessionAffinityTtlSeconds\":942987228},\"name\":\"ktt\",\"type\":\"tvlz\",\"id\":\"emhzrncsdtc\"}],\"nextLink\":\"siypbs\"}")
+                    "{\"value\":[{\"properties\":{\"resourceState\":\"Migrated\",\"customHttpsProvisioningState\":\"Failed\",\"customHttpsProvisioningSubstate\":\"DomainControlValidationRequestTimedOut\",\"hostName\":\"gplsaknynf\",\"sessionAffinityEnabledState\":\"Enabled\",\"sessionAffinityTtlSeconds\":962840058},\"name\":\"uopxodlqiyntor\",\"type\":\"hleosjsw\",\"id\":\"mslyzrpzbchckqqz\"},{\"properties\":{\"resourceState\":\"Enabling\",\"customHttpsProvisioningState\":\"Failed\",\"customHttpsProvisioningSubstate\":\"DeployingCertificate\",\"hostName\":\"zynkedya\",\"sessionAffinityEnabledState\":\"Disabled\",\"sessionAffinityTtlSeconds\":613432064},\"name\":\"ibzyhwitsmyp\",\"type\":\"npcdpumnzgm\",\"id\":\"nmabik\"},{\"properties\":{\"resourceState\":\"Enabled\",\"customHttpsProvisioningState\":\"Disabled\",\"customHttpsProvisioningSubstate\":\"IssuingCertificate\",\"hostName\":\"dtlwwrlkd\",\"sessionAffinityEnabledState\":\"Disabled\",\"sessionAffinityTtlSeconds\":575537073},\"name\":\"otllxdyhgsyo\",\"type\":\"gjltdtbnnhado\",\"id\":\"rkvcikhnvpa\"},{\"properties\":{\"resourceState\":\"Creating\",\"customHttpsProvisioningState\":\"Disabling\",\"customHttpsProvisioningSubstate\":\"DomainControlValidationRequestTimedOut\",\"hostName\":\"kywggxkallatmel\",\"sessionAffinityEnabledState\":\"Enabled\",\"sessionAffinityTtlSeconds\":1750624466},\"name\":\"jzkzi\",\"type\":\"vvcnayr\",\"id\":\"rnxxmueed\"}],\"nextLink\":\"rdvstkwqqtch\"}")
                 .toObject(FrontendEndpointsListResult.class);
-        Assertions.assertEquals("siypbs", model.nextLink());
+        Assertions.assertEquals("rdvstkwqqtch", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FrontendEndpointsListResult model = new FrontendEndpointsListResult().withNextLink("siypbs");
+        FrontendEndpointsListResult model = new FrontendEndpointsListResult().withNextLink("rdvstkwqqtch");
         model = BinaryData.fromObject(model).toObject(FrontendEndpointsListResult.class);
-        Assertions.assertEquals("siypbs", model.nextLink());
+        Assertions.assertEquals("rdvstkwqqtch", model.nextLink());
     }
 }

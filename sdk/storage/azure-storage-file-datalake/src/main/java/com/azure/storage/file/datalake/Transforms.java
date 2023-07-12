@@ -901,7 +901,7 @@ class Transforms {
             .setHeaders(toBlobHttpHeaders(options.getHeaders()))
             .setMetadata(options.getMetadata())
             .setTags(options.getTags())
-            .setTier(options.getTier())
+            .setTier(options.getAccessTier())
             .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()));
     }
 }

@@ -11,7 +11,6 @@ import com.azure.ai.formrecognizer.documentanalysis.implementation.models.BuildD
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ComposeDocumentModelRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.CopyAuthorization;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentAnalysisFeature;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelSummary;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelsAnalyzeDocumentHeaders;
@@ -21,6 +20,7 @@ import com.azure.ai.formrecognizer.documentanalysis.implementation.models.Docume
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.GetDocumentModelsResponse;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.StringIndexType;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisFeature;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;

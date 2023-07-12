@@ -123,6 +123,10 @@ parameters:
   displayName: 'spring-cloud-azure-starter-eventhubs'
   type: boolean
   default: true
+- name: release_springcloudazurestartereventgrid
+  displayName: 'spring-cloud-azure-starter-eventgrid'
+  type: boolean
+  default: true
 - name: release_springcloudazurestarterkeyvault
   displayName: 'spring-cloud-azure-starter-keyvault'
   type: boolean
@@ -392,6 +396,14 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestartereventhubs }}
+      - name: spring-cloud-azure-starter-eventgrid
+        groupId: com.azure.spring
+        safeName: springcloudazurestartereventgrid
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazurestartereventgrid }}
       - name: spring-cloud-azure-starter-keyvault
         groupId: com.azure.spring
         safeName: springcloudazurestarterkeyvault

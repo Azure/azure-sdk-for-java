@@ -14,15 +14,15 @@ public final class RulesEngineListResultTests {
         RulesEngineListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"resourceState\":\"Enabling\",\"rules\":[]},\"id\":\"shfwpracstwity\",\"name\":\"hevxcced\",\"type\":\"pnmdyodnwzxltjcv\"}],\"nextLink\":\"ltiugcxnavv\"}")
+                    "{\"value\":[{\"properties\":{\"resourceState\":\"Disabling\",\"rules\":[]},\"id\":\"xgwim\",\"name\":\"njhf\",\"type\":\"xw\"}],\"nextLink\":\"zk\"}")
                 .toObject(RulesEngineListResult.class);
-        Assertions.assertEquals("ltiugcxnavv", model.nextLink());
+        Assertions.assertEquals("zk", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RulesEngineListResult model = new RulesEngineListResult().withNextLink("ltiugcxnavv");
+        RulesEngineListResult model = new RulesEngineListResult().withNextLink("zk");
         model = BinaryData.fromObject(model).toObject(RulesEngineListResult.class);
-        Assertions.assertEquals("ltiugcxnavv", model.nextLink());
+        Assertions.assertEquals("zk", model.nextLink());
     }
 }

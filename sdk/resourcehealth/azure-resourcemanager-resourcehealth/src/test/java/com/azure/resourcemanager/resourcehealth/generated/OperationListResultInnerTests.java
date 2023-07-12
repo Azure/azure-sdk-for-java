@@ -10,59 +10,58 @@ import com.azure.resourcemanager.resourcehealth.models.Operation;
 import com.azure.resourcemanager.resourcehealth.models.OperationDisplay;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationListResultInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationListResultInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"iachbo\",\"display\":{\"provider\":\"lnrosfqp\",\"resource\":\"ehzzvypyqrim\",\"operation\":\"npvswjdkirso\",\"description\":\"qxhcrmn\"}},{\"name\":\"jtckwhdso\",\"display\":{\"provider\":\"yip\",\"resource\":\"sqwpgrjb\",\"operation\":\"orcjxvsnby\",\"description\":\"abnmocpcyshu\"}},{\"name\":\"afbljjgpbtoqcjmk\",\"display\":{\"provider\":\"vbqid\",\"resource\":\"ajzyul\",\"operation\":\"u\",\"description\":\"krlkhbzhfepg\"}}]}")
+                    "{\"value\":[{\"name\":\"dcuf\",\"display\":{\"provider\":\"rpymzidnsez\",\"resource\":\"tbzsgfyccs\",\"operation\":\"wmdwzjeiachboo\",\"description\":\"lnrosfqp\"}},{\"name\":\"ehzzvypyqrim\",\"display\":{\"provider\":\"pvswjdkirso\",\"resource\":\"qxhcrmn\",\"operation\":\"jtckwhdso\",\"description\":\"iy\"}},{\"name\":\"jxsqwpgrjbz\",\"display\":{\"provider\":\"cjxvsnbyxqab\",\"resource\":\"ocpcy\",\"operation\":\"urzafb\",\"description\":\"j\"}}]}")
                 .toObject(OperationListResultInner.class);
-        Assertions.assertEquals("iachbo", model.value().get(0).name());
-        Assertions.assertEquals("lnrosfqp", model.value().get(0).display().provider());
-        Assertions.assertEquals("ehzzvypyqrim", model.value().get(0).display().resource());
-        Assertions.assertEquals("npvswjdkirso", model.value().get(0).display().operation());
-        Assertions.assertEquals("qxhcrmn", model.value().get(0).display().description());
+        Assertions.assertEquals("dcuf", model.value().get(0).name());
+        Assertions.assertEquals("rpymzidnsez", model.value().get(0).display().provider());
+        Assertions.assertEquals("tbzsgfyccs", model.value().get(0).display().resource());
+        Assertions.assertEquals("wmdwzjeiachboo", model.value().get(0).display().operation());
+        Assertions.assertEquals("lnrosfqp", model.value().get(0).display().description());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationListResultInner model =
             new OperationListResultInner()
                 .withValue(
                     Arrays
                         .asList(
                             new Operation()
-                                .withName("iachbo")
+                                .withName("dcuf")
                                 .withDisplay(
                                     new OperationDisplay()
-                                        .withProvider("lnrosfqp")
-                                        .withResource("ehzzvypyqrim")
-                                        .withOperation("npvswjdkirso")
-                                        .withDescription("qxhcrmn")),
+                                        .withProvider("rpymzidnsez")
+                                        .withResource("tbzsgfyccs")
+                                        .withOperation("wmdwzjeiachboo")
+                                        .withDescription("lnrosfqp")),
                             new Operation()
-                                .withName("jtckwhdso")
+                                .withName("ehzzvypyqrim")
                                 .withDisplay(
                                     new OperationDisplay()
-                                        .withProvider("yip")
-                                        .withResource("sqwpgrjb")
-                                        .withOperation("orcjxvsnby")
-                                        .withDescription("abnmocpcyshu")),
+                                        .withProvider("pvswjdkirso")
+                                        .withResource("qxhcrmn")
+                                        .withOperation("jtckwhdso")
+                                        .withDescription("iy")),
                             new Operation()
-                                .withName("afbljjgpbtoqcjmk")
+                                .withName("jxsqwpgrjbz")
                                 .withDisplay(
                                     new OperationDisplay()
-                                        .withProvider("vbqid")
-                                        .withResource("ajzyul")
-                                        .withOperation("u")
-                                        .withDescription("krlkhbzhfepg"))));
+                                        .withProvider("cjxvsnbyxqab")
+                                        .withResource("ocpcy")
+                                        .withOperation("urzafb")
+                                        .withDescription("j"))));
         model = BinaryData.fromObject(model).toObject(OperationListResultInner.class);
-        Assertions.assertEquals("iachbo", model.value().get(0).name());
-        Assertions.assertEquals("lnrosfqp", model.value().get(0).display().provider());
-        Assertions.assertEquals("ehzzvypyqrim", model.value().get(0).display().resource());
-        Assertions.assertEquals("npvswjdkirso", model.value().get(0).display().operation());
-        Assertions.assertEquals("qxhcrmn", model.value().get(0).display().description());
+        Assertions.assertEquals("dcuf", model.value().get(0).name());
+        Assertions.assertEquals("rpymzidnsez", model.value().get(0).display().provider());
+        Assertions.assertEquals("tbzsgfyccs", model.value().get(0).display().resource());
+        Assertions.assertEquals("wmdwzjeiachboo", model.value().get(0).display().operation());
+        Assertions.assertEquals("lnrosfqp", model.value().get(0).display().description());
     }
 }

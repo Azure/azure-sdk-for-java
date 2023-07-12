@@ -12,6 +12,8 @@ import javax.xml.stream.XMLStreamException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
+import static com.azure.xml.AzureXmlTestUtils.getRootElementName;
+
 public class BlobItemPropertiesInternal implements XmlSerializable<BlobItemPropertiesInternal> {
     /*
      * The Creation-Time property.
@@ -1074,12 +1076,22 @@ public class BlobItemPropertiesInternal implements XmlSerializable<BlobItemPrope
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("Properties");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        xmlWriter.writeStartElement(getRootElementName(rootElementName, "Properties"));
         return xmlWriter.writeEndElement();
     }
 
     public static BlobItemPropertiesInternal fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return xmlReader.readObject("Properties", reader -> {
+        return fromXml(xmlReader, null);
+    }
+
+    public static BlobItemPropertiesInternal fromXml(XmlReader xmlReader, String rootElementName)
+        throws XMLStreamException {
+        return xmlReader.readObject(getRootElementName(rootElementName, "Properties"), reader -> {
             BlobItemPropertiesInternal deserialized = new BlobItemPropertiesInternal();
 
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

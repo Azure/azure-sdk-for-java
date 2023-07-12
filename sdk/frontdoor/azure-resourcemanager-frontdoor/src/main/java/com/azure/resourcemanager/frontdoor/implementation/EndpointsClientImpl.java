@@ -59,8 +59,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     public interface EndpointsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors"
-                + "/{frontDoorName}/purge")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/purge")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> purgeContent(
@@ -115,7 +114,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         } else {
             contentFilePaths.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -175,7 +174,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
         } else {
             contentFilePaths.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
