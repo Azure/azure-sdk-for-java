@@ -13,8 +13,8 @@ public final class RouterJobItem {
     /*
      * A unit of work to be routed
      */
-    @JsonProperty(value = "routerJob")
-    private RouterJob routerJob;
+    @JsonProperty(value = "job")
+    private RouterJob job;
 
     /*
      * (Optional) The Concurrency Token.
@@ -23,22 +23,22 @@ public final class RouterJobItem {
     private String etag;
 
     /**
-     * Get the routerJob property: A unit of work to be routed.
+     * Get the job property: A unit of work to be routed.
      *
-     * @return the routerJob value.
+     * @return the job value.
      */
-    public RouterJob getRouterJob() {
-        return this.routerJob;
+    public RouterJob getJob() {
+        return this.job;
     }
 
     /**
-     * Set the routerJob property: A unit of work to be routed.
+     * Set the job property: A unit of work to be routed.
      *
-     * @param routerJob the routerJob value to set.
+     * @param job the job value to set.
      * @return the RouterJobItem object itself.
      */
-    public RouterJobItem setRouterJob(RouterJob routerJob) {
-        this.routerJob = routerJob;
+    public RouterJobItem setJob(RouterJob job) {
+        this.job = job;
         return this;
     }
 

@@ -23,11 +23,11 @@ public final class DistributionPolicy {
     private String name;
 
     /*
-     * The expiry time of any offers created under this policy will be governed
-     * by the offer time to live.
+     * The number of seconds after which any offers created under this policy
+     * will be expired.
      */
-    @JsonProperty(value = "offerTtlSeconds")
-    private Double offerTtlSeconds;
+    @JsonProperty(value = "offerExpiresAfterSeconds")
+    private Double offerExpiresAfterSeconds;
 
     /*
      * Abstract base class for defining a distribution mode
@@ -65,24 +65,24 @@ public final class DistributionPolicy {
     }
 
     /**
-     * Get the offerTtlSeconds property: The expiry time of any offers created under this policy will be governed by the
-     * offer time to live.
+     * Get the offerExpiresAfterSeconds property: The number of seconds after which any offers created under this policy
+     * will be expired.
      *
-     * @return the offerTtlSeconds value.
+     * @return the offerExpiresAfterSeconds value.
      */
-    public Double getOfferTtlSeconds() {
-        return this.offerTtlSeconds;
+    public Double getOfferExpiresAfterSeconds() {
+        return this.offerExpiresAfterSeconds;
     }
 
     /**
-     * Set the offerTtlSeconds property: The expiry time of any offers created under this policy will be governed by the
-     * offer time to live.
+     * Set the offerExpiresAfterSeconds property: The number of seconds after which any offers created under this policy
+     * will be expired.
      *
-     * @param offerTtlSeconds the offerTtlSeconds value to set.
+     * @param offerExpiresAfterSeconds the offerExpiresAfterSeconds value to set.
      * @return the DistributionPolicy object itself.
      */
-    public DistributionPolicy setOfferTtlSeconds(Double offerTtlSeconds) {
-        this.offerTtlSeconds = offerTtlSeconds;
+    public DistributionPolicy setOfferExpiresAfterSeconds(Double offerExpiresAfterSeconds) {
+        this.offerExpiresAfterSeconds = offerExpiresAfterSeconds;
         return this;
     }
 
