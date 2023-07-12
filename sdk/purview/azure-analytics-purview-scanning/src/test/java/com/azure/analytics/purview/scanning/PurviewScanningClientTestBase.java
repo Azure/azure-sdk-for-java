@@ -3,19 +3,12 @@
 
 package com.azure.analytics.purview.scanning;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
 import java.util.Objects;
 
 public class PurviewScanningClientTestBase extends TestProxyTestBase {
