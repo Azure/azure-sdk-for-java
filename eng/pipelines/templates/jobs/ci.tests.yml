@@ -120,7 +120,7 @@ jobs:
           ContinueOnError: ${{ notIn(split(variables.JavaTestVersion, '.')[1], '8', '11', '17', '21') }}
 
       - ${{ if notIn(split(variables.JavaTestVersion, '.')[1], '8', '11', '17', '21') }}:
-        - template: eng/pipelines/templates/steps/run-and-validate-linting.yml
+        - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
           parameters:
             JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
             ContinueOnError: true
