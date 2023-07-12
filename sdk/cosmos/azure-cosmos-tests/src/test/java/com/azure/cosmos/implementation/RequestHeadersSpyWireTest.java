@@ -52,21 +52,25 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         DedicatedGatewayRequestOptions dedicatedOptions1 = new DedicatedGatewayRequestOptions();
         dedicatedOptions1.setMaxIntegratedCacheStaleness(Duration.ofMinutes(2));
+        dedicatedOptions1.setBypassIntegratedCache(true);
         CosmosQueryRequestOptions options1 = new CosmosQueryRequestOptions();
         options1.setDedicatedGatewayRequestOptions(dedicatedOptions1);
 
         DedicatedGatewayRequestOptions dedicatedOptions2 = new DedicatedGatewayRequestOptions();
         dedicatedOptions2.setMaxIntegratedCacheStaleness(Duration.ofHours(5));
+        dedicatedOptions2.setBypassIntegratedCache(false);
         CosmosQueryRequestOptions options2 = new CosmosQueryRequestOptions();
         options2.setDedicatedGatewayRequestOptions(dedicatedOptions2);
 
         DedicatedGatewayRequestOptions dedicatedOptions3 = new DedicatedGatewayRequestOptions();
         dedicatedOptions3.setMaxIntegratedCacheStaleness(Duration.ofSeconds(10));
+        dedicatedOptions3.setBypassIntegratedCache(null);
         CosmosQueryRequestOptions options3 = new CosmosQueryRequestOptions();
         options3.setDedicatedGatewayRequestOptions(dedicatedOptions3);
 
         DedicatedGatewayRequestOptions dedicatedOptions4 = new DedicatedGatewayRequestOptions();
         dedicatedOptions4.setMaxIntegratedCacheStaleness(Duration.ofMillis(500));
+        dedicatedOptions4.setBypassIntegratedCache(true);
         CosmosQueryRequestOptions options4 = new CosmosQueryRequestOptions();
         options4.setDedicatedGatewayRequestOptions(dedicatedOptions4);
 
@@ -83,21 +87,25 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         DedicatedGatewayRequestOptions dedicatedOptions1 = new DedicatedGatewayRequestOptions();
         dedicatedOptions1.setMaxIntegratedCacheStaleness(Duration.ofMinutes(2));
+        dedicatedOptions1.setBypassIntegratedCache(true);
         CosmosItemRequestOptions options1 = new CosmosItemRequestOptions();
         options1.setDedicatedGatewayRequestOptions(dedicatedOptions1);
 
         DedicatedGatewayRequestOptions dedicatedOptions2 = new DedicatedGatewayRequestOptions();
         dedicatedOptions2.setMaxIntegratedCacheStaleness(Duration.ofHours(5));
+        dedicatedOptions2.setBypassIntegratedCache(false);
         CosmosItemRequestOptions options2 = new CosmosItemRequestOptions();
         options2.setDedicatedGatewayRequestOptions(dedicatedOptions2);
 
         DedicatedGatewayRequestOptions dedicatedOptions3 = new DedicatedGatewayRequestOptions();
         dedicatedOptions3.setMaxIntegratedCacheStaleness(Duration.ofSeconds(10));
+        dedicatedOptions3.setBypassIntegratedCache(null);
         CosmosItemRequestOptions options3 = new CosmosItemRequestOptions();
         options3.setDedicatedGatewayRequestOptions(dedicatedOptions3);
 
         DedicatedGatewayRequestOptions dedicatedOptions4 = new DedicatedGatewayRequestOptions();
         dedicatedOptions4.setMaxIntegratedCacheStaleness(Duration.ofMillis(500));
+        dedicatedOptions4.setBypassIntegratedCache(true);
         CosmosItemRequestOptions options4 = new CosmosItemRequestOptions();
         options4.setDedicatedGatewayRequestOptions(dedicatedOptions4);
 
@@ -226,6 +234,14 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
             assertThat(durationInMillis).isEqualTo(String.valueOf(options
                 .getMaxIntegratedCacheStaleness()
                 .toMillis()));
+            if (options.getBypassIntegratedCache() != null) {
+                assertThat(headers.containsKey(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_BYPASS_CACHE)).isTrue();
+                String bypassIntegratedCache =
+                    headers.get(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_BYPASS_CACHE);
+                assertThat(bypassIntegratedCache).isEqualTo(String.valueOf(options.getBypassIntegratedCache()));
+            } else {
+                assertThat(headers.containsKey(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_BYPASS_CACHE)).isFalse();
+            }
         }
     }
 
