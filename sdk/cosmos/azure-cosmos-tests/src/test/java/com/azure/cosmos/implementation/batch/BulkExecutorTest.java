@@ -129,7 +129,10 @@ public class BulkExecutorTest extends BatchTestBase {
             inputFlux,
             cosmosBulkExecutionOptions);
         Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<BulkExecutorTest>> bulkResponseFlux =
-            Flux.deferContextual(context -> executor.execute());
+            Flux.deferContextual(context -> executor.execute()).flatMap(response -> {
+                logger.debug(String.valueOf(response.getResponse().getCosmosDiagnostics()));
+                return Mono.just(response);
+            });;
 
         Disposable disposable = bulkResponseFlux.subscribe();
         disposable.dispose();
@@ -146,9 +149,7 @@ public class BulkExecutorTest extends BatchTestBase {
         }
     }
 
-    /**
-     * Write operations should not be retried on a gone exception because the operation might have succeeded.
-     */
+    // Write operations should not be retried on a gone exception because the operation might have succeeded.
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void executeBulk_OnConnectionDelayFailure() throws InterruptedException {
         this.container = createContainer(database);
