@@ -24,7 +24,7 @@ class TestUtils {
 
     static String getConnectionString() {
         return Configuration.getGlobalConfiguration()
-            .get("WEB_PUB_SUB_CONNECTION_STRING", "Endpoint=https://example.com;AccessKey=dummykey;Version=1.0;");
+            .get("WEB_PUB_SUB_CONNECTION_STRING", "Endpoint=https://testendpoint.webpubsubdev.azure.com;AccessKey=LoremIpsumDolorSitAmetConsectetur;Version=1.0;");
     }
 
     static RetryOptions getRetryOptions() {

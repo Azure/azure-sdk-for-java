@@ -22,9 +22,7 @@ import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
@@ -32,14 +30,15 @@ import java.text.ParseException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 
 public class WebPubSubServiceClientTests extends TestProxyTestBase {
 
     private WebPubSubServiceClient client;
 
-    @BeforeEach
-    public void setup() {
+    @Override
+    protected void beforeTest() {
         WebPubSubServiceClientBuilder webPubSubServiceClientBuilder = new WebPubSubServiceClientBuilder()
             .connectionString(TestUtils.getConnectionString())
             .retryOptions(TestUtils.getRetryOptions())
@@ -59,12 +58,6 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     private static void assertResponse(Response<?> response, int expectedCode) {
         assertNotNull(response);
         assertEquals(expectedCode, response.getStatusCode());
-    }
-
-    @Test
-    @DoNotRecord
-    public void assertClientNotNull() {
-        assertNotNull(client);
     }
 
     @Test
@@ -262,10 +255,11 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     }
 
     @Test
-    @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE", disabledReason = "This requires real "
-            + "connection id that is created when a client connects to Web PubSub service. So, run this in PLAYBACK "
-            + "mode only.")
     public void testCheckPermission() {
+        assumeTrue(getTestMode() == TestMode.PLAYBACK, "This requires real "
+            + "connection id that is created when a client connects to Web PubSub service. So, run this in PLAYBACK "
+            + "mode only.");
+
         RequestOptions requestOptions = new RequestOptions()
             .addQueryParam("targetName", "java");
         boolean permission = client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "71xtjgThROOJ6DsVY3xbBw2ef45fd11",

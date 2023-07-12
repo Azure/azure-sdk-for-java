@@ -18,9 +18,7 @@ import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -36,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
@@ -53,8 +52,8 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
 
     private WebPubSubServiceAsyncClient client;
 
-    @BeforeEach
-    public void setup() {
+    @Override
+    protected void beforeTest() {
         WebPubSubServiceClientBuilder builder = new WebPubSubServiceClientBuilder()
             .connectionString(TestUtils.getConnectionString())
             .retryOptions(TestUtils.getRetryOptions())
@@ -78,12 +77,6 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
             })
             .expectComplete()
             .verify(TIMEOUT);
-    }
-
-    @DoNotRecord
-    @Test
-    public void assertClientNotNull() {
-        assertNotNull(client);
     }
 
     @Test
@@ -298,12 +291,14 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     }
 
     @Test
-    @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE", disabledReason = "This requires real "
-        + "connection id that is created when a client connects to Web PubSub service. So, run this in PLAYBACK "
-        + "mode only.")
     public void testCheckPermission() {
+        assumeTrue(getTestMode() == TestMode.PLAYBACK, "This requires real "
+            + "connection id that is created when a client connects to Web PubSub service. So, run this in PLAYBACK "
+            + "mode only.");
+
         RequestOptions requestOptions = new RequestOptions()
             .addQueryParam("targetName", "java");
+
         StepVerifier.create(client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "71xtjgThROOJ6DsVY3xbBw2ef45fd11",
             requestOptions))
             .assertNext(response -> {
