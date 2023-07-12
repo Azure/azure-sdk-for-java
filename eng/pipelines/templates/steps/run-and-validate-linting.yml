@@ -8,6 +8,9 @@ parameters:
   - name: ContinueOnError
     type: boolean
     default: false
+  - name: RunLinting
+    type: boolean
+    default: true
 
 steps:
   - task: Maven@3
@@ -21,6 +24,7 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       goals: 'verify'
+    condition: ${{ parameters.RunLinting }}
 
   - task: PowerShell@2
     inputs:
@@ -29,12 +33,12 @@ steps:
       pwsh: true
       workingDirectory: $(Pipeline.Workspace)
     displayName: 'Generate Linting Reports'
-    condition: always()
+    condition: ${{ parameters.RunLinting }}
 
   - publish: $(Build.ArtifactStagingDirectory)/linting-reports.zip
     displayName: 'Publish Linting Reports'
     artifact: linting-reports-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
-    condition: always()
+    condition: ${{ parameters.RunLinting }}
 
   - pwsh: |
       if ((Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/linting-reports -Directory | Measure-Object).Count -gt 0) {
@@ -43,6 +47,7 @@ steps:
       }
     displayName: 'Fail Pipeline if Linting Reports Exist'
     continueOnError: ${{ parameters.ContinueOnError }}
+    condition: ${{ parameters.RunLinting }}
 
   - task: Maven@3
     displayName: 'Run Javadoc'
@@ -56,3 +61,4 @@ steps:
       publishJUnitResults: false
       goals: 'verify'
     continueOnError: ${{ parameters.ContinueOnError }}
+    condition: ${{ parameters.RunLinting }}

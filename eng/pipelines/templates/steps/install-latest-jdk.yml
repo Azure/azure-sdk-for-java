@@ -2,6 +2,9 @@ parameters:
   - name: LatestJdkFeatureVersion
     type: string
     default: $(LatestJdkFeatureVersion)
+  - name: IsLatestNonLtsJdk
+    type: boolean
+    default: true
 
 steps:
   # Non-standard JDK versions are only supported in Linux.
@@ -11,6 +14,7 @@ steps:
       key: 'jdk | "1.${{ parameters.LatestJdkFeatureVersion }}" | "$(CacheSalt)" | "$(Agent.OS)"'
       path: $(Agent.BuildDirectory)/jdk-${{ parameters.LatestJdkFeatureVersion }}
     displayName: 'Cache Latest JDK'
+    condition: ${{ parameter.IsLatestNonLtsJdk }}
 
   - task: PowerShell@2
     displayName: 'Install Latest JDK'
@@ -20,6 +24,7 @@ steps:
         -JdkFeatureVersion ${{ parameters.LatestJdkFeatureVersion }}
       workingDirectory: $(Agent.BuildDirectory)
       filePath: eng/scripts/Install-Latest-JDK.ps1
+    condition: ${{ parameter.IsLatestNonLtsJdk }}
 
   - pwsh: |
       Write-Host "Java 8 JDK: $Env:JAVA_HOME_8_X64"
@@ -27,3 +32,4 @@ steps:
       Write-Host "Java 17 JDK: $Env:JAVA_HOME_17_X64"
       Write-Host "Latest JDK: $Env:JAVA_HOME_${{ parameters.LatestJdkFeatureVersion }}_X64"
     displayName: 'Verify Latest JDK Install'
+    condition: ${{ parameter.IsLatestNonLtsJdk }}

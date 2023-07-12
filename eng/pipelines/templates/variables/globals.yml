@@ -5,8 +5,8 @@ variables:
   # This is the default Java test version. It's the version used when running tests.
   JavaTestVersion: '1.17'
   # This is the latest Java version released. It's used to run a non-failing job to validate the latest Java version.
-  LatestJavaVersion: '1.20'
-  LatestJdkFeatureVersion: '20'
+  LatestNonLtsJavaVersion: '1.20'
+  LatestNonLtsJdkFeatureVersion: '20'
   # This is the version of Python used by various tools in the Java build/release processes
   PythonVersion: '3.9'
 

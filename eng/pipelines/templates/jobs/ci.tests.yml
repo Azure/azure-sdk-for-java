@@ -46,9 +46,6 @@ parameters:
   - name: AdditionalLintingOptions
     type: string
     default: ''
-  - name: LatestNonLtsJavaVersion
-    type: boolean
-    default: false
 
 jobs:
   - job: 'Test'
@@ -101,10 +98,10 @@ jobs:
       # Java 18), then install the latest Java version and use that to run a full build for validation of the latest
       # Java version.
       # Otherwise, run a normal test run.
-      - ${{ if parameters.LatestNonLtsJavaVersion }}:
-        - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
-          parameters:
-            LatestJdkFeatureVersion: $(LatestJdkFeatureVersion)
+      - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
+        parameters:
+          LatestJdkFeatureVersion: $(LatestJdkFeatureVersion)
+          IsLatestNonLtsJdk: ${{ eq(variables['JavaTestVersion'], variables['LatestNonLtsJavaVersion']) }}
 
       - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
         parameters:
@@ -125,11 +122,11 @@ jobs:
           BuildParallelization: ${{ parameters.BuildParallelization }}
           ContinueOnError: ${{ parameters.LatestNonLtsJavaVersion }}
 
-      - ${{ if parameters.LatestNonLtsJavaVersion }}:
-        - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
-          parameters:
-            JavaBuildVersion: $(JavaTestVersion)
-            AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
-            ContinueOnError: true
+      - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
+        parameters:
+          JavaBuildVersion: $(JavaTestVersion)
+          AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+          ContinueOnError: true
+          RunLinting: ${{ eq(variables['JavaTestVersion'], variables['LatestNonLtsJavaVersion']) }}
 
       - template: /eng/common/testproxy/publish-proxy-logs.yml
