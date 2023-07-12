@@ -251,10 +251,6 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
 
     }
 
-    /*****************************************************************************************************************
-     * Sync Tests - WebPubSubGroup
-     ****************************************************************************************************************/
-
     @Test
     public void testRemoveNonExistentUserFromGroup() {
         StepVerifier.create(client.removeUserFromGroupWithResponse("java",
