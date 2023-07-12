@@ -430,11 +430,12 @@ public class TestProxyTests extends TestProxyTestBase {
         String targetRepoRoot = TestUtils.getRepoRootResolveUntil(getTestClassPath(), "target").toString();
         System.out.printf("Target repo root: %s", targetRepoRoot);
         System.out.printf("Eng repo root: %s", engRepoRoot.toString());
+        String assetPath = Paths.get("sdk", "core", "azure-core-test", "assets.json").toString();
         ProcessBuilder builder = new ProcessBuilder(commandLine,
             "config",
             "locate",
             "-a",
-            "sdk\\core\\azure-core-test\\assets.json",
+            assetPath,
             "--storage-location",
             engRepoRoot.toString());
         Map<String, String> environment = builder.environment();
@@ -443,6 +444,7 @@ public class TestProxyTests extends TestProxyTestBase {
         environment.put("LOGGING__LOGLEVEL__DEFAULT", "Information");
         builder.directory(engRepoRoot.toFile());
         Process process = builder.start();
+
         BufferedReader reader =
             new BufferedReader(new InputStreamReader(process.getInputStream()));
         StringBuilder stringBuilder = new StringBuilder();
@@ -450,6 +452,11 @@ public class TestProxyTests extends TestProxyTestBase {
         while ((line = reader.readLine()) != null) {
             if (line.contains("azure-sdk-for-java")) {
                 stringBuilder.append(line);
+            }
+            try {
+                process.waitFor();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
         System.out.printf("Process output: %s", stringBuilder);
