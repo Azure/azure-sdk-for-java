@@ -17,12 +17,10 @@ import io.opentelemetry.sdk.resources.Resource;
 
 import java.util.Map;
 
-@SuppressWarnings("javadoc")
 public final class ResourceParser {
 
     private static final String DEFAULT_SERVICE_NAME = "unknown_service:java";
 
-    @SuppressWarnings({"NoImplInPublicAPI", "ExternalDependencyExposedCheck"})
     // visible for testing
     public static void updateRoleNameAndInstance(
         AbstractTelemetryBuilder builder, Resource resource, Configuration configuration) {
