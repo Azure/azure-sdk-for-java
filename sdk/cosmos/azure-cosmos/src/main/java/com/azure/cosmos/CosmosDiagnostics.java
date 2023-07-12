@@ -423,7 +423,7 @@ public final class CosmosDiagnostics {
                     String identifier,
                     String errorMessage,
                     long transportRequestId) {
-                    if (request.requestContext.cosmosDiagnostics== null) {
+                    if (request.requestContext.cosmosDiagnostics == null) {
                         return;
                     }
 

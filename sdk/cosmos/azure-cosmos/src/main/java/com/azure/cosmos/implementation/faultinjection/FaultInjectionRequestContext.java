@@ -69,8 +69,8 @@ public class FaultInjectionRequestContext {
         });
     }
 
-    public void recordAddressRefresh(boolean forceRefresh) {
-        if (forceRefresh) {
+    public void recordAddressForceRefreshed(boolean forceRefreshed) {
+        if (forceRefreshed) {
             this.addressForceRefreshed.compareAndSet(false, true);
         }
     }

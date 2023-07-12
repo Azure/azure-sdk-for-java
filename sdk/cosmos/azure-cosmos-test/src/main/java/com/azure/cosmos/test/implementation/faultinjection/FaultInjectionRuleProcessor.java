@@ -126,7 +126,7 @@ public class FaultInjectionRuleProcessor {
         if (rule.getCondition().getOperationType() != null
             && rule.getCondition().getOperationType() == FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH
             && this.connectionMode != ConnectionMode.DIRECT) {
-            throw new IllegalArgumentException("METADATA_REQUEST_ADDRESS_REFRESH operation type is not supported when client is not in direct mode.");
+            throw new IllegalArgumentException("METADATA_REQUEST_ADDRESS_REFRESH operation type is not supported when client is in gateway mode.");
         }
     }
 
@@ -163,7 +163,6 @@ public class FaultInjectionRuleProcessor {
                 }
 
                 List<URI> regionEndpoints = this.getRegionEndpoints(rule.getCondition());
-
                 if (StringUtils.isEmpty(rule.getCondition().getRegion())) {
                     // if region is not specific configured, then also add the defaultEndpoint
                     List<URI> regionEndpointsWithDefault = new ArrayList<>(regionEndpoints);
@@ -276,12 +275,17 @@ public class FaultInjectionRuleProcessor {
                                 .collect(Collectors.toList());
 
                         FaultInjectionConnectionErrorResult result = (FaultInjectionConnectionErrorResult) rule.getResult();
+
+                        List<URI> regionEndpointsWithDefault = new ArrayList<>(regionEndpoints);
+                        // if region is not specific configured, then also add the defaultEndpoint
+                        regionEndpointsWithDefault.add(this.globalEndpointManager.getDefaultEndpoint());
+
                         return new FaultInjectionConnectionErrorRule(
                             rule.getId(),
                             rule.isEnabled(),
                             rule.getStartDelay(),
                             rule.getDuration(),
-                            regionEndpoints,
+                            regionEndpointsWithDefault,
                             effectiveAddresses,
                             rule.getCondition().getConnectionType(),
                             result

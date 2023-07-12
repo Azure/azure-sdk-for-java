@@ -364,15 +364,18 @@ public class RxGatewayStoreModel implements RxStoreModel {
                     if (reactorNettyRequestRecord != null) {
                         rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());
 
-                        rsp.setFaultInjectionRuleId(
-                            request
-                                .faultInjectionRequestContext
-                                .getFaultInjectionRuleId(reactorNettyRequestRecord.getTransportRequestId()));
+                        if (this.gatewayServerErrorInjector != null) {
+                            // only configure when fault injection is used
+                            rsp.setFaultInjectionRuleId(
+                                request
+                                    .faultInjectionRequestContext
+                                    .getFaultInjectionRuleId(reactorNettyRequestRecord.getTransportRequestId()));
 
-                        rsp.setFaultInjectionRuleEvaluationResults(
-                            request
-                                .faultInjectionRequestContext
-                                .getFaultInjectionRuleEvaluationResults(reactorNettyRequestRecord.getTransportRequestId()));
+                            rsp.setFaultInjectionRuleEvaluationResults(
+                                request
+                                    .faultInjectionRequestContext
+                                    .getFaultInjectionRuleEvaluationResults(reactorNettyRequestRecord.getTransportRequestId()));
+                        }
                     }
 
                     if (request.requestContext.cosmosDiagnostics != null) {

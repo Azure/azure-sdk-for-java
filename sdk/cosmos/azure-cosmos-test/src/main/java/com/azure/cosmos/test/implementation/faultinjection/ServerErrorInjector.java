@@ -13,7 +13,7 @@ import java.time.Duration;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /***
- * Fault injector which can handle {@link FaultInjectionServerErrorRule} with DIRECT connection type.
+ * Fault injector which can handle {@link FaultInjectionServerErrorRule} for both direct and gateway connection type.
  */
 public class ServerErrorInjector implements IServerErrorInjector {
     private final FaultInjectionRuleStore ruleStore;

@@ -343,7 +343,7 @@ public class GatewayAddressCache implements IAddressCache {
         }
 
         // track address refresh has happened, this is only meant to be used for fault injection validation
-        request.faultInjectionRequestContext.recordAddressRefresh(forceRefresh);
+        request.faultInjectionRequestContext.recordAddressForceRefreshed(forceRefresh);
 
         request.setAddressRefresh(true, forceRefresh);
         String entryUrl = PathsHelper.generatePath(ResourceType.Document, collectionRid, true);
@@ -409,13 +409,15 @@ public class GatewayAddressCache implements IAddressCache {
         Instant addressCallStartTime = Instant.now();
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), httpHeaders);
 
-        Duration responseTimeout= Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
-        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, responseTimeout);
+        Duration responseTimeout = Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
 
-        if (tokenProvider.getAuthorizationTokenType() == AuthorizationTokenType.AadToken) {
+        Mono<HttpResponse> httpResponseMono;
+        if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
+            httpResponseMono = this.httpClient.send(httpRequest, responseTimeout);
+        } else {
             httpResponseMono = tokenProvider
                 .populateAuthorizationHeader(httpHeaders)
-                .then(httpResponseMono);
+                .flatMap(valueHttpHeaders -> this.httpClient.send(httpRequest,responseTimeout));
         }
 
         if (this.gatewayServerErrorInjector != null) {
