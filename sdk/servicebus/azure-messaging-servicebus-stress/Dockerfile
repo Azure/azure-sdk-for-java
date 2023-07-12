@@ -3,10 +3,15 @@ FROM maven:3.8.6-openjdk-11 as builder
 RUN mkdir /stress-sb
 WORKDIR /stress-sb
 
+ADD ./sdk/tools /stress-eh/sdk/tools
+ADD ./sdk/parents /stress-eh/sdk/parents
 ADD ./sdk/core /stress-sb/sdk/core
 ADD ./sdk/servicebus /stress-sb/sdk/servicebus
+ADD ./eng /stress-eh/eng
 
 RUN --mount=type=cache,target=/root/.m2 \
+ mvn -f /stress-eh/eng/code-quality-reports/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
+ mvn -f /stress-eh/sdk/tools/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
  mvn -f /stress-sb/sdk/core/azure-core/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
  mvn -f /stress-sb/sdk/core/azure-core-test/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
  mvn -f /stress-sb/sdk/core/azure-core-amqp/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
