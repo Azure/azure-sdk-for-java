@@ -46,6 +46,9 @@ parameters:
   - name: AdditionalLintingOptions
     type: string
     default: ''
+  - name: LatestNonLtsJavaVersion
+    type: boolean
+    default: false
 
 jobs:
   - job: 'Test'
@@ -98,7 +101,7 @@ jobs:
       # Java 18), then install the latest Java version and use that to run a full build for validation of the latest
       # Java version.
       # Otherwise, run a normal test run.
-      - ${{ if eq(variables['JavaTestVersion'], variables['LatestJavaVersion']) }}:
+      - ${{ if parameters.LatestNonLtsJavaVersion }}:
         - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
           parameters:
             LatestJdkFeatureVersion: $(LatestJdkFeatureVersion)
@@ -120,12 +123,12 @@ jobs:
           TestOptions: ${{ parameters.TestOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
-          ContinueOnError: ${{ eq(variables['JavaTestVersion'], variables['LatestJavaVersion']) }}
+          ContinueOnError: ${{ parameters.LatestNonLtsJavaVersion }}
 
-      - ${{ if eq(variables['JavaTestVersion'], variables['LatestJavaVersion']) }}:
+      - ${{ if parameters.LatestNonLtsJavaVersion }}:
         - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
           parameters:
-            JavaBuildVersion: ${{ parameters.JavaTestVersion }}
+            JavaBuildVersion: $(JavaTestVersion)
             AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
             ContinueOnError: true
 
