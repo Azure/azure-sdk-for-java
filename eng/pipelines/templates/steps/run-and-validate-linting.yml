@@ -2,6 +2,9 @@ parameters:
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
+  - name: AdditionalLintingOptions
+    type: string
+    default: ''
   - name: ContinueOnError
     type: boolean
     default: false
