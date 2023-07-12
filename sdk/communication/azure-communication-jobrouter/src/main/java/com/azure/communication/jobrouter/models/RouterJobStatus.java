@@ -4,62 +4,65 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for RouterJobStatus. */
-public enum RouterJobStatus {
-    /** Enum value pendingClassification. */
-    PENDING_CLASSIFICATION("pendingClassification"),
+public final class RouterJobStatus extends ExpandableStringEnum<RouterJobStatus> {
+    /** Static value pendingClassification for RouterJobStatus. */
+    public static final RouterJobStatus PENDING_CLASSIFICATION = fromString("pendingClassification");
 
-    /** Enum value queued. */
-    QUEUED("queued"),
+    /** Static value queued for RouterJobStatus. */
+    public static final RouterJobStatus QUEUED = fromString("queued");
 
-    /** Enum value assigned. */
-    ASSIGNED("assigned"),
+    /** Static value assigned for RouterJobStatus. */
+    public static final RouterJobStatus ASSIGNED = fromString("assigned");
 
-    /** Enum value completed. */
-    COMPLETED("completed"),
+    /** Static value completed for RouterJobStatus. */
+    public static final RouterJobStatus COMPLETED = fromString("completed");
 
-    /** Enum value closed. */
-    CLOSED("closed"),
+    /** Static value closed for RouterJobStatus. */
+    public static final RouterJobStatus CLOSED = fromString("closed");
 
-    /** Enum value cancelled. */
-    CANCELLED("cancelled"),
+    /** Static value cancelled for RouterJobStatus. */
+    public static final RouterJobStatus CANCELLED = fromString("cancelled");
 
-    /** Enum value classificationFailed. */
-    CLASSIFICATION_FAILED("classificationFailed"),
+    /** Static value classificationFailed for RouterJobStatus. */
+    public static final RouterJobStatus CLASSIFICATION_FAILED = fromString("classificationFailed");
 
-    /** Enum value created. */
-    CREATED("created");
+    /** Static value created for RouterJobStatus. */
+    public static final RouterJobStatus CREATED = fromString("created");
 
-    /** The actual serialized value for a RouterJobStatus instance. */
-    private final String value;
+    /** Static value pendingSchedule for RouterJobStatus. */
+    public static final RouterJobStatus PENDING_SCHEDULE = fromString("pendingSchedule");
 
-    RouterJobStatus(String value) {
-        this.value = value;
+    /** Static value scheduled for RouterJobStatus. */
+    public static final RouterJobStatus SCHEDULED = fromString("scheduled");
+
+    /** Static value scheduleFailed for RouterJobStatus. */
+    public static final RouterJobStatus SCHEDULE_FAILED = fromString("scheduleFailed");
+
+    /** Static value waitingForActivation for RouterJobStatus. */
+    public static final RouterJobStatus WAITING_FOR_ACTIVATION = fromString("waitingForActivation");
+
+    /**
+     * Creates or finds a RouterJobStatus from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding RouterJobStatus.
+     */
+    @JsonCreator
+    public static RouterJobStatus fromString(String name) {
+        return fromString(name, RouterJobStatus.class);
     }
 
     /**
-     * Parses a serialized value to a RouterJobStatus instance.
+     * Gets known RouterJobStatus values.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed RouterJobStatus object, or null if unable to parse.
+     * @return known RouterJobStatus values.
      */
-    @JsonCreator
-    public static RouterJobStatus fromString(String value) {
-        RouterJobStatus[] items = RouterJobStatus.values();
-        for (RouterJobStatus item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<RouterJobStatus> values() {
+        return values(RouterJobStatus.class);
     }
 }

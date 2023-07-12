@@ -55,7 +55,7 @@ public final class WorkerSelector {
      * The time at which this worker selector expires in UTC
      */
     @JsonProperty(value = "expireTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime expireTime;
+    private OffsetDateTime expirationTime;
 
     /**
      * Get the key property: The label key to query against.
@@ -173,7 +173,7 @@ public final class WorkerSelector {
      *
      * @return the expireTime value.
      */
-    public OffsetDateTime getExpireTime() {
-        return this.expireTime;
+    public OffsetDateTime getExpirationTime() {
+        return this.expirationTime;
     }
 }

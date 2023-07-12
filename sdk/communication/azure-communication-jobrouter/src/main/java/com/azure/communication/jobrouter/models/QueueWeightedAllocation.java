@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-/** Contains the weight percentage and label selectors to be applied if selected for weighted distributions. */
+/** Contains the weight percentage and queue selectors to be applied if selected for weighted distributions. */
 @Fluent
 public final class QueueWeightedAllocation {
     /*
@@ -19,11 +19,11 @@ public final class QueueWeightedAllocation {
     private double weight;
 
     /*
-     * A collection of label selectors that will be applied if this allocation
+     * A collection of queue selectors that will be applied if this allocation
      * is selected.
      */
-    @JsonProperty(value = "labelSelectors", required = true)
-    private List<QueueSelector> labelSelectors;
+    @JsonProperty(value = "queueSelectors", required = true)
+    private List<RouterQueueSelector> queueSelectors;
 
     /**
      * Get the weight property: The percentage of this weight, expressed as a fraction of 1.
@@ -46,24 +46,24 @@ public final class QueueWeightedAllocation {
     }
 
     /**
-     * Get the labelSelectors property: A collection of label selectors that will be applied if this allocation is
+     * Get the queueSelectors property: A collection of queue selectors that will be applied if this allocation is
      * selected.
      *
-     * @return the labelSelectors value.
+     * @return the queueSelectors value.
      */
-    public List<QueueSelector> getLabelSelectors() {
-        return this.labelSelectors;
+    public List<RouterQueueSelector> getQueueSelectors() {
+        return this.queueSelectors;
     }
 
     /**
-     * Set the labelSelectors property: A collection of label selectors that will be applied if this allocation is
+     * Set the queueSelectors property: A collection of queue selectors that will be applied if this allocation is
      * selected.
      *
-     * @param labelSelectors the labelSelectors value to set.
+     * @param queueSelectors the queueSelectors value to set.
      * @return the QueueWeightedAllocation object itself.
      */
-    public QueueWeightedAllocation setLabelSelectors(List<QueueSelector> labelSelectors) {
-        this.labelSelectors = labelSelectors;
+    public QueueWeightedAllocation setQueueSelectors(List<RouterQueueSelector> queueSelectors) {
+        this.queueSelectors = queueSelectors;
         return this;
     }
 }
