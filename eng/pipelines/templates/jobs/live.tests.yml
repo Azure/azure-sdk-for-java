@@ -114,10 +114,13 @@ jobs:
             ${{ each var in parameters.EnvVars }}:
               ${{ var.key }}: ${{ var.value }}
 
+      # Looks strange, but this is the only way to set 'SucceededWithIssues' as the job status.
+      # Agent.JobStatus is a protected variable, so we can't set it directly.
       - pwsh: |
-          Write-Host "##vso[task.setvariable variable=Agent.JobStatus;isOutput=true]SucceededWithIssues"
+          exit 1
         displayName: 'Reset status for Latest JDK'
         condition: and(eq(variables['IsLatestNonLtsJdk'], true), notIn(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues'))
+        continueOnError: true
 
       # macOS has known issues running HTTP fault injector, change this once
       # https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved

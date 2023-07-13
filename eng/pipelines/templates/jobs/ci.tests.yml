@@ -115,6 +115,14 @@ jobs:
           JavaBuildVersion: $(JavaTestVersion)
           AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
 
+      # Looks strange, but this is the only way to set 'SucceededWithIssues' as the job status.
+      # Agent.JobStatus is a protected variable, so we can't set it directly.
+      - pwsh: |
+          exit 1
+        displayName: 'Reset status for Latest JDK'
+        condition: and(eq(variables['IsLatestNonLtsJdk'], true), notIn(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues'))
+        continueOnError: true
+
       - template: /eng/pipelines/templates/steps/build-and-test.yml
         parameters:
           SDKType: ${{ parameters.SDKType }}
@@ -125,9 +133,12 @@ jobs:
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
 
+      # Looks strange, but this is the only way to set 'SucceededWithIssues' as the job status.
+      # Agent.JobStatus is a protected variable, so we can't set it directly.
       - pwsh: |
-          Write-Host "##vso[task.setvariable variable=Agent.JobStatus;isOutput=true]SucceededWithIssues"
+          exit 1
         displayName: 'Reset status for Latest JDK'
         condition: and(eq(variables['IsLatestNonLtsJdk'], true), notIn(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues'))
+        continueOnError: true
 
       - template: /eng/common/testproxy/publish-proxy-logs.yml
