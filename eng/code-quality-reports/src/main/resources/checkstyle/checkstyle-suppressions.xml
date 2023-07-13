@@ -570,10 +570,4 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files=".*(DeviceCodeCredential|InteractiveBrowserCredential|AzureCliCredential|AzureDeveloperCliCredential|ClientCertificateCredential|ClientSecretCredential|EnvironmentCredential|OnBehalfOfCredential|ChainedTokenCredential|ClientAssertionCredential|UsernamePasswordCredential).java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.search.documents.indexes.models.SynonymMap"/>
-
-  <!-- Checkstyle suppression for azure-monitor-opentelemetry-exporter package -->
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser.java"/>
-  <suppress checks="Javadoc" files="com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.monitor.opentelemetry.exporter.implementation.utils.AksResourceAttributes.otelResourceAttributes"/>
 </suppressions>
