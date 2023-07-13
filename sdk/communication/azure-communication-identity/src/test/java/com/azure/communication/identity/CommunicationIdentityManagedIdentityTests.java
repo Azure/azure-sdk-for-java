@@ -9,70 +9,95 @@ import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import java.util.Arrays;
+
+import java.util.Collections;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
+
 import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeamsTokenTest;
+import static com.azure.communication.identity.models.CommunicationTokenScope.CHAT;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CommunicationIdentityManagedIdentityTests extends CommunicationIdentityClientTestBase {
-    private CommunicationIdentityClient client;
 
-    @BeforeEach
-    public void setup() {
-        super.setup();
-        httpClient = buildSyncAssertingClient(httpClient);
+    private static final List<CommunicationTokenScope> SCOPES = Collections.singletonList(CHAT);
+    private CommunicationIdentityClient client;
+    private CommunicationIdentityClientBuilder builder;
+
+    @Override
+    public void beforeTest() {
+        super.beforeTest();
+        builder = createClientBuilderUsingManagedIdentity(buildSyncAssertingClient(httpClient));
     }
 
     @Test
     public void createIdentityClient() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         client = setupClient(builder, "createIdentityClientUsingManagedIdentitySync");
         assertNotNull(client);
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
-        assertNotNull(communicationUser.getId());
-        assertFalse(communicationUser.getId().isEmpty());
+        verifyUserNotEmpty(communicationUser);
     }
 
     @Test
     public void createUserWithResponse() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         client = setupClient(builder, "createUserWithResponseUsingManagedIdentitySync");
 
         // Action & Assert
         Response<CommunicationUserIdentifier> response = client.createUserWithResponse(Context.NONE);
-        assertNotNull(response.getValue().getId());
-        assertFalse(response.getValue().getId().isEmpty());
         assertEquals(201, response.getStatusCode(), "Expect status code to be 201");
+        verifyUserNotEmpty(response.getValue());
+    }
+
+    @Test
+    public void getToken() {
+        // Arrange
+        client = setupClient(builder, "getTokenUsingManagedIdentitySync");
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        verifyUserNotEmpty(communicationUser);
+
+        // Action & Assert
+        AccessToken issuedToken = client.getToken(communicationUser, SCOPES);
+        verifyTokenNotEmpty(issuedToken);
+    }
+
+    @Test
+    public void getTokenWithResponse() {
+        // Arrange
+        client = setupClient(builder, "getTokenWithResponseUsingManagedIdentitySync");
+        CommunicationUserIdentifier communicationUser = client.createUser();
+
+        // Action & Assert
+        Response<AccessToken> response = client.getTokenWithResponse(communicationUser, SCOPES, Context.NONE);
+        assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
+        verifyTokenNotEmpty(response.getValue());
     }
 
     @Test
     public void deleteUser() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         client = setupClient(builder, "deleteUserUsingManagedIdentitySync");
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        verifyUserNotEmpty(communicationUser);
 
         // Action & Assert
-        CommunicationUserIdentifier communicationUser = client.createUser();
-        assertNotNull(communicationUser.getId());
         client.deleteUser(communicationUser);
     }
 
     @Test
     public void deleteUserWithResponse() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         client = setupClient(builder, "deleteUserWithResponseUsingManagedIdentitySync");
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        verifyUserNotEmpty(communicationUser);
 
         // Action & Assert
-        CommunicationUserIdentifier communicationUser = client.createUser();
         Response<Void> response = client.deleteUserWithResponse(communicationUser, Context.NONE);
         assertEquals(204, response.getStatusCode(), "Expect status code to be 204");
     }
@@ -80,12 +105,11 @@ public class CommunicationIdentityManagedIdentityTests extends CommunicationIden
     @Test
     public void revokeToken() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         client = setupClient(builder, "revokeTokenUsingManagedIdentitySync");
         CommunicationUserIdentifier communicationUser = client.createUser();
-        assertNotNull(communicationUser.getId());
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-        client.getToken(communicationUser, scopes);
+        verifyUserNotEmpty(communicationUser);
+        AccessToken issuedToken = client.getToken(communicationUser, SCOPES);
+        verifyTokenNotEmpty(issuedToken);
 
         // Action & Assert
         client.revokeTokens(communicationUser);
@@ -94,42 +118,15 @@ public class CommunicationIdentityManagedIdentityTests extends CommunicationIden
     @Test
     public void revokeTokenWithResponse() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         client = setupClient(builder, "revokeTokenWithResponseUsingManagedIdentitySync");
         CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-        client.getToken(communicationUser, scopes);
+        verifyUserNotEmpty(communicationUser);
+        AccessToken issuedToken = client.getToken(communicationUser, SCOPES);
+        verifyTokenNotEmpty(issuedToken);
 
         // Action & Assert
         Response<Void> response = client.revokeTokensWithResponse(communicationUser, Context.NONE);
         assertEquals(204, response.getStatusCode(), "Expect status code to be 204");
-    }
-
-    @Test
-    public void getToken() {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        client = setupClient(builder, "getTokenUsingManagedIdentitySync");
-        CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-
-        // Action & Assert
-        AccessToken issuedToken = client.getToken(communicationUser, scopes);
-        verifyTokenNotEmpty(issuedToken);
-    }
-
-    @Test
-    public void getTokenWithResponse() {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        client = setupClient(builder, "getTokenWithResponseUsingManagedIdentitySync");
-        CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-
-        // Action & Assert
-        Response<AccessToken> response = client.getTokenWithResponse(communicationUser, scopes, Context.NONE);
-        assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
-        verifyTokenNotEmpty(response.getValue());
     }
 
     @ParameterizedTest
@@ -138,10 +135,9 @@ public class CommunicationIdentityManagedIdentityTests extends CommunicationIden
         if (skipExchangeAadTeamsTokenTest()) {
             return;
         }
-
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         client = setupClient(builder, "getTokenForTeamsUserUsingManagedIdentitySync");
+
         // Action & Assert
         AccessToken issuedToken = client.getTokenForTeamsUser(options);
         verifyTokenNotEmpty(issuedToken);
@@ -154,8 +150,8 @@ public class CommunicationIdentityManagedIdentityTests extends CommunicationIden
             return;
         }
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         client = setupClient(builder, "getTokenForTeamsUserWithResponseUsingManagedIdentitySync");
+
         // Action & Assert
         Response<AccessToken> response = client.getTokenForTeamsUserWithResponse(options, Context.NONE);
         assertEquals(200, response.getStatusCode(), "Expect status code to be 200");

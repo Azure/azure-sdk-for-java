@@ -216,7 +216,7 @@ private object CosmosTableSchemaInferrer
       case decimalNode: DecimalNode if decimalNode.isInt => IntegerType
       case arrayNode: ArrayNode => inferDataTypeFromArrayNode(arrayNode, allowNullForInferredProperties) match {
         case Some(valueType) => ArrayType(valueType)
-        case None => NullType
+        case None => ArrayType(NullType)
       }
       case objectNode: ObjectNode =>
         inferDataTypeFromObjectNode(

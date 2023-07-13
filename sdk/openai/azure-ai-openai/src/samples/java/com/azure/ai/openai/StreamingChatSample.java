@@ -42,7 +42,7 @@ public class StreamingChatSample {
         IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream(deploymentOrModelId, new ChatCompletionsOptions(chatMessages));
 
         chatCompletionsStream.forEach(chatCompletions -> {
-            System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
+            System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
             for (ChatChoice choice : chatCompletions.getChoices()) {
                 ChatMessage message = choice.getDelta();
                 if (message != null) {

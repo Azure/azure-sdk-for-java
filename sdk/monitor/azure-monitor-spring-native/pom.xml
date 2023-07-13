@@ -19,12 +19,11 @@
     <maven.compiler.target>${jdk.version}</maven.compiler.target>
     <maven.compiler.testSource>${jdk-test.version}</maven.compiler.testSource>
     <maven.compiler.testTarget>${jdk-test.version}</maven.compiler.testTarget>
-    <maven.javadoc.skip>true
-    </maven.javadoc.skip>   <!-- For the Application Insights Spring Boot starter for Spring native, users have only to declare the starter dependency. Users won't manipulate the Java classes of this Spring Boot starter. -->
   </properties>
 
-  <artifactId>applicationinsights-spring-native</artifactId>
-  <version>1.0.0-beta.1</version>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-monitor-spring-native</artifactId>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-monitor-spring-native;current} -->
 
   <distributionManagement>
     <site>
@@ -37,47 +36,36 @@
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>io.opentelemetry</groupId>
-        <artifactId>opentelemetry-bom</artifactId>
-        <version>1.24.0</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>io.opentelemetry.instrumentation</groupId>
-        <artifactId>opentelemetry-instrumentation-bom-alpha</artifactId>
-        <version>1.24.0-alpha</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <dependencies>
 
     <!-- OTel dependencies -->
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
       <artifactId>opentelemetry-spring-boot-starter</artifactId>
+      <version>1.27.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
-      <version>1.24.0-alpha</version>
+      <version>1.28.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
-      <artifactId>opentelemetry-runtime-metrics</artifactId>
+      <artifactId>opentelemetry-runtime-telemetry-java8</artifactId>
+      <version>1.27.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
     </dependency>
     <!-- End of OTel dependencies -->
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-      <version>1.0.0-beta.8</version>
+      <version>1.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-api-logs</artifactId>
+      <version>1.26.0-alpha</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api-logs;external_dependency} -->
+      <scope>compile</scope>
     </dependency>
 
 
@@ -88,19 +76,91 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.2.1</version>  <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.0.0-M3</version>  <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:[1.24.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.24.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
-                <include>io.opentelemetry.instrumentation:opentelemetry-runtime-metrics:[1.24.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-metrics;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:[1.27.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.28.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8:[1.27.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-api-logs:[1.26.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api-logs;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
         </configuration>
       </plugin>
+
+      <!-- START: Empty Java Doc -->
+      <!-- The following code will generate an empty javadoc with just a README.md. This is necessary
+          to pass the required checks on Maven. The way this works is by setting the classesDirectory
+          to a directory that only contains the README.md, which we need to copy. If the classesDirectory
+          is set to the root, where the README.md lives, it still won't have javadocs but the jar file
+          will contain a bunch of files that shouldn't be there. The faux sources directory is deleted
+          and recreated with the README.md being copied every time to guarantee that, when building locally,
+          it'll have the latest copy of the README.md file.
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>empty-javadoc-jar-with-readme</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <classifier>javadoc</classifier>
+              <classesDirectory>${project.basedir}/javadocTemp</classesDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>copy-readme-to-javadocTemp</id>
+            <phase>prepare-package</phase>
+            <configuration>
+              <target>
+                <echo>Deleting existing ${project.basedir}/javadocTemp</echo>
+                <delete includeEmptyDirs="true" quiet="true">
+                  <fileset dir="${project.basedir}/javadocTemp"/>
+                </delete>
+                <echo>Copying ${project.basedir}/README.md to
+                  ${project.basedir}/javadocTemp/README.md
+                </echo>
+                <copy file="${project.basedir}/README.md" tofile="${project.basedir}/javadocTemp/README.md"/>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- END: Empty Java Doc -->
     </plugins>
   </build>
 

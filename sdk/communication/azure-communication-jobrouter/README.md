@@ -135,7 +135,7 @@ To initialize the JobRouter Client, the connection string can be used to instant
 Alternatively, you can also use Active Directory authentication using DefaultAzureCredential.
 
 ```java 
-RouterClient routerClient = new RouterClientBuilder()
+RouterClient jobRouterClient = new RouterClientBuilder()
     .connectionString(connectionString);
     .buildClient();
 ```
@@ -152,14 +152,14 @@ CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDist
         .setMinConcurrentOffers(1)
         .setMaxConcurrentOffers(10)
 );
-DistributionPolicy distributionPolicy = routerClient.createDistributionPolicy(createDistributionPolicyOptions);
+DistributionPolicy distributionPolicy = jobRouterClient.createDistributionPolicy(createDistributionPolicyOptions);
 ```
 
 ### Create a Queue
 
 ```java 
 CreateQueueOptions createQueueOptions = new CreateQueueOptions("queue-id", distributionPolicy.getId());
-JobQueue jobQueue = routerClient.createQueue(createQueueOptions);
+JobQueue jobQueue = jobRouterClient.createQueue(createQueueOptions);
 ```
 
 ### Create a Job
@@ -176,7 +176,7 @@ CreateJobOptions createJobOptions = new CreateJobOptions("job-id", "chat-channel
                         .setValue(10);
                 }}
             );
-RouterJob routerJob = routerClient.createJob(createJobOptions);
+RouterJob routerJob = jobRouterClient.createJob(createJobOptions);
 ```
 
 ### Create a Worker
@@ -213,7 +213,7 @@ CreateWorkerOptions createWorkerOptions = new CreateWorkerOptions(workerId, 10)
     .setChannelConfigurations(channelConfigurations)
     .setQueueAssignments(queueAssignments);
 
-RouterWorker routerWorker = routerClient.createWorker(createWorkerOptions);
+RouterWorker routerWorker = jobRouterClient.createWorker(createWorkerOptions);
 ```
 
 ## Troubleshooting

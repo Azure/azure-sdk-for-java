@@ -172,7 +172,7 @@ public final class OpenAIClientImpl {
         Mono<Response<BinaryData>> getEmbeddings(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentId,
+                @PathParam("deploymentId") String deploymentOrModelName,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData embeddingsOptions,
                 RequestOptions requestOptions,
@@ -193,7 +193,7 @@ public final class OpenAIClientImpl {
         Response<BinaryData> getEmbeddingsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentId,
+                @PathParam("deploymentId") String deploymentOrModelName,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData embeddingsOptions,
                 RequestOptions requestOptions,
@@ -214,7 +214,7 @@ public final class OpenAIClientImpl {
         Mono<Response<BinaryData>> getCompletions(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentId,
+                @PathParam("deploymentId") String deploymentOrModelName,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData completionsOptions,
                 RequestOptions requestOptions,
@@ -235,7 +235,7 @@ public final class OpenAIClientImpl {
         Response<BinaryData> getCompletionsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentId,
+                @PathParam("deploymentId") String deploymentOrModelName,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData completionsOptions,
                 RequestOptions requestOptions,
@@ -256,7 +256,7 @@ public final class OpenAIClientImpl {
         Mono<Response<BinaryData>> getChatCompletions(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentId,
+                @PathParam("deploymentId") String deploymentOrModelName,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData chatCompletionsOptions,
                 RequestOptions requestOptions,
@@ -277,7 +277,7 @@ public final class OpenAIClientImpl {
         Response<BinaryData> getChatCompletionsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentId,
+                @PathParam("deploymentId") String deploymentOrModelName,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData chatCompletionsOptions,
                 RequestOptions requestOptions,
@@ -398,7 +398,8 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
      *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
      *     scenarios.
@@ -413,14 +414,14 @@ public final class OpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEmbeddingsWithResponseAsync(
-            String deploymentId, BinaryData embeddingsOptions, RequestOptions requestOptions) {
+            String deploymentOrModelName, BinaryData embeddingsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getEmbeddings(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                deploymentId,
+                                deploymentOrModelName,
                                 accept,
                                 embeddingsOptions,
                                 requestOptions,
@@ -461,7 +462,8 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
      *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
      *     scenarios.
@@ -476,12 +478,12 @@ public final class OpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEmbeddingsWithResponse(
-            String deploymentId, BinaryData embeddingsOptions, RequestOptions requestOptions) {
+            String deploymentOrModelName, BinaryData embeddingsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getEmbeddingsSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
-                deploymentId,
+                deploymentOrModelName,
                 accept,
                 embeddingsOptions,
                 requestOptions,
@@ -557,7 +559,8 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param completionsOptions The configuration information for a completions request. Completions support a wide
      *     variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -571,14 +574,14 @@ public final class OpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCompletionsWithResponseAsync(
-            String deploymentId, BinaryData completionsOptions, RequestOptions requestOptions) {
+            String deploymentOrModelName, BinaryData completionsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getCompletions(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                deploymentId,
+                                deploymentOrModelName,
                                 accept,
                                 completionsOptions,
                                 requestOptions,
@@ -654,7 +657,8 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param completionsOptions The configuration information for a completions request. Completions support a wide
      *     variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -667,12 +671,12 @@ public final class OpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCompletionsWithResponse(
-            String deploymentId, BinaryData completionsOptions, RequestOptions requestOptions) {
+            String deploymentOrModelName, BinaryData completionsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getCompletionsSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
-                deploymentId,
+                deploymentOrModelName,
                 accept,
                 completionsOptions,
                 requestOptions,
@@ -754,7 +758,8 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
      *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -768,14 +773,14 @@ public final class OpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getChatCompletionsWithResponseAsync(
-            String deploymentId, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+            String deploymentOrModelName, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getChatCompletions(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                deploymentId,
+                                deploymentOrModelName,
                                 accept,
                                 chatCompletionsOptions,
                                 requestOptions,
@@ -857,7 +862,8 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
      *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -870,12 +876,12 @@ public final class OpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getChatCompletionsWithResponse(
-            String deploymentId, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+            String deploymentOrModelName, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getChatCompletionsSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
-                deploymentId,
+                deploymentOrModelName,
                 accept,
                 chatCompletionsOptions,
                 requestOptions,

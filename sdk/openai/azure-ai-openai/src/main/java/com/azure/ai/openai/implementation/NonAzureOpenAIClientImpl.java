@@ -34,7 +34,7 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Implementation for calling Non-Azure OpenAI service
+ * Implementation for calling Non-Azure OpenAI Service
  */
 public final class NonAzureOpenAIClientImpl {
     /** The proxy service used to perform REST calls. */
