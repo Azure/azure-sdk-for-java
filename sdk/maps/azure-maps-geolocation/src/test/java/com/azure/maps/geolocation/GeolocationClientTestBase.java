@@ -63,7 +63,7 @@ public class GeolocationClientTestBase extends TestProxyTestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
 
-        if (interceptorManager.isPlaybackMode()){
+        if (interceptorManager.isPlaybackMode()) {
             builder.endpoint("https://localhost:8080");
         }
 
@@ -82,7 +82,6 @@ public class GeolocationClientTestBase extends TestProxyTestBase {
         if (interceptorManager.isPlaybackMode()) {
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
 
-            customMatchers.add(new BodilessMatcher());
             customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("subscription-key")));
             interceptorManager.addMatchers(customMatchers);
         }

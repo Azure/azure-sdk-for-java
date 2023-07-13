@@ -9,7 +9,6 @@
 ### Bugs Fixed
 
 ### Other Changes
-- Migrated test recordings to assets repo.
 
 ## 1.0.0-beta.1 (2022-10-11)
 
