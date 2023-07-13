@@ -12,7 +12,7 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
-import com.azure.ai.openai.models.FunctionCall;
+import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -194,7 +194,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testChatFunctionAutoPreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatFunctionForRunner((modelId, chatCompletionsOptions) -> {
-            chatCompletionsOptions.setFunctionCall(FunctionCall.AUTO);
+            chatCompletionsOptions.setFunctionCall(FunctionCallConfig.AUTO);
             ChatCompletions chatCompletions = client.getChatCompletions(modelId, chatCompletionsOptions);
 
             assertEquals(1, chatCompletions.getChoices().size());
@@ -213,7 +213,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testChatFunctionNonePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatFunctionForRunner((modelId, chatCompletionsOptions) -> {
-            chatCompletionsOptions.setFunctionCall(FunctionCall.NONE);
+            chatCompletionsOptions.setFunctionCall(FunctionCallConfig.NONE);
             ChatCompletions chatCompletions = client.getChatCompletions(modelId, chatCompletionsOptions);
 
             assertChatCompletions(1, "stop", ChatRole.ASSISTANT, chatCompletions);
@@ -225,7 +225,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testChatFunctionNotSuppliedByNamePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatFunctionForRunner((modelId, chatCompletionsOptions) -> {
-            chatCompletionsOptions.setFunctionCall(new FunctionCall("NotMyFunction"));
+            chatCompletionsOptions.setFunctionCall(new FunctionCallConfig("NotMyFunction"));
             HttpResponseException exception = assertThrows(HttpResponseException.class,
                 () ->  client.getChatCompletions(modelId, chatCompletionsOptions));
             assertEquals(400, exception.getResponse().getStatusCode());

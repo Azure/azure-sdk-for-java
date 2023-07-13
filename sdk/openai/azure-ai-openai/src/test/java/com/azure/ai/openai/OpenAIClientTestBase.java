@@ -5,7 +5,7 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.functions.Parameters;
-import com.azure.ai.openai.implementation.models.FunctionCall;
+import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;

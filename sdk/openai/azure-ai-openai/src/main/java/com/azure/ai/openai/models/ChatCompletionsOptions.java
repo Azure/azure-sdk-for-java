@@ -454,10 +454,9 @@ public final class ChatCompletionsOptions {
     private FunctionCallModelBase functionCall;
 
     /*
-     * Field not used for serialization. This is a convenience field to enable the functionality while honouring the
-     * polymorphic nature of the field
+     * Field not used for serialization. This is a convenience helper field for the serialization of "function_call".
      */
-    @JsonIgnore private FunctionCall functionCallInternal;
+    @JsonIgnore private FunctionCallConfig functionCallConfig;
 
     /**
      * Get the functions property: A list of functions the model may generate JSON inputs for.
@@ -515,8 +514,8 @@ public final class ChatCompletionsOptions {
      *
      * @return the functionCall value.
      */
-    public FunctionCall getFunctionCall() {
-        return this.functionCallInternal;
+    public FunctionCallConfig getFunctionCall() {
+        return this.functionCallConfig;
     }
 
     /**
@@ -525,18 +524,18 @@ public final class ChatCompletionsOptions {
      * function. Specifying a particular function via `{"name": "my_function"}` forces the model to call that function.
      * "none" is the default when no functions are present. "auto" is the default if functions are present.
      *
-     * @param functionCallInternal the functionCall value to set.
+     * @param functionCallConfigInternal the functionCall value to set.
      * @return the ChatCompletionsOptions object itself.
      */
-    public ChatCompletionsOptions setFunctionCall(FunctionCall functionCallInternal) {
-        this.functionCallInternal = functionCallInternal;
+    public ChatCompletionsOptions setFunctionCall(FunctionCallConfig functionCallConfigInternal) {
+        this.functionCallConfig = functionCallConfigInternal;
         if (FunctionCallPreset.values().stream()
-                .anyMatch(preset -> preset.toString().equals(functionCallInternal.getName()))) {
+                .anyMatch(preset -> preset.toString().equals(functionCallConfigInternal.getName()))) {
             this.functionCall =
                     new FunctionCallPresetFunctionCallModel(
-                            FunctionCallPreset.fromString(this.functionCallInternal.getName()));
+                            FunctionCallPreset.fromString(this.functionCallConfig.getName()));
         } else {
-            this.functionCall = new FunctionNameFunctionCallModel(new FunctionName(this.functionCallInternal.getName()));
+            this.functionCall = new FunctionNameFunctionCallModel(new FunctionName(this.functionCallConfig.getName()));
         }
         return this;
     }

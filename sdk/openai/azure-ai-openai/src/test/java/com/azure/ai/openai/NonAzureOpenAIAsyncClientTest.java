@@ -12,7 +12,7 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
-import com.azure.ai.openai.models.FunctionCall;
+import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -251,7 +251,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testChatFunctionAutoPreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getChatFunctionForNonAzureRunner((modelId, chatCompletionsOptions) -> {
-            chatCompletionsOptions.setFunctionCall(FunctionCall.AUTO);
+            chatCompletionsOptions.setFunctionCall(FunctionCallConfig.AUTO);
             StepVerifier.create(client.getChatCompletions(modelId, chatCompletionsOptions))
                 .assertNext(chatCompletions -> {
                     assertEquals(1, chatCompletions.getChoices().size());
@@ -272,7 +272,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testChatFunctionNonePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getChatFunctionForNonAzureRunner((modelId, chatCompletionsOptions) -> {
-            chatCompletionsOptions.setFunctionCall(FunctionCall.NONE);
+            chatCompletionsOptions.setFunctionCall(FunctionCallConfig.NONE);
             StepVerifier.create(client.getChatCompletions(modelId, chatCompletionsOptions))
                 .assertNext(chatCompletions -> {
                     assertChatCompletions(1, "stop", ChatRole.ASSISTANT, chatCompletions);
@@ -286,7 +286,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testChatFunctionNotSuppliedByNamePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getChatFunctionForNonAzureRunner((modelId, chatCompletionsOptions) -> {
-            chatCompletionsOptions.setFunctionCall(new FunctionCall("NotMyFunction"));
+            chatCompletionsOptions.setFunctionCall(new FunctionCallConfig("NotMyFunction"));
             StepVerifier.create(client.getChatCompletions(modelId, chatCompletionsOptions))
                 .verifyErrorSatisfies(throwable -> {
                     assertInstanceOf(HttpResponseException.class, throwable);
