@@ -4,8 +4,11 @@
 
 package com.azure.ai.openai;
 
+import com.azure.ai.openai.functions.Parameters;
+import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
+import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
@@ -13,6 +16,7 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
+import com.azure.ai.openai.implementation.models.FunctionDefinition;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageResponse;
 import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
@@ -134,6 +138,14 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         );
     }
 
+    void getChatFunctionForNonAzureRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        testRunner.accept("gpt-3.5-turbo-0613", getChatMessagesWithFunction());
+    }
+
+    void getChatFunctionForRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        testRunner.accept("gpt-4", getChatMessagesWithFunction());
+    }
+
     private List<ChatMessage> getChatMessages() {
         List<ChatMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatMessage(ChatRole.SYSTEM).setContent("You are a helpful assistant. You will talk like a pirate."));
@@ -141,6 +153,20 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Of course, me hearty! What can I do for ye?"));
         chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way to train a parrot?"));
         return chatMessages;
+    }
+
+    private ChatCompletionsOptions getChatMessagesWithFunction() {
+        FunctionDefinition functionDefinition = new FunctionDefinition("MyFunction");
+        Parameters parameters = new Parameters();
+        functionDefinition.setParameters(parameters);
+        List<FunctionDefinition> functions = Arrays.asList(functionDefinition);
+
+        List<ChatMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the weather like in San Francisco in Celsius?"));
+
+        ChatCompletionsOptions chatCompletionOptions = new ChatCompletionsOptions(chatMessages);
+        chatCompletionOptions.setFunctions(functions);
+        return chatCompletionOptions;
     }
 
     static void assertCompletions(int choicesPerPrompt, Completions actual) {
@@ -245,5 +271,14 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     static void assertImageResponse(ImageResponse actual) {
         assertNotNull(actual.getData());
         assertFalse(actual.getData().isEmpty());
+    }
+
+    static <T> T assertFunctionCall(ChatChoice actual, String functionName, Class<T> myPropertiesClazz) {
+        assertEquals(0, actual.getIndex());
+        assertEquals("function_call", actual.getFinishReason().toString());
+        FunctionCall functionCall = actual.getMessage().getFunctionCall();
+        assertEquals(functionName, functionCall.getName());
+        BinaryData argumentJson = BinaryData.fromString(functionCall.getArguments());
+        return argumentJson.toObject(myPropertiesClazz);
     }
 }
