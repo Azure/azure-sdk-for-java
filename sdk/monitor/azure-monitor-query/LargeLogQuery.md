@@ -32,7 +32,7 @@ static final String WORKSPACE_ID = "{workspace-id}";
 
 ### Defining the Helper Function
 
-In order to overcome the service limits, the strategy is to query data in smaller chunks based on some time column (i.e. TImeGenerated). The
+In order to overcome the service limits, the strategy is to query data in smaller chunks based on a timestamp column (e.g. `TimeGenerated`). The
 following helper function take a large query and splits it into a `LogsBatchQuery` based on a list of time ranges (called endpoints).
 
 ```java com.azure.monitor.query.LargeQuerySample-createBatchQueryFromLargeQuery
