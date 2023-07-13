@@ -466,7 +466,15 @@ jobs:
       vmImage: MMSUbuntu20.04
 
     steps:
+      # Always run tests for non-PR builds.
+      # For PR builds check if any meaningful code changes have been made.
+      # A meaningful code change is changing of source code, Maven configurations, or pipeline configurations.
       - pwsh: |
+          if ("$(Build.Reason)" -ne 'PullRequest') {
+            Write-Host "##vso[task.setvariable variable=ShouldRunTests;isOutput=true]true"
+            exit 0
+          }
+
           $changedFiles = & "eng/common/scripts/get-changedfiles.ps1"
           foreach ($changedFile in $changedFiles) {
             $inEngPipelines = $changedFile -match '^eng/pipelines'
@@ -476,31 +484,31 @@ jobs:
 
             if ($changedFile -match '.*\.(java|groovy|xml|yml)$') {
               Write-Host "##vso[task.setvariable variable=ShouldRunTests;isOutput=true]true"
-              break
+              exit 0
             }
           }
 
-  - job: 'RunTests'
-    dependsOn: ShouldRunTests
-    condition: dependencies.ShouldRunTests.outputs['RunTests']
-    steps:
-      - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
-        parameters:
-          JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
-          MatrixConfigs: ${{ parameters.MatrixConfigs }}
-          MatrixFilters: ${{ parameters.MatrixFilters }}
-          MatrixReplace: ${{ parameters.MatrixReplace }}
-          CloudConfig:
-            Cloud: Public
-          AdditionalParameters:
-            SDKType: ${{ parameters.SDKType }}
-            ServiceDirectory: ${{ parameters.ServiceDirectory }}
-            TestPipeline: ${{ parameters.TestPipeline }}
-            Artifacts: ${{ parameters.Artifacts }}
-            AdditionalModules: ${{ parameters.AdditionalModules }}
-            PreTestSteps: ${{ parameters.PreTestSteps }}
-            PreBuildSteps: ${{ parameters.PreBuildSteps }}
-            TestGoals: ${{ parameters.TestGoals }}
-            TestOptions: ${{ parameters.TestOptions }}
-            TestParallelization: ${{ parameters.TestParallelization }}
-            BuildParallelization: ${{ parameters.BuildParallelization }}
+  - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+    parameters:
+      DependsOn: ShouldRunTests
+      JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
+      ${{ if variables['ShouldRunTests'] }}:
+        MatrixConfigs: ${{ parameters.MatrixConfigs }}
+      ${{ else }}:
+        MatrixConfigs: []
+      MatrixFilters: ${{ parameters.MatrixFilters }}
+      MatrixReplace: ${{ parameters.MatrixReplace }}
+      CloudConfig:
+        Cloud: Public
+      AdditionalParameters:
+        SDKType: ${{ parameters.SDKType }}
+        ServiceDirectory: ${{ parameters.ServiceDirectory }}
+        TestPipeline: ${{ parameters.TestPipeline }}
+        Artifacts: ${{ parameters.Artifacts }}
+        AdditionalModules: ${{ parameters.AdditionalModules }}
+        PreTestSteps: ${{ parameters.PreTestSteps }}
+        PreBuildSteps: ${{ parameters.PreBuildSteps }}
+        TestGoals: ${{ parameters.TestGoals }}
+        TestOptions: ${{ parameters.TestOptions }}
+        TestParallelization: ${{ parameters.TestParallelization }}
+        BuildParallelization: ${{ parameters.BuildParallelization }}
