@@ -484,10 +484,25 @@ public final class OpenAIClientImpl {
      * {
      *     id: String (Required)
      *     created: int (Required)
+     *     prompt_annotations (Optional): [
+     *          (Optional){
+     *             prompt_index: int (Required)
+     *             content_filter_results (Optional): {
+     *                 sexual (Required): {
+     *                     severity: String(safe/low/medium/high) (Required)
+     *                     filtered: boolean (Required)
+     *                 }
+     *                 violence (Required): (recursive schema, see violence above)
+     *                 hate (Required): (recursive schema, see hate above)
+     *                 self_harm (Required): (recursive schema, see self_harm above)
+     *             }
+     *         }
+     *     ]
      *     choices (Required): [
      *          (Required){
      *             text: String (Required)
      *             index: int (Required)
+     *             content_filter_results (Optional): (recursive schema, see content_filter_results above)
      *             logprobs (Required): {
      *                 tokens (Required): [
      *                     String (Required)
@@ -582,10 +597,25 @@ public final class OpenAIClientImpl {
      * {
      *     id: String (Required)
      *     created: int (Required)
+     *     prompt_annotations (Optional): [
+     *          (Optional){
+     *             prompt_index: int (Required)
+     *             content_filter_results (Optional): {
+     *                 sexual (Required): {
+     *                     severity: String(safe/low/medium/high) (Required)
+     *                     filtered: boolean (Required)
+     *                 }
+     *                 violence (Required): (recursive schema, see violence above)
+     *                 hate (Required): (recursive schema, see hate above)
+     *                 self_harm (Required): (recursive schema, see self_harm above)
+     *             }
+     *         }
+     *     ]
      *     choices (Required): [
      *          (Required){
      *             text: String (Required)
      *             index: int (Required)
+     *             content_filter_results (Optional): (recursive schema, see content_filter_results above)
      *             logprobs (Required): {
      *                 tokens (Required): [
      *                     String (Required)
@@ -704,6 +734,21 @@ public final class OpenAIClientImpl {
      *             index: int (Required)
      *             finish_reason: String(stop/length/content_filter/function_call) (Required)
      *             delta (Optional): (recursive schema, see delta above)
+     *             content_filter_results (Optional): {
+     *                 sexual (Required): {
+     *                     severity: String(safe/low/medium/high) (Required)
+     *                     filtered: boolean (Required)
+     *                 }
+     *                 violence (Required): (recursive schema, see violence above)
+     *                 hate (Required): (recursive schema, see hate above)
+     *                 self_harm (Required): (recursive schema, see self_harm above)
+     *             }
+     *         }
+     *     ]
+     *     prompt_annotations (Optional): [
+     *          (Optional){
+     *             prompt_index: int (Required)
+     *             content_filter_results (Optional): (recursive schema, see content_filter_results above)
      *         }
      *     ]
      *     usage (Required): {
@@ -808,6 +853,21 @@ public final class OpenAIClientImpl {
      *             index: int (Required)
      *             finish_reason: String(stop/length/content_filter/function_call) (Required)
      *             delta (Optional): (recursive schema, see delta above)
+     *             content_filter_results (Optional): {
+     *                 sexual (Required): {
+     *                     severity: String(safe/low/medium/high) (Required)
+     *                     filtered: boolean (Required)
+     *                 }
+     *                 violence (Required): (recursive schema, see violence above)
+     *                 hate (Required): (recursive schema, see hate above)
+     *                 self_harm (Required): (recursive schema, see self_harm above)
+     *             }
+     *         }
+     *     ]
+     *     prompt_annotations (Optional): [
+     *          (Optional){
+     *             prompt_index: int (Required)
+     *             content_filter_results (Optional): (recursive schema, see content_filter_results above)
      *         }
      *     ]
      *     usage (Required): {
