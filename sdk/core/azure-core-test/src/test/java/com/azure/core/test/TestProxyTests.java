@@ -428,16 +428,16 @@ public class TestProxyTests extends TestProxyTestBase {
             TestProxyUtils.getProxyProcessName()).toString();
         Path engRepoRoot = TestUtils.getRepoRootResolveUntil(getTestClassPath(), "eng");
         String targetRepoRoot = TestUtils.getRepoRootResolveUntil(getTestClassPath(), "target").toString();
-        System.out.printf("Target repo root: %s", targetRepoRoot);
-        System.out.printf("Eng repo root: %s", engRepoRoot.toString());
+        System.out.printf("Target repo root: %s\n", targetRepoRoot);
+        System.out.printf("Eng repo root: %s\n", engRepoRoot.toString());
         String assetPath = Paths.get("sdk", "core", "azure-core-test", "assets.json").toString();
+        System.out.printf("AssetPath being passed to config locate is %s\n", assetPath);
+        System.out.printf("CommandLine: %s\n", commandLine);
         ProcessBuilder builder = new ProcessBuilder(commandLine,
             "config",
             "locate",
             "-a",
-            assetPath,
-            "--storage-location",
-            engRepoRoot.toString());
+            assetPath);
         Map<String, String> environment = builder.environment();
         environment.put("LOGGING__LOGLEVEL", "Information");
         environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Warning");
@@ -447,26 +447,24 @@ public class TestProxyTests extends TestProxyTestBase {
 
         BufferedReader reader =
             new BufferedReader(new InputStreamReader(process.getInputStream()));
+
         StringBuilder stringBuilder = new StringBuilder();
         String line;
         while ((line = reader.readLine()) != null) {
-            if (line.contains("azure-sdk-for-java")) {
-                stringBuilder.append(line);
-            }
-            try {
-                process.waitFor();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            stringBuilder.append(line).append("\n");
         }
-        System.out.printf("Process output: %s", stringBuilder);
-        String filePath = stringBuilder.toString();
+
+        String[] lines = stringBuilder.toString().split("\n");
+            System.out.printf("Process output: %s\n", stringBuilder);
+        String filePath = lines[lines.length - 1];
         String recordingName = testContextManager.getTestPlaybackRecordingName() + ".json";
         String relativePath =
             engRepoRoot.relativize(Paths.get(targetRepoRoot, "src/test/resources/session-records", recordingName))
                 .toString();
-        System.out.printf("Relative path: %s", relativePath);
+        System.out.printf("Relative path: \"%s\"\n", relativePath);
+        System.out.printf("Line Filtered: \"%s\"\n", filePath);
         return Paths.get(filePath, relativePath).toString();
+
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
