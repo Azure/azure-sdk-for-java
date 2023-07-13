@@ -2,6 +2,7 @@ steps:
   # Looks strange, but this is the only way to set 'SucceededWithIssues' as the job status.
   # Agent.JobStatus is a protected variable, so we can't set it directly.
   - pwsh: |
+      Write-Host "Job status: $(Agent.JobStatus)"
       exit 1
     displayName: 'Reset status for Latest JDK'
     condition: and(eq(variables['IsLatestNonLtsJdk'], true), notIn(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues'))

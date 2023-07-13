@@ -5,8 +5,25 @@ parameters:
   - name: AdditionalLintingOptions
     type: string
     default: ''
+  - name: RunLinting
+    type: boolean
+    default: false
 
 steps:
+  # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
+  - task: Maven@3
+    displayName: 'Build and Install'
+    inputs:
+      mavenPomFile: pom.xml
+      goals: 'install'
+      options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests $(DefaultSkipOptions) -pl $(ProjectList) -am'
+      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: ${{ parameters.JavaBuildVersion }}
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+    condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(parameters.RunLinting, succeeded()))
+
   - task: Maven@3
     displayName: 'Run SpotBugs, Checkstyle, and RevApi'
     inputs:
@@ -18,7 +35,7 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       goals: 'verify'
-    condition: eq(coalesce(variables['IsLatestNonLtsJdk'], true), true)
+    condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(parameters.RunLinting, succeeded()))
 
   - task: PowerShell@2
     inputs:
@@ -27,12 +44,12 @@ steps:
       pwsh: true
       workingDirectory: $(Pipeline.Workspace)
     displayName: 'Generate Linting Reports'
-    condition: eq(coalesce(variables['IsLatestNonLtsJdk'], true), true)
+    condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(parameters.RunLinting, succeeded()))
 
   - publish: $(Build.ArtifactStagingDirectory)/linting-reports.zip
     displayName: 'Publish Linting Reports'
     artifact: linting-reports-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
-    condition: eq(coalesce(variables['IsLatestNonLtsJdk'], true), true)
+    condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(parameters.RunLinting, succeeded()))
 
   - pwsh: |
       if ((Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/linting-reports -Directory | Measure-Object).Count -gt 0) {
@@ -40,7 +57,7 @@ steps:
         exit 1
       }
     displayName: 'Fail Pipeline if Linting Reports Exist'
-    condition: eq(coalesce(variables['IsLatestNonLtsJdk'], true), true)
+    condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(parameters.RunLinting, succeeded()))
 
   - task: Maven@3
     displayName: 'Run Javadoc'
@@ -53,4 +70,4 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       goals: 'verify'
-    condition: eq(coalesce(variables['IsLatestNonLtsJdk'], true), true)
+    condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(parameters.RunLinting, succeeded()))

@@ -341,23 +341,11 @@ jobs:
           arguments: >
             -Directory sdk/${{ parameters.ServiceDirectory }}
 
-      # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
-      - task: Maven@3
-        displayName: 'Build and Install'
-        inputs:
-          mavenPomFile: pom.xml
-          goals: 'install'
-          options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests $(DefaultSkipOptions) -pl $(ProjectList) -am'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: ${{ parameters.JavaBuildVersion }}
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
           JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
           AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+          RunLinting: true
 
       - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
 
