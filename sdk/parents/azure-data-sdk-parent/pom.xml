@@ -445,16 +445,16 @@
 
     <!--
      By default we build against our baseline, Java 8, but we also want to ensure compatibility
-     against the latest Java LTS release, currently Java 11. We therefore have two profiles:
+     against the latest Java LTS release, currently Java 17. We therefore have two profiles:
        * The default 'requires-java-8', which will perform a build using Java 8 as its target.
-       * The non-default 'requires-java-lts' profile, which will build against the current LTS release.
+       * The non-default 'requires-java-17-or-later' profile, which will build against the current LTS release.
    -->
     <profile>
       <id>requires-java-8</id>
       <activation>
         <activeByDefault>true</activeByDefault>
         <property>
-          <name>!requires-java-lts</name>
+          <name>!requires-java-17-or-later</name>
         </property>
       </activation>
       <build>
@@ -476,10 +476,10 @@
     </profile>
 
     <profile>
-      <id>requires-java-lts</id>
+      <id>requires-java-17-or-later</id>
       <activation>
         <property>
-          <name>requires-java-lts</name>
+          <name>requires-java-17-or-later</name>
         </property>
       </activation>
       <build>
@@ -489,8 +489,8 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
-              <source>11</source>
-              <target>11</target>
+              <source>17</source>
+              <target>17</target>
               <showWarnings>true</showWarnings>
               <showDeprecation>true</showDeprecation>
               <compilerArgument>-Xlint:all</compilerArgument>

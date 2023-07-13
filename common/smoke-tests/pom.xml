@@ -22,9 +22,9 @@
   <profiles>
     <!--
      By default we build against our baseline, Java 8, but we also want to ensure compatibility
-     against the latest Java LTS release, currently Java 11. We therefore have two profiles:
+     against the latest Java LTS release, currently Java 17. We therefore have two profiles:
        * The default 'requires-java-8', which will perform a build using Java 8 as its target.
-       * The non-default 'requires-java-lts' profile, which will build against the current LTS release.
+       * The non-default 'requires-java-17-or-later' profile, which will build against the current LTS release.
    -->
     <profile>
       <id>requires-java-8</id>
@@ -53,9 +53,9 @@
     </profile>
 
     <profile>
-      <id>requires-java-9-or-later</id>
+      <id>requires-java-17-or-later</id>
       <activation>
-        <jdk>[9,)</jdk>
+        <jdk>[17,)</jdk>
       </activation>
       <build>
         <plugins>
