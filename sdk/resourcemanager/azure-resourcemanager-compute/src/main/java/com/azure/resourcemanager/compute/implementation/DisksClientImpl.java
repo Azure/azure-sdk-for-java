@@ -241,7 +241,7 @@ public final class DisksClientImpl
         } else {
             disk.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -300,7 +300,7 @@ public final class DisksClientImpl
         } else {
             disk.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -522,7 +522,7 @@ public final class DisksClientImpl
         } else {
             disk.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -581,7 +581,7 @@ public final class DisksClientImpl
         } else {
             disk.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -794,7 +794,7 @@ public final class DisksClientImpl
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -846,7 +846,7 @@ public final class DisksClientImpl
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -947,7 +947,7 @@ public final class DisksClientImpl
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         return FluxUtil
             .withContext(
                 context ->
@@ -997,7 +997,7 @@ public final class DisksClientImpl
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1186,7 +1186,7 @@ public final class DisksClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1241,7 +1241,7 @@ public final class DisksClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1347,7 +1347,7 @@ public final class DisksClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1390,7 +1390,7 @@ public final class DisksClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1500,7 +1500,7 @@ public final class DisksClientImpl
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1560,7 +1560,7 @@ public final class DisksClientImpl
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1782,7 +1782,7 @@ public final class DisksClientImpl
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         return FluxUtil
             .withContext(
                 context ->
@@ -1832,7 +1832,7 @@ public final class DisksClientImpl
         if (diskName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-01-02";
         context = this.client.mergeContext(context);
         return service
             .revokeAccess(

@@ -53,7 +53,7 @@ public final class DedicatedHostsUpdateSamples {
                 "aaaaaaaaa",
                 "aaaaaaaaaaaaaaaaaaaaa",
                 new DedicatedHostUpdate()
-                    .withTags(mapOf("key8813", "fakeTokenPlaceholder"))
+                    .withTags(mapOf("key8813", "aaaaaaaaaaaaaaaaaaaaaaaaaaa"))
                     .withPlatformFaultDomain(1)
                     .withAutoReplaceOnFailure(true)
                     .withLicenseType(DedicatedHostLicenseTypes.WINDOWS_SERVER_HYBRID),

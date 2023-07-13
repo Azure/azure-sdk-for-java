@@ -52,7 +52,7 @@ public final class CapacityReservationsUpdateSamples {
                 "aaaaaaaaaa",
                 "aaaaaaaaaaaaaaaaaaa",
                 new CapacityReservationUpdate()
-                    .withTags(mapOf("key4974", "fakeTokenPlaceholder"))
+                    .withTags(mapOf("key4974", "aaaaaaaaaaaaaaaa"))
                     .withSku(new Sku().withName("Standard_DS1_v2").withTier("aaa").withCapacity(7L)),
                 com.azure.core.util.Context.NONE);
     }

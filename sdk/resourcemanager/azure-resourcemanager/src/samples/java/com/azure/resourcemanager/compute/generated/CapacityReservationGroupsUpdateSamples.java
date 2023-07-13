@@ -50,7 +50,7 @@ public final class CapacityReservationGroupsUpdateSamples {
             .updateWithResponse(
                 "rgcompute",
                 "aaaaaaaaaaaaaaaaaaaaaa",
-                new CapacityReservationGroupUpdate().withTags(mapOf("key5355", "fakeTokenPlaceholder")),
+                new CapacityReservationGroupUpdate().withTags(mapOf("key5355", "aaa")),
                 com.azure.core.util.Context.NONE);
     }
 
