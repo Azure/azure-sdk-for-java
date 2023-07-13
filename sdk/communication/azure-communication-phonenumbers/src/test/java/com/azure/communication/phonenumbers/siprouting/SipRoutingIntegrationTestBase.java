@@ -14,6 +14,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -31,7 +32,7 @@ import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
 
-public class SipRoutingIntegrationTestBase extends TestBase {
+public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
     private static final String AZURE_TEST_DOMAIN = Configuration.getGlobalConfiguration()
@@ -103,9 +104,9 @@ public class SipRoutingIntegrationTestBase extends TestBase {
     private static final Pattern UUID_FQDN_REDACTION_PATTERN =
         Pattern.compile("-[0-9a-f]{32}\\.[0-9a-z\\.]*(\\.com|\\.net)", Pattern.CASE_INSENSITIVE);
 
-    protected static final String MESSAGE_DUPLICATE_ROUTES = 
+    protected static final String MESSAGE_DUPLICATE_ROUTES =
         "Status code 400, \"{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"DuplicatedRoute\",\"message\":\"There is a duplicated route.\"}}}\"";
-    protected static final String MESSAGE_DUPLICATE_TRUNKS = 
+    protected static final String MESSAGE_DUPLICATE_TRUNKS =
         "Status code 400, \"{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"RouteWithDuplicatedTrunk\",\"message\":\"There is a duplicated trunk in a route.\"}}}\"";
     protected static final String MESSAGE_MISSING_TRUNK =
         "Status code 422, \"{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"MissingTrunk\",\"message\":\"Route targeting a missing trunk.\"}}}\"";

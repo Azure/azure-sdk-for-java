@@ -8,25 +8,50 @@
         "Authorization": "Sanitized",
         "Content-Length": "0",
         "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "f5f47b04-05f0-4c88-bc66-c4176bf85f17"
+        "x-ms-client-request-id": "04c3d208-dae9-4429-97a0-573506ea25fb"
       },
       "RequestBody": null,
-      "StatusCode": 401,
+      "StatusCode": 200,
       "ResponseHeaders": {
-        "Content-Type": "application/json",
-        "Date": "Thu, 13 Jul 2023 00:46:24 GMT",
-        "MS-CV": "yW2ZPVt5Okyo9jePK8J36Q.0",
+        "api-supported-versions": "2021-03-07, 2022-12-01, 2022-12-02-preview2, 2023-05-01-preview",
+        "Cache-Control": "max-age=21600, private, stale-while-revalidate=86400",
+        "Content-Length": "182",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 13 Jul 2023 21:37:49 GMT",
+        "MS-CV": "dyqEwD\u002Br6Ei9ziFqHU0pRg.0",
         "Strict-Transport-Security": "max-age=2592000",
-        "Transfer-Encoding": "chunked",
-        "X-Azure-Ref": "0YUmvZAAAAAAY4d/yALniRrNljvnH/V/eV1NURURHRTA4MTQAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Azure-Ref": "0p26wZAAAAACFc6\u002Byb9iZRqS7pmi1j2RgV1NURURHRTA4MDkAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
         "X-Cache": "CONFIG_NOCACHE",
-        "X-Processing-Time": "8ms"
+        "X-Processing-Time": "6611ms"
       },
       "ResponseBody": {
-        "error": {
-          "code": "Denied",
-          "message": "Denied by the resource provider."
-        }
+        "areaCodes": [
+          {
+            "areaCode": "888"
+          },
+          {
+            "areaCode": "877"
+          },
+          {
+            "areaCode": "866"
+          },
+          {
+            "areaCode": "855"
+          },
+          {
+            "areaCode": "844"
+          },
+          {
+            "areaCode": "800"
+          },
+          {
+            "areaCode": "833"
+          },
+          {
+            "areaCode": "88"
+          }
+        ],
+        "nextLink": null
       }
     }
   ],

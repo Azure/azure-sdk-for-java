@@ -1,31 +1,33 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/phoneNumbers/\u002B18332321221?api-version=2022-12-01",
+      "RequestUri": "https://REDACTED/phoneNumbers/\u002B13862002577?api-version=2022-12-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "*/*",
         "Authorization": "Sanitized",
         "Content-Length": "0",
         "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "624a1398-fbf0-4ee8-b3fe-f44ea7b82b56"
+        "x-ms-client-request-id": "53c8fc7d-25ee-48a7-8577-618387300b9f"
       },
       "RequestBody": null,
-      "StatusCode": 401,
+      "StatusCode": 404,
       "ResponseHeaders": {
+        "api-supported-versions": "2021-03-07, 2022-01-11-preview2, 2022-06-01-preview, 2022-12-01, 2022-12-02-preview2, 2023-05-01-preview",
         "Content-Type": "application/json",
-        "Date": "Thu, 13 Jul 2023 00:46:24 GMT",
-        "MS-CV": "EiCRQ28kwUm6s8WegIzhbw.0",
+        "Date": "Thu, 13 Jul 2023 21:37:43 GMT",
+        "MS-CV": "1EcOxSa8uU\u002BRTRl9LHugxw.0",
         "Strict-Transport-Security": "max-age=2592000",
         "Transfer-Encoding": "chunked",
-        "X-Azure-Ref": "0YUmvZAAAAABgMdWLZQtAQb\u002BdtzAg5ml6V1NURURHRTA4MTAAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Azure-Ref": "0p26wZAAAAADvVyl3TvSGTLYgpjgWs\u002BgfV1NURURHRTA4MTQAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
         "X-Cache": "CONFIG_NOCACHE",
-        "X-Processing-Time": "8ms"
+        "X-Processing-Time": "341ms"
       },
       "ResponseBody": {
         "error": {
-          "code": "Denied",
-          "message": "Denied by the resource provider."
+          "code": "NotFound",
+          "message": "Input phoneNumber \u002B13862002577 cannot be found.",
+          "target": "phonenumber"
         }
       }
     }

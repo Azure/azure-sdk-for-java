@@ -9,33 +9,39 @@
         "Content-Length": "92",
         "Content-Type": "application/merge-patch\u002Bjson",
         "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "cc7b99b8-b2ac-4155-998f-d1b33559c33f",
-        "x-ms-content-sha256": "MT9axYJEKrYU6ydrDkjSTcjirncvOX07RYaQpUenCFY=",
-        "x-ms-date": "Thu, 13 Jul 2023 00:43:32 GMT",
-        "x-ms-hmac-string-to-sign-base64": "UEFUQ0gKL3NpcD9hcGktdmVyc2lvbj0yMDIzLTAzLTAxClRodSwgMTMgSnVsIDIwMjMgMDA6NDM6MzIgR01UO1JFREFDVEVELmNvbW11bmljYXRpb24uYXp1cmUuY29tO01UOWF4WUpFS3JZVTZ5ZHJEa2pTVGNqaXJuY3ZPWDA3UllhUXBVZW5DRlk9"
+        "x-ms-client-request-id": "d8e85e5f-0f4a-4f7b-8db9-a3d5792eb2fb",
+        "x-ms-content-sha256": "ENFKafrXN7aAquTNUaQP8tXB1zhylpaeRnKfmd3C0jU=",
+        "x-ms-date": "Thu, 13 Jul 2023 21:38:02 GMT",
+        "x-ms-hmac-string-to-sign-base64": "UEFUQ0gKL3NpcD9hcGktdmVyc2lvbj0yMDIzLTAzLTAxClRodSwgMTMgSnVsIDIwMjMgMjE6Mzg6MDIgR01UO3JnLWVtYWlsLWNvbW0tY29tbXVuaWNhdGlvbi5jb21tdW5pY2F0aW9uLmF6dXJlLmNvbTtFTkZLYWZyWE43YUFxdVROVWFRUDh0WEIxemh5bHBhZVJuS2ZtZDNDMGpVPQ=="
       },
       "RequestBody": {
         "trunks": {
-          "set-8b0b586a7c7045949e494f9372408ea1.testdomain.com": {
+          "set-05c14cd250a74c5fa0a042c76949568a.testdomain.com": {
             "sipSignalingPort": 4567
           }
         }
       },
-      "StatusCode": 401,
+      "StatusCode": 422,
       "ResponseHeaders": {
+        "api-deprecated-versions": "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview",
+        "api-supported-versions": "2023-03-01, 2023-04-01-preview",
         "Content-Type": "application/json",
-        "Date": "Thu, 13 Jul 2023 00:43:33 GMT",
-        "MS-CV": "Ek4WLVUV90ed6CGwviNs3Q.0",
+        "Date": "Thu, 13 Jul 2023 21:38:03 GMT",
+        "MS-CV": "k0hMg/CM5ES9bydx\u002BJ30nw.0",
         "Strict-Transport-Security": "max-age=2592000",
         "Transfer-Encoding": "chunked",
-        "X-Azure-Ref": "0tkivZAAAAABJavZ7oy6aSL424/i30OvLV1NURURHRTA4MTMAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Azure-Ref": "0um6wZAAAAACDUpSSyudCSYNeU7h3Y/vKV1NURURHRTA4MTMAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
         "X-Cache": "CONFIG_NOCACHE",
-        "X-Processing-Time": "18ms"
+        "X-Processing-Time": "210ms"
       },
       "ResponseBody": {
         "error": {
-          "code": "Denied",
-          "message": "Denied by the resource provider."
+          "code": "UnprocessableConfiguration",
+          "message": "One or more request inputs are not valid.",
+          "innererror": {
+            "code": "UnsuccessfulDomainVerification",
+            "message": "Provided domain is not verified"
+          }
         }
       }
     }

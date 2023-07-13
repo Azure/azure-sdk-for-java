@@ -8,24 +8,91 @@
         "Authorization": "Sanitized",
         "Content-Length": "0",
         "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "f0356ead-6d45-4551-abb9-bd98ed26e3f2"
+        "x-ms-client-request-id": "76b4b9d7-d46b-4c92-92eb-fb8c7f591c88"
       },
       "RequestBody": null,
-      "StatusCode": 401,
+      "StatusCode": 200,
       "ResponseHeaders": {
+        "api-deprecated-versions": "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview",
+        "api-supported-versions": "2023-03-01, 2023-04-01-preview",
+        "Content-Length": "246",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 13 Jul 2023 21:38:36 GMT",
+        "MS-CV": "Xcc4bi3CokSp78lkFclnJw.0",
+        "Strict-Transport-Security": "max-age=2592000",
+        "X-Azure-Ref": "03G6wZAAAAACMx8ao2oBnQLzTQLO/xSvSV1NURURHRTA4MTMAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Processing-Time": "119ms"
+      },
+      "ResponseBody": {
+        "trunks": {},
+        "routes": [
+          {
+            "description": "desc0",
+            "name": "route0",
+            "numberPattern": "0.*",
+            "trunks": []
+          },
+          {
+            "description": "desc1",
+            "name": "route1",
+            "numberPattern": "1.*",
+            "trunks": []
+          },
+          {
+            "description": "desc2",
+            "name": "route2",
+            "numberPattern": "2.*",
+            "trunks": []
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/sip?api-version=2023-03-01",
+      "RequestMethod": "PATCH",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "259",
+        "Content-Type": "application/merge-patch\u002Bjson",
+        "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "83c5d70b-6299-4e4c-a168-df1372fc05d3"
+      },
+      "RequestBody": {
+        "trunks": {
+          "second-f18fbfd91e9444ffafa3f2cec70c0ac6.testdomain.com": {
+            "sipSignalingPort": 2345
+          },
+          "first-0c524752dc864e28aefaf4f671f0144d.testdomain.com": {
+            "sipSignalingPort": 1234
+          },
+          "third-bcf468b481ef4255b36693228067f04c.testdomain.com": {
+            "sipSignalingPort": 3456
+          }
+        }
+      },
+      "StatusCode": 422,
+      "ResponseHeaders": {
+        "api-deprecated-versions": "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview",
+        "api-supported-versions": "2023-03-01, 2023-04-01-preview",
         "Content-Type": "application/json",
-        "Date": "Thu, 13 Jul 2023 00:11:57 GMT",
-        "MS-CV": "63uNcjDXC0KWI7yxc1gUqw.0",
+        "Date": "Thu, 13 Jul 2023 21:38:36 GMT",
+        "MS-CV": "Lrk29Q7xY02YkSjGLZoRqw.0",
         "Strict-Transport-Security": "max-age=2592000",
         "Transfer-Encoding": "chunked",
-        "X-Azure-Ref": "0TkGvZAAAAAAU/TvTnOk5TqAhybq2A9rlV1NURURHRTA4MTUAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Azure-Ref": "03G6wZAAAAAB\u002BYVjIb97/Tq5N/oCqCw98V1NURURHRTA4MTMAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
         "X-Cache": "CONFIG_NOCACHE",
-        "X-Processing-Time": "21ms"
+        "X-Processing-Time": "331ms"
       },
       "ResponseBody": {
         "error": {
-          "code": "Denied",
-          "message": "Denied by the resource provider."
+          "code": "UnprocessableConfiguration",
+          "message": "One or more request inputs are not valid.",
+          "innererror": {
+            "code": "UnsuccessfulDomainVerification",
+            "message": "Provided domain is not verified"
+          }
         }
       }
     }

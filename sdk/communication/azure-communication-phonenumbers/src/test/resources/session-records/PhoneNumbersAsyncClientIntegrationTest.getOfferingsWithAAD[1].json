@@ -8,25 +8,78 @@
         "Authorization": "Sanitized",
         "Content-Length": "0",
         "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "8cd8dde1-19f1-46ac-8c46-8cd1447d2d03"
+        "x-ms-client-request-id": "a593ad73-46d8-4427-9dfa-c9a165439e9d"
       },
       "RequestBody": null,
-      "StatusCode": 401,
+      "StatusCode": 200,
       "ResponseHeaders": {
-        "Content-Type": "application/json",
-        "Date": "Thu, 13 Jul 2023 00:46:24 GMT",
-        "MS-CV": "3nyUsr1MiUeHVf3dZK/u9g.0",
+        "api-supported-versions": "2021-03-07, 2022-12-01, 2022-12-02-preview2, 2023-05-01-preview",
+        "Cache-Control": "max-age=21600, private, stale-while-revalidate=86400",
+        "Content-Length": "861",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 13 Jul 2023 21:37:46 GMT",
+        "MS-CV": "j/F7eG\u002Bo1Eii0a78iNMjiQ.0",
         "Strict-Transport-Security": "max-age=2592000",
-        "Transfer-Encoding": "chunked",
-        "X-Azure-Ref": "0YUmvZAAAAAByDRAxp/gnR7V8ccEAvb4fV1NURURHRTA4MDgAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Azure-Ref": "0qm6wZAAAAADNewUedhxwTZckEh3GjASSV1NURURHRTA4MTQAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
         "X-Cache": "CONFIG_NOCACHE",
-        "X-Processing-Time": "129ms"
+        "X-Processing-Time": "661ms"
       },
       "ResponseBody": {
-        "error": {
-          "code": "Denied",
-          "message": "Denied by the resource provider."
-        }
+        "phoneNumberOfferings": [
+          {
+            "phoneNumberType": "geographic",
+            "assignmentType": "person",
+            "availableCapabilities": {
+              "calling": "inbound\u002Boutbound",
+              "sms": "none"
+            },
+            "cost": {
+              "amount": 1.0,
+              "currencyCode": "USD",
+              "billingFrequency": "monthly"
+            }
+          },
+          {
+            "phoneNumberType": "geographic",
+            "assignmentType": "application",
+            "availableCapabilities": {
+              "calling": "inbound\u002Boutbound",
+              "sms": "none"
+            },
+            "cost": {
+              "amount": 1.0,
+              "currencyCode": "USD",
+              "billingFrequency": "monthly"
+            }
+          },
+          {
+            "phoneNumberType": "tollFree",
+            "assignmentType": "application",
+            "availableCapabilities": {
+              "calling": "inbound\u002Boutbound",
+              "sms": "inbound\u002Boutbound"
+            },
+            "cost": {
+              "amount": 2.0,
+              "currencyCode": "USD",
+              "billingFrequency": "monthly"
+            }
+          },
+          {
+            "phoneNumberType": "tollFree",
+            "assignmentType": "application",
+            "availableCapabilities": {
+              "calling": "inbound\u002Boutbound",
+              "sms": "none"
+            },
+            "cost": {
+              "amount": 2.0,
+              "currencyCode": "USD",
+              "billingFrequency": "monthly"
+            }
+          }
+        ],
+        "nextLink": null
       }
     }
   ],

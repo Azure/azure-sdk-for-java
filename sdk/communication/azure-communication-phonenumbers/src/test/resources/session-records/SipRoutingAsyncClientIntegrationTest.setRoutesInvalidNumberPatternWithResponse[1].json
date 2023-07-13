@@ -9,10 +9,10 @@
         "Content-Length": "31",
         "Content-Type": "application/merge-patch\u002Bjson",
         "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "e67c6236-a355-41ed-b94e-b665c0bcbf48",
+        "x-ms-client-request-id": "9d63b465-504e-4aab-9eb3-089fbaae2473",
         "x-ms-content-sha256": "uKBABtcZMlytpWwieyj0XRNdhPFXgmuHoqfjsKWGB1k=",
-        "x-ms-date": "Thu, 13 Jul 2023 00:11:51 GMT",
-        "x-ms-hmac-string-to-sign-base64": "UEFUQ0gKL3NpcD9hcGktdmVyc2lvbj0yMDIzLTAzLTAxClRodSwgMTMgSnVsIDIwMjMgMDA6MTE6NTEgR01UO1JFREFDVEVELmNvbW11bmljYXRpb24uYXp1cmUuY29tO3VLQkFCdGNaTWx5dHBXd2lleWowWFJOZGhQRlhnbXVIb3FmanNLV0dCMWs9"
+        "x-ms-date": "Thu, 13 Jul 2023 21:38:23 GMT",
+        "x-ms-hmac-string-to-sign-base64": "UEFUQ0gKL3NpcD9hcGktdmVyc2lvbj0yMDIzLTAzLTAxClRodSwgMTMgSnVsIDIwMjMgMjE6Mzg6MjMgR01UO3JnLWVtYWlsLWNvbW0tY29tbXVuaWNhdGlvbi5jb21tdW5pY2F0aW9uLmF6dXJlLmNvbTt1S0JBQnRjWk1seXRwV3dpZXlqMFhSTmRoUEZYZ211SG9xZmpzS1dHQjFrPQ=="
       },
       "RequestBody": {
         "routes": [
@@ -21,21 +21,25 @@
           }
         ]
       },
-      "StatusCode": 401,
+      "StatusCode": 422,
       "ResponseHeaders": {
         "Content-Type": "application/json",
-        "Date": "Thu, 13 Jul 2023 00:11:52 GMT",
-        "MS-CV": "z5TblrECmEG\u002BmD7ke9Ow0A.0",
+        "Date": "Thu, 13 Jul 2023 21:38:23 GMT",
+        "MS-CV": "SoBv5rklJk\u002BQSxLES6hOjw.0",
         "Strict-Transport-Security": "max-age=2592000",
         "Transfer-Encoding": "chunked",
-        "X-Azure-Ref": "0SUGvZAAAAAA9XxnPsiuHTIaPhVPTIO3GV1NURURHRTA4MTUAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Azure-Ref": "0z26wZAAAAAAvvWKcbkLeRo4SVwLZEZjTV1NURURHRTA4MTMAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
         "X-Cache": "CONFIG_NOCACHE",
-        "X-Processing-Time": "22ms"
+        "X-Processing-Time": "10ms"
       },
       "ResponseBody": {
         "error": {
-          "code": "Denied",
-          "message": "Denied by the resource provider."
+          "code": "UnprocessableConfiguration",
+          "message": "One or more request inputs are not valid.",
+          "innererror": {
+            "code": "InvalidRouteNumberPattern",
+            "message": "Route with an invalid number pattern."
+          }
         }
       }
     }

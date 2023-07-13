@@ -9,30 +9,36 @@
         "Content-Length": "92",
         "Content-Type": "application/merge-patch\u002Bjson",
         "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "55d8f043-fbf3-4855-9888-bb41b42fc91d"
+        "x-ms-client-request-id": "db93672c-fd6c-41b3-bc60-3c9cada7bdd0"
       },
       "RequestBody": {
         "trunks": {
-          "set-1071f452b7694a95b11358c6f6089d07.testdomain.com": {
+          "set-05c14cd250a74c5fa0a042c76949568a.testdomain.com": {
             "sipSignalingPort": 4567
           }
         }
       },
-      "StatusCode": 401,
+      "StatusCode": 422,
       "ResponseHeaders": {
+        "api-deprecated-versions": "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview",
+        "api-supported-versions": "2023-03-01, 2023-04-01-preview",
         "Content-Type": "application/json",
-        "Date": "Thu, 13 Jul 2023 00:12:03 GMT",
-        "MS-CV": "Yb\u002B/MZj2hkuZvf\u002BOCLqkcQ.0",
+        "Date": "Thu, 13 Jul 2023 21:38:51 GMT",
+        "MS-CV": "JvFwQgGIvEqZYDC6JWh1uQ.0",
         "Strict-Transport-Security": "max-age=2592000",
         "Transfer-Encoding": "chunked",
-        "X-Azure-Ref": "0U0GvZAAAAADwddh7oqJ2RrRijCbilguTV1NURURHRTA4MTUAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Azure-Ref": "0626wZAAAAADFApz6Q1v9S6IiRHMhCNQZV1NURURHRTA4MTMAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
         "X-Cache": "CONFIG_NOCACHE",
-        "X-Processing-Time": "19ms"
+        "X-Processing-Time": "363ms"
       },
       "ResponseBody": {
         "error": {
-          "code": "Denied",
-          "message": "Denied by the resource provider."
+          "code": "UnprocessableConfiguration",
+          "message": "One or more request inputs are not valid.",
+          "innererror": {
+            "code": "UnsuccessfulDomainVerification",
+            "message": "Provided domain is not verified"
+          }
         }
       }
     }

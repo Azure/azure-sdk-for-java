@@ -9,10 +9,10 @@
         "Content-Length": "37",
         "Content-Type": "application/merge-patch\u002Bjson",
         "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "4dce1808-1a2b-4cdf-9abd-eee31dc291aa",
+        "x-ms-client-request-id": "3940933a-a6f9-405a-98dd-0eab2c1c6bf2",
         "x-ms-content-sha256": "dm2zjRYQfcm0sLHondatUp2K0Wwc3Rd8RKJeMEYiOJY=",
-        "x-ms-date": "Thu, 13 Jul 2023 00:11:59 GMT",
-        "x-ms-hmac-string-to-sign-base64": "UEFUQ0gKL3NpcD9hcGktdmVyc2lvbj0yMDIzLTAzLTAxClRodSwgMTMgSnVsIDIwMjMgMDA6MTE6NTkgR01UO1JFREFDVEVELmNvbW11bmljYXRpb24uYXp1cmUuY29tO2RtMnpqUllRZmNtMHNMSG9uZGF0VXAySzBXd2MzUmQ4UktKZU1FWWlPSlk9"
+        "x-ms-date": "Thu, 13 Jul 2023 21:38:43 GMT",
+        "x-ms-hmac-string-to-sign-base64": "UEFUQ0gKL3NpcD9hcGktdmVyc2lvbj0yMDIzLTAzLTAxClRodSwgMTMgSnVsIDIwMjMgMjE6Mzg6NDMgR01UO3JnLWVtYWlsLWNvbW0tY29tbXVuaWNhdGlvbi5jb21tdW5pY2F0aW9uLmF6dXJlLmNvbTtkbTJ6alJZUWZjbTBzTEhvbmRhdFVwMkswV3djM1JkOFJLSmVNRVlpT0pZPQ=="
       },
       "RequestBody": {
         "routes": [
@@ -21,21 +21,25 @@
           }
         ]
       },
-      "StatusCode": 401,
+      "StatusCode": 422,
       "ResponseHeaders": {
         "Content-Type": "application/json",
-        "Date": "Thu, 13 Jul 2023 00:12:00 GMT",
-        "MS-CV": "eZLxjt73oU60u99IBH1skw.0",
+        "Date": "Thu, 13 Jul 2023 21:38:43 GMT",
+        "MS-CV": "OpyatL\u002BNy0m009N4omggMw.0",
         "Strict-Transport-Security": "max-age=2592000",
         "Transfer-Encoding": "chunked",
-        "X-Azure-Ref": "0UUGvZAAAAAABg1JcylDESrv2ZbfFSnfoV1NURURHRTA4MTUAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Azure-Ref": "0426wZAAAAADwOKJbxDXfTICUbl/WkfSOV1NURURHRTA4MTMAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
         "X-Cache": "CONFIG_NOCACHE",
-        "X-Processing-Time": "20ms"
+        "X-Processing-Time": "9ms"
       },
       "ResponseBody": {
         "error": {
-          "code": "Denied",
-          "message": "Denied by the resource provider."
+          "code": "UnprocessableConfiguration",
+          "message": "One or more request inputs are not valid.",
+          "innererror": {
+            "code": "InvalidRouteName",
+            "message": "Route with an invalid name."
+          }
         }
       }
     }

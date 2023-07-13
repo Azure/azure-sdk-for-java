@@ -8,24 +8,24 @@
         "Authorization": "Sanitized",
         "Content-Length": "0",
         "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "3e4de52d-a75c-4751-9dab-890a19a3c098",
+        "x-ms-client-request-id": "2f81d434-6f2f-451c-9ec2-aeff63637f7f",
         "x-ms-content-sha256": "47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=",
-        "x-ms-date": "Thu, 13 Jul 2023 00:11:34 GMT",
-        "x-ms-hmac-string-to-sign-base64": "R0VUCi9hdmFpbGFibGVQaG9uZU51bWJlcnMvY291bnRyaWVzL1VTL2xvY2FsaXRpZXM/YXBpLXZlcnNpb249MjAyMi0xMi0wMQpUaHUsIDEzIEp1bCAyMDIzIDAwOjExOjM0IEdNVDtzcm5hZ2FyLWFjcy5jb21tdW5pY2F0aW9uLmF6dXJlLmNvbTs0N0RFUXBqOEhCU2ErL1RJbVcrNUpDZXVRZVJrbTVOTXBKV1pHM2hTdUZVPQ=="
+        "x-ms-date": "Thu, 13 Jul 2023 21:37:59 GMT",
+        "x-ms-hmac-string-to-sign-base64": "R0VUCi9hdmFpbGFibGVQaG9uZU51bWJlcnMvY291bnRyaWVzL1VTL2xvY2FsaXRpZXM/YXBpLXZlcnNpb249MjAyMi0xMi0wMQpUaHUsIDEzIEp1bCAyMDIzIDIxOjM3OjU5IEdNVDtzbXN0ZXN0YXBwLmNvbW11bmljYXRpb24uYXp1cmUuY29tOzQ3REVRcGo4SEJTYSsvVEltVys1SkNldVFlUmttNU5NcEpXWkczaFN1RlU9"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "api-supported-versions": "2022-12-01, 2022-12-02-preview2, 2023-05-01-preview",
         "Cache-Control": "max-age=21600, private, stale-while-revalidate=86400",
-        "Content-Length": "10204",
+        "Content-Length": "10205",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 13 Jul 2023 00:11:35 GMT",
-        "MS-CV": "lHuJ\u002BVhWg0yk2b1WUhaSFw.0",
+        "Date": "Thu, 13 Jul 2023 21:37:58 GMT",
+        "MS-CV": "C\u002BiOuZn1e06HtqcU2y05jQ.0",
         "Strict-Transport-Security": "max-age=2592000",
-        "X-Azure-Ref": "0N0GvZAAAAACMLgVGs0t2RbjZDBI7ZrFXV1NURURHRTAxMTYAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Azure-Ref": "0t26wZAAAAABLdMmrVOsRRr/TVHPmsyOyV1NURURHRTA4MDkAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
         "X-Cache": "CONFIG_NOCACHE",
-        "X-Processing-Time": "266ms"
+        "X-Processing-Time": "270ms"
       },
       "ResponseBody": {
         "phoneNumberLocalities": [
@@ -101,13 +101,6 @@
           },
           {
             "localizedName": "Concord",
-            "administrativeDivision": {
-              "localizedName": "CA",
-              "abbreviatedName": "CA"
-            }
-          },
-          {
-            "localizedName": "Escondido",
             "administrativeDivision": {
               "localizedName": "CA",
               "abbreviatedName": "CA"
@@ -258,6 +251,13 @@
             "administrativeDivision": {
               "localizedName": "DE",
               "abbreviatedName": "DE"
+            }
+          },
+          {
+            "localizedName": "Cape Coral",
+            "administrativeDivision": {
+              "localizedName": "FL",
+              "abbreviatedName": "FL"
             }
           },
           {

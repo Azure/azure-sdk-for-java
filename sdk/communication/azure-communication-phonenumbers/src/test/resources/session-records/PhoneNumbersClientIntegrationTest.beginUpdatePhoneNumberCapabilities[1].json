@@ -1,4 +1,39 @@
 {
-  "Entries": [],
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/phoneNumbers/\u002B13862002577?api-version=2022-12-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "66b9b9f2-6f2b-437f-a14d-7ef0c3af3119",
+        "x-ms-content-sha256": "47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=",
+        "x-ms-date": "Thu, 13 Jul 2023 21:37:53 GMT",
+        "x-ms-hmac-string-to-sign-base64": "R0VUCi9waG9uZU51bWJlcnMvKzEzODYyMDAyNTc3P2FwaS12ZXJzaW9uPTIwMjItMTItMDEKVGh1LCAxMyBKdWwgMjAyMyAyMTozNzo1MyBHTVQ7c21zdGVzdGFwcC5jb21tdW5pY2F0aW9uLmF6dXJlLmNvbTs0N0RFUXBqOEhCU2ErL1RJbVcrNUpDZXVRZVJrbTVOTXBKV1pHM2hTdUZVPQ=="
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "api-supported-versions": "2021-03-07, 2022-01-11-preview2, 2022-06-01-preview, 2022-12-01, 2022-12-02-preview2, 2023-05-01-preview",
+        "Content-Type": "application/json",
+        "Date": "Thu, 13 Jul 2023 21:37:53 GMT",
+        "MS-CV": "7VAaauf3nEy8QjznCSX/WQ.0",
+        "Strict-Transport-Security": "max-age=2592000",
+        "Transfer-Encoding": "chunked",
+        "X-Azure-Ref": "0sW6wZAAAAACUXvbJIg99QKZkfd\u002BXNRoFV1NURURHRTAxMTAAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Processing-Time": "206ms"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "NotFound",
+          "message": "Input phoneNumber \u002B13862002577 cannot be found.",
+          "target": "phonenumber"
+        }
+      }
+    }
+  ],
   "Variables": {}
 }
