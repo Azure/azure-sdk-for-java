@@ -442,10 +442,10 @@ public final class DocumentModelAdministrationClient {
         context = enableSyncRestProxy(getTracingContext(context));
         Context finalContext = context;
         if (trainingDataContentSource instanceof AzureBlobFileListContentSource) {
-            AzureBlobFileListContentSource AzureBlobFileListContentSource = (AzureBlobFileListContentSource) trainingDataContentSource;
-            Objects.requireNonNull(AzureBlobFileListContentSource.getContainerUrl(),
+            AzureBlobFileListContentSource azureBlobFileListContentSource = (AzureBlobFileListContentSource) trainingDataContentSource;
+            Objects.requireNonNull(azureBlobFileListContentSource.getContainerUrl(),
                 "'blobContainerUrl' is required.");
-            Objects.requireNonNull(AzureBlobFileListContentSource.getFileList(),
+            Objects.requireNonNull(azureBlobFileListContentSource.getFileList(),
                 "'fileList' is required.");
         }
         if (trainingDataContentSource instanceof AzureBlobContentSource) {

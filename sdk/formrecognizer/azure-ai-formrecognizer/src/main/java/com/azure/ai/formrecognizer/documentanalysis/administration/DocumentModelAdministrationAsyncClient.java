@@ -152,7 +152,8 @@ import static com.azure.core.util.FluxUtil.withContext;
  * @see com.azure.ai.formrecognizer.documentanalysis.administration
  * @see DocumentModelAdministrationClientBuilder
  * @see DocumentModelAdministrationClient
- */@ServiceClient(builder = DocumentModelAdministrationClientBuilder.class, isAsync = true)
+ */
+@ServiceClient(builder = DocumentModelAdministrationClientBuilder.class, isAsync = true)
 public final class DocumentModelAdministrationAsyncClient {
     private final ClientLogger logger = new ClientLogger(DocumentModelAdministrationAsyncClient.class);
     private final FormRecognizerClientImpl formRecognizerClientImpl;
@@ -474,10 +475,11 @@ public final class DocumentModelAdministrationAsyncClient {
         }
 
         if (trainingDataContentSource instanceof AzureBlobFileListContentSource) {
-            AzureBlobFileListContentSource AzureBlobFileListContentSource = (AzureBlobFileListContentSource) trainingDataContentSource;
-            Objects.requireNonNull(AzureBlobFileListContentSource.getContainerUrl(),
+            AzureBlobFileListContentSource azureBlobFileListContentSource =
+                (AzureBlobFileListContentSource) trainingDataContentSource;
+            Objects.requireNonNull(azureBlobFileListContentSource.getContainerUrl(),
                 "'blobContainerUrl' is required.");
-            Objects.requireNonNull(AzureBlobFileListContentSource.getFileList(),
+            Objects.requireNonNull(azureBlobFileListContentSource.getFileList(),
                 "'fileList' is required.");
         }
         if (trainingDataContentSource instanceof AzureBlobContentSource) {
