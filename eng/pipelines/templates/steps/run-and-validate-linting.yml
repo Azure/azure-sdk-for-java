@@ -5,6 +5,9 @@ parameters:
   - name: AdditionalLintingOptions
     type: string
     default: ''
+  - name: BuildParallelization
+    type: string
+    default: '2C'
   - name: RunLinting
     type: boolean
     default: false

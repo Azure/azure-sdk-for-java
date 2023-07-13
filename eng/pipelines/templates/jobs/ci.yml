@@ -345,6 +345,7 @@ jobs:
         parameters:
           JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
           AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+          BuildParallelization: ${{ parameters.BuildParallelization }}
           RunLinting: true
 
       - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml

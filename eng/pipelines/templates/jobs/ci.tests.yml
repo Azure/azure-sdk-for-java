@@ -114,6 +114,7 @@ jobs:
         parameters:
           JavaBuildVersion: $(JavaTestVersion)
           AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+          BuildParallelization: ${{ parameters.BuildParallelization }}
 
       - template: /eng/pipelines/templates/steps/set-succeededwithissues-job-status.yml
 
