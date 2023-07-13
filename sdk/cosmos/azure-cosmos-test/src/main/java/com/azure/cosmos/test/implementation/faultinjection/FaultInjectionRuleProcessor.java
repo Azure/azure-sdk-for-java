@@ -122,6 +122,12 @@ public class FaultInjectionRuleProcessor {
             && this.connectionMode != ConnectionMode.DIRECT) {
             throw new IllegalArgumentException("Direct connection type rule is not supported when client is not in direct mode.");
         }
+
+        if (rule.getCondition().getOperationType() != null
+            && rule.getCondition().getOperationType() == FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH
+            && this.connectionMode != ConnectionMode.DIRECT) {
+            throw new IllegalArgumentException("METADATA_REQUEST_ADDRESS_REFRESH operation type is not supported when client is in gateway mode.");
+        }
     }
 
     private Mono<IFaultInjectionRuleInternal> getEffectiveRule(
@@ -151,12 +157,12 @@ public class FaultInjectionRuleProcessor {
                 // get effective condition
                 FaultInjectionConditionInternal effectiveCondition = new FaultInjectionConditionInternal(documentCollection.getResourceId());
 
-                if (rule.getCondition().getOperationType() != null && canErrorLimitToOperation(errorType)) {
+                if ((rule.getCondition().getOperationType() != null && canErrorLimitToOperation(errorType))) {
                     effectiveCondition.setOperationType(this.getEffectiveOperationType(rule.getCondition().getOperationType()));
+                    effectiveCondition.setResourceType(this.getEffectiveResourceType(rule.getCondition().getOperationType()));
                 }
 
                 List<URI> regionEndpoints = this.getRegionEndpoints(rule.getCondition());
-
                 if (StringUtils.isEmpty(rule.getCondition().getRegion())) {
                     // if region is not specific configured, then also add the defaultEndpoint
                     List<URI> regionEndpointsWithDefault = new ArrayList<>(regionEndpoints);
@@ -166,7 +172,23 @@ public class FaultInjectionRuleProcessor {
                     effectiveCondition.setRegionEndpoints(regionEndpoints);
                 }
 
-                // TODO: add handling for gateway mode
+                if (rule.getCondition().getConnectionType() == FaultInjectionConnectionType.GATEWAY) {
+                    // for gateway mode, SDK does not decide which replica to send the request to
+                    // so the most granular level it can control is by partition
+                    if (canErrorLimitToOperation(errorType) && canRequestLimitToPartition(rule.getCondition())) {
+                        return BackoffRetryUtility.executeRetry(
+                                () -> this.resolvePartitionKeyRangeIds(
+                                    rule.getCondition().getEndpoints(),
+                                    documentCollection),
+                                new FaultInjectionRuleProcessorRetryPolicy(this.retryOptions))
+                            .map(pkRangeIds -> {
+                                effectiveCondition.setPartitionKeyRangeIds(pkRangeIds);
+                                return effectiveCondition;
+                            });
+                    }
+
+                    return Mono.just(effectiveCondition);
+                }
 
                 // Direct connection mode, populate physical addresses
                 boolean primaryAddressesOnly = this.isWriteOnly(rule.getCondition());
@@ -219,6 +241,20 @@ public class FaultInjectionRuleProcessor {
             && errorType != FaultInjectionServerErrorType.GONE;
     }
 
+    private boolean canRequestLimitToPartition(FaultInjectionCondition faultInjectionCondition) {
+        // Some operations can be targeted for a certain partition while some can not (for example metadata requests)
+        if (faultInjectionCondition.getOperationType() == null
+            || faultInjectionCondition.getOperationType() == FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH) {
+            return true;
+        }
+
+        // non metadata requests
+        return !ImplementationBridgeHelpers
+            .FaultInjectionConditionHelper
+            .getFaultInjectionConditionAccessor()
+            .isMetadataOperationType(faultInjectionCondition);
+    }
+
     private Mono<IFaultInjectionRuleInternal> getEffectiveConnectionErrorRule(
         FaultInjectionRule rule,
         DocumentCollection documentCollection) {
@@ -239,12 +275,17 @@ public class FaultInjectionRuleProcessor {
                                 .collect(Collectors.toList());
 
                         FaultInjectionConnectionErrorResult result = (FaultInjectionConnectionErrorResult) rule.getResult();
+
+                        List<URI> regionEndpointsWithDefault = new ArrayList<>(regionEndpoints);
+                        // if region is not specific configured, then also add the defaultEndpoint
+                        regionEndpointsWithDefault.add(this.globalEndpointManager.getDefaultEndpoint());
+
                         return new FaultInjectionConnectionErrorRule(
                             rule.getId(),
                             rule.isEnabled(),
                             rule.getStartDelay(),
                             rule.getDuration(),
-                            regionEndpoints,
+                            regionEndpointsWithDefault,
                             effectiveAddresses,
                             rule.getCondition().getConnectionType(),
                             result
@@ -280,6 +321,9 @@ public class FaultInjectionRuleProcessor {
 
         switch (faultInjectionOperationType) {
             case READ_ITEM:
+            case METADATA_REQUEST_CONTAINER:
+            case METADATA_REQUEST_DATABASE_ACCOUNT:
+            case METADATA_REQUEST_ADDRESS_REFRESH:
                 return OperationType.Read;
             case CREATE_ITEM:
                 return OperationType.Create;
@@ -293,10 +337,65 @@ public class FaultInjectionRuleProcessor {
                 return OperationType.Delete;
             case PATCH_ITEM:
                 return OperationType.Patch;
+            case METADATA_REQUEST_QUERY_PLAN:
+                return OperationType.QueryPlan;
+            case METADATA_REQUEST_PARTITION_KEY_RANGES:
+                return OperationType.ReadFeed;
             default:
                 throw new IllegalStateException("FaultInjectionOperationType " + faultInjectionOperationType + " is not supported");
         }
     }
+
+    private ResourceType getEffectiveResourceType(FaultInjectionOperationType faultInjectionOperationType) {
+        if (faultInjectionOperationType == null) {
+            return null;
+        }
+
+        switch (faultInjectionOperationType) {
+            case READ_ITEM:
+            case CREATE_ITEM:
+            case QUERY_ITEM:
+            case UPSERT_ITEM:
+            case REPLACE_ITEM:
+            case DELETE_ITEM:
+            case PATCH_ITEM:
+            case METADATA_REQUEST_QUERY_PLAN:
+                return ResourceType.Document;
+            case METADATA_REQUEST_CONTAINER:
+                return ResourceType.DocumentCollection;
+            case METADATA_REQUEST_DATABASE_ACCOUNT:
+                return ResourceType.DatabaseAccount;
+            case METADATA_REQUEST_ADDRESS_REFRESH:
+                return ResourceType.Address;
+            case METADATA_REQUEST_PARTITION_KEY_RANGES:
+                return ResourceType.PartitionKeyRange;
+            default:
+                throw new IllegalStateException("FaultInjectionOperationType " + faultInjectionOperationType + " is not supported");
+        }
+    }
+
+    private Mono<List<String>> resolvePartitionKeyRangeIds(
+        FaultInjectionEndpoints addressEndpoints,
+        DocumentCollection documentCollection) {
+        if (addressEndpoints == null) {
+            return Mono.just(Arrays.asList());
+        }
+
+        FeedRangeInternal feedRangeInternal = FeedRangeInternal.convert(addressEndpoints.getFeedRange());
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            null,
+            OperationType.Read,
+            documentCollection.getResourceId(),
+            ResourceType.Document,
+            Collections.emptyMap());
+
+        return feedRangeInternal
+            .getPartitionKeyRanges(
+                this.partitionKeyRangeCache,
+                request,
+                Mono.just(new Utils.ValueHolder<>(documentCollection)));
+    }
+
 
     private Mono<List<URI>> resolvePhysicalAddresses(
         List<URI> regionEndpoints,

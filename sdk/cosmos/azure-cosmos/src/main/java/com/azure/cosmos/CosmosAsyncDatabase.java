@@ -406,7 +406,17 @@ public class CosmosAsyncDatabase {
 
     /**
      * Creates a Cosmos container if it does not exist on the service.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists -->
+     * <pre>
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
+     * cosmosAsyncDatabase.createContainerIfNotExists&#40;containerProperties&#41;
+     *     .subscribe&#40;
+     *         cosmosContainerResponse -&gt; System.out.println&#40;cosmosContainerResponse&#41;,
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create container: &quot; + throwable&#41;
+     *     &#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created or existing container. In case of failure the {@link Mono} will
@@ -425,7 +435,17 @@ public class CosmosAsyncDatabase {
 
     /**
      * Creates a Cosmos container if it does not exist on the service.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExistsThroughput -->
+     * <pre>
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
+     * cosmosAsyncDatabase.createContainerIfNotExists&#40;containerProperties, throughputProperties&#41;
+     *     .subscribe&#40;
+     *         cosmosContainerResponse -&gt; System.out.println&#40;cosmosContainerResponse&#41;,
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create container: &quot; + throwable&#41;
+     *     &#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExistsThroughput -->
      * The throughput setting will only be used if the specified container
      * does not exist and therefore a new container will be created.
      * <p>
@@ -451,7 +471,17 @@ public class CosmosAsyncDatabase {
 
     /**
      * Creates a Cosmos container if it does not exist on the service.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExistsThroughput -->
+     * <pre>
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
+     * cosmosAsyncDatabase.createContainerIfNotExists&#40;containerProperties, throughputProperties&#41;
+     *     .subscribe&#40;
+     *         cosmosContainerResponse -&gt; System.out.println&#40;cosmosContainerResponse&#41;,
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create container: &quot; + throwable&#41;
+     *     &#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExistsThroughput -->
      * The throughput properties will only be used if the specified container
      * does not exist and therefor a new container will be created.
      * <p>
@@ -477,7 +507,17 @@ public class CosmosAsyncDatabase {
 
     /**
      * Creates a Cosmos container if it does not exist on the service.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists -->
+     * <pre>
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
+     * cosmosAsyncDatabase.createContainerIfNotExists&#40;containerProperties&#41;
+     *     .subscribe&#40;
+     *         cosmosContainerResponse -&gt; System.out.println&#40;cosmosContainerResponse&#41;,
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create container: &quot; + throwable&#41;
+     *     &#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists -->
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created container. In case of failure the {@link Mono} will error.
@@ -496,7 +536,17 @@ public class CosmosAsyncDatabase {
 
     /**
      * Creates a Cosmos container if it does not exist on the service.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExistsThroughput -->
+     * <pre>
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
+     * cosmosAsyncDatabase.createContainerIfNotExists&#40;containerProperties, throughputProperties&#41;
+     *     .subscribe&#40;
+     *         cosmosContainerResponse -&gt; System.out.println&#40;cosmosContainerResponse&#41;,
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create container: &quot; + throwable&#41;
+     *     &#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExistsThroughput -->
      * The throughput properties will only be used if the specified container
      * does not exist and therefor a new container will be created.
      * <p>
@@ -522,7 +572,17 @@ public class CosmosAsyncDatabase {
 
     /**
      * Creates a Cosmos container if it does not exist on the service.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists -->
+     * <pre>
+     * CosmosContainerProperties containerProperties =
+     *     new CosmosContainerProperties&#40;containerId, partitionKeyDefinition&#41;;
+     * cosmosAsyncDatabase.createContainerIfNotExists&#40;containerProperties&#41;
+     *     .subscribe&#40;
+     *         cosmosContainerResponse -&gt; System.out.println&#40;cosmosContainerResponse&#41;,
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create container: &quot; + throwable&#41;
+     *     &#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createContainerIfNotExists -->
      * The throughput setting will only be used if the specified container
      * does not exist and a new container will be created.
      * <p>
@@ -548,7 +608,19 @@ public class CosmosAsyncDatabase {
 
     /**
      * Reads all cosmos containers.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllContainers -->
+     * <pre>
+     * cosmosAsyncDatabase.readAllContainers&#40;&#41;
+     *     .byPage&#40;&#41;
+     *     .flatMap&#40;containerPropertiesFeedResponse -&gt; &#123;
+     *         for &#40;CosmosContainerProperties properties : containerPropertiesFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;properties&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllContainers -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read containers. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -587,7 +659,19 @@ public class CosmosAsyncDatabase {
 
     /**
      * Reads all cosmos containers.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllContainers -->
+     * <pre>
+     * cosmosAsyncDatabase.readAllContainers&#40;&#41;
+     *     .byPage&#40;&#41;
+     *     .flatMap&#40;containerPropertiesFeedResponse -&gt; &#123;
+     *         for &#40;CosmosContainerProperties properties : containerPropertiesFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;properties&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllContainers -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read containers. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -601,7 +685,19 @@ public class CosmosAsyncDatabase {
 
     /**
      * Query for cosmos containers in a cosmos database.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryContainers -->
+     * <pre>
+     * cosmosAsyncDatabase.queryContainers&#40;&quot;SELECT * FROM DB_NAME&quot;&#41;
+     *     .byPage&#40;&#41;
+     *     .flatMap&#40;containerPropertiesFeedResponse -&gt; &#123;
+     *         for &#40;CosmosContainerProperties properties : containerPropertiesFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;properties&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryContainers -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained containers. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -616,7 +712,19 @@ public class CosmosAsyncDatabase {
 
     /**
      * Query for cosmos containers in a cosmos database.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryContainers -->
+     * <pre>
+     * cosmosAsyncDatabase.queryContainers&#40;&quot;SELECT * FROM DB_NAME&quot;&#41;
+     *     .byPage&#40;&#41;
+     *     .flatMap&#40;containerPropertiesFeedResponse -&gt; &#123;
+     *         for &#40;CosmosContainerProperties properties : containerPropertiesFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;properties&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryContainers -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained containers. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -636,7 +744,19 @@ public class CosmosAsyncDatabase {
 
     /**
      * Query for cosmos containers in a cosmos database.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryContainers -->
+     * <pre>
+     * cosmosAsyncDatabase.queryContainers&#40;&quot;SELECT * FROM DB_NAME&quot;&#41;
+     *     .byPage&#40;&#41;
+     *     .flatMap&#40;containerPropertiesFeedResponse -&gt; &#123;
+     *         for &#40;CosmosContainerProperties properties : containerPropertiesFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;properties&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryContainers -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained containers. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -651,7 +771,19 @@ public class CosmosAsyncDatabase {
 
     /**
      * Query for cosmos containers in a cosmos database.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.queryContainers -->
+     * <pre>
+     * cosmosAsyncDatabase.queryContainers&#40;&quot;SELECT * FROM DB_NAME&quot;&#41;
+     *     .byPage&#40;&#41;
+     *     .flatMap&#40;containerPropertiesFeedResponse -&gt; &#123;
+     *         for &#40;CosmosContainerProperties properties : containerPropertiesFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;properties&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.queryContainers -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the obtained containers. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -685,6 +817,18 @@ public class CosmosAsyncDatabase {
      * {@link Mono} upon successful completion will contain a single resource
      * response with the created user. In case of failure the {@link Mono} will
      * error.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.createUser -->
+     * <pre>
+     * String userId = &quot;userId&quot;;
+     * CosmosUserProperties userProperties = new CosmosUserProperties&#40;&#41;;
+     * userProperties.setId&#40;userId&#41;;
+     * cosmosAsyncDatabase.createUser&#40;userProperties&#41;
+     *     .subscribe&#40;
+     *         userResponse -&gt; System.out.println&#40;userResponse&#41;,
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to create user: &quot; + throwable&#41;
+     *     &#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.createUser -->
      *
      * @param userProperties the cosmos user properties
      * @return an {@link Mono} containing the single resource response with the
@@ -714,6 +858,18 @@ public class CosmosAsyncDatabase {
      * performed. The {@link Mono} upon successful completion will contain a single
      * resource response with the created user. In case of failure the {@link Mono}
      * will error.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.upsertUser -->
+     * <pre>
+     * String userId = &quot;userId&quot;;
+     * CosmosUserProperties userProperties = new CosmosUserProperties&#40;&#41;;
+     * userProperties.setId&#40;userId&#41;;
+     * cosmosAsyncDatabase.upsertUser&#40;userProperties&#41;
+     *     .subscribe&#40;
+     *         userResponse -&gt; System.out.println&#40;userResponse&#41;,
+     *         throwable -&gt; System.out.println&#40;&quot;Failed to upsert user: &quot; + throwable&#41;
+     *     &#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.upsertUser -->
      *
      * @param userProperties the cosmos user properties
      * @return an {@link Mono} containing the single resource response with the
@@ -725,7 +881,19 @@ public class CosmosAsyncDatabase {
 
     /**
      * Reads all cosmos users in a database.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllUsers -->
+     * <pre>
+     * cosmosAsyncDatabase.readAllUsers&#40;&#41;
+     *     .byPage&#40;&#41;
+     *     .flatMap&#40;userPropertiesFeedResponse -&gt; &#123;
+     *         for &#40;CosmosUserProperties properties : userPropertiesFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;properties&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllUsers -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read cosmos users. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -739,7 +907,19 @@ public class CosmosAsyncDatabase {
 
     /**
      * Reads all cosmos users in a database.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncDatabase.readAllUsers -->
+     * <pre>
+     * cosmosAsyncDatabase.readAllUsers&#40;&#41;
+     *     .byPage&#40;&#41;
+     *     .flatMap&#40;userPropertiesFeedResponse -&gt; &#123;
+     *         for &#40;CosmosUserProperties properties : userPropertiesFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;properties&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncDatabase.readAllUsers -->
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
      * contain one or several feed response of the read cosmos users. In case of
      * failure the {@link CosmosPagedFlux} will error.
@@ -861,7 +1041,7 @@ public class CosmosAsyncDatabase {
      * contain one or several feed response of the obtained client encryption keys. In case of
      * failure the {@link CosmosPagedFlux} will error.
      *
-     * @param query query as string.
+     * @param query   query as string.
      * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained client encryption keys or an error.
@@ -897,7 +1077,7 @@ public class CosmosAsyncDatabase {
      * failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
-     * @param options the query request options.
+     * @param options   the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained client encryption keys or an error.
      */
@@ -966,7 +1146,7 @@ public class CosmosAsyncDatabase {
      * contain one or several feed response of the obtained users. In case of
      * failure the {@link CosmosPagedFlux} will error.
      *
-     * @param query query as string.
+     * @param query   query as string.
      * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained users or an error.
@@ -1002,7 +1182,7 @@ public class CosmosAsyncDatabase {
      * failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
-     * @param options the query request options.
+     * @param options   the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained users or an error.
      */
@@ -1032,7 +1212,7 @@ public class CosmosAsyncDatabase {
      * @return the mono.
      */
     public Mono<ThroughputResponse> replaceThroughput(ThroughputProperties throughputProperties) {
-       return withContext(context -> replaceThroughputInternal(throughputProperties, context));
+        return withContext(context -> replaceThroughputInternal(throughputProperties, context));
     }
 
     /**
@@ -1048,7 +1228,7 @@ public class CosmosAsyncDatabase {
         String queryText = "select * from c where c.offerResourceId = @resourceId";
         SqlQuerySpec querySpec = new SqlQuerySpec(queryText);
         List<SqlParameter> parameters = Collections
-                                            .singletonList(new SqlParameter("@resourceId", resourceId));
+            .singletonList(new SqlParameter("@resourceId", resourceId));
         querySpec.setParameters(parameters);
         return querySpec;
     }
@@ -1147,15 +1327,15 @@ public class CosmosAsyncDatabase {
             options;
         Mono<CosmosContainerResponse> responseMono =
             container.read(requestOptions, nestedContext).onErrorResume(exception -> {
-            final Throwable unwrappedException = Exceptions.unwrap(exception);
-            if (unwrappedException instanceof CosmosException) {
-                final CosmosException cosmosException = (CosmosException) unwrappedException;
-                if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                    return createContainerInternal(containerProperties, requestOptions, nestedContext);
+                final Throwable unwrappedException = Exceptions.unwrap(exception);
+                if (unwrappedException instanceof CosmosException) {
+                    final CosmosException cosmosException = (CosmosException) unwrappedException;
+                    if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                        return createContainerInternal(containerProperties, requestOptions, nestedContext);
+                    }
                 }
-            }
-            return Mono.error(unwrappedException);
-        });
+                return Mono.error(unwrappedException);
+            });
 
         CosmosDiagnosticsThresholds requestDiagnosticThresholds = options != null ?
             ModelBridgeInternal.toRequestOptions(options).getDiagnosticsThresholds() : null;
@@ -1202,7 +1382,7 @@ public class CosmosAsyncDatabase {
     Mono<CosmosDatabaseResponse> readInternal(CosmosDatabaseRequestOptions options, Context context) {
         String spanName = "readDatabase." + this.getId();
         Mono<CosmosDatabaseResponse> responseMono = getDocClientWrapper()
-            .readDatabase(getLink(),ModelBridgeInternal.toRequestOptions(options))
+            .readDatabase(getLink(), ModelBridgeInternal.toRequestOptions(options))
             .map(ModelBridgeInternal::createCosmosDatabaseResponse).single();
 
         CosmosDiagnosticsThresholds requestDiagnosticThresholds =
@@ -1302,7 +1482,7 @@ public class CosmosAsyncDatabase {
             client.getEffectiveDiagnosticsThresholds(null));
     }
 
-    private Mono<ThroughputResponse> replaceThroughputInternal(ThroughputProperties throughputProperties, Context context){
+    private Mono<ThroughputResponse> replaceThroughputInternal(ThroughputProperties throughputProperties, Context context) {
         String spanName = "replaceThroughput." + this.getId();
         Context nestedContext = context.addData(
             DiagnosticsProvider.COSMOS_CALL_DEPTH,
@@ -1348,7 +1528,7 @@ public class CosmosAsyncDatabase {
                 .map(ModelBridgeInternal::createThroughputRespose));
     }
 
-    private Mono<ThroughputResponse> readThroughputInternal(Context context){
+    private Mono<ThroughputResponse> readThroughputInternal(Context context) {
         String spanName = "readThroughput." + this.getId();
         Context nestedContext = context.addData(
             DiagnosticsProvider.COSMOS_CALL_DEPTH,
@@ -1410,5 +1590,7 @@ public class CosmosAsyncDatabase {
             });
     }
 
-    static { initialize(); }
+    static {
+        initialize();
+    }
 }
