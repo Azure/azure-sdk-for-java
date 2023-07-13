@@ -1,26 +1,34 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.communication.azure.com/availablePhoneNumbers/countries?api-version=2022-12-01",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "1b33df74-9b71-400d-a0da-bf2f37deb94a"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "X-Cache" : "CONFIG_NOCACHE",
-      "Strict-Transport-Security" : "max-age=2592000",
-      "api-supported-versions" : "2022-12-01",
-      "X-Processing-Time" : "2793ms",
-      "MS-CV" : "GFqfU3CReE283tmlX/DTgw.0",
-      "retry-after" : "0",
-      "X-Azure-Ref" : "0daSkYwAAAAAwLGiiMQjnQoHtjdnVyEghTUVYMzFFREdFMDMyMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
-      "StatusCode" : "200",
-      "Body" : "{\"countries\":[{\"localizedName\":\"Canada\",\"countryCode\":\"CA\"},{\"localizedName\":\"Denmark\",\"countryCode\":\"DK\"},{\"localizedName\":\"Ireland\",\"countryCode\":\"IE\"},{\"localizedName\":\"Italy\",\"countryCode\":\"IT\"},{\"localizedName\":\"Puerto Rico\",\"countryCode\":\"PR\"},{\"localizedName\":\"Sweden\",\"countryCode\":\"SE\"},{\"localizedName\":\"United Kingdom\",\"countryCode\":\"GB\"},{\"localizedName\":\"United States\",\"countryCode\":\"US\"}],\"nextLink\":null}",
-      "Date" : "Thu, 22 Dec 2022 18:39:52 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/availablePhoneNumbers/countries?api-version=2022-12-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "03a52306-da10-4173-af96-e0e14ea4b8c3"
+      },
+      "RequestBody": null,
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Content-Type": "application/json",
+        "Date": "Thu, 13 Jul 2023 00:46:35 GMT",
+        "MS-CV": "uyDRjn60tkypaRPNV2JRTA.0",
+        "Strict-Transport-Security": "max-age=2592000",
+        "Transfer-Encoding": "chunked",
+        "X-Azure-Ref": "0bEmvZAAAAABZleSXcWU/RrSNbf5eM9B4V1NURURHRTA4MDgAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Processing-Time": "8ms"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "Denied",
+          "message": "Denied by the resource provider."
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

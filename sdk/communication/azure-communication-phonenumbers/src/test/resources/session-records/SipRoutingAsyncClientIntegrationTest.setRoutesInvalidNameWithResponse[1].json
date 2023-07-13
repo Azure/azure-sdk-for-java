@@ -1,26 +1,44 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "PATCH",
-    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "8aef5e1a-9816-4f97-8c74-af970c4923fe",
-      "Content-Type" : "application/merge-patch+json"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "X-Cache" : "CONFIG_NOCACHE",
-      "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "18ms",
-      "MS-CV" : "0PqpmS6/f02aiJh5p6KDFg.0",
-      "retry-after" : "0",
-      "X-Azure-Ref" : "0HZsIZAAAAADA5qoDhhGJTbeQjGmMrrYjUFJHMDFFREdFMDkyMQBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
-      "StatusCode" : "422",
-      "Body" : "{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"InvalidRouteName\",\"message\":\"Route with an invalid name.\"}}}",
-      "Date" : "Wed, 08 Mar 2023 14:26:36 GMT",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/sip?api-version=2023-03-01",
+      "RequestMethod": "PATCH",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "37",
+        "Content-Type": "application/merge-patch\u002Bjson",
+        "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "d181d4f7-c3ef-41fc-a63b-75ae1ebedf0a",
+        "x-ms-content-sha256": "dm2zjRYQfcm0sLHondatUp2K0Wwc3Rd8RKJeMEYiOJY=",
+        "x-ms-date": "Thu, 13 Jul 2023 00:11:54 GMT",
+        "x-ms-hmac-string-to-sign-base64": "UEFUQ0gKL3NpcD9hcGktdmVyc2lvbj0yMDIzLTAzLTAxClRodSwgMTMgSnVsIDIwMjMgMDA6MTE6NTQgR01UO1JFREFDVEVELmNvbW11bmljYXRpb24uYXp1cmUuY29tO2RtMnpqUllRZmNtMHNMSG9uZGF0VXAySzBXd2MzUmQ4UktKZU1FWWlPSlk9"
+      },
+      "RequestBody": {
+        "routes": [
+          {
+            "numberPattern": "99.*"
+          }
+        ]
+      },
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Content-Type": "application/json",
+        "Date": "Thu, 13 Jul 2023 00:11:55 GMT",
+        "MS-CV": "epAX3V3lU0\u002BoVIevxHdc3g.0",
+        "Strict-Transport-Security": "max-age=2592000",
+        "Transfer-Encoding": "chunked",
+        "X-Azure-Ref": "0TEGvZAAAAABFVUTihKwsRo6CdSo8G3jTV1NURURHRTA4MTUAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Processing-Time": "21ms"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "Denied",
+          "message": "Denied by the resource provider."
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

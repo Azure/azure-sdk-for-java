@@ -1,49 +1,44 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "PATCH",
-    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "44d66622-9fb8-436b-8008-0e98ecf2db09",
-      "Content-Type" : "application/merge-patch+json"
-    },
-    "Response" : {
-      "X-Cache" : "CONFIG_NOCACHE",
-      "Strict-Transport-Security" : "max-age=2592000",
-      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview, 2023-03-01",
-      "X-Processing-Time" : "947ms",
-      "MS-CV" : "T11pjjjNokq/CSPo3M5ZJw.0",
-      "retry-after" : "0",
-      "X-Azure-Ref" : "0UpsIZAAAAAAeZjlTOPivRZDwHYTMw43oUFJHMDFFREdFMDkyMQBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
-      "Content-Length" : "337",
-      "StatusCode" : "200",
-      "Body" : "{\"trunks\":{\"set.redacted.com\":{\"sipSignalingPort\":4567}},\"routes\":[{\"description\":\"desc0\",\"name\":\"route0\",\"numberPattern\":\"0.*\",\"trunks\":[]},{\"description\":\"desc1\",\"name\":\"route1\",\"numberPattern\":\"1.*\",\"trunks\":[]},{\"description\":\"desc2\",\"name\":\"route2\",\"numberPattern\":\"2.*\",\"trunks\":[]}]}",
-      "Date" : "Wed, 08 Mar 2023 14:27:31 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "1aeab127-8659-47e4-8a77-8e0bd9eb9269"
-    },
-    "Response" : {
-      "X-Cache" : "CONFIG_NOCACHE",
-      "Strict-Transport-Security" : "max-age=2592000",
-      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview, 2023-03-01",
-      "X-Processing-Time" : "172ms",
-      "MS-CV" : "utNiDixU/0uggA9Zgp+bhg.0",
-      "retry-after" : "0",
-      "X-Azure-Ref" : "0U5sIZAAAAADyGuJbQqxpSZ4O4JdpKagJUFJHMDFFREdFMDkyMQBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
-      "Content-Length" : "337",
-      "StatusCode" : "200",
-      "Body" : "{\"trunks\":{\"set.redacted.com\":{\"sipSignalingPort\":4567}},\"routes\":[{\"description\":\"desc0\",\"name\":\"route0\",\"numberPattern\":\"0.*\",\"trunks\":[]},{\"description\":\"desc1\",\"name\":\"route1\",\"numberPattern\":\"1.*\",\"trunks\":[]},{\"description\":\"desc2\",\"name\":\"route2\",\"numberPattern\":\"2.*\",\"trunks\":[]}]}",
-      "Date" : "Wed, 08 Mar 2023 14:27:31 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/sip?api-version=2023-03-01",
+      "RequestMethod": "PATCH",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "92",
+        "Content-Type": "application/merge-patch\u002Bjson",
+        "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "7ecd1ca2-49f3-4380-9e14-41dcbda97281",
+        "x-ms-content-sha256": "TWtZvfhza6L8prFkuU2d865ga7diPuoqbQemhU0Wle4=",
+        "x-ms-date": "Thu, 13 Jul 2023 00:12:01 GMT",
+        "x-ms-hmac-string-to-sign-base64": "UEFUQ0gKL3NpcD9hcGktdmVyc2lvbj0yMDIzLTAzLTAxClRodSwgMTMgSnVsIDIwMjMgMDA6MTI6MDEgR01UO1JFREFDVEVELmNvbW11bmljYXRpb24uYXp1cmUuY29tO1RXdFp2Zmh6YTZMOHByRmt1VTJkODY1Z2E3ZGlQdW9xYlFlbWhVMFdsZTQ9"
+      },
+      "RequestBody": {
+        "trunks": {
+          "set-1071f452b7694a95b11358c6f6089d07.testdomain.com": {
+            "sipSignalingPort": 4567
+          }
+        }
+      },
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Content-Type": "application/json",
+        "Date": "Thu, 13 Jul 2023 00:12:02 GMT",
+        "MS-CV": "48oX/wN4U0ap2szjTW73FQ.0",
+        "Strict-Transport-Security": "max-age=2592000",
+        "Transfer-Encoding": "chunked",
+        "X-Azure-Ref": "0U0GvZAAAAAD3OvQ2mgj0SrPgJineICAwV1NURURHRTA4MTUAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Processing-Time": "20ms"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "Denied",
+          "message": "Denied by the resource provider."
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }
