@@ -3,7 +3,7 @@
 This guide will show you how to run large log queries **without** extra costs using Log Analytics and the Monitor Query SDK.
 
 Due to Log Analytics [service limits](https://learn.microsoft.com/en-us/azure/azure-monitor/service-limits#la-query-api), sometimes it may
-not be possible to retrieve all the expected data in a single query. For example, the nnumber of rows returned or the maximum size of the
+not be possible to retrieve all the expected data in a single query. For example, the number of rows returned or the maximum size of the
 data returned may exceed the stated limits. One approach for overcoming these limits is to split the queries into multiple smaller queries
 using different time ranges.
 
