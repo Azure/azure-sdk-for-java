@@ -485,8 +485,9 @@ jobs:
         # For PR builds check if any meaningful code changes have been made.
         # A meaningful code change is changing of source code, Maven configurations, or pipeline configurations.
         - pwsh: |
-            Write-Host ${{ parameters.MatrixConfigs }}
-            
+            $jsonObject = ConvertFrom-Json -InputObject ${{ parameters.MatrixConfigs }}
+            Write-Host $jsonObject
+
             if ("$(Build.Reason)" -ne 'PullRequest') {
               Write-Host "##vso[task.setvariable variable=ShouldRunTests;]true"
               return
