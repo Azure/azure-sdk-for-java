@@ -114,6 +114,11 @@ jobs:
             ${{ each var in parameters.EnvVars }}:
               ${{ var.key }}: ${{ var.value }}
 
+      - pwsh: |
+          Write-Host "##vso[task.setvariable variable=Agent.JobStatus;isOutput=true]SucceededWithIssues"
+        displayName: 'Reset status for Latest JDK'
+        condition: and(eq(variables['IsLatestNonLtsJdk'], true), notIn(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues'))
+
       # macOS has known issues running HTTP fault injector, change this once
       # https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
       - ${{ if and(eq(parameters.UseHttpFaultInjector, 'true'), not(contains(variables['OSVmImage'], 'mac'))) }}:
