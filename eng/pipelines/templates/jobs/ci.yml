@@ -485,20 +485,16 @@ jobs:
             $sourceCodeFile = $changedFile -match '.*\.(groovy|java|kt|scala|xml|yml)$'
 
             if ($changedFile -match '.*\.(java|groovy|xml|yml)$') {
-              Write-Host "##vso[task.setvariable variable=ShouldRunTests;isOutput=true]true"
+              Write-Host "##vso[task.setvariable variable=MatrixConfigs;isOutput=true]${{ parameters.MatrixConfigs }}"
               break
             }
           }
 
   - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
-    condition: eq(dependencies.ShouldRunTests.outputs['ShouldRunTests'], 'true')
     parameters:
       DependsOn: ShouldRunTests
       JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
-      ${{ if variables['ShouldRunTests'] }}:
-        MatrixConfigs: ${{ parameters.MatrixConfigs }}
-      ${{ else }}:
-        MatrixConfigs: []
+      MatrixConfigs: dependencies.Foo.outputs['MatrixConfigs']
       MatrixFilters: ${{ parameters.MatrixFilters }}
       MatrixReplace: ${{ parameters.MatrixReplace }}
       CloudConfig:
