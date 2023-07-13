@@ -524,13 +524,13 @@ public final class ChatCompletionsOptions {
      * function. Specifying a particular function via `{"name": "my_function"}` forces the model to call that function.
      * "none" is the default when no functions are present. "auto" is the default if functions are present.
      *
-     * @param functionCallConfigInternal the functionCall value to set.
+     * @param functionCallConfig the functionCall value to set.
      * @return the ChatCompletionsOptions object itself.
      */
-    public ChatCompletionsOptions setFunctionCall(FunctionCallConfig functionCallConfigInternal) {
-        this.functionCallConfig = functionCallConfigInternal;
+    public ChatCompletionsOptions setFunctionCall(FunctionCallConfig functionCallConfig) {
+        this.functionCallConfig = functionCallConfig;
         if (FunctionCallPreset.values().stream()
-                .anyMatch(preset -> preset.toString().equals(functionCallConfigInternal.getName()))) {
+                .anyMatch(preset -> preset.toString().equals(functionCallConfig.getName()))) {
             this.functionCall =
                     new FunctionCallPresetFunctionCallModel(
                             FunctionCallPreset.fromString(this.functionCallConfig.getName()));
