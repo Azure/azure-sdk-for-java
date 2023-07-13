@@ -17,7 +17,7 @@ public final class LabelValue {
      * Constructor for numerical value.
      * @param numericValue numeric value of label.
      */
-    public LabelValue(double numericValue) {
+    public LabelValue(Double numericValue) {
         this.value = numericValue;
     }
 
@@ -33,7 +33,7 @@ public final class LabelValue {
      * Constructor for boolean value.
      * @param boolValue boolean value of label.
      */
-    public LabelValue(boolean boolValue) {
+    public LabelValue(Boolean boolValue) {
         this.value = boolValue;
     }
 
@@ -43,5 +43,38 @@ public final class LabelValue {
      */
     public Object getValue() {
         return this.value;
+    }
+
+    /**
+     * Returns Double value of object
+     * @return (Double) value.
+     */
+    public Double getValueAsDouble() {
+        if (value.getClass() == Double.class) {
+            return (Double) this.value;
+        }
+        throw new Error("value is not of type Double.");
+    }
+
+    /**
+     * Returns String value of object
+     * @return (String) value.
+     */
+    public String getValueAsString() {
+        if (value.getClass() == String.class) {
+            return (String) this.value;
+        }
+        throw new Error("value is not of type String.");
+    }
+
+    /**
+     * Returns Boolean value of object
+     * @return (Boolean) value.
+     */
+    public Boolean getValueAsBoolean() {
+        if (value.getClass() == Boolean.class) {
+            return (Boolean) this.value;
+        }
+        throw new Error("value is not of type Boolean.");
     }
 }

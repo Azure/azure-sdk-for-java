@@ -19,7 +19,7 @@ public final class StaticWorkerSelector extends WorkerSelectorAttachment {
      * worker selection
      */
     @JsonProperty(value = "labelSelector", required = true)
-    private WorkerSelector labelSelector;
+    private RouterWorkerSelector labelSelector;
 
     /**
      * Get the labelSelector property: Describes a condition that must be met against a set of labels for worker
@@ -27,7 +27,7 @@ public final class StaticWorkerSelector extends WorkerSelectorAttachment {
      *
      * @return the labelSelector value.
      */
-    public WorkerSelector getLabelSelector() {
+    public RouterWorkerSelector getLabelSelector() {
         return this.labelSelector;
     }
 
@@ -38,7 +38,7 @@ public final class StaticWorkerSelector extends WorkerSelectorAttachment {
      * @param labelSelector the labelSelector value to set.
      * @return the StaticWorkerSelector object itself.
      */
-    public StaticWorkerSelector setLabelSelector(WorkerSelector labelSelector) {
+    public StaticWorkerSelector setLabelSelector(RouterWorkerSelector labelSelector) {
         this.labelSelector = labelSelector;
         return this;
     }
