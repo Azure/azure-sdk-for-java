@@ -3,10 +3,15 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.core.util.logging.ClientLogger;
+
 /**
  * Wrapper class for labels. Supports double, String and boolean types.
  */
 public final class LabelValue {
+
+    private static final ClientLogger LOGGER = new ClientLogger(LabelValue.class);
+
 
     /**
      * Value to pass to server.
@@ -53,7 +58,7 @@ public final class LabelValue {
         if (value.getClass() == Double.class) {
             return (Double) this.value;
         }
-        throw new Error("value is not of type Double.");
+        throw LOGGER.logExceptionAsError(new IllegalStateException("value is not of type Double."));
     }
 
     /**
@@ -64,7 +69,7 @@ public final class LabelValue {
         if (value.getClass() == String.class) {
             return (String) this.value;
         }
-        throw new Error("value is not of type String.");
+        throw LOGGER.logExceptionAsError(new IllegalStateException("value is not of type String."));
     }
 
     /**
@@ -75,6 +80,6 @@ public final class LabelValue {
         if (value.getClass() == Boolean.class) {
             return (Boolean) this.value;
         }
-        throw new Error("value is not of type Boolean.");
+        throw LOGGER.logExceptionAsError(new IllegalStateException("value is not of type Boolean."));
     }
 }
