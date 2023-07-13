@@ -15,23 +15,23 @@ public final class BareMetalMachineRunCommandParametersTests {
         BareMetalMachineRunCommandParameters model =
             BinaryData
                 .fromString(
-                    "{\"arguments\":[\"tvqcttadijaeu\"],\"limitTimeSeconds\":8092412337575637077,\"script\":\"sieekpndzaapm\"}")
+                    "{\"arguments\":[\"nfwqzdzgtilaxhn\",\"hqlyvijo\",\"wivkxo\"],\"limitTimeSeconds\":6975043128466071943,\"script\":\"nbixxrti\"}")
                 .toObject(BareMetalMachineRunCommandParameters.class);
-        Assertions.assertEquals("tvqcttadijaeu", model.arguments().get(0));
-        Assertions.assertEquals(8092412337575637077L, model.limitTimeSeconds());
-        Assertions.assertEquals("sieekpndzaapm", model.script());
+        Assertions.assertEquals("nfwqzdzgtilaxhn", model.arguments().get(0));
+        Assertions.assertEquals(6975043128466071943L, model.limitTimeSeconds());
+        Assertions.assertEquals("nbixxrti", model.script());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BareMetalMachineRunCommandParameters model =
             new BareMetalMachineRunCommandParameters()
-                .withArguments(Arrays.asList("tvqcttadijaeu"))
-                .withLimitTimeSeconds(8092412337575637077L)
-                .withScript("sieekpndzaapm");
+                .withArguments(Arrays.asList("nfwqzdzgtilaxhn", "hqlyvijo", "wivkxo"))
+                .withLimitTimeSeconds(6975043128466071943L)
+                .withScript("nbixxrti");
         model = BinaryData.fromObject(model).toObject(BareMetalMachineRunCommandParameters.class);
-        Assertions.assertEquals("tvqcttadijaeu", model.arguments().get(0));
-        Assertions.assertEquals(8092412337575637077L, model.limitTimeSeconds());
-        Assertions.assertEquals("sieekpndzaapm", model.script());
+        Assertions.assertEquals("nfwqzdzgtilaxhn", model.arguments().get(0));
+        Assertions.assertEquals(6975043128466071943L, model.limitTimeSeconds());
+        Assertions.assertEquals("nbixxrti", model.script());
     }
 }

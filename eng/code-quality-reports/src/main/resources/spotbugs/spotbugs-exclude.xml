@@ -2323,6 +2323,14 @@
   </Match>
   <Bug pattern="NM_CONFUSING"/>
 
+  <!--  This method is made synchronous by blocking and waiting for a result. They do not return
+  anything, so it can be ignored. -->
+  <Match>
+    <Class name="com.microsoft.azure.eventgrid.implementation.EventGridClientImpl"/>
+    <Method name="publishEvents"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
   <Match>
     <Class name="com.azure.ai.metricsadvisor.implementation.models.InfluxDBParameter"/>
     <Method name="getUserName"/>
@@ -2501,6 +2509,11 @@
   <Match>
     <Class name="com.azure.maps.render.implementation.RenderV2sImpl"/>
     <Method name="~getMap.*+"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.maps.render.implementation.RendersImpl"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 

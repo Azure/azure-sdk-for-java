@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosSessionRetryOptions;
+import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -154,7 +154,7 @@ public class ConsistencyReader {
     private final StoreReader storeReader;
     private final QuorumReader quorumReader;
     private final Configs configs;
-    private final CosmosSessionRetryOptions sessionRetryOptions;
+    private final SessionRetryOptions sessionRetryOptions;
 
     public ConsistencyReader(
         DiagnosticsClientContext diagnosticsClientContext,
@@ -164,7 +164,7 @@ public class ConsistencyReader {
         TransportClient transportClient,
         GatewayServiceConfigurationReader serviceConfigReader,
         IAuthorizationTokenProvider authorizationTokenProvider,
-        CosmosSessionRetryOptions sessionRetryOptions) {
+        SessionRetryOptions sessionRetryOptions) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.configs = configs;
         this.serviceConfigReader = serviceConfigReader;

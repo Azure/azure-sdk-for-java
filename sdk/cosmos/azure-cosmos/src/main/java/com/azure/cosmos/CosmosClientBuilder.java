@@ -138,7 +138,7 @@ public class CosmosClientBuilder implements
     private Boolean clientTelemetryEnabledOverride = null;
     private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
-    private CosmosSessionRetryOptions sessionRetryOptions;
+    private SessionRetryOptions sessionRetryOptions;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -806,7 +806,7 @@ public class CosmosClientBuilder implements
     }
 
     /**
-     * Sets the {@link CosmosSessionRetryOptions} instance on the client.
+     * Sets the {@link SessionRetryOptions} instance on the client.
      * <p>
      * This setting helps in optimizing retry behavior associated with
      * {@code NOT_FOUND / READ_SESSION_NOT_AVAILABLE} or {@code 404 / 1002} scenarios which happen
@@ -814,7 +814,7 @@ public class CosmosClientBuilder implements
      * request goes to a region that does not have recent enough data which the
      * request is looking for.
      * <p>
-     * DISCLAIMER: Setting {@link CosmosSessionRetryOptions} will modify retry behavior
+     * DISCLAIMER: Setting {@link SessionRetryOptions} will modify retry behavior
      * for all operations or workloads executed through this instance of the client.
      * <p>
      * For multi-write accounts:
@@ -841,7 +841,7 @@ public class CosmosClientBuilder implements
      *         If a read request goes to a local read region, it helps to switch to the write region quicker.
      *     </li>
      *     <li>
-     *         If a read request goes to a write region, the {@link CosmosSessionRetryOptions} setting does not
+     *         If a read request goes to a write region, the {@link SessionRetryOptions} setting does not
      *         matter since the write region in a single-write account has the most up to date data.
      *     </li>
      *     <li>
@@ -869,15 +869,15 @@ public class CosmosClientBuilder implements
      *     <li>Bulk</li>
      * </ul>
      *
-     * @param sessionRetryOptions The {@link CosmosSessionRetryOptions} instance.
+     * @param sessionRetryOptions The {@link SessionRetryOptions} instance.
      * @return current CosmosClientBuilder
      */
-    public CosmosClientBuilder sessionRetryOptions(CosmosSessionRetryOptions sessionRetryOptions) {
+    public CosmosClientBuilder sessionRetryOptions(SessionRetryOptions sessionRetryOptions) {
         this.sessionRetryOptions = sessionRetryOptions;
         return this;
     }
 
-    CosmosSessionRetryOptions getSessionRetryOptions() {
+    SessionRetryOptions getSessionRetryOptions() {
         return this.sessionRetryOptions;
     }
 

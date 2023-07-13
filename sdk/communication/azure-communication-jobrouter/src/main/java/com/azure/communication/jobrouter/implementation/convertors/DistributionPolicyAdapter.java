@@ -4,8 +4,8 @@
 package com.azure.communication.jobrouter.implementation.convertors;
 
 import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.options.CreateDistributionPolicyOptions;
-import com.azure.communication.jobrouter.models.options.UpdateDistributionPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
+import com.azure.communication.jobrouter.models.UpdateDistributionPolicyOptions;
 
 /**
  * Converts request options for create and update Classification Policy to {@link DistributionPolicy}.
@@ -19,7 +19,7 @@ public class DistributionPolicyAdapter {
     public static DistributionPolicy convertCreateOptionsToDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
         return new DistributionPolicy()
             .setMode(createDistributionPolicyOptions.getMode())
-            .setOfferTtlSeconds(Long.valueOf(createDistributionPolicyOptions.getOfferTtl().getSeconds()).doubleValue())
+            .setOfferExpiresAfterSeconds(Long.valueOf(createDistributionPolicyOptions.getOfferExpiresAfterSeconds().getSeconds()).doubleValue())
             .setName(createDistributionPolicyOptions.getName());
     }
 
@@ -32,6 +32,6 @@ public class DistributionPolicyAdapter {
         return new DistributionPolicy()
             .setMode(updateDistributionPolicyOptions.getMode())
             .setName(updateDistributionPolicyOptions.getName())
-            .setOfferTtlSeconds(Long.valueOf(updateDistributionPolicyOptions.getOfferTtl().getSeconds()).doubleValue());
+            .setOfferExpiresAfterSeconds(Long.valueOf(updateDistributionPolicyOptions.getOfferTtl().getSeconds()).doubleValue());
     }
 }
