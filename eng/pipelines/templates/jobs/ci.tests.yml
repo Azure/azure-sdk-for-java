@@ -115,8 +115,7 @@ jobs:
           JavaBuildVersion: $(JavaTestVersion)
           AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
-
-      - template: /eng/pipelines/templates/steps/set-succeededwithissues-job-status.yml
+          ContinueOnError: true
 
       - template: /eng/pipelines/templates/steps/build-and-test.yml
         parameters:
@@ -127,9 +126,5 @@ jobs:
           TestOptions: ${{ parameters.TestOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
-
-      # This has to be done twice in this pipeline as latest JDK runs a full build and test run, so we need to restore
-      # the job status after both linting and testing.
-      - template: /eng/pipelines/templates/steps/set-succeededwithissues-job-status.yml
 
       - template: /eng/common/testproxy/publish-proxy-logs.yml

@@ -11,6 +11,9 @@ parameters:
   - name: RunLinting
     type: boolean
     default: false
+  - name: ContinueOnError
+    type: boolean
+    default: false
 
 steps:
   # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
@@ -25,6 +28,7 @@ steps:
       jdkVersionOption: ${{ parameters.JavaBuildVersion }}
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
+    continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
 
   - task: Maven@3
@@ -38,6 +42,7 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       goals: 'verify'
+    continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
 
   - task: PowerShell@2
@@ -47,11 +52,13 @@ steps:
       pwsh: true
       workingDirectory: $(Pipeline.Workspace)
     displayName: 'Generate Linting Reports'
+    continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
 
   - publish: $(Build.ArtifactStagingDirectory)/linting-reports.zip
     displayName: 'Publish Linting Reports'
     artifact: linting-reports-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
+    continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
 
   - pwsh: |
@@ -60,6 +67,7 @@ steps:
         exit 1
       }
     displayName: 'Fail Pipeline if Linting Reports Exist'
+    continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
 
   - task: Maven@3
@@ -73,4 +81,5 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       goals: 'verify'
+    continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
