@@ -32,8 +32,8 @@ public final class ConditionalWorkerSelector extends WorkerSelectorAttachment {
     /*
      * The label selectors to attach
      */
-    @JsonProperty(value = "labelSelectors", required = true)
-    private List<WorkerSelector> labelSelectors;
+    @JsonProperty(value = "workerSelectors", required = true)
+    private List<RouterWorkerSelector> workerSelectors;
 
     /**
      * Get the condition property: A rule of one of the following types:
@@ -68,18 +68,18 @@ public final class ConditionalWorkerSelector extends WorkerSelectorAttachment {
      *
      * @return the labelSelectors value.
      */
-    public List<WorkerSelector> getLabelSelectors() {
-        return this.labelSelectors;
+    public List<RouterWorkerSelector> getWorkerSelectors() {
+        return this.workerSelectors;
     }
 
     /**
      * Set the labelSelectors property: The label selectors to attach.
      *
-     * @param labelSelectors the labelSelectors value to set.
+     * @param workerSelectors the labelSelectors value to set.
      * @return the ConditionalWorkerSelector object itself.
      */
-    public ConditionalWorkerSelector setLabelSelectors(List<WorkerSelector> labelSelectors) {
-        this.labelSelectors = labelSelectors;
+    public ConditionalWorkerSelector setWorkerSelectors(List<RouterWorkerSelector> workerSelectors) {
+        this.workerSelectors = workerSelectors;
         return this;
     }
 }

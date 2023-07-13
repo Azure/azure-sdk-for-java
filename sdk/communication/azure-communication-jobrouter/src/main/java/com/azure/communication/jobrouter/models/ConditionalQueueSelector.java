@@ -32,8 +32,8 @@ public final class ConditionalQueueSelector extends QueueSelectorAttachment {
     /*
      * The label selectors to attach
      */
-    @JsonProperty(value = "labelSelectors", required = true)
-    private List<QueueSelector> labelSelectors;
+    @JsonProperty(value = "queueSelectors", required = true)
+    private List<RouterQueueSelector> queueSelectors;
 
     /**
      * Get the condition property: A rule of one of the following types:
@@ -68,18 +68,18 @@ public final class ConditionalQueueSelector extends QueueSelectorAttachment {
      *
      * @return the labelSelectors value.
      */
-    public List<QueueSelector> getLabelSelectors() {
-        return this.labelSelectors;
+    public List<RouterQueueSelector> getQueueSelectors() {
+        return this.queueSelectors;
     }
 
     /**
      * Set the labelSelectors property: The label selectors to attach.
      *
-     * @param labelSelectors the labelSelectors value to set.
+     * @param queueSelectors the labelSelectors value to set.
      * @return the ConditionalQueueSelector object itself.
      */
-    public ConditionalQueueSelector setLabelSelectors(List<QueueSelector> labelSelectors) {
-        this.labelSelectors = labelSelectors;
+    public ConditionalQueueSelector setQueueSelectors(List<RouterQueueSelector> queueSelectors) {
+        this.queueSelectors = queueSelectors;
         return this;
     }
 }

@@ -7,13 +7,13 @@ import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.LabelOperator;
-import com.azure.communication.jobrouter.models.QueueSelector;
 import com.azure.communication.jobrouter.models.QueueSelectorAttachment;
 import com.azure.communication.jobrouter.models.RouterQueue;
+import com.azure.communication.jobrouter.models.RouterQueueSelector;
+import com.azure.communication.jobrouter.models.RouterWorkerSelector;
 import com.azure.communication.jobrouter.models.StaticQueueSelector;
 import com.azure.communication.jobrouter.models.StaticRule;
 import com.azure.communication.jobrouter.models.StaticWorkerSelector;
-import com.azure.communication.jobrouter.models.WorkerSelector;
 import com.azure.communication.jobrouter.models.WorkerSelectorAttachment;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -45,7 +45,7 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
          * Create queue selectors.
          */
         StaticQueueSelector staticQueueSelector = new StaticQueueSelector()
-            .setLabelSelector(new QueueSelector()
+            .setQueueSelector(new RouterQueueSelector()
                 .setKey("queueId")
                 .setLabelOperator(LabelOperator.EQUAL)
                 .setValue(queueId));
@@ -61,7 +61,7 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
          * Create worker selectors.
          */
         StaticWorkerSelector staticWorkerSelector = new StaticWorkerSelector()
-            .setLabelSelector(new WorkerSelector()
+            .setWorkerSelector(new RouterWorkerSelector()
                 .setKey("key")
                 .setLabelOperator(LabelOperator.EQUAL)
                 .setValue("value"));
