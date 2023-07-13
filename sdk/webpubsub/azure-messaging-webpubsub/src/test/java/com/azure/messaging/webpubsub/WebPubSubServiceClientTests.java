@@ -39,19 +39,27 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
 
     @Override
     protected void beforeTest() {
-        WebPubSubServiceClientBuilder webPubSubServiceClientBuilder = new WebPubSubServiceClientBuilder()
+        WebPubSubServiceClientBuilder builder = new WebPubSubServiceClientBuilder()
             .connectionString(TestUtils.getConnectionString())
             .retryOptions(TestUtils.getRetryOptions())
-            .httpClient(HttpClient.createDefault())
             .hub(TestUtils.HUB_NAME);
 
-        if (getTestMode() == TestMode.PLAYBACK) {
-            webPubSubServiceClientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else if (getTestMode() == TestMode.RECORD) {
-            webPubSubServiceClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+        switch (getTestMode()) {
+            case LIVE:
+                builder.httpClient(HttpClient.createDefault());
+                break;
+            case RECORD:
+                builder.httpClient(HttpClient.createDefault())
+                    .addPolicy(interceptorManager.getRecordPolicy());
+                break;
+            case PLAYBACK:
+                builder.httpClient(interceptorManager.getPlaybackClient());
+                break;
+            default:
+                throw new IllegalStateException("Unknown test mode. " + getTestMode());
         }
 
-        this.client = webPubSubServiceClientBuilder
+        this.client = builder
             .buildClient();
     }
 
@@ -63,8 +71,8 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     @Test
     public void testBroadcastString() {
         assertResponse(client.sendToAllWithResponse(
-                BinaryData.fromString("Hello World - Broadcast test!"),
-                new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
+            BinaryData.fromString("Hello World - Broadcast test!"),
+            new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
     }
 
     @Test
@@ -79,8 +87,8 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     public void testBroadcastBytes() {
         byte[] bytes = "Hello World - Broadcast test!".getBytes();
         assertResponse(client.sendToAllWithResponse(
-                BinaryData.fromBytes(bytes),
-                new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/octet-stream"))), 202);
+            BinaryData.fromBytes(bytes),
+            new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/octet-stream"))), 202);
     }
 
     @Test
@@ -89,7 +97,7 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
 
         assertResponse(client.sendToUserWithResponse("test_user",
             message,
-                new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
+            new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
 
         assertResponse(client.sendToUserWithResponse("test_user",
                 message, WebPubSubContentType.TEXT_PLAIN, message.getLength(),
@@ -128,15 +136,15 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     @Test
     public void testSendToUserBytes() {
         assertResponse(client.sendToUserWithResponse("test_user",
-                BinaryData.fromBytes("Hello World!".getBytes(StandardCharsets.UTF_8)),
-                new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/octet-stream"))), 202);
+            BinaryData.fromBytes("Hello World!".getBytes(StandardCharsets.UTF_8)),
+            new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/octet-stream"))), 202);
     }
 
     @Test
     public void testSendToConnectionString() {
         assertResponse(client.sendToConnectionWithResponse("test_connection",
-                BinaryData.fromString("Hello World!"),
-                new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
+            BinaryData.fromString("Hello World!"),
+            new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
     }
 
     @Test
@@ -150,33 +158,33 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     @Test
     public void testSendToConnectionBytes() {
         assertResponse(client.sendToConnectionWithResponse("test_connection",
-                BinaryData.fromBytes("Hello World!".getBytes(StandardCharsets.UTF_8)),
-                new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/octet-stream"))), 202);
+            BinaryData.fromBytes("Hello World!".getBytes(StandardCharsets.UTF_8)),
+            new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/octet-stream"))), 202);
     }
 
     @Test
     public void testSendToConnectionJson() {
         assertResponse(client.sendToConnectionWithResponse("test_connection",
-                BinaryData.fromString("{\"data\": true}"),
-                new RequestOptions()
-                        .addRequestCallback(request -> request.getHeaders().set("Content-Type", "application/json"))), 202);
+            BinaryData.fromString("{\"data\": true}"),
+            new RequestOptions()
+                .addRequestCallback(request -> request.getHeaders().set("Content-Type", "application/json"))), 202);
     }
 
     @Test
     public void testSendToAllJson() {
         RequestOptions requestOptions = new RequestOptions().addRequestCallback(request -> request.getHeaders().set(
-                "Content-Type", "application/json"));
+            "Content-Type", "application/json"));
 
         assertResponse(client.sendToAllWithResponse(BinaryData.fromString("{\"boolvalue\": true}"),
-                requestOptions), 202);
+            requestOptions), 202);
         assertResponse(client.sendToAllWithResponse(BinaryData.fromString("{\"stringvalue\": \"testingwebpubsub\"}"),
-                requestOptions), 202);
+            requestOptions), 202);
 
         assertResponse(client.sendToAllWithResponse(BinaryData.fromString("{\"intvalue\": 25}"),
-                requestOptions), 202);
+            requestOptions), 202);
 
         assertResponse(client.sendToAllWithResponse(BinaryData.fromString("{\"floatvalue\": 55.4}"),
-                requestOptions), 202);
+            requestOptions), 202);
     }
 
     @Test
@@ -219,30 +227,30 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     @Test
     public void testRemoveNonExistentUserFromGroup() {
         assertResponse(client.removeUserFromGroupWithResponse("java",
-                "testRemoveNonExistentUserFromGroup", new RequestOptions()), 204);
+            "testRemoveNonExistentUserFromGroup", new RequestOptions()), 204);
     }
 
     @Test
     public void testSendMessageToGroup() {
         assertResponse(client.sendToGroupWithResponse("java",
-                BinaryData.fromString("Hello World!"),
-                new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
+            BinaryData.fromString("Hello World!"),
+            new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
     }
 
     @Test
     public void testAadCredential() {
         WebPubSubServiceClientBuilder webPubSubServiceClientBuilder = new WebPubSubServiceClientBuilder()
-                .endpoint(TestUtils.getEndpoint())
-                .httpClient(HttpClient.createDefault())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .hub("test");
+            .endpoint(TestUtils.getEndpoint())
+            .httpClient(HttpClient.createDefault())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .hub("test");
 
         if (getTestMode() == TestMode.PLAYBACK) {
             webPubSubServiceClientBuilder.httpClient(interceptorManager.getPlaybackClient())
-                    .connectionString(TestUtils.getConnectionString());
+                .connectionString(TestUtils.getConnectionString());
         } else if (getTestMode() == TestMode.RECORD) {
             webPubSubServiceClientBuilder.addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
+                .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
             webPubSubServiceClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
@@ -250,8 +258,8 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
         this.client = webPubSubServiceClientBuilder.buildClient();
 
         assertResponse(client.sendToUserWithResponse("test_user",
-                BinaryData.fromString("Hello World!"),
-                new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
+            BinaryData.fromString("Hello World!"),
+            new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
     }
 
     @Test

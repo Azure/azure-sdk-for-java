@@ -60,13 +60,21 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
         WebPubSubServiceClientBuilder builder = new WebPubSubServiceClientBuilder()
             .connectionString(TestUtils.getConnectionString())
             .retryOptions(TestUtils.getRetryOptions())
-            .httpClient(HttpClient.createDefault())
             .hub(TestUtils.HUB_NAME);
 
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.httpClient(buildAsyncAssertingClient(interceptorManager.getPlaybackClient()));
-        } else if (getTestMode() == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
+        switch (getTestMode()) {
+            case LIVE:
+                builder.httpClient(HttpClient.createDefault());
+                break;
+            case RECORD:
+                builder.httpClient(HttpClient.createDefault())
+                    .addPolicy(interceptorManager.getRecordPolicy());
+                break;
+            case PLAYBACK:
+                builder.httpClient(interceptorManager.getPlaybackClient());
+                break;
+            default:
+                throw new IllegalStateException("Unknown test mode. " + getTestMode());
         }
 
         this.client = builder.buildAsyncClient();

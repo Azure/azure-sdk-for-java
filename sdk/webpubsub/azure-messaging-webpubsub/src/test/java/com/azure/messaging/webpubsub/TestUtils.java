@@ -28,7 +28,7 @@ final class TestUtils {
     }
 
     static RetryOptions getRetryOptions() {
-        return new RetryOptions(new FixedDelayOptions(0, Duration.ofSeconds(20)));
+        return new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(20)));
     }
 
     static HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
