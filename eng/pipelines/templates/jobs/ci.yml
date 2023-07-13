@@ -463,7 +463,6 @@ jobs:
   - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
     parameters:
       JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
-      PreGenerationSteps: /eng/pipelines/templates/steps/should-run-tests.yml
       MatrixConfigs: ${{ parameters.MatrixConfigs }}
       MatrixFilters: ${{ parameters.MatrixFilters }}
       MatrixReplace: ${{ parameters.MatrixReplace }}
@@ -481,3 +480,34 @@ jobs:
         TestOptions: ${{ parameters.TestOptions }}
         TestParallelization: ${{ parameters.TestParallelization }}
         BuildParallelization: ${{ parameters.BuildParallelization }}
+      PreGenerationSteps:
+        # Always run tests for non-PR builds.
+        # For PR builds check if any meaningful code changes have been made.
+        # A meaningful code change is changing of source code, Maven configurations, or pipeline configurations.
+        - pwsh: |
+            if ("$(Build.Reason)" -ne 'PullRequest') {
+              Write-Host "##vso[task.setvariable variable=ShouldRunTests;]true"
+              return
+            }
+
+            $changedFiles = & "eng/common/scripts/get-changedfiles.ps1"
+            foreach ($changedFile in $changedFiles) {
+              $inEngPipelines = $changedFile -match '^eng/pipelines'
+              $inEngScripts = $changedFile -match '^eng/scripts'
+              $inEngVersioning = $changedFile -match '^eng/versioning'
+              $sourceCodeFile = $changedFile -match '.*\.(groovy|java|kt|scala|xml|yml)$'
+
+              if ($changedFile -match '.*\.(java|groovy|xml|yml)$') {
+                Write-Host "##vso[task.setvariable variable=ShouldRunTests;]true"
+                return
+              }
+            }
+
+            Write-Host "##vso[task.setvariable variable=ShouldRunTests;]false"
+          displayName: "Check if tests should be run"
+
+        - ${{ each config in parameters.MatrixConfigs }}:
+          pwsh: |
+            "{}" | Out-File -FilePath ${{ config.Path }}
+          displayName: "Rewrite test matrix to skip tests"
+          condition: eq(variables['ShouldRunTests'], 'false')
