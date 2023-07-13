@@ -11,6 +11,7 @@ pr:
 
 variables:
   - template: /eng/pipelines/templates/variables/globals.yml
+  - IsLatestNonLtsJdk: true
 
 stages:
   - stage: LatestJdk
