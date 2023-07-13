@@ -91,7 +91,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             this.clientWithPreferredRegions =
                 this.getClientBuilder()
                     .contentResponseOnWriteEnabled(true)
-                    .preferredRegions(this.preferredRegionList.subList(1,2))
+                    .preferredRegions(this.preferredRegionList)
                     .multipleWriteRegionsEnabled(true)
                     .buildAsyncClient();
 
