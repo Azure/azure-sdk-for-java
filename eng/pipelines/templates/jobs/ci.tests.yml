@@ -110,6 +110,11 @@ jobs:
 
       - ${{ parameters.PreTestSteps }}
 
+      - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
+        parameters:
+          JavaBuildVersion: $(JavaTestVersion)
+          AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+
       - template: /eng/pipelines/templates/steps/build-and-test.yml
         parameters:
           SDKType: ${{ parameters.SDKType }}
@@ -119,10 +124,5 @@ jobs:
           TestOptions: ${{ parameters.TestOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
-
-      - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
-        parameters:
-          JavaBuildVersion: $(JavaTestVersion)
-          AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
 
       - template: /eng/common/testproxy/publish-proxy-logs.yml
