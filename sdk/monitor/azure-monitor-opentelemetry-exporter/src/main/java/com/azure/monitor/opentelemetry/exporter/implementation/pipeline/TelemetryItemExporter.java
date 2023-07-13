@@ -151,7 +151,7 @@ public class TelemetryItemExporter {
         // Don't send _OTELRESOURCE_ custom metric when OTEL_RESOURCE_ATTRIBUTES env var is empty
         // Don't send _OTELRESOURCE_ custom metric to Statsbeat yet
         // insert _OTELRESOURCE_ at the beginning of each batch
-        if (!AksResourceAttributes.otelResourceAttributes.isEmpty()
+        if (!AksResourceAttributes.getOtelResourceAttributes().isEmpty()
             && !"Statsbeat".equals(telemetryItems.get(0).getName())) {
             telemetryItems.add(
                 0, createOtelResourceMetric(telemetryItems.get(0).getTags(), connectionString));
@@ -183,7 +183,7 @@ public class TelemetryItemExporter {
 
         // add attributes from OTEL_RESOURCE_ATTRIBUTES
         for (Map.Entry<String, String> entry :
-            AksResourceAttributes.otelResourceAttributes.entrySet()) {
+            AksResourceAttributes.getOtelResourceAttributes().entrySet()) {
             builder.addProperty(entry.getKey(), entry.getValue());
         }
         return builder.build();

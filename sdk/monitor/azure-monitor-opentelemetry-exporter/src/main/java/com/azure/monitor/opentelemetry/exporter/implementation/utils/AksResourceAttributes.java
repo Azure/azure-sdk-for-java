@@ -20,15 +20,15 @@ public final class AksResourceAttributes {
     private static final String AZURE_AKS = "azure_aks";
     private static final String UNKNOWN_SERVICE = "unknown_service";
     private static final ClientLogger logger = new ClientLogger(AksResourceAttributes.class);
-    public static Map<String, String> otelResourceAttributes;
+    static Map<String, String> otelResourceAttributes = initOtelResourceAttributes();
 
-    static {
+    // visible for tests only
+    public static void reloadOtelResourceAttributes() {
         otelResourceAttributes = initOtelResourceAttributes();
     }
 
-    // visible for tests only
-    static void reloadOtelResourceAttributes() {
-        otelResourceAttributes = initOtelResourceAttributes();
+    public static Map<String, String> getOtelResourceAttributes() {
+        return otelResourceAttributes;
     }
 
     public static boolean isAks() {
@@ -84,7 +84,7 @@ public final class AksResourceAttributes {
     // TODO remove manual parsing once SDK 1.28.0 is released
     // (see https://github.com/open-telemetry/opentelemetry-java/pull/5554)
     // visible for testing
-    public static Map<String, String> initOtelResourceAttributes() {
+    private static Map<String, String> initOtelResourceAttributes() {
         Map<String, String> originalMap =
             DefaultConfigProperties.create(Collections.emptyMap()).getMap("otel.resource.attributes");
         Map<String, String> decodedMap = new HashMap<>(originalMap.size());
