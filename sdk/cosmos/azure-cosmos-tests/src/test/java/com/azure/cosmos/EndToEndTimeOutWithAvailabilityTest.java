@@ -91,7 +91,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             this.clientWithPreferredRegions =
                 this.getClientBuilder()
                     .contentResponseOnWriteEnabled(true)
-                    .preferredRegions(this.preferredRegionList)
+                    .preferredRegions(this.preferredRegionList.subList(1,2))
                     .multipleWriteRegionsEnabled(true)
                     .buildAsyncClient();
 
@@ -141,16 +141,29 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             throw new SkipException("excludeRegionTest_SkipFirstPreferredRegion can only be tested for multi-master with multi-regions");
         }
 
+        if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Failure injection only supported for DIRECT mode");
+        }
+
         TestItem createdItem = TestItem.createNewItem();
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         this.cosmosAsyncContainer.createItem(createdItem).block();
-        CosmosEndToEndOperationLatencyPolicyConfig config = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(3))
+        CosmosEndToEndOperationLatencyPolicyConfig config = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(6))
             .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(Duration.ofMillis(100), Duration.ofMillis(200)))
             .build();
         options.setCosmosEndToEndOperationLatencyPolicyConfig(config);
-        FaultInjectionRule rule = injectFailure(createdContainer, faultInjectionOperationType);
-        CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, null);
+        options.setNonIdempotentWriteRetryPolicy(true, true);
+        FaultInjectionRule rule = injectFailure(cosmosAsyncContainer, faultInjectionOperationType);
+        CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, options);
         assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isGreaterThan(1);
+        ObjectNode diagnosticsNode = null;
+        try {
+            diagnosticsNode = (ObjectNode) OBJECT_MAPPER.readTree(cosmosDiagnostics.toString());
+            assertResponseFromSpeculatedRegion(diagnosticsNode);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        rule.disable();
     }
 
     @DataProvider(name = "faultInjectionArgProvider")
@@ -160,7 +173,6 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM},
             {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM},
             {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM},
-//            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM },
             {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM}
         };
     }
@@ -256,7 +268,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
 
         FaultInjectionServerErrorResultBuilder faultInjectionResultBuilder = FaultInjectionResultBuilders
             .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
-            .delay(Duration.ofMillis(5000))
+            .delay(Duration.ofMillis(6000))
             .times(1);
 
         IFaultInjectionResult result = faultInjectionResultBuilder.build();
@@ -333,9 +345,6 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             || operationType == OperationType.Patch
             || operationType == OperationType.Upsert) {
 
-//            CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
-//            cosmosItemRequestOptions.setExcludedRegions(excludeRegions);
-
             if (operationType == OperationType.Read) {
 
                 return cosmosAsyncContainer.readItem(
@@ -374,7 +383,6 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
                         .add("/newPath", "newPath");
 
                 CosmosPatchItemRequestOptions patchItemRequestOptions = new CosmosPatchItemRequestOptions();
-//                patchItemRequestOptions.setExcludedRegions(excludeRegions);
                 return cosmosAsyncContainer
                     .patchItem(createdItem.getId(), new PartitionKey(createdItem.getMypk()), patchOperations, patchItemRequestOptions, TestItem.class)
                     .block().getDiagnostics();
