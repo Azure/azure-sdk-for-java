@@ -503,11 +503,6 @@ jobs:
               }
             }
 
+            Write-Host ${{ parameters.MatrixConfigs }}
             Write-Host "##vso[task.setvariable variable=ShouldRunTests;]false"
           displayName: "Check if tests should be run"
-
-        - ${{ each config in parameters.MatrixConfigs }}:
-          pwsh: |
-            "{}" | Out-File -FilePath ${{ config.Path }}
-          displayName: "Rewrite test matrix to skip tests"
-          condition: eq(variables['ShouldRunTests'], 'false')
