@@ -40,7 +40,6 @@ steps:
         exit 1
       }
     displayName: 'Fail Pipeline if Linting Reports Exist'
-    continueOnError: ${{ eq(variables['IsLatestNonLtsJdk'], true) }}
     condition: eq(coalesce(variables['IsLatestNonLtsJdk'], true), true)
 
   - task: Maven@3
@@ -54,5 +53,4 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       goals: 'verify'
-    continueOnError: ${{ eq(variables['IsLatestNonLtsJdk'], true) }}
     condition: eq(coalesce(variables['IsLatestNonLtsJdk'], true), true)

@@ -50,8 +50,7 @@ steps:
       goals: 'install'
     env:
       AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
-    continueOnError: ${{ eq(variables['IsLatestNonLtsJdk'], true) }}
-    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
+    condition: or(and(succeeded(), ne(variables['TestFromSource'], 'true')), eq(variables['IsLatestNonLtsJdk'], true))
 
   - task: PythonScript@0
     displayName: 'Update external dependency versions'
@@ -73,7 +72,6 @@ steps:
       goals: 'install'
     env:
       AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
-    continueOnError: ${{ eq(variables['IsLatestNonLtsJdk'], true) }}
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
   # we want to run this when TestFromSource isn't true
@@ -89,12 +87,7 @@ steps:
       publishJUnitResults: false
       goals: ${{ parameters.TestGoals }}
     env: ${{ parameters.TestEnvVars }}
-    continueOnError: ${{ eq(variables['IsLatestNonLtsJdk'], true) }}
-    # Only run tests if the build succeeded without errors.
-    # This doesn't use the built-in 'succeeded()' as the passes if the build succeeded or succeeded with warnings,
-    # which is what continueOnError: true does.
-    # https://learn.microsoft.com/azure/devops/pipelines/process/expressions?view=azure-devops#succeeded
-    condition: and(eq(variables['Agent.JobStatus'], 'Succeeded'), ne(variables['TestFromSource'], 'true'))
+    condition: or(and(succeeded(), ne(variables['TestFromSource'], 'true')), eq(variables['IsLatestNonLtsJdk'], true))
 
   # Generate the pom file with all the modules required for creating an aggregate code coverage report
   - task: PythonScript@0
