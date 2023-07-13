@@ -4,16 +4,63 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterJobConstructorProxy;
+import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
+import com.azure.communication.jobrouter.implementation.converters.LabelSelectorAdapter;
+import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /** A unit of work to be routed. */
 @Fluent
 public final class RouterJob {
+    public RouterJob(String id) {
+        this.id = id;
+    }
+
+    /**
+     * Package-private constructor of the class, used internally.
+     *
+     * @param internal The internal RouterJob
+     */
+    RouterJob(RouterJobInternal internal) {
+        id = internal.getId();
+        requestedWorkerSelectors = internal.getRequestedWorkerSelectors().stream()
+            .map(ws -> LabelSelectorAdapter.convertWorkerSelectorToPublic(ws))
+            .collect(Collectors.toList());
+        attachedWorkerSelectors = internal.getAttachedWorkerSelectors().stream()
+            .map(ws -> LabelSelectorAdapter.convertWorkerSelectorToPublic(ws))
+            .collect(Collectors.toList());
+        assignments = internal.getAssignments().entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> JobAdapter.convertJobAssignmentToPublic(entry.getValue())));
+        status = RouterJobStatus.fromString(internal.getStatus().toString());
+        enqueuedAt = internal.getEnqueuedAt();
+        scheduledAt = internal.getScheduledAt();
+
+        setChannelId(internal.getChannelId());
+        setChannelReference(internal.getChannelReference());
+        setQueueId(internal.getQueueId());
+        setLabels(internal.getLabels().entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> (LabelValue)entry.getValue())));
+        setNotes(internal.getNotes());
+        setPriority(internal.getPriority());
+        setClassificationPolicyId(internal.getClassificationPolicyId());
+        setDispositionCode(internal.getDispositionCode());
+        setClassificationPolicyId(internal.getClassificationPolicyId());
+        setTags(internal.getTags().entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> (LabelValue)entry.getValue())));
+        setMatchingMode(JobAdapter.convertMatchingModeToPublic(internal.getMatchingMode()));
+    }
+
+    static {
+        RouterJobConstructorProxy.setAccessor(internal -> new RouterJob(internal));
+    }
+
     /*
      * The id of the job.
      */
@@ -87,7 +134,7 @@ public final class RouterJob {
      * rules engines to make decisions.
      */
     @JsonProperty(value = "labels")
-    private Map<String, Object> labels;
+    private Map<String, LabelValue> labels;
 
     /*
      * A collection of the assignments of the job.
@@ -100,7 +147,7 @@ public final class RouterJob {
      * A set of non-identifying attributes attached to this job
      */
     @JsonProperty(value = "tags")
-    private Map<String, Object> tags;
+    private Map<String, LabelValue> tags;
 
     /*
      * Notes attached to a job, sorted by timestamp
@@ -118,7 +165,7 @@ public final class RouterJob {
      * The matchingMode property.
      */
     @JsonProperty(value = "matchingMode")
-    private JobMatchingMode matchingMode;
+    private RouterJobMatchingMode matchingMode;
 
     /**
      * Get the id property: The id of the job.
@@ -305,7 +352,7 @@ public final class RouterJob {
      *
      * @return the labels value.
      */
-    public Map<String, Object> getLabels() {
+    public Map<String, LabelValue> getLabels() {
         return this.labels;
     }
 
@@ -316,7 +363,7 @@ public final class RouterJob {
      * @param labels the labels value to set.
      * @return the RouterJob object itself.
      */
-    public RouterJob setLabels(Map<String, Object> labels) {
+    public RouterJob setLabels(Map<String, LabelValue> labels) {
         this.labels = labels;
         return this;
     }
@@ -335,7 +382,7 @@ public final class RouterJob {
      *
      * @return the tags value.
      */
-    public Map<String, Object> getTags() {
+    public Map<String, LabelValue> getTags() {
         return this.tags;
     }
 
@@ -345,7 +392,7 @@ public final class RouterJob {
      * @param tags the tags value to set.
      * @return the RouterJob object itself.
      */
-    public RouterJob setTags(Map<String, Object> tags) {
+    public RouterJob setTags(Map<String, LabelValue> tags) {
         this.tags = tags;
         return this;
     }
@@ -384,7 +431,7 @@ public final class RouterJob {
      *
      * @return the matchingMode value.
      */
-    public JobMatchingMode getMatchingMode() {
+    public RouterJobMatchingMode getMatchingMode() {
         return this.matchingMode;
     }
 
@@ -394,7 +441,7 @@ public final class RouterJob {
      * @param matchingMode the matchingMode value to set.
      * @return the RouterJob object itself.
      */
-    public RouterJob setMatchingMode(JobMatchingMode matchingMode) {
+    public RouterJob setMatchingMode(RouterJobMatchingMode matchingMode) {
         this.matchingMode = matchingMode;
         return this;
     }

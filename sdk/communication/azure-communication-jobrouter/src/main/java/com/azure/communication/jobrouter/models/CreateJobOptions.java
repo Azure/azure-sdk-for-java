@@ -61,12 +61,37 @@ public final class CreateJobOptions {
     /**
      * A set of non-identifying attributes attached to this job.
      */
-    private Map<String, Object> tags;
+    private Map<String, LabelValue> tags;
 
     /**
      * Notes attached to a job, sorted by timestamp.
      */
     private List<RouterJobNote> notes;
+
+    /*
+     * The matchingMode property.
+     */
+    private RouterJobMatchingMode matchingMode;
+
+    /**
+     * Get the matchingMode property: The matchingMode property.
+     *
+     * @return the matchingMode value.
+     */
+    public RouterJobMatchingMode getMatchingMode() {
+        return this.matchingMode;
+    }
+
+    /**
+     * Set the matchingMode property: The matchingMode property.
+     *
+     * @param matchingMode the matchingMode value to set.
+     * @return the RouterJobInternal object itself.
+     */
+    public CreateJobOptions setMatchingMode(RouterJobMatchingMode matchingMode) {
+        this.matchingMode = matchingMode;
+        return this;
+    }
 
     /**
      * Constructor for CreateJobOptions.
@@ -147,7 +172,7 @@ public final class CreateJobOptions {
      * @param tags A set of non-identifying attributes attached to this job.
      * @return this
      */
-    public CreateJobOptions setTags(Map<String, Object> tags) {
+    public CreateJobOptions setTags(Map<String, LabelValue> tags) {
         this.tags = tags;
         return this;
     }
@@ -240,7 +265,7 @@ public final class CreateJobOptions {
      * A set of non-identifying attributes attached to this job
      * @return tags
      */
-    public Map<String, Object> getTags() {
+    public Map<String, LabelValue> getTags() {
         return this.tags;
     }
 

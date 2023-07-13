@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes a label selector that will always be attached. */
+/** Describes a worker selector that will always be attached. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("static")
 @Fluent
@@ -22,20 +22,20 @@ public final class StaticWorkerSelector extends WorkerSelectorAttachment {
     private RouterWorkerSelector workerSelector;
 
     /**
-     * Get the labelSelector property: Describes a condition that must be met against a set of labels for worker
+     * Get the workerSelector property: Describes a condition that must be met against a set of labels for worker
      * selection.
      *
-     * @return the labelSelector value.
+     * @return the workerSelector value.
      */
     public RouterWorkerSelector getWorkerSelector() {
         return this.workerSelector;
     }
 
     /**
-     * Set the labelSelector property: Describes a condition that must be met against a set of labels for worker
+     * Set the workerSelector property: Describes a condition that must be met against a set of labels for worker
      * selection.
      *
-     * @param workerSelector the labelSelector value to set.
+     * @param workerSelector the workerSelector value to set.
      * @return the StaticWorkerSelector object itself.
      */
     public StaticWorkerSelector setWorkerSelector(RouterWorkerSelector workerSelector) {

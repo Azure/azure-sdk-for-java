@@ -1,0 +1,76 @@
+package com.azure.communication.jobrouter.implementation.converters;
+
+import com.azure.communication.jobrouter.implementation.models.DirectMapRouterRuleInternal;
+import com.azure.communication.jobrouter.implementation.models.ExpressionRouterRuleInternal;
+import com.azure.communication.jobrouter.implementation.models.ExpressionRouterRuleLanguageInternal;
+import com.azure.communication.jobrouter.implementation.models.FunctionRouterRuleCredentialInternal;
+import com.azure.communication.jobrouter.implementation.models.FunctionRouterRuleInternal;
+import com.azure.communication.jobrouter.implementation.models.Oauth2ClientCredentialInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterRuleInternal;
+import com.azure.communication.jobrouter.implementation.models.StaticRouterRuleInternal;
+import com.azure.communication.jobrouter.implementation.models.WebhookRouterRuleInternal;
+import com.azure.communication.jobrouter.models.DirectMapRouterRule;
+import com.azure.communication.jobrouter.models.ExpressionRouterRule;
+import com.azure.communication.jobrouter.models.ExpressionRouterRuleLanguage;
+import com.azure.communication.jobrouter.models.FunctionRouterRule;
+import com.azure.communication.jobrouter.models.FunctionRouterRuleCredential;
+import com.azure.communication.jobrouter.models.Oauth2ClientCredential;
+import com.azure.communication.jobrouter.models.RouterRule;
+import com.azure.communication.jobrouter.models.StaticRouterRule;
+import com.azure.communication.jobrouter.models.WebhookRouterRule;
+
+/**
+ * Converts between RouterRule and RouterRuleInternal
+ */
+public class RouterRuleAdapter {
+
+    public static RouterRuleInternal convertRouterRuleToInternal(RouterRule rule) {
+        if (rule instanceof DirectMapRouterRule) {
+            return new DirectMapRouterRuleInternal();
+        } else if (rule instanceof ExpressionRouterRule) {
+            return new ExpressionRouterRuleInternal().setExpression(((ExpressionRouterRule) rule).getExpression())
+                .setLanguage(ExpressionRouterRuleLanguageInternal.POWER_FX);
+        } else if (rule instanceof FunctionRouterRule functionRouterRule) {
+            return new FunctionRouterRuleInternal().setFunctionUri(functionRouterRule.getFunctionUri())
+                .setCredential(new FunctionRouterRuleCredentialInternal()
+                    .setFunctionKey(functionRouterRule.getCredential().getFunctionKey())
+                    .setAppKey(functionRouterRule.getCredential().getAppKey())
+                    .setClientId(functionRouterRule.getCredential().getClientId()));
+        } else if (rule instanceof StaticRouterRule staticRouterRule) {
+            return new StaticRouterRuleInternal().setValue(staticRouterRule.getValue());
+        } else if (rule instanceof WebhookRouterRule webhookRouterRule) {
+            return new WebhookRouterRuleInternal().setWebhookUri(webhookRouterRule.getWebhookUri())
+                .setClientCredential(new Oauth2ClientCredentialInternal()
+                    .setClientId(webhookRouterRule.getClientCredential().getClientId())
+                    .setClientSecret(webhookRouterRule.getClientCredential().getClientSecret()))
+                .setAuthorizationServerUri(webhookRouterRule.getAuthorizationServerUri());
+        }
+
+        return new RouterRuleInternal();
+    }
+
+    public static RouterRule convertRouterRuleToPublic(RouterRuleInternal rule) {
+        if (rule instanceof DirectMapRouterRuleInternal) {
+            return new DirectMapRouterRule();
+        } else if (rule instanceof ExpressionRouterRuleInternal) {
+            return new ExpressionRouterRule().setExpression(((ExpressionRouterRuleInternal) rule).getExpression())
+                .setLanguage(ExpressionRouterRuleLanguage.POWER_FX);
+        } else if (rule instanceof FunctionRouterRuleInternal functionRouterRule) {
+            return new FunctionRouterRule().setFunctionUri(functionRouterRule.getFunctionUri())
+                .setCredential(new FunctionRouterRuleCredential()
+                    .setFunctionKey(functionRouterRule.getCredential().getFunctionKey())
+                    .setAppKey(functionRouterRule.getCredential().getAppKey())
+                    .setClientId(functionRouterRule.getCredential().getClientId()));
+        } else if (rule instanceof StaticRouterRuleInternal staticRouterRule) {
+            return new StaticRouterRule().setValue(staticRouterRule.getValue());
+        } else if (rule instanceof WebhookRouterRuleInternal webhookRouterRule) {
+            return new WebhookRouterRule().setWebhookUri(webhookRouterRule.getWebhookUri())
+                .setClientCredential(new Oauth2ClientCredential()
+                    .setClientId(webhookRouterRule.getClientCredential().getClientId())
+                    .setClientSecret(webhookRouterRule.getClientCredential().getClientSecret()))
+                .setAuthorizationServerUri(webhookRouterRule.getAuthorizationServerUri());
+        }
+
+        return null;
+    }
+}

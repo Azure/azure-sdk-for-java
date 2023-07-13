@@ -4,13 +4,48 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.communication.jobrouter.implementation.accesshelpers.ClassificationPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.converters.LabelSelectorAdapter;
+import com.azure.communication.jobrouter.implementation.converters.RouterRuleAdapter;
+import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
+import com.azure.communication.jobrouter.implementation.models.QueueSelectorAttachmentInternal;
+import com.azure.communication.jobrouter.implementation.models.WorkerSelectorAttachmentInternal;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 /** A container for the rules that govern how jobs are classified. */
 @Fluent
 public final class ClassificationPolicy {
+    public ClassificationPolicy(String id) {
+        this.id = id;
+    }
+
+    /**
+     * Package-private constructor of the class, used internally.
+     *
+     * @param internal The internal ClassificationPolicy
+     */
+    ClassificationPolicy(ClassificationPolicyInternal internal) {
+        id = internal.getId();
+
+        setName(internal.getName());
+        setPrioritizationRule(RouterRuleAdapter.convertRouterRuleToPublic(internal.getPrioritizationRule()));
+        setFallbackQueueId(internal.getFallbackQueueId());
+        setQueueSelectors(internal.getQueueSelectors().stream()
+            .map(qs -> LabelSelectorAdapter.convertQueueSelectorAttachmentToPublic((QueueSelectorAttachmentInternal)qs))
+            .collect(Collectors.toList()));
+        setWorkerSelectors(internal.getWorkerSelectors().stream()
+            .map(ws -> LabelSelectorAdapter.convertWorkerSelectorAttachmentToPublic((WorkerSelectorAttachmentInternal)ws))
+            .collect(Collectors.toList()));
+    }
+
+    static {
+        ClassificationPolicyConstructorProxy.setAccessor(internal -> new ClassificationPolicy(internal));
+    }
+
     /*
      * Unique identifier of this policy.
      */

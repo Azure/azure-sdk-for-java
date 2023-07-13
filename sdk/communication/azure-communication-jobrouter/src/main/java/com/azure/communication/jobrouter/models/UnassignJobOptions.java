@@ -3,6 +3,9 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.communication.jobrouter.implementation.models.UnassignJobRequest;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Request options to unassign a job from a worker.
  */
@@ -16,6 +19,33 @@ public final class UnassignJobOptions {
      * id of assignment associated with the job.
      */
     private final String assignmentId;
+
+    /*
+     * If suspendMatching is true, then the job is not queued for re-matching with a worker.
+     */
+    private Boolean suspendMatching;
+
+    /**
+     * Get the suspendMatching property: If suspendMatching is true, then the job is not queued for re-matching with a
+     * worker.
+     *
+     * @return the suspendMatching value.
+     */
+    public Boolean isSuspendMatching() {
+        return this.suspendMatching;
+    }
+
+    /**
+     * Set the suspendMatching property: If suspendMatching is true, then the job is not queued for re-matching with a
+     * worker.
+     *
+     * @param suspendMatching the suspendMatching value to set.
+     * @return the UnassignJobOptions object itself.
+     */
+    public UnassignJobOptions setSuspendMatching(Boolean suspendMatching) {
+        this.suspendMatching = suspendMatching;
+        return this;
+    }
 
     /**
      * Constructor for UnassignJobOptions.

@@ -4,13 +4,40 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterQueueConstructorProxy;
+import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /** A queue that can contain jobs to be routed. */
 @Fluent
 public final class RouterQueue {
+    public RouterQueue(String id) {
+        this.id = id;
+    }
+
+    /**
+     * Package-private constructor of the class, used internally.
+     *
+     * @param internal The internal RouterQueue
+     */
+    RouterQueue(RouterQueueInternal internal) {
+        id = internal.getId();
+
+        setName(internal.getName());
+        setDistributionPolicyId(internal.getDistributionPolicyId());
+        setExceptionPolicyId(internal.getExceptionPolicyId());
+        setLabels(internal.getLabels().entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> (LabelValue)entry.getValue())));
+    }
+
+    static {
+        RouterQueueConstructorProxy.setAccessor(internal -> new RouterQueue(internal));
+    }
+
     /*
      * The Id of this queue
      */
@@ -35,7 +62,7 @@ public final class RouterQueue {
      * rules engines to make decisions.
      */
     @JsonProperty(value = "labels")
-    private Map<String, Object> labels;
+    private Map<String, LabelValue> labels;
 
     /*
      * (Optional) The ID of the exception policy that determines various job
@@ -101,7 +128,7 @@ public final class RouterQueue {
      *
      * @return the labels value.
      */
-    public Map<String, Object> getLabels() {
+    public Map<String, LabelValue> getLabels() {
         return this.labels;
     }
 
@@ -112,7 +139,7 @@ public final class RouterQueue {
      * @param labels the labels value to set.
      * @return the RouterQueue object itself.
      */
-    public RouterQueue setLabels(Map<String, Object> labels) {
+    public RouterQueue setLabels(Map<String, LabelValue> labels) {
         this.labels = labels;
         return this;
     }

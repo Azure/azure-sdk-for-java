@@ -27,7 +27,7 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
      * existing) in key-value pairs
      */
     @JsonProperty(value = "labelsToUpsert")
-    private Map<String, Object> labelsToUpsert;
+    private Map<String, LabelValue> labelsToUpsert;
 
     /**
      * Get the classificationPolicyId property: (optional) The new classification policy that will determine queue,
@@ -57,7 +57,7 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
      *
      * @return the labelsToUpsert value.
      */
-    public Map<String, Object> getLabelsToUpsert() {
+    public Map<String, LabelValue> getLabelsToUpsert() {
         return this.labelsToUpsert;
     }
 
@@ -68,7 +68,7 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
      * @param labelsToUpsert the labelsToUpsert value to set.
      * @return the ReclassifyExceptionAction object itself.
      */
-    public ReclassifyExceptionAction setLabelsToUpsert(Map<String, Object> labelsToUpsert) {
+    public ReclassifyExceptionAction setLabelsToUpsert(Map<String, LabelValue> labelsToUpsert) {
         this.labelsToUpsert = labelsToUpsert;
         return this;
     }
