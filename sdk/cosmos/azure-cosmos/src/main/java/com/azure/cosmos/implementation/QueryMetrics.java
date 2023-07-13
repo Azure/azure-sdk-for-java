@@ -3,10 +3,10 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.query.metrics.FetchExecutionRange;
 import com.azure.cosmos.implementation.query.metrics.SchedulingTimeSpan;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 /**
  * Query metrics in the Azure Cosmos database service.
  * This metric represents a moving average for a set of queries whose metrics have been aggregated together.
@@ -287,6 +288,10 @@ public final class QueryMetrics {
 
     @Override
     public String toString() {
-        return RntbdObjectMapper.toString(this);
+        try {
+            return Utils.getSimpleObjectMapper().writeValueAsString(this);
+        } catch (final JsonProcessingException error) {
+            return "null";
+        }
     }
 }

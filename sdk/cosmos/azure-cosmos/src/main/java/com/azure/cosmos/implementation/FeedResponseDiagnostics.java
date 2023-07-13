@@ -3,15 +3,23 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import com.azure.cosmos.implementation.query.QueryInfo;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.DurationDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 /**
  * The type Feed response diagnostics.
@@ -19,6 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class FeedResponseDiagnostics {
 
     private static final ObjectMapper mapper = new ObjectMapper();
+    private static final SimpleFilterProvider filterProvider = new SimpleFilterProvider();
     private static final Logger LOGGER = LoggerFactory.getLogger(FeedResponseDiagnostics.class);
     private Map<String, QueryMetrics> queryMetricsMap;
     private QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext;
@@ -30,6 +39,11 @@ public class FeedResponseDiagnostics {
         if (clientSideRequestStatistics != null) {
             this.clientSideRequestStatistics.addAll(clientSideRequestStatistics);
         }
+        mapper.registerModule(new SimpleModule()
+            .addSerializer(Duration.class, ToStringSerializer.instance)
+            .addDeserializer(Duration.class, DurationDeserializer.INSTANCE)
+            .addSerializer(Instant.class, ToStringSerializer.instance))
+            .setFilterProvider(filterProvider);
     }
 
     public FeedResponseDiagnostics(FeedResponseDiagnostics toBeCloned) {
@@ -61,7 +75,16 @@ public class FeedResponseDiagnostics {
      */
     @Override
     public String toString() {
-        return RntbdObjectMapper.toString(this);
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (final JsonProcessingException error) {
+            LOGGER.debug("could not convert {} value to JSON due to:", this.getClass(), error);
+            try {
+                return lenientFormat("{\"error\":%s}", mapper.writeValueAsString(error.toString()));
+            } catch (final JsonProcessingException exception) {
+                return "null";
+            }
+        }
     }
 
     public void setDiagnosticsContext(QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext) {
