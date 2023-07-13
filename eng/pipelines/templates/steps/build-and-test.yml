@@ -35,9 +35,6 @@ parameters:
   - name: ExcludeProjectList
     type: string
     default: 'com.azure.resourcemanager:azure-resourcemanager-samples'
-  - name: ContinueOnError
-    type: boolean
-    default: false
 
 steps:
   - task: Maven@3
@@ -53,7 +50,7 @@ steps:
       goals: 'install'
     env:
       AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
-    continueOnError: ${{ parameters.ContinueOnError }}
+    continueOnError: ${{ coalesce(variables['IsLatestNonLtsJdk'], false) }}
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
   - task: PythonScript@0
@@ -76,7 +73,7 @@ steps:
       goals: 'install'
     env:
       AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
-    continueOnError: ${{ parameters.ContinueOnError }}
+    continueOnError: ${{ coalesce(variables['IsLatestNonLtsJdk'], false) }}
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
   # we want to run this when TestFromSource isn't true
@@ -92,7 +89,7 @@ steps:
       publishJUnitResults: false
       goals: ${{ parameters.TestGoals }}
     env: ${{ parameters.TestEnvVars }}
-    continueOnError: ${{ parameters.ContinueOnError }}
+    continueOnError: ${{ coalesce(variables['IsLatestNonLtsJdk'], false) }}
     # Only run tests if the build succeeded without errors.
     # This doesn't use the built-in 'succeeded()' as the passes if the build succeeded or succeeded with warnings,
     # which is what continueOnError: true does.

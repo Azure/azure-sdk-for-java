@@ -60,10 +60,12 @@ stages:
 
           - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
+          - pwsh: |
+              Write-Host "##vso[task.setvariable variable=IsLatestNonLtsJdk;]true"
+
           - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
             parameters:
               LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
-              IsLatestNonLtsJdk: true
 
           - task: Maven@3
             displayName: 'Run All Libraries Latest JDK'

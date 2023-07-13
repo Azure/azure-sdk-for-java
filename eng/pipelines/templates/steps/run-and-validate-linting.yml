@@ -5,12 +5,6 @@ parameters:
   - name: AdditionalLintingOptions
     type: string
     default: ''
-  - name: ContinueOnError
-    type: boolean
-    default: false
-  - name: RunLinting
-    type: boolean
-    default: true
 
 steps:
   - task: Maven@3
@@ -24,7 +18,7 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       goals: 'verify'
-    condition: ${{ parameters.RunLinting }}
+    condition: ${{ coalesce(variables['IsLatestNonLtsJdk'], true) }}
 
   - task: PowerShell@2
     inputs:
@@ -33,12 +27,12 @@ steps:
       pwsh: true
       workingDirectory: $(Pipeline.Workspace)
     displayName: 'Generate Linting Reports'
-    condition: ${{ parameters.RunLinting }}
+    condition: ${{ coalesce(variables['IsLatestNonLtsJdk'], true) }}
 
   - publish: $(Build.ArtifactStagingDirectory)/linting-reports.zip
     displayName: 'Publish Linting Reports'
     artifact: linting-reports-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
-    condition: ${{ parameters.RunLinting }}
+    condition: ${{ coalesce(variables['IsLatestNonLtsJdk'], true) }}
 
   - pwsh: |
       if ((Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/linting-reports -Directory | Measure-Object).Count -gt 0) {
@@ -46,8 +40,8 @@ steps:
         exit 1
       }
     displayName: 'Fail Pipeline if Linting Reports Exist'
-    continueOnError: ${{ parameters.ContinueOnError }}
-    condition: ${{ parameters.RunLinting }}
+    continueOnError: ${{ coalesce(variables['IsLatestNonLtsJdk'], false) }}
+    condition: ${{ coalesce(variables['IsLatestNonLtsJdk'], true) }}
 
   - task: Maven@3
     displayName: 'Run Javadoc'
@@ -60,5 +54,5 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       goals: 'verify'
-    continueOnError: ${{ parameters.ContinueOnError }}
-    condition: ${{ parameters.RunLinting }}
+    continueOnError: ${{ coalesce(variables['IsLatestNonLtsJdk'], false) }}
+    condition: ${{ coalesce(variables['IsLatestNonLtsJdk'], true) }}
