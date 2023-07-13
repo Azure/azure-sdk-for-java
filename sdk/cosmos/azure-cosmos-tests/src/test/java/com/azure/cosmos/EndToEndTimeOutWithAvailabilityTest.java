@@ -67,7 +67,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
 
 
     // These regions should match the ones in test-resources.json
-    private final List<String> regions = ImmutableList.of("West US 2", "East US 2");
+    private List<String> regions;
 
     @Factory(dataProvider = "clientBuildersWithDirectTcpSession")
     public EndToEndTimeOutWithAvailabilityTest(CosmosClientBuilder clientBuilder) {
@@ -79,14 +79,6 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
 
     @BeforeClass(groups = {"multi-region"}, timeOut = SETUP_TIMEOUT * 100)
     public void beforeClass() throws Exception {
-//        CosmosClientBuilder builder = this.getClientBuilder();
-//        builder.preferredRegions(regions);
-//        CosmosAsyncClient client = builder.buildAsyncClient();
-//        CosmosAsyncDatabase createdDatabase = getSharedCosmosDatabase(client);
-//        createdContainer = getSharedMultiPartitionCosmosContainer(client);
-//        truncateCollection(createdContainer);
-//
-//        createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer));
         System.setProperty("COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS", "1000");
         System.setProperty("COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS", "500");
 
@@ -95,6 +87,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             dummyClient = this.getClientBuilder().buildAsyncClient();
 
             this.preferredRegionList = getPreferredRegionList(dummyClient);
+            this.regions = this.preferredRegionList;
             this.clientWithPreferredRegions =
                 this.getClientBuilder()
                     .contentResponseOnWriteEnabled(true)
