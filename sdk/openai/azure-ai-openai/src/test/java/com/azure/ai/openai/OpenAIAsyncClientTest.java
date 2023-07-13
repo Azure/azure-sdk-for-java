@@ -293,7 +293,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                 .assertNext(chatCompletions -> {
                     assertSafeContentFilterResults(chatCompletions.getPromptFilterResults().get(0).getContentFilterResults());
                     assertEquals(1, chatCompletions.getChoices().size());
-                    ChatChoice chatChoice  = chatCompletions.getChoices().get(0);
+                    ChatChoice chatChoice = chatCompletions.getChoices().get(0);
                     assertSafeContentFilterResults(chatChoice.getContentFilterResults());
                 })
                 .verifyComplete();
@@ -311,8 +311,8 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             completionsOptions.setMaxTokens(2000);
             StepVerifier.create(client.getCompletions(modelId, completionsOptions))
                 .assertNext(completions -> {
-                    assertCompletions(1 ,completions);
-                    ContentFilterResults contentFilterResults  = completions.getPromptFilterResults().get(0).getContentFilterResults();
+                    assertCompletions(1, completions);
+                    ContentFilterResults contentFilterResults = completions.getPromptFilterResults().get(0).getContentFilterResults();
                     assertSafeContentFilterResults(contentFilterResults);
                     assertSafeContentFilterResults(completions.getChoices().get(0).getContentFilterResults());
                 }).verifyComplete();

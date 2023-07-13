@@ -11,7 +11,6 @@ import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
-import com.azure.ai.openai.models.ContentFilterResults;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -323,7 +322,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             CompletionsOptions completionsOptions = new CompletionsOptions(Arrays.asList(prompt));
             StepVerifier.create(client.getCompletions(modelId, completionsOptions))
                 .assertNext(completions -> {
-                    assertCompletions(1 ,completions);
+                    assertCompletions(1, completions);
                     assertNull(completions.getPromptFilterResults());
                     assertNull(completions.getChoices().get(0).getContentFilterResults());
                 }).verifyComplete();

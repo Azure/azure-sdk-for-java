@@ -22,7 +22,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 
@@ -92,7 +91,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         client = getNonAzureOpenAISyncClient(httpClient);
         getCompletionsRunner((modelId, prompt) -> {
             ClientAuthenticationException exception = assertThrows(ClientAuthenticationException.class,
-                () ->  client.getCompletionsWithResponse(modelId,
+                () -> client.getCompletionsWithResponse(modelId,
                     BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions()));
             assertEquals(401, exception.getResponse().getStatusCode());
         });
@@ -104,7 +103,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         client = getNonAzureOpenAISyncClient(httpClient);
         getCompletionsRunner((modelId, prompt) -> {
             HttpResponseException exception = assertThrows(HttpResponseException.class,
-                () ->  client.getCompletionsWithResponse(modelId,
+                () -> client.getCompletionsWithResponse(modelId,
                     BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions()));
             assertEquals(429, exception.getResponse().getStatusCode());
         });
@@ -242,7 +241,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         getChatFunctionForNonAzureRunner((modelId, chatCompletionsOptions) -> {
             chatCompletionsOptions.setFunctionCall(new FunctionCallConfig("NotMyFunction"));
             HttpResponseException exception = assertThrows(HttpResponseException.class,
-                () ->  client.getChatCompletions(modelId, chatCompletionsOptions));
+                () -> client.getChatCompletions(modelId, chatCompletionsOptions));
             assertEquals(400, exception.getResponse().getStatusCode());
 
             assertInstanceOf(HttpResponseException.class, exception);
@@ -271,7 +270,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             CompletionsOptions completionsOptions = new CompletionsOptions(Arrays.asList(prompt));
             Completions completions = client.getCompletions(modelId, completionsOptions);
 
-            assertCompletions(1 ,completions);
+            assertCompletions(1, completions);
             assertNull(completions.getPromptFilterResults());
             assertNull(completions.getChoices().get(0).getContentFilterResults());
         });

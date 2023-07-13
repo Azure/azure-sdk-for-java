@@ -7,12 +7,10 @@ import com.azure.ai.openai.functions.MyFunctionCallArguments;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
-import com.azure.ai.openai.models.ChatMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
-import com.azure.ai.openai.models.ContentFilterResults;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.core.exception.HttpResponseException;
@@ -94,7 +92,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             String deploymentId = "BAD_DEPLOYMENT_ID";
             ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
                 () -> client.getCompletionsWithResponse(deploymentId,
-                BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions()));
+                    BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions()));
             assertEquals(404, exception.getResponse().getStatusCode());
         });
     }
@@ -231,7 +229,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         getChatFunctionForRunner((modelId, chatCompletionsOptions) -> {
             chatCompletionsOptions.setFunctionCall(new FunctionCallConfig("NotMyFunction"));
             HttpResponseException exception = assertThrows(HttpResponseException.class,
-                () ->  client.getChatCompletions(modelId, chatCompletionsOptions));
+                () -> client.getChatCompletions(modelId, chatCompletionsOptions));
             assertEquals(400, exception.getResponse().getStatusCode());
 
             assertInstanceOf(HttpResponseException.class, exception);
@@ -262,7 +260,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             // work around for this model, there seem to be some issues with Completions in gpt-turbo models
             completionsOptions.setMaxTokens(2000);
             Completions completions = client.getCompletions(modelId, completionsOptions);
-            assertCompletions(1 ,completions);
+            assertCompletions(1, completions);
             assertSafeContentFilterResults(completions.getPromptFilterResults().get(0).getContentFilterResults());
             assertSafeContentFilterResults(completions.getChoices().get(0).getContentFilterResults());
         });
