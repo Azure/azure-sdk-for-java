@@ -29,10 +29,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BulkExecutorTest extends BatchTestBase {
 
     private CosmosAsyncClient client;
-    private CosmosAsyncClient client2;
     private CosmosAsyncContainer container;
 
-    private CosmosAsyncContainer createdContainer;
     private CosmosAsyncDatabase database;
     private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
 
@@ -59,15 +57,6 @@ public class BulkExecutorTest extends BatchTestBase {
                 }
             }
         }
-        if (this.createdContainer != null) {
-            try {
-                this.createdContainer.delete().block();
-            } catch (CosmosException error) {
-                if (error.getStatusCode() != 404) {
-                    throw error;
-                }
-            }
-        }
     }
 
     @BeforeMethod(groups = { "emulator" })
@@ -78,9 +67,6 @@ public class BulkExecutorTest extends BatchTestBase {
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_CosmosContainerTest() {
         client = getClientBuilder().buildAsyncClient();
-        client2 = getClientBuilder().buildAsyncClient();
-        createdContainer = getSharedMultiPartitionCosmosContainer(client2);
-        CosmosAsyncDatabase createdDatabase = getSharedCosmosDatabase(client2);
         database = createDatabase(client, preExistingDatabaseId);
     }
 
@@ -141,7 +127,7 @@ public class BulkExecutorTest extends BatchTestBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void executeBulk_preserveOrdering() throws InterruptedException { // need to fix this, don't know how to check if order was written correctly
+    public void executeBulk_preserveOrdering() throws InterruptedException {
         int totalRequest = 100;
         this.container = createContainer(database);
 
@@ -215,8 +201,8 @@ public class BulkExecutorTest extends BatchTestBase {
 
 
     @Test(groups = { "emulator" })
-    public void executeBulk_preserveOrdering_OnFailure() throws InterruptedException {
-        int totalRequest = 10;
+    public void executeBulk_preserveOrdering_OnFailures() throws InterruptedException {
+        int totalRequest = 100;
         this.container = createContainer(database);
 
         List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
@@ -243,7 +229,8 @@ public class BulkExecutorTest extends BatchTestBase {
             .setPreserveOrdering(cosmosBulkExecutionOptions, true);
 
         FaultInjectionRule rule = injectFailure("RequestRateTooLarge", this.container, FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.TOO_MANY_REQUEST);
-//        FaultInjectionRule rule = injectFailure("PartitionSplit", createdContainer, FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING);
+//        FaultInjectionRule rule2 = injectFailure("Too Many ", this.container, FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.GONE); // how to test no retry --------------
+//        FaultInjectionRule rule2 = injectFailure("PartitionSplit", this.container, FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING); // Never triggers partition splitting flow ----------------
 
         Flux<CosmosItemOperation> inputFlux = Flux
             .fromArray(itemOperationsArray)
@@ -297,6 +284,7 @@ public class BulkExecutorTest extends BatchTestBase {
             iterations++;
         }
         rule.disable();
+//        rule2.disable();
     }
 
     private FaultInjectionRule injectFailure(String id,
@@ -320,7 +308,7 @@ public class BulkExecutorTest extends BatchTestBase {
             .condition(condition)
             .result(result)
             .startDelay(Duration.ofSeconds(1))
-            .hitLimit(12) // 1 or 2
+            .hitLimit(10) // -------------------------------------------------------------------------------------------
             .build();
 
 
