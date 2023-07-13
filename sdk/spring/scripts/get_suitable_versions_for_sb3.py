@@ -134,7 +134,7 @@ def output_versions_file(resolve_dict, remove_list):
         for key, value in sorted(resolve_dict.items()):
             output_file.write('{};{}\n'.format(key, value))
         for k in sorted(remove_list):
-            output_file.write("#remove;{}".format(k))
+            output_file.write("#remove;{}\n".format(k))
         output_file.close()
     else:
         log.warn("Nothing conflict!")

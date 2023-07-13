@@ -98,7 +98,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.46.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.47.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
@@ -227,7 +227,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <configuration>
           <sourceFileExcludes>
             <sourceFileExclude>com/azure/spring/data/cosmos/core/mapping/BasicCosmosPersistentProperty.java</sourceFileExclude>
