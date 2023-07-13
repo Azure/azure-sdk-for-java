@@ -466,8 +466,8 @@ public class TestProxyTests extends TestProxyTestBase {
         String relativePath =
             engRepoRoot.relativize(Paths.get(targetRepoRoot, "src/test/resources/session-records", recordingName))
                 .toString();
-        System.out.printf("Relative path: %s\n", relativePath);
-        System.out.printf("Line Filtered: %s\n", filePath);
+        System.out.printf("Relative path: \"%s\"\n", relativePath);
+        System.out.printf("Line Filtered: \"%s\"\n", filePath);
         return Paths.get(filePath, relativePath).toString();
     }
 
