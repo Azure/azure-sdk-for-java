@@ -10,6 +10,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.ResourceAttribute
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.HostName;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.sdk.resources.Resource;

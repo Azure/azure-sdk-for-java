@@ -31,6 +31,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTag
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TempDirs;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.VersionGenerator;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;

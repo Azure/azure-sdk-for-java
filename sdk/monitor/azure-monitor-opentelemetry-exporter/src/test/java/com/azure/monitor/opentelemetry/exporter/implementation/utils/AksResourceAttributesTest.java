@@ -6,7 +6,6 @@ package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
-import com.azure.monitor.opentelemetry.exporter.ResourceParser;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import io.opentelemetry.sdk.resources.Resource;

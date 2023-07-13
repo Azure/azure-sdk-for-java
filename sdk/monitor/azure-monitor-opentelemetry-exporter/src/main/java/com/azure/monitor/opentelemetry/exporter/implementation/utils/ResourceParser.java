@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.monitor.opentelemetry.exporter;
+package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AksResourceAttributes.getAksRoleInstance;
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AksResourceAttributes.getAksRoleName;
@@ -11,8 +11,6 @@ import com.azure.core.util.Configuration;
 import com.azure.monitor.opentelemetry.exporter.implementation.ResourceAttributes;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
-import com.azure.monitor.opentelemetry.exporter.implementation.utils.HostName;
-import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import io.opentelemetry.sdk.resources.Resource;
 
 import java.util.Map;
