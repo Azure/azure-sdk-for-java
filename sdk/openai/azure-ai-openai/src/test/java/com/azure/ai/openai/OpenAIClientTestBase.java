@@ -5,6 +5,8 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.functions.Parameters;
+import com.azure.ai.openai.models.ContentFilterResults;
+import com.azure.ai.openai.models.ContentFilterSeverity;
 import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
@@ -146,6 +148,14 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("gpt-4", getChatMessagesWithFunction());
     }
 
+    void getChatCompletionsContentFilterRunner(BiConsumer<String, List<ChatMessage>> testRunner) {
+        testRunner.accept("gpt-4", getChatMessages());
+    }
+
+    void getCompletionsContentFilterRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept("gpt-35-turbo", "What is 3 times 4?");
+    }
+
     private List<ChatMessage> getChatMessages() {
         List<ChatMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatMessage(ChatRole.SYSTEM).setContent("You are a helpful assistant. You will talk like a pirate."));
@@ -280,5 +290,17 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertEquals(functionName, functionCall.getName());
         BinaryData argumentJson = BinaryData.fromString(functionCall.getArguments());
         return argumentJson.toObject(myPropertiesClazz);
+    }
+
+    static void assertSafeContentFilterResults(ContentFilterResults contentFilterResults) {
+        assertNotNull(contentFilterResults);
+        assertFalse(contentFilterResults.getHate().isFiltered());
+        assertEquals(contentFilterResults.getHate().getSeverity(), ContentFilterSeverity.SAFE);
+        assertFalse(contentFilterResults.getSexual().isFiltered());
+        assertEquals(contentFilterResults.getSexual().getSeverity(), ContentFilterSeverity.SAFE);
+        assertFalse(contentFilterResults.getSelfHarm().isFiltered());
+        assertEquals(contentFilterResults.getSelfHarm().getSeverity(), ContentFilterSeverity.SAFE);
+        assertFalse(contentFilterResults.getViolence().isFiltered());
+        assertEquals(contentFilterResults.getViolence().getSeverity(), ContentFilterSeverity.SAFE);
     }
 }
