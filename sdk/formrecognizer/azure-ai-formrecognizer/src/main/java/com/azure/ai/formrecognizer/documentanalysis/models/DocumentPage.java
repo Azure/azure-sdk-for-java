@@ -62,11 +62,6 @@ public final class DocumentPage {
     private List<DocumentLine> lines;
 
     /*
-     * Extracted annotations from the page.
-     */
-    private List<DocumentAnnotation> annotations;
-
-    /*
      * Extracted barcodes from the page.
      */
     private List<DocumentBarcode> barcodes;
@@ -252,25 +247,6 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the extracted annotations from the page.
-     *
-     * @return the annotations value.
-     */
-    public List<DocumentAnnotation> getAnnotations() {
-        return this.annotations;
-    }
-
-    /**
-     * Set the annotations property: Extracted annotations from the page.
-     *
-     * @param annotations the annotations value to set.
-     * @return the DocumentPage object itself.
-     */
-    void setAnnotations(List<DocumentAnnotation> annotations) {
-        this.annotations = annotations;
-    }
-
-    /**
      * Get the extracted barcodes from the page.
      *
      * @return the barcodes value.
@@ -363,11 +339,6 @@ public final class DocumentPage {
             @Override
             public void setBarcodes(DocumentPage documentPage, List<DocumentBarcode> barcodes) {
                 documentPage.setBarcodes(barcodes);
-            }
-
-            @Override
-            public void setAnnotations(DocumentPage documentPage, List<DocumentAnnotation> annotations) {
-                documentPage.setAnnotations(annotations);
             }
         });
     }

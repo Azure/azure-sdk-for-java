@@ -78,7 +78,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
                 : httpClient),
             serviceVersion,
-            false)
+            true)
             .buildAsyncClient();
     }
 
@@ -557,19 +557,19 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
                 = new HashMap<String, ClassifierDocumentTypeDetails>();
             documentTypeDetailsMap.put("IRS-1040-A",
-                new ClassifierDocumentTypeDetails().setTrainingDataContentSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS" +
+                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS" +
                     "-1040-A/train")));
             documentTypeDetailsMap.put("IRS-1040-B",
-                new ClassifierDocumentTypeDetails().setTrainingDataContentSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS" +
+                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS" +
                     "-1040-B/train")));
             documentTypeDetailsMap.put("IRS-1040-C",
-                new ClassifierDocumentTypeDetails().setTrainingDataContentSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS" +
+                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS" +
                     "-1040-C/train")));
             documentTypeDetailsMap.put("IRS-1040-D",
-                new ClassifierDocumentTypeDetails().setTrainingDataContentSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS" +
+                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS" +
                     "-1040-D/train")));
             documentTypeDetailsMap.put("IRS-1040-E",
-                new ClassifierDocumentTypeDetails().setTrainingDataContentSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS" +
+                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS" +
                     "-1040-E/train")));
             SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
                 client.beginBuildDocumentClassifier(documentTypeDetailsMap)
@@ -596,19 +596,19 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
                 = new HashMap<String, ClassifierDocumentTypeDetails>();
             documentTypeDetailsMap.put("IRS-1040-A",
-                new ClassifierDocumentTypeDetails().setTrainingDataContentSource(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-A" +
+                new ClassifierDocumentTypeDetails(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-A" +
                     ".jsonl")));
             documentTypeDetailsMap.put("IRS-1040-B",
-                new ClassifierDocumentTypeDetails().setTrainingDataContentSource(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-B" +
+                new ClassifierDocumentTypeDetails(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-B" +
                     ".jsonl")));
             documentTypeDetailsMap.put("IRS-1040-C",
-                new ClassifierDocumentTypeDetails().setTrainingDataContentSource(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-C" +
+                new ClassifierDocumentTypeDetails(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-C" +
                     ".jsonl")));
             documentTypeDetailsMap.put("IRS-1040-D",
-                new ClassifierDocumentTypeDetails().setTrainingDataContentSource(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-D" +
+                new ClassifierDocumentTypeDetails(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-D" +
                     ".jsonl")));
             documentTypeDetailsMap.put("IRS-1040-E",
-                new ClassifierDocumentTypeDetails().setTrainingDataContentSource(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-E" +
+                new ClassifierDocumentTypeDetails(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-E" +
                     ".jsonl")));
             SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
                 client.beginBuildDocumentClassifier(documentTypeDetailsMap,

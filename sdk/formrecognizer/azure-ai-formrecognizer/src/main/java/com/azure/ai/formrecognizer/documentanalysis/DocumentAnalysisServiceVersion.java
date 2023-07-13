@@ -39,6 +39,6 @@ public enum DocumentAnalysisServiceVersion implements ServiceVersion {
      */
     public static DocumentAnalysisServiceVersion getLatest() {
         // Switch to the latest preview once recordings are updated.
-        return V2023_07_31;
+        return V2022_08_31;
     }
 }

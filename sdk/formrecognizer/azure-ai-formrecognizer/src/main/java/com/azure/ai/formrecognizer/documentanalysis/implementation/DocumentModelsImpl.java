@@ -377,9 +377,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
@@ -422,9 +420,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
@@ -467,9 +463,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
@@ -512,9 +506,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
@@ -551,9 +543,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
@@ -592,9 +582,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
@@ -631,9 +619,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
@@ -672,9 +658,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
@@ -723,9 +707,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
@@ -774,9 +756,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
@@ -824,9 +804,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
@@ -877,9 +855,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
@@ -928,9 +904,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
@@ -979,9 +953,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
@@ -1030,9 +1002,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
@@ -1080,9 +1050,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
@@ -1133,9 +1101,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
@@ -1184,9 +1150,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
@@ -1237,9 +1201,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
@@ -1282,9 +1244,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
@@ -1327,9 +1287,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
@@ -1372,9 +1330,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
@@ -1411,9 +1367,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
@@ -1452,9 +1406,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
@@ -1491,9 +1443,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
+     * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
@@ -1532,9 +1482,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Get analyze result
-     *
-     * <p>Gets the result of document analysis.
+     * Gets the result of document analysis.
      *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
@@ -1558,9 +1506,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Get analyze result
-     *
-     * <p>Gets the result of document analysis.
+     * Gets the result of document analysis.
      *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
@@ -1579,9 +1525,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Get analyze result
-     *
-     * <p>Gets the result of document analysis.
+     * Gets the result of document analysis.
      *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
@@ -1596,9 +1540,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Get analyze result
-     *
-     * <p>Gets the result of document analysis.
+     * Gets the result of document analysis.
      *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
@@ -1615,9 +1557,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Get analyze result
-     *
-     * <p>Gets the result of document analysis.
+     * Gets the result of document analysis.
      *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
@@ -1636,9 +1576,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Get analyze result
-     *
-     * <p>Gets the result of document analysis.
+     * Gets the result of document analysis.
      *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
@@ -1653,9 +1591,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Build document model
-     *
-     * <p>Builds a custom document analysis model.
+     * Builds a custom document analysis model.
      *
      * @param buildRequest Building request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1674,9 +1610,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Build document model
-     *
-     * <p>Builds a custom document analysis model.
+     * Builds a custom document analysis model.
      *
      * @param buildRequest Building request parameters.
      * @param context The context to associate with this operation.
@@ -1694,9 +1628,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Build document model
-     *
-     * <p>Builds a custom document analysis model.
+     * Builds a custom document analysis model.
      *
      * @param buildRequest Building request parameters.
      * @param context The context to associate with this operation.
@@ -1714,9 +1646,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Build document model
-     *
-     * <p>Builds a custom document analysis model.
+     * Builds a custom document analysis model.
      *
      * @param buildRequest Building request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1739,9 +1669,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Build document model
-     *
-     * <p>Builds a custom document analysis model.
+     * Builds a custom document analysis model.
      *
      * @param buildRequest Building request parameters.
      * @param context The context to associate with this operation.
@@ -1766,9 +1694,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Build document model
-     *
-     * <p>Builds a custom document analysis model.
+     * Builds a custom document analysis model.
      *
      * @param buildRequest Building request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1791,9 +1717,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Build document model
-     *
-     * <p>Builds a custom document analysis model.
+     * Builds a custom document analysis model.
      *
      * @param buildRequest Building request parameters.
      * @param context The context to associate with this operation.
@@ -1817,9 +1741,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Compose document model
-     *
-     * <p>Creates a new document model from document types of existing document models.
+     * Creates a new document model from document types of existing document models.
      *
      * @param composeRequest Compose request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1842,9 +1764,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Compose document model
-     *
-     * <p>Creates a new document model from document types of existing document models.
+     * Creates a new document model from document types of existing document models.
      *
      * @param composeRequest Compose request parameters.
      * @param context The context to associate with this operation.
@@ -1862,9 +1782,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Compose document model
-     *
-     * <p>Creates a new document model from document types of existing document models.
+     * Creates a new document model from document types of existing document models.
      *
      * @param composeRequest Compose request parameters.
      * @param context The context to associate with this operation.
@@ -1882,9 +1800,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Compose document model
-     *
-     * <p>Creates a new document model from document types of existing document models.
+     * Creates a new document model from document types of existing document models.
      *
      * @param composeRequest Compose request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1907,9 +1823,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Compose document model
-     *
-     * <p>Creates a new document model from document types of existing document models.
+     * Creates a new document model from document types of existing document models.
      *
      * @param composeRequest Compose request parameters.
      * @param context The context to associate with this operation.
@@ -1934,9 +1848,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Compose document model
-     *
-     * <p>Creates a new document model from document types of existing document models.
+     * Creates a new document model from document types of existing document models.
      *
      * @param composeRequest Compose request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1959,9 +1871,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Compose document model
-     *
-     * <p>Creates a new document model from document types of existing document models.
+     * Creates a new document model from document types of existing document models.
      *
      * @param composeRequest Compose request parameters.
      * @param context The context to associate with this operation.
@@ -1986,9 +1896,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Generate copy authorization
-     *
-     * <p>Generates authorization to copy a document model to this location with specified modelId and optional
+     * Generates authorization to copy a document model to this location with specified modelId and optional
      * description.
      *
      * @param authorizeCopyRequest Authorize copy request parameters.
@@ -2013,9 +1921,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Generate copy authorization
-     *
-     * <p>Generates authorization to copy a document model to this location with specified modelId and optional
+     * Generates authorization to copy a document model to this location with specified modelId and optional
      * description.
      *
      * @param authorizeCopyRequest Authorize copy request parameters.
@@ -2035,9 +1941,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Generate copy authorization
-     *
-     * <p>Generates authorization to copy a document model to this location with specified modelId and optional
+     * Generates authorization to copy a document model to this location with specified modelId and optional
      * description.
      *
      * @param authorizeCopyRequest Authorize copy request parameters.
@@ -2054,9 +1958,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Generate copy authorization
-     *
-     * <p>Generates authorization to copy a document model to this location with specified modelId and optional
+     * Generates authorization to copy a document model to this location with specified modelId and optional
      * description.
      *
      * @param authorizeCopyRequest Authorize copy request parameters.
@@ -2074,9 +1976,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Generate copy authorization
-     *
-     * <p>Generates authorization to copy a document model to this location with specified modelId and optional
+     * Generates authorization to copy a document model to this location with specified modelId and optional
      * description.
      *
      * @param authorizeCopyRequest Authorize copy request parameters.
@@ -2096,9 +1996,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Generate copy authorization
-     *
-     * <p>Generates authorization to copy a document model to this location with specified modelId and optional
+     * Generates authorization to copy a document model to this location with specified modelId and optional
      * description.
      *
      * @param authorizeCopyRequest Authorize copy request parameters.
@@ -2113,9 +2011,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Copy document model
-     *
-     * <p>Copies document model to the target resource, region, and modelId.
+     * Copies document model to the target resource, region, and modelId.
      *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
@@ -2140,9 +2036,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Copy document model
-     *
-     * <p>Copies document model to the target resource, region, and modelId.
+     * Copies document model to the target resource, region, and modelId.
      *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
@@ -2161,9 +2055,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Copy document model
-     *
-     * <p>Copies document model to the target resource, region, and modelId.
+     * Copies document model to the target resource, region, and modelId.
      *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
@@ -2182,9 +2074,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Copy document model
-     *
-     * <p>Copies document model to the target resource, region, and modelId.
+     * Copies document model to the target resource, region, and modelId.
      *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
@@ -2208,9 +2098,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Copy document model
-     *
-     * <p>Copies document model to the target resource, region, and modelId.
+     * Copies document model to the target resource, region, and modelId.
      *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
@@ -2236,9 +2124,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Copy document model
-     *
-     * <p>Copies document model to the target resource, region, and modelId.
+     * Copies document model to the target resource, region, and modelId.
      *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
@@ -2262,9 +2148,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Copy document model
-     *
-     * <p>Copies document model to the target resource, region, and modelId.
+     * Copies document model to the target resource, region, and modelId.
      *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
@@ -2290,9 +2174,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * List document models
-     *
-     * <p>List all document models.
+     * List all document models.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2318,9 +2200,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * List document models
-     *
-     * <p>List all document models.
+     * List all document models.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2345,9 +2225,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * List document models
-     *
-     * <p>List all document models.
+     * List all document models.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2359,9 +2237,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * List document models
-     *
-     * <p>List all document models.
+     * List all document models.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2376,9 +2252,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * List document models
-     *
-     * <p>List all document models.
+     * List all document models.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2399,9 +2273,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * List document models
-     *
-     * <p>List all document models.
+     * List all document models.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2424,9 +2296,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * List document models
-     *
-     * <p>List all document models.
+     * List all document models.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2439,9 +2309,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * List document models
-     *
-     * <p>List all document models.
+     * List all document models.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2456,9 +2324,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Get document model
-     *
-     * <p>Gets detailed document model information.
+     * Gets detailed document model information.
      *
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2476,9 +2342,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Get document model
-     *
-     * <p>Gets detailed document model information.
+     * Gets detailed document model information.
      *
      * @param modelId Unique document model name.
      * @param context The context to associate with this operation.
@@ -2494,9 +2358,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Get document model
-     *
-     * <p>Gets detailed document model information.
+     * Gets detailed document model information.
      *
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2510,9 +2372,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Get document model
-     *
-     * <p>Gets detailed document model information.
+     * Gets detailed document model information.
      *
      * @param modelId Unique document model name.
      * @param context The context to associate with this operation.
@@ -2527,9 +2387,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Get document model
-     *
-     * <p>Gets detailed document model information.
+     * Gets detailed document model information.
      *
      * @param modelId Unique document model name.
      * @param context The context to associate with this operation.
@@ -2545,9 +2403,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Get document model
-     *
-     * <p>Gets detailed document model information.
+     * Gets detailed document model information.
      *
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2561,9 +2417,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Delete document model
-     *
-     * <p>Deletes document model.
+     * Deletes document model.
      *
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2581,9 +2435,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Delete document model
-     *
-     * <p>Deletes document model.
+     * Deletes document model.
      *
      * @param modelId Unique document model name.
      * @param context The context to associate with this operation.
@@ -2599,9 +2451,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Delete document model
-     *
-     * <p>Deletes document model.
+     * Deletes document model.
      *
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2615,9 +2465,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Delete document model
-     *
-     * <p>Deletes document model.
+     * Deletes document model.
      *
      * @param modelId Unique document model name.
      * @param context The context to associate with this operation.
@@ -2632,9 +2480,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Delete document model
-     *
-     * <p>Deletes document model.
+     * Deletes document model.
      *
      * @param modelId Unique document model name.
      * @param context The context to associate with this operation.
@@ -2651,9 +2497,7 @@ public final class DocumentModelsImpl {
     }
 
     /**
-     * Delete document model
-     *
-     * <p>Deletes document model.
+     * Deletes document model.
      *
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

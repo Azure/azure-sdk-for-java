@@ -68,12 +68,6 @@ public final class DocumentPage {
     private List<DocumentLine> lines;
 
     /*
-     * Extracted annotations from the page.
-     */
-    @JsonProperty(value = "annotations")
-    private List<DocumentAnnotation> annotations;
-
-    /*
      * Extracted barcodes from the page.
      */
     @JsonProperty(value = "barcodes")
@@ -180,15 +174,6 @@ public final class DocumentPage {
      */
     public List<DocumentLine> getLines() {
         return this.lines;
-    }
-
-    /**
-     * Get the annotations property: Extracted annotations from the page.
-     *
-     * @return the annotations value.
-     */
-    public List<DocumentAnnotation> getAnnotations() {
-        return this.annotations;
     }
 
     /**
