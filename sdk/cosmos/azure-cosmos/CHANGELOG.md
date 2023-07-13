@@ -9,6 +9,7 @@
 #### Bugs Fixed
 *  Fixed retrying write operations when a gone exception occurs. - See [PR 35838](https://github.com/Azure/azure-sdk-for-java/pull/35838)
 #### Other Changes
+* Added fault injection support for Gateway connection mode - See [PR 35378](https://github.com/Azure/azure-sdk-for-java/pull/35378)
 
 ### 4.47.0 (2023-06-26)
 

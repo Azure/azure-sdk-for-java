@@ -50,6 +50,7 @@
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-opens com.azure.ai.openai/com.azure.ai.openai=ALL-UNNAMED
       --add-opens com.azure.ai.openai/com.azure.ai.openai.implementation=com.fasterxml.jackson.databind
+      --add-opens com.azure.ai.openai/com.azure.ai.openai.functions=com.fasterxml.jackson.databind
     </javaModulesSurefireArgLine>
     <jacoco.skip>true</jacoco.skip>
   </properties>
