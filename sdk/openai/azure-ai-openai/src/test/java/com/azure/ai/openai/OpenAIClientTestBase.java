@@ -156,6 +156,14 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("gpt-35-turbo", "What is 3 times 4?");
     }
 
+    void getChatCompletionsContentFilterRunnerForNonAzure(BiConsumer<String, List<ChatMessage>> testRunner) {
+        testRunner.accept("gpt-3.5-turbo-0613", getChatMessages());
+    }
+
+    void getCompletionsContentFilterRunnerForNonAzure(BiConsumer<String, String> testRunner) {
+        testRunner.accept("text-davinci-002", "What is 3 times 4?");
+    }
+
     private List<ChatMessage> getChatMessages() {
         List<ChatMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatMessage(ChatRole.SYSTEM).setContent("You are a helpful assistant. You will talk like a pirate."));

@@ -247,8 +247,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             ChatCompletions chatCompletions = client.getChatCompletions(modelId, new ChatCompletionsOptions(chatMessages));
             assertSafeContentFilterResults(chatCompletions.getPromptFilterResults().get(0).getContentFilterResults());
             assertEquals(1, chatCompletions.getChoices().size());
-            ChatChoice chatChoice  = chatCompletions.getChoices().get(0);
-            assertSafeContentFilterResults(chatChoice.getContentFilterResults());
+            assertSafeContentFilterResults(chatCompletions.getChoices().get(0).getContentFilterResults());
 
         });
     }
@@ -264,8 +263,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             completionsOptions.setMaxTokens(2000);
             Completions completions = client.getCompletions(modelId, completionsOptions);
             assertCompletions(1 ,completions);
-            ContentFilterResults contentFilterResults  = completions.getPromptFilterResults().get(0).getContentFilterResults();
-            assertSafeContentFilterResults(contentFilterResults);
+            assertSafeContentFilterResults(completions.getPromptFilterResults().get(0).getContentFilterResults());
             assertSafeContentFilterResults(completions.getChoices().get(0).getContentFilterResults());
         });
     }

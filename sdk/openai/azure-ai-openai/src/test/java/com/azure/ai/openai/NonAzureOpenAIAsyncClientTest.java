@@ -11,6 +11,7 @@ import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
+import com.azure.ai.openai.models.ContentFilterResults;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -23,11 +24,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
@@ -294,6 +297,36 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                     assertEquals(400, httpResponseException.getResponse().getStatusCode());
                     assertTrue(httpResponseException.getMessage().contains("Invalid value for 'function_call'"));
                 });
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        getChatCompletionsContentFilterRunnerForNonAzure((modelId, chatMessages) -> {
+            StepVerifier.create(client.getChatCompletions(modelId, new ChatCompletionsOptions(chatMessages)))
+                .assertNext(chatCompletions -> {
+                    assertNull(chatCompletions.getPromptFilterResults());
+                    assertEquals(1, chatCompletions.getChoices().size());
+                    assertNull(chatCompletions.getChoices().get(0).getContentFilterResults());
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        getCompletionsContentFilterRunnerForNonAzure((modelId, prompt) -> {
+            CompletionsOptions completionsOptions = new CompletionsOptions(Arrays.asList(prompt));
+            StepVerifier.create(client.getCompletions(modelId, completionsOptions))
+                .assertNext(completions -> {
+                    assertCompletions(1 ,completions);
+                    assertNull(completions.getPromptFilterResults());
+                    assertNull(completions.getChoices().get(0).getContentFilterResults());
+                }).verifyComplete();
         });
     }
 }
