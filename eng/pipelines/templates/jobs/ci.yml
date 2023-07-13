@@ -485,6 +485,8 @@ jobs:
         # For PR builds check if any meaningful code changes have been made.
         # A meaningful code change is changing of source code, Maven configurations, or pipeline configurations.
         - pwsh: |
+            Write-Host ${{ parameters.MatrixConfigs }}
+            
             if ("$(Build.Reason)" -ne 'PullRequest') {
               Write-Host "##vso[task.setvariable variable=ShouldRunTests;]true"
               return
@@ -503,6 +505,5 @@ jobs:
               }
             }
 
-            Write-Host ${{ parameters.MatrixConfigs }}
             Write-Host "##vso[task.setvariable variable=ShouldRunTests;]false"
           displayName: "Check if tests should be run"
