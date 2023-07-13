@@ -4,10 +4,8 @@
 package com.azure.storage.common.policy;
 
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.test.TestProxyTestBase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
@@ -15,7 +13,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class MetadataValidationPolicyTests extends TestProxyTestBase {
+public class MetadataValidationPolicyTests {
 
     @ParameterizedTest
     @MethodSource("invalidMetadataWhitespaceSupplier")
@@ -23,13 +21,13 @@ public class MetadataValidationPolicyTests extends TestProxyTestBase {
         assertThrows(IllegalArgumentException.class, () -> MetadataValidationPolicy.validateMetadataHeaders(headers));
     }
 
-    private static Stream<Arguments> invalidMetadataWhitespaceSupplier() {
+    private static Stream<HttpHeaders> invalidMetadataWhitespaceSupplier() {
         return Stream.of(
-            Arguments.of(new HttpHeaders().add("x-ms-meta- ", "value")),
-            Arguments.of(new HttpHeaders().add("x-ms-meta- nameleadspace", "value")),
-            Arguments.of(new HttpHeaders().add("x-ms-meta-nametrailspace ", "value")),
-            Arguments.of(new HttpHeaders().add("x-ms-meta-valueleadspace", " value")),
-            Arguments.of(new HttpHeaders().add("x-ms-meta-valuetrailspace", "value "))
+            new HttpHeaders().add("x-ms-meta- ", "value"),
+            new HttpHeaders().add("x-ms-meta- nameleadspace", "value"),
+            new HttpHeaders().add("x-ms-meta-nametrailspace ", "value"),
+            new HttpHeaders().add("x-ms-meta-valueleadspace", " value"),
+            new HttpHeaders().add("x-ms-meta-valuetrailspace", "value ")
         );
     }
 
@@ -61,15 +59,15 @@ public class MetadataValidationPolicyTests extends TestProxyTestBase {
         assertDoesNotThrow(() -> MetadataValidationPolicy.validateMetadataHeaders(headers));
     }
 
-    private static Stream<Arguments> noMetadataValuesSupplier() {
+    private static Stream<HttpHeaders> noMetadataValuesSupplier() {
         return Stream.of(
-            Arguments.of(new HttpHeaders().add("", "notmetadataheaderemptyname")),
-            Arguments.of(new HttpHeaders().add(" ", "notmetadataheaderspacename")),
-            Arguments.of(new HttpHeaders().add(" notmetadataheaderwithleadingspace", "value")),
-            Arguments.of(new HttpHeaders().add("notmetadataheaderwithtrailingspace ", "value")),
-            Arguments.of(new HttpHeaders().add("notmetadatavaluewithtrailingspace", " value")),
-            Arguments.of(new HttpHeaders().add("notmetadatavaluewithtrailingspace", "value ")),
-            Arguments.of(new HttpHeaders().add("notmetadatavaluewithspacevalue", " "))
+            new HttpHeaders().add("", "notmetadataheaderemptyname"),
+            new HttpHeaders().add(" ", "notmetadataheaderspacename"),
+            new HttpHeaders().add(" notmetadataheaderwithleadingspace", "value"),
+            new HttpHeaders().add("notmetadataheaderwithtrailingspace ", "value"),
+            new HttpHeaders().add("notmetadatavaluewithtrailingspace", " value"),
+            new HttpHeaders().add("notmetadatavaluewithtrailingspace", "value "),
+            new HttpHeaders().add("notmetadatavaluewithspacevalue", " ")
         );
     }
 }

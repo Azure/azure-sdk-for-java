@@ -3,7 +3,6 @@
 
 package com.azure.storage.common.sas;
 
-import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Context;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
 import com.azure.storage.common.implementation.SasImplUtils;
@@ -22,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SasModelsTests extends TestProxyTestBase {
+public class SasModelsTests {
 
     @Test
     public void accountSasSignatureValuesMin() {

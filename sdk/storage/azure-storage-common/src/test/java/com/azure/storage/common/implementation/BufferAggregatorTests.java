@@ -3,9 +3,7 @@
 
 package com.azure.storage.common.implementation;
 
-import com.azure.core.test.TestProxyTestBase;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.nio.ByteBuffer;
@@ -16,7 +14,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class BufferAggregatorTests extends TestProxyTestBase {
+public class BufferAggregatorTests {
 
     @ParameterizedTest
     @MethodSource("readFirstNBytesSupplier")
@@ -47,13 +45,40 @@ public class BufferAggregatorTests extends TestProxyTestBase {
         assertEquals(ByteBuffer.wrap(data, 50, 50), ByteBuffer.wrap(outArr));
     }
 
-    private static Stream<Arguments> readFirstNBytesSupplier() {
+    private static Stream<List<byte[]>> readFirstNBytesSupplier() {
         return Stream.of(
-            Arguments.of(new ArrayList<byte[]>() { { add(new byte[5]); add(new byte[95]); } }),
-            Arguments.of(new ArrayList<byte[]>() { { add(new byte[10]); add(new byte[10]); add(new byte[10]); add(new byte[70]); } }),
-            Arguments.of(new ArrayList<byte[]>() { { add(new byte[100]); } }),
-            Arguments.of(new ArrayList<byte[]>() { { add(new byte[50]); add(new byte[50]); } }),
-            Arguments.of(new ArrayList<byte[]>() { { add(new byte[70]); add(new byte[20]); add(new byte[10]); } })
+            new ArrayList<byte[]>() {
+                {
+                    add(new byte[5]);
+                    add(new byte[95]);
+                }
+            },
+            new ArrayList<byte[]>() {
+                {
+                    add(new byte[10]);
+                    add(new byte[10]);
+                    add(new byte[10]);
+                    add(new byte[70]);
+                }
+            },
+            new ArrayList<byte[]>() {
+                {
+                    add(new byte[100]);
+                }
+            },
+            new ArrayList<byte[]>() {
+                {
+                    add(new byte[50]);
+                    add(new byte[50]);
+                }
+            },
+            new ArrayList<byte[]>() {
+                {
+                    add(new byte[70]);
+                    add(new byte[20]);
+                    add(new byte[10]);
+                }
+            }
         );
     }
 }

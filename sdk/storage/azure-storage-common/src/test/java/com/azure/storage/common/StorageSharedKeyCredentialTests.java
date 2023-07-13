@@ -4,7 +4,6 @@
 package com.azure.storage.common;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
-import com.azure.core.test.TestProxyTestBase;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class StorageSharedKeyCredentialTests extends TestProxyTestBase {
+public class StorageSharedKeyCredentialTests {
 
     @Test
     public void canMapFromAzureNamedKeyCredential() {

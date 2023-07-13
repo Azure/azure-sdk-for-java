@@ -4,7 +4,6 @@
 package com.azure.storage.common.implementation;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.MockHttpResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,7 +19,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class FluxInputStreamTests extends TestProxyTestBase {
+public class FluxInputStreamTests {
 
     /* Network tests to be performed by implementors of the FluxInputStream. */
     Flux<ByteBuffer> generateData(int num) {

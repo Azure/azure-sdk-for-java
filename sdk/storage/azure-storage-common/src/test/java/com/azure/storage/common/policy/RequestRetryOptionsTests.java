@@ -6,7 +6,6 @@ package com.azure.storage.common.policy;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.RetryOptions;
-import com.azure.core.test.TestProxyTestBase;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -14,7 +13,7 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class RequestRetryOptionsTests extends TestProxyTestBase {
+public class RequestRetryOptionsTests {
 
     @Test
     public void retryOptionsToRequestRetryOptionsMapping() {
