@@ -271,7 +271,8 @@ public final class CallConnectionAsync {
 
             TransferToParticipantRequestInternal request = new TransferToParticipantRequestInternal()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(transferCallToParticipantOptions.getTargetParticipant()))
-                .setOperationContext(transferCallToParticipantOptions.getOperationContext());
+                .setOperationContext(transferCallToParticipantOptions.getOperationContext())
+                .setCallbackUriOverride(transferCallToParticipantOptions.getCallbackUrlOverride());
 
             if (transferCallToParticipantOptions.getSipHeaders() != null || transferCallToParticipantOptions.getVoipHeaders() != null) {
                 request.setCustomContext(new CustomContext()
@@ -323,7 +324,8 @@ public final class CallConnectionAsync {
                 .setParticipantToAdd(CommunicationIdentifierConverter.convert(addParticipantOptions.getTargetParticipant().getTargetParticipant()))
                 .setSourceDisplayName(addParticipantOptions.getTargetParticipant().getSourceDisplayName())
                 .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(addParticipantOptions.getTargetParticipant().getSourceCallerIdNumber()))
-                .setOperationContext(addParticipantOptions.getOperationContext());
+                .setOperationContext(addParticipantOptions.getOperationContext())
+                .setCallbackUriOverride(addParticipantOptions.getCallbackUriOverride());
 
             // Need to do a null check since it is optional; it might be a null and breaks the get function as well as type casting.
             if (addParticipantOptions.getInvitationTimeout() != null) {
@@ -382,7 +384,8 @@ public final class CallConnectionAsync {
 
             RemoveParticipantRequestInternal request = new RemoveParticipantRequestInternal()
                 .setParticipantToRemove(CommunicationIdentifierConverter.convert(removeParticipantOptions.getParticipant()))
-                .setOperationContext(removeParticipantOptions.getOperationContext());
+                .setOperationContext(removeParticipantOptions.getOperationContext())
+                .setCallbackUriOverride(removeParticipantOptions.getCallbackUriOverride());
 
             return callConnectionInternal.removeParticipantWithResponseAsync(
                     callConnectionId,

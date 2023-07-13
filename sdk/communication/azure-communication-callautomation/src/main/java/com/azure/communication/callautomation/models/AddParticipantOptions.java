@@ -32,6 +32,11 @@ public final class AddParticipantOptions {
     private Duration invitationTimeout;
 
     /**
+     * The call back URI override.
+     */
+    private String callbackUriOverride;
+
+    /**
      * Constructor
      * @param targetParticipant target callinvite
      */
@@ -58,6 +63,15 @@ public final class AddParticipantOptions {
     }
 
     /**
+     * Get the call back URI override.
+     *
+     * @return the callbackUriOverride
+     */
+    public String getCallbackUriOverride() {
+        return callbackUriOverride;
+    }
+
+    /**
      * Get the invitationTimeoutInSeconds.
      *
      * @return the Invitation Timeout In Seconds
@@ -74,6 +88,17 @@ public final class AddParticipantOptions {
      */
     public AddParticipantOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Set the call back URI override.
+     *
+     * @param callbackUriOverride The call back URI override to set
+     * @return the AddParticipantOptions object itself.
+     */
+    public AddParticipantOptions setCallbackUriOverride(String callbackUriOverride) {
+        this.callbackUriOverride = callbackUriOverride;
         return this;
     }
 
