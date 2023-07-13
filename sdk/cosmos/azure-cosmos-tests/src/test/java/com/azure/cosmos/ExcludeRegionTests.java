@@ -188,7 +188,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
         }
     }
 
-    private List<String> getPreferredRegionList(CosmosAsyncClient client) {
+    static List<String> getPreferredRegionList(CosmosAsyncClient client) {
         assertThat(client).isNotNull();
 
         AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(client);
