@@ -9,10 +9,7 @@ import com.azure.core.test.implementation.RestProxyTests;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.condition.DisabledForJreRange;
-import org.junit.jupiter.api.condition.JRE;
 
-@DisabledForJreRange(max = JRE.JAVA_11)
 public class RestProxyWithJdkHttpClientTests extends RestProxyTests {
     private static WireMockServer server;
 

@@ -11,15 +11,12 @@ import com.azure.core.util.ConfigurationSource;
 import com.azure.core.util.HttpClientOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledForJreRange;
-import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-@DisabledForJreRange(max = JRE.JAVA_11)
 @Execution(ExecutionMode.SAME_THREAD) // because singleton http client, it can avoid race condition.
 public class JdkHttpClientSingletonTests {
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();

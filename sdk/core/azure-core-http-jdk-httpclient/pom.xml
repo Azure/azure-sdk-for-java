@@ -221,11 +221,11 @@
       </build>
     </profile>
 
-    <!-- Override the parent client.pom.xml's java11+ profile to override target of base-compile execution from 1.8 to 11-->
+    <!-- Override the parent client.pom.xml's java11+ profile to override target of base-compile execution from 1.8 to 12-->
     <profile>
-      <id>requires-java-11-or-later</id>
+      <id>requires-java-12-or-later</id>
       <activation>
-        <jdk>[11,)</jdk>
+        <jdk>[12,)</jdk>
       </activation>
       <build>
         <plugins>
@@ -234,15 +234,15 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
-              <testRelease>11</testRelease>
+              <testRelease>12</testRelease>
             </configuration>
             <executions>
               <execution>
                 <id>default-compile</id>
               </execution>
-              <!-- Here the 'base-compile' execution section of requires-java-lts profile defined in parent pom.client.xml is overridden.
+              <!-- Here the 'base-compile' execution section of requires-java-12-or-later profile defined in parent pom.client.xml is overridden.
                In parent pom, this execution entry enforces java8 release compatibility. The new http APIs are not available
-               in Java8, hence here in this pom we override that release compatibility to 11.
+               in Java8, hence here in this pom we override that release compatibility to 12.
               -->
               <execution>
                 <id>base-compile</id>
@@ -250,12 +250,12 @@
                   <goal>compile</goal>
                 </goals>
                 <configuration combine.self="override">
-                  <release>11</release>
+                  <release>12</release>
                 </configuration>
               </execution>
-              <!-- Here the 'base-testCompile' execution section of requires-java-lts profile defined in parent pom.client.xml is overridden.
+              <!-- Here the 'base-testCompile' execution section of requires-java-11-or-later profile defined in parent pom.client.xml is overridden.
                In parent pom, this execution entry enforces java8 release compatibility. The new http APIs are not available
-               in Java8, hence here in this pom we override that release compatibility to 11.
+               in Java8, hence here in this pom we override that release compatibility to 12.
               -->
               <execution>
                 <id>base-testCompile</id>
@@ -263,7 +263,7 @@
                   <goal>testCompile</goal>
                 </goals>
                 <configuration combine.self="override">
-                  <testRelease>11</testRelease>
+                  <testRelease>12</testRelease>
                 </configuration>
               </execution>
             </executions>
