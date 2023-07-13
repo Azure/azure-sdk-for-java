@@ -466,13 +466,15 @@ jobs:
       vmImage: MMSUbuntu20.04
 
     steps:
+      - checkout: none
+
       # Always run tests for non-PR builds.
       # For PR builds check if any meaningful code changes have been made.
       # A meaningful code change is changing of source code, Maven configurations, or pipeline configurations.
       - pwsh: |
           if ("$(Build.Reason)" -ne 'PullRequest') {
             Write-Host "##vso[task.setvariable variable=ShouldRunTests;isOutput=true]true"
-            exit 0
+            return
           }
 
           $changedFiles = & "eng/common/scripts/get-changedfiles.ps1"
@@ -484,11 +486,12 @@ jobs:
 
             if ($changedFile -match '.*\.(java|groovy|xml|yml)$') {
               Write-Host "##vso[task.setvariable variable=ShouldRunTests;isOutput=true]true"
-              exit 0
+              break
             }
           }
 
   - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+    condition: eq(dependencies.ShouldRunTests.outputs['ShouldRunTests'], 'true')
     parameters:
       DependsOn: ShouldRunTests
       JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
