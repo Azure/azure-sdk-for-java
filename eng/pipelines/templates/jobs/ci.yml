@@ -485,11 +485,7 @@ jobs:
         # For PR builds check if any meaningful code changes have been made.
         # A meaningful code change is changing of source code, Maven configurations, or pipeline configurations.
         - pwsh: |
-            $jsonObject = ConvertFrom-Json -InputObject ${{ parameters.MatrixConfigs }}
-            Write-Host $jsonObject
-
             if ("$(Build.Reason)" -ne 'PullRequest') {
-              Write-Host "##vso[task.setvariable variable=ShouldRunTests;]true"
               return
             }
 
@@ -500,11 +496,13 @@ jobs:
               $inEngVersioning = $changedFile -match '^eng/versioning'
               $sourceCodeFile = $changedFile -match '.*\.(groovy|java|kt|scala|xml|yml)$'
 
-              if ($changedFile -match '.*\.(java|groovy|xml|yml)$') {
-                Write-Host "##vso[task.setvariable variable=ShouldRunTests;]true"
+              if ($changedFile -match '.*\.(java|groovy|xml)$') {
                 return
               }
             }
 
-            Write-Host "##vso[task.setvariable variable=ShouldRunTests;]false"
+            for ($config in ${{ parameters.MatrixConfigs }}) {
+              Write-Host $config.Path
+              "{}" | Out-File -FilePath $config.Path -Encoding utf8
+            }
           displayName: "Check if tests should be run"
