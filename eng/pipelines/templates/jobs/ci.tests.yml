@@ -97,7 +97,12 @@ jobs:
           Write-Host $(JavaTestVersion)
           Write-Host $(LatestNonLtsJavaVersion)
           $isLatestNonLtsJdk = $(JavaTestVersion) -eq $(LatestNonLtsJavaVersion)
-          Write-Host "##vso[task.setvariable variable=IsLatestNonLtsJdk;]$isLatestNonLtsJdk"
+          Write-Host $isLatestNonLtsJdk
+          if ($isLatestNonLtsJdk) {
+            Write-Host "##vso[task.setvariable variable=IsLatestNonLtsJdk;]true"
+          } else {
+            Write-Host "##vso[task.setvariable variable=IsLatestNonLtsJdk;]false"
+          }
         displayName: 'Set IsLatestNonLtsJdk variable'
 
       # If the Java test versions isn't one of the LTS versions, or in other words is the latest Java version we're
@@ -108,7 +113,7 @@ jobs:
       - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
         parameters:
           LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
-          IsLatestNonLtsJdk: ${{ eq(variables['IsLatestNonLtsJdk'], 'True') }}
+          IsLatestNonLtsJdk: ${{ eq(variables['IsLatestNonLtsJdk'], 'true') }}
 
       - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
         parameters:
@@ -127,13 +132,13 @@ jobs:
           TestOptions: ${{ parameters.TestOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
-          ContinueOnError: ${{ eq(variables['IsLatestNonLtsJdk'], 'True') }}
+          ContinueOnError: ${{ eq(variables['IsLatestNonLtsJdk'], 'true') }}
 
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
           JavaBuildVersion: $(JavaTestVersion)
           AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
           ContinueOnError: true
-          RunLinting: ${{ eq(variables['IsLatestNonLtsJdk'], 'True') }}
+          RunLinting: ${{ eq(variables['IsLatestNonLtsJdk'], 'true') }}
 
       - template: /eng/common/testproxy/publish-proxy-logs.yml

@@ -65,7 +65,11 @@ jobs:
           Write-Host $(LatestNonLtsJavaVersion)
           $isLatestNonLtsJdk = $(JavaTestVersion) -eq $(LatestNonLtsJavaVersion)
           Write-Host $isLatestNonLtsJdk
-          Write-Host "##vso[task.setvariable variable=IsLatestNonLtsJdk;]$isLatestNonLtsJdk"
+          if ($isLatestNonLtsJdk) {
+            Write-Host "##vso[task.setvariable variable=IsLatestNonLtsJdk;]true"
+          } else {
+            Write-Host "##vso[task.setvariable variable=IsLatestNonLtsJdk;]false"
+          }
         displayName: 'Set IsLatestNonLtsJdk variable'
 
       # If the Java test versions isn't one of the LTS versions, or in other words is the latest Java version we're
@@ -74,7 +78,7 @@ jobs:
       - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
         parameters:
           LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
-          IsLatestNonLtsJdk: ${{ eq(variables['IsLatestNonLtsJdk'], 'True') }}
+          IsLatestNonLtsJdk: ${{ eq(variables['IsLatestNonLtsJdk'], 'true') }}
 
       - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
         parameters:
@@ -112,7 +116,7 @@ jobs:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           ParallelTestPlayback: 'false'
           BuildParallelization: ${{ parameters.BuildParallelization }}
-          ContinueOnError: ${{ eq(variables['IsLatestNonLtsJdk'], 'True') }}
+          ContinueOnError: ${{ eq(variables['IsLatestNonLtsJdk'], 'true') }}
           IsLiveTest: true
           TestGoals: ${{ parameters.TestGoals }}
           TestOptions: ${{ parameters.TestOptions }}
