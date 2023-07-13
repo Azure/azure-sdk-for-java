@@ -42,8 +42,9 @@ context-client-method-parameter: true
 required-parameter-client-methods: true
 custom-strongly-typed-header-deserialization: true
 generic-response-type: true
+enable-sync-stack: true
 ```
- 
+
 ### Rename Role to ParticipantRole
 ```yaml
 directive:
