@@ -50,7 +50,7 @@ steps:
       goals: 'install'
     env:
       AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
-    continueOnError: ${{ coalesce(variables['IsLatestNonLtsJdk'], false) }}
+    continueOnError: ${{ eq(variables['IsLatestNonLtsJdk'], true) }}
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
   - task: PythonScript@0
@@ -73,7 +73,7 @@ steps:
       goals: 'install'
     env:
       AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
-    continueOnError: ${{ coalesce(variables['IsLatestNonLtsJdk'], false) }}
+    continueOnError: ${{ eq(variables['IsLatestNonLtsJdk'], true) }}
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
   # we want to run this when TestFromSource isn't true
@@ -89,7 +89,7 @@ steps:
       publishJUnitResults: false
       goals: ${{ parameters.TestGoals }}
     env: ${{ parameters.TestEnvVars }}
-    continueOnError: ${{ coalesce(variables['IsLatestNonLtsJdk'], false) }}
+    continueOnError: ${{ eq(variables['IsLatestNonLtsJdk'], true) }}
     # Only run tests if the build succeeded without errors.
     # This doesn't use the built-in 'succeeded()' as the passes if the build succeeded or succeeded with warnings,
     # which is what continueOnError: true does.
