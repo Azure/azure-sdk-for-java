@@ -9,24 +9,17 @@ import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilde
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobContentSource;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobFileListContentSource;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ClassifierDocumentTypeDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
-import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisFeature;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
 import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
-import com.azure.ai.formrecognizer.documentanalysis.models.TrainingDataContentSource;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -38,14 +31,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -237,8 +226,7 @@ public class ReadmeSamples {
             documentTypeDetails.getFieldSchema().forEach((name, documentFieldSchema) -> {
                 System.out.printf("Document field: %s%n", name);
                 System.out.printf("Document field type: %s%n", documentFieldSchema.getType().toString());
-                System.out.printf("Document field confidence: %.2f%n",
-                    documentTypeDetails.getFieldConfidence().get(name));
+                System.out.printf("Document field confidence: %.2f%n", documentTypeDetails.getFieldConfidence().get(name));
             });
         });
         // END: readme-sample-buildModel
@@ -364,8 +352,7 @@ public class ReadmeSamples {
                 documentKeyValuePair.getKey().getBoundingRegions().toString());
 
             System.out.printf("Value content: %s%n", documentKeyValuePair.getValue().getContent());
-            System.out.printf("Value content bounding region: %s%n",
-                documentKeyValuePair.getValue().getBoundingRegions().toString());
+            System.out.printf("Value content bounding region: %s%n", documentKeyValuePair.getValue().getBoundingRegions().toString());
         });
         // END: readme-sample-analyzePrebuiltDocument
     }
@@ -390,8 +377,7 @@ public class ReadmeSamples {
             modelId.set(documentModelSummary.getModelId());
 
             // get custom document analysis model info
-            DocumentModelDetails documentModel =
-                documentModelAdminClient.getDocumentModel(documentModelSummary.getModelId());
+            DocumentModelDetails documentModel = documentModelAdminClient.getDocumentModel(documentModelSummary.getModelId());
             System.out.printf("Model ID: %s%n", documentModel.getModelId());
             System.out.printf("Model Description: %s%n", documentModel.getDescription());
             System.out.printf("Model created on: %s%n", documentModel.getCreatedOn());
@@ -427,11 +413,10 @@ public class ReadmeSamples {
      * Code snippet for handling exception
      */
     public void handlingExceptionAsync() {
-        DocumentModelAdministrationAsyncClient administrationAsyncClient =
-            new DocumentModelAdministrationClientBuilder()
-                .credential(new AzureKeyCredential("{key}"))
-                .endpoint("{endpoint}")
-                .buildAsyncClient();
+        DocumentModelAdministrationAsyncClient administrationAsyncClient = new DocumentModelAdministrationClientBuilder()
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("{endpoint}")
+            .buildAsyncClient();
 
         // BEGIN: readme-sample-async-handlingException
         administrationAsyncClient.deleteDocumentModel("{modelId}")
@@ -478,116 +463,5 @@ public class ReadmeSamples {
             .getDocuments()
             .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocType()));
         // END: readme-sample-classifyDocument
-    }
-
-    public void beginBuildDocumentClassifier() {
-        // BEGIN: readme-sample-build-classifier
-
-        // Build custom classifier document model
-        String trainingBlobUrl = "{SAS_URL_of_your_container_in_blob_storage}";
-
-        TrainingDataContentSource contentSourceA
-            = new AzureBlobContentSource(trainingBlobUrl).setPrefix("IRS-1040-A/train");
-        TrainingDataContentSource contentSourceB
-            = new AzureBlobFileListContentSource(trainingBlobUrl, "IRS-1040-B.jsonl");
-
-        HashMap<String, ClassifierDocumentTypeDetails> docTypes = new HashMap<String, ClassifierDocumentTypeDetails>() {
-            {
-                put("1040-A", new ClassifierDocumentTypeDetails(contentSourceA));
-                put("1040-B", new ClassifierDocumentTypeDetails(contentSourceB));
-            }};
-
-        DocumentClassifierDetails documentClassifierDetails
-            = documentModelAdminClient.beginBuildDocumentClassifier(docTypes).getFinalResult();
-
-        System.out.printf("Classifier ID: %s%n", documentClassifierDetails.getClassifierId());
-        System.out.printf("Classifier created on: %s%n", documentClassifierDetails.getCreatedOn());
-
-        documentClassifierDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
-            if (documentTypeDetails.getTrainingDataContentSource() instanceof AzureBlobContentSource) {
-                System.out.printf("Blob Source container Url: %s", ((AzureBlobContentSource) documentTypeDetails
-                    .getTrainingDataContentSource()).getContainerUrl());
-            }
-        });
-        // END: readme-sample-build-classifier
-    }
-
-    public void beginAnalyzeDocumentWithFormulas() throws IOException {
-        // BEGIN: readme-sample-analyzeDocument-premium
-        File document = new File("{local/file_path/fileName.jpg}");
-        String modelId = "{model_id}";
-        final AnalyzeDocumentOptions analyzeDocumentOptions
-            = new AnalyzeDocumentOptions()
-            .setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.FORMULAS));
-
-        // Utility method to convert input stream to Binary Data
-        BinaryData data = BinaryData.fromStream(new ByteArrayInputStream(Files.readAllBytes(document.toPath())));
-
-        AnalyzeResult analyzeResult
-            = documentAnalysisClient.beginAnalyzeDocument(modelId, data, analyzeDocumentOptions, Context.NONE)
-            .getFinalResult();
-
-        analyzeResult.getPages()
-            .forEach(documentPage -> {
-                System.out.printf("Document page Number: %s%n", documentPage.getPageNumber());
-                documentPage.getFormulas()
-                    .forEach(documentFormula -> System.out.printf("Formula value: %s%n", documentFormula.getValue()));
-            });
-        // END: readme-sample-analyzeDocument-premium
-    }
-
-    public void manageClassifiers() {
-        AtomicReference<String> classifierId = new AtomicReference<>();
-        // BEGIN: readme-sample-manage-classifiers
-        // Get a paged list of all document classifiers
-        PagedIterable<DocumentClassifierDetails> documentClassifierDetailList = documentModelAdminClient.listDocumentClassifiers();
-        System.out.println("We have following classifiers in the account:");
-        documentClassifierDetailList.forEach(documentClassifierDetails -> {
-            System.out.printf("Classifier ID: %s%n", documentClassifierDetails.getClassifierId());
-
-            // get Classifier info
-            classifierId.set(documentClassifierDetails.getClassifierId());
-            DocumentClassifierDetails documentClassifier = documentModelAdminClient.getDocumentClassifier(documentClassifierDetails.getClassifierId());
-            System.out.printf("Classifier ID: %s%n", documentClassifier.getClassifierId());
-            System.out.printf("Classifier created on: %s%n", documentClassifier.getCreatedOn());
-            documentClassifier.getDocTypes().forEach((key, documentTypeDetails) -> {
-                if (documentTypeDetails.getTrainingDataContentSource() instanceof AzureBlobContentSource) {
-                    System.out.printf("Blob Source container Url: %s", ((AzureBlobContentSource) documentTypeDetails
-                        .getTrainingDataContentSource()).getContainerUrl());
-                }
-            });
-        });
-
-        // Delete classifier
-        System.out.printf("Deleted Classifier with Classifier ID: %s, operation completed with status: %s%n", classifierId.get(),
-            documentModelAdminClient.deleteDocumentClassifierWithResponse(classifierId.get(), Context.NONE).getStatusCode());
-
-        // END: readme-sample-manage-classifiers
-    }
-
-    public void buildModelSourceOverload() {
-        // BEGIN: readme-sample-build-classifier-source-overload
-        // Existing
-        String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
-        String prefix = "{blob_name_prefix}}";
-
-        documentModelAdminClient.beginBuildDocumentModel(blobContainerUrl,
-            DocumentModelBuildMode.TEMPLATE,
-            prefix,
-            new BuildDocumentModelOptions().setModelId("my-build-model").setDescription("model desc"),
-            Context.NONE);
-
-        // New overload
-        documentModelAdminClient.beginBuildDocumentModel(
-            new AzureBlobContentSource(blobContainerUrl).setPrefix(prefix),
-            DocumentModelBuildMode.TEMPLATE);
-
-        // Using AzureBlobFileListContentSource source type
-        documentModelAdminClient.beginBuildDocumentModel(
-            new AzureBlobFileListContentSource(blobContainerUrl, "file-list.jsonL"),
-            DocumentModelBuildMode.TEMPLATE,
-            new BuildDocumentModelOptions().setModelId("my-build-model").setDescription("model desc"),
-            Context.NONE);
-        // END: readme-sample-build-classifier-source-overload
     }
 }

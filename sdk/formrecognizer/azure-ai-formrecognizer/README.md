@@ -340,8 +340,7 @@ analyzeResult.getKeyValuePairs().forEach(documentKeyValuePair -> {
         documentKeyValuePair.getKey().getBoundingRegions().toString());
 
     System.out.printf("Value content: %s%n", documentKeyValuePair.getValue().getContent());
-    System.out.printf("Value content bounding region: %s%n",
-        documentKeyValuePair.getValue().getBoundingRegions().toString());
+    System.out.printf("Value content bounding region: %s%n", documentKeyValuePair.getValue().getBoundingRegions().toString());
 });
 ```
 
@@ -463,8 +462,7 @@ documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
     documentTypeDetails.getFieldSchema().forEach((name, documentFieldSchema) -> {
         System.out.printf("Document field: %s%n", name);
         System.out.printf("Document field type: %s%n", documentFieldSchema.getType().toString());
-        System.out.printf("Document field confidence: %.2f%n",
-            documentTypeDetails.getFieldConfidence().get(name));
+        System.out.printf("Document field confidence: %.2f%n", documentTypeDetails.getFieldConfidence().get(name));
     });
 });
 ```
@@ -547,8 +545,7 @@ customDocumentModels.forEach(documentModelSummary -> {
     modelId.set(documentModelSummary.getModelId());
 
     // get custom document analysis model info
-    DocumentModelDetails documentModel =
-        documentModelAdminClient.getDocumentModel(documentModelSummary.getModelId());
+    DocumentModelDetails documentModel = documentModelAdminClient.getDocumentModel(documentModelSummary.getModelId());
     System.out.printf("Model ID: %s%n", documentModel.getModelId());
     System.out.printf("Model Description: %s%n", documentModel.getDescription());
     System.out.printf("Model created on: %s%n", documentModel.getCreatedOn());

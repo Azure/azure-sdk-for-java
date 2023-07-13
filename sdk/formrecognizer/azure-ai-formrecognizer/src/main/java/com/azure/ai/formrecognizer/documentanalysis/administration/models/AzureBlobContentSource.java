@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 
 /** Azure Blob Storage content. */
 @Fluent
-public final class AzureBlobContentSource implements TrainingDataContentSource {
+public final class AzureBlobContentSource extends TrainingDataContentSource {
     /*
      * Azure Blob Storage container URL.
      */

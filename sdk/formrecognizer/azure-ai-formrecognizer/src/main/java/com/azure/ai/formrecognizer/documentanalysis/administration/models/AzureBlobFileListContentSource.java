@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
 
 /** File list in Azure Blob Storage. */
 @Immutable
-public final class AzureBlobFileListContentSource implements TrainingDataContentSource {
+public final class AzureBlobFileListContentSource extends TrainingDataContentSource {
     /*
      * Azure Blob Storage container URL.
      */

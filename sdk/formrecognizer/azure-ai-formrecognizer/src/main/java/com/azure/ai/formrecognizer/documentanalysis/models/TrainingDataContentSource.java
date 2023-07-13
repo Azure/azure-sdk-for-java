@@ -6,5 +6,5 @@ package com.azure.ai.formrecognizer.documentanalysis.models;
 /**
  * Class representing the source of the training content.
  */
-public interface TrainingDataContentSource {
+public abstract class TrainingDataContentSource {
 }
