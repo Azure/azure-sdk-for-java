@@ -33,7 +33,7 @@ public class TestProxyManager {
         this.testClassPath = testClassPath;
         // This is necessary to stop the proxy when the debugger is stopped.
         Runtime.getRuntime().addShutdownHook(new Thread(this::stopProxy));
-        if (!proxyIsManual()) {
+        if (runningLocally()) {
             TestProxyDownloader.installTestProxy(testClassPath);
         }
     }
@@ -46,7 +46,7 @@ public class TestProxyManager {
     public void startProxy() {
         try {
             // if we're not running in CI we will check to see if someone has started the proxy, and start one if not.
-            if (!proxyIsManual() && !checkAlive(1, Duration.ofSeconds(1))) {
+            if (runningLocally() && !checkAlive(1, Duration.ofSeconds(1))) {
                 String commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
                     TestProxyUtils.getProxyProcessName()).toString();
 
@@ -104,7 +104,8 @@ public class TestProxyManager {
      * Checks the environment variables commonly set in CI to determine if the run is local.
      * @return True if the run is local.
      */
-    private boolean proxyIsManual() {
-        return Configuration.getGlobalConfiguration().get("PROXY_MANUAL_START") != null;
+    private boolean runningLocally() {
+        return Configuration.getGlobalConfiguration().get("TF_BUILD") == null
+            && Configuration.getGlobalConfiguration().get("CI") == null;
     }
 }
