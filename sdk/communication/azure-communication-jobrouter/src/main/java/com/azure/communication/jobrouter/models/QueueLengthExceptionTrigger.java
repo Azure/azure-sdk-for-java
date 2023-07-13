@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("queue-length")
 @Fluent
-public final class QueueLengthExceptionTrigger extends JobExceptionTrigger {
+public final class QueueLengthExceptionTrigger extends ExceptionTrigger {
     /*
      * Threshold of number of jobs ahead in the queue to for this trigger to
      * fire.

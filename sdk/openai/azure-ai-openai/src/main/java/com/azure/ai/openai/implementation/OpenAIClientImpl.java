@@ -5,7 +5,6 @@
 package com.azure.ai.openai.implementation;
 
 import com.azure.ai.openai.OpenAIServiceVersion;
-import com.azure.ai.openai.models.ImageOperationStatus;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -23,7 +22,6 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
@@ -174,7 +172,7 @@ public final class OpenAIClientImpl {
         Mono<Response<BinaryData>> getEmbeddings(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentId,
+                @PathParam("deploymentId") String deploymentOrModelName,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData embeddingsOptions,
                 RequestOptions requestOptions,
@@ -195,7 +193,7 @@ public final class OpenAIClientImpl {
         Response<BinaryData> getEmbeddingsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentId,
+                @PathParam("deploymentId") String deploymentOrModelName,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData embeddingsOptions,
                 RequestOptions requestOptions,
@@ -216,7 +214,7 @@ public final class OpenAIClientImpl {
         Mono<Response<BinaryData>> getCompletions(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentId,
+                @PathParam("deploymentId") String deploymentOrModelName,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData completionsOptions,
                 RequestOptions requestOptions,
@@ -237,7 +235,7 @@ public final class OpenAIClientImpl {
         Response<BinaryData> getCompletionsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentId,
+                @PathParam("deploymentId") String deploymentOrModelName,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData completionsOptions,
                 RequestOptions requestOptions,
@@ -258,7 +256,7 @@ public final class OpenAIClientImpl {
         Mono<Response<BinaryData>> getChatCompletions(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentId,
+                @PathParam("deploymentId") String deploymentOrModelName,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData chatCompletionsOptions,
                 RequestOptions requestOptions,
@@ -279,7 +277,7 @@ public final class OpenAIClientImpl {
         Response<BinaryData> getChatCompletionsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentId,
+                @PathParam("deploymentId") String deploymentOrModelName,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/json") BinaryData chatCompletionsOptions,
                 RequestOptions requestOptions,
@@ -297,7 +295,7 @@ public final class OpenAIClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getImageOperationStatus(
+        Mono<Response<BinaryData>> getAzureBatchImageGenerationOperationStatus(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("operationId") String operationId,
@@ -317,7 +315,7 @@ public final class OpenAIClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getImageOperationStatusSync(
+        Response<BinaryData> getAzureBatchImageGenerationOperationStatusSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("operationId") String operationId,
@@ -337,7 +335,7 @@ public final class OpenAIClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> startGenerateImage(
+        Mono<Response<BinaryData>> beginAzureBatchImageGeneration(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("accept") String accept,
@@ -357,7 +355,7 @@ public final class OpenAIClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> startGenerateImageSync(
+        Response<BinaryData> beginAzureBatchImageGenerationSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("accept") String accept,
@@ -400,7 +398,8 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
      *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
      *     scenarios.
@@ -415,14 +414,14 @@ public final class OpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEmbeddingsWithResponseAsync(
-            String deploymentId, BinaryData embeddingsOptions, RequestOptions requestOptions) {
+            String deploymentOrModelName, BinaryData embeddingsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getEmbeddings(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                deploymentId,
+                                deploymentOrModelName,
                                 accept,
                                 embeddingsOptions,
                                 requestOptions,
@@ -463,7 +462,8 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
      *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
      *     scenarios.
@@ -478,12 +478,12 @@ public final class OpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEmbeddingsWithResponse(
-            String deploymentId, BinaryData embeddingsOptions, RequestOptions requestOptions) {
+            String deploymentOrModelName, BinaryData embeddingsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getEmbeddingsSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
-                deploymentId,
+                deploymentOrModelName,
                 accept,
                 embeddingsOptions,
                 requestOptions,
@@ -548,7 +548,7 @@ public final class OpenAIClientImpl {
      *                     int (Required)
      *                 ]
      *             }
-     *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
+     *             finish_reason: String(stop/length/content_filter) (Required)
      *         }
      *     ]
      *     usage (Required): {
@@ -559,7 +559,8 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param completionsOptions The configuration information for a completions request. Completions support a wide
      *     variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -573,14 +574,14 @@ public final class OpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCompletionsWithResponseAsync(
-            String deploymentId, BinaryData completionsOptions, RequestOptions requestOptions) {
+            String deploymentOrModelName, BinaryData completionsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getCompletions(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                deploymentId,
+                                deploymentOrModelName,
                                 accept,
                                 completionsOptions,
                                 requestOptions,
@@ -645,7 +646,7 @@ public final class OpenAIClientImpl {
      *                     int (Required)
      *                 ]
      *             }
-     *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
+     *             finish_reason: String(stop/length/content_filter) (Required)
      *         }
      *     ]
      *     usage (Required): {
@@ -656,7 +657,8 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param completionsOptions The configuration information for a completions request. Completions support a wide
      *     variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -669,12 +671,12 @@ public final class OpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCompletionsWithResponse(
-            String deploymentId, BinaryData completionsOptions, RequestOptions requestOptions) {
+            String deploymentOrModelName, BinaryData completionsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getCompletionsSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
-                deploymentId,
+                deploymentOrModelName,
                 accept,
                 completionsOptions,
                 requestOptions,
@@ -726,7 +728,7 @@ public final class OpenAIClientImpl {
      *                 content: String (Optional)
      *             }
      *             index: int (Required)
-     *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
+     *             finish_reason: String(stop/length/content_filter) (Required)
      *             delta (Optional): (recursive schema, see delta above)
      *         }
      *     ]
@@ -738,7 +740,8 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
      *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -752,14 +755,14 @@ public final class OpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getChatCompletionsWithResponseAsync(
-            String deploymentId, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+            String deploymentOrModelName, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getChatCompletions(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                deploymentId,
+                                deploymentOrModelName,
                                 accept,
                                 chatCompletionsOptions,
                                 requestOptions,
@@ -811,7 +814,7 @@ public final class OpenAIClientImpl {
      *                 content: String (Optional)
      *             }
      *             index: int (Required)
-     *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
+     *             finish_reason: String(stop/length/content_filter) (Required)
      *             delta (Optional): (recursive schema, see delta above)
      *         }
      *     ]
@@ -823,7 +826,8 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
      *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -836,12 +840,12 @@ public final class OpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getChatCompletionsWithResponse(
-            String deploymentId, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+            String deploymentOrModelName, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getChatCompletionsSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
-                deploymentId,
+                deploymentOrModelName,
                 accept,
                 chatCompletionsOptions,
                 requestOptions,
@@ -860,26 +864,21 @@ public final class OpenAIClientImpl {
      *     expires: Long (Optional)
      *     result (Optional): {
      *         created: long (Required)
-     *         data (Required): [
-     *              (Required){
-     *                 url: String (Optional)
-     *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     target: String (Optional)
-     *                     details (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     innererror (Optional): {
-     *                         code: String (Optional)
-     *                         innererror (Optional): (recursive schema, see innererror above)
-     *                     }
-     *                 }
-     *             }
-     *         ]
+     *         data: DataModelBase (Required)
      *     }
-     *     status: String(notRunning/running/succeeded/canceled/failed/deleted) (Required)
-     *     error (Optional): (recursive schema, see error above)
+     *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
      * }
      * }</pre>
      *
@@ -889,16 +888,16 @@ public final class OpenAIClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of the operation if the operation succeeded along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return a polling status update or final response payload for an image operation along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getImageOperationStatusWithResponseAsync(
+    public Mono<Response<BinaryData>> getAzureBatchImageGenerationOperationStatusWithResponseAsync(
             String operationId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getImageOperationStatus(
+                        service.getAzureBatchImageGenerationOperationStatus(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 operationId,
@@ -919,26 +918,21 @@ public final class OpenAIClientImpl {
      *     expires: Long (Optional)
      *     result (Optional): {
      *         created: long (Required)
-     *         data (Required): [
-     *              (Required){
-     *                 url: String (Optional)
-     *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     target: String (Optional)
-     *                     details (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     innererror (Optional): {
-     *                         code: String (Optional)
-     *                         innererror (Optional): (recursive schema, see innererror above)
-     *                     }
-     *                 }
-     *             }
-     *         ]
+     *         data: DataModelBase (Required)
      *     }
-     *     status: String(notRunning/running/succeeded/canceled/failed/deleted) (Required)
-     *     error (Optional): (recursive schema, see error above)
+     *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
      * }
      * }</pre>
      *
@@ -948,12 +942,13 @@ public final class OpenAIClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of the operation if the operation succeeded along with {@link Response}.
+     * @return a polling status update or final response payload for an image operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getImageOperationStatusWithResponse(String operationId, RequestOptions requestOptions) {
+    public Response<BinaryData> getAzureBatchImageGenerationOperationStatusWithResponse(
+            String operationId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getImageOperationStatusSync(
+        return service.getAzureBatchImageGenerationOperationStatusSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
                 operationId,
@@ -972,6 +967,7 @@ public final class OpenAIClientImpl {
      *     prompt: String (Required)
      *     n: Integer (Optional)
      *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     response_format: String(url/b64_json) (Optional)
      *     user: String (Optional)
      * }
      * }</pre>
@@ -1007,12 +1003,12 @@ public final class OpenAIClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> startGenerateImageWithResponseAsync(
+    private Mono<Response<BinaryData>> beginAzureBatchImageGenerationWithResponseAsync(
             BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.startGenerateImage(
+                        service.beginAzureBatchImageGeneration(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 accept,
@@ -1031,6 +1027,7 @@ public final class OpenAIClientImpl {
      *     prompt: String (Required)
      *     n: Integer (Optional)
      *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     response_format: String(url/b64_json) (Optional)
      *     user: String (Optional)
      * }
      * }</pre>
@@ -1065,10 +1062,10 @@ public final class OpenAIClientImpl {
      * @return status details for long running operations along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> startGenerateImageWithResponse(
+    private Response<BinaryData> beginAzureBatchImageGenerationWithResponse(
             BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.startGenerateImageSync(
+        return service.beginAzureBatchImageGenerationSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
                 accept,
@@ -1087,6 +1084,7 @@ public final class OpenAIClientImpl {
      *     prompt: String (Required)
      *     n: Integer (Optional)
      *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     response_format: String(url/b64_json) (Optional)
      *     user: String (Optional)
      * }
      * }</pre>
@@ -1121,11 +1119,11 @@ public final class OpenAIClientImpl {
      * @return the {@link PollerFlux} for polling of status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginStartGenerateImageAsync(
+    public PollerFlux<BinaryData, BinaryData> beginBeginAzureBatchImageGenerationAsync(
             BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
-                () -> this.startGenerateImageWithResponseAsync(imageGenerationOptions, requestOptions),
+                () -> this.beginAzureBatchImageGenerationWithResponseAsync(imageGenerationOptions, requestOptions),
                 new DefaultPollingStrategy<>(
                         new PollingStrategyOptions(this.getHttpPipeline())
                                 .setEndpoint("{endpoint}/openai".replace("{endpoint}", this.getEndpoint()))
@@ -1147,6 +1145,7 @@ public final class OpenAIClientImpl {
      *     prompt: String (Required)
      *     n: Integer (Optional)
      *     size: String(256x256/512x512/1024x1024) (Optional)
+     *     response_format: String(url/b64_json) (Optional)
      *     user: String (Optional)
      * }
      * }</pre>
@@ -1181,11 +1180,11 @@ public final class OpenAIClientImpl {
      * @return the {@link SyncPoller} for polling of status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginStartGenerateImage(
+    public SyncPoller<BinaryData, BinaryData> beginBeginAzureBatchImageGeneration(
             BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         return SyncPoller.createPoller(
                 Duration.ofSeconds(1),
-                () -> this.startGenerateImageWithResponse(imageGenerationOptions, requestOptions),
+                () -> this.beginAzureBatchImageGenerationWithResponse(imageGenerationOptions, requestOptions),
                 new SyncDefaultPollingStrategy<>(
                         new PollingStrategyOptions(this.getHttpPipeline())
                                 .setEndpoint("{endpoint}/openai".replace("{endpoint}", this.getEndpoint()))
@@ -1195,125 +1194,5 @@ public final class OpenAIClientImpl {
                                                 : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Starts the generation of a batch of images from a text caption.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     prompt: String (Required)
-     *     n: Integer (Optional)
-     *     size: String(256x256/512x512/1024x1024) (Optional)
-     *     user: String (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     status: String (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param imageGenerationOptions Represents the request data used to generate images.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of status details for long running operations.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult, ImageOperationStatus> beginStartGenerateImageWithModelAsync(
-            BinaryData imageGenerationOptions, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.startGenerateImageWithResponseAsync(imageGenerationOptions, requestOptions),
-                new DefaultPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint("{endpoint}/openai".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)),
-                TypeReference.createInstance(PollResult.class),
-                TypeReference.createInstance(ImageOperationStatus.class));
-    }
-
-    /**
-     * Starts the generation of a batch of images from a text caption.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     prompt: String (Required)
-     *     n: Integer (Optional)
-     *     size: String(256x256/512x512/1024x1024) (Optional)
-     *     user: String (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     status: String (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param imageGenerationOptions Represents the request data used to generate images.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of status details for long running operations.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult, ImageOperationStatus> beginStartGenerateImageWithModel(
-            BinaryData imageGenerationOptions, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(
-                Duration.ofSeconds(1),
-                () -> this.startGenerateImageWithResponse(imageGenerationOptions, requestOptions),
-                new SyncDefaultPollingStrategy<>(
-                        new PollingStrategyOptions(this.getHttpPipeline())
-                                .setEndpoint("{endpoint}/openai".replace("{endpoint}", this.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)),
-                TypeReference.createInstance(PollResult.class),
-                TypeReference.createInstance(ImageOperationStatus.class));
     }
 }

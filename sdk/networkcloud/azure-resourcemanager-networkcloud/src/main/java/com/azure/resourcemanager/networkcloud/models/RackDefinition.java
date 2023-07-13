@@ -13,7 +13,7 @@ import java.util.List;
 @Fluent
 public final class RackDefinition {
     /*
-     * The zone name used for this rack when created.
+     * The zone name used for this rack when created. Availability zones are used for workload placement.
      */
     @JsonProperty(value = "availabilityZone")
     private String availabilityZone;
@@ -60,7 +60,8 @@ public final class RackDefinition {
     }
 
     /**
-     * Get the availabilityZone property: The zone name used for this rack when created.
+     * Get the availabilityZone property: The zone name used for this rack when created. Availability zones are used for
+     * workload placement.
      *
      * @return the availabilityZone value.
      */
@@ -69,7 +70,8 @@ public final class RackDefinition {
     }
 
     /**
-     * Set the availabilityZone property: The zone name used for this rack when created.
+     * Set the availabilityZone property: The zone name used for this rack when created. Availability zones are used for
+     * workload placement.
      *
      * @param availabilityZone the availabilityZone value to set.
      * @return the RackDefinition object itself.

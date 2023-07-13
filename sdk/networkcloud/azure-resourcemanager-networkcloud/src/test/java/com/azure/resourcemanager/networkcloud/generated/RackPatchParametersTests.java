@@ -16,24 +16,24 @@ public final class RackPatchParametersTests {
         RackPatchParameters model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"rackLocation\":\"zft\",\"rackSerialNumber\":\"jwabmd\"},\"tags\":{\"kyqltqsrogt\":\"mvcopexcmjurbuhh\",\"ysidfvclgl\":\"wkffdjkt\"}}")
+                    "{\"properties\":{\"rackLocation\":\"ctfjgtixr\",\"rackSerialNumber\":\"zuyt\"},\"tags\":{\"bauiropi\":\"lmuowo\",\"n\":\"nszonwpngaj\"}}")
                 .toObject(RackPatchParameters.class);
-        Assertions.assertEquals("mvcopexcmjurbuhh", model.tags().get("kyqltqsrogt"));
-        Assertions.assertEquals("zft", model.rackLocation());
-        Assertions.assertEquals("jwabmd", model.rackSerialNumber());
+        Assertions.assertEquals("lmuowo", model.tags().get("bauiropi"));
+        Assertions.assertEquals("ctfjgtixr", model.rackLocation());
+        Assertions.assertEquals("zuyt", model.rackSerialNumber());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RackPatchParameters model =
             new RackPatchParameters()
-                .withTags(mapOf("kyqltqsrogt", "mvcopexcmjurbuhh", "ysidfvclgl", "wkffdjkt"))
-                .withRackLocation("zft")
-                .withRackSerialNumber("jwabmd");
+                .withTags(mapOf("bauiropi", "lmuowo", "n", "nszonwpngaj"))
+                .withRackLocation("ctfjgtixr")
+                .withRackSerialNumber("zuyt");
         model = BinaryData.fromObject(model).toObject(RackPatchParameters.class);
-        Assertions.assertEquals("mvcopexcmjurbuhh", model.tags().get("kyqltqsrogt"));
-        Assertions.assertEquals("zft", model.rackLocation());
-        Assertions.assertEquals("jwabmd", model.rackSerialNumber());
+        Assertions.assertEquals("lmuowo", model.tags().get("bauiropi"));
+        Assertions.assertEquals("ctfjgtixr", model.rackLocation());
+        Assertions.assertEquals("zuyt", model.rackSerialNumber());
     }
 
     @SuppressWarnings("unchecked")

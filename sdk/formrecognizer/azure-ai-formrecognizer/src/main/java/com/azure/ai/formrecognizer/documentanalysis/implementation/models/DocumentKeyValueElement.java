@@ -4,13 +4,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An object representing the field key or value in a key-value pair. */
-@Fluent
+@Immutable
 public final class DocumentKeyValueElement {
     /*
      * Concatenated content of the key-value element in reading order.
@@ -37,7 +37,7 @@ public final class DocumentKeyValueElement {
      * @param spans the spans value to set.
      */
     @JsonCreator
-    public DocumentKeyValueElement(
+    private DocumentKeyValueElement(
             @JsonProperty(value = "content", required = true) String content,
             @JsonProperty(value = "spans", required = true) List<DocumentSpan> spans) {
         this.content = content;
@@ -60,17 +60,6 @@ public final class DocumentKeyValueElement {
      */
     public List<BoundingRegion> getBoundingRegions() {
         return this.boundingRegions;
-    }
-
-    /**
-     * Set the boundingRegions property: Bounding regions covering the key-value element.
-     *
-     * @param boundingRegions the boundingRegions value to set.
-     * @return the DocumentKeyValueElement object itself.
-     */
-    public DocumentKeyValueElement setBoundingRegions(List<BoundingRegion> boundingRegions) {
-        this.boundingRegions = boundingRegions;
-        return this;
     }
 
     /**

@@ -4,14 +4,14 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Operation info. */
-@Fluent
+@Immutable
 public final class OperationSummary {
     /*
      * Operation ID
@@ -78,7 +78,7 @@ public final class OperationSummary {
      * @param resourceLocation the resourceLocation value to set.
      */
     @JsonCreator
-    public OperationSummary(
+    private OperationSummary(
             @JsonProperty(value = "operationId", required = true) String operationId,
             @JsonProperty(value = "status", required = true) OperationStatus status,
             @JsonProperty(value = "createdDateTime", required = true) OffsetDateTime createdDateTime,
@@ -118,17 +118,6 @@ public final class OperationSummary {
      */
     public Integer getPercentCompleted() {
         return this.percentCompleted;
-    }
-
-    /**
-     * Set the percentCompleted property: Operation progress (0-100).
-     *
-     * @param percentCompleted the percentCompleted value to set.
-     * @return the OperationSummary object itself.
-     */
-    public OperationSummary setPercentCompleted(Integer percentCompleted) {
-        this.percentCompleted = percentCompleted;
-        return this;
     }
 
     /**
@@ -177,33 +166,11 @@ public final class OperationSummary {
     }
 
     /**
-     * Set the apiVersion property: API version used to create this operation.
-     *
-     * @param apiVersion the apiVersion value to set.
-     * @return the OperationSummary object itself.
-     */
-    public OperationSummary setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
-    }
-
-    /**
      * Get the tags property: List of key-value tag attributes associated with the document model.
      *
      * @return the tags value.
      */
     public Map<String, String> getTags() {
         return this.tags;
-    }
-
-    /**
-     * Set the tags property: List of key-value tag attributes associated with the document model.
-     *
-     * @param tags the tags value to set.
-     * @return the OperationSummary object itself.
-     */
-    public OperationSummary setTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
     }
 }

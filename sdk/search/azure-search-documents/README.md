@@ -95,15 +95,20 @@ See [choosing a pricing tier](https://docs.microsoft.com/azure/search/search-sku
 
 ### Authenticate the client
 
-In order to interact with the Azure Cognitive Search service you'll need to create an instance of the Search Client class.
-To make this possible you will need,
+To interact with the Search service, you'll need to create an instance of the appropriate client class: `SearchClient` 
+for searching indexed documents, `SearchIndexClient` for managing indexes, or `SearchIndexerClient` for crawling data 
+sources and loading search documents into an index. To instantiate a client object, you'll need an **endpoint** and 
+**API key**. You can refer to the documentation for more information on [supported authenticating approaches](https://learn.microsoft.com/azure/search/search-security-overview#authentication) 
+with the Search service.
 
-1. [URL endpoint](https://docs.microsoft.com/azure/search/search-create-service-portal#get-a-key-and-url-endpoint)
-1. [API key](https://docs.microsoft.com/azure/search/search-create-service-portal#get-a-key-and-url-endpoint)
+#### Get an API Key
 
-for your service. [The api-key is the sole mechanism for authenticating access to
-your search service endpoint.](https://docs.microsoft.com/azure/search/search-security-api-keys)
-You can obtain your api-key from the [Azure portal](https://portal.azure.com/) or via the Azure CLI:
+You can get the **endpoint** and an **API key** from the Search service in the [Azure Portal](https://portal.azure.com/). 
+Please refer the [documentation](https://docs.microsoft.com/azure/search/search-security-api-keys) for instructions on 
+how to get an API key.
+
+Alternatively, you can use the following [Azure CLI](https://learn.microsoft.com/cli/azure/) command to retrieve the 
+API key from the Search service:
 
 ```bash
 az search admin-key show --service-name <mysearch> --resource-group <mysearch-rg>
@@ -188,6 +193,46 @@ SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
     .buildAsyncClient();
 ```
 
+#### Create a client using Azure Active Directory authentication
+
+You can also create a `SearchClient`, `SearchIndexClient`, or `SearchIndexerClient` using Azure Active Directory (AAD) 
+authentication. Your user or service principal must be assigned the "Search Index Data Reader" role.
+Using the [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential) 
+you can authenticate a service using Managed Identity or a service principal, authenticate as a developer working on an
+application, and more all without changing code. Please refer the [documentation](https://learn.microsoft.com/azure/search/search-security-rbac?tabs=config-svc-portal%2Croles-portal%2Ctest-portal%2Ccustom-role-portal%2Cdisable-keys-portal) 
+for instructions on how to connect to Azure Cognitive Search using Azure role-based access control (Azure RBAC).
+
+Before you can use the `DefaultAzureCredential`, or any credential type from [Azure.Identity](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md), 
+you'll first need to [install the Azure.Identity package](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#include-the-package).
+
+To use `DefaultAzureCredential` with a client ID and secret, you'll need to set the `AZURE_TENANT_ID`, 
+`AZURE_CLIENT_ID`, and `AZURE_CLIENT_SECRET` environment variables; alternatively, you can pass those values
+to the `ClientSecretCredential` also in `azure-identity`.
+
+Make sure you use the right namespace for `DefaultAzureCredential` at the top of your source file:
+
+```java
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+```
+
+Then you can create an instance of `DefaultAzureCredential` and pass it to a new instance of your client:
+
+```java readme-sample-searchClientWithTokenCredential
+String indexName = "nycjobs";
+
+// Get the service endpoint from the environment
+String endpoint = Configuration.getGlobalConfiguration().get("SEARCH_ENDPOINT");
+DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+
+// Create a client
+SearchClient client = new SearchClientBuilder()
+    .endpoint(endpoint)
+    .indexName(indexName)
+    .credential(credential)
+    .buildClient();
+```
+
 ### Send your first search query
 
 To get running with Azure Cognitive Search first create an index following this [guide][search-get-started-portal].
@@ -219,6 +264,35 @@ tables.)_ The `azure-search-documents` client library exposes operations on thes
 * `SearchIndexerClient` allows you to:
   * [Start indexers to automatically crawl data sources](https://docs.microsoft.com/rest/api/searchservice/indexer-operations)
   * [Define AI powered Skillsets to transform and enrich your data](https://docs.microsoft.com/rest/api/searchservice/skillset-operations)
+
+Azure Cognitive Search provides two powerful features:
+
+### Semantic Search
+
+Semantic search enhances the quality of search results for text-based queries. By enabling Semantic Search on your 
+search service, you can improve the relevance of search results in two ways:
+
+- It applies secondary ranking to the initial result set, promoting the most semantically relevant results to the top.
+- It extracts and returns captions and answers in the response, which can be displayed on a search page to enhance the 
+  user's search experience.
+
+To learn more about Semantic Search, you can refer to the [documentation](https://learn.microsoft.com/azure/search/vector-search-overview).
+
+### Vector Search
+
+Vector Search is an information retrieval technique that overcomes the limitations of traditional keyword-based search. 
+Instead of relying solely on lexical analysis and matching individual query terms, Vector Search utilizes machine 
+learning models to capture the contextual meaning of words and phrases. It represents documents and queries as vectors 
+in a high-dimensional space called an embedding. By understanding the intent behind the query, Vector Search can deliver 
+more relevant results that align with the user's requirements, even if the exact terms are not present in the document. 
+Moreover, Vector Search can be applied to various types of content, including images and videos, not just text.
+
+To learn how to index vector fields and perform vector search, you can refer to the [sample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/VectorSearchExample.java). 
+This sample provides detailed guidance on indexing vector fields and demonstrates how to perform vector search.
+
+Additionally, for more comprehensive information about Vector Search, including its concepts and usage, you can refer 
+to the [documentation](https://learn.microsoft.com/azure/search/vector-search-overview). The documentation provides 
+in-depth explanations and guidance on leveraging the power of Vector Search in Azure Cognitive Search.
 
 ## Examples
 

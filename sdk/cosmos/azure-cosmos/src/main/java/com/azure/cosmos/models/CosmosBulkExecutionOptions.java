@@ -4,11 +4,14 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -32,6 +35,7 @@ public final class CosmosBulkExecutionOptions {
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private Map<String, String> customOptions;
     private String throughputControlGroupName;
+    private List<String> excludeRegions;
 
     /**
      * Constructor
@@ -292,6 +296,31 @@ public final class CosmosBulkExecutionOptions {
         return this;
     }
 
+    /**
+     * List of regions to exclude for the request/retries. Example "East US" or "East US, West US"
+     * These regions will be excluded from the preferred regions list
+     *
+     * @param excludeRegions list of regions
+     * @return the {@link CosmosBulkExecutionOptions}
+     */
+    public CosmosBulkExecutionOptions setExcludedRegions(List<String> excludeRegions) {
+        this.excludeRegions = excludeRegions;
+        return this;
+    }
+
+    /**
+     * Gets the list of regions to be excluded for the request/retries. These regions are excluded
+     * from the preferred region list.
+     *
+     * @return a list of excluded regions
+     * */
+    public List<String> getExcludedRegions() {
+        if (this.excludeRegions == null) {
+            return null;
+        }
+        return UnmodifiableList.unmodifiableList(this.excludeRegions);
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -396,6 +425,11 @@ public final class CosmosBulkExecutionOptions {
                 @Override
                 public Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
                     return cosmosBulkExecutionOptions.customOptions;
+                }
+
+                @Override
+                public List<String> getExcludeRegions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
+                    return cosmosBulkExecutionOptions.excludeRegions;
                 }
 
             });

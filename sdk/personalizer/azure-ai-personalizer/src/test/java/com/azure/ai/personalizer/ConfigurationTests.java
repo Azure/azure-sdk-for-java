@@ -33,7 +33,8 @@ public class ConfigurationTests extends PersonalizerTestBase {
             .setRewardWaitTime(newExperimentalUnitDuration)
             .setExplorationPercentage(newExplorationPercentage)
             .setLogRetentionDays(Integer.MAX_VALUE);
-        PersonalizerAdministrationClient client = getAdministrationClient(httpClient, serviceVersion, true);
+        PersonalizerAdministrationClient client = getAdministrationClientBuilder(httpClient, serviceVersion, true)
+            .buildClient();
         testUpdateProperties(client, properties);
         testGetProperties(client, properties);
         updateAndGetPolicy(client);

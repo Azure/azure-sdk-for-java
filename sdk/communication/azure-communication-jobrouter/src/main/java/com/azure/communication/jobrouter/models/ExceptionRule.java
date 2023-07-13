@@ -6,7 +6,6 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Map;
 
 /** A rule that defines actions to execute upon a specific trigger. */
@@ -16,7 +15,7 @@ public final class ExceptionRule {
      * The trigger for this exception rule
      */
     @JsonProperty(value = "trigger", required = true)
-    private JobExceptionTrigger trigger;
+    private ExceptionTrigger trigger;
 
     /*
      * A dictionary collection of actions to perform once the exception is
@@ -30,7 +29,7 @@ public final class ExceptionRule {
      *
      * @return the trigger value.
      */
-    public JobExceptionTrigger getTrigger() {
+    public ExceptionTrigger getTrigger() {
         return this.trigger;
     }
 
@@ -40,7 +39,7 @@ public final class ExceptionRule {
      * @param trigger the trigger value to set.
      * @return the ExceptionRule object itself.
      */
-    public ExceptionRule setTrigger(JobExceptionTrigger trigger) {
+    public ExceptionRule setTrigger(ExceptionTrigger trigger) {
         this.trigger = trigger;
         return this;
     }

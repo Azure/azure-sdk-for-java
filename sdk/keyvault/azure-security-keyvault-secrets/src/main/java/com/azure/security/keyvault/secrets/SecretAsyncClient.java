@@ -729,7 +729,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretProperties> listPropertiesOfSecrets() {
-        return implClient.listPropertiesOfSecrets();
+        return implClient.listPropertiesOfSecretsAsync();
     }
 
     /**
@@ -752,7 +752,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedSecret> listDeletedSecrets() {
-        return implClient.listDeletedSecrets();
+        return implClient.listDeletedSecretsAsync();
     }
 
     /**
@@ -784,6 +784,6 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretProperties> listPropertiesOfSecretVersions(String name) {
-        return implClient.listPropertiesOfSecretVersions(name);
+        return implClient.listPropertiesOfSecretVersionsAsync(name);
     }
 }

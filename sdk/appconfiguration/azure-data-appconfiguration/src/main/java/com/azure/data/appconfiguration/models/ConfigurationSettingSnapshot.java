@@ -36,9 +36,9 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
     private final List<SnapshotSettingFilter> filters;
 
     /*
-     * The composition type describes how the key-values within the snapshot are composed. The 'all' composition type
-     * includes all key-values. The 'group_by_key' composition type ensures there are no two key-values containing the
-     * same key.
+     * The composition type describes how the key-values within the snapshot are composed. The 'key' composition type
+     * ensures there are no two key-values containing the same key. The 'key_label' composition type ensures there are
+     * no two key-values containing the same key and label.
      */
     private CompositionType compositionType;
 
@@ -77,7 +77,7 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
     /*
      * A value representing the current state of the snapshot.
      */
-    private String etag;
+    private String eTag;
 
     /**
      * Creates an instance of ConfigurationSettingSnapshot class.
@@ -117,8 +117,8 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
 
     /**
      * Get the compositionType property: The composition type describes how the key-values within the snapshot are
-     * composed. The 'all' composition type includes all key-values. The 'group_by_key' composition type ensures there
-     * are no two key-values containing the same key.
+     * composed. The 'key' composition type ensures there are no two key-values containing the same key. The 'key_label'
+     * composition type ensures there are no two key-values containing the same key and label.
      *
      * @return the compositionType value.
      */
@@ -128,8 +128,8 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
 
     /**
      * Set the compositionType property: The composition type describes how the key-values within the snapshot are
-     * composed. The 'all' composition type includes all key-values. The 'group_by_key' composition type ensures there
-     * are no two key-values containing the same key.
+     * composed. The 'key' composition type ensures there are no two key-values containing the same key. The 'key_label'
+     * composition type ensures there are no two key-values containing the same key and label.
      *
      * @param compositionType the compositionType value to set.
      * @return the ConfigurationSettingSnapshot object itself.
@@ -223,12 +223,12 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
     }
 
     /**
-     * Get the etag property: A value representing the current state of the snapshot.
+     * Get the eTag property: A value representing the current state of the snapshot.
      *
-     * @return the etag value.
+     * @return the eTag value.
      */
-    public String getEtag() {
-        return this.etag;
+    public String getETag() {
+        return this.eTag;
     }
 
     @Override
@@ -244,7 +244,7 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
         jsonWriter.writeNumberField("size", this.size);
         jsonWriter.writeNumberField("items_count", this.itemCount);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("etag", this.etag);
+        jsonWriter.writeStringField("etag", this.eTag);
         return jsonWriter.writeEndObject();
     }
 
@@ -271,7 +271,7 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
                     Long size = null;
                     Long itemCount = null;
                     Map<String, String> tags = null;
-                    String etag = null;
+                    String eTag = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -302,7 +302,7 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
                         } else if ("tags".equals(fieldName)) {
                             tags = reader.readMap(reader1 -> reader1.getString());
                         } else if ("etag".equals(fieldName)) {
-                            etag = reader.getString();
+                            eTag = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
@@ -319,7 +319,7 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
                         deserializedConfigurationSettingSnapshot.size = size;
                         deserializedConfigurationSettingSnapshot.itemCount = itemCount;
                         deserializedConfigurationSettingSnapshot.tags = tags;
-                        deserializedConfigurationSettingSnapshot.etag = etag;
+                        deserializedConfigurationSettingSnapshot.eTag = eTag;
 
                         return deserializedConfigurationSettingSnapshot;
                     }

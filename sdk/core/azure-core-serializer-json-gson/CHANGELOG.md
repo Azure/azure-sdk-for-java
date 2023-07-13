@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 1.2.2 (2023-07-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to `1.41.0`.
+
 ## 1.2.1 (2023-06-02)
 
 ### Other Changes

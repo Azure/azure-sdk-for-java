@@ -6,7 +6,6 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 import java.util.Map;
 
@@ -62,13 +61,13 @@ public final class RouterWorker {
      * A list of active offers issued to this worker.
      */
     @JsonProperty(value = "offers", access = JsonProperty.Access.WRITE_ONLY)
-    private List<JobOffer> offers;
+    private List<RouterJobOffer> offers;
 
     /*
      * A list of assigned jobs attached to this worker.
      */
     @JsonProperty(value = "assignedJobs", access = JsonProperty.Access.WRITE_ONLY)
-    private List<WorkerAssignment> assignedJobs;
+    private List<RouterWorkerAssignment> assignedJobs;
 
     /*
      * A value indicating the workers capacity. A value of '1' means all
@@ -211,7 +210,7 @@ public final class RouterWorker {
      *
      * @return the offers value.
      */
-    public List<JobOffer> getOffers() {
+    public List<RouterJobOffer> getOffers() {
         return this.offers;
     }
 
@@ -220,7 +219,7 @@ public final class RouterWorker {
      *
      * @return the assignedJobs value.
      */
-    public List<WorkerAssignment> getAssignedJobs() {
+    public List<RouterWorkerAssignment> getAssignedJobs() {
         return this.assignedJobs;
     }
 
