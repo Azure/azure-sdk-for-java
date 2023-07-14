@@ -33,7 +33,6 @@ public class RntbdConnectionStateListener {
     private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
     private final AddressSelector addressSelector;
     private final AtomicBoolean endpointValidationInProgress = new AtomicBoolean(false);
-    private final AtomicBoolean forceBackgroundAddressRefreshInProgress = new AtomicBoolean(false);
 
 
     // endregion
@@ -169,29 +168,27 @@ public class RntbdConnectionStateListener {
             return;
         }
 
-        if (request.requestContext.isRequestCancelledOnTimeout() == null) {
+        AtomicBoolean isRequestCancelledOnTimeout = request.requestContext.isRequestCancelledOnTimeout();
+
+        if (isRequestCancelledOnTimeout == null || !isRequestCancelledOnTimeout.get()) {
             return;
         }
 
-        AtomicBoolean isRequestCancelledOnTimeout = request.requestContext.isRequestCancelledOnTimeout();
         final boolean forceAddressRefresh = request.requestContext.forceRefreshAddressCache;
 
-        if (this.forceBackgroundAddressRefreshInProgress.compareAndSet(false, true)
-            && isRequestCancelledOnTimeout.get()) {
-            this.addressSelector
-                .resolveAddressesAsync(request, forceAddressRefresh)
-                .subscribeOn(Schedulers.boundedElastic())
-                .doOnSubscribe(ignore -> {
-                    logger.debug("Background refresh of addresses started!");
-                })
-                .doFinally(signalType -> {
-                    this.forceBackgroundAddressRefreshInProgress.compareAndSet(true, false);
-                })
-                .subscribe(
-                    ignoreResult -> {},
-                    throwable -> {logger.warn("Background address refresh failed with {}", throwable.getMessage(), throwable);}
-                );
-        }
+        this.addressSelector
+            .resolveAddressesAsync(request, forceAddressRefresh)
+            .subscribeOn(Schedulers.boundedElastic())
+            .doOnSubscribe(ignore -> {
+                logger.debug("Background refresh of addresses started!");
+            })
+            .subscribe(
+                ignoreResult -> {
+                },
+                throwable -> {
+                    logger.warn("Background address refresh failed with {}", throwable.getMessage(), throwable);
+                }
+            );
     }
     // endregion
 }
