@@ -28,6 +28,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -39,6 +40,7 @@ import java.nio.ByteBuffer;
 /** Initializes a new instance of the synchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class)
 public final class OpenAIClient {
+    private static final ClientLogger LOGGER = new ClientLogger(OpenAIClient.class);
 
     @Generated private final OpenAIClientImpl serviceClient;
 
@@ -498,11 +500,11 @@ public final class OpenAIClient {
             } catch (Exception e) {
                 Throwable unwrapped = Exceptions.unwrap(e);
                 if (unwrapped instanceof RuntimeException) {
-                    throw (RuntimeException) unwrapped;
+                    throw LOGGER.logExceptionAsError((RuntimeException) unwrapped);
                 } else if (unwrapped instanceof IOException) {
-                    throw new UncheckedIOException((IOException) unwrapped);
+                    throw LOGGER.logExceptionAsError(new UncheckedIOException((IOException) unwrapped));
                 } else {
-                    throw new RuntimeException(unwrapped);
+                    throw LOGGER.logExceptionAsError(new RuntimeException(unwrapped));
                 }
             }
         }
