@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 import com.fasterxml.jackson.annotation.JsonInclude.Include
 // scalastyle:off underscore.import
 import com.fasterxml.jackson.databind.node._
@@ -22,9 +21,6 @@ import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 import scala.util.{Try, Success, Failure}
-
-// scalastyle:off underscore.import
-// scalastyle:on underscore.import
 
 // scalastyle:off
 private[cosmos] object CosmosRowConverter {

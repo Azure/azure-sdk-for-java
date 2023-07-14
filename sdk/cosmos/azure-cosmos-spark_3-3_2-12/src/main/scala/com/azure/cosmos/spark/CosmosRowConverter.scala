@@ -7,9 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 
 import scala.collection.concurrent.TrieMap
 
-// scalastyle:off underscore.import
-// scalastyle:on underscore.import
-
 // scalastyle:off
 private[cosmos] object CosmosRowConverter {
 
