@@ -285,4 +285,20 @@ directive:
   transform: >
     $ = "JobMatchModeTypeInternal";
 
+# Set reference to WorkerSelectorAttachment in ClassificationPolicy
+- from: swagger-document
+  where: "$.definitions.ClassificationPolicyInternal.properties.workerSelectors.items"
+  transform: >
+    $["$ref"] = "#/definitions/WorkerSelectorAttachmentInternal";
+# Set reference to QueueSelectorAttachment in ClassificationPolicy  
+- from: swagger-document
+  where: "$.definitions.ClassificationPolicyInternal.properties.queueSelectors.items"
+  transform: >
+    $["$ref"] = "#/definitions/QueueSelectorAttachmentInternal";
+# Set reference to ExceptionAction in ExceptionRule
+- from: swagger-document
+  where: "$.definitions.ExceptionRuleInternal.properties.actions"
+  transform: >
+    $.type = "object";
+    $.additionalProperties["$ref"] = "#/definitions/ExceptionActionInternal";
 ```

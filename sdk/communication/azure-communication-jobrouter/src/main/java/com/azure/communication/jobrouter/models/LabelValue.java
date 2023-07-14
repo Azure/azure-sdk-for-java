@@ -16,14 +16,14 @@ public final class LabelValue {
     /**
      * Value to pass to server.
      */
-    private Object value;
+    private final Object value;
 
     /**
      * Constructor for integer value.
-     * @param numericValue numeric value of label.
+     * @param integerValue integer value of label.
      */
-    public LabelValue(Integer numericValue) {
-        this.value = numericValue;
+    public LabelValue(Integer integerValue) {
+        this.value = integerValue;
     }
 
     /**

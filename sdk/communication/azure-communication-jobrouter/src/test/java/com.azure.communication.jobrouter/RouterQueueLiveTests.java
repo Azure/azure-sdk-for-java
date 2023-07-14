@@ -16,7 +16,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class JobQueueLiveTests extends JobRouterTestBase {
+public class RouterQueueLiveTests extends JobRouterTestBase {
     private JobRouterClient jobRouterClient;
 
     private JobRouterAdministrationClient routerAdminClient;
@@ -53,7 +53,7 @@ public class JobQueueLiveTests extends JobRouterTestBase {
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
 
         String queueId = String.format("%s-CreateQueue-Queue", JAVA_LIVE_TESTS);
-        RouterQueue jobQueue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
+        RouterQueue queue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
 
         Map<String, LabelValue> updatedQueueLabels = new HashMap<String, LabelValue>() {
             {
@@ -62,10 +62,10 @@ public class JobQueueLiveTests extends JobRouterTestBase {
         };
 
         // Action
-        jobQueue = routerAdminClient.updateQueue(new UpdateQueueOptions(queueId).setLabels(updatedQueueLabels));
+        queue = routerAdminClient.updateQueue(new UpdateQueueOptions(queueId).setLabels(updatedQueueLabels));
 
         // Verify
-        assertEquals(updatedQueueLabels.get("Label_1").getValue(), jobQueue.getLabels().get("Label_1").getValue());
+        assertEquals(updatedQueueLabels.get("Label_1").getValue(), queue.getLabels().get("Label_1").getValue());
 
         // Cleanup
         routerAdminClient.deleteQueue(queueId);

@@ -102,7 +102,7 @@ public class ExceptionPolicyAdapter {
                 .setTrigger(convertExceptionTriggerToPublic(entry.getValue().getTrigger()))
                 .setActions(entry.getValue().getActions().entrySet().stream()
                     .collect(Collectors.toMap(Map.Entry::getKey,
-                        actions -> convertExceptionActionToPublic((ExceptionActionInternal)actions.getValue()))))))
+                        actions -> convertExceptionActionToPublic(actions.getValue()))))))
             : new HashMap<>();
     }
 

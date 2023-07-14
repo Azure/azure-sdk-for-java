@@ -33,7 +33,7 @@ public final class ClassificationPolicyInternal {
      * The queue selectors to resolve a queue for a given job.
      */
     @JsonProperty(value = "queueSelectors")
-    private List<Object> queueSelectors;
+    private List<QueueSelectorAttachmentInternal> queueSelectors;
 
     /*
      * A rule of one of the following types:
@@ -51,7 +51,7 @@ public final class ClassificationPolicyInternal {
      * The worker label selectors to attach to a given job.
      */
     @JsonProperty(value = "workerSelectors")
-    private List<Object> workerSelectors;
+    private List<WorkerSelectorAttachmentInternal> workerSelectors;
 
     /** Creates an instance of ClassificationPolicyInternal class. */
     public ClassificationPolicyInternal() {}
@@ -110,7 +110,7 @@ public final class ClassificationPolicyInternal {
      *
      * @return the queueSelectors value.
      */
-    public List<Object> getQueueSelectors() {
+    public List<QueueSelectorAttachmentInternal> getQueueSelectors() {
         return this.queueSelectors;
     }
 
@@ -120,7 +120,7 @@ public final class ClassificationPolicyInternal {
      * @param queueSelectors the queueSelectors value to set.
      * @return the ClassificationPolicyInternal object itself.
      */
-    public ClassificationPolicyInternal setQueueSelectors(List<Object> queueSelectors) {
+    public ClassificationPolicyInternal setQueueSelectors(List<QueueSelectorAttachmentInternal> queueSelectors) {
         this.queueSelectors = queueSelectors;
         return this;
     }
@@ -160,7 +160,7 @@ public final class ClassificationPolicyInternal {
      *
      * @return the workerSelectors value.
      */
-    public List<Object> getWorkerSelectors() {
+    public List<WorkerSelectorAttachmentInternal> getWorkerSelectors() {
         return this.workerSelectors;
     }
 
@@ -170,7 +170,7 @@ public final class ClassificationPolicyInternal {
      * @param workerSelectors the workerSelectors value to set.
      * @return the ClassificationPolicyInternal object itself.
      */
-    public ClassificationPolicyInternal setWorkerSelectors(List<Object> workerSelectors) {
+    public ClassificationPolicyInternal setWorkerSelectors(List<WorkerSelectorAttachmentInternal> workerSelectors) {
         this.workerSelectors = workerSelectors;
         return this;
     }

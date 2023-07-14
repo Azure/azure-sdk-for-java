@@ -22,7 +22,7 @@ public final class ExceptionRuleInternal {
      * action.
      */
     @JsonProperty(value = "actions", required = true)
-    private Map<String, Object> actions;
+    private Map<String, ExceptionActionInternal> actions;
 
     /** Creates an instance of ExceptionRuleInternal class. */
     public ExceptionRuleInternal() {}
@@ -53,7 +53,7 @@ public final class ExceptionRuleInternal {
      *
      * @return the actions value.
      */
-    public Map<String, Object> getActions() {
+    public Map<String, ExceptionActionInternal> getActions() {
         return this.actions;
     }
 
@@ -64,7 +64,7 @@ public final class ExceptionRuleInternal {
      * @param actions the actions value to set.
      * @return the ExceptionRuleInternal object itself.
      */
-    public ExceptionRuleInternal setActions(Map<String, Object> actions) {
+    public ExceptionRuleInternal setActions(Map<String, ExceptionActionInternal> actions) {
         this.actions = actions;
         return this;
     }

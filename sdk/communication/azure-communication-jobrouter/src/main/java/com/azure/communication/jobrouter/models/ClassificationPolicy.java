@@ -8,8 +8,6 @@ import com.azure.communication.jobrouter.implementation.accesshelpers.Classifica
 import com.azure.communication.jobrouter.implementation.converters.LabelSelectorAdapter;
 import com.azure.communication.jobrouter.implementation.converters.RouterRuleAdapter;
 import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
-import com.azure.communication.jobrouter.implementation.models.QueueSelectorAttachmentInternal;
-import com.azure.communication.jobrouter.implementation.models.WorkerSelectorAttachmentInternal;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -35,22 +33,22 @@ public final class ClassificationPolicy {
         setPrioritizationRule(RouterRuleAdapter.convertRouterRuleToPublic(internal.getPrioritizationRule()));
         setFallbackQueueId(internal.getFallbackQueueId());
         setQueueSelectors(internal.getQueueSelectors().stream()
-            .map(qs -> LabelSelectorAdapter.convertQueueSelectorAttachmentToPublic((QueueSelectorAttachmentInternal)qs))
+            .map(LabelSelectorAdapter::convertQueueSelectorAttachmentToPublic)
             .collect(Collectors.toList()));
         setWorkerSelectors(internal.getWorkerSelectors().stream()
-            .map(ws -> LabelSelectorAdapter.convertWorkerSelectorAttachmentToPublic((WorkerSelectorAttachmentInternal)ws))
+            .map(LabelSelectorAdapter::convertWorkerSelectorAttachmentToPublic)
             .collect(Collectors.toList()));
     }
 
     static {
-        ClassificationPolicyConstructorProxy.setAccessor(internal -> new ClassificationPolicy(internal));
+        ClassificationPolicyConstructorProxy.setAccessor(ClassificationPolicy::new);
     }
 
     /*
      * Unique identifier of this policy.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
+    private final String id;
 
     /*
      * Friendly name of this policy.
