@@ -23,8 +23,7 @@
         "TestFromSource": false,
         "RunAggregateReports": true,
         "TestGoals": "surefire:test",
-        "TestOptions": "",
-        "CoverageArg": "--disablecov"
+        "TestOptions": ""
     },
     "include": [
         {
