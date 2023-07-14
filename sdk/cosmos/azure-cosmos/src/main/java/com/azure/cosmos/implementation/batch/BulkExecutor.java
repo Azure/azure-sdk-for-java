@@ -467,8 +467,8 @@ public final class BulkExecutor<TContext> implements Disposable {
         return partitionedGroupFluxOfInputOperations
             .mergeWith(groupFluxProcessor)
             .onBackpressureBuffer()
-//            .window(5) //How am I supposed to come up with this value. I am also confused why this works ---------------------------
-//            .flatMapSequential(Flux::sort)
+            .window(5) //How am I supposed to come up with this value. I am also confused why this works ---------------------------
+            .flatMapSequential(Flux::sort)
             .timestamp()
             .subscribeOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
             .bufferUntil((Tuple2<Long, CosmosItemOperation> timeStampItemOperationTuple) -> {
