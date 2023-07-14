@@ -2290,9 +2290,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, internalObjectNode, options, collectionObs);
 
-            return requestObs.flatMap(req -> this
-                .delete(req, retryPolicyInstance, getOperationContextAndListenerTuple(options))
-                .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class)));
+            Mono<RxDocumentServiceResponse> responseObservable =
+                requestObs.flatMap(req -> {
+                    CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
+                    Mono<RxDocumentServiceResponse> rxDocumentServiceResponseMono = this
+                        .delete(req, retryPolicyInstance, getOperationContextAndListenerTuple(options));
+                    return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, rxDocumentServiceResponseMono);
+                });
+
+            return responseObservable
+                .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a document due to [{}]", e.getMessage());
