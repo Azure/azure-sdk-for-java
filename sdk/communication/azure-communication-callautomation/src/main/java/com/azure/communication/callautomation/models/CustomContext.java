@@ -22,7 +22,7 @@ final class CustomContext {
      * @param sipHeaders
      * @param voipHeaders
      */
-    public CustomContext(Map<String, String> sipHeaders, Map<String, String> voipHeaders) {
+    CustomContext(Map<String, String> sipHeaders, Map<String, String> voipHeaders) {
         this.sipHeaders = sipHeaders;
         this.voipHeaders = voipHeaders;
     }
