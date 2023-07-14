@@ -117,4 +117,6 @@ jobs:
             git checkout -- .
           displayName: "Reset version override changes"
 
+      - template: ../steps/upload-repository-on-failure.yml
+
       - template: /eng/common/testproxy/publish-proxy-logs.yml

@@ -41,7 +41,10 @@ parameters:
 
 steps:
   - task: Maven@3
-    displayName: 'Build for non-From Source run'
+    ${{ if ne(parameters.VersionOverride, '') }}:
+      displayName: 'Build for non-From Source run - Version override ${{ parameters.VersionOverride }}'
+    ${{ else }}:
+      displayName: 'Build for non-From Source run'
     inputs:
       mavenPomFile: pom.xml
       options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} -pl $(ProjectList) -am
@@ -63,7 +66,7 @@ steps:
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
   - task: Maven@3
-    displayName: 'Re-build for version override run'
+    displayName: 'Re-build for version override run - Version override ${{ parameters.VersionOverride }}'
     inputs:
       mavenPomFile: pom.xml
       options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} -pl $(ProjectList)
@@ -72,7 +75,7 @@ steps:
       jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
-      goals: 'install'
+      goals: 'clean install'
     env:
       AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
@@ -154,9 +157,12 @@ steps:
     env: ${{ parameters.TestEnvVars }}
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
-  - template: ../steps/upload-repository-on-failure.yml
-
-  - template: ../steps/retain-heap-dump-hprofs.yml
+  - ${{ if ne(parameters.VersionOverride, '') }}:
+    - template: ../steps/retain-heap-dump-hprofs.yml
+      parameters:
+        OomArtifactName: 'oom-vo-${{ parameters.VersionOverride }}'
+  - ${{ else }}:
+    - template: ../steps/retain-heap-dump-hprofs.yml
 
   - task: PublishTestResults@2
     condition: always()
@@ -165,7 +171,10 @@ steps:
       testResultsFiles: '**/TEST-*.xml'
       searchFolder: '$(System.DefaultWorkingDirectory)/sdk'
       mergeTestResults: true
-      testRunTitle: $(Agent.JobName)
+      ${{ if ne(parameters.VersionOverride, '') }}:
+        testRunTitle: '$(Agent.JobName)_vo_${{ parameters.VersionOverride }}'
+      ${{ else }}:
+        testRunTitle: $(Agent.JobName)
       ${{ if ne(parameters.TestResultsFiles, '') }}:
         testResultsFiles: ${{ parameters.TestResultsFiles }}
 
