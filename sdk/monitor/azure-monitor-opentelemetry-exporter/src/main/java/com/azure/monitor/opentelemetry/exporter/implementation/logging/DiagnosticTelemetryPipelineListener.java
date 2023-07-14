@@ -99,7 +99,12 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
     public void onException(TelemetryPipelineRequest request, String reason, Throwable throwable) {
         if (!NetworkFriendlyExceptions.logSpecialOneTimeFriendlyException(
             throwable, request.getUrl().toString(), friendlyExceptionThrown, logger)) {
-            operationLogger.recordFailure(reason, throwable, INGESTION_ERROR);
+            if (!suppressWarningsOnRetryableFailures) {
+                operationLogger.recordFailure(
+                    reason + " (telemetry will be stored to disk and retried later)",
+                    throwable,
+                    INGESTION_ERROR);
+            }
         }
     }
 

@@ -18,8 +18,8 @@ public final class StaticQueueSelector extends QueueSelectorAttachment {
      * Describes a condition that must be met against a set of labels for queue
      * selection
      */
-    @JsonProperty(value = "labelSelector", required = true)
-    private QueueSelector labelSelector;
+    @JsonProperty(value = "queueSelector", required = true)
+    private RouterQueueSelector queueSelector;
 
     /**
      * Get the labelSelector property: Describes a condition that must be met against a set of labels for queue
@@ -27,19 +27,19 @@ public final class StaticQueueSelector extends QueueSelectorAttachment {
      *
      * @return the labelSelector value.
      */
-    public QueueSelector getLabelSelector() {
-        return this.labelSelector;
+    public RouterQueueSelector getQueueSelector() {
+        return this.queueSelector;
     }
 
     /**
      * Set the labelSelector property: Describes a condition that must be met against a set of labels for queue
      * selection.
      *
-     * @param labelSelector the labelSelector value to set.
+     * @param queueSelector the labelSelector value to set.
      * @return the StaticQueueSelector object itself.
      */
-    public StaticQueueSelector setLabelSelector(QueueSelector labelSelector) {
-        this.labelSelector = labelSelector;
+    public StaticQueueSelector setQueueSelector(RouterQueueSelector queueSelector) {
+        this.queueSelector = queueSelector;
         return this;
     }
 }
