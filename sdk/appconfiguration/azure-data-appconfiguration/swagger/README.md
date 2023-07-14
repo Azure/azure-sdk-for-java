@@ -41,7 +41,7 @@ customization-class: src/main/java/AppConfigCustomization.java
 ```yaml
 output-folder: ..\
 java: true
-use: '@autorest/java@4.1.16'
+use: '@autorest/java@4.1.17'
 enable-sync-stack: true
 generate-client-interfaces: false
 generate-client-as-impl: true
@@ -65,6 +65,7 @@ directive:
     $["items_count"]["x-ms-client-name"] = "item_count";
     $["created"]["x-ms-client-name"] = "createdAt"; 
     $["expires"]["x-ms-client-name"] = "expiresAt";
+    $["etag"]["x-ms-client-name"] = "eTag";
 ```
 
 ### Renames

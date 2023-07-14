@@ -34,7 +34,7 @@
     <jacoco.min.linecoverage>0.1</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.05</jacoco.min.branchcoverage>
     <javaModulesSurefireArgLine>
-      --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
+      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -72,7 +72,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.9.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.9.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

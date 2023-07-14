@@ -33,7 +33,7 @@ To update generated files for JobRouter service, run the following command
 ``` yaml
 tag: package-jobrouter-2022-07-18-preview
 require:
-- https://raw.githubusercontent.com/williamzhao87/azure-rest-api-specs/17ac729b6e3e6fe173efccf9822e6d5d7338031b/specification/communication/data-plane/JobRouter/readme.md
+- https://raw.githubusercontent.com/williamzhao87/azure-rest-api-specs/9d3360a17e766a1833bfda1315d6863ee44e917c/specification/communication/data-plane/JobRouter/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL

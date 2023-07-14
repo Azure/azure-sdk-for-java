@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -414,6 +415,26 @@ public final class CosmosDiagnostics {
                 @Override
                 public CosmosDiagnostics create(DiagnosticsClientContext clientContext, double samplingRate) {
                     return new CosmosDiagnostics(clientContext).setSamplingRateSnapshot(samplingRate);
+                }
+
+                @Override
+                public void recordAddressResolutionEnd(
+                    RxDocumentServiceRequest request,
+                    String identifier,
+                    String errorMessage,
+                    long transportRequestId) {
+                    if (request.requestContext.cosmosDiagnostics == null) {
+                        return;
+                    }
+
+                    request
+                        .requestContext.cosmosDiagnostics
+                        .clientSideRequestStatistics
+                        .recordAddressResolutionEnd(
+                            identifier,
+                            errorMessage,
+                            request.faultInjectionRequestContext.getFaultInjectionRuleId(transportRequestId),
+                            request.faultInjectionRequestContext.getFaultInjectionRuleEvaluationResults(transportRequestId));
                 }
             });
     }
