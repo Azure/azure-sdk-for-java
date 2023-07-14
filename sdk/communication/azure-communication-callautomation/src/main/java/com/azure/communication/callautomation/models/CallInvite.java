@@ -21,8 +21,6 @@ public final class CallInvite {
     private final CommunicationIdentifier targetParticipant;
     private final PhoneNumberIdentifier sourceCallerIdNumber;
     private String sourceDisplayName;
-    //private final Map<String, String> sipHeaders;
-    //private final Map<String, String> voipHeaders;
     private final CustomContext customContext;
 
     /**
@@ -31,9 +29,9 @@ public final class CallInvite {
      * @param callerIdNumber Caller's phone number identifier
      */
     public CallInvite(PhoneNumberIdentifier targetIdentity, PhoneNumberIdentifier callerIdNumber) {
-        targetParticipant = targetIdentity;
-        sourceCallerIdNumber = callerIdNumber;
-        customContext = new CustomContext(new HashMap<String, String>(), null);
+        this.targetParticipant = targetIdentity;
+        this.sourceCallerIdNumber = callerIdNumber;
+        this.customContext = new CustomContext(new HashMap<String, String>(), null);
     }
 
     /**
@@ -43,7 +41,7 @@ public final class CallInvite {
     public CallInvite(CommunicationUserIdentifier targetIdentity) {
         this.targetParticipant = targetIdentity;
         this.sourceCallerIdNumber = null;
-        customContext = new CustomContext(null, new HashMap<String, String>());
+        this.customContext = new CustomContext(null, new HashMap<String, String>());
     }
 
     /**
@@ -53,7 +51,7 @@ public final class CallInvite {
     public CallInvite(MicrosoftTeamsUserIdentifier targetIdentity) {
         this.targetParticipant = targetIdentity;
         this.sourceCallerIdNumber = null;
-        customContext = new CustomContext(null, new HashMap<String, String>());
+        this.customContext = new CustomContext(null, new HashMap<String, String>());
     }
 
     /**
