@@ -20,6 +20,7 @@ import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
 import com.azure.communication.jobrouter.models.CloseJobOptions;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
+import com.azure.communication.jobrouter.models.DeclineJobOfferOptions;
 import com.azure.communication.jobrouter.models.ListJobsOptions;
 import com.azure.communication.jobrouter.models.ListWorkersOptions;
 import com.azure.communication.jobrouter.models.RouterJob;
@@ -604,7 +605,7 @@ public final class JobRouterAsyncClient {
     public PagedFlux<RouterJobItem> listJobs(ListJobsOptions listJobsOptions) {
         try {
             return JobAdapter.convertPagedFluxToPublic(jobRouter.listJobsAsync(
-                RouterJobStatusSelectorInternal.fromString(listJobsOptions.getJobStateSelector().toString()),
+                RouterJobStatusSelectorInternal.fromString(listJobsOptions.getStatus().toString()),
                 listJobsOptions.getQueueId(),
                 listJobsOptions.getChannelId(),
                 listJobsOptions.getClassificationPolicyId(),
@@ -629,7 +630,7 @@ public final class JobRouterAsyncClient {
     PagedFlux<RouterJobItem> listJobs(ListJobsOptions listJobsOptions, Context context) {
         try {
             return JobAdapter.convertPagedFluxToPublic(jobRouter.listJobsAsync(
-                RouterJobStatusSelectorInternal.fromString(listJobsOptions.getJobStateSelector().toString()),
+                RouterJobStatusSelectorInternal.fromString(listJobsOptions.getStatus().toString()),
                 listJobsOptions.getQueueId(),
                 listJobsOptions.getChannelId(),
                 listJobsOptions.getClassificationPolicyId(),
@@ -763,17 +764,16 @@ public final class JobRouterAsyncClient {
     /**
      * Declines an offer to work on a job.
      *
-     * @param workerId Id of the worker.
-     * @param offerId Id of the offer.
+     * @param options Options for declining the job offer.
      * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> declineJobOffer(String workerId, String offerId) {
+    public Mono<Void> declineJobOffer(DeclineJobOfferOptions options) {
         try {
-            return withContext(context -> declineJobOfferWithResponse(workerId, offerId, context)
+            return withContext(context -> declineJobOfferWithResponse(options, context)
                 .flatMap(
                     (Response<Void> res) -> {
                         if (res.getValue() != null) {
@@ -790,25 +790,25 @@ public final class JobRouterAsyncClient {
     /**
      * Declines an offer to work on a job.
      *
-     * @param workerId Id of the worker.
-     * @param offerId Id of the offer.
+     * @param options Options for declining the job offer.
      * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> declineJobOfferWithResponse(String workerId, String offerId) {
+    public Mono<Response<Void>> declineJobOfferWithResponse(DeclineJobOfferOptions options) {
         try {
-            return withContext(context -> declineJobOfferWithResponse(workerId, offerId, context));
+            return withContext(context -> declineJobOfferWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<Void>> declineJobOfferWithResponse(String workerId, String offerId, Context context) {
+    Mono<Response<Void>> declineJobOfferWithResponse(DeclineJobOfferOptions options, Context context) {
         try {
-            return jobRouter.declineJobActionWithResponseAsync(workerId, offerId, new DeclineJobOfferRequest(), context)
+            return jobRouter.declineJobActionWithResponseAsync(options.getWorkerId(), options.getOfferId(),
+                    new DeclineJobOfferRequest().setRetryOfferAt(options.getRetryOfferAt()), context)
                 .map(result -> new SimpleResponse<Void>(
                     result.getRequest(), result.getStatusCode(), result.getHeaders(), null));
         } catch (RuntimeException ex) {
@@ -1109,7 +1109,7 @@ public final class JobRouterAsyncClient {
     public PagedFlux<RouterWorkerItem> listWorkers(ListWorkersOptions listWorkersOptions) {
         try {
             return WorkerAdapter.convertPagedFluxToPublic(jobRouter.listWorkersAsync(
-                RouterWorkerStateSelectorInternal.fromString(listWorkersOptions.getWorkerStateSelector().toString()),
+                RouterWorkerStateSelectorInternal.fromString(listWorkersOptions.getState().toString()),
                 listWorkersOptions.getChannelId(),
                 listWorkersOptions.getQueueId(),
                 listWorkersOptions.getHasCapacity(),
@@ -1122,7 +1122,7 @@ public final class JobRouterAsyncClient {
     PagedFlux<RouterWorkerItem> listWorkers(ListWorkersOptions listWorkersOptions, Context context) {
         try {
             return WorkerAdapter.convertPagedFluxToPublic(jobRouter.listWorkersAsync(
-                RouterWorkerStateSelectorInternal.fromString(listWorkersOptions.getWorkerStateSelector().toString()),
+                RouterWorkerStateSelectorInternal.fromString(listWorkersOptions.getState().toString()),
                 listWorkersOptions.getChannelId(),
                 listWorkersOptions.getQueueId(),
                 listWorkersOptions.getHasCapacity(),

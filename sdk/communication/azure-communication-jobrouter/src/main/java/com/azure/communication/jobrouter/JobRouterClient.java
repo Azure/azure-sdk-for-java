@@ -9,19 +9,20 @@ import com.azure.communication.jobrouter.implementation.models.CommunicationErro
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
+import com.azure.communication.jobrouter.models.CloseJobOptions;
+import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateWorkerOptions;
+import com.azure.communication.jobrouter.models.DeclineJobOfferOptions;
+import com.azure.communication.jobrouter.models.ListJobsOptions;
+import com.azure.communication.jobrouter.models.ListWorkersOptions;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobItem;
 import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
 import com.azure.communication.jobrouter.models.RouterQueueStatistics;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.RouterWorkerItem;
-import com.azure.communication.jobrouter.models.UnassignJobResult;
-import com.azure.communication.jobrouter.models.CloseJobOptions;
-import com.azure.communication.jobrouter.models.CreateJobOptions;
-import com.azure.communication.jobrouter.models.CreateWorkerOptions;
-import com.azure.communication.jobrouter.models.ListJobsOptions;
-import com.azure.communication.jobrouter.models.ListWorkersOptions;
 import com.azure.communication.jobrouter.models.UnassignJobOptions;
+import com.azure.communication.jobrouter.models.UnassignJobResult;
 import com.azure.communication.jobrouter.models.UpdateJobOptions;
 import com.azure.communication.jobrouter.models.UpdateWorkerOptions;
 import com.azure.core.annotation.ReturnType;
@@ -437,22 +438,20 @@ public final class JobRouterClient {
     /**
      * Declines an offer to work on a job.
      *
-     * @param workerId Id of the worker.
-     * @param offerId Id of the offer.
+     * @param options Options for declining the job offer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void declineJobOffer(String workerId, String offerId) {
-        this.client.declineJobOffer(workerId, offerId).block();
+    public void declineJobOffer(DeclineJobOfferOptions options) {
+        this.client.declineJobOffer(options).block();
     }
 
     /**
      * Declines an offer to work on a job.
      *
-     * @param workerId Id of the worker.
-     * @param offerId Id of the offer.
+     * @param options Options for declining the job offer.
      * @param context The context to associate with this operation.
      * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -460,8 +459,8 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> declineJobOfferWithResponse(String workerId, String offerId, Context context) {
-        return this.client.declineJobOfferWithResponse(workerId, offerId, context).block();
+    public Response<Void> declineJobOfferWithResponse(DeclineJobOfferOptions options, Context context) {
+        return this.client.declineJobOfferWithResponse(options, context).block();
     }
 
     /**
