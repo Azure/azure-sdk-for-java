@@ -13,6 +13,7 @@ import com.azure.communication.jobrouter.models.UpdateClassificationPolicyOption
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.util.ETag;
 import reactor.core.publisher.Flux;
 
 import java.util.function.Function;
@@ -64,7 +65,7 @@ public class ClassificationPolicyAdapter {
                 .stream()
                 .map(internal -> new ClassificationPolicyItem()
                     .setClassificationPolicy(ClassificationPolicyConstructorProxy.create(internal.getClassificationPolicy()))
-                    .setEtag(internal.getEtag()))
+                    .setEtag(new ETag(internal.getEtag())))
                 .collect(Collectors.toList()),
             internalResponse.getContinuationToken(),
             null);

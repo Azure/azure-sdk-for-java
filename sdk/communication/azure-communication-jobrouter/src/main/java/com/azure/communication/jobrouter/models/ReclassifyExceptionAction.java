@@ -15,6 +15,9 @@ import java.util.Map;
 @JsonTypeName("reclassify")
 @Fluent
 public final class ReclassifyExceptionAction extends ExceptionAction {
+    /** Creates an instance of ReclassifyExceptionAction class. */
+    public ReclassifyExceptionAction() {}
+
     /*
      * (optional) The new classification policy that will determine queue,
      * priority and worker selectors.

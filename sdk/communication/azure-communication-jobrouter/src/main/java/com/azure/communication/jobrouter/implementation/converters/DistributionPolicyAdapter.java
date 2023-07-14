@@ -25,6 +25,7 @@ import com.azure.communication.jobrouter.models.UpdateDistributionPolicyOptions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.util.ETag;
 import reactor.core.publisher.Flux;
 
 import java.util.function.Function;
@@ -67,7 +68,7 @@ public class DistributionPolicyAdapter {
                 .stream()
                 .map(internal -> new DistributionPolicyItem()
                     .setDistributionPolicy(DistributionPolicyConstructorProxy.create(internal.getDistributionPolicy()))
-                    .setEtag(internal.getEtag()))
+                    .setEtag(new ETag(internal.getEtag())))
                 .collect(Collectors.toList()),
             internalResponse.getContinuationToken(),
             null);
@@ -81,55 +82,48 @@ public class DistributionPolicyAdapter {
     }
 
     public static DistributionModeInternal convertDistributionModeToInternal(DistributionMode mode) {
-        if (mode instanceof BestWorkerMode bestWorker) {
+        if (mode instanceof BestWorkerMode) {
+            BestWorkerMode bestWorker = (BestWorkerMode) mode;
             return new BestWorkerModeInternal()
                 .setMinConcurrentOffers(bestWorker.getMinConcurrentOffers())
                 .setMaxConcurrentOffers(bestWorker.getMaxConcurrentOffers())
                 .setBypassSelectors(bestWorker.isBypassSelectors())
                 .setScoringRule(RouterRuleAdapter.convertRouterRuleToInternal(bestWorker.getScoringRule()))
-                .setScoringRuleOptions(new ScoringRuleOptionsInternal()
-                    .setAllowScoringBatchOfWorkers(bestWorker.getScoringRuleOptions().isAllowScoringBatchOfWorkers())
-                    .setDescendingOrder(bestWorker.getScoringRuleOptions().isDescendingOrder())
-                    .setBatchSize(bestWorker.getScoringRuleOptions().getBatchSize())
-                    .setScoringParameters(bestWorker.getScoringRuleOptions().getScoringParameters().stream()
-                        .map(p -> ScoringRuleParameterSelectorInternal.fromString(p.toString())).collect(Collectors.toList())));
-        } else if (mode instanceof RoundRobinMode roundRobin) {
+                .setScoringRuleOptions(convertScoringRuleOptionsToInternal(bestWorker.getScoringRuleOptions()));
+        } else if (mode instanceof RoundRobinMode) {
+            RoundRobinMode roundRobin = (RoundRobinMode) mode;
             return new RoundRobinModeInternal()
                 .setMinConcurrentOffers(roundRobin.getMinConcurrentOffers())
                 .setMaxConcurrentOffers(roundRobin.getMaxConcurrentOffers())
                 .setBypassSelectors(roundRobin.isBypassSelectors());
-        } else if (mode instanceof LongestIdleMode longestIdle) {
+        } else if (mode instanceof LongestIdleMode) {
+            LongestIdleMode longestIdle = (LongestIdleMode) mode;
             return new LongestIdleModeInternal()
                 .setMinConcurrentOffers(longestIdle.getMinConcurrentOffers())
                 .setMaxConcurrentOffers(longestIdle.getMaxConcurrentOffers())
                 .setBypassSelectors(longestIdle.isBypassSelectors());
         }
 
-        return new DistributionModeInternal()
-            .setMinConcurrentOffers(mode.getMinConcurrentOffers())
-            .setMaxConcurrentOffers(mode.getMaxConcurrentOffers())
-            .setBypassSelectors(mode.isBypassSelectors());
+        return null;
     }
 
     public static DistributionMode convertDistributionModeToPublic(DistributionModeInternal mode) {
-        if (mode instanceof BestWorkerModeInternal bestWorker) {
+        if (mode instanceof BestWorkerModeInternal) {
+            BestWorkerModeInternal bestWorker = (BestWorkerModeInternal) mode;
             return new BestWorkerMode()
                 .setMinConcurrentOffers(bestWorker.getMinConcurrentOffers())
                 .setMaxConcurrentOffers(bestWorker.getMaxConcurrentOffers())
                 .setBypassSelectors(bestWorker.isBypassSelectors())
                 .setScoringRule(RouterRuleAdapter.convertRouterRuleToPublic(bestWorker.getScoringRule()))
-                .setScoringRuleOptions(new ScoringRuleOptions()
-                    .setAllowScoringBatchOfWorkers(bestWorker.getScoringRuleOptions().isAllowScoringBatchOfWorkers())
-                    .setDescendingOrder(bestWorker.getScoringRuleOptions().isDescendingOrder())
-                    .setBatchSize(bestWorker.getScoringRuleOptions().getBatchSize())
-                    .setScoringParameters(bestWorker.getScoringRuleOptions().getScoringParameters().stream()
-                        .map(p -> ScoringRuleParameterSelector.fromString(p.toString())).collect(Collectors.toList())));
-        } else if (mode instanceof RoundRobinModeInternal roundRobin) {
+                .setScoringRuleOptions(convertScoringRuleOptionsToPublic(bestWorker.getScoringRuleOptions()));
+        } else if (mode instanceof RoundRobinModeInternal) {
+            RoundRobinModeInternal roundRobin = (RoundRobinModeInternal) mode;
             return new RoundRobinMode()
                 .setMinConcurrentOffers(roundRobin.getMinConcurrentOffers())
                 .setMaxConcurrentOffers(roundRobin.getMaxConcurrentOffers())
                 .setBypassSelectors(roundRobin.isBypassSelectors());
-        } else if (mode instanceof LongestIdleModeInternal longestIdle) {
+        } else if (mode instanceof LongestIdleModeInternal) {
+            LongestIdleModeInternal longestIdle = (LongestIdleModeInternal) mode;
             return new LongestIdleMode()
                 .setMinConcurrentOffers(longestIdle.getMinConcurrentOffers())
                 .setMaxConcurrentOffers(longestIdle.getMaxConcurrentOffers())
@@ -137,5 +131,29 @@ public class DistributionPolicyAdapter {
         }
 
         return null;
+    }
+
+    public static ScoringRuleOptionsInternal convertScoringRuleOptionsToInternal(ScoringRuleOptions options) {
+        return options != null ? new ScoringRuleOptionsInternal()
+            .setAllowScoringBatchOfWorkers(options.isAllowScoringBatchOfWorkers())
+            .setDescendingOrder(options.isDescendingOrder())
+            .setBatchSize(options.getBatchSize())
+            .setScoringParameters(options.getScoringParameters() != null
+                ? options.getScoringParameters().stream()
+                    .map(p -> ScoringRuleParameterSelectorInternal.fromString(p.toString()))
+                    .collect(Collectors.toList()) : null)
+            : null;
+    }
+
+    public static ScoringRuleOptions convertScoringRuleOptionsToPublic(ScoringRuleOptionsInternal options) {
+        return options != null ? new ScoringRuleOptions()
+            .setAllowScoringBatchOfWorkers(options.isAllowScoringBatchOfWorkers())
+            .setDescendingOrder(options.isDescendingOrder())
+            .setBatchSize(options.getBatchSize())
+            .setScoringParameters(options.getScoringParameters() != null
+                ? options.getScoringParameters().stream()
+                .map(p -> ScoringRuleParameterSelector.fromString(p.toString()))
+                .collect(Collectors.toList()) : null)
+            : null;
     }
 }

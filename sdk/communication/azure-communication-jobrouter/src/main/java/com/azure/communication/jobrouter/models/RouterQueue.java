@@ -4,6 +4,7 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.communication.jobrouter.implementation.accesshelpers.LabelValueConstructorProxy;
 import com.azure.communication.jobrouter.implementation.accesshelpers.RouterQueueConstructorProxy;
 import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
 import com.azure.core.annotation.Fluent;
@@ -31,7 +32,7 @@ public final class RouterQueue {
         setDistributionPolicyId(internal.getDistributionPolicyId());
         setExceptionPolicyId(internal.getExceptionPolicyId());
         setLabels(internal.getLabels().entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> (LabelValue)entry.getValue())));
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> LabelValueConstructorProxy.create(entry.getValue()))));
     }
 
     static {

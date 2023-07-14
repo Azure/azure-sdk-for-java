@@ -30,15 +30,17 @@ public class RouterRuleAdapter {
         } else if (rule instanceof ExpressionRouterRule) {
             return new ExpressionRouterRuleInternal().setExpression(((ExpressionRouterRule) rule).getExpression())
                 .setLanguage(ExpressionRouterRuleLanguageInternal.POWER_FX);
-        } else if (rule instanceof FunctionRouterRule functionRouterRule) {
+        } else if (rule instanceof FunctionRouterRule) {
+            FunctionRouterRule functionRouterRule = (FunctionRouterRule) rule;
             return new FunctionRouterRuleInternal().setFunctionUri(functionRouterRule.getFunctionUri())
                 .setCredential(new FunctionRouterRuleCredentialInternal()
                     .setFunctionKey(functionRouterRule.getCredential().getFunctionKey())
                     .setAppKey(functionRouterRule.getCredential().getAppKey())
                     .setClientId(functionRouterRule.getCredential().getClientId()));
-        } else if (rule instanceof StaticRouterRule staticRouterRule) {
-            return new StaticRouterRuleInternal().setValue(staticRouterRule.getValue());
-        } else if (rule instanceof WebhookRouterRule webhookRouterRule) {
+        } else if (rule instanceof StaticRouterRule) {
+            return new StaticRouterRuleInternal().setValue(((StaticRouterRule)rule).getValue());
+        } else if (rule instanceof WebhookRouterRule) {
+            WebhookRouterRule webhookRouterRule = (WebhookRouterRule) rule;
             return new WebhookRouterRuleInternal().setWebhookUri(webhookRouterRule.getWebhookUri())
                 .setClientCredential(new Oauth2ClientCredentialInternal()
                     .setClientId(webhookRouterRule.getClientCredential().getClientId())
@@ -46,7 +48,7 @@ public class RouterRuleAdapter {
                 .setAuthorizationServerUri(webhookRouterRule.getAuthorizationServerUri());
         }
 
-        return new RouterRuleInternal();
+        return null;
     }
 
     public static RouterRule convertRouterRuleToPublic(RouterRuleInternal rule) {
@@ -55,15 +57,17 @@ public class RouterRuleAdapter {
         } else if (rule instanceof ExpressionRouterRuleInternal) {
             return new ExpressionRouterRule().setExpression(((ExpressionRouterRuleInternal) rule).getExpression())
                 .setLanguage(ExpressionRouterRuleLanguage.POWER_FX);
-        } else if (rule instanceof FunctionRouterRuleInternal functionRouterRule) {
+        } else if (rule instanceof FunctionRouterRuleInternal) {
+            FunctionRouterRuleInternal functionRouterRule = (FunctionRouterRuleInternal) rule;
             return new FunctionRouterRule().setFunctionUri(functionRouterRule.getFunctionUri())
                 .setCredential(new FunctionRouterRuleCredential()
                     .setFunctionKey(functionRouterRule.getCredential().getFunctionKey())
                     .setAppKey(functionRouterRule.getCredential().getAppKey())
                     .setClientId(functionRouterRule.getCredential().getClientId()));
-        } else if (rule instanceof StaticRouterRuleInternal staticRouterRule) {
-            return new StaticRouterRule().setValue(staticRouterRule.getValue());
-        } else if (rule instanceof WebhookRouterRuleInternal webhookRouterRule) {
+        } else if (rule instanceof StaticRouterRuleInternal) {
+            return new StaticRouterRule().setValue(((StaticRouterRuleInternal)rule).getValue());
+        } else if (rule instanceof WebhookRouterRuleInternal) {
+            WebhookRouterRuleInternal webhookRouterRule = (WebhookRouterRuleInternal) rule;
             return new WebhookRouterRule().setWebhookUri(webhookRouterRule.getWebhookUri())
                 .setClientCredential(new Oauth2ClientCredential()
                     .setClientId(webhookRouterRule.getClientCredential().getClientId())

@@ -30,6 +30,7 @@ import com.azure.communication.jobrouter.models.WaitTimeExceptionTrigger;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.util.ETag;
 import reactor.core.publisher.Flux;
 
 import java.util.HashMap;
@@ -72,7 +73,7 @@ public class ExceptionPolicyAdapter {
                 .stream()
                 .map(internal -> new ExceptionPolicyItem()
                     .setExceptionPolicy(ExceptionPolicyConstructorProxy.create(internal.getExceptionPolicy()))
-                    .setEtag(internal.getEtag()))
+                    .setEtag(new ETag(internal.getEtag())))
                 .collect(Collectors.toList()),
             internalResponse.getContinuationToken(),
             null);
@@ -106,19 +107,23 @@ public class ExceptionPolicyAdapter {
     }
 
     public static ExceptionTriggerInternal convertExceptionTriggerToInternal(ExceptionTrigger trigger) {
-        if (trigger instanceof QueueLengthExceptionTrigger queueLength) {
+        if (trigger instanceof QueueLengthExceptionTrigger) {
+            QueueLengthExceptionTrigger queueLength = (QueueLengthExceptionTrigger) trigger;
             return new QueueLengthExceptionTriggerInternal().setThreshold(queueLength.getThreshold());
-        } else if (trigger instanceof WaitTimeExceptionTrigger waitTime) {
+        } else if (trigger instanceof WaitTimeExceptionTrigger) {
+            WaitTimeExceptionTrigger waitTime = (WaitTimeExceptionTrigger) trigger;
             return new WaitTimeExceptionTriggerInternal().setThresholdSeconds(waitTime.getThresholdSeconds());
         }
 
-        return new ExceptionTriggerInternal();
+        return null;
     }
 
     public static ExceptionTrigger convertExceptionTriggerToPublic(ExceptionTriggerInternal trigger) {
-        if (trigger instanceof QueueLengthExceptionTriggerInternal queueLength) {
+        if (trigger instanceof QueueLengthExceptionTriggerInternal) {
+            QueueLengthExceptionTriggerInternal queueLength = (QueueLengthExceptionTriggerInternal) trigger;
             return new QueueLengthExceptionTrigger().setThreshold(queueLength.getThreshold());
-        } else if (trigger instanceof WaitTimeExceptionTriggerInternal waitTime) {
+        } else if (trigger instanceof WaitTimeExceptionTriggerInternal) {
+            WaitTimeExceptionTriggerInternal waitTime = (WaitTimeExceptionTriggerInternal) trigger;
             return new WaitTimeExceptionTrigger().setThresholdSeconds(waitTime.getThresholdSeconds());
         }
 
@@ -126,34 +131,44 @@ public class ExceptionPolicyAdapter {
     }
 
     public static ExceptionActionInternal convertExceptionActionToInternal(ExceptionAction action) {
-        if (action instanceof CancelExceptionAction cancel) {
-            return new CancelExceptionActionInternal().setNote(cancel.getNote()).setDispositionCode(cancel.getDispositionCode());
-        } else if (action instanceof ManualReclassifyExceptionAction manualReclassify) {
+        if (action instanceof CancelExceptionAction) {
+            CancelExceptionAction cancel = (CancelExceptionAction) action;
+            return new CancelExceptionActionInternal()
+                .setNote(cancel.getNote())
+                .setDispositionCode(cancel.getDispositionCode());
+        } else if (action instanceof ManualReclassifyExceptionAction) {
+            ManualReclassifyExceptionAction manualReclassify = (ManualReclassifyExceptionAction) action;
             return new ManualReclassifyExceptionActionInternal()
                 .setPriority(manualReclassify.getPriority())
                 .setQueueId(manualReclassify.getQueueId())
                 .setWorkerSelectors(manualReclassify.getWorkerSelectors().stream()
                     .map(LabelSelectorAdapter::convertWorkerSelectorToInternal).collect(Collectors.toList()));
-        } else if (action instanceof ReclassifyExceptionAction reclassify) {
+        } else if (action instanceof ReclassifyExceptionAction) {
+            ReclassifyExceptionAction reclassify = (ReclassifyExceptionAction) action;
             return new ReclassifyExceptionActionInternal()
                 .setClassificationPolicyId(reclassify.getClassificationPolicyId())
                 .setLabelsToUpsert(reclassify.getLabelsToUpsert().entrySet().stream()
                     .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())));
         }
 
-        return new ExceptionActionInternal();
+        return null;
     }
 
     public static ExceptionAction convertExceptionActionToPublic(ExceptionActionInternal action) {
-        if (action instanceof CancelExceptionActionInternal cancel) {
-            return new CancelExceptionAction().setNote(cancel.getNote()).setDispositionCode(cancel.getDispositionCode());
-        } else if (action instanceof ManualReclassifyExceptionActionInternal manualReclassify) {
+        if (action instanceof CancelExceptionActionInternal) {
+            CancelExceptionActionInternal cancel = (CancelExceptionActionInternal) action;
+            return new CancelExceptionAction()
+                .setNote(cancel.getNote())
+                .setDispositionCode(cancel.getDispositionCode());
+        } else if (action instanceof ManualReclassifyExceptionActionInternal) {
+            ManualReclassifyExceptionActionInternal manualReclassify = (ManualReclassifyExceptionActionInternal) action;
             return new ManualReclassifyExceptionAction()
                 .setPriority(manualReclassify.getPriority())
                 .setQueueId(manualReclassify.getQueueId())
                 .setWorkerSelectors(manualReclassify.getWorkerSelectors().stream()
                     .map(LabelSelectorAdapter::convertWorkerSelectorToPublic).collect(Collectors.toList()));
-        } else if (action instanceof ReclassifyExceptionActionInternal reclassify) {
+        } else if (action instanceof ReclassifyExceptionActionInternal) {
+            ReclassifyExceptionActionInternal reclassify = (ReclassifyExceptionActionInternal) action;
             return new ReclassifyExceptionAction()
                 .setClassificationPolicyId(reclassify.getClassificationPolicyId())
                 .setLabelsToUpsert(reclassify.getLabelsToUpsert().entrySet().stream()

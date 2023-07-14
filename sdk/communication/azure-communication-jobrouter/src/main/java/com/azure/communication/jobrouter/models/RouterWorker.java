@@ -4,6 +4,7 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.communication.jobrouter.implementation.accesshelpers.LabelValueConstructorProxy;
 import com.azure.communication.jobrouter.implementation.accesshelpers.RouterWorkerConstructorProxy;
 import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
@@ -34,9 +35,9 @@ public final class RouterWorker {
         loadRatio = internal.getLoadRatio();
 
         setLabels(internal.getLabels().entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> (LabelValue)entry.getValue())));
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> LabelValueConstructorProxy.create(entry.getValue()))));
         setTags(internal.getTags().entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> (LabelValue)entry.getValue())));
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> LabelValueConstructorProxy.create(entry.getValue()))));
         setQueueAssignments(internal.getQueueAssignments().entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> new RouterQueueAssignment())));
         setAvailableForOffers(internal.isAvailableForOffers());

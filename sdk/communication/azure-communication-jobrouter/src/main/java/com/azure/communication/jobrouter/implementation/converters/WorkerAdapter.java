@@ -21,6 +21,7 @@ import com.azure.communication.jobrouter.models.UpdateWorkerOptions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.util.ETag;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -93,7 +94,7 @@ public class WorkerAdapter {
                 .stream()
                 .map(internal -> new RouterWorkerItem()
                     .setWorker(RouterWorkerConstructorProxy.create(internal.getWorker()))
-                    .setEtag(internal.getEtag()))
+                    .setEtag(new ETag(internal.getEtag())))
                 .collect(Collectors.toList()),
             internalResponse.getContinuationToken(),
             null);
