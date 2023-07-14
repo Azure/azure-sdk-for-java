@@ -1,14 +1,9 @@
 # Release History
 
-## 1.0.0-beta.9 (Unreleased)
+## 1.0.0-beta.9 (2023-07-14)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+### Dependency Update
+- Update OpenTelemetry Java Instrumentation to 1.28.0
 
 ## 1.0.0-beta.8 (2023-02-24)
 
