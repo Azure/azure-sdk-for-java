@@ -61,7 +61,6 @@ import java.net.SocketException;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -144,13 +143,6 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
                 createRequest,
-                true /* isNetworkFailure */
-            },
-            {
-                ReadTimeoutException.INSTANCE,
-                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
-                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
-                readRequest,
                 true /* isNetworkFailure */
             },
             {

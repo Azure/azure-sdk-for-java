@@ -4,9 +4,14 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.InvalidPartitionException;
+import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import io.netty.channel.ConnectTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -162,7 +167,7 @@ public class RntbdConnectionStateListener {
         return 0;
     }
 
-    public void attemptBackgroundAddressRefresh(RxDocumentServiceRequest request) {
+    public void attemptBackgroundAddressRefresh(RxDocumentServiceRequest request, Exception exception) {
 
         if (request.requestContext == null) {
             return;
@@ -170,7 +175,9 @@ public class RntbdConnectionStateListener {
 
         AtomicBoolean isRequestCancelledOnTimeout = request.requestContext.isRequestCancelledOnTimeout();
 
-        if (isRequestCancelledOnTimeout == null || !isRequestCancelledOnTimeout.get()) {
+        if (isRequestCancelledOnTimeout == null
+            || !isRequestCancelledOnTimeout.get()
+            || !shouldRefreshForException(exception)) {
             return;
         }
 
@@ -191,4 +198,14 @@ public class RntbdConnectionStateListener {
             );
     }
     // endregion
+
+    private boolean shouldRefreshForException(Exception exception) {
+        return (
+            exception instanceof ConnectTimeoutException
+                || exception instanceof InvalidPartitionException
+                || exception instanceof PartitionIsMigratingException
+                || exception instanceof PartitionKeyRangeIsSplittingException
+                || exception instanceof GoneException
+        );
+    }
 }

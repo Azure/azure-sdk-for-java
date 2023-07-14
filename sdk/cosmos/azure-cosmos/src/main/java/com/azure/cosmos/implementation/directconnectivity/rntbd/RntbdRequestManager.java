@@ -1048,22 +1048,21 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                         case SubStatusCodes.COMPLETING_SPLIT_OR_MERGE:
                             cause = new PartitionKeyRangeIsSplittingException(error, lsn, partitionKeyRangeId, responseHeaders);
                             handleGoneException(serviceRequest, cause);
-                            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(serviceRequest);
+                            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(serviceRequest, cause);
                             break;
                         case SubStatusCodes.COMPLETING_PARTITION_MIGRATION:
                             cause = new PartitionIsMigratingException(error, lsn, partitionKeyRangeId, responseHeaders);
                             handleGoneException(serviceRequest, cause);
-                            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(serviceRequest);
+                            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(serviceRequest, cause);
                             break;
                         case SubStatusCodes.NAME_CACHE_IS_STALE:
                             cause = new InvalidPartitionException(error, lsn, partitionKeyRangeId, responseHeaders);
                             handleGoneException(serviceRequest, cause);
-                            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(serviceRequest);
+                            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(serviceRequest, cause);
                             break;
                         case SubStatusCodes.PARTITION_KEY_RANGE_GONE:
                             cause = new PartitionKeyRangeGoneException(error, lsn, partitionKeyRangeId, responseHeaders);
                             handleGoneException(serviceRequest, cause);
-                            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(serviceRequest);
                             break;
                         default:
                             GoneException goneExceptionFromService =
@@ -1072,7 +1071,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                             goneExceptionFromService.setIsBasedOn410ResponseFromService();
                             cause = goneExceptionFromService;
                             handleGoneException(serviceRequest, cause);
-                            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(serviceRequest);
+                            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(serviceRequest, cause);
                             break;
                     }
                     break;
@@ -1166,12 +1165,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             request.forcePartitionKeyRangeRefresh = true;
         } else if (exception instanceof GoneException) {
             request.requestContext.forceRefreshAddressCache = true;
-        } else if (exception instanceof PartitionKeyRangeGoneException) {
-            request.forcePartitionKeyRangeRefresh = true;
-            request.requestContext.forceRefreshAddressCache = true;
-            request.requestContext.resolvedPartitionKeyRange = null;
-            request.requestContext.quorumSelectedLSN = -1;
-            request.requestContext.quorumSelectedStoreResponse = null;
         }
     }
 

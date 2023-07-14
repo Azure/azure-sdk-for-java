@@ -611,7 +611,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 serviceRequest.requestContext.forceRefreshAddressCache = true;
             }
 
-            connectionStateListener.attemptBackgroundAddressRefresh(serviceRequest);
+            connectionStateListener.attemptBackgroundAddressRefresh(serviceRequest, goneException);
             requestRecord.completeExceptionally(goneException);
         }
 
