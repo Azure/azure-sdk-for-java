@@ -28,6 +28,7 @@ public class TelemetryPipeline {
 
     // Based on Stamp specific redirects design doc
     private static final int MAX_REDIRECTS = 10;
+    private static final HttpHeaderName LOCATION =  HttpHeaderName.fromString("Location");
 
     private final HttpPipeline pipeline;
 
@@ -122,7 +123,7 @@ public class TelemetryPipeline {
         int responseCode = response.getStatusCode();
 
         if (StatusCode.isRedirect(responseCode) && remainingRedirects > 0) {
-            String location = response.getHeaderValue(HttpHeaderName.fromString("Location"));
+            String location = response.getHeaderValue(LOCATION);
             URL locationUrl;
             try {
                 locationUrl = new URI(location).toURL();
