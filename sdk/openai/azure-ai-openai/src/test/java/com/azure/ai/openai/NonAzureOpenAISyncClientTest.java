@@ -23,10 +23,13 @@ import com.azure.core.util.IterableStream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Arrays;
+
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -88,7 +91,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         client = getNonAzureOpenAISyncClient(httpClient);
         getCompletionsRunner((modelId, prompt) -> {
             ClientAuthenticationException exception = assertThrows(ClientAuthenticationException.class,
-                () ->  client.getCompletionsWithResponse(modelId,
+                () -> client.getCompletionsWithResponse(modelId,
                     BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions()));
             assertEquals(401, exception.getResponse().getStatusCode());
         });
@@ -100,7 +103,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         client = getNonAzureOpenAISyncClient(httpClient);
         getCompletionsRunner((modelId, prompt) -> {
             HttpResponseException exception = assertThrows(HttpResponseException.class,
-                () ->  client.getCompletionsWithResponse(modelId,
+                () -> client.getCompletionsWithResponse(modelId,
                     BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions()));
             assertEquals(429, exception.getResponse().getStatusCode());
         });
@@ -238,11 +241,38 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         getChatFunctionForNonAzureRunner((modelId, chatCompletionsOptions) -> {
             chatCompletionsOptions.setFunctionCall(new FunctionCallConfig("NotMyFunction"));
             HttpResponseException exception = assertThrows(HttpResponseException.class,
-                () ->  client.getChatCompletions(modelId, chatCompletionsOptions));
+                () -> client.getChatCompletions(modelId, chatCompletionsOptions));
             assertEquals(400, exception.getResponse().getStatusCode());
 
             assertInstanceOf(HttpResponseException.class, exception);
             assertTrue(exception.getMessage().contains("Invalid value for 'function_call'"));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatCompletionsContentFilterRunnerForNonAzure((modelId, chatMessages) -> {
+            ChatCompletions chatCompletions = client.getChatCompletions(modelId, new ChatCompletionsOptions(chatMessages));
+
+            assertNull(chatCompletions.getPromptFilterResults());
+            assertEquals(1, chatCompletions.getChoices().size());
+            assertNull(chatCompletions.getChoices().get(0).getContentFilterResults());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getCompletionsContentFilterRunnerForNonAzure((modelId, prompt) -> {
+            CompletionsOptions completionsOptions = new CompletionsOptions(Arrays.asList(prompt));
+            Completions completions = client.getCompletions(modelId, completionsOptions);
+
+            assertCompletions(1, completions);
+            assertNull(completions.getPromptFilterResults());
+            assertNull(completions.getChoices().get(0).getContentFilterResults());
         });
     }
 }

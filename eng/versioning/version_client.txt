@@ -64,10 +64,10 @@ com.azure:azure-code-customization-parent;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-chat;1.3.9;1.4.0-beta.1
 com.azure:azure-communication-callingserver;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-communication-callautomation;1.0.1;1.1.0-beta.1
-com.azure:azure-communication-common;1.2.9;2.0.0-beta.2
+com.azure:azure-communication-common;1.2.10;2.0.0-beta.2
 com.azure:azure-communication-common-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-sms;1.1.14;1.2.0-beta.1
-com.azure:azure-communication-identity;1.4.7;1.5.0-beta.1
+com.azure:azure-communication-identity;1.4.8;1.5.0-beta.1
 com.azure:azure-communication-phonenumbers;1.1.3;1.2.0-beta.1
 com.azure:azure-communication-networktraversal;1.1.0-beta.2;1.1.0-beta.3
 com.azure:azure-communication-jobrouter;1.0.0-beta.1;1.0.0-beta.1
@@ -145,7 +145,7 @@ com.azure:azure-messaging-webpubsub;1.2.5;1.3.0-beta.1
 com.azure:azure-messaging-webpubsub-client;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-mixedreality-authentication;1.2.14;1.3.0-beta.1
 com.azure:azure-mixedreality-remoterendering;1.1.19;1.2.0-beta.1
-com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.8;1.0.0-beta.9
+com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.9;1.0.0-beta.10
 com.azure:azure-monitor-ingestion;1.0.4;1.1.0-beta.1
 com.azure:azure-monitor-ingestion-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-monitor-query;1.2.1;1.3.0-beta.1
@@ -410,7 +410,7 @@ com.azure.resourcemanager:azure-resourcemanager-storagemover;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerservicefleet;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-voiceservices;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-graphservices;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-paloaltonetworks-ngfw;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-paloaltonetworks-ngfw;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-newrelicobservability;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-qumulo;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-selfhelp;1.0.0;1.1.0-beta.1

@@ -111,4 +111,23 @@ public final class ChatCompletions {
     public int getCreatedAt() {
         return this.createdAt;
     }
+
+    /*
+     * Content filtering results for zero or more prompts in the request. In a streaming request,
+     * results for different prompts may arrive at different times or in different orders.
+     */
+    @Generated
+    @JsonProperty(value = "prompt_annotations")
+    private List<PromptFilterResult> promptFilterResults;
+
+    /**
+     * Get the promptFilterResults property: Content filtering results for zero or more prompts in the request. In a
+     * streaming request, results for different prompts may arrive at different times or in different orders.
+     *
+     * @return the promptFilterResults value.
+     */
+    @Generated
+    public List<PromptFilterResult> getPromptFilterResults() {
+        return this.promptFilterResults;
+    }
 }

@@ -13,6 +13,8 @@ import com.azure.ai.openai.models.ChatMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
+import com.azure.ai.openai.models.ContentFilterResults;
+import com.azure.ai.openai.models.ContentFilterSeverity;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
@@ -144,6 +146,22 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     void getChatFunctionForRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
         testRunner.accept("gpt-4", getChatMessagesWithFunction());
+    }
+
+    void getChatCompletionsContentFilterRunner(BiConsumer<String, List<ChatMessage>> testRunner) {
+        testRunner.accept("gpt-4", getChatMessages());
+    }
+
+    void getCompletionsContentFilterRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept("gpt-35-turbo", "What is 3 times 4?");
+    }
+
+    void getChatCompletionsContentFilterRunnerForNonAzure(BiConsumer<String, List<ChatMessage>> testRunner) {
+        testRunner.accept("gpt-3.5-turbo-0613", getChatMessages());
+    }
+
+    void getCompletionsContentFilterRunnerForNonAzure(BiConsumer<String, String> testRunner) {
+        testRunner.accept("text-davinci-002", "What is 3 times 4?");
     }
 
     private List<ChatMessage> getChatMessages() {
@@ -280,5 +298,17 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertEquals(functionName, functionCall.getName());
         BinaryData argumentJson = BinaryData.fromString(functionCall.getArguments());
         return argumentJson.toObject(myPropertiesClazz);
+    }
+
+    static void assertSafeContentFilterResults(ContentFilterResults contentFilterResults) {
+        assertNotNull(contentFilterResults);
+        assertFalse(contentFilterResults.getHate().isFiltered());
+        assertEquals(contentFilterResults.getHate().getSeverity(), ContentFilterSeverity.SAFE);
+        assertFalse(contentFilterResults.getSexual().isFiltered());
+        assertEquals(contentFilterResults.getSexual().getSeverity(), ContentFilterSeverity.SAFE);
+        assertFalse(contentFilterResults.getSelfHarm().isFiltered());
+        assertEquals(contentFilterResults.getSelfHarm().getSeverity(), ContentFilterSeverity.SAFE);
+        assertFalse(contentFilterResults.getViolence().isFiltered());
+        assertEquals(contentFilterResults.getViolence().getSeverity(), ContentFilterSeverity.SAFE);
     }
 }
