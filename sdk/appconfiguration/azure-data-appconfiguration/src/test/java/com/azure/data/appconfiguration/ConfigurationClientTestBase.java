@@ -819,7 +819,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         assertNotNull(actualSnapshot.getCreatedAt());
         assertEquals(itemCount, actualSnapshot.getItemCount());
         assertNotNull(actualSnapshot.getSize());
-        assertNotNull(actualSnapshot.getEtag());
+        assertNotNull(actualSnapshot.getETag());
 
         if (!CoreUtils.isNullOrEmpty(tags)) {
             assertEquals(tags, actualSnapshot.getTags());

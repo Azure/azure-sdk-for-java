@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-
 import java.util.List;
 
 /** An action that manually reclassifies a job by providing the queue, priority and worker selectors. */
@@ -32,7 +31,7 @@ public final class ManualReclassifyExceptionAction extends ExceptionAction {
      * Updated WorkerSelectors.
      */
     @JsonProperty(value = "workerSelectors")
-    private List<WorkerSelector> workerSelectors;
+    private List<RouterWorkerSelector> workerSelectors;
 
     /**
      * Get the queueId property: Updated QueueId.
@@ -79,7 +78,7 @@ public final class ManualReclassifyExceptionAction extends ExceptionAction {
      *
      * @return the workerSelectors value.
      */
-    public List<WorkerSelector> getWorkerSelectors() {
+    public List<RouterWorkerSelector> getWorkerSelectors() {
         return this.workerSelectors;
     }
 
@@ -89,7 +88,7 @@ public final class ManualReclassifyExceptionAction extends ExceptionAction {
      * @param workerSelectors the workerSelectors value to set.
      * @return the ManualReclassifyExceptionAction object itself.
      */
-    public ManualReclassifyExceptionAction setWorkerSelectors(List<WorkerSelector> workerSelectors) {
+    public ManualReclassifyExceptionAction setWorkerSelectors(List<RouterWorkerSelector> workerSelectors) {
         this.workerSelectors = workerSelectors;
         return this;
     }

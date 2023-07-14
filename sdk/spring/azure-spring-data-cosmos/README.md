@@ -124,6 +124,7 @@ Set `maxDegreeOfParallelism` flag to an integer in application.properties to all
 Set `maxBufferedItemCount` flag to an integer in application.properties to allow the user to set the max number of items that can be buffered during parallel query execution; if set to less than 0, the system automatically decides the number of items to buffer.
 NOTE: Setting this to a very high value can result in high memory consumption.
 Set `responseContinuationTokenLimitInKb` flag to an integer in application.properties to allow the user to limit the length of the continuation token in the query response. The continuation token contains both required and optional fields. The required fields are necessary for resuming the execution from where it was stoped. The optional fields may contain serialized index lookup work that was done but not yet utilized. This avoids redoing the work again in subsequent continuations and hence improve the query performance. Setting the maximum continuation size to 1KB, the Azure Cosmos DB service will only serialize required fields. Starting from 2KB, the Azure Cosmos DB service would serialize as much as it could fit till it reaches the maximum specified size.
+Set `pointOperationLatencyThresholdInMS`, `nonPointOperationLatencyThresholdInMS`, `requestChargeThresholdInRU` and `payloadSizeThresholdInBytes` to enable diagnostics at the client level when these thresholds are exceeded.
 
 ```java readme-sample-AppConfiguration
 @Configuration
@@ -156,6 +157,18 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
     @Value("${azure.cosmos.responseContinuationTokenLimitInKb}")
     private int responseContinuationTokenLimitInKb;
 
+    @Value("${azure.cosmos.diagnosticsThresholds.pointOperationLatencyThresholdInMS}")
+    private int pointOperationLatencyThresholdInMS;
+    
+    @Value("${azure.cosmos.diagnosticsThresholds.nonPointOperationLatencyThresholdInMS}")
+    private int nonPointOperationLatencyThresholdInMS;
+    
+    @Value("${azure.cosmos.diagnosticsThresholds.requestChargeThresholdInRU}")
+    private int requestChargeThresholdInRU;
+    
+    @Value("${azure.cosmos.diagnosticsThresholds.payloadSizeThresholdInBytes}")
+    private int payloadSizeThresholdInBytes;
+
     private AzureKeyCredential azureKeyCredential;
 
     @Bean
@@ -166,7 +179,17 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
         return new CosmosClientBuilder()
             .endpoint(uri)
             .credential(azureKeyCredential)
-            .directMode(directConnectionConfig, gatewayConnectionConfig);
+            .directMode(directConnectionConfig, gatewayConnectionConfig)
+            .clientTelemetryConfig(
+                new CosmosClientTelemetryConfig()
+                    .diagnosticsThresholds(
+                        new CosmosDiagnosticsThresholds()
+                            .setNonPointOperationLatencyThreshold(Duration.ofMillis(nonPointOperationLatencyThresholdInMS))
+                            .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
+                            .setPayloadSizeThreshold(payloadSizeThresholdInBytes)
+                            .setRequestChargeThreshold(requestChargeThresholdInRU)
+                    )
+                    .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
     }
 
     @Override
@@ -201,6 +224,7 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 ```
 ### Customizing Configuration
 You can customize `DirectConnectionConfig` or `GatewayConnectionConfig` or both and provide them to `CosmosClientBuilder` bean to customize `CosmosAsyncClient`
+You can customize `pointOperationLatencyThresholdInMS`, `nonPointOperationLatencyThresholdInMS`, `requestChargeThresholdInRU` and `payloadSizeThresholdInBytes` to customize the thresholds for diagnostic logging when combined with `CosmosDiagnosticsHandler` which enables diagnostic logging with the default thresholds when added to the `CosmosClientBuilder`.
 
 ```java readme-sample-AppConfigurationCodeSnippet
 @Bean
@@ -210,7 +234,17 @@ public CosmosClientBuilder getCosmosClientBuilder() {
     GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
     return new CosmosClientBuilder()
         .endpoint(uri)
-        .directMode(directConnectionConfig, gatewayConnectionConfig);
+        .directMode(directConnectionConfig, gatewayConnectionConfig)
+        .clientTelemetryConfig(
+                new CosmosClientTelemetryConfig()
+                    .diagnosticsThresholds(
+                        new CosmosDiagnosticsThresholds()
+                            .setNonPointOperationLatencyThreshold(Duration.ofMillis(nonPointOperationLatencyThresholdInMS))
+                            .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
+                            .setPayloadSizeThreshold(payloadSizeThresholdInBytes)
+                            .setRequestChargeThreshold(requestChargeThresholdInRU)
+                    )
+                    .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
 }
 
 @Override
@@ -227,6 +261,14 @@ public CosmosConfig cosmosConfig() {
 
 By default, `@EnableCosmosRepositories` will scan the current package for any interfaces that extend one of Spring Data's repository interfaces.
 Use it to annotate your Configuration class to scan a different root package by `@EnableCosmosRepositories(basePackageClass=UserRepository.class)` if your project layout has multiple projects.
+
+#### Enabling logging diagnostics to Azure Application Insights with JavaAgent
+
+Diagnostics can be enabled by passing the JavaAgent with your application like below. This will enable logging with the default thresholds. The '-javaagent' must be passed before the '-jar'.
+
+```commandline
+java -javaagent:"<path-to-applicationinsights-agent-jar>" -jar <myapp.jar>
+```
 
 #### Using database provisioned throughput
 
@@ -689,7 +731,7 @@ public class SecondaryDatasourceConfiguration {
     public CosmosAsyncClient getCosmosAsyncClient(@Qualifier("secondary") CosmosProperties secondaryProperties) {
         return CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder()
             .key(secondaryProperties.getKey())
-            .endpoint(secondaryProperties.getUri()));
+            .endpoint(secondaryProperties.getUri());
     }
 
     @Bean("secondaryCosmosConfig")
@@ -727,7 +769,7 @@ public class SecondaryDatasourceConfiguration {
 public CosmosAsyncClient getCosmosAsyncClient(@Qualifier("secondary") CosmosProperties secondaryProperties) {
     return CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder()
         .key(secondaryProperties.getKey())
-        .endpoint(secondaryProperties.getUri()));
+        .endpoint(secondaryProperties.getUri());
 }
 
 @Bean("secondaryCosmosConfig")

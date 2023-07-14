@@ -2,6 +2,10 @@
 
 ## 1.0.0-beta.3 (Unreleased)
 
+- Added methods and models to support DALL-E
+- Added methods and models to support Functions
+- Added models supporting ResponsibleAI annotations
+
 ### Features Added
 
 ### Breaking Changes

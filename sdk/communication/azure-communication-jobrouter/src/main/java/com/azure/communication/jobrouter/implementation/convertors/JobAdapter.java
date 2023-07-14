@@ -3,11 +3,13 @@
 
 package com.azure.communication.jobrouter.implementation.convertors;
 
+import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.RouterJob;
-import com.azure.communication.jobrouter.models.options.CreateJobOptions;
-import com.azure.communication.jobrouter.models.options.UpdateJobOptions;
+import com.azure.communication.jobrouter.models.RouterJobNote;
+import com.azure.communication.jobrouter.models.UpdateJobOptions;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -25,12 +27,16 @@ public class JobAdapter {
         Map<String, LabelValue> labelValueMap = createJobOptions.getLabels();
         Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : null;
+        Map<String, String> jobNotes = new HashMap<>();
+        for (RouterJobNote note: createJobOptions.getNotes()) {
+            jobNotes.put(note.getMessage(), note.getTime().toString());
+        }
         return new RouterJob()
             .setChannelId(createJobOptions.getChannelId())
             .setChannelReference(createJobOptions.getChannelReference())
             .setQueueId(createJobOptions.getQueueId())
             .setLabels(labels)
-            .setNotes(createJobOptions.getNotes())
+            .setNotes(jobNotes)
             .setPriority(createJobOptions.getPriority())
             .setClassificationPolicyId(createJobOptions.getClassificationPolicyId())
             .setDispositionCode(createJobOptions.getDispositionCode())
