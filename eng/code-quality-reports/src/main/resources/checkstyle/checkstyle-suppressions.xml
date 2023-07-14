@@ -570,4 +570,5 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files=".*(DeviceCodeCredential|InteractiveBrowserCredential|AzureCliCredential|AzureDeveloperCliCredential|ClientCertificateCredential|ClientSecretCredential|EnvironmentCredential|OnBehalfOfCredential|ChainedTokenCredential|ClientAssertionCredential|UsernamePasswordCredential).java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.search.documents.indexes.models.SynonymMap"/>
+
 </suppressions>
