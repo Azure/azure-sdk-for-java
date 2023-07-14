@@ -6,7 +6,6 @@
     "JavaTestVersion": "1.17",
     "AZURE_TEST_HTTP_CLIENTS": "netty",
     "TestGoals": "surefire:test",
-    "AZURE_VERSION_OVERRIDE_TESTS": true,
-    "TestVersionSupport": true
+
   }
 }

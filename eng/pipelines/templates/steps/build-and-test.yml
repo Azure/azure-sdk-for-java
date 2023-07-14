@@ -158,11 +158,11 @@ steps:
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - ${{ if ne(parameters.VersionOverride, '') }}:
-    - template: ../steps/retain-heap-dump-hprofs.yml
+    - template: /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml
       parameters:
         OomArtifactName: 'oom-vo-${{ parameters.VersionOverride }}'
   - ${{ else }}:
-    - template: ../steps/retain-heap-dump-hprofs.yml
+    - template: /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml
 
   - task: PublishTestResults@2
     condition: always()

@@ -17,17 +17,9 @@ parameters:
   - name: PreTestSteps
     type: object
     default: []
-  - name: Matrix
-    type: object
   - name: CloudConfig
     type: object
     default: {}
-  - name: DependsOn
-    type: string
-    default: ''
-  - name: UsePlatformContainer
-    type: boolean
-    default: false
   - name: PreBuildSteps
     type: object
     default: []
@@ -49,24 +41,21 @@ parameters:
 
 jobs:
   - job: 'Test'
-    dependsOn: ${{ parameters.DependsOn }}
     condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))
 
-    strategy:
-      matrix: $[ ${{ parameters.Matrix }} ]
-
     pool:
-      name: $(Pool)
-      vmImage: $(OSVmImage)
-
-    ${{ if eq(parameters.UsePlatformContainer, 'true') }}:
-      # Add a default so the job doesn't fail when the matrix is empty
-      container: $[ variables['Container'] ]
+      name: 'azsdk-pool-mms-ubuntu-2004-general'
+      vmImage: 'MMSUbuntu20.04'
 
     variables:
-      - template: ../variables/globals.yml
+      - template: /eng/pipelines/templates/variables/globals.yml
 
     steps:
+      - pwsh: |
+          Write-Host "##vso[task.setvariable variable=AZURE_VERSION_OVERRIDE_TESTS]true"
+          Write-Host "##vso[task.setvariable variable=TestVersionSupport]true"
+        diplayName: "Set version override variables"
+
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
@@ -93,7 +82,7 @@ jobs:
         displayName: Dump Test-Proxy Logs
         condition: succeededOrFailed()
 
-      - template: ../steps/install-reporting-tools.yml
+      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
         parameters:
           JdkVersion: $(JavaTestVersion)
 
@@ -117,6 +106,6 @@ jobs:
             git checkout -- .
           displayName: "Reset version override changes"
 
-      - template: ../steps/upload-repository-on-failure.yml
+      - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
 
       - template: /eng/common/testproxy/publish-proxy-logs.yml
