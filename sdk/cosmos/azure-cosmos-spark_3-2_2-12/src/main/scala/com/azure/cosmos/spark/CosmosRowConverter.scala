@@ -2,35 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{Constants, Utils}
-import com.azure.cosmos.spark.CosmosTableSchemaInferrer._
-import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
-import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.annotation.JsonInclude.Include
-import com.fasterxml.jackson.databind.node._
-import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
-import org.apache.spark.sql.Row
-import org.apache.spark.sql.catalyst.InternalRow
-import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
-import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema, UnsafeMapData}
-import org.apache.spark.sql.catalyst.util.ArrayData
+import com.fasterxml.jackson.databind.ObjectMapper
 
-import java.io.IOException
-import java.sql.{Date, Timestamp}
-import java.time.format.DateTimeFormatter
-import java.time.{Instant, LocalDate, OffsetDateTime, ZoneOffset}
-import java.util.concurrent.TimeUnit
 import scala.collection.concurrent.TrieMap
 
 // scalastyle:off underscore.import
-import org.apache.spark.sql.types._
-
-import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
-
-import org.apache.spark.unsafe.types.UTF8String
-
-import scala.util.{Failure, Success, Try}
 
 // scalastyle:off
 private[cosmos] object CosmosRowConverter {

@@ -1,16 +1,21 @@
 ## Release History
 
-### 4.20.0-beta.1 (Unreleased)
+### 4.21.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added `feed_detail` diagnostics mode. - See [PR 35501](https://github.com/Azure/azure-sdk-for-java/pull/35501)
 * Spark 3.4 support: - See [PR 35176](https://github.com/Azure/azure-sdk-for-java/pull/35176).
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed schema reference issue for empty array - See [PR 35746](https://github.com/Azure/azure-sdk-for-java/pull/35746)
 
 #### Other Changes
+
+### 4.20.0 (2023-06-26)
+
+#### Features Added
+* Added `feed_detail` diagnostics mode. - See [PR 35501](https://github.com/Azure/azure-sdk-for-java/pull/35501)
 
 ### 4.19.0 (2023-06-09)
 

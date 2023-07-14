@@ -30,39 +30,7 @@ import scala.collection.JavaConverters._
 import org.apache.spark.unsafe.types.UTF8String
 import scala.util.{Try, Success, Failure}
 
-// scalastyle:off
-private[cosmos] object CosmosRowConverter {
-
-  // TODO: Expose configuration to handle duplicate fields
-  // See: https://github.com/Azure/azure-sdk-for-java/pull/18642#discussion_r558638474
-  private val rowConverterMap = new TrieMap[CosmosSerializationConfig, CosmosRowConverter]
-
-  def get(serializationConfig: CosmosSerializationConfig) : CosmosRowConverter = {
-    rowConverterMap.get(serializationConfig) match {
-      case Some(existingRowConverter) => existingRowConverter
-      case None =>
-        val newRowConverterCandidate = createRowConverter(serializationConfig)
-        rowConverterMap.putIfAbsent(serializationConfig, newRowConverterCandidate) match {
-          case Some(existingConcurrentlyCreatedRowConverter) => existingConcurrentlyCreatedRowConverter
-          case None => newRowConverterCandidate
-        }
-    }
-  }
-
-  private def createRowConverter(serializationConfig: CosmosSerializationConfig): CosmosRowConverter = {
-    val objectMapper = new ObjectMapper()
-    serializationConfig.serializationInclusionMode match {
-      case SerializationInclusionModes.NonNull => objectMapper.setSerializationInclusion(Include.NON_NULL)
-      case SerializationInclusionModes.NonEmpty => objectMapper.setSerializationInclusion(Include.NON_EMPTY)
-      case SerializationInclusionModes.NonDefault => objectMapper.setSerializationInclusion(Include.NON_DEFAULT)
-      case _ => objectMapper.setSerializationInclusion(Include.ALWAYS)
-    }
-
-    new CosmosRowConverter(objectMapper, serializationConfig)
-  }
-}
-
-private[cosmos] class CosmosRowConverter(
+class CosmosRowConverterBase(
                                   private val objectMapper: ObjectMapper,
                                   private val serializationConfig: CosmosSerializationConfig)
     extends BasicLoggingTrait {
@@ -161,7 +129,7 @@ private[cosmos] class CosmosRowConverter(
         }
     }
 
-    private def convertRawBodyJsonToObjectNode(json: String, rawBodyFieldName: String): ObjectNode = {
+    def convertRawBodyJsonToObjectNode(json: String, rawBodyFieldName: String): ObjectNode = {
       val doc = objectMapper.readTree(json).asInstanceOf[ObjectNode]
 
       if (rawBodyFieldName == CosmosTableSchemaInferrer.OriginRawJsonBodyAttributeName) {
@@ -212,7 +180,7 @@ private[cosmos] class CosmosRowConverter(
       }
     }
 
-    private def convertToStringKeyMap(input : Any): Map[String, _] = {
+    def convertToStringKeyMap(input : Any): Map[String, _] = {
       try {
         input.asInstanceOf[Map[String, _]]
       }
@@ -224,7 +192,7 @@ private[cosmos] class CosmosRowConverter(
       }
     }
 
-    private def convertRowDataToString(rowData: Any) : String = {
+    def convertRowDataToString(rowData: Any) : String = {
       rowData match {
         case str: String =>
           str
@@ -235,7 +203,7 @@ private[cosmos] class CosmosRowConverter(
       }
     }
 
-    private def convertSparkDataTypeToJsonNode(fieldType: DataType, rowData: Any) : Option[JsonNode] = {
+    def convertSparkDataTypeToJsonNode(fieldType: DataType, rowData: Any) : Option[JsonNode] = {
       if (serializationConfig.serializationInclusionMode == SerializationInclusionModes.NonEmpty ||
         serializationConfig.serializationInclusionMode == SerializationInclusionModes.NonDefault) {
 
@@ -245,7 +213,7 @@ private[cosmos] class CosmosRowConverter(
       }
     }
 
-    private def isDefaultValue(value: Any): Boolean = {
+    def isDefaultValue(value: Any): Boolean = {
       value match {
         case stringValue: String => stringValue.isEmpty
         case intValue: Int => intValue == 0
@@ -265,7 +233,7 @@ private[cosmos] class CosmosRowConverter(
       }
     }
 
-    private def convertToJsonNodeConditionally[T](value: T) = {
+    def convertToJsonNodeConditionally[T](value: T) = {
       if (skipDefaultValues && isDefaultValue(value)) {
         None
       } else {
@@ -273,7 +241,7 @@ private[cosmos] class CosmosRowConverter(
       }
     }
 
-    private def convertSparkDataTypeToJsonNodeConditionally
+    def convertSparkDataTypeToJsonNodeConditionally
     (
       fieldType: DataType,
       rowData: Any
@@ -425,7 +393,7 @@ private[cosmos] class CosmosRowConverter(
       }
     }
 
-    private def convertSparkDataTypeToJsonNodeNonNull(fieldType: DataType, rowData: Any) : JsonNode = {
+    def convertSparkDataTypeToJsonNodeNonNull(fieldType: DataType, rowData: Any) : JsonNode = {
         fieldType match {
             case StringType => objectMapper.convertValue(convertRowDataToString(rowData), classOf[JsonNode])
             case BinaryType => objectMapper.convertValue(rowData.asInstanceOf[Array[Byte]], classOf[JsonNode])
@@ -541,13 +509,13 @@ private[cosmos] class CosmosRowConverter(
         }
     }
 
-    private def putNullConditionally(objectNode: ObjectNode, fieldName: String) = {
+    def putNullConditionally(objectNode: ObjectNode, fieldName: String) = {
       if (serializationConfig.serializationInclusionMode == SerializationInclusionModes.Always) {
         objectNode.putNull(fieldName)
       }
     }
 
-    private def convertSparkMapToObjectNode(elementType: DataType, containsNull: Boolean, data: Map[String, Any]) : ObjectNode = {
+    def convertSparkMapToObjectNode(elementType: DataType, containsNull: Boolean, data: Map[String, Any]) : ObjectNode = {
         val objectNode = objectMapper.createObjectNode()
 
         data.foreach(x =>
@@ -564,7 +532,7 @@ private[cosmos] class CosmosRowConverter(
         objectNode
     }
 
-    private def convertSparkMapToObjectNode(elementType: DataType, containsNull: Boolean, data: UnsafeMapData) : ObjectNode = {
+    def convertSparkMapToObjectNode(elementType: DataType, containsNull: Boolean, data: UnsafeMapData) : ObjectNode = {
         val objectNode = objectMapper.createObjectNode()
 
         val keys: Array[String] = data.keyArray().toArray[UTF8String](StringType).map(_.toString)
@@ -584,7 +552,7 @@ private[cosmos] class CosmosRowConverter(
         objectNode
     }
 
-    private def convertSparkArrayToArrayNode(elementType: DataType, containsNull: Boolean, data: Seq[Any]): ArrayNode = {
+    def convertSparkArrayToArrayNode(elementType: DataType, containsNull: Boolean, data: Seq[Any]): ArrayNode = {
       val arrayNode = objectMapper.createArrayNode()
 
       data.foreach(value => writeSparkArrayDataToArrayNode(arrayNode, elementType, containsNull, value))
@@ -592,7 +560,7 @@ private[cosmos] class CosmosRowConverter(
       arrayNode
     }
 
-    private def convertSparkArrayToArrayNode(elementType: DataType, containsNull: Boolean, data: ArrayData): ArrayNode = {
+    def convertSparkArrayToArrayNode(elementType: DataType, containsNull: Boolean, data: ArrayData): ArrayNode = {
       val arrayNode = objectMapper.createArrayNode()
 
       data.foreach(elementType, (_, value)
@@ -601,7 +569,7 @@ private[cosmos] class CosmosRowConverter(
       arrayNode
     }
 
-    private def writeSparkArrayDataToArrayNode(arrayNode: ArrayNode,
+    def writeSparkArrayDataToArrayNode(arrayNode: ArrayNode,
                                                elementType: DataType,
                                                containsNull: Boolean,
                                                value: Any): Unit = {
@@ -616,7 +584,7 @@ private[cosmos] class CosmosRowConverter(
       }
     }
 
-    private def convertSparkSubItemToJsonNode
+    def convertSparkSubItemToJsonNode
     (
       elementType: DataType,
       containsNull: Boolean,
@@ -674,7 +642,7 @@ private[cosmos] class CosmosRowConverter(
         }
     }
 
-    private def rowTypeRouterToJsonArray(element: Any, schema: StructType) : ObjectNode = {
+    def rowTypeRouterToJsonArray(element: Any, schema: StructType) : ObjectNode = {
         element match {
             case e: Row => fromRowToObjectNode(e)
             case e: InternalRow => fromInternalRowToObjectNode(e, schema)
@@ -835,7 +803,7 @@ private[cosmos] class CosmosRowConverter(
                 Option(objectNode.get(name)).map(convertToSparkDataType(dataType, _, schemaConversionMode)).orNull
         }
 
-    private def convertToSparkDataType(dataType: DataType,
+    def convertToSparkDataType(dataType: DataType,
                                        value: JsonNode,
                                        schemaConversionMode: SchemaConversionMode): Any =
       (value, dataType) match {
@@ -899,7 +867,7 @@ private[cosmos] class CosmosRowConverter(
       }
     }
 
-    private def toTimestamp(value: JsonNode): Timestamp = {
+    def toTimestamp(value: JsonNode): Timestamp = {
         value match {
             case isJsonNumber() => new Timestamp(value.asLong())
             case textNode : TextNode =>
@@ -913,7 +881,7 @@ private[cosmos] class CosmosRowConverter(
         }
     }
 
-    private def toDate(value: JsonNode): Date = {
+    def toDate(value: JsonNode): Date = {
         value match {
             case isJsonNumber() => new Date(value.asLong())
             case textNode : TextNode =>
@@ -927,7 +895,7 @@ private[cosmos] class CosmosRowConverter(
         }
     }
 
-    private def parseDateTimeFromString (value: String) : Option[OffsetDateTime] = {
+    def parseDateTimeFromString (value: String) : Option[OffsetDateTime] = {
         try {
             val odt = OffsetDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME) //yyyy-MM-ddTHH:mm:ss+01:00
             Some(odt)
@@ -944,7 +912,7 @@ private[cosmos] class CosmosRowConverter(
         }
     }
 
-    private object isJsonNumber {
+     object isJsonNumber {
         def unapply(x: JsonNode): Boolean = x match {
             case _: com.fasterxml.jackson.databind.node.IntNode
                  | _: com.fasterxml.jackson.databind.node.DecimalNode
