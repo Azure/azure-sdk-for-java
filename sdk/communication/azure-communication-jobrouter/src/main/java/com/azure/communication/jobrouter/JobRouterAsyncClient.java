@@ -504,7 +504,7 @@ public final class JobRouterAsyncClient {
                     closeJobOptions.getJobId(),
                     closeJobOptions.getAssignmentId(),
                     closeJobOptions.getDispositionCode(),
-                    closeJobOptions.getCloseTime(),
+                    closeJobOptions.getCloseAt(),
                     closeJobOptions.getNote(),
                     context
                 ).map(result -> new SimpleResponse<Void>(

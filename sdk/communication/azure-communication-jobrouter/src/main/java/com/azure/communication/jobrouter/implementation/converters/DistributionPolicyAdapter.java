@@ -43,7 +43,7 @@ public class DistributionPolicyAdapter {
     public static DistributionPolicyInternal convertCreateOptionsToDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
         return new DistributionPolicyInternal()
             .setMode(convertDistributionModeToInternal(createDistributionPolicyOptions.getMode()))
-            .setOfferExpiresAfterSeconds(Long.valueOf(createDistributionPolicyOptions.getOfferExpiresAfterSeconds().getSeconds()).doubleValue())
+            .setOfferExpiresAfterSeconds(Long.valueOf(createDistributionPolicyOptions.getOfferExpiresAfter().getSeconds()).doubleValue())
             .setName(createDistributionPolicyOptions.getName());
     }
 
@@ -56,7 +56,7 @@ public class DistributionPolicyAdapter {
         return new DistributionPolicyInternal()
             .setMode(convertDistributionModeToInternal(updateDistributionPolicyOptions.getMode()))
             .setName(updateDistributionPolicyOptions.getName())
-            .setOfferExpiresAfterSeconds(Long.valueOf(updateDistributionPolicyOptions.getOfferTtl().getSeconds()).doubleValue());
+            .setOfferExpiresAfterSeconds(Long.valueOf(updateDistributionPolicyOptions.getOfferExpiresAfter().getSeconds()).doubleValue());
     }
 
     public static PagedFlux<DistributionPolicyItem> convertPagedFluxToPublic(PagedFlux<DistributionPolicyItemInternal> internalPagedFlux) {
