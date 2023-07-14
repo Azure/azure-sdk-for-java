@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -21,7 +22,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
-import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
@@ -29,8 +29,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
-import java.io.IOException;
-import java.io.InputStream;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -41,8 +39,6 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPSClient;
 import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
@@ -153,42 +149,6 @@ public class AppServiceTest extends ResourceManagerTestBase {
                 .create();
     }
 
-    /**
-     * Uploads a file to an Azure web app.
-     *
-     * @param profile the publishing profile for the web app.
-     * @param fileName the name of the file on server
-     * @param file the local file
-     */
-    public static void uploadFileToWebApp(PublishingProfile profile, String fileName, InputStream file) {
-        FTPSClient ftpClient = new FTPSClient();
-        String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
-        String server = ftpUrlSegments[0];
-        String path = "./site/wwwroot/webapps";
-        if (fileName.contains("/")) {
-            int lastslash = fileName.lastIndexOf('/');
-            path = path + "/" + fileName.substring(0, lastslash);
-            fileName = fileName.substring(lastslash + 1);
-        }
-        try {
-            ftpClient.connect(server);
-            ftpClient.enterLocalPassiveMode();
-            ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
-            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-            for (String segment : path.split("/")) {
-                if (!ftpClient.changeWorkingDirectory(segment)) {
-                    ftpClient.makeDirectory(segment);
-                    ftpClient.changeWorkingDirectory(segment);
-                }
-            }
-            ftpClient.storeFile(fileName, file);
-            ftpClient.disconnect();
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
-
     protected static Response<String> curl(String urlString) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, urlString);
         Mono<Response<String>> response =
@@ -260,7 +220,6 @@ public class AppServiceTest extends ResourceManagerTestBase {
             ResourceManagerUtils.sleep(Duration.ofMinutes(1));
             response = curl("https://" + hostname);
 
-
             if (response.getStatusCode() == 200) {
                 break;
             }
@@ -279,6 +238,6 @@ public class AppServiceTest extends ResourceManagerTestBase {
     private static final HttpPipeline HTTP_PIPELINE = new HttpPipelineBuilder()
         .policies(
             new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)),
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS))
+            new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(30)), "Retry-After", ChronoUnit.SECONDS))
         .build();
 }
