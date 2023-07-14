@@ -1,94 +1,94 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms?api-version=2023-06-14",
+    "Uri" : "https://REDACTED.unitedstates.communication.azure.com/rooms?api-version=2023-06-14",
     "Headers" : {
       "content-type" : "application/json",
-      "x-ms-client-request-id" : "6bb99890-1629-4d09-8619-e46fb8b3ae01",
-      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0 (11.0.19; Windows 11; 10.0)"
+      "x-ms-client-request-id" : "f0361058-c941-46dc-83a5-c26c38c78342",
+      "user-agent" : "azsdk-java-azure-communication-rooms/1.1.0-beta.1 (18.0.2.1; Windows 11; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2022-02-01, 2023-03-31-preview, 2023-06-14",
+      "api-supported-versions" : "2023-03-31-preview, 2023-06-14",
       "Repeatability-Result" : "accepted",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Wed, 07 Jun 2023 20:17:20 GMT",
-      "MS-CV" : "xOUlK/UqqEiGAMLcrHw9oA.0",
-      "api-deprecated-versions" : "2021-04-07",
-      "X-Azure-Ref" : "00OWAZAAAAAA7YITJr9VMQYexQZmYJxSLWVZSMzExMDAwMTE1MDMxAGYwOWE0YzEzLTIxZjEtNDhlYy05Y2Y3LTY2NTQ1Njg0YjY0Mg==",
-      "Body" : "{\"id\":\"99528282835805929\",\"createdAt\":\"2023-06-07T20:17:21.2991282+00:00\",\"validFrom\":\"2023-06-07T20:16:54.1831091+00:00\",\"validUntil\":\"2023-07-07T20:16:54.1831091+00:00\"}",
+      "Date" : "Fri, 14 Jul 2023 21:26:20 GMT",
+      "MS-CV" : "4ibPoeOUKECKvMGARXT9uA.0",
+      "api-deprecated-versions" : "2021-04-07, 2022-02-01",
+      "X-Azure-Ref" : "0fL2xZAAAAADJoEWKqj9XTLuWYIvhkmU7WVZSMzExMDAwMTE1MDExADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "Body" : "{\"id\":\"99452043080540381\",\"createdAt\":\"2023-07-14T21:26:20.4809489+00:00\",\"validFrom\":\"2023-07-14T21:26:04.2942258+00:00\",\"validUntil\":\"2023-08-13T21:26:04.2942258+00:00\"}",
       "Request-Context" : "appId=",
-      "Location" : "99528282835805929",
+      "Location" : "99452043080540381",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms?api-version=2023-06-14",
+    "Uri" : "https://REDACTED.unitedstates.communication.azure.com/rooms?api-version=2023-06-14",
     "Headers" : {
       "content-type" : "application/json",
-      "x-ms-client-request-id" : "6bb99890-1629-4d09-8619-e46fb8b3ae01",
-      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0 (11.0.19; Windows 11; 10.0)"
+      "x-ms-client-request-id" : "f0361058-c941-46dc-83a5-c26c38c78342",
+      "user-agent" : "azsdk-java-azure-communication-rooms/1.1.0-beta.1 (18.0.2.1; Windows 11; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2022-02-01, 2023-03-31-preview, 2023-06-14",
+      "api-supported-versions" : "2023-03-31-preview, 2023-06-14",
       "Repeatability-Result" : "accepted",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Wed, 07 Jun 2023 20:17:21 GMT",
-      "MS-CV" : "EH3bxS9HxE6NFNAvP/hb/w.0",
-      "api-deprecated-versions" : "2021-04-07",
-      "X-Azure-Ref" : "00eWAZAAAAADokI4xE0+lTpNp2ICWsNASWVZSMzExMDAwMTE1MDMxAGYwOWE0YzEzLTIxZjEtNDhlYy05Y2Y3LTY2NTQ1Njg0YjY0Mg==",
-      "Body" : "{\"id\":\"99528282835805929\",\"createdAt\":\"2023-06-07T20:17:21.2991282+00:00\",\"validFrom\":\"2023-06-07T20:16:54.1831091+00:00\",\"validUntil\":\"2023-07-07T20:16:54.1831091+00:00\"}",
+      "Date" : "Fri, 14 Jul 2023 21:26:20 GMT",
+      "MS-CV" : "EkIXHPvQ7kWcf3n3FalOKQ.0",
+      "api-deprecated-versions" : "2021-04-07, 2022-02-01",
+      "X-Azure-Ref" : "0fL2xZAAAAAB2lu7987mCQIEgnAMZyQ0tWVZSMzExMDAwMTE1MDExADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "Body" : "{\"id\":\"99452043080540381\",\"createdAt\":\"2023-07-14T21:26:20.4809489+00:00\",\"validFrom\":\"2023-07-14T21:26:04.2942258+00:00\",\"validUntil\":\"2023-08-13T21:26:04.2942258+00:00\"}",
       "Request-Context" : "appId=",
-      "Location" : "99528282835805929",
+      "Location" : "99452043080540381",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms?api-version=2023-06-14",
+    "Uri" : "https://REDACTED.unitedstates.communication.azure.com/rooms?api-version=2023-06-14",
     "Headers" : {
-      "x-ms-client-request-id" : "d9c5f2de-6744-4c6e-95f0-4a6f509db69f",
-      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0 (11.0.19; Windows 11; 10.0)"
+      "x-ms-client-request-id" : "61b35380-38a3-4741-932d-4611d63e257e",
+      "user-agent" : "azsdk-java-azure-communication-rooms/1.1.0-beta.1 (18.0.2.1; Windows 11; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2022-02-01, 2023-03-31-preview, 2023-06-14",
-      "MS-CV" : "rxX61g+nZ0qdhovLibjC1Q.0",
-      "api-deprecated-versions" : "2021-04-07",
+      "api-supported-versions" : "2023-03-31-preview, 2023-06-14",
+      "MS-CV" : "jTUj3FO0l0W5l28P96d//w.0",
+      "api-deprecated-versions" : "2021-04-07, 2022-02-01",
       "retry-after" : "0",
-      "X-Azure-Ref" : "00eWAZAAAAADQHI6UTXvDQa8r8xBmqo83WVZSMzExMDAwMTE1MDMxAGYwOWE0YzEzLTIxZjEtNDhlYy05Y2Y3LTY2NTQ1Njg0YjY0Mg==",
+      "X-Azure-Ref" : "0fL2xZAAAAADYkcPM6r37RoU6PVVt4FMUWVZSMzExMDAwMTE1MDExADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"id\":\"99577836317718882\",\"createdAt\":\"2023-05-11T20:30:01.5313683+00:00\",\"validFrom\":\"2023-05-11T20:30:00.8854484+00:00\",\"validUntil\":\"2023-11-07T20:30:00.8854484+00:00\"},{\"id\":\"99580998574582381\",\"createdAt\":\"2023-05-13T00:49:13.3925416+00:00\",\"validFrom\":\"2023-05-13T00:56:11+00:00\",\"validUntil\":\"2023-05-13T01:44:11+00:00\"},{\"id\":\"99571386961344324\",\"createdAt\":\"2023-05-13T00:49:20.221169+00:00\",\"validFrom\":\"2023-05-13T00:46:18+00:00\",\"validUntil\":\"2023-05-13T01:43:18+00:00\"},{\"id\":\"99577738790981340\",\"createdAt\":\"2023-05-24T20:27:24.9312845+00:00\",\"validFrom\":\"2023-05-24T20:27:24.4948642+00:00\",\"validUntil\":\"2023-11-20T20:27:24.4948642+00:00\"},{\"id\":\"9957024141060190\",\"createdAt\":\"2023-05-11T20:30:04.578355+00:00\",\"validFrom\":\"2023-05-11T20:30:04.2930213+00:00\",\"validUntil\":\"2023-11-07T20:30:04.2930213+00:00\"},{\"id\":\"995105940203554409\",\"createdAt\":\"2023-05-18T23:46:03.4563953+00:00\",\"validFrom\":\"2023-05-18T23:46:02.3683688+00:00\",\"validUntil\":\"2023-11-14T23:46:02.3683688+00:00\"},{\"id\":\"99544050186700680\",\"createdAt\":\"2023-05-11T20:30:08.3284581+00:00\",\"validFrom\":\"2023-05-11T20:30:08.0472933+00:00\",\"validUntil\":\"2023-11-07T20:30:08.0472933+00:00\"},{\"id\":\"99576733058296487\",\"createdAt\":\"2023-05-11T20:30:14.3812543+00:00\",\"validFrom\":\"2023-05-11T20:30:14.0962213+00:00\",\"validUntil\":\"2023-11-07T20:30:14.0962213+00:00\"},{\"id\":\"99538730037396640\",\"createdAt\":\"2023-05-13T00:49:16.2748079+00:00\",\"validFrom\":\"2023-05-13T00:43:13+00:00\",\"validUntil\":\"2023-05-13T01:42:13+00:00\"},{\"id\":\"99534537308216805\",\"createdAt\":\"2023-05-24T22:24:08.4990792+00:00\",\"validFrom\":\"2023-05-24T22:24:08.0882356+00:00\",\"validUntil\":\"2023-11-20T22:24:08.0882356+00:00\"},{\"id\":\"99582174576162880\",\"createdAt\":\"2023-05-23T15:19:10.9565081+00:00\",\"validFrom\":\"2023-05-23T15:19:10.5486271+00:00\",\"validUntil\":\"2023-11-19T15:19:10.5486271+00:00\"},{\"id\":\"99516468855438969\",\"createdAt\":\"2023-05-25T00:05:37.3048819+00:00\",\"validFrom\":\"2023-05-25T00:05:36.2712959+00:00\",\"validUntil\":\"2023-11-21T00:05:36.2712959+00:00\"},{\"id\":\"99553918498774489\",\"createdAt\":\"2023-05-11T20:30:21.3502161+00:00\",\"validFrom\":\"2023-05-11T20:30:21.0717713+00:00\",\"validUntil\":\"2023-11-07T20:30:21.0717713+00:00\"},{\"id\":\"99547891690018526\",\"createdAt\":\"2023-05-23T18:23:23.936176+00:00\",\"validFrom\":\"2023-05-24T18:23:23.0131665+00:00\",\"validUntil\":\"2023-11-20T00:00:00+00:00\"},{\"id\":\"99584014868007500\",\"createdAt\":\"2023-05-23T15:19:14.0816015+00:00\",\"validFrom\":\"2023-02-26T22:08:46.6009669+00:00\",\"validUntil\":\"2023-05-23T22:08:46.6009669+00:00\"},{\"id\":\"99541022046469624\",\"createdAt\":\"2023-05-23T15:18:33.6837153+00:00\",\"validFrom\":\"2023-05-23T15:18:33.2832922+00:00\",\"validUntil\":\"2023-11-19T15:18:33.2832922+00:00\"},{\"id\":\"99513049062785720\",\"createdAt\":\"2023-05-13T00:49:11.5886208+00:00\",\"validFrom\":\"2023-05-13T00:56:09+00:00\",\"validUntil\":\"2023-05-13T01:55:09+00:00\"},{\"id\":\"995788826846809442\",\"createdAt\":\"2023-05-11T20:37:49.4103026+00:00\",\"validFrom\":\"2023-05-11T20:37:48.1615288+00:00\",\"validUntil\":\"2023-11-07T20:37:48.1615288+00:00\"},{\"id\":\"99510518302618766\",\"createdAt\":\"2023-05-26T16:39:19.4286214+00:00\",\"validFrom\":\"2023-05-26T16:39:18.5999913+00:00\",\"validUntil\":\"2023-11-22T16:39:18.5999913+00:00\"},{\"id\":\"99593661560704769\",\"createdAt\":\"2023-05-25T21:18:36.592123+00:00\",\"validFrom\":\"2023-02-26T22:08:46.6009669+00:00\",\"validUntil\":\"2023-06-26T22:08:46.6009669+00:00\"},{\"id\":\"99567547460861285\",\"createdAt\":\"2023-05-24T19:40:06.1070502+00:00\",\"validFrom\":\"2023-05-24T19:40:04.7396496+00:00\",\"validUntil\":\"2023-11-20T19:40:04.7396496+00:00\"},{\"id\":\"99526599655414743\",\"createdAt\":\"2023-05-23T15:19:12.5971854+00:00\",\"validFrom\":\"2023-05-23T15:19:12.1826685+00:00\",\"validUntil\":\"2023-11-19T15:19:12.1826685+00:00\"},{\"id\":\"995875681246447208\",\"createdAt\":\"2023-05-24T22:24:06.6081512+00:00\",\"validFrom\":\"2023-05-24T22:24:05.4600198+00:00\",\"validUntil\":\"2023-11-20T22:24:05.4600198+00:00\"},{\"id\":\"99535888141717243\",\"createdAt\":\"2023-05-26T16:32:09.4162903+00:00\",\"validFrom\":\"2023-05-26T16:32:08.457804+00:00\",\"validUntil\":\"2023-11-22T16:32:08.457804+00:00\"},{\"id\":\"99555954070631844\",\"createdAt\":\"2023-05-23T15:18:31.2617513+00:00\",\"validFrom\":\"2023-05-23T15:18:29.548844+00:00\",\"validUntil\":\"2023-11-19T15:18:29.548844+00:00\"},{\"id\":\"99542319451003485\",\"createdAt\":\"2023-05-23T15:18:35.2775163+00:00\",\"validFrom\":\"2023-02-26T22:08:46.6009669+00:00\",\"validUntil\":\"2023-05-23T22:08:46.6009669+00:00\"},{\"id\":\"9951008263693190\",\"createdAt\":\"2023-05-16T20:29:06.430114+00:00\",\"validFrom\":\"2023-05-16T20:29:05.5559517+00:00\",\"validUntil\":\"2023-11-12T20:29:05.5559517+00:00\"},{\"id\":\"99583230453109925\",\"createdAt\":\"2023-05-13T00:49:18.618176+00:00\",\"validFrom\":\"2023-05-13T00:42:16+00:00\",\"validUntil\":\"2023-05-13T01:52:16+00:00\"},{\"id\":\"99583529235218420\",\"createdAt\":\"2023-05-25T21:17:58.792382+00:00\",\"validFrom\":\"2023-05-25T21:17:57.4391575+00:00\",\"validUntil\":\"2023-11-21T21:17:57.4391575+00:00\"}],\"nextLink\":\"https://rooms-europe.ppe.communication.azure.net/rooms?nextLink=W3sidG9rZW4iOiIrUklEOn5XLXR0QUpHamFPZG1sQjRBQUFBQUNBPT0jUlQ6MSNUUkM6MzAjSVNWOjIjSUVPOjY1NTY3I1FDRjo4I0ZQQzpBZ2g2QUFBQUFDQUFBSG9BQUFBQUlBQUFlZ0FBQUFBZ0FBQWVBR2FVa1FBQThoRkEvd2NIQWo4bEFBeEJDUUJEcEFTQUlmNy9FVUEvQUE9PSIsInJhbmdlIjp7Im1pbiI6IjA1QzFDRkZGRkZGRkY4IiwibWF4IjoiMDVDMURGRkZGRkZGRjgifX1d&api-version=2023-06-14\"}",
-      "Date" : "Wed, 07 Jun 2023 20:17:21 GMT",
+      "Body" : "{\"value\":[{\"id\":\"99452043080540381\",\"createdAt\":\"2023-07-14T21:26:20.4809489+00:00\",\"validFrom\":\"2023-07-14T21:26:04.2942258+00:00\",\"validUntil\":\"2023-08-13T21:26:04.2942258+00:00\"},{\"id\":\"99457711000107563\",\"createdAt\":\"2023-07-14T21:26:16.308281+00:00\",\"validFrom\":\"2023-07-14T21:26:04.2942258+00:00\",\"validUntil\":\"2023-08-13T21:26:04.2942258+00:00\"},{\"id\":\"9946239247731979\",\"createdAt\":\"2023-07-14T21:26:10.1205385+00:00\",\"validFrom\":\"2023-07-14T21:26:04.2942258+00:00\",\"validUntil\":\"2023-08-13T21:26:04.2942258+00:00\"},{\"id\":\"99429536986022964\",\"createdAt\":\"2023-07-14T21:21:47.0379456+00:00\",\"validFrom\":\"2023-07-14T21:20:39.5752122+00:00\",\"validUntil\":\"2023-08-13T21:20:39.5752122+00:00\"},{\"id\":\"99426181723513243\",\"createdAt\":\"2023-07-14T21:21:39.9494819+00:00\",\"validFrom\":\"2023-07-14T21:20:39.5752122+00:00\",\"validUntil\":\"2023-08-13T21:20:39.5752122+00:00\"},{\"id\":\"99465442338703868\",\"createdAt\":\"2023-07-14T21:21:39.4018536+00:00\",\"validFrom\":\"2023-07-14T21:20:39.5752122+00:00\",\"validUntil\":\"2023-08-13T21:20:39.5752122+00:00\"},{\"id\":\"99461087709845543\",\"createdAt\":\"2023-07-14T21:21:10.4968465+00:00\",\"validFrom\":\"2023-07-14T21:20:39.5752122+00:00\",\"validUntil\":\"2023-08-13T21:20:39.5752122+00:00\"},{\"id\":\"99410657967027583\",\"createdAt\":\"2023-07-14T21:20:52.6801693+00:00\",\"validFrom\":\"2023-07-14T21:20:39.5752122+00:00\",\"validUntil\":\"2023-08-13T21:20:39.5752122+00:00\"},{\"id\":\"99499681790324703\",\"createdAt\":\"2023-07-14T21:17:41.581833+00:00\",\"validFrom\":\"2023-07-14T21:16:56.6736159+00:00\",\"validUntil\":\"2023-08-13T21:16:56.6736159+00:00\"},{\"id\":\"99485631664463127\",\"createdAt\":\"2023-07-14T21:17:30.9182425+00:00\",\"validFrom\":\"2023-07-14T21:16:56.6736159+00:00\",\"validUntil\":\"2023-08-13T21:16:56.6736159+00:00\"},{\"id\":\"99443731350520041\",\"createdAt\":\"2023-07-14T21:17:30.3399938+00:00\",\"validFrom\":\"2023-07-14T21:16:56.6736159+00:00\",\"validUntil\":\"2023-08-13T21:16:56.6736159+00:00\"},{\"id\":\"99454360970093105\",\"createdAt\":\"2023-07-14T21:17:12.1033864+00:00\",\"validFrom\":\"2023-07-14T21:16:56.6736159+00:00\",\"validUntil\":\"2023-08-13T21:16:56.6736159+00:00\"},{\"id\":\"99461364961652723\",\"createdAt\":\"2023-07-14T21:17:06.6835661+00:00\",\"validFrom\":\"2023-07-14T21:16:56.6736159+00:00\",\"validUntil\":\"2023-08-13T21:16:56.6736159+00:00\"},{\"id\":\"99410023561990824\",\"createdAt\":\"2023-07-14T21:17:02.4953945+00:00\",\"validFrom\":\"2023-07-14T21:16:56.6736159+00:00\",\"validUntil\":\"2023-08-13T21:16:56.6736159+00:00\"},{\"id\":\"99467048107973788\",\"createdAt\":\"2023-07-14T20:35:46.8849784+00:00\",\"validFrom\":\"2023-07-14T20:35:00.2733407+00:00\",\"validUntil\":\"2023-08-13T20:35:00.2733407+00:00\"},{\"id\":\"99464377741438506\",\"createdAt\":\"2023-07-14T20:35:36.4494537+00:00\",\"validFrom\":\"2023-07-14T20:35:00.2733407+00:00\",\"validUntil\":\"2023-08-13T20:35:00.2733407+00:00\"},{\"id\":\"99480818961121988\",\"createdAt\":\"2023-07-14T20:35:35.8712818+00:00\",\"validFrom\":\"2023-07-14T20:35:00.2733407+00:00\",\"validUntil\":\"2023-08-13T20:35:00.2733407+00:00\"},{\"id\":\"99432835355623083\",\"createdAt\":\"2023-07-14T20:35:18.5290557+00:00\",\"validFrom\":\"2023-07-14T20:35:00.2733407+00:00\",\"validUntil\":\"2023-08-13T20:35:00.2733407+00:00\"},{\"id\":\"99482222632627084\",\"createdAt\":\"2023-07-14T20:35:12.6687037+00:00\",\"validFrom\":\"2023-07-14T20:35:00.2733407+00:00\",\"validUntil\":\"2023-08-13T20:35:00.2733407+00:00\"},{\"id\":\"99481544367974402\",\"createdAt\":\"2023-07-14T20:35:06.0532374+00:00\",\"validFrom\":\"2023-07-14T20:35:00.2733407+00:00\",\"validUntil\":\"2023-08-13T20:35:00.2733407+00:00\"},{\"id\":\"99472687853977860\",\"createdAt\":\"2023-06-22T16:56:18.1691532+00:00\",\"validFrom\":\"2023-06-22T16:56:17.880171+00:00\",\"validUntil\":\"2023-12-19T16:56:17.880171+00:00\"},{\"id\":\"9941872474765810\",\"createdAt\":\"2023-06-19T23:00:28.1381154+00:00\",\"validFrom\":\"2023-06-19T23:00:27.6433153+00:00\",\"validUntil\":\"2023-12-16T23:00:27.6433153+00:00\"},{\"id\":\"99420332440189242\",\"createdAt\":\"2023-06-19T22:52:20.7866969+00:00\",\"validFrom\":\"2023-06-19T22:52:20.1456166+00:00\",\"validUntil\":\"2023-12-16T22:52:20.1456166+00:00\"}],\"nextLink\":\"https://rooms-e2e-prod.unitedstates.communication.azure.com/rooms?nextLink=W3sidG9rZW4iOiIrUklEOn5OM1VKQU5WeFl3emFybVlBQUFBQUJBPT0jUlQ6MSNUUkM6MzAjUlREOkhQSkptS1QxdVpxbEJCbkd5TlNPQk1IWmowK2hwQT09I0lTVjoyI0lFTzo2NTU2NyNRQ0Y6OCNGUEM6QWdpUUFBQUFBQkFBQUxBQkFBQUFFQUFBa0FBQUFBQVFBQUFTQUVJa0FBVVFBREtBWVFBQUROZUg5WXlGaFpFQUFBQUFFQUFBR2dEVmdRRUlQRkFtZ1pDQWtvQ0dnTnlHS3B2cmdUbUFSSUIxZ3BJQUFBQUFFQUFBR0FEcmhlQ0tCb3ZDZ29hRUo0TnVoT2FDT0lUaGdCS0F2b0dUQUFBQUFCQUFBQWdBN0lTQmhIbUQxSU9VQUFBQUFCQUFBQWdBUVJZQUVhNkRVSWFWQUFBQUFCQUFBQUlBN1p1WUFBQUFBQkFBQUFJQTRwK1pBQUFBQUJBQUFFNEFtcGNkZ0ZNQUFDZ0FnSUVvOHdDQUFnQ1E0QUliZ0ZNQk1BQUFESXNBR1lBVEFCZ0F3QUFjQVJlQUFRUUZNQllBREFjQ0FBQkFTQUFBQXk0QUU0QVdnQmlBSG9BNGdBUEFHQURBZ0FNQW13QUFBQUFRQUFBR0FMRTBFRUJ3Z0o0QUFBQUFFQUFBQWdCNW1aOEFBQUFBRUFBQURBRDRoMU9BT29CTWdRSEFSaUNnQUFBQUFCQUFBQWdBS29Jb2dFYUFFNEN5QUFBQUFCQUFBQlFBSDRJQndBQWlhNEFDZ0E2QUZJQUlnTUdBbzRDekFBQUFBQkFBQUFJQWU2eTZBQUFBQUJBQUFBSUFLSUhGQUFBQUFCQUFBQVlBc1JvQWdqNkN5d0FBQUFBUUFBQVVBUEtIQ0lBT2dINkFGSUNTaFdtRUk0QUFoTUtDMVFBQUFBQVFBQUFFQVBPNE1JRFdBQUFBQUJBQUFFZ0FSNHdCd0tRRUdZQitoUXVBQnNBRkFBaUFJQUFBQVRBaVFRQVlnQmlBRWdBQTR5QUFFZ0NBZ0FBZ0VnREFMQVFBRkFBQUpBUUFBQWpBRVJZQUFDUUFDQUJBZ1FZQ0FBQkkxd0FBQUFBUUFBQVdBSG1EQWNBZ0FSeUFJSUFDd0NBRUdpQTZnQUNBVFl6a0FBQUFBQkFBQUJ3QTRJbGpnSWlCcTRJR2dOT0thNENQZ0JFQWlBQ2xnRWlCQklEMWdPa0FBQUFBRUFBQUNnQ2hwQUNNV0lsRWc4R0E2Z0FBQUFBUUFBQWVBQ2lDQWNDSUFGZUFFNENTZ3JHQ01ZSEJnS2lBajRCcWdEK0NzU1VBRk9zQUFBQUFFQUFBQWdBVGhld0FBQUFBRUFBQUJnQXRzRzZBRUlEdEFBQUFBQkFBQUFZQWFKa0J3RkFBN2dBQUFBQVFBQUFHQUlLVzhRa3dGRzRCQUFBQUVBQUFDZ0ExcGppRURZQkdnTUdIY3dFQUFBQVFBQUFDQUw2VWVBRUFBQUFRQUFBUUFHK2lHWUFOZ0JPQUVvQUJ3QWdnR28rRUFRQUFBQkFBQUN3QUQ1NEtnQUhBQlFBVGdBNkFGSUFoQU5RQVRZVUlnQUhBQ1FDVWdBSEFnZ0ZLZ0N5QUFjQWdZT0VBUUJpTEFRQUFBQkFBQUNnQTZiY0R3QUlDQUlBaEFQTUFBS2dCQUlNQUVRQUF5UkVBQXdGekFLQUVBQVlCQU1JRlFBUkFBSXdCQUFBQUVBQUFJZ0FDd0FEQWdBQ3NnQVBBQ0JBQWdDRUFNd0FBS0FGZ0lBQU5sQWlBQW9BQndEQUNsZ0VBQUFBUUFBQUlBRkVlQUJMQ2dHT0FtQUVBQUFBUUFBQUdBRG03YjRLRGdKa0JBQUFBRUFBQUJBQjdnQ0NBbWdFQUFBQVFBQUFJQU1FR29BQUJLQUJFbkFFQUFBQVFBQUFDQU1lOW93RUFBQUFRQUFBRUFDcXJSSUdrQVFBQUFCQUFBQUlBY3J1d0FRQUFBQkFBQUJnQUxxY0N3QWtBR0FTMUFhQUVBQW9DQUhpdjcvOFJBT0FQIiwicmFuZ2UiOnsibWluIjoiMDVDMURGRkZGRkZGRjgiLCJtYXgiOiIwNUMxRTdGRkZGRkZGQSJ9fV0&api-version=2023-06-14\"}",
+      "Date" : "Fri, 14 Jul 2023 21:26:21 GMT",
       "Request-Context" : "appId=",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms/99528282835805929?api-version=2023-06-14",
+    "Uri" : "https://REDACTED.unitedstates.communication.azure.com/rooms/99452043080540381?api-version=2023-06-14",
     "Headers" : {
-      "x-ms-client-request-id" : "286bace1-b4d9-43cd-84a5-6b3a37bf346b",
-      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0 (11.0.19; Windows 11; 10.0)"
+      "x-ms-client-request-id" : "dbfa978a-54ae-4fc3-945e-fc3ed0f1b631",
+      "user-agent" : "azsdk-java-azure-communication-rooms/1.1.0-beta.1 (18.0.2.1; Windows 11; 10.0)"
     },
     "Response" : {
       "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2022-02-01, 2023-03-31-preview, 2023-06-14",
-      "MS-CV" : "ISVCzN/xukOQE78pIrVD4A.0",
-      "api-deprecated-versions" : "2021-04-07",
+      "api-supported-versions" : "2023-03-31-preview, 2023-06-14",
+      "MS-CV" : "bz3YfeoNv0Gv7JuYikuR+w.0",
+      "api-deprecated-versions" : "2021-04-07, 2022-02-01",
       "retry-after" : "0",
-      "X-Azure-Ref" : "00uWAZAAAAACu+x2etnMhRZEEk1jLx/U+WVZSMzExMDAwMTE1MDMxAGYwOWE0YzEzLTIxZjEtNDhlYy05Y2Y3LTY2NTQ1Njg0YjY0Mg==",
+      "X-Azure-Ref" : "0fb2xZAAAAADY8S43OtDPTJcAFasxG+2YWVZSMzExMDAwMTE1MDExADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
       "Content-Length" : "0",
       "StatusCode" : "204",
       "Body" : "",
-      "Date" : "Wed, 07 Jun 2023 20:17:22 GMT",
+      "Date" : "Fri, 14 Jul 2023 21:26:21 GMT",
       "Request-Context" : "appId="
     },
     "Exception" : null

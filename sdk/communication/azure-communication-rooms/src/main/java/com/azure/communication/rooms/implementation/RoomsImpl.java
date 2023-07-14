@@ -278,6 +278,8 @@ public final class RoomsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoomModel> createWithResponse(CreateRoomRequest createRoomRequest, Context context) {
         final String accept = "application/json";
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         return service.createSync(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
