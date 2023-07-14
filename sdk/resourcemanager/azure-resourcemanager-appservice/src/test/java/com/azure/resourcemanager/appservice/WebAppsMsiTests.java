@@ -5,11 +5,11 @@ package com.azure.resourcemanager.appservice;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
+import com.azure.resourcemanager.appservice.fluent.models.CsmPublishingCredentialsPoliciesEntityProperties;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.FtpsState;
 import com.azure.resourcemanager.appservice.models.JavaVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
-import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.resourcemanager.appservice.models.RemoteVisualStudioVersion;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
@@ -64,6 +64,7 @@ public class WebAppsMsiTests extends AppServiceTest {
                 .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
                 .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
                 .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
+                .withFtpsState(FtpsState.FTPS_ONLY)
                 .create();
         Assertions.assertNotNull(webApp);
         Assertions.assertEquals(Region.US_WEST, webApp.region());
@@ -75,7 +76,7 @@ public class WebAppsMsiTests extends AppServiceTest {
         Assertions.assertNotNull(webApp.systemAssignedManagedServiceIdentityTenantId());
 
         if (!isPlaybackMode()) {
-            // Check availability of environment variables
+            enableFtps(webApp);
             uploadFileToWebApp(
                 webApp.getPublishingProfile(),
                 "appservicemsi.war",
@@ -90,14 +91,6 @@ public class WebAppsMsiTests extends AppServiceTest {
             Assertions.assertTrue(body.contains(webApp.resourceGroupName()));
             Assertions.assertTrue(body.contains(webApp.id()));
         }
-
-        webApp.update()
-            .withFtpsState(FtpsState.FTPS_ONLY)
-            .apply();
-        PublishingProfile publishingProfile = webApp.getPublishingProfile();
-        Assertions.assertNotNull(publishingProfile.ftpUrl());
-        Assertions.assertNotNull(publishingProfile.ftpUsername());
-        Assertions.assertNotNull(publishingProfile.ftpPassword());
     }
 
     @Test
@@ -151,6 +144,7 @@ public class WebAppsMsiTests extends AppServiceTest {
                 .withUserAssignedManagedServiceIdentity()
                 .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
                 .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
+                .withFtpsState(FtpsState.FTPS_ONLY)
                 .create();
         Assertions.assertNotNull(webApp);
         Assertions.assertEquals(Region.US_WEST, webApp.region());
@@ -167,7 +161,7 @@ public class WebAppsMsiTests extends AppServiceTest {
         Assertions.assertTrue(setContainsValue(identityIds, identityName2));
 
         if (!isPlaybackMode()) {
-            // Check availability of environment variables
+            enableFtps(webApp);
             uploadFileToWebApp(
                 webApp.getPublishingProfile(),
                 "appservicemsi.war",
@@ -184,7 +178,24 @@ public class WebAppsMsiTests extends AppServiceTest {
         }
     }
 
-    boolean setContainsValue(Set<String> stringSet, String value) {
+    private static void enableFtps(WebApp webApp) {
+        webApp.manager().resourceManager().genericResources().define("ftp")
+            .withRegion(webApp.regionName())
+            .withExistingResourceGroup(webApp.resourceGroupName())
+            .withResourceType("basicPublishingCredentialsPolicies")
+            .withProviderNamespace("Microsoft.Web")
+            .withoutPlan()
+            .withParentResourcePath("sites/" + webApp.name())
+            .withApiVersion("2018-11-01")
+            .withProperties(new CsmPublishingCredentialsPoliciesEntityProperties().withAllow(true))
+            .create();
+
+        webApp.update()
+            .withFtpsState(FtpsState.FTPS_ONLY)
+            .apply();
+    }
+
+    private static boolean setContainsValue(Set<String> stringSet, String value) {
         boolean found = false;
         for (String setContent : stringSet) {
             if (setContent.contains(value)) {

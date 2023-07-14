@@ -42,7 +42,7 @@ import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPSClient;
 import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
@@ -161,7 +161,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
      * @param file the local file
      */
     public static void uploadFileToWebApp(PublishingProfile profile, String fileName, InputStream file) {
-        FTPClient ftpClient = new FTPClient();
+        FTPSClient ftpClient = new FTPSClient();
         String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
         String server = ftpUrlSegments[0];
         String path = "./site/wwwroot/webapps";
@@ -185,6 +185,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
             ftpClient.disconnect();
         } catch (IOException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
