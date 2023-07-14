@@ -107,8 +107,8 @@ jobs:
             BuildParallelization: ${{ parameters.BuildParallelization }}
             VersionOverride: ${{ versionOverride }}
 
-        pwsh: |
-          git checkout -- .
-        displayName: "Reset version override changes"
+        - pwsh: |
+            git checkout -- .
+          displayName: "Reset version override changes"
 
       - template: /eng/common/testproxy/publish-proxy-logs.yml
