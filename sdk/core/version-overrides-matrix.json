@@ -6,15 +6,6 @@
     "JavaTestVersion": "1.17",
     "AZURE_TEST_HTTP_CLIENTS": "netty",
     "TestGoals": "surefire:test",
-    "VersionOverrides": [
-        "jackson_2.10",
-        "jackson_2.11",
-        "jackson_2.12",
-        "jackson_2.14",
-        "jackson_2.15",		
-        "reactor_2020",
-        "reactor_2022"
-    ],
     "AZURE_VERSION_OVERRIDE_TESTS": true,
     "TestVersionSupport": true
   }

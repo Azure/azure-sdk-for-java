@@ -35,6 +35,9 @@ parameters:
   - name: ExcludeProjectList
     type: string
     default: 'com.azure.resourcemanager:azure-resourcemanager-samples'
+  - name: VersionOverride
+    type: string
+    default: ''
 
 steps:
   - task: Maven@3
@@ -56,7 +59,7 @@ steps:
     displayName: 'Update external dependency versions'
     inputs:
       scriptPath: 'eng/versioning/update_versions.py'
-      arguments: '--update-type external_dependency --build-type client --sr --vo $(VersionOverrides)'
+      arguments: '--update-type external_dependency --build-type client --sr --vo ${{ parameters.VersionOverride }}'
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
   - task: Maven@3

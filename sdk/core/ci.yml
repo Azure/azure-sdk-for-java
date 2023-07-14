@@ -187,7 +187,7 @@ extends:
         jobs:
           - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
             parameters:
-              JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
+              JobTemplatePath: /eng/pipelines/templates/jobs/ci.versions.tests.yml
               MatrixConfigs:
                 - Name: version_overrides_tests
                   Path: sdk/core/version-overrides-matrix.json
@@ -199,6 +199,14 @@ extends:
                   - name: azure-core-version-tests
                     groupId: com.azure
                     safeName: azurecoreversiontests
+                VersionOverrides:
+                  - jackson_2.10
+                  - jackson_2.11
+                  - jackson_2.12
+                  - jackson_2.14
+                  - jackson_2.15
+                  - reactor_2020
+                  - reactor_2022
       - stage: AzureJsonReflectVersionSupport
         displayName: 'azure-json-reflect Version Support'
         dependsOn: []
@@ -208,7 +216,7 @@ extends:
               JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
               MatrixConfigs:
                 - Name: azure_json_reflect_version_support
-                  Path: sdk/core/azure-json-reflect-version-support-matrix.json
+                  Path: sdk/core/version-overrides-matrix.json
                   Selection: all
                   GenerateVMJobs: true
               AdditionalParameters:
@@ -217,6 +225,19 @@ extends:
                   - name: azure-json-reflect
                     groupId: com.azure
                     safeName: azurejsonreflect
+                VersionOverrides:
+                  - gson_2.4
+                  - gson_2.5
+                  - gson_2.6
+                  - gson_2.7
+                  - gson_2.8
+                  - gson_2.9
+                  - jackson_2.10
+                  - jackson_2.11
+                  - jackson_2.12
+                  - jackson_2.13
+                  - jackson_2.14
+                  - jackson_2.15
 
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
