@@ -4,6 +4,15 @@
 
 package com.azure.communication.callautomation.models;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.azure.core.annotation.Fluent;
+
+/**
+ *  Custom context details.
+ */
+@Fluent
 final class CustomContext {
     private final Map<String, String> sipHeaders;
     private final Map<String, String> voipHeaders;
@@ -13,7 +22,7 @@ final class CustomContext {
      * @param sipHeaders
      * @param voipHeaders
      */
-    public CustomContext(Map<String, String> sipHeaders, Map<String, String> voipHeaders){
+    public CustomContext(Map<String, String> sipHeaders, Map<String, String> voipHeaders) {
         this.sipHeaders = sipHeaders;
         this.voipHeaders = voipHeaders;
     }
