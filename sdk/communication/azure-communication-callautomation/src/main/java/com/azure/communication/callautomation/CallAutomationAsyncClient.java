@@ -251,10 +251,10 @@ public final class CallAutomationAsyncClient {
             .setCallbackUri(createCallGroupOptions.getCallbackUrl())
             .setOperationContext(createCallGroupOptions.getOperationContext());
 
-        if (createCallGroupOptions.getSipHeaders() != null || createCallGroupOptions.getVoipHeaders() != null) {
+        if (createCallGroupOptions.getCustomContext().getSipHeaders() != null || createCallGroupOptions.getCustomContext().getVoipHeaders() != null) {
             CustomContext customContext = new CustomContext();
-            customContext.setSipHeaders(createCallGroupOptions.getSipHeaders());
-            customContext.setVoipHeaders(createCallGroupOptions.getVoipHeaders());
+            customContext.setSipHeaders(createCallGroupOptions.getCustomContext().getSipHeaders());
+            customContext.setVoipHeaders(createCallGroupOptions.getCustomContext().getVoipHeaders());
             request.setCustomContext(customContext);
         }
 
