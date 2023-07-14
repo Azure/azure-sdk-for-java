@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.*;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.models.*;
@@ -199,8 +200,8 @@ public class BulkExecutorTest extends BatchTestBase {
         }
     }
 
-
-    @Test(groups = { "emulator" })
+    // tests the partition split retry flow and the regular retry flow
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void executeBulk_preserveOrdering_OnFailures() throws InterruptedException {
         int totalRequest = 100;
         this.container = createContainer(database);
@@ -228,8 +229,8 @@ public class BulkExecutorTest extends BatchTestBase {
             .getCosmosBulkExecutionOptionsAccessor()
             .setPreserveOrdering(cosmosBulkExecutionOptions, true);
 
-        FaultInjectionRule rule = injectFailure("RequestRateTooLarge", this.container, FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.TOO_MANY_REQUEST);
-//        FaultInjectionRule rule2 = injectFailure("Too Many ", this.container, FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.GONE); // how to test no retry --------------
+        FaultInjectionRule rule = injectFailure("RequestRateTooLarge", this.container,
+            FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.TOO_MANY_REQUEST, 10);
 //        FaultInjectionRule rule2 = injectFailure("PartitionSplit", this.container, FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING); // Never triggers partition splitting flow ----------------
 
         Flux<CosmosItemOperation> inputFlux = Flux
@@ -284,12 +285,85 @@ public class BulkExecutorTest extends BatchTestBase {
             iterations++;
         }
         rule.disable();
-//        rule2.disable();
+    }
+
+    // Tests No Retry Exception flow
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void executeBulk_preserveOrdering_OnServiceUnAvailable() throws InterruptedException {
+        int totalRequest = 100;
+        this.container = createContainer(database);
+
+        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        String duplicatePK = UUID.randomUUID().toString();
+        String duplicateId = UUID.randomUUID().toString();
+        PartitionKey duplicatePartitionKey = new PartitionKey(duplicatePK);
+        for (int i = 0; i < totalRequest; i++) {
+            if (i == 0) {
+                BatchTestBase.EventDoc eventDoc = new BatchTestBase.EventDoc(duplicateId, 2, 4, "type1",
+                    duplicatePK);
+                cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(duplicateId, eventDoc,
+                    duplicatePartitionKey));
+            } else {
+                cosmosItemOperations.add(CosmosBulkOperations.getPatchItemOperation(duplicateId,
+                    new PartitionKey(duplicatePK), CosmosPatchOperations.create().replace("/type", "updated" + i)));
+            }
+        }
+
+        CosmosItemOperation[] itemOperationsArray =
+            new CosmosItemOperation[cosmosItemOperations.size()];
+        cosmosItemOperations.toArray(itemOperationsArray);
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+        ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
+            .setPreserveOrdering(cosmosBulkExecutionOptions, true);
+
+        FaultInjectionRule rule = injectFailure("ServiceUnavailable", this.container,
+            FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, 7);
+
+        Flux<CosmosItemOperation> inputFlux = Flux
+            .fromArray(itemOperationsArray)
+            .delayElements(Duration.ofMillis(100));
+        final BulkExecutor<BulkExecutorTest> executor = new BulkExecutor<>(
+            this.container,
+            inputFlux,
+            cosmosBulkExecutionOptions);
+        Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<BulkExecutorTest>> bulkResponseFlux =
+            Flux.deferContextual(context -> executor.execute());
+
+
+        Mono<List<CosmosBulkOperationResponse<BulkExecutorTest>>> convertToListMono = bulkResponseFlux
+            .collect(Collectors.toList());
+        List<CosmosBulkOperationResponse<BulkExecutorTest>> bulkResponse = convertToListMono.block();
+
+        assertThat(bulkResponse.size()).isEqualTo(totalRequest);
+
+
+
+        for (int i = 0; i < cosmosItemOperations.size(); i++) {
+            CosmosBulkOperationResponse<BulkExecutorTest> operationResponse = bulkResponse.get(i);
+            com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse =
+                operationResponse.getResponse();
+
+            assertThat(cosmosBulkItemResponse).isNull();
+
+        }
+
+        int iterations = 0;
+        while (true) {
+            assertThat(iterations < 100);
+            if (executor.isDisposed()) {
+                break;
+            }
+
+            Thread.sleep(10);
+            iterations++;
+        }
+        rule.disable();
     }
 
     private FaultInjectionRule injectFailure(String id,
         CosmosAsyncContainer createdContainer,
-        FaultInjectionOperationType operationType, FaultInjectionServerErrorType serverErrorType) {
+        FaultInjectionOperationType operationType, FaultInjectionServerErrorType serverErrorType, int hitlimit) {
 
 
         FaultInjectionServerErrorResultBuilder faultInjectionResultBuilder = FaultInjectionResultBuilders
@@ -308,7 +382,7 @@ public class BulkExecutorTest extends BatchTestBase {
             .condition(condition)
             .result(result)
             .startDelay(Duration.ofSeconds(1))
-            .hitLimit(10) // -------------------------------------------------------------------------------------------
+            .hitLimit(hitlimit)
             .build();
 
 

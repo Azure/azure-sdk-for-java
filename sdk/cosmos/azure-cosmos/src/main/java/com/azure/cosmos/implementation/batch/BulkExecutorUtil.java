@@ -105,48 +105,6 @@ final class BulkExecutorUtil {
             final ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) operation;
 
             final Mono<String> pkRangeIdMono;
-            if (preserveOrdering) {
-                pkRangeIdMono = Mono.defer(() ->
-                        BulkExecutorUtil.getCollectionInfoAsync(docClientWrapper, container, collectionBeforeRecreation.get())
-                            .flatMap(collection -> {
-                                final PartitionKeyDefinition definition = collection.getPartitionKey();
-                                final PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(operation, definition);
-                                itemBulkOperation.setPartitionKeyJson(partitionKeyInternal.toJson());
-
-                                return docClientWrapper.getPartitionKeyRangeCache()
-                                    .tryLookupAsync(null, collection.getResourceId(), null, null)
-                                    .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) -> {
-
-                                        if (routingMap.v == null) {
-                                            collectionBeforeRecreation.set(collection);
-                                            throw new CollectionRoutingMapNotFoundException(
-                                                String.format(
-                                                    "No collection routing map found for container %s(%s) in database %s.",
-                                                    container.getId(),
-                                                    collection.getResourceId(),
-                                                    container.getDatabase().getId())
-                                            );
-                                        }
-
-                                        return routingMap.v.getRangeByEffectivePartitionKey(
-                                            getEffectivePartitionKeyString(
-                                                partitionKeyInternal,
-                                                definition)).getId();
-                                    });
-                            }))
-                    .retryWhen(Retry
-                        .indefinitely()
-                        .filter(t -> t instanceof CollectionRoutingMapNotFoundException)
-                        .doBeforeRetry((retrySignal) -> docClientWrapper
-                            .getCollectionCache()
-                            .refresh(
-                                null,
-                                Utils.getCollectionName(BridgeInternal.getLink(container)),
-                                null)
-                        )
-                    );
-
-            } else {
                 pkRangeIdMono = Mono.defer(() ->
                         BulkExecutorUtil.getCollectionInfoAsync(docClientWrapper, container, collectionBeforeRecreation.get())
                             .flatMap(collection -> {
@@ -189,8 +147,6 @@ final class BulkExecutorUtil {
                                 null)
                         )
                     );
-
-            }
             return pkRangeIdMono;
         } else {
             throw new UnsupportedOperationException("Unknown CosmosItemOperation.");
