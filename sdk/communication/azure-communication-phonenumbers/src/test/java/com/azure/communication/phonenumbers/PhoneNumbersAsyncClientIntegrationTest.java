@@ -38,7 +38,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPurchasedPhoneNumber(HttpClient httpClient) {
-        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
+        String phoneNumber = getTestPhoneNumber();
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumber")
                         .getPurchasedPhoneNumber(phoneNumber))
@@ -52,7 +52,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPurchasedPhoneNumberWithAAD(HttpClient httpClient) {
-        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
+        String phoneNumber = getTestPhoneNumber();
         StepVerifier.create(
                 this.getClientWithManagedIdentity(httpClient, "getPurchasedPhoneNumberWithAAD")
                         .getPurchasedPhoneNumber(phoneNumber))
@@ -66,7 +66,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPurchasedPhoneNumberWithResponse(HttpClient httpClient) {
-        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
+        String phoneNumber = getTestPhoneNumber();
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberWithResponse")
                         .getPurchasedPhoneNumberWithResponse(phoneNumber))
@@ -158,7 +158,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @DisabledIfEnvironmentVariable(named = "COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST", matches = "(?i)(true)")
     @DisabledIfEnvironmentVariable(named = "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS", matches = "(?i)(true)")
     public void beginUpdatePhoneNumberCapabilities(HttpClient httpClient) {
-        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
+        String phoneNumber = getTestPhoneNumber();
 
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberForCapabilities")

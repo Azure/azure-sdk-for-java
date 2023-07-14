@@ -1,48 +1,26 @@
 {
-  "Entries": [
-    {
-      "RequestUri": "https://REDACTED/sip?api-version=2023-03-01",
-      "RequestMethod": "PATCH",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "31",
-        "Content-Type": "application/merge-patch\u002Bjson",
-        "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "b51ca8c0-0020-4810-9de9-817c816d7c18",
-        "x-ms-content-sha256": "uKBABtcZMlytpWwieyj0XRNdhPFXgmuHoqfjsKWGB1k=",
-        "x-ms-date": "Thu, 13 Jul 2023 21:37:58 GMT",
-        "x-ms-hmac-string-to-sign-base64": "UEFUQ0gKL3NpcD9hcGktdmVyc2lvbj0yMDIzLTAzLTAxClRodSwgMTMgSnVsIDIwMjMgMjE6Mzc6NTggR01UO3JnLWVtYWlsLWNvbW0tY29tbXVuaWNhdGlvbi5jb21tdW5pY2F0aW9uLmF6dXJlLmNvbTt1S0JBQnRjWk1seXRwV3dpZXlqMFhSTmRoUEZYZ211SG9xZmpzS1dHQjFrPQ=="
-      },
-      "RequestBody": {
-        "routes": [
-          {
-            "name": "route99"
-          }
-        ]
-      },
-      "StatusCode": 422,
-      "ResponseHeaders": {
-        "Content-Type": "application/json",
-        "Date": "Thu, 13 Jul 2023 21:37:58 GMT",
-        "MS-CV": "ZOM2syfIX0O9/HYUIH0KpA.0",
-        "Strict-Transport-Security": "max-age=2592000",
-        "Transfer-Encoding": "chunked",
-        "X-Azure-Ref": "0tm6wZAAAAACNqougJY2\u002BSLJ6AcIWOgltV1NURURHRTA4MTMAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
-        "X-Cache": "CONFIG_NOCACHE",
-        "X-Processing-Time": "8ms"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "UnprocessableConfiguration",
-          "message": "One or more request inputs are not valid.",
-          "innererror": {
-            "code": "InvalidRouteNumberPattern",
-            "message": "Route with an invalid number pattern."
-          }
-        }
-      }
-    }
-  ],
-  "Variables": {}
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "91a9fc9e-8924-4091-bc2d-9a9bc2726b0c",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "X-Processing-Time" : "31ms",
+      "MS-CV" : "/4JfSINk+kClAm0E8lkKQQ.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0FJEIZAAAAAAcvktAi1XNS5WugGMXGxFCUFJHMDFFREdFMDkwNgBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
+      "StatusCode" : "422",
+      "Body" : "{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"InvalidRouteNumberPattern\",\"message\":\"Route with an invalid number pattern.\"}}}",
+      "Date" : "Wed, 08 Mar 2023 13:43:48 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
 }

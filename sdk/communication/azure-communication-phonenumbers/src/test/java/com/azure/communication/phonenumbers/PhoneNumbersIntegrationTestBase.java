@@ -14,11 +14,16 @@ import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 
 public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
@@ -39,6 +44,21 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
             builder.addPolicy(getRecordPolicy());
         }
 
+        if (!interceptorManager.isLiveMode()) {
+
+            // sanitize phone numbers
+            interceptorManager.addSanitizers(Arrays.asList(
+                new TestProxySanitizer("^[\\\\+]?[(]?[0-9]{3}[)]?[-\\\\s\\\\.]?[0-9]{3}[-\\\\s\\\\.]?[0-9]{4,6}$",
+                    "REDACTED", TestProxySanitizerType.URL), new TestProxySanitizer("id", null,"REDACTED",
+                    TestProxySanitizerType.BODY_KEY), new TestProxySanitizer("phoneNumber", null,"REDACTED",
+                    TestProxySanitizerType.BODY_KEY)));
+        }
+
+        if (interceptorManager.isPlaybackMode()) {
+            interceptorManager.addMatchers(Arrays.asList(
+                new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64"))));
+        }
+
         return builder;
     }
 
@@ -54,6 +74,13 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
             builder.credential(new FakeCredentials());
         } else {
             builder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+
+        if (!interceptorManager.isLiveMode()) {
+
+            // sanitize phone numbers
+            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("", "(?<=/phoneNumbers/)([^/?]+)",
+                "REDACTED", TestProxySanitizerType.URL)));
         }
 
         if (shouldRecord()) {

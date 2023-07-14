@@ -1,50 +1,49 @@
 {
-  "Entries": [
-    {
-      "RequestUri": "https://REDACTED/sip?api-version=2023-03-01",
-      "RequestMethod": "PATCH",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "92",
-        "Content-Type": "application/merge-patch\u002Bjson",
-        "User-Agent": "azsdk-java-azure-communication-phonenumbers/1.2.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "7d6af1b6-d6ae-41c1-8be6-ff16e7cd552d",
-        "x-ms-content-sha256": "ENFKafrXN7aAquTNUaQP8tXB1zhylpaeRnKfmd3C0jU=",
-        "x-ms-date": "Thu, 13 Jul 2023 21:38:12 GMT",
-        "x-ms-hmac-string-to-sign-base64": "UEFUQ0gKL3NpcD9hcGktdmVyc2lvbj0yMDIzLTAzLTAxClRodSwgMTMgSnVsIDIwMjMgMjE6Mzg6MTIgR01UO3JnLWVtYWlsLWNvbW0tY29tbXVuaWNhdGlvbi5jb21tdW5pY2F0aW9uLmF6dXJlLmNvbTtFTkZLYWZyWE43YUFxdVROVWFRUDh0WEIxemh5bHBhZVJuS2ZtZDNDMGpVPQ=="
-      },
-      "RequestBody": {
-        "trunks": {
-          "set-05c14cd250a74c5fa0a042c76949568a.testdomain.com": {
-            "sipSignalingPort": 4567
-          }
-        }
-      },
-      "StatusCode": 422,
-      "ResponseHeaders": {
-        "api-deprecated-versions": "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview",
-        "api-supported-versions": "2023-03-01, 2023-04-01-preview",
-        "Content-Type": "application/json",
-        "Date": "Thu, 13 Jul 2023 21:38:12 GMT",
-        "MS-CV": "waSIcQorcECoEw9HjaTjEQ.0",
-        "Strict-Transport-Security": "max-age=2592000",
-        "Transfer-Encoding": "chunked",
-        "X-Azure-Ref": "0xG6wZAAAAACksPFT3OXBQqw6Dunk/vDNV1NURURHRTA4MTMAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
-        "X-Cache": "CONFIG_NOCACHE",
-        "X-Processing-Time": "193ms"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "UnprocessableConfiguration",
-          "message": "One or more request inputs are not valid.",
-          "innererror": {
-            "code": "UnsuccessfulDomainVerification",
-            "message": "Provided domain is not verified"
-          }
-        }
-      }
-    }
-  ],
-  "Variables": {}
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "9d3e0e3a-e81f-4919-95d6-f5776f23e9e8",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview, 2023-03-01",
+      "X-Processing-Time" : "947ms",
+      "MS-CV" : "JHKUpats2kaFTkDViLnbIQ.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0RpEIZAAAAADV0Txu7qIrSraYjhgvdA7YUFJHMDFFREdFMDkwNgBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
+      "Content-Length" : "337",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{\"set.redacted.com\":{\"sipSignalingPort\":4567}},\"routes\":[{\"description\":\"desc0\",\"name\":\"route0\",\"numberPattern\":\"0.*\",\"trunks\":[]},{\"description\":\"desc1\",\"name\":\"route1\",\"numberPattern\":\"1.*\",\"trunks\":[]},{\"description\":\"desc2\",\"name\":\"route2\",\"numberPattern\":\"2.*\",\"trunks\":[]}]}",
+      "Date" : "Wed, 08 Mar 2023 13:44:38 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "f6013848-48b9-4172-9e68-c5aeff86ef03"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview, 2023-03-01",
+      "X-Processing-Time" : "171ms",
+      "MS-CV" : "Q+zBaiJfIU+AAIncyFmmkw.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0R5EIZAAAAAC35iJp//chT7Kv2xMqUpnbUFJHMDFFREdFMDkwNgBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
+      "Content-Length" : "337",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{\"set.redacted.com\":{\"sipSignalingPort\":4567}},\"routes\":[{\"description\":\"desc0\",\"name\":\"route0\",\"numberPattern\":\"0.*\",\"trunks\":[]},{\"description\":\"desc1\",\"name\":\"route1\",\"numberPattern\":\"1.*\",\"trunks\":[]},{\"description\":\"desc2\",\"name\":\"route2\",\"numberPattern\":\"2.*\",\"trunks\":[]}]}",
+      "Date" : "Wed, 08 Mar 2023 13:44:39 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
 }

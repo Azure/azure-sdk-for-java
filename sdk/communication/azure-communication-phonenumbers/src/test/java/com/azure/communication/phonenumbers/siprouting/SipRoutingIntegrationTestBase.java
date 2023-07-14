@@ -5,29 +5,23 @@ package com.azure.communication.phonenumbers.siprouting;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute;
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.implementation.TestingHelpers;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.UUID;
-import java.util.function.Function;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
@@ -115,32 +109,21 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
     protected static final String MESSAGE_INVALID_ROUTE_NAME =
         "Status code 422, \"{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"InvalidRouteName\",\"message\":\"Route with an invalid name.\"}}}\"";
 
-    protected SipRoutingClientBuilder getClientBuilder(HttpClient httpClient) {
-        CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
-        String communicationEndpoint = communicationConnectionString.getEndpoint();
-        String communicationAccessKey = communicationConnectionString.getAccessKey();
-
-        SipRoutingClientBuilder builder = new SipRoutingClientBuilder();
-        builder
-            .httpClient(getHttpClient(httpClient))
-            .endpoint(communicationEndpoint)
-            .credential(new AzureKeyCredential(communicationAccessKey));
-
-        if (shouldRecord()) {
-            addRedactors(builder);
-        }
-
-        return builder;
-    }
-
     protected SipRoutingClientBuilder getClientBuilderWithConnectionString(HttpClient httpClient) {
         SipRoutingClientBuilder builder = new SipRoutingClientBuilder();
         builder
             .httpClient(getHttpClient(httpClient))
             .connectionString(CONNECTION_STRING);
 
-        if (shouldRecord()) {
-            addRedactors(builder);
+        if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("-[0-9a-f]{32}\\.[0-9a-z\\.]*(\\" +
+                ".com|\\.net)", "REDACTED", TestProxySanitizerType.BODY_KEY), new TestProxySanitizer("id", null,
+                "REDACTED", TestProxySanitizerType.BODY_KEY), new TestProxySanitizer("phoneNumber", null, "REDACTED",
+                TestProxySanitizerType.BODY_KEY)));
         }
 
         return builder;
@@ -153,31 +136,27 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
             .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint());
 
         if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new FakeCredentials());
+            builder.credential(new MockTokenCredential());
         } else {
             builder.credential(new DefaultAzureCredentialBuilder().build());
         }
 
-        if (shouldRecord()) {
-            addRedactors(builder);
+        if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer(null, "(-[0-9a-f]{32}\\.[0-9a-z\\" +
+                ".]*(\\.com|\\.net))", "REDACTED", TestProxySanitizerType.BODY_KEY), new TestProxySanitizer("id", null,
+                "REDACTED", TestProxySanitizerType.BODY_KEY), new TestProxySanitizer("phoneNumber", null, "REDACTED",
+                TestProxySanitizerType.BODY_KEY)));
         }
 
         return builder;
     }
 
-    private void addRedactors(SipRoutingClientBuilder builder) {
-        List<Function<String, String>> redactors = new ArrayList<>();
-        redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-        redactors.add(data -> redact(data, UUID_FQDN_REDACTION_PATTERN.matcher(data), ".redacted.com"));
-        builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
-    }
-
-    private boolean shouldRecord() {
-        return getTestMode() == TestMode.RECORD;
-    }
-
     private HttpClient getHttpClient(HttpClient httpClient) {
-        if (httpClient == null || getTestMode() == TestMode.PLAYBACK) {
+        if (getTestMode() == TestMode.PLAYBACK) {
             return interceptorManager.getPlaybackClient();
         }
         return httpClient;
@@ -197,24 +176,6 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
                     + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
                 return Mono.just(bufferedResponse);
             });
-    }
-
-    static class FakeCredentials implements TokenCredential {
-        @Override
-        public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-            return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
-        }
-    }
-
-    private String redact(String content, Matcher matcher, String replacement) {
-        while (matcher.find()) {
-            String captureGroup = matcher.group();
-            if (!CoreUtils.isNullOrEmpty(captureGroup)) {
-                content = content.replace(matcher.group(), replacement);
-            }
-        }
-
-        return content;
     }
 
     private static String getUniqueFqdn(String order) {
