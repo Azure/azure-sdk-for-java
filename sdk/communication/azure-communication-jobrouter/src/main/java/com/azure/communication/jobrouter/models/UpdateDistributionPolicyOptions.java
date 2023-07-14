@@ -16,15 +16,14 @@ public final class UpdateDistributionPolicyOptions {
     private final String id;
 
     /**
-     * The human readable name of the policy.
+     * The human-readable name of the policy.
      */
     private String name;
 
     /**
-     * The expiry time of any offers created under this policy will be governed
-     * by the offer time to live.
+     * The expiry time of any offers created under this policy.
      */
-    private Duration offerTtl;
+    private Duration offerExpiresAfter;
 
     /**
      * Abstract base class for defining a distribution mode
@@ -50,13 +49,12 @@ public final class UpdateDistributionPolicyOptions {
     }
 
     /**
-     * Sets offerTtlSeconds.
-     * @param offerTtl The expiry time of any offers created under this policy will be governed
-     *   by the offer time to live.
+     * Sets offerExpiresAfter.
+     * @param offerExpiresAfter The expiry time of any offers created under this policy.
      * @return this
      */
-    public UpdateDistributionPolicyOptions setOfferTtl(Duration offerTtl) {
-        this.offerTtl = offerTtl;
+    public UpdateDistributionPolicyOptions setOfferExpiresAfter(Duration offerExpiresAfter) {
+        this.offerExpiresAfter = offerExpiresAfter;
         return this;
     }
 
@@ -87,11 +85,11 @@ public final class UpdateDistributionPolicyOptions {
     }
 
     /**
-     * Get the offer time to live of offers created under this policy.
-     * @return offerTtlSeconds
+     * Get the expiry time of offers created under this policy.
+     * @return offerExpiresAfter
      */
-    public Duration getOfferTtl() {
-        return this.offerTtl;
+    public Duration getOfferExpiresAfter() {
+        return this.offerExpiresAfter;
     }
 
     /**

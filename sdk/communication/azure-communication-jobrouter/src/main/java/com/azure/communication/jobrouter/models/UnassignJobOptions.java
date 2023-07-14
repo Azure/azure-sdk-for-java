@@ -17,6 +17,33 @@ public final class UnassignJobOptions {
      */
     private final String assignmentId;
 
+    /*
+     * If suspendMatching is true, then the job is not queued for re-matching with a worker.
+     */
+    private Boolean suspendMatching;
+
+    /**
+     * Get the suspendMatching property: If suspendMatching is true, then the job is not queued for re-matching with a
+     * worker.
+     *
+     * @return the suspendMatching value.
+     */
+    public Boolean isSuspendMatching() {
+        return this.suspendMatching;
+    }
+
+    /**
+     * Set the suspendMatching property: If suspendMatching is true, then the job is not queued for re-matching with a
+     * worker.
+     *
+     * @param suspendMatching the suspendMatching value to set.
+     * @return the UnassignJobOptions object itself.
+     */
+    public UnassignJobOptions setSuspendMatching(Boolean suspendMatching) {
+        this.suspendMatching = suspendMatching;
+        return this;
+    }
+
     /**
      * Constructor for UnassignJobOptions.
      * @param jobId jobId to unassign.
