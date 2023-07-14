@@ -24,19 +24,19 @@ import com.azure.monitor.query.implementation.logs.models.MetadataResults;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Metadatas. */
-public final class MetadatasImpl {
+public final class Metadatas {
     /** The proxy service used to perform REST calls. */
     private final MetadatasService service;
 
     /** The service client containing this operation class. */
-    private final AzureLogAnalyticsImpl client;
+    private final AzureLogAnalytics client;
 
     /**
      * Initializes an instance of Metadatas.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    MetadatasImpl(AzureLogAnalyticsImpl client) {
+    Metadatas(AzureLogAnalytics client) {
         this.service =
                 RestProxy.create(MetadatasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

@@ -13,12 +13,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.monitor.query.implementation.logs.models.LogsQueryHelper;
-import com.azure.monitor.query.implementation.metrics.MonitorManagementClientImpl;
+import com.azure.monitor.query.implementation.metrics.MonitorManagementClient;
 import com.azure.monitor.query.implementation.metrics.models.MetricsHelper;
 import com.azure.monitor.query.implementation.metrics.models.MetricsResponse;
 import com.azure.monitor.query.implementation.metrics.models.ResultType;
-import com.azure.monitor.query.implementation.metricsdefinitions.MetricsDefinitionsClientImpl;
-import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespacesClientImpl;
+import com.azure.monitor.query.implementation.metricsdefinitions.MetricsDefinitionsClient;
+import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespacesClient;
+import com.azure.monitor.query.models.AggregationType;
 import com.azure.monitor.query.models.MetricDefinition;
 import com.azure.monitor.query.models.MetricNamespace;
 import com.azure.monitor.query.models.MetricsQueryOptions;
@@ -47,15 +48,15 @@ import static com.azure.monitor.query.implementation.metrics.models.MetricsHelpe
 @ServiceClient(builder = MetricsQueryClientBuilder.class)
 public final class MetricsQueryClient {
 
-    private final MonitorManagementClientImpl metricsClient;
-    private final MetricsNamespacesClientImpl metricsNamespaceClient;
-    private final MetricsDefinitionsClientImpl metricsDefinitionsClient;
+    private final MonitorManagementClient metricsClient;
+    private final MetricsNamespacesClient metricsNamespacesClient;
+    private final MetricsDefinitionsClient metricsDefinitionsClient;
 
-    MetricsQueryClient(MonitorManagementClientImpl metricsClient,
-                       MetricsNamespacesClientImpl metricsNamespaceClient,
-                       MetricsDefinitionsClientImpl metricsDefinitionsClients) {
+    MetricsQueryClient(MonitorManagementClient metricsClient,
+                       MetricsNamespacesClient metricsNamespacesClient,
+                       MetricsDefinitionsClient metricsDefinitionsClients) {
         this.metricsClient = metricsClient;
-        this.metricsNamespaceClient = metricsNamespaceClient;
+        this.metricsNamespacesClient = metricsNamespacesClient;
         this.metricsDefinitionsClient = metricsDefinitionsClients;
     }
 
@@ -110,7 +111,7 @@ public final class MetricsQueryClient {
         if (options != null && !CoreUtils.isNullOrEmpty(options.getAggregations())) {
             aggregation = options.getAggregations()
                 .stream()
-                .map(type -> type.toString())
+                .map(AggregationType::toString)
                 .collect(Collectors.joining(","));
         }
         String timespan = options == null || options.getTimeInterval() == null ? null
@@ -155,7 +156,7 @@ public final class MetricsQueryClient {
     public PagedIterable<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime,
                                                                Context context) {
         Objects.requireNonNull(resourceUri, "'resourceUri' cannot be null");
-        PagedResponse<com.azure.monitor.query.implementation.metricsnamespaces.models.MetricNamespace> response = metricsNamespaceClient.getMetricNamespaces().listSinglePage(resourceUri,
+        PagedResponse<com.azure.monitor.query.implementation.metricsnamespaces.models.MetricNamespace> response = metricsNamespacesClient.getMetricNamespaces().listSinglePage(resourceUri,
             startTime == null ? null : startTime.toString(), context);
         List<MetricNamespace> metricNamespaces = response.getValue()
             .stream()

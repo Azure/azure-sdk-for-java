@@ -13,12 +13,13 @@ import com.azure.core.models.ResponseError;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.monitor.query.implementation.logs.models.LogsQueryHelper;
-import com.azure.monitor.query.implementation.metrics.MonitorManagementClientImpl;
+import com.azure.monitor.query.implementation.metrics.MonitorManagementClient;
 import com.azure.monitor.query.implementation.metrics.models.ErrorResponseException;
 import com.azure.monitor.query.implementation.metrics.models.MetricsHelper;
 import com.azure.monitor.query.implementation.metrics.models.ResultType;
-import com.azure.monitor.query.implementation.metricsdefinitions.MetricsDefinitionsClientImpl;
-import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespacesClientImpl;
+import com.azure.monitor.query.implementation.metricsdefinitions.MetricsDefinitionsClient;
+import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespacesClient;
+import com.azure.monitor.query.models.AggregationType;
 import com.azure.monitor.query.models.MetricDefinition;
 import com.azure.monitor.query.models.MetricNamespace;
 import com.azure.monitor.query.models.MetricsQueryOptions;
@@ -30,7 +31,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.monitor.query.implementation.metrics.models.MetricsHelper.convertToMetricsQueryResult;
 
 /**
  * The asynchronous client for querying Azure Monitor metrics.
@@ -46,15 +46,15 @@ import static com.azure.monitor.query.implementation.metrics.models.MetricsHelpe
  */
 @ServiceClient(builder = MetricsQueryClientBuilder.class, isAsync = true)
 public final class MetricsQueryAsyncClient {
-    private final MonitorManagementClientImpl metricsClient;
-    private final MetricsNamespacesClientImpl metricsNamespaceClient;
-    private final MetricsDefinitionsClientImpl metricsDefinitionsClient;
+    private final MonitorManagementClient metricsClient;
+    private final MetricsNamespacesClient metricsNamespacesClient;
+    private final MetricsDefinitionsClient metricsDefinitionsClient;
 
-    MetricsQueryAsyncClient(MonitorManagementClientImpl metricsClient,
-                            MetricsNamespacesClientImpl metricsNamespaceClient,
-                            MetricsDefinitionsClientImpl metricsDefinitionsClients) {
+    MetricsQueryAsyncClient(MonitorManagementClient metricsClient,
+                            MetricsNamespacesClient metricsNamespacesClient,
+                            MetricsDefinitionsClient metricsDefinitionsClients) {
         this.metricsClient = metricsClient;
-        this.metricsNamespaceClient = metricsNamespaceClient;
+        this.metricsNamespacesClient = metricsNamespacesClient;
         this.metricsDefinitionsClient = metricsDefinitionsClients;
     }
 
@@ -112,7 +112,7 @@ public final class MetricsQueryAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     @SuppressWarnings("deprecation")
     public PagedFlux<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime) {
-        return metricsNamespaceClient
+        return metricsNamespacesClient
                 .getMetricNamespaces()
                 .listAsync(resourceUri, startTime == null ? null : startTime.toString())
                 .mapPage(MetricsHelper::mapMetricNamespace);
@@ -146,7 +146,7 @@ public final class MetricsQueryAsyncClient {
 
     @SuppressWarnings("deprecation")
     PagedFlux<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime, Context context) {
-        return metricsNamespaceClient
+        return metricsNamespacesClient
                 .getMetricNamespaces()
                 .listAsync(resourceUri, startTime == null ? null : startTime.toString(), context)
                 .mapPage(MetricsHelper::mapMetricNamespace);
@@ -167,7 +167,7 @@ public final class MetricsQueryAsyncClient {
         if (!CoreUtils.isNullOrEmpty(options.getAggregations())) {
             aggregation = options.getAggregations()
                     .stream()
-                    .map(type -> type.toString())
+                    .map(AggregationType::toString)
                     .collect(Collectors.joining(","));
         }
         String timespan = options.getTimeInterval() == null ? null
@@ -177,11 +177,9 @@ public final class MetricsQueryAsyncClient {
                 .listWithResponseAsync(resourceUri, timespan, options.getGranularity(),
                         String.join(",", metricsNames), aggregation, options.getTop(), options.getOrderBy(),
                         options.getFilter(), ResultType.DATA, options.getMetricNamespace(), context)
-                .map(response -> convertToMetricsQueryResult(response))
-                .onErrorMap(ErrorResponseException.class, ex -> {
-                    return new HttpResponseException(ex.getMessage(), ex.getResponse(),
-                            new ResponseError(ex.getValue().getCode(), ex.getValue().getMessage()));
-                });
+                .map(MetricsHelper::convertToMetricsQueryResult)
+                .onErrorMap(ErrorResponseException.class, ex -> new HttpResponseException(ex.getMessage(),
+                    ex.getResponse(), new ResponseError(ex.getValue().getCode(), ex.getValue().getMessage())));
     }
 
 }

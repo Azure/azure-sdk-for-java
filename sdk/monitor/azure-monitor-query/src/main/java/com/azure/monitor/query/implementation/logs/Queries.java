@@ -30,19 +30,19 @@ import java.time.Duration;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Queries. */
-public final class QueriesImpl {
+public final class Queries {
     /** The proxy service used to perform REST calls. */
     private final QueriesService service;
 
     /** The service client containing this operation class. */
-    private final AzureLogAnalyticsImpl client;
+    private final AzureLogAnalytics client;
 
     /**
      * Initializes an instance of Queries.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    QueriesImpl(AzureLogAnalyticsImpl client) {
+    Queries(AzureLogAnalytics client) {
         this.service = RestProxy.create(QueriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }

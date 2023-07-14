@@ -11,16 +11,34 @@ import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.query.implementation.metrics.MonitorManagementClientImplBuilder;
-import com.azure.monitor.query.implementation.metricsdefinitions.MetricsDefinitionsClientImplBuilder;
-import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespacesClientImplBuilder;
+import com.azure.monitor.query.implementation.metrics.MonitorManagementClient;
+import com.azure.monitor.query.implementation.metricsdefinitions.MetricsDefinitionsClient;
+import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespacesClient;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import static com.azure.core.util.CoreUtils.getApplicationId;
 
 /**
  * Fluent builder for creating instances of {@link MetricsQueryClient} and {@link MetricsQueryAsyncClient}.
@@ -48,13 +66,29 @@ import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespace
 @ServiceClientBuilder(serviceClients = {MetricsQueryClient.class, MetricsQueryAsyncClient.class})
 public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQueryClientBuilder>,
         HttpTrait<MetricsQueryClientBuilder>, ConfigurationTrait<MetricsQueryClientBuilder>, TokenCredentialTrait<MetricsQueryClientBuilder> {
+    private static final ClientLogger LOGGER = new ClientLogger(MetricsQueryClientBuilder.class);
 
-    private final MonitorManagementClientImplBuilder innerMetricsBuilder = new MonitorManagementClientImplBuilder();
-    private final MetricsDefinitionsClientImplBuilder innerMetricsDefinitionsBuilder =
-            new MetricsDefinitionsClientImplBuilder();
-    private final MetricsNamespacesClientImplBuilder innerMetricsNamespaceBuilder =
-            new MetricsNamespacesClientImplBuilder();
-    private final ClientLogger logger = new ClientLogger(MetricsQueryClientBuilder.class);
+    private static final String CLIENT_NAME;
+    private static final String CLIENT_VERSION;
+
+    static {
+        Map<String, String> properties = CoreUtils.getProperties("azure-monitor-query.properties");
+        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
+        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
+    }
+
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
+
+    private String endpoint;
+    private HttpPipeline pipeline;
+    private HttpClient httpClient;
+    private Configuration configuration;
+    private HttpLogOptions httpLogOptions;
+    private HttpPipelinePolicy retryPolicy;
+    private RetryOptions retryOptions;
+    private ClientOptions clientOptions;
+    private TokenCredential tokenCredential;
     private MetricsQueryServiceVersion serviceVersion;
 
     /**
@@ -64,9 +98,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      */
     @Override
     public MetricsQueryClientBuilder endpoint(String endpoint) {
-        innerMetricsBuilder.host(endpoint);
-        innerMetricsDefinitionsBuilder.host(endpoint);
-        innerMetricsNamespaceBuilder.host(endpoint);
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -77,9 +109,11 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      */
     @Override
     public MetricsQueryClientBuilder pipeline(HttpPipeline pipeline) {
-        innerMetricsBuilder.pipeline(pipeline);
-        innerMetricsDefinitionsBuilder.pipeline(pipeline);
-        innerMetricsNamespaceBuilder.pipeline(pipeline);
+        if (this.pipeline != null && pipeline == null) {
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
+
+        this.pipeline = pipeline;
         return this;
     }
 
@@ -90,9 +124,11 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      */
     @Override
     public MetricsQueryClientBuilder httpClient(HttpClient httpClient) {
-        innerMetricsBuilder.httpClient(httpClient);
-        innerMetricsDefinitionsBuilder.httpClient(httpClient);
-        innerMetricsNamespaceBuilder.httpClient(httpClient);
+        if (this.httpClient != null && httpClient == null) {
+            LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
+        }
+
+        this.httpClient = httpClient;
         return this;
     }
 
@@ -103,9 +139,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      */
     @Override
     public MetricsQueryClientBuilder configuration(Configuration configuration) {
-        innerMetricsBuilder.configuration(configuration);
-        innerMetricsDefinitionsBuilder.configuration(configuration);
-        innerMetricsNamespaceBuilder.configuration(configuration);
+        this.configuration = configuration;
         return this;
     }
 
@@ -116,9 +150,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      */
     @Override
     public MetricsQueryClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
-        innerMetricsBuilder.httpLogOptions(httpLogOptions);
-        innerMetricsDefinitionsBuilder.httpLogOptions(httpLogOptions);
-        innerMetricsNamespaceBuilder.httpLogOptions(httpLogOptions);
+        this.httpLogOptions = httpLogOptions;
         return this;
     }
 
@@ -128,9 +160,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      * @return the MetricsClientBuilder.
      */
     public MetricsQueryClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        innerMetricsBuilder.retryPolicy(retryPolicy);
-        innerMetricsDefinitionsBuilder.retryPolicy(retryPolicy);
-        innerMetricsNamespaceBuilder.retryPolicy(retryPolicy);
+        this.retryPolicy = retryPolicy;
         return this;
     }
 
@@ -141,9 +171,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      */
     @Override
     public MetricsQueryClientBuilder retryOptions(RetryOptions retryOptions) {
-        innerMetricsBuilder.retryOptions(retryOptions);
-        innerMetricsDefinitionsBuilder.retryOptions(retryOptions);
-        innerMetricsNamespaceBuilder.retryOptions(retryOptions);
+        this.retryOptions = retryOptions;
         return this;
     }
 
@@ -154,9 +182,12 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      */
     @Override
     public MetricsQueryClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
-        innerMetricsBuilder.addPolicy(customPolicy);
-        innerMetricsDefinitionsBuilder.addPolicy(customPolicy);
-        innerMetricsNamespaceBuilder.addPolicy(customPolicy);
+        Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
+        if (customPolicy.getPipelinePosition() == HttpPipelinePosition.PER_RETRY) {
+            perRetryPolicies.add(customPolicy);
+        } else {
+            perCallPolicies.add(customPolicy);
+        }
         return this;
     }
 
@@ -167,9 +198,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      */
     @Override
     public MetricsQueryClientBuilder credential(TokenCredential tokenCredential) {
-        innerMetricsBuilder.credential(tokenCredential);
-        innerMetricsDefinitionsBuilder.credential(tokenCredential);
-        innerMetricsNamespaceBuilder.credential(tokenCredential);
+        this.tokenCredential = tokenCredential;
         return this;
     }
 
@@ -180,9 +209,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      */
     @Override
     public MetricsQueryClientBuilder clientOptions(ClientOptions clientOptions) {
-        innerMetricsBuilder.clientOptions(clientOptions);
-        innerMetricsDefinitionsBuilder.clientOptions(clientOptions);
-        innerMetricsNamespaceBuilder.clientOptions(clientOptions);
+        this.clientOptions = clientOptions;
         return this;
     }
 
@@ -201,8 +228,13 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      * @return A synchronous {@link MetricsQueryClient}.
      */
     public MetricsQueryClient buildClient() {
-        return new MetricsQueryClient(innerMetricsBuilder.buildClient(),
-            innerMetricsNamespaceBuilder.buildClient(), innerMetricsDefinitionsBuilder.buildClient());
+        String host = getBuildEndpoint();
+        MetricsQueryServiceVersion apiVersion = getBuildServiceVersion();
+        HttpPipeline httpPipeline = getOrCreateHttpPipeline();
+
+        return new MetricsQueryClient(createMonitorManagementClient(host, httpPipeline, apiVersion),
+            createMetricsNamespacesClient(host, httpPipeline),
+            createMetricsDefinitionsClient(host, httpPipeline, apiVersion));
     }
 
     /**
@@ -210,9 +242,78 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      * @return An asynchronous {@link MetricsQueryAsyncClient}.
      */
     public MetricsQueryAsyncClient buildAsyncClient() {
-        logger.info("Using service version " + this.serviceVersion);
-        return new MetricsQueryAsyncClient(innerMetricsBuilder.buildClient(),
-                innerMetricsNamespaceBuilder.buildClient(), innerMetricsDefinitionsBuilder.buildClient());
+        String host = getBuildEndpoint();
+        MetricsQueryServiceVersion apiVersion = getBuildServiceVersion();
+        HttpPipeline httpPipeline = getOrCreateHttpPipeline();
+
+        return new MetricsQueryAsyncClient(createMonitorManagementClient(host, httpPipeline, apiVersion),
+            createMetricsNamespacesClient(host, httpPipeline),
+            createMetricsDefinitionsClient(host, httpPipeline, apiVersion));
+    }
+
+
+
+    private MonitorManagementClient createMonitorManagementClient(String endpoint, HttpPipeline pipeline,
+                                                                  MetricsQueryServiceVersion serviceVersion) {
+        return new MonitorManagementClient(pipeline, endpoint, serviceVersion.getVersion());
+    }
+
+    private MetricsDefinitionsClient createMetricsDefinitionsClient(String endpoint, HttpPipeline pipeline,
+                                                                    MetricsQueryServiceVersion serviceVersion) {
+        return new MetricsDefinitionsClient(pipeline, endpoint, serviceVersion.getVersion());
+    }
+
+    private MetricsNamespacesClient createMetricsNamespacesClient(String endpoint, HttpPipeline pipeline) {
+        // Namespaces uses a different version than the other clients.
+        // Only 2017-12-01-preview is supported.
+        return new MetricsNamespacesClient(pipeline, endpoint, "2017-12-01-preview");
+    }
+
+    private String getBuildEndpoint() {
+        return (this.endpoint == null) ? "https://management.azure.com" : this.endpoint;
+    }
+
+    private MetricsQueryServiceVersion getBuildServiceVersion() {
+        return (this.serviceVersion == null) ? MetricsQueryServiceVersion.getLatest() : this.serviceVersion;
+    }
+
+    private HttpPipeline getOrCreateHttpPipeline() {
+        if (this.pipeline != null) {
+            return this.pipeline;
+        }
+
+        Configuration buildConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration()
+            : configuration;
+
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        policies.add(new UserAgentPolicy(
+            getApplicationId(clientOptions, httpLogOptions), CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersFromContextPolicy());
+
+        policies.addAll(perCallPolicies);
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
+
+        policies.add(new AddDatePolicy());
+
+        if (tokenCredential != null) {
+            String localHost = (endpoint != null) ? endpoint : "https://management.azure.com";
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", localHost)));
+        }
+
+        policies.addAll(perRetryPolicies);
+
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
+
+        return new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .clientOptions(clientOptions)
+            .build();
     }
 
 }
