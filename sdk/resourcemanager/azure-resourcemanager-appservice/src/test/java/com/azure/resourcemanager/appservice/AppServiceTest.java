@@ -37,6 +37,7 @@ import java.util.concurrent.TimeoutException;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
@@ -238,6 +239,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
     private static final HttpPipeline HTTP_PIPELINE = new HttpPipelineBuilder()
         .policies(
             new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)),
-            new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(30)), "Retry-After", ChronoUnit.SECONDS))
+            new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(30)), "Retry-After", ChronoUnit.SECONDS),
+            new HttpDebugLoggingPolicy())
         .build();
 }

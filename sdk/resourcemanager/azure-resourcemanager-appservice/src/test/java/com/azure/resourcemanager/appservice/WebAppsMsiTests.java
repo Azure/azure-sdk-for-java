@@ -31,6 +31,8 @@ public class WebAppsMsiTests extends AppServiceTest {
     private String rgName1 = "";
     private String webappName1 = "";
 
+    // WebApp.deploy fails intermittently
+
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         webappName1 = generateRandomResourceName("java-webapp-", 20);
