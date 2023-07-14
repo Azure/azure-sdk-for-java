@@ -15,6 +15,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.AuthenticationRecord;
+import com.azure.identity.ChainedTokenCredential;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.ValidationUtil;
@@ -71,6 +72,8 @@ public final class IdentityClientOptions implements Cloneable {
     private boolean instanceDiscovery;
 
     private Duration credentialProcessTimeout = Duration.ofSeconds(10);
+
+    private boolean isChained;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -706,6 +709,24 @@ public final class IdentityClientOptions implements Cloneable {
      */
     public void setCredentialProcessTimeout(Duration credentialProcessTimeout) {
         this.credentialProcessTimeout = credentialProcessTimeout;
+    }
+
+    /**
+     * Indicates whether this options instance is part of a {@link ChainedTokenCredential}.
+     * @return true if this options instance is part of a {@link ChainedTokenCredential}, false otherwise.
+     */
+    public boolean isChained() {
+        return this.isChained;
+    }
+
+    /**
+     * Sets whether this options instance is part of a {@link ChainedTokenCredential}.
+     * @param isChained
+     * @return the updated client options
+     */
+    public IdentityClientOptions setChained(boolean isChained) {
+        this.isChained = isChained;
+        return this;
     }
 
     public IdentityClientOptions clone() {

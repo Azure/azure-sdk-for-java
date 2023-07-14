@@ -76,6 +76,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      */
     public DefaultAzureCredentialBuilder() {
         this.identityClientOptions.setIdentityLogOptionsImpl(new IdentityLogOptionsImpl(true));
+        this.identityClientOptions.setChained(true);
     }
 
     /**
