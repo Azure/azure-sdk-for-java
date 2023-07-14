@@ -41,7 +41,7 @@ steps:
       jdkVersionOption: ${{ parameters.JavaBuildVersion }}
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
-      goals: 'checkstyle:check spotbugs:check spotbugs:spotbugs revapi:check'
+      goals: 'checkstyle:check spotbugs:check revapi:check'
     continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
 
