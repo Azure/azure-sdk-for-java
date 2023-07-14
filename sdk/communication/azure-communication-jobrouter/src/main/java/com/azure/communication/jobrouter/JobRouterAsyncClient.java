@@ -51,16 +51,16 @@ import static com.azure.core.util.FluxUtil.withContext;
  * Async Client that supports job router operations.
  *
  * <p><strong>Instantiating an asynchronous job router Client</strong></p>
- * <!-- src_embed com.azure.communication.jobrouter.routerasyncclient.instantiation -->
+ * <!-- src_embed com.azure.communication.jobrouter.jobrouterasyncclient.instantiation -->
  * <pre>
  * &#47;&#47; Initialize the router client builder
  * final JobRouterClientBuilder builder = new JobRouterClientBuilder&#40;&#41;
  *     .connectionString&#40;connectionString&#41;;
- * &#47;&#47; Build the router client
+ * &#47;&#47; Build the jobrouter client
  * JobRouterAsyncClient jobRouterAsyncClient = builder.buildAsyncClient&#40;&#41;;
  *
  * </pre>
- * <!-- end com.azure.communication.jobrouter.routerasyncclient.instantiation -->
+ * <!-- end com.azure.communication.jobrouter.jobrouterasyncclient.instantiation -->
  *
  * <p>View {@link JobRouterClientBuilder this} for additional ways to construct the client.</p>
  *
