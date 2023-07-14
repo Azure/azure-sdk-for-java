@@ -7,14 +7,18 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.InterceptorManager;
-import com.azure.core.test.TestContextManager;
-import com.azure.core.test.TestMode;
-import com.azure.core.test.http.AssertingHttpClientBuilder;
-import com.azure.core.test.implementation.TestingHelpers;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.models.NetworkCallRecord;
+import com.azure.core.test.models.RecordedData;
+import com.azure.core.util.Context;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -22,13 +26,14 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.time.OffsetDateTime;
 
 import static com.azure.data.schemaregistry.Constants.PLAYBACK_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -38,11 +43,10 @@ import static org.mockito.Mockito.when;
  * reproduced with the latest client.
  */
 public class SchemaRegistryAsyncClientPlaybackTests {
-    private final TestMode testMode = TestingHelpers.getTestMode();
+    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
     private TokenCredential tokenCredential;
     private String endpoint;
-    private TestContextManager testContextManager;
-    private InterceptorManager interceptorManager;
+    private RecordedData recordedData;
 
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
@@ -51,21 +55,18 @@ public class SchemaRegistryAsyncClientPlaybackTests {
                 "Expected testInfo.getTestMethod() not be empty since we need a method for TestContextManager.");
         }
 
-        // We only do this in playback mode since the content is static.
-        if (testMode != TestMode.PLAYBACK) {
-            return;
-        }
-
-        this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), TestMode.PLAYBACK);
-
-        try {
-            interceptorManager = new InterceptorManager(testContextManager);
-        } catch (UncheckedIOException e) {
-            Assertions.fail(e);
-        }
-
         this.tokenCredential = mock(TokenCredential.class);
         this.endpoint = PLAYBACK_ENDPOINT;
+
+        final String resourceName = "/compat/" + testInfo.getTestMethod().get().getName() + ".json";
+
+        try (InputStream stream = SchemaRegistryAsyncClientPlaybackTests.class.getResourceAsStream(resourceName)) {
+            this.recordedData = SERIALIZER.deserialize(stream, RecordedData.class, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw new UncheckedIOException("Unable to get resource input stream for: " + resourceName, e);
+        }
+
+        assertNotNull(recordedData, "RecordedData should not be null. Resource: " + resourceName);
 
         // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
         when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
@@ -77,22 +78,7 @@ public class SchemaRegistryAsyncClientPlaybackTests {
 
     @AfterEach
     public void teardownTest() {
-        if (testMode != TestMode.PLAYBACK) {
-            return;
-        }
-
-        if (testContextManager != null && testContextManager.didTestRun() && interceptorManager != null) {
-            interceptorManager.close();
-        }
-
         Mockito.framework().clearInlineMock(this);
-    }
-
-    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertAsync()
-            .skipRequest((httpRequest, context) -> false)
-            .build();
     }
 
     /**
@@ -101,13 +87,13 @@ public class SchemaRegistryAsyncClientPlaybackTests {
      */
     @Test
     public void getSchemaByIdFromPortal() {
-        assumeTrue(testMode == TestMode.PLAYBACK, "Test is only run in PLAYBACK mode.");
 
         // Arrange
+        final HttpClient httpClientMock = setupHttpClient(recordedData);
         final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
             .fullyQualifiedNamespace(endpoint)
             .credential(tokenCredential)
-            .httpClient(buildAsyncAssertingClient(interceptorManager.getPlaybackClient()))
+            .httpClient(httpClientMock)
             .serviceVersion(SchemaRegistryVersion.V2021_10)
             .buildAsyncClient();
         final String schemaId = "f45b841fcb88401e961ca45477906be9";
@@ -123,17 +109,18 @@ public class SchemaRegistryAsyncClientPlaybackTests {
     }
 
     /**
-     * Verifies that the new serializer works with 1.0.0 schema registry client. https://search.maven.org/artifact/com.azure/azure-data-schemaregistry/1.0.0/
+     * Verifies that the new serializer works with 1.0.0 schema registry client.
+     * https://search.maven.org/artifact/com.azure/azure-data-schemaregistry/1.0.0/
      */
     @Test
     public void getSchemaBackCompatibility() {
-        assumeTrue(testMode == TestMode.PLAYBACK, "Test is only run in PLAYBACK mode.");
-
         // Arrange
+        final HttpClient httpClientMock = setupHttpClient(recordedData);
+
         final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
             .fullyQualifiedNamespace(endpoint)
             .credential(tokenCredential)
-            .httpClient(interceptorManager.getPlaybackClient())
+            .httpClient(httpClientMock)
             .serviceVersion(SchemaRegistryVersion.V2021_10)
             .buildAsyncClient();
         final String schemaId = "e5691f79e3964309ac712ec52abcccca";
@@ -146,5 +133,28 @@ public class SchemaRegistryAsyncClientPlaybackTests {
                 assertEquals(SchemaFormat.AVRO, schema.getProperties().getFormat());
             })
             .verifyComplete();
+    }
+
+
+    private static HttpClient setupHttpClient(RecordedData recordedData) {
+        final HttpClient httpClientMock = mock(HttpClient.class);
+        final NetworkCallRecord networkRecord = recordedData.findFirstAndRemoveNetworkCall(e -> true);
+
+        when(httpClientMock.send(any(), any(Context.class))).thenAnswer(invocationOnMock -> {
+            final HttpRequest request = invocationOnMock.getArgument(0);
+
+            final String body = networkRecord.getResponse().remove("Body");
+            final String statusCodeMessage = networkRecord.getResponse().remove("StatusCode");
+            final int statusCode = Integer.parseInt(statusCodeMessage);
+
+            assertNotNull(body, "Body cannot be null");
+
+            final HttpHeaders headers = new HttpHeaders(networkRecord.getResponse());
+
+            final HttpResponse response = new MockHttpResponse(request, statusCode, headers, body);
+            return Mono.just(response);
+        });
+
+        return httpClientMock;
     }
 }

@@ -21,7 +21,7 @@ import com.azure.maps.elevation.implementation.models.ErrorResponseException;
 
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous ElevationClient type. 
+/** Initializes a new instance of the asynchronous ElevationClient type.
 * Creating an async client using a {@link com.azure.core.credential.AzureKeyCredential}:
 * <!-- src_embed com.azure.maps.elevation.async.builder.key.instantiation -->
 * <pre>
@@ -42,7 +42,7 @@ public final class ElevationAsyncClient {
     private static final int ELEVATION_DATA_SMALL_SIZE = 100;
 
     /**
-     * 
+     *
      * Initializes an instance of ElevationClient client.
      *
      * @param serviceClient the service client implementation.
@@ -60,7 +60,7 @@ public final class ElevationAsyncClient {
      *     new GeoPosition&#40;-121.68853362143818, 46.856464798637127&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.async.get_data_for_points -->
-     * 
+     *
      * **Applies to**: S1 pricing tier.
      *
      * <p>The Get Data for Points API provides elevation data for one or more points. A point is defined in lat,long
@@ -68,8 +68,7 @@ public final class ElevationAsyncClient {
      *
      * <p>Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a
      * pipeline delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline
-     * delimited string, use the [POST Data For
-     * Points](https://docs.microsoft.com/rest/api/maps/elevation/postdataforpoints).
+     * delimited string, use POST Data For Points.
      *
      * <p>The result will be in the same sequence of points listed in the request.
      *
@@ -100,7 +99,7 @@ public final class ElevationAsyncClient {
      *     new GeoPosition&#40;-121.68853362143818, 46.856464798637127&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.async.get_data_for_points -->
-     * 
+     *
      * **Applies to**: S1 pricing tier.
      *
      * <p>The Get Data for Points API provides elevation data for one or more points. A point is defined in lat,long
@@ -108,8 +107,7 @@ public final class ElevationAsyncClient {
      *
      * <p>Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a
      * pipeline delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline
-     * delimited string, use the [POST Data For
-     * Points](https://docs.microsoft.com/rest/api/maps/elevation/postdataforpoints).
+     * delimited string, use POST Data For Points..
      *
      * <p>The result will be in the same sequence of points listed in the request.
      *
@@ -137,7 +135,7 @@ public final class ElevationAsyncClient {
      *     new GeoPosition&#40;-121.68853362143818, 46.856464798637127&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.async.get_data_for_points -->
-     * 
+     *
      * **Applies to**: S1 pricing tier.
      *
      * <p>The Get Data for Points API provides elevation data for one or more points. A point is defined in lat,long
@@ -145,8 +143,7 @@ public final class ElevationAsyncClient {
      *
      * <p>Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a
      * pipeline delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline
-     * delimited string, use the [POST Data For
-     * Points](https://docs.microsoft.com/rest/api/maps/elevation/postdataforpoints).
+     * delimited string, use the POST Data For Points.
      *
      * <p>The result will be in the same sequence of points listed in the request.
      *
@@ -165,7 +162,7 @@ public final class ElevationAsyncClient {
     Mono<Response<ElevationResult>> getDataForPointsWithResponse(List<GeoPosition> points, Context context) {
         if (points.size() < ELEVATION_DATA_SMALL_SIZE) {
             return this.serviceClient.getDataForPointsWithResponseAsync(JsonFormat.JSON, Utility.geoPositionToString(points), context);
-        } 
+        }
         return this.serviceClient.postDataForPointsWithResponseAsync(JsonFormat.JSON, Utility.toLatLongPairAbbreviated(points), context).onErrorMap(throwable -> {
             if (!(throwable instanceof ErrorResponseException)) {
                 return throwable;
@@ -184,7 +181,7 @@ public final class ElevationAsyncClient {
      *     new GeoPosition&#40;-121.65853362143818, 46.85646479863713&#41;&#41;, 5&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.async.get_data_for_polyline -->
-     * 
+     *
      * **Applies to**: S1 pricing tier.
      *
      * <p>The Get Data for Polyline API provides elevation data along a polyline.
@@ -230,7 +227,7 @@ public final class ElevationAsyncClient {
      *     new GeoPosition&#40;-121.65853362143818, 46.85646479863713&#41;&#41;, 5&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.async.get_data_for_polyline -->
-     * 
+     *
      * **Applies to**: S1 pricing tier.
      *
      * <p>The Get Data for Polyline API provides elevation data along a polyline.
@@ -273,7 +270,7 @@ public final class ElevationAsyncClient {
      *     new GeoPosition&#40;-121.65853362143818, 46.85646479863713&#41;&#41;, 5&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.async.get_data_for_polyline -->
-     * 
+     *
      * **Applies to**: S1 pricing tier.
      *
      * <p>The Get Data for Polyline API provides elevation data along a polyline.
@@ -307,7 +304,7 @@ public final class ElevationAsyncClient {
     Mono<Response<ElevationResult>> getDataForPolylineWithResponse(List<GeoPosition> lines, Integer samples, Context context) {
         if (lines.size() < ELEVATION_DATA_SMALL_SIZE) {
             return this.serviceClient.getDataForPolylineWithResponseAsync(JsonFormat.JSON, Utility.geoPositionToString(lines), samples, context);
-        } 
+        }
         return this.serviceClient.postDataForPolylineWithResponseAsync(JsonFormat.JSON, Utility.toLatLongPairAbbreviated(lines), samples, context).onErrorMap(throwable -> {
             if (!(throwable instanceof ErrorResponseException)) {
                 return throwable;
@@ -325,7 +322,7 @@ public final class ElevationAsyncClient {
      *     -121.658533621438f, 46.8564647986371f&#41;, 3, 3&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.async.get_data_for_bounding_box -->
-     * 
+     *
      * **Applies to**: S1 pricing tier.
      *
      * <p>The Get Data for Bounding Box API provides elevation data at equally spaced locations within a bounding box. A
@@ -366,7 +363,7 @@ public final class ElevationAsyncClient {
      *     -121.658533621438f, 46.8564647986371f&#41;, 3, 3&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.async.get_data_for_bounding_box -->
-     * 
+     *
      * **Applies to**: S1 pricing tier.
      *
      * <p>The Get Data for Bounding Box API provides elevation data at equally spaced locations within a bounding box. A
@@ -404,7 +401,7 @@ public final class ElevationAsyncClient {
      *     -121.658533621438f, 46.8564647986371f&#41;, 3, 3&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.async.get_data_for_bounding_box -->
-     * 
+     *
      * **Applies to**: S1 pricing tier.
      *
      * <p>The Get Data for Bounding Box API provides elevation data at equally spaced locations within a bounding box. A

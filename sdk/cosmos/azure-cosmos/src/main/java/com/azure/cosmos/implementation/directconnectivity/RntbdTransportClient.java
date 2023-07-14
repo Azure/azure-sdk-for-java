@@ -401,7 +401,7 @@ public class RntbdTransportClient extends TransportClient {
         injectorProvider.registerConnectionErrorInjector(this.endpointProvider);
         if (this.serverErrorInjector != null) {
             this.serverErrorInjector
-                .registerServerErrorInjector(injectorProvider.getRntbdServerErrorInjector());
+                .registerServerErrorInjector(injectorProvider.getServerErrorInjector());
         }
     }
 

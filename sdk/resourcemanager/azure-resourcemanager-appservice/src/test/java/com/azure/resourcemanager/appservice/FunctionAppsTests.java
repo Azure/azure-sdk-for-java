@@ -11,6 +11,7 @@ import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.AppSetting;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAppBasic;
+import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
 import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
 import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
 import com.azure.resourcemanager.appservice.models.PricingTier;
@@ -404,6 +405,47 @@ public class FunctionAppsTests extends AppServiceTest {
         assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_17);
 
         assertRunning(functionApp1);
+    }
+
+    @Test
+    public void canCreateAndUpdateFunctionAppWithContainerSize() {
+        rgName2 = null;
+        webappName1 = generateRandomResourceName("java-function-", 20);
+        String functionDeploymentSlotName = generateRandomResourceName("fds", 15);
+
+        FunctionApp functionApp1 = appServiceManager.functionApps()
+            .define(webappName1)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName1)
+            .withContainerSize(512)
+            .create();
+
+        FunctionDeploymentSlot functionDeploymentSlot = functionApp1.deploymentSlots()
+            .define(functionDeploymentSlotName)
+            .withConfigurationFromParent()
+            .withContainerSize(256)
+            .create();
+
+        Assertions.assertEquals(512, functionApp1.containerSize());
+        Assertions.assertEquals(256, functionDeploymentSlot.containerSize());
+
+        functionApp1.update()
+            .withContainerSize(320)
+            .apply();
+
+        functionApp1.refresh();
+
+        Assertions.assertEquals(320, functionApp1.containerSize());
+
+        Assertions.assertEquals(256, functionDeploymentSlot.containerSize());
+
+        functionDeploymentSlot.update()
+            .withContainerSize(128)
+            .apply();
+
+        functionDeploymentSlot.refresh();
+
+        Assertions.assertEquals(128, functionDeploymentSlot.containerSize());
     }
 
     private void assertRunning(FunctionApp functionApp) {

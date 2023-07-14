@@ -45,6 +45,7 @@ public class CallMediaUnitTests {
         playTextSource.setVoiceGender(GenderType.MALE);
         playTextSource.setSourceLocale("en-US");
         playTextSource.setVoiceName("LULU");
+        playTextSource.setCustomVoiceEndpointId("customVoiceEndpointId");
     }
 
     @Test

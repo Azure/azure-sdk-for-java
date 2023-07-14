@@ -12,7 +12,7 @@ public final class ClusterAvailableVersionTests {
     public void testDeserialize() throws Exception {
         ClusterAvailableVersion model =
             BinaryData
-                .fromString("{\"supportExpiryDate\":\"tqhjfbebrjcx\",\"targetClusterVersion\":\"fuwutttxf\"}")
+                .fromString("{\"supportExpiryDate\":\"hmpvecx\",\"targetClusterVersion\":\"debfqkkrbmpukgri\"}")
                 .toObject(ClusterAvailableVersion.class);
     }
 

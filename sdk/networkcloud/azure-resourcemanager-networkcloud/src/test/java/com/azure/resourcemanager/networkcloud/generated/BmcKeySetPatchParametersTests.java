@@ -19,31 +19,30 @@ public final class BmcKeySetPatchParametersTests {
         BmcKeySetPatchParameters model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"expiration\":\"2021-06-08T12:29:12Z\",\"userList\":[{\"azureUserName\":\"zb\",\"description\":\"byvi\"},{\"azureUserName\":\"tctbrxkjzwrgxffm\",\"description\":\"kwfbkgo\"},{\"azureUserName\":\"xwopdbydpizqa\",\"description\":\"napxbiygnug\"}]},\"tags\":{\"flqo\":\"fsmfcttuxuuyi\"}}")
+                    "{\"properties\":{\"expiration\":\"2021-10-26T14:14:43Z\",\"userList\":[{\"azureUserName\":\"fvwbcb\",\"description\":\"mbnkb\"},{\"azureUserName\":\"vqvxk\",\"description\":\"vqihebwtswbzuwf\"}]},\"tags\":{\"vcjfelisdjubggb\":\"ragegi\",\"gacyrcmjdmspo\":\"igkxkbsazga\"}}")
                 .toObject(BmcKeySetPatchParameters.class);
-        Assertions.assertEquals("fsmfcttuxuuyi", model.tags().get("flqo"));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-08T12:29:12Z"), model.expiration());
-        Assertions.assertEquals("zb", model.userList().get(0).azureUsername());
-        Assertions.assertEquals("byvi", model.userList().get(0).description());
+        Assertions.assertEquals("ragegi", model.tags().get("vcjfelisdjubggb"));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T14:14:43Z"), model.expiration());
+        Assertions.assertEquals("fvwbcb", model.userList().get(0).azureUsername());
+        Assertions.assertEquals("mbnkb", model.userList().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BmcKeySetPatchParameters model =
             new BmcKeySetPatchParameters()
-                .withTags(mapOf("flqo", "fsmfcttuxuuyi"))
-                .withExpiration(OffsetDateTime.parse("2021-06-08T12:29:12Z"))
+                .withTags(mapOf("vcjfelisdjubggb", "ragegi", "gacyrcmjdmspo", "igkxkbsazga"))
+                .withExpiration(OffsetDateTime.parse("2021-10-26T14:14:43Z"))
                 .withUserList(
                     Arrays
                         .asList(
-                            new KeySetUser().withAzureUsername("zb").withDescription("byvi"),
-                            new KeySetUser().withAzureUsername("tctbrxkjzwrgxffm").withDescription("kwfbkgo"),
-                            new KeySetUser().withAzureUsername("xwopdbydpizqa").withDescription("napxbiygnug")));
+                            new KeySetUser().withAzureUsername("fvwbcb").withDescription("mbnkb"),
+                            new KeySetUser().withAzureUsername("vqvxk").withDescription("vqihebwtswbzuwf")));
         model = BinaryData.fromObject(model).toObject(BmcKeySetPatchParameters.class);
-        Assertions.assertEquals("fsmfcttuxuuyi", model.tags().get("flqo"));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-08T12:29:12Z"), model.expiration());
-        Assertions.assertEquals("zb", model.userList().get(0).azureUsername());
-        Assertions.assertEquals("byvi", model.userList().get(0).description());
+        Assertions.assertEquals("ragegi", model.tags().get("vcjfelisdjubggb"));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T14:14:43Z"), model.expiration());
+        Assertions.assertEquals("fvwbcb", model.userList().get(0).azureUsername());
+        Assertions.assertEquals("mbnkb", model.userList().get(0).description());
     }
 
     @SuppressWarnings("unchecked")

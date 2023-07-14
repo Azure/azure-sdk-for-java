@@ -3,12 +3,16 @@
 
 package com.azure.ai.openai;
 
+import com.azure.ai.openai.functions.MyFunctionCallArguments;
+import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
+import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
+import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -21,6 +25,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -185,6 +190,59 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
                 BinaryData.fromObject(embeddingsOptions), new RequestOptions());
             Embeddings resultEmbeddings = assertAndGetValueFromResponse(response, Embeddings.class, 200);
             assertEmbeddings(resultEmbeddings);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGenerateImage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getImageGenerationRunner(options -> assertImageResponse(client.generateImage(options)));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatFunctionAutoPreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatFunctionForNonAzureRunner((modelId, chatCompletionsOptions) -> {
+            chatCompletionsOptions.setFunctionCall(FunctionCallConfig.AUTO);
+            ChatCompletions chatCompletions = client.getChatCompletions(modelId, chatCompletionsOptions);
+
+            assertEquals(1, chatCompletions.getChoices().size());
+            ChatChoice chatChoice = chatCompletions.getChoices().get(0);
+            MyFunctionCallArguments arguments = assertFunctionCall(
+                chatChoice,
+                "MyFunction",
+                MyFunctionCallArguments.class);
+            assertEquals(arguments.getLocation(), "San Francisco, CA");
+            assertEquals(arguments.getUnit(), "CELSIUS");
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatFunctionNonePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatFunctionForNonAzureRunner((modelId, chatCompletionsOptions) -> {
+            chatCompletionsOptions.setFunctionCall(FunctionCallConfig.NONE);
+            ChatCompletions chatCompletions = client.getChatCompletions(modelId, chatCompletionsOptions);
+
+            assertChatCompletions(1, "stop", ChatRole.ASSISTANT, chatCompletions);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatFunctionNotSuppliedByNamePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatFunctionForNonAzureRunner((modelId, chatCompletionsOptions) -> {
+            chatCompletionsOptions.setFunctionCall(new FunctionCallConfig("NotMyFunction"));
+            HttpResponseException exception = assertThrows(HttpResponseException.class,
+                () ->  client.getChatCompletions(modelId, chatCompletionsOptions));
+            assertEquals(400, exception.getResponse().getStatusCode());
+
+            assertInstanceOf(HttpResponseException.class, exception);
+            assertTrue(exception.getMessage().contains("Invalid value for 'function_call'"));
         });
     }
 }

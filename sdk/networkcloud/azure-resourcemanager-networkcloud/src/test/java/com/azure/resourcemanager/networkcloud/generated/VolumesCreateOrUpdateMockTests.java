@@ -34,7 +34,7 @@ public final class VolumesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"extendedLocation\":{\"name\":\"toyrplixlajml\",\"type\":\"pq\"},\"properties\":{\"attachedTo\":[\"hamfowgwbtmk\"],\"detailedStatus\":\"Active\",\"detailedStatusMessage\":\"kzwaqxofq\",\"provisioningState\":\"Succeeded\",\"serialNumber\":\"iqbplvfidusz\",\"sizeMiB\":7345588349145165973},\"location\":\"byjgmsfepx\",\"tags\":{\"fowxwyovcxjsgbi\":\"pqadagrhrdicxdwy\",\"dveksbuhoduch\":\"cu\",\"yszekbhwlka\":\"lscrdpibfdyjduss\",\"n\":\"ggkrehbf\"},\"id\":\"ybff\",\"name\":\"jfiimreoa\",\"type\":\"sqtaadusrexxfa\"}";
+            "{\"extendedLocation\":{\"name\":\"aqzi\",\"type\":\"mqimiymqru\"},\"properties\":{\"attachedTo\":[\"hfupetasvvoqsbpk\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"fkg\",\"provisioningState\":\"Succeeded\",\"serialNumber\":\"owuz\",\"sizeMiB\":1254235972970834440},\"location\":\"ohdkcprgukx\",\"tags\":{\"hlutixmqrudjizc\":\"io\",\"mcrunfhiucn\":\"f\",\"dkyzbfvxov\":\"fbcpaqktkrumzu\",\"hyhlwcjsqg\":\"kxiuxqggvqr\"},\"id\":\"jhffbxrqrkij\",\"name\":\"euqlsdxeqztv\",\"type\":\"wmwwmjswen\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,19 +65,19 @@ public final class VolumesCreateOrUpdateMockTests {
         Volume response =
             manager
                 .volumes()
-                .define("wljuxlkbectvt")
-                .withRegion("zeagmceituuge")
-                .withExistingResourceGroup("wakwseivmakxhys")
-                .withExtendedLocation(new ExtendedLocation().withName("j").withType("skdchmaiubavl"))
-                .withSizeMiB(3750355652175573402L)
-                .withTags(mapOf("tlzm", "pj", "eolctaebf", "lsyj", "jcustbvtq", "yrle"))
+                .define("obsmf")
+                .withRegion("dndoabhjxw")
+                .withExistingResourceGroup("ikcdrdaasax")
+                .withExtendedLocation(new ExtendedLocation().withName("wiyjvzuko").withType("r"))
+                .withSizeMiB(2392325715602900901L)
+                .withTags(mapOf("tltcl", "euipmpvksmitnsq", "frakkldgrc", "rdpqgfhy", "jajqmatxjt", "fcmfcn"))
                 .create();
 
-        Assertions.assertEquals("byjgmsfepx", response.location());
-        Assertions.assertEquals("pqadagrhrdicxdwy", response.tags().get("fowxwyovcxjsgbi"));
-        Assertions.assertEquals("toyrplixlajml", response.extendedLocation().name());
-        Assertions.assertEquals("pq", response.extendedLocation().type());
-        Assertions.assertEquals(7345588349145165973L, response.sizeMiB());
+        Assertions.assertEquals("ohdkcprgukx", response.location());
+        Assertions.assertEquals("io", response.tags().get("hlutixmqrudjizc"));
+        Assertions.assertEquals("aqzi", response.extendedLocation().name());
+        Assertions.assertEquals("mqimiymqru", response.extendedLocation().type());
+        Assertions.assertEquals(1254235972970834440L, response.sizeMiB());
     }
 
     @SuppressWarnings("unchecked")

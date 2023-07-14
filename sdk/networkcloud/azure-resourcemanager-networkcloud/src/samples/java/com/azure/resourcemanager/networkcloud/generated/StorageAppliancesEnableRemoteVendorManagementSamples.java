@@ -10,7 +10,7 @@ import java.util.Arrays;
 /** Samples for StorageAppliances EnableRemoteVendorManagement. */
 public final class StorageAppliancesEnableRemoteVendorManagementSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/StorageAppliances_EnableRemoteVendorManagement.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/StorageAppliances_EnableRemoteVendorManagement.json
      */
     /**
      * Sample code: Turn on remote vendor management for storage appliance.

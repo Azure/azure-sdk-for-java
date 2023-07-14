@@ -4,11 +4,11 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.models.CancelExceptionAction;
+import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
 import com.azure.communication.jobrouter.models.ExceptionAction;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.models.ExceptionRule;
 import com.azure.communication.jobrouter.models.QueueLengthExceptionTrigger;
-import com.azure.communication.jobrouter.models.options.CreateExceptionPolicyOptions;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -19,7 +19,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ExceptionPolicyLiveTests extends JobRouterTestBase {
-    private RouterAdministrationClient routerAdminClient;
+    private JobRouterAdministrationClient routerAdminClient;
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
