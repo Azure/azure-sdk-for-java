@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.jobrouter.implementation.converters;
 
 import com.azure.communication.jobrouter.implementation.accesshelpers.LabelValueConstructorProxy;
@@ -68,21 +71,21 @@ public class LabelSelectorAdapter {
     }
 
     public static RouterQueueSelectorInternal convertQueueSelectorToInternal(RouterQueueSelector qs) {
-        RouterQueueSelectorInternal QueueSelector = new RouterQueueSelectorInternal()
+        RouterQueueSelectorInternal queueSelector = new RouterQueueSelectorInternal()
             .setKey(qs.getKey())
             .setValue(qs.getValue())
             .setLabelOperator(LabelOperatorInternal.fromString(qs.getLabelOperator().toString()));
 
-        return QueueSelector;
+        return queueSelector;
     }
 
     public static RouterQueueSelector convertQueueSelectorToPublic(RouterQueueSelectorInternal qs) {
-        RouterQueueSelector QueueSelector = new RouterQueueSelector()
+        RouterQueueSelector queueSelector = new RouterQueueSelector()
             .setKey(qs.getKey())
             .setValue(LabelValueConstructorProxy.create(qs.getValue()))
             .setLabelOperator(LabelOperator.fromString(qs.getLabelOperator().toString()));
 
-        return QueueSelector;
+        return queueSelector;
     }
 
     public static QueueSelectorAttachmentInternal convertQueueSelectorAttachmentToInternal(QueueSelectorAttachment attachment) {

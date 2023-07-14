@@ -107,14 +107,14 @@ public class WorkerAdapter {
         });
     }
 
-    public static Map<String,ChannelConfiguration> convertChannelConfigurationsToPublic(Map<String,ChannelConfigurationInternal> internal) {
+    public static Map<String, ChannelConfiguration> convertChannelConfigurationsToPublic(Map<String, ChannelConfigurationInternal> internal) {
         return internal != null ? internal.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> new ChannelConfiguration()
                 .setCapacityCostPerJob(entry.getValue().getCapacityCostPerJob())
                 .setMaxNumberOfJobs(entry.getValue().getMaxNumberOfJobs()))) : new HashMap<>();
     }
 
-    public static Map<String,ChannelConfigurationInternal> convertChannelConfigurationsToInternal(Map<String,ChannelConfiguration> channelConfigurations) {
+    public static Map<String, ChannelConfigurationInternal> convertChannelConfigurationsToInternal(Map<String, ChannelConfiguration> channelConfigurations) {
         return channelConfigurations != null ? channelConfigurations.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> new ChannelConfigurationInternal()
                 .setCapacityCostPerJob(entry.getValue().getCapacityCostPerJob())

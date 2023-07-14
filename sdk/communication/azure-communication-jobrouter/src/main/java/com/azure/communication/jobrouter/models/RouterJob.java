@@ -4,6 +4,7 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.communication.jobrouter.implementation.accesshelpers.LabelValueConstructorProxy;
 import com.azure.communication.jobrouter.implementation.accesshelpers.RouterJobConstructorProxy;
 import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
 import com.azure.communication.jobrouter.implementation.converters.LabelSelectorAdapter;
@@ -19,6 +20,11 @@ import java.util.stream.Collectors;
 /** A unit of work to be routed. */
 @Fluent
 public final class RouterJob {
+    /**
+     * Public constructor.
+     *
+     * @param id The id
+     */
     public RouterJob(String id) {
         this.id = id;
     }
@@ -46,14 +52,14 @@ public final class RouterJob {
         setChannelReference(internal.getChannelReference());
         setQueueId(internal.getQueueId());
         setLabels(internal.getLabels().entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> (LabelValue)entry.getValue())));
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> LabelValueConstructorProxy.create(entry.getValue()))));
         setNotes(internal.getNotes());
         setPriority(internal.getPriority());
         setClassificationPolicyId(internal.getClassificationPolicyId());
         setDispositionCode(internal.getDispositionCode());
         setClassificationPolicyId(internal.getClassificationPolicyId());
         setTags(internal.getTags().entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> (LabelValue)entry.getValue())));
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> LabelValueConstructorProxy.create(entry.getValue()))));
         setMatchingMode(JobAdapter.convertMatchingModeToPublic(internal.getMatchingMode()));
     }
 

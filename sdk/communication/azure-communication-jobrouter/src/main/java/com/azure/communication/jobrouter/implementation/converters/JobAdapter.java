@@ -128,11 +128,11 @@ public class JobAdapter {
             null);
 
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-                Flux<PagedResponse<RouterJobItemInternal>> flux = (continuationToken == null)
-                    ? internalPagedFlux.byPage()
-                    : internalPagedFlux.byPage(continuationToken);
-                return flux.map(responseMapper);
-            });
+            Flux<PagedResponse<RouterJobItemInternal>> flux = (continuationToken == null)
+                ? internalPagedFlux.byPage()
+                : internalPagedFlux.byPage(continuationToken);
+            return flux.map(responseMapper);
+        });
     }
 
     public static RouterJobAssignment convertJobAssignmentToPublic(RouterJobAssignmentInternal internal) {
@@ -146,7 +146,8 @@ public class JobAdapter {
 
     public static RouterJobMatchingMode convertMatchingModeToPublic(JobMatchingModeInternal internal) {
         RouterJobMatchingMode matchingMode = new RouterJobMatchingMode()
-            .setModeType(RouterJobMatchModeType.fromString(internal.getModeType().toString()));
+            .setModeType(RouterJobMatchModeType.fromString(internal != null
+                ? internal.getModeType().toString() : JobMatchModeTypeInternal.QUEUE_AND_MATCH_MODE.toString()));
         if (internal == null || internal.getModeType() == JobMatchModeTypeInternal.QUEUE_AND_MATCH_MODE) {
             matchingMode.setQueueAndMatchMode(new QueueAndMatchMode());
         } else if (internal.getModeType() == JobMatchModeTypeInternal.SUSPEND_MODE) {
@@ -161,7 +162,8 @@ public class JobAdapter {
 
     public static JobMatchingModeInternal convertMatchingModeToInternal(RouterJobMatchingMode matchingMode) {
         JobMatchingModeInternal matchingModeInternal = new JobMatchingModeInternal()
-            .setModeType(JobMatchModeTypeInternal.fromString(matchingMode.getModeType().toString()));
+            .setModeType(JobMatchModeTypeInternal.fromString(matchingMode != null
+                ? matchingMode.getModeType().toString() : RouterJobMatchModeType.QUEUE_AND_MATCH_MODE.toString()));
         if (matchingMode == null || matchingMode.getModeType() == RouterJobMatchModeType.QUEUE_AND_MATCH_MODE) {
             matchingModeInternal.setQueueAndMatchMode(new QueueAndMatchMode());
         } else if (matchingMode.getModeType() == RouterJobMatchModeType.SUSPEND_MODE) {

@@ -13,6 +13,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Policy governing how jobs are distributed to workers. */
 @Fluent
 public final class DistributionPolicy {
+    /**
+     * Public constructor.
+     *
+     * @param id The id
+     */
     public DistributionPolicy(String id) {
         this.id = id;
     }

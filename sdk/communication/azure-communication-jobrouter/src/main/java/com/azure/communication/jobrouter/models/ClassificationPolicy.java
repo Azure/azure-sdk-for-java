@@ -17,6 +17,11 @@ import java.util.stream.Collectors;
 /** A container for the rules that govern how jobs are classified. */
 @Fluent
 public final class ClassificationPolicy {
+    /**
+     * Public constructor.
+     *
+     * @param id The id
+     */
     public ClassificationPolicy(String id) {
         this.id = id;
     }

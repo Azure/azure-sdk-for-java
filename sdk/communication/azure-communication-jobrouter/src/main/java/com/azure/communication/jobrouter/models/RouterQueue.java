@@ -16,6 +16,11 @@ import java.util.stream.Collectors;
 /** A queue that can contain jobs to be routed. */
 @Fluent
 public final class RouterQueue {
+    /**
+     * Public constructor.
+     *
+     * @param id The id
+     */
     public RouterQueue(String id) {
         this.id = id;
     }

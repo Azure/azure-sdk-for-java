@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.jobrouter.implementation.converters;
 
 import com.azure.communication.jobrouter.implementation.models.DirectMapRouterRuleInternal;
@@ -38,7 +41,7 @@ public class RouterRuleAdapter {
                     .setAppKey(functionRouterRule.getCredential().getAppKey())
                     .setClientId(functionRouterRule.getCredential().getClientId()));
         } else if (rule instanceof StaticRouterRule) {
-            return new StaticRouterRuleInternal().setValue(((StaticRouterRule)rule).getValue());
+            return new StaticRouterRuleInternal().setValue(((StaticRouterRule) rule).getValue());
         } else if (rule instanceof WebhookRouterRule) {
             WebhookRouterRule webhookRouterRule = (WebhookRouterRule) rule;
             return new WebhookRouterRuleInternal().setWebhookUri(webhookRouterRule.getWebhookUri())
@@ -65,7 +68,7 @@ public class RouterRuleAdapter {
                     .setAppKey(functionRouterRule.getCredential().getAppKey())
                     .setClientId(functionRouterRule.getCredential().getClientId()));
         } else if (rule instanceof StaticRouterRuleInternal) {
-            return new StaticRouterRule().setValue(((StaticRouterRuleInternal)rule).getValue());
+            return new StaticRouterRule().setValue(((StaticRouterRuleInternal) rule).getValue());
         } else if (rule instanceof WebhookRouterRuleInternal) {
             WebhookRouterRuleInternal webhookRouterRule = (WebhookRouterRuleInternal) rule;
             return new WebhookRouterRule().setWebhookUri(webhookRouterRule.getWebhookUri())

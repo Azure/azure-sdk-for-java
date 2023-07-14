@@ -15,6 +15,11 @@ import java.util.Map;
 /** A policy that defines actions to execute when exception are triggered. */
 @Fluent
 public final class ExceptionPolicy {
+    /**
+     * Public constructor.
+     *
+     * @param id The id
+     */
     public ExceptionPolicy(String id) {
         this.id = id;
     }

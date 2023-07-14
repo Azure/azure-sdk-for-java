@@ -18,6 +18,11 @@ import java.util.stream.Collectors;
 /** An entity for jobs to be routed to. */
 @Fluent
 public final class RouterWorker {
+    /**
+     * Public constructor.
+     *
+     * @param id The id
+     */
     public RouterWorker(String id) {
         this.id = id;
     }

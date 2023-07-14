@@ -3,9 +3,6 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.communication.jobrouter.implementation.models.UnassignJobRequest;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 /**
  * Request options to unassign a job from a worker.
  */
