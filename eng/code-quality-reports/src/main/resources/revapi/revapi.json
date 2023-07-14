@@ -275,6 +275,12 @@
           "regex": true,
           "code": "java.method.(returnTypeTypeParametersChanged|parameterTypeChanged|returnTypeChanged)",
           "new": ".* com.azure.security.attestation.*attestTpm.*"
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.monitor\\.query\\.models.*",
+          "justification": "Removing Jackson annotations from Monitor Query in transition to stream-style."
         }
       ]
     }
