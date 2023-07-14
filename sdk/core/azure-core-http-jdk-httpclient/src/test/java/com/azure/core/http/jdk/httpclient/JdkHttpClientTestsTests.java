@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.netty;
+package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.HttpClientTestsServer;
@@ -9,14 +9,14 @@ import com.azure.core.test.http.HttpClientTests;
 import com.azure.core.test.http.LocalTestServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.condition.DisabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
-/**
- * Reactor Netty {@link HttpClientTests}.
- */
+@DisabledForJreRange(max = JRE.JAVA_11)
 @Execution(ExecutionMode.SAME_THREAD)
-public class NettyAsyncHttpClientHttpClientTests extends HttpClientTests {
+public class JdkHttpClientTestsTests extends HttpClientTests {
     private static LocalTestServer server;
 
     @BeforeAll
@@ -44,7 +44,12 @@ public class NettyAsyncHttpClientHttpClientTests extends HttpClientTests {
     }
 
     @Override
+    protected boolean isSecure() {
+        return false;
+    }
+
+    @Override
     protected HttpClient createHttpClient() {
-        return new NettyAsyncHttpClientBuilder().build();
+        return new JdkHttpClientProvider().createInstance();
     }
 }
