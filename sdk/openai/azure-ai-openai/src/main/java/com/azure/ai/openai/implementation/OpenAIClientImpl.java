@@ -488,13 +488,13 @@ public final class OpenAIClientImpl {
      *          (Optional){
      *             prompt_index: int (Required)
      *             content_filter_results (Optional): {
-     *                 sexual (Required): {
+     *                 sexual (Optional): {
      *                     severity: String(safe/low/medium/high) (Required)
      *                     filtered: boolean (Required)
      *                 }
-     *                 violence (Required): (recursive schema, see violence above)
-     *                 hate (Required): (recursive schema, see hate above)
-     *                 self_harm (Required): (recursive schema, see self_harm above)
+     *                 violence (Optional): (recursive schema, see violence above)
+     *                 hate (Optional): (recursive schema, see hate above)
+     *                 self_harm (Optional): (recursive schema, see self_harm above)
      *             }
      *         }
      *     ]
@@ -601,13 +601,13 @@ public final class OpenAIClientImpl {
      *          (Optional){
      *             prompt_index: int (Required)
      *             content_filter_results (Optional): {
-     *                 sexual (Required): {
+     *                 sexual (Optional): {
      *                     severity: String(safe/low/medium/high) (Required)
      *                     filtered: boolean (Required)
      *                 }
-     *                 violence (Required): (recursive schema, see violence above)
-     *                 hate (Required): (recursive schema, see hate above)
-     *                 self_harm (Required): (recursive schema, see self_harm above)
+     *                 violence (Optional): (recursive schema, see violence above)
+     *                 hate (Optional): (recursive schema, see hate above)
+     *                 self_harm (Optional): (recursive schema, see self_harm above)
      *             }
      *         }
      *     ]
@@ -735,13 +735,13 @@ public final class OpenAIClientImpl {
      *             finish_reason: String(stop/length/content_filter/function_call) (Required)
      *             delta (Optional): (recursive schema, see delta above)
      *             content_filter_results (Optional): {
-     *                 sexual (Required): {
+     *                 sexual (Optional): {
      *                     severity: String(safe/low/medium/high) (Required)
      *                     filtered: boolean (Required)
      *                 }
-     *                 violence (Required): (recursive schema, see violence above)
-     *                 hate (Required): (recursive schema, see hate above)
-     *                 self_harm (Required): (recursive schema, see self_harm above)
+     *                 violence (Optional): (recursive schema, see violence above)
+     *                 hate (Optional): (recursive schema, see hate above)
+     *                 self_harm (Optional): (recursive schema, see self_harm above)
      *             }
      *         }
      *     ]
@@ -854,13 +854,13 @@ public final class OpenAIClientImpl {
      *             finish_reason: String(stop/length/content_filter/function_call) (Required)
      *             delta (Optional): (recursive schema, see delta above)
      *             content_filter_results (Optional): {
-     *                 sexual (Required): {
+     *                 sexual (Optional): {
      *                     severity: String(safe/low/medium/high) (Required)
      *                     filtered: boolean (Required)
      *                 }
-     *                 violence (Required): (recursive schema, see violence above)
-     *                 hate (Required): (recursive schema, see hate above)
-     *                 self_harm (Required): (recursive schema, see self_harm above)
+     *                 violence (Optional): (recursive schema, see violence above)
+     *                 hate (Optional): (recursive schema, see hate above)
+     *                 self_harm (Optional): (recursive schema, see self_harm above)
      *             }
      *         }
      *     ]
