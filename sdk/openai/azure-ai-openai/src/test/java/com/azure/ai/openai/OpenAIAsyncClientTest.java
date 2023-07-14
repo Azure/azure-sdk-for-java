@@ -228,7 +228,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testGenerateImage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getImageGenerationRunner(options ->
-            StepVerifier.create(client.generateImage(options))
+            StepVerifier.create(client.getImages(options))
                 .assertNext(OpenAIClientTestBase::assertImageResponse)
                 .verifyComplete());
     }

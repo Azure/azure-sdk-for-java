@@ -5,9 +5,7 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.functions.Parameters;
-import com.azure.ai.openai.models.ContentFilterResults;
-import com.azure.ai.openai.models.ContentFilterSeverity;
-import com.azure.ai.openai.models.FunctionCall;
+import com.azure.ai.openai.implementation.models.FunctionDefinition;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
@@ -15,10 +13,12 @@ import com.azure.ai.openai.models.ChatMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
+import com.azure.ai.openai.models.ContentFilterResults;
+import com.azure.ai.openai.models.ContentFilterSeverity;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
-import com.azure.ai.openai.implementation.models.FunctionDefinition;
+import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageResponse;
 import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
