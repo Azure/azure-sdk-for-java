@@ -23,6 +23,8 @@ import com.azure.core.util.IterableStream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Arrays;
+
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -90,7 +92,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             String deploymentId = "BAD_DEPLOYMENT_ID";
             ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
                 () -> client.getCompletionsWithResponse(deploymentId,
-                BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions()));
+                    BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions()));
             assertEquals(404, exception.getResponse().getStatusCode());
         });
     }
@@ -227,11 +229,40 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         getChatFunctionForRunner((modelId, chatCompletionsOptions) -> {
             chatCompletionsOptions.setFunctionCall(new FunctionCallConfig("NotMyFunction"));
             HttpResponseException exception = assertThrows(HttpResponseException.class,
-                () ->  client.getChatCompletions(modelId, chatCompletionsOptions));
+                () -> client.getChatCompletions(modelId, chatCompletionsOptions));
             assertEquals(400, exception.getResponse().getStatusCode());
 
             assertInstanceOf(HttpResponseException.class, exception);
             assertTrue(exception.getMessage().contains("Invalid value for 'function_call'"));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getChatCompletionsContentFilterRunner((modelId, chatMessages) -> {
+            ChatCompletions chatCompletions = client.getChatCompletions(modelId, new ChatCompletionsOptions(chatMessages));
+            assertSafeContentFilterResults(chatCompletions.getPromptFilterResults().get(0).getContentFilterResults());
+            assertEquals(1, chatCompletions.getChoices().size());
+            assertSafeContentFilterResults(chatCompletions.getChoices().get(0).getContentFilterResults());
+
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        //TODO: revert this service version lock. This is only so that we can test Completions' content filtering
+        client = getOpenAIClient(httpClient, OpenAIServiceVersion.V2023_06_01_PREVIEW);
+        getCompletionsContentFilterRunner((modelId, prompt) -> {
+            CompletionsOptions completionsOptions = new CompletionsOptions(Arrays.asList(prompt));
+            // work around for this model, there seem to be some issues with Completions in gpt-turbo models
+            completionsOptions.setMaxTokens(2000);
+            Completions completions = client.getCompletions(modelId, completionsOptions);
+            assertCompletions(1, completions);
+            assertSafeContentFilterResults(completions.getPromptFilterResults().get(0).getContentFilterResults());
+            assertSafeContentFilterResults(completions.getChoices().get(0).getContentFilterResults());
         });
     }
 }

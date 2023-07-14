@@ -11,6 +11,7 @@ import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
+import com.azure.ai.openai.models.ContentFilterResults;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.core.exception.HttpResponseException;
@@ -23,6 +24,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -279,6 +281,41 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     assertEquals(400, httpResponseException.getResponse().getStatusCode());
                     assertTrue(httpResponseException.getMessage().contains("Invalid value for 'function_call'"));
                 });
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getChatCompletionsContentFilterRunner((modelId, chatMessages) -> {
+            StepVerifier.create(client.getChatCompletions(modelId, new ChatCompletionsOptions(chatMessages)))
+                .assertNext(chatCompletions -> {
+                    assertSafeContentFilterResults(chatCompletions.getPromptFilterResults().get(0).getContentFilterResults());
+                    assertEquals(1, chatCompletions.getChoices().size());
+                    ChatChoice chatChoice = chatCompletions.getChoices().get(0);
+                    assertSafeContentFilterResults(chatChoice.getContentFilterResults());
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        //TODO: revert this service version lock. This is only so that we can test Completions' content filtering
+        client = getOpenAIAsyncClient(httpClient, OpenAIServiceVersion.V2023_06_01_PREVIEW);
+        getCompletionsContentFilterRunner((modelId, prompt) -> {
+            CompletionsOptions completionsOptions = new CompletionsOptions(Arrays.asList(prompt));
+            // work around for this model, there seem to be some issues with Completions in gpt-turbo models
+            completionsOptions.setMaxTokens(2000);
+            StepVerifier.create(client.getCompletions(modelId, completionsOptions))
+                .assertNext(completions -> {
+                    assertCompletions(1, completions);
+                    ContentFilterResults contentFilterResults = completions.getPromptFilterResults().get(0).getContentFilterResults();
+                    assertSafeContentFilterResults(contentFilterResults);
+                    assertSafeContentFilterResults(completions.getChoices().get(0).getContentFilterResults());
+                }).verifyComplete();
         });
     }
 }
