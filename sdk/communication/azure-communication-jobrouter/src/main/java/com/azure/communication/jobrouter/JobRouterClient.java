@@ -36,16 +36,16 @@ import com.azure.core.util.Context;
  * Sync Client that supports job router operations.
  *
  * <p><strong>Instantiating a synchronous JobRouter Client</strong></p>
- * <!-- src_embed com.azure.communication.jobrouter.routerclient.instantiation -->
+ * <!-- src_embed com.azure.communication.jobrouter.jobrouterclient.instantiation -->
  * <pre>
- * &#47;&#47; Initialize the router client builder
+ * &#47;&#47; Initialize the jobrouter client builder
  * final JobRouterClientBuilder builder = new JobRouterClientBuilder&#40;&#41;
  *     .connectionString&#40;connectionString&#41;;
- * &#47;&#47; Build the router client
+ * &#47;&#47; Build the jobrouter client
  * JobRouterClient jobRouterClient = builder.buildClient&#40;&#41;;
  *
  * </pre>
- * <!-- end com.azure.communication.jobrouter.routerclient.instantiation -->
+ * <!-- end com.azure.communication.jobrouter.jobrouterclient.instantiation -->
  *
  * <p>View {@link JobRouterClientBuilder this} for additional ways to construct the client.</p>
  *

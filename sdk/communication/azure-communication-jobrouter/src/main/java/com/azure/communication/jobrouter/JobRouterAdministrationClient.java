@@ -43,16 +43,16 @@ import com.azure.core.util.Context;
  * Sync Client that supports job router administration operations.
  *
  * <p><strong>Instantiating a synchronous JobRouter Administration Client</strong></p>
- * <!-- src_embed com.azure.communication.jobrouter.routeradministrationclient.instantiation -->
+ * <!-- src_embed com.azure.communication.jobrouter.jobrouteradministrationclient.instantiation -->
  * <pre>
  * &#47;&#47; Initialize the router administration client builder
  * final JobRouterAdministrationClientBuilder builder = new JobRouterAdministrationClientBuilder&#40;&#41;
  *     .connectionString&#40;connectionString&#41;;
- * &#47;&#47; Build the router administration client
+ * &#47;&#47; Build the jobRouter administration client
  * JobRouterAdministrationClient jobRouterAdministrationClient = builder.buildClient&#40;&#41;;
  *
  * </pre>
- * <!-- end com.azure.communication.jobrouter.routeradministrationclient.instantiation -->
+ * <!-- end com.azure.communication.jobrouter.jobrouteradministrationclient.instantiation -->
  *
  * <p>View {@link JobRouterAdministrationClientBuilder this} for additional ways to construct the client.</p>
  *
